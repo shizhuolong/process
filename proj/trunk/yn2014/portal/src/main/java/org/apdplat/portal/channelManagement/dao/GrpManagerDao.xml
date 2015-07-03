@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelManagement.dao.GrpManagerDao">
+
+	<select id="listTreeNode" parameterType="java.util.Map" resultType="java.util.Map">
+	<!-- 
+		<choose>
+			<when test="level==0">
+				SELECT 
+       				DISTINCT T.GROUP_ID_1 AS "id", T.GROUP_ID_1_NAME AS "name",1 as "lev" ,'86000' as "pId",'true' as "isParent"
+				FROM PORTAL.TAB_PORTAL_GRP_PERSON T 
+			</when>
+			<when test="level==1">
+				SELECT 
+       				DISTINCT T.UNIT_ID AS "id", T.UNIT_NAME AS "name",2 as "lev" , T.group_id_1 as "pId",'false' as "isParent"
+				FROM PORTAL.TAB_PORTAL_MOB_PERSON T 
+				WHERE T.GROUP_ID_1 = #{groupId}
+			</when>
+			<otherwise>
+				SELECT '86000' AS "id", '云南省' AS "name", '0' as "lev",'-1' as "pId",'true' as "isParent",'true' as "open" FROM DUAL
+			</otherwise>
+		</choose>
+		 -->
+		<choose>
+        	<when test="flag==0">
+        		select t.id        as "id",
+		               t.code      as "groupId",
+		               t.orgname   as "name",
+		               t.orglevel  as "lev",
+		               t.parent_id as "pId",
+		               CASE  t.orglevel
+	                   WHEN '1' THEN 'true'
+	                   WHEN '2' THEN 'true'
+	                   ELSE 'false' END "isParent"
+		        from portal.apdp_org t
+		        where t.code = #{groupId}
+        	</when>
+        	<otherwise>
+				select t.id        as "id",
+		               t.code      as "groupId",
+		               t.orgname   as "name",
+		               t.orglevel  as "lev",
+		               t.parent_id as "pId",
+		               CASE  t.orglevel
+	                   WHEN '1' THEN 'true'
+	                   WHEN '2' THEN 'true'
+	                   ELSE 'false' END "isParent"
+		        from portal.apdp_org t
+		        where t.parent_id in(select o.id from portal.apdp_org o where o.code = #{groupId})
+			</otherwise>
+        </choose>
+	</select>
+	<select id="queryGrpPerson" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT
+		CASE T.USER_TYPE
+		WHEN '1' THEN '渠道经理'
+		WHEN '2' THEN '客户经理'
+		ELSE '其他' END "user_type"
+		,T.NAME, T.PHONE,T.DEVELOPER,T.UNIT_NAME, T.HQ_CHAN_CODE, T.HQ_CHAN_NAME
+	FROM PORTAL.TAB_PORTAL_GRP_PERSON T
+
+	<where> 
+			<if test="level==1">
+				<!--如果是省公司则全部查出  -->
+			</if>
+			<if test="level==2">
+				AND T.Group_Id_1=#{groupId}
+			</if>
+			<if test="level==3 or level==4">
+				AND T.UNIT_ID=#{groupId}
+			</if>
+			<if test="type!=null">
+				AND T.User_Type=#{type}
+			</if>
+			
+			<if test="name!=null">
+				AND T.Name like #{name}
+			</if>
+			<if test="phone!=null">
+				AND T.Phone like #{phone}
+			</if>
+			<if test="chanCode!=null">
+				AND T.Hq_Chan_Code like #{chanCode}
+			</if>
+			<if test="chanName!=null">
+				AND T.Hq_Chan_Name like #{chanName}
+			</if>
+			<if test="developer!=null">
+				AND T.DEVELOPER = #{developer}
+			</if>
+	</where>
+	ORDER BY T.HQ_CHAN_CODE
+	</select>
+</mapper>
