@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.index.dao.IndexDao">
+	<cache flushInterval="3600000"/>
+	<select id="searchIncomeAndDev" parameterType="java.util.Map" resultType="java.util.Map">
+ 		<if test="orgLevel==1">
+ 			SELECT T.GROUP_ID_0 AS GROUPID,
+		      NVL(T.GROUP_ID_1_NAME, '云南省') GROUPNAME,
+		      SUM(T.DEV_2G_NUM) AS DEV_2G_NUM,
+		      SUM(T.SR_2G_NUM) AS SR_2G_NUM,
+		      SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) AS DEV_3G_NUM,
+		      SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) AS SR_3G_NUM,
+		      SUM(T.DEV_4G_NUM) AS DEV_4G_NUM,
+		      SUM(T.SR_4G_NUM) AS SR_4G_NUM,
+		      SUM(T.DEV_2G_NUM) + SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) +
+		      SUM(T.DEV_4G_NUM) AS TOTAL_DEV_NUM,
+		      SUM(T.SR_2G_NUM) + SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) +
+		      SUM(T.SR_4G_NUM) AS TOTAL_SR_NUM
+		 	FROM PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T
+			WHERE T.DEAL_DATE = #{dealDate}
+			GROUP BY GROUPING SETS(T.GROUP_ID_0,(T.GROUP_ID_0, T.GROUP_ID_1_NAME))
+			ORDER BY TOTAL_SR_NUM DESC
+ 		</if>
+ 		<if test="orgLevel==2">
+ 			SELECT T.GROUP_ID_1_NAME,
+		       NVL(T.UNIT_NAME, T.GROUP_ID_1_NAME) AS GROUPNAME,
+		       SUM(T.DEV_2G_NUM) AS DEV_2G_NUM,
+		       SUM(T.SR_2G_NUM) AS SR_2G_NUM,
+		       SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) AS DEV_3G_NUM,
+		       SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) AS SR_3G_NUM,
+		       SUM(T.DEV_4G_NUM) AS DEV_4G_NUM,
+		       SUM(T.SR_4G_NUM) AS SR_4G_NUM,
+		       SUM(T.DEV_2G_NUM) + SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) +
+		       SUM(T.DEV_4G_NUM) AS TOTAL_DEV_NUM,
+		       SUM(T.SR_2G_NUM) + SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) +
+		       SUM(T.SR_4G_NUM) AS TOTAL_SR_NUM
+		  	FROM PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T
+		 	WHERE T.DEAL_DATE = #{dealDate} AND T.GROUP_ID_1 = #{orgCode}
+		 	GROUP BY GROUPING SETS(T.GROUP_ID_1_NAME,(T.GROUP_ID_1_NAME, T.UNIT_NAME))
+		 	ORDER BY TOTAL_SR_NUM DESC
+ 		</if>
+ 		<if test="orgLevel==3">
+ 			SELECT T.UNIT_NAME,
+		       NVL(T.GROUP_ID_4_NAME, T.UNIT_NAME) AS GROUPNAME,
+		       SUM(T.DEV_2G_NUM) AS DEV_2G_NUM,
+		       SUM(T.SR_2G_NUM) AS SR_2G_NUM,
+		       SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) AS DEV_3G_NUM,
+		       SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) AS SR_3G_NUM,
+		       SUM(T.DEV_4G_NUM) AS DEV_4G_NUM,
+		       SUM(T.SR_4G_NUM) AS SR_4G_NUM,
+		       SUM(T.DEV_2G_NUM) + SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) +
+		       SUM(T.DEV_4G_NUM) AS TOTAL_DEV_NUM,
+		       SUM(T.SR_2G_NUM) + SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) +
+		       SUM(T.SR_4G_NUM) AS TOTAL_SR_NUM
+		  	FROM PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T
+		 	WHERE T.DEAL_DATE = #{dealDate} AND T.UNIT_ID = #{orgCode}
+		 	GROUP BY GROUPING SETS(T.UNIT_NAME,(T.UNIT_NAME, T.GROUP_ID_4_NAME))
+		 	ORDER BY TOTAL_SR_NUM DESC
+ 		</if>
+ 		<if test="orgLevel==4">
+ 			SELECT T.GROUP_ID_4_NAME,
+		       SUM(T.DEV_2G_NUM) AS DEV_2G_NUM,
+		       SUM(T.SR_2G_NUM) AS SR_2G_NUM,
+		       SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) AS DEV_3G_NUM,
+		       SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) AS SR_3G_NUM,
+		       SUM(T.DEV_4G_NUM) AS DEV_4G_NUM,
+		       SUM(T.SR_4G_NUM) AS SR_4G_NUM,
+		       SUM(T.DEV_2G_NUM) + SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) +
+		       SUM(T.DEV_4G_NUM) AS TOTAL_DEV_NUM,
+		       SUM(T.SR_2G_NUM) + SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) +
+		       SUM(T.SR_4G_NUM) AS TOTAL_SR_NUM
+		  	FROM PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T
+		 	WHERE T.DEAL_DATE = #{dealDate} AND T.GROUP_ID_4 = #{orgCode}
+		 	GROUP BY T.GROUP_ID_4_NAME
+		 	ORDER BY TOTAL_SR_NUM DESC
+ 		</if>
+	</select>
+	<select id="searchYj" parameterType="java.util.Map" resultType="java.util.Map">
+ 		<!--  <if test="orgLevel==1">-->
+			 SELECT 
+			 	 '1' as FLAG,
+			     BILLINGCYCLID,
+			     GROUP_ID_0_NAME GROUPNAME,
+			     GROUP_ID_0_NAME || '--' || GROUP_ID_0 AS ORGANIZATIONAL, 
+			     TO_CHAR(SUM(TOTAL_2G),'99999999990.00') TOTAL_2G,
+			     TO_CHAR(SUM(TOTAL_3G),'99999999990.00') TOTAL_3G, 
+			     TO_CHAR(SUM(TOTAL_NETWORK),'99999999990.00') TOTAL_NETWORK,
+			     TO_CHAR(SUM(TOTAL_FLOW),'99999999990.00') TOTAL_FLOW, 
+			     TO_CHAR(SUM(CHANL_SUBSIDY),'99999999990.00') CHANL_SUBSIDY,
+			     TO_CHAR(SUM(OTHER),'99999999990.00') OTHER, 
+			     TO_CHAR(SUM(TOTAL),'99999999990.00') TOTAL 
+			 FROM PMRT.TB_MRT_COMM_AGENT_REPORT 
+			 WHERE 
+			      BILLINGCYCLID = #{dealDate} 
+			      AND GROUP_ID_0 = #{code} 
+			      GROUP BY GROUP_ID_0_NAME,GROUP_ID_0_NAME || '--' || GROUP_ID_0,BILLINGCYCLID 
+			 UNION  ALL 
+			 SELECT 
+			 	  '2' as FLAG,
+			      BILLINGCYCLID,
+			      GROUP_ID_1_NAME GROUPNAME,
+			      GROUP_ID_1_NAME || '--' || GROUP_ID_1 AS ORGANIZATIONAL, 
+			      TO_CHAR(SUM(TOTAL_2G),'99999999990.00') TOTAL_2G, 
+			      TO_CHAR(SUM(TOTAL_3G),'99999999990.00') TOTAL_3G, 
+			      TO_CHAR(SUM(TOTAL_NETWORK),'99999999990.00') TOTAL_NETWORK, 
+			      TO_CHAR(SUM(TOTAL_FLOW),'99999999990.00') TOTAL_FLOW, 
+			      TO_CHAR(SUM(CHANL_SUBSIDY),'99999999990.00') CHANL_SUBSIDY, 
+			      TO_CHAR(SUM(OTHER),'99999999990.00') OTHER, 
+			      TO_CHAR(SUM(TOTAL),'99999999990.00') TOTAL 
+			FROM PMRT.TB_MRT_COMM_AGENT_REPORT 
+			WHERE 
+			     BILLINGCYCLID = #{dealDate}
+			     AND GROUP_ID_0 = #{code} 
+			GROUP BY GROUP_ID_1_NAME,GROUP_ID_1_NAME || '--' || GROUP_ID_1,BILLINGCYCLID
+ 		<!--  </if>-->
+	</select>
+	<select id="searchRealTimeDev" parameterType="java.util.Map" resultType="java.util.Map" useCache="false">
+ 		<!--  <if test="orgLevel==1">-->
+			 select * from (
+			       SELECT 
+			         max(max_date) as max_date,
+			         max(group_id_0_name) as groupname,
+			         sum(nvl(T2.DEV_G2,0)) as dev_g2,
+			         sum(nvl(t2.DEV_G3,0)) as dev_g3,
+			         sum(nvl(t2.DEV_WIFI,0)) as dev_wifi,
+			         sum(nvl((T2.DEV_G2+t2.DEV_G3+t2.DEV_WIFI),0))  AS DEV_ALL  
+			       FROM (
+			            select '全省' group_id_0_name,c.* 
+			            from PCDE.TB_CDE_CHANL_HQ_CODE c ) T1 
+			             
+			            JOIN ( 
+			                 select 
+			                      max(BB.DEAL_DATE) as max_date,
+			                      BB.HQ_CHAN_CODE AS CH_CODE, 
+			                      SUM(case bb.net_type when '0' then bb.dev_num ELSE 0  end) DEV_G2,
+			                      SUM(case bb.net_type when '1' then bb.dev_num ELSE 0  end) DEV_G3,
+			                      SUM(case bb.net_type when '2' then bb.dev_num ELSE 0 end) DEV_WIFI   
+			                 from 
+			                      PMRT.TB_MRT_JF_DEV_INCOME_hour bb 
+			                 WHERE 
+			                      BB.DEAL_DATE = to_char(${realTime},'yyyymmddhh24')  
+			                      and group_id_0 =#{code} 
+			                 GROUP BY BB.HQ_CHAN_CODE  )T2 
+			            ON T1.HQ_CHAN_CODE=T2.CH_CODE 
+			            group by group_id_0  
+			       union 
+			            SELECT 
+			                  max(max_date) as max_date,
+			                  max(group_id_1_name) as groupname,
+			                  sum(nvl(T2.DEV_G2,0)) as dev_g2,
+			                  sum(nvl(t2.DEV_G3,0)) as dev_g3,
+			                  sum(nvl(t2.DEV_WIFI,0)) as dev_wifi,
+			                  sum(nvl((T2.DEV_G2+t2.DEV_G3+t2.DEV_WIFI),0))  AS DEV_ALL  
+			            FROM PCDE.TB_CDE_CHANL_HQ_CODE T1  
+			            JOIN (
+			                 select 
+			                      max(BB.DEAL_DATE) as max_date,
+			                      BB.HQ_CHAN_CODE AS CH_CODE, 
+			                      SUM(case bb.net_type when '0' then bb.dev_num ELSE 0  end) DEV_G2, 
+			                      SUM(case bb.net_type when '1' then bb.dev_num ELSE 0  end) DEV_G3,
+			                      SUM(case bb.net_type when '2' then bb.dev_num ELSE 0 end) DEV_WIFI   
+			                 from PMRT.TB_MRT_JF_DEV_INCOME_hour bb 
+			                 WHERE BB.DEAL_DATE = to_char(${realTime},'yyyymmddhh24')  
+			                 and group_id_0 =#{code}
+			                 GROUP BY BB.HQ_CHAN_CODE )T2 
+			            ON T1.HQ_CHAN_CODE=T2.CH_CODE group by group_id_1 ) order by dev_g2 desc
+ 		<!-- </if> -->
+	</select>
+	<select id="listIncomeAndDevChart" parameterType="java.util.Map" resultType="java.util.Map">
+ 		SELECT SUBSTR(T.DEAL_DATE, 7) || '日' AS X,
+		       SUM(T.DEV_2G_NUM) AS Y1,
+		       SUM(T.DEV_3G_NUM) + SUM(T.DEV_WIFI_NUM) AS Y2,
+		       SUM(T.DEV_4G_NUM) AS Y3
+		FROM PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T
+		WHERE T.DEAL_DATE BETWEEN TO_CHAR(TRUNC(SYSDATE-1, 'mm'), 'yyyyMMdd') AND
+		       TO_CHAR(LAST_DAY(SYSDATE-1), 'yyyyMMdd')
+		<if test="orgLevel==2">
+			AND T.GROUP_ID_1 = #{code}
+		</if>
+		<if test="orgLevel==3">
+			AND T.UNIT_ID = #{code}
+		</if>
+		<if test="orgLevel==4">
+			AND T.GROUP_ID_4 = #{code}
+		</if>
+		GROUP BY T.DEAL_DATE
+		ORDER BY T.DEAL_DATE
+	</select>
+	
+	<select id="listNetIncomeChart" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT SUBSTR(T.DEAL_DATE, 7) || '日' AS X,
+	        SUM(T.SR_2G_NUM) AS Y1,
+	        SUM(T.SR_3G_NUM) + SUM(T.SR_WIFI_NUM) AS Y2,
+	        SUM(T.SR_4G_NUM) AS Y3
+	   	FROM PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T
+	  	WHERE T.DEAL_DATE BETWEEN TO_CHAR(TRUNC(SYSDATE-1, 'mm'), 'yyyyMMdd') AND
+	        TO_CHAR(LAST_DAY(SYSDATE-1), 'yyyyMMdd')
+	    <if test="orgLevel==2">
+			AND T.GROUP_ID_1 = #{code}
+		</if>
+		<if test="orgLevel==3">
+			AND T.UNIT_ID = #{code}
+		</if>
+		<if test="orgLevel==4">
+			AND T.GROUP_ID_4 = #{code}
+		</if>
+	  	GROUP BY T.DEAL_DATE
+	  	ORDER BY T.DEAL_DATE
+	</select>
+	<select id="getChanlPosition" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+		      HQ.LOG_NO,
+		      HQ.LAT_NO,
+		      HQ.IMGFORNT,
+		      HQ.IMGMIDDLE,
+		      HQ.IMGLATER,
+		      HQ.GROUP_ID_4,
+		      HQ.GROUP_ID_4_NAME,
+		      CHNL_ADDR,
+			  HQ_CHAN_CODE
+		FROM PCDE.TB_CDE_CHANL_HQ_CODE HQ 
+		WHERE HQ.LOG_NO=#{log} AND HQ.LAT_NO=#{lat}
+	</select>
+	<select id="listChanlPositions" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="flag==2">
+			SELECT 
+			      HQ.LOG_NO,
+			      HQ.LAT_NO,
+			      CASE HQ.CHANNEL_LEVEL WHEN 'E' THEN 0 WHEN 'F' THEN 0 ELSE 1 END HASDEV,
+			      HQ.GROUP_ID_4_NAME
+			FROM PCDE.TB_CDE_CHANL_HQ_CODE HQ ,
+			PCDE.TAB_CDE_CHANL_HQ_CODE HA
+		    WHERE HQ.HQ_CHAN_CODE=HA.HQ_CHAN_CODE
+			<if test="lat0!=0 and lat1!=0 and log0!=0 and log1!=0">
+				AND HQ.LAT_NO BETWEEN #{lat0} AND #{lat1}
+	        	AND HQ.LOG_NO BETWEEN #{log0} AND #{log1}
+	        	AND hq.CHN_CDE_2 in('2010000','1010000')
+		        AND HQ.STATUS ${status}
+	        </if>
+        </if>
+        <if test="flag==1">
+			SELECT 
+		          AVG(HQ.LOG_NO) LOG_NO,
+		          AVG(HQ.LAT_NO) LAT_NO,
+		          COUNT(*) NUM,
+		          HQ.GROUP_ID_3
+		    FROM PCDE.TB_CDE_CHANL_HQ_CODE HQ ,
+		    PCDE.TAB_CDE_CHANL_HQ_CODE HA
+		    WHERE HQ.HQ_CHAN_CODE=HA.HQ_CHAN_CODE
+		          AND hq.LOG_NO IS NOT NULL
+		          AND hq.LAT_NO IS NOT NULL
+		          AND hq.CHN_CDE_2 in('2010000','1010000')
+		          AND HQ.STATUS ${status}
+		     <if test="flag==1 and code!=null">
+				 AND HA.GROUP_ID_1=#{group} 
+			 </if>
+        </if>
+        <if test="flag==0">
+			SELECT 
+		          AVG(HQ.LOG_NO) LOG_NO,
+		          AVG(HQ.LAT_NO) LAT_NO,
+		          COUNT(*) NUM,
+		          HQ.GROUP_ID_1
+		    FROM PCDE.TB_CDE_CHANL_HQ_CODE HQ 
+		    ,PCDE.TAB_CDE_CHANL_HQ_CODE HA
+		   WHERE HQ.HQ_CHAN_CODE=HA.HQ_CHAN_CODE
+		          AND hq.LOG_NO IS NOT NULL
+		          AND hq.LAT_NO IS NOT NULL
+		          AND hq.CHN_CDE_2 in('2010000','1010000')
+		          AND HQ.STATUS ${status}
+        </if>
+		<if test="orgLevel==1">
+			AND HA.GROUP_ID_0=#{code}
+		</if>
+	    <if test="orgLevel==2">
+			AND HA.GROUP_ID_1=#{code} 
+		</if>
+		<if test="orgLevel==3">
+			AND HA.UNIT_ID=#{code}
+		</if>
+		<if test="orgLevel==4">
+			AND HA.GROUP_ID_4=#{code}
+		</if>
+		<if test="orgLevel>4">
+			AND 1=2
+		</if>
+		
+		<if test="flag==0">
+			 GROUP BY HQ.GROUP_ID_1
+		</if>
+		<if test="flag==1">
+			 GROUP BY HQ.GROUP_ID_3
+		</if>
+	</select>
+	
+	<select id="listBulls" parameterType="java.util.Map" resultType="java.util.Map" >
+		SELECT *
+  			FROM (SELECT T.BULLETINID, T.BULLNAME,to_char(T.CREATETIME,'yyyy-mm-dd') CREATETIME FROM portal.tab_portal_bulletin T
+         	ORDER BY T.CREATETIME DESC)
+ 		 WHERE ROWNUM &lt;= #{num}
+	</select>
+	<select id="listXsph" parameterType="java.util.Map" resultType="java.util.Map" >
+		select rownum,t.* from
+		(SELECT *
+  			FROM PMRT.TB_MRT_JCDY_DEV_RANK_MON t
+ 		 WHERE t.deal_date=#{dealDate}
+ 		<if test="orgLevel==2">
+			and t.GROUP_ID_1=#{code}
+		</if>
+		<if test="orgLevel==3">
+			and t.UNIT_ID=#{code}
+		</if>
+		<if test="orgLevel>3">
+			and t.HR_NO=#{hrId}
+		</if>
+		order by RANK asc) t
+		where rownum&lt;21
+	</select>
+	<select id="getBullById" parameterType="java.util.Map" resultType="java.util.Map" useCache="false" >
+		SELECT * 
+			FROM portal.tab_portal_bulletin T
+		WHERE T.BULLETINID=#{id} 
+	</select>
+	
+	<select id="listDoc" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT *
+   			FROM (SELECT T.ID, T.OLD_NAME oldName FROM PORTAL.TAB_PORTAL_DOC T ORDER BY T.CREATE_DATE DESC)
+  		WHERE ROWNUM &lt;= #{num}
+	</select>
+	
+	<select id="freeChannel" parameterType="java.util.Map" resultType="int" useCache="false">
+		 SELECT  COUNT(*) FROM PCDE.TAB_CDE_CHANL_HQ_CODE T,PCDE.TAB_CDE_GROUP_CODE T1 
+		 	WHERE T.UNIT_ID = T1.UNIT_ID AND T1.IS_DEFAULT =1 AND T.IS_SIGN = 1 
+		 <if test="orgLevel==2">
+		 	AND T.GROUP_ID_1 = #{orgCode}
+		 </if>
+		 <if test="orgLevel==3">
+		 	AND T.UNIT_ID = #{orgCode}
+		 </if>
+	</select>
+	
+</mapper>

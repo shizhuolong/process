@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelManagement.dao.ChannelResourceDao">
+
+	<select id="listChannel" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="orgLevel==1">
+			SELECT 
+				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
+				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1
+ 			<if test="hq_chan_name != null">
+ 				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
+ 			</if>
+ 			<if test="hq_chan_code != null">
+ 				AND T.HQ_CHAN_CODE=#{hq_chan_code}
+ 			</if>
+ 			<if test="is_default != null">
+ 				AND T2.IS_DEFAULT=#{is_default}
+ 			</if>
+ 			ORDER BY T.GROUP_ID_1, T.UNIT_ID
+		</if>	
+		<if test="orgLevel==2">
+			SELECT 
+				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
+				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND T.GROUP_ID_1 = #{code}
+ 			<if test="hq_chan_name != null">
+ 				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
+ 			</if>
+ 			<if test="hq_chan_code != null">
+ 				AND T.HQ_CHAN_CODE=#{hq_chan_code}
+ 			</if>
+ 			<if test="is_default != null">
+ 				AND T2.IS_DEFAULT=#{is_default}
+ 			</if>
+ 			ORDER BY T.GROUP_ID_1, T.UNIT_ID
+		</if>
+		<if test="orgLevel==3">
+			SELECT 
+				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
+				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND T.UNIT_ID = #{code}
+ 			<if test="hq_chan_name != null">
+ 				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
+ 			</if>
+ 			<if test="hq_chan_code != null">
+ 				AND T.HQ_CHAN_CODE=#{hq_chan_code}
+ 			</if>
+ 			<if test="is_default != null">
+ 				AND T2.IS_DEFAULT=#{is_default}
+ 			</if>
+ 			ORDER BY T.GROUP_ID_1, T.UNIT_ID
+		</if>
+		<if test="orgLevel==4">
+			SELECT 
+				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
+				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND 1=2
+ 			ORDER BY T.GROUP_ID_1, T.UNIT_ID
+		</if>
+	</select>
+	
+	<select id="listUnit" parameterType="java.util.Map" resultType="java.util.Map">
+ 		SELECT 
+ 			T.UNIT_ID, T.UNIT_NAME, T2.ID
+  		FROM PCDE.TAB_CDE_GROUP_CODE T, PORTAL.APDP_ORG T2
+ 		WHERE T.UNIT_ID = T2.CODE AND T.GROUP_ID_1 = #{group_id_1} AND T.IS_DEFAULT = 0
+ 		<if test="unit_name != null">
+ 			AND T.UNIT_NAME LIKE #{unit_name}
+ 		</if>
+	</select>
+	
+	<update id="updateChanlUnit" parameterType="java.util.Map">
+		UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE T
+   			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}, T.UPDATE_TIME=sysdate
+ 		WHERE T.GROUP_ID_4 = #{group_id_4}
+	</update>
+	
+	<update id="updateOrg" parameterType="java.util.Map">
+		UPDATE PORTAL.APDP_ORG T SET T.PARENT_ID = #{orgId} WHERE T.CODE = #{group_id_4}
+	</update>
+	
+	<update id="updateChannelManager" parameterType="java.util.Map">
+		UPDATE PORTAL.TAB_PORTAL_MOB_PERSON T
+   			SET T.USERID='', T.NAME='',T.ACCOUNT='',T.PHONE='',T.HR_ID='',
+   			T.UNIT_ID=#{unit_id},T.UNIT_NAME = #{unit_name}
+ 		WHERE T.GROUP_ID_CODE = #{group_id_4}
+	</update>
+	
+	<update id="updateGrpPerson" parameterType="java.util.Map">
+		UPDATE PORTAL.TAB_PORTAL_GRP_PERSON T 
+			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}
+ 		WHERE T.GROUP_ID_CODE = #{group_id_4}
+	</update>
+	
+	<update id="updateMagPerson" parameterType="java.util.Map">
+		UPDATE PORTAL.TAB_PORTAL_MAG_PERSON T 
+			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}
+ 		WHERE T.GROUP_ID_CODE = #{group_id_4}
+	</update>
+	
+	<select id="queryChanelInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		<!-- SELECT 
+			T.GROUP_ID_1_NAME,
+       		T.UNIT_NAME,
+       		T.GROUP_ID_4_NAME,
+       		T.HQ_CHAN_CODE,
+       		T2.NAME,
+       		T2.PHONE
+  		FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PORTAL.TAB_PORTAL_MOB_PERSON T2
+ 		WHERE T.GROUP_ID_4 = T2.GROUP_ID_CODE AND T2.LEV = 2
+   		AND T.GROUP_ID_4 = #{group_id_4} -->
+   		SELECT 
+   			T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,
+       		T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME,T3.LOG_NO,T3.LAT_NO,
+       		DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止','') AS STATUS,
+       		T3.HQ_PAY_CHNL_ID,T3.PAY_CHNL_NAME,DECODE(T3.IS_INPUT_SYSTEM, '1', '是', '否') AS IS_INPUT_SYSTEM,
+       		T3.SYSTEM_NUM,DECODE(T3.IS_SIGN, '1', '是', '否') AS IS_SIGN,
+       		DECODE(t3.IS_DEVELOPER,'1','是','否') AS IS_DEVELOPER,
+       		DECODE(T3.IS_MINI_HALL, '1', '是', '否') AS IS_MINI_HALL,T2.NAME,T2.PHONE
+  		FROM PCDE.TAB_CDE_CHANL_HQ_CODE   T,
+       		PORTAL.TAB_PORTAL_MOB_PERSON T2,
+       		PCDE.TB_CDE_CHANL_HQ_CODE    T3
+ 		WHERE T.GROUP_ID_4 = T2.GROUP_ID_CODE
+   			AND T.GROUP_ID_4 = T3.GROUP_ID_4
+   			AND T2.LEV = 2
+   			AND T.GROUP_ID_4 = #{group_id_4}
+   		
+	</select>
+	
+	<select id="loadChanlDetails" parameterType="String" resultType="java.util.Map">
+		SELECT 
+			T.HQ_CHAN_CODE,T.GROUP_ID_4_NAME,T.GROUP_ID_1_NAME,T0.UNIT_NAME,T.CHN_CDE_1_NAME,
+			T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.CONTACT_NAME,T.CONTACT_PHONE,
+			T.CON_OFFICE_PHONE,T.LOG_NO,T.LAT_NO,T.CHNL_ADDR,
+			DECODE(T.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止','') AS STATUS,
+       		DECODE(T.IS_MINI_HALL, '1', '是', '0', '否', '') AS IS_MINI_HALL,
+       		TO_CHAR(T.CREATE_TIME, 'yyyy-MM-dd HH:mi:ss') AS CREATE_TIME,
+       		T.HALL_AREA_SIZE,DECODE(T.CHAIN_FLAG, '1', '是', '否') AS CHAIN_FLAG,
+       		T.BUS_AREA_SIZE,T.IMGFORNT,T.IMGMIDDLE,T.IMGLATER,
+       		T1.NAME,T1.ACCOUNT,T1.PHONE
+  		FROM PCDE.TB_CDE_CHANL_HQ_CODE T LEFT JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T0
+    	ON (T0.FD_CHNL_CODE = T.FD_CHNL_CODE) LEFT JOIN PORTAL.TAB_PORTAL_MOB_PERSON T1
+    	ON (T.GROUP_ID_4 = T1.GROUP_ID_CODE)
+   		WHERE T.GROUP_ID_4 = #{group_id_4}
+	</select>
+	
+</mapper>

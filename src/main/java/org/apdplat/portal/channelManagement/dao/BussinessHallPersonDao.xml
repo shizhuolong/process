@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelManagement.dao.BussinessHallPersonDao">
+
+	<select id="listTreeNode" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="orgLevel==null">
+			SELECT 
+				T.ID AS "id",'-1' AS "pId",T.ORGNAME AS "name",
+				T.CODE AS "code",T.ORGLEVEL AS "orgLevel",'true' as "isParent"
+			FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = '1'
+		</if>
+		<if test="orgLevel==1">
+			SELECT 
+				T.ID AS "id",T.PARENT_ID AS "pId",T.ORGNAME AS "name",
+				T.CODE AS "code",T.ORGLEVEL AS "orgLevel",'true' as "isParent"
+			FROM PORTAL.APDP_ORG T WHERE T.PARENT_ID = #{orgId}
+		</if>
+		<if test="orgLevel==2">
+			SELECT 
+				T.ID AS "id",T.PARENT_ID AS "pId",T.ORGNAME AS "name",
+				T.CODE AS "code",T.ORGLEVEL AS "orgLevel",'false' as "isParent"
+			FROM PORTAL.APDP_ORG T WHERE T.PARENT_ID = #{orgId}
+		</if>
+	</select>
+	
+	<select id="queryMagPerson" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="orgLevel==1">
+			SELECT 
+				T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,
+				T.USER_CODE,T.USER_LOG_CODE
+			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+			<where>
+				<if test="hq_chan_code != null">
+	    			AND T.HQ_CHAN_CODE=#{hq_chan_code}
+		    	</if>
+		    	<if test="phone != null">
+		    		AND T.PHONE=#{phone}
+		    	</if>
+		    	<if test="name != null">
+		    		AND T.NAME LIKE #{name}
+		    	</if>
+		    	<if test="hq_chan_name != null">
+		    		AND T.HQ_CHAN_NAME LIKE #{hq_chan_name}
+		    	</if>
+		    	<if test="user_code != null">
+		    		AND T.USER_CODE=#{user_code}
+		    	</if>
+		    	<if test="user_log_code != null">
+		    		AND T.USER_LOG_CODE=#{user_log_code}
+		    	</if>
+			</where>
+			ORDER BY T.NAME
+		</if>
+		<if test="orgLevel==2">
+			SELECT 
+				T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,
+				T.USER_CODE,T.USER_LOG_CODE
+			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+			WHERE T.GROUP_ID_1 = #{code}
+			<if test="hq_chan_code != null">
+    			AND T.HQ_CHAN_CODE=#{hq_chan_code}
+	    	</if>
+	    	<if test="phone != null">
+	    		AND T.PHONE=#{phone}
+	    	</if>
+	    	<if test="name != null">
+	    		AND T.NAME LIKE #{name}
+	    	</if>
+	    	<if test="hq_chan_name != null">
+	    		AND T.HQ_CHAN_NAME LIKE #{hq_chan_name}
+	    	</if>
+	    	<if test="user_code != null">
+	    		AND T.USER_CODE=#{user_code}
+	    	</if>
+	    	<if test="user_log_code != null">
+	    		AND T.USER_LOG_CODE=#{user_log_code}
+	    	</if>
+			ORDER BY T.NAME
+		</if>
+		<if test="orgLevel==3">
+			SELECT 
+				T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,
+				T.USER_CODE,T.USER_LOG_CODE
+			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+			WHERE T.UNIT_ID = #{code}
+			<if test="hq_chan_code != null">
+    			AND T.HQ_CHAN_CODE=#{hq_chan_code}
+	    	</if>
+	    	<if test="phone != null">
+	    		AND T.PHONE=#{phone}
+	    	</if>
+	    	<if test="name != null">
+	    		AND T.NAME LIKE #{name}
+	    	</if>
+	    	<if test="hq_chan_name != null">
+	    		AND T.HQ_CHAN_NAME LIKE #{hq_chan_name}
+	    	</if>
+	    	<if test="user_code != null">
+	    		AND T.USER_CODE=#{user_code}
+	    	</if>
+	    	<if test="user_log_code != null">
+	    		AND T.USER_LOG_CODE=#{user_log_code}
+	    	</if>
+			ORDER BY T.NAME
+		</if>
+		<if test="orgLevel==4">
+			SELECT 
+				T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,
+				T.USER_CODE,T.USER_LOG_CODE
+			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+			WHERE 1=2
+		</if>
+	</select>
+	
+</mapper>

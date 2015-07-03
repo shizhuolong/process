@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.loginStatistics.dao.LoginStatisticsDao">
+
+	<select id="searchUserLoginTimes" parameterType="java.util.Map" resultType="java.util.Map">
+		<choose>
+			<when test="orgLevel==1">
+				SELECT T2.ORGNAME,T1.REALNAME,T.USERNAME,T1.PHONE,COUNT(T.USERNAME) AS TIMES,
+       				TO_CHAR(T3.LOGINTIME, 'yyyy-MM-dd hh24:mi:ss') AS LOGINTIME
+		  		FROM PORTAL.APDP_LOG_USERLOGIN T JOIN PORTAL.APDP_USER T1
+		    		ON (T.USERNAME = T1.USERNAME)
+		  		JOIN PORTAL.APDP_ORG T2 
+		  			ON (T1.ORG_ID = T2.ID)
+		  		JOIN (SELECT T3.USERNAME, MAX(T3.LOGINTIME) LOGINTIME 
+		  				FROM PORTAL.APDP_LOG_USERLOGIN T3
+		         		WHERE TO_CHAR(T3.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
+		         		GROUP BY T3.USERNAME) T3
+		    	ON (T.USERNAME = T3.USERNAME)
+		 		WHERE T1.ENABLED = 1
+		   		AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
+		   		<if test="queryOrgCode != null">
+		   			AND T2.CODE = #{queryOrgCode}
+		   		</if>
+		   		<if test="username != null">
+		   			AND T1.USERNAME = #{username}
+		   		</if>
+		   		<if test="realname != null">
+		   			AND T1.REALNAME LIKE #{realname}
+		   		</if>
+		 		GROUP BY T2.ORGNAME, T1.REALNAME, T.USERNAME, T1.PHONE, T3.LOGINTIME
+		 		ORDER BY COUNT(T.USERNAME) DESC
+			</when>
+			<otherwise>
+				SELECT T2.ORGNAME,T1.REALNAME,T.USERNAME,T1.PHONE,COUNT(T.USERNAME) AS TIMES,
+       				TO_CHAR(T3.LOGINTIME, 'yyyy-MM-dd hh24:mi:ss') AS LOGINTIME
+		  		FROM PORTAL.APDP_LOG_USERLOGIN T JOIN PORTAL.APDP_USER T1
+		    		ON (T.USERNAME = T1.USERNAME)
+		  		JOIN PORTAL.APDP_ORG T2 
+		  			ON (T1.ORG_ID = T2.ID)
+		  		JOIN (SELECT T3.USERNAME, MAX(T3.LOGINTIME) LOGINTIME 
+		  				FROM PORTAL.APDP_LOG_USERLOGIN T3
+		         		WHERE TO_CHAR(T3.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
+		         		GROUP BY T3.USERNAME) T3
+		    	ON (T.USERNAME = T3.USERNAME)
+		 		WHERE T1.ENABLED = 1
+		   		AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
+		   		AND EXISTS (SELECT 1
+		          FROM (SELECT T.ID
+		                  FROM PORTAL.APDP_ORG T
+		                 START WITH T.PARENT_ID =
+		                            (SELECT ID
+		                               FROM PORTAL.APDP_ORG T
+		                              WHERE T.CODE = #{code})
+		                CONNECT BY PRIOR T.ID = T.PARENT_ID
+		                UNION
+		                SELECT ID FROM PORTAL.APDP_ORG T WHERE T.CODE = #{code}) T5
+		         WHERE T5.ID = T2.ID)
+		         <if test="queryOrgCode != null">
+		   			AND T2.CODE = #{queryOrgCode}
+		   		</if>
+		   		<if test="username != null">
+		   			AND T1.USERNAME = #{username}
+		   		</if>
+		   		<if test="realname != null">
+		   			AND T1.REALNAME LIKE #{realname}
+		   		</if>
+		 		GROUP BY T2.ORGNAME, T1.REALNAME, T.USERNAME, T1.PHONE, T3.LOGINTIME
+		 		ORDER BY COUNT(T.USERNAME) DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="searchSelectOrg" parameterType="java.util.Map" resultType="java.util.Map">
+		<choose>
+			<when test="orgLevel==1">
+				SELECT T.CODE, '省公司' AS ORGNAME FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = 1
+				UNION
+				SELECT T.CODE, T.ORGNAME FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = 2
+			</when>
+			<otherwise>
+				SELECT T.CODE, T.ORGNAME FROM PORTAL.APDP_ORG T WHERE T.CODE = #{code}
+			</otherwise>
+		</choose>
+	</select>
+	
+</mapper>
