@@ -6,7 +6,7 @@
 		 * 动态判断加入artDialog
 		 * 
 		 */
-		if(!art){
+		if(typeof(art)=="undefined"){
 			$("BODY").append('<script type="text/javascript" src="'+$("#ctx").val()+'/js/artDialog4.1.7/artDialog.js"></script>');
 			$("BODY").append('<link href="'+$("#ctx").val()+'/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />');
 		}
