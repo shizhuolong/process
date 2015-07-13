@@ -52,9 +52,9 @@ function search(pageNumber) {
 	var unitName=$("#unitName").val();
 	
 //条件
-	var sql = "SELECT T3.* FROM (SELECT T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON PARTITION(P201501) T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE) T3 where 1=1 ";
+	var sql = "SELECT T3.* FROM (SELECT T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON  T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
 	if(time!=''){
-		sql+=" and T3.DEAL_DATE="+time;
+		sql+=" and T3.DEAL_DATE='"+time+"'";
 	}
 	if(regionName!=''){
 		sql+=" and T3.GROUP_ID_1_NAME = '"+regionName+"'";
@@ -193,9 +193,9 @@ function downsAll(){
 	var unitName=$("#unitName").val();
 	
 //条件
-	var sql = "SELECT T3.* FROM (SELECT T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON PARTITION(P201501) T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE) T3 where 1=1 ";
+	var sql = "SELECT T3.* FROM (SELECT T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON  T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
 	if(time!=''){
-		sql+=" and T3.DEAL_DATE="+time;
+		sql+=" and T3.DEAL_DATE='"+time+"'";
 	}
 	if(regionName!=''){
 		sql+=" and T3.GROUP_ID_1_NAME = '"+regionName+"'";
