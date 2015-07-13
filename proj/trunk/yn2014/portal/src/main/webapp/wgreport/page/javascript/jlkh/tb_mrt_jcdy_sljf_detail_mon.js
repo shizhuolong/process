@@ -44,6 +44,7 @@ jQuery(function(){
 		var deal_date = $.trim($("#deal_date").val());
 		var user_name = $.trim($("#user_name").val());
 		var unit_name = $.trim($("#unit_name").val());
+		var itemdesc=$.trim($("#itemdesc").val());
 		var fsql = getSelect();
 		var c=cols.join(",");
 		var sql = "select "+c+" from PMRT.TB_MRT_JCDY_SLJF_DETAIL_MON WHERE DEAL_DATE = " + deal_date +fsql;
@@ -60,6 +61,9 @@ jQuery(function(){
 		}
 		if(user_name != "") {
 			sql += " AND USER_NAME LIKE '%"+user_name+"%' ";
+		}
+		if(itemdesc!=""){
+			sql+=" AND BUSI_DESC LIKE '%"+itemdesc+"%' ";
 		}
 		init(sql);
 	});
@@ -239,6 +243,7 @@ function downsAll(){
 	var city_name = $.trim($("#city_name").val());
 	var user_name = $.trim($("#user_name").val());
 	var unit_name = $.trim($("#unit_name").val());
+	var itemdesc=$.trim($("#itemdesc").val());
 	var fsql = getSelect();
 	var c=cols.join(",");
 	var sql =  "select "+c+" from PMRT.TB_MRT_JCDY_SLJF_DETAIL_MON WHERE DEAL_DATE = " + deal_date +fsql ;
@@ -255,6 +260,9 @@ function downsAll(){
 	}
 	if(user_name != "") {
 		sql += " AND USER_NAME LIKE '%"+user_name+"%' ";
+	}
+	if(itemdesc!=""){
+		sql+=" AND BUSI_DESC LIKE '%"+itemdesc+"%' ";
 	}
 	var showtext="Sheet";
 	   var showtext1="result";

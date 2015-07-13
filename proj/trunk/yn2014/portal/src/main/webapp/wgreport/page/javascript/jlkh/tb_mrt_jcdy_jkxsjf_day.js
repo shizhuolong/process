@@ -68,6 +68,7 @@ jQuery(function(){
 		var unit_name = $.trim($("#unit_name").val());
 		var user_name = $.trim($("#user_name").val());
 		var service_num =$.trim($("#service_num").val());
+		var itemdesc=$.trim($("#itemdesc").val());
 		var fsql = getSelect();
 		var sql = "SELECT T.DEAL_DATE,T.AREA_NAME,T.UNIT_NAME,T.USER_NAME,T.HR_NO," +
 		"T.SUBSCRIPTION_ID,T.SERVICE_NUM,T.JOIN_DATE,T.OPERATOR_ID, " +
@@ -93,6 +94,9 @@ jQuery(function(){
 		}
 		if(user_name != "") {
 			sql += " AND T.USER_NAME LIKE '%"+user_name+"%' ";
+		}
+		if(itemdesc!=""){
+			sql+=" AND ITEMDESC LIKE '%"+itemdesc+"%' ";
 		}
 		sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 		init(sql);
@@ -271,6 +275,7 @@ function downsAll(){
 	var unit_name = $.trim($("#unit_name").val());
 	var user_name = $.trim($("#user_name").val());
 	var service_num = $.trim($("#service_num").val());
+	var itemdesc=$.trim($("#itemdesc").val());
 	var fsql = getSelect();
 	var sql = "SELECT T.DEAL_DATE,T.AREA_NAME,T.UNIT_NAME,T.USER_NAME,T.HR_NO," +
 	"T.SUBSCRIPTION_ID,T.SERVICE_NUM,T.JOIN_DATE,T.OPERATOR_ID, " +
@@ -296,6 +301,9 @@ function downsAll(){
 	}
 	if(user_name != "") {
 		sql += " AND T.USER_NAME LIKE '%"+user_name+"%' ";
+	}
+	if(itemdesc!=""){
+		sql+=" AND ITEMDESC LIKE '%"+itemdesc+"%' ";
 	}
 	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	
