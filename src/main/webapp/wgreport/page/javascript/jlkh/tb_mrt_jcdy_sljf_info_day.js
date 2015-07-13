@@ -65,6 +65,7 @@ jQuery(function(){
 		var endDate = $.trim($("#endTime").val());
 		var unit_name = $.trim($("#unit_name").val());
 		var user_name = $.trim($("#user_name").val());
+		var itemdesc=$.trim($("#itemdesc").val());
 		var fsql = getSelect();
 		var sql = "SELECT T.DEAL_DATE,T.AREA_NAME,T.UNIT_NAME,T.HR_NO,T.USER_NAME,T.HQ_CHAN_CODE," +
 		"T.HQ_NAME,T.OPERATOR_ID,T.BUSI_ID,T.BUSI_DESC,T.SLL,T.BIGBUSI_CODE,T.BIGBUSI_DESC," +
@@ -84,6 +85,9 @@ jQuery(function(){
 		}
 		if(user_name != "") {
 			sql += " AND T.USER_NAME LIKE '%"+user_name+"%' ";
+		}
+		if(itemdesc!=""){
+			sql+=" AND BUSI_DESC LIKE '%"+itemdesc+"%' ";
 		}
 		sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 		init(sql);
@@ -261,6 +265,7 @@ function downsAll(){
 	var endDate = $.trim($("#endTime").val());
 	var unit_name = $.trim($("#unit_name").val());
 	var user_name = $.trim($("#user_name").val());
+	var itemdesc=$.trim($("#itemdesc").val());
 	var fsql = getSelect();
 	var sql = "SELECT T.DEAL_DATE,T.AREA_NAME,T.UNIT_NAME,T.HR_NO,T.USER_NAME,T.HQ_CHAN_CODE," +
 	"T.HQ_NAME,T.OPERATOR_ID,T.BUSI_ID,T.BUSI_DESC,T.SLL,T.BIGBUSI_CODE,T.BIGBUSI_DESC," +
@@ -280,6 +285,9 @@ function downsAll(){
 	}
 	if(user_name != "") {
 		sql += " AND T.USER_NAME LIKE '%"+user_name+"%' ";
+	}
+	if(itemdesc!=""){
+		sql+=" AND BUSI_DESC LIKE '%"+itemdesc+"%' ";
 	}
 	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	

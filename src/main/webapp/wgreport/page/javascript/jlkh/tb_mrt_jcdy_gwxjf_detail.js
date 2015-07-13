@@ -45,6 +45,7 @@ jQuery(function(){
 		var user_name = $.trim($("#user_name").val());
 		var unit_name = $.trim($("#unit_name").val());
 		var service_num=$.trim($("#service_num").val());
+		var itemdesc=$.trim($("#itemdesc").val());
 		var fsql = getSelect();
 		var c=cols.join(",");
 		var sql = "select "+c+" from PMRT.TB_MRT_JCDY_GWXJF_DETAIL_MON WHERE DEAL_DATE = " + deal_date +fsql;
@@ -64,6 +65,9 @@ jQuery(function(){
 		}
 		if(service_num!=""){
 			sql+=" AND SERVICE_NUM LIKE '%"+service_num+"%' ";
+		}
+		if(itemdesc!=""){
+			sql+=" AND ITEMDESC LIKE '%"+itemdesc+"%' ";
 		}
 		init(sql);
 	});
@@ -244,6 +248,7 @@ function downsAll(){
 	var user_name = $.trim($("#user_name").val());
 	var unit_name = $.trim($("#unit_name").val());
 	var service_num = $.trim($("#service_num").val());
+	var itemdesc=$.trim($("#itemdesc").val());
 	var fsql = getSelect();
 	var c=cols.join(",");
 	var sql =  "select "+c+" from PMRT.TB_MRT_JCDY_GWXJF_DETAIL_MON WHERE DEAL_DATE = " + deal_date +fsql ;
@@ -263,6 +268,9 @@ function downsAll(){
 	}
 	if(service_num != "") {
 		sql += " AND SERVICE_NUM LIKE '%"+service_num+"%' ";
+	}
+	if(itemdesc!=""){
+		sql+=" AND ITEMDESC LIKE '%"+itemdesc+"%' ";
 	}
 	var showtext="Sheet";
 	   var showtext1="result";
