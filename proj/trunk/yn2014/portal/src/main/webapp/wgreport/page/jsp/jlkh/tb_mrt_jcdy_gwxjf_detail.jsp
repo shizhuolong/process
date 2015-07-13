@@ -77,12 +77,16 @@
 					<td>
 						<input type="text" name="user_name" id="user_name" style="width: 152px;">
 					</td>
+					</tr>
+					<tr>
 					<td align="right">用户号码</td>
 					<td>
 						<input type="text" name="service_num" id="service_num" style="width: 152px;">
 					</td>
-					</tr>
-					<tr>
+					<td align="right">业务描述</td>
+					<td>
+						<input type="text" name="itemdesc" id="itemdesc" style="width: 152px;">
+					</td>
 					<td align="left" colspan="3">
 						<input type="button" id="search" class="btn-search" style="float:left;"/>
 						<input type="button" id="exceldown" value="导出Excel" class="ana-button" style="cursor:pointer;margin-top:0px;margin-bottom:0px;padding-top:0px;float:left;"/>

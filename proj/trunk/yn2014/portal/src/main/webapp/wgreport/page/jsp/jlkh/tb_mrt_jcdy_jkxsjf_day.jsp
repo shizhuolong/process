@@ -74,12 +74,6 @@
 					<td>
 						<input type="text" name="service_num" id="service_num">
 					</td>
-					<td align="center" rowspan="2" width="100">
-						<input type="button" id="search" class="btn-search" />
-					</td>
-					<td rowspan="2">
-						<input type="button" id="exceldown" value="导出Excel" class="ana-button" style="cursor:pointer;margin-top: 3px;"/>
-					</td>
 				</tr>
 				<tr>
 					<td>营服中心：</td>
@@ -89,6 +83,16 @@
 					<td>人员姓名:</td>
 					<td>
 						<input type="text" name="user_name" id="user_name" style="width: 152px;">
+					</td>
+					<td align="right">业务描述</td>
+					<td>
+						<input type="text" name="itemdesc" id="itemdesc" style="width: 152px;">
+					</td>
+					<td align="center" rowspan="2" width="100">
+						<input type="button" id="search" class="btn-search" />
+					</td>
+					<td rowspan="2">
+						<input type="button" id="exceldown" value="导出Excel" class="ana-button" style="cursor:pointer;margin-top: 3px;"/>
 					</td>
 				</tr>
 			</table>
