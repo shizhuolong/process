@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"]];
-var field=["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"];
+var title=[["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","渠道编码","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"]];
+var field=["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","渠道编码","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"];
 var orderBy = '';
 var report = null;
 $(function() {
@@ -68,6 +68,7 @@ function search(pageNumber) {
 	"         WHEN T.USER_ROLE = 4 THEN '营业人员'                 "+
 	"         WHEN T.USER_ROLE IN (5, 6, 10) THEN '营服总'         "+
 	"         ELSE '' END 角色类型,                                "+
+	"         T.HQ_CHAN_CODE  渠道编码,                            "+
 	"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                   "+
 	"       T.DEVICE_NUMBER 用户号码,                            	 "+
 	"       CASE                                                 "+
@@ -80,7 +81,7 @@ function search(pageNumber) {
 	"       T.F_HR_ID 上级HR编码,                                	 "+
 	"       T1.NAME  归属上级姓名,                               	 "+
 	"       T2.HR_ID 责任人编码,                                 	 "+
-	"       T2.NAME  责任人                                      						 "+
+	"       T2.NAME  责任人                                      						     "+
 	"  FROM (SELECT T.*, T1.F_HR_ID                              "+
 	"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON T             "+
 	"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID         "+
@@ -275,6 +276,7 @@ function downsAll(){
 	"         WHEN T.USER_ROLE = 4 THEN '营业人员'                 "+
 	"         WHEN T.USER_ROLE IN (5, 6, 10) THEN '营服总'         "+
 	"         ELSE '' END 角色类型,                                "+
+	"         T.HQ_CHAN_CODE  渠道编码,                            "+
 	"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                   "+
 	"       T.DEVICE_NUMBER 用户号码,                            	 "+
 	"       CASE                                                 "+
@@ -340,7 +342,7 @@ function downsAll(){
 	/*	sql+=" and T.GROUP_ID_1 ='"+regionCode+"'";*/
 	}
 	sql+=" ORDER BY T.GROUP_ID_1,T.UNIT_ID";
-	var title=[["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"]];
+	var title=[["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","渠道编码","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"]];
 	showtext = 'KPI收入明细报表-'+time;
 	downloadExcel(sql,title,showtext);
 }
