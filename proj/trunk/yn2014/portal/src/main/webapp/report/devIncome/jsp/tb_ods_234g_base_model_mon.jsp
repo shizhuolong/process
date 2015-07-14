@@ -29,6 +29,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_ods_234g_base_model_mon.js"></script>
+<style type="text/css">
+  #lch_DataHead TR TH,#lch_DataBody TR TD{
+   min-width: 10px;
+}
+</style>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -78,9 +83,5 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-
 </body>
-<script>
-
-</script>
 </html>
