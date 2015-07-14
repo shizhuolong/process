@@ -73,7 +73,7 @@
 					name="userName" type="text" id="userName" /></td>
 				<td width="6%">用户号码：</td>
 				<td width="15%"><input class="default-text-input wper80"
-					name="userCode" type="text" id="userCode" /></td>
+					name=userPhone type="text" id="userPhone" /></td>
 				<td width="5%"><a class="default-btn" href="#" id="searchBtn"
 					style="float: right; margin-right: 30px;">查询</a></td>
 				<td width="5%"><a class="default-btn" href="#" id="exportBtn"
