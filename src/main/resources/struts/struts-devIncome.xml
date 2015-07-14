@@ -11,5 +11,13 @@
 		</global-exception-mappings>
         <action name="devIncome_*" class="org.apdplat.report.devIncome.action.ReportAction" method="{1}">
         </action>
+        <action name="hrUpload_*" class="org.apdplat.report.devIncome.action.HrUploadAction" method="{1}">
+            <result name="success">/report/devIncome/jsp/tmp_jcdy_hr_salary_list.jsp</result>
+            <result name="error">/report/devIncome/jsp/tmp_jcdy_hr_salary.jsp</result>            
+        </action>
+        <action name="orUpload_*" class="org.apdplat.report.devIncome.action.OrUploadAction" method="{1}">
+            <result name="success">/report/devIncome/jsp/tmp_jcdy_hr_salary_out_list.jsp</result>
+            <result name="error">/report/devIncome/jsp/tmp_jcdy_hr_out_salary.jsp</result>            
+        </action>
 	</package>
 </struts>
