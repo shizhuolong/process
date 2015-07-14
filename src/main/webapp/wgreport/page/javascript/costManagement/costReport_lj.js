@@ -3,7 +3,7 @@ var _execute = $.Project.execute;
 var defaultMsgDom = $('#searchTime');
 var tablecode = ["income_total","income_2g","income_3g", "income_4g","income_kd","income_zx",
                  "gridding_total","comm_total","comm_2g", "comm_3g", "comm_4g","comm_hardlink",
-                 "comm_gy","channel","zdbt_amount","kvb_amount","fzf_amount",
+                 "comm_gy","fee_jmwb","channel","zdbt_amount","kvb_amount","fzf_amount",
                  "sdwyf_amount","ads_amount","ywypclf_amount","yhjr_amount",
                  "bgf_amount","clsyf_amount","zdf_amount","clf_amount","txf_amount","profit"];
 var querydate = "";
@@ -22,20 +22,35 @@ jQuery(function($){
 
 function initTable(sql){
 	var col = 
-			"SUM(NVL(T.INCOME_TOTAL, 0)) AS INCOME_TOTAL,SUM(NVL(T.INCOME_2G, 0)) AS INCOME_2G," +
-			"SUM(NVL(T.INCOME_3G, 0)) AS INCOME_3G,SUM(NVL(T.INCOME_4G, 0)) AS INCOME_4G," +
-			"SUM(NVL(T.INCOME_KD, 0)) AS INCOME_KD,SUM(NVL(T.INCOME_ZX, 0)) AS INCOME_ZX," +
-			"SUM(NVL(T.GRIDDING_TOTAL, 0)) AS GRIDDING_TOTAL,SUM(NVL(T.COMM_TOTAL, 0)) AS COMM_TOTAL," +
-			"SUM(NVL(T.COMM_2G, 0)) AS COMM_2G,SUM(NVL(T.COMM_3G, 0)) AS COMM_3G," +
-			"SUM(NVL(T.COMM_4G, 0)) AS COMM_4G,SUM(NVL(T.COMM_HARDLINK, 0)) AS COMM_HARDLINK,SUM(NVL(T.COMM_GY, 0)) AS COMM_GY," +
-			"SUM(NVL(T.CHANNEL, 0)) AS CHANNEL,SUM(NVL(T.ZDBT_AMOUNT, 0)) AS ZDBT_AMOUNT," +
-			"SUM(NVL(T.KVB_AMOUNT, 0)) AS KVB_AMOUNT,SUM(NVL(T.FZF_AMOUNT, 0)) AS FZF_AMOUNT," +
-			"SUM(NVL(T.SDWYF_AMOUNT, 0)) AS SDWYF_AMOUNT," +
-			"SUM(NVL(T.ADS_AMOUNT, 0)) AS ADS_AMOUNT,SUM(NVL(T.YWYPCLF_AMOUNT, 0)) AS YWYPCLF_AMOUNT," +
-			"SUM(NVL(T.YHJR_AMOUNT, 0)) AS YHJR_AMOUNT,SUM(NVL(T.BGF_AMOUNT, 0)) AS BGF_AMOUNT," +
-			"SUM(NVL(T.CLSYF_AMOUNT, 0)) AS CLSYF_AMOUNT,SUM(NVL(T.ZDF_AMOUNT, 0)) AS ZDF_AMOUNT," +
-			"SUM(NVL(T.CLF_AMOUNT, 0)) AS CLF_AMOUNT,SUM(NVL(T.TXF_AMOUNT, 0)) AS TXF_AMOUNT,SUM(NVL(T.PROFIT, 0)) AS PROFIT " +
-			"FROM PMRT.TB_MRT_COST_UNIT_PROFIT T ";
+		"SUM(NVL(T.INCOME_TOTAL, 0)) AS INCOME_TOTAL,    "+
+		"SUM(NVL(T.INCOME_2G, 0)) AS INCOME_2G,          "+
+		"SUM(NVL(T.INCOME_3G, 0)) AS INCOME_3G,          "+
+		"SUM(NVL(T.INCOME_4G, 0)) AS INCOME_4G,          "+
+		"SUM(NVL(T.INCOME_KD, 0)) AS INCOME_KD,          "+
+		"SUM(NVL(T.INCOME_ZX, 0)) AS INCOME_ZX,          "+
+		"SUM(NVL(T.GRIDDING_TOTAL, 0)) AS GRIDDING_TOTAL,"+
+		"SUM(NVL(T.COMM_TOTAL, 0)) AS COMM_TOTAL,        "+
+		"SUM(NVL(T.COMM_2G, 0)) AS COMM_2G,              "+
+		"SUM(NVL(T.COMM_3G, 0)) AS COMM_3G,              "+
+		"SUM(NVL(T.COMM_4G, 0)) AS COMM_4G,              "+
+		"SUM(NVL(T.COMM_HARDLINK, 0)) AS COMM_HARDLINK,  "+
+		"SUM(NVL(T.COMM_GY, 0)) AS COMM_GY,              "+
+		"SUM(NVL(T.FEE_JMWB, 0)) AS FEE_JMWB,            "+
+		"SUM(NVL(T.CHANNEL, 0)) AS CHANNEL,              "+
+		"SUM(NVL(T.ZDBT_AMOUNT, 0)) AS ZDBT_AMOUNT,      "+
+		"SUM(NVL(T.KVB_AMOUNT, 0)) AS KVB_AMOUNT,        "+
+		"SUM(NVL(T.FZF_AMOUNT, 0)) AS FZF_AMOUNT,        "+
+		"SUM(NVL(T.SDWYF_AMOUNT, 0)) AS SDWYF_AMOUNT,    "+
+		"SUM(NVL(T.ADS_AMOUNT, 0)) AS ADS_AMOUNT,        "+
+		"SUM(NVL(T.YWYPCLF_AMOUNT, 0)) AS YWYPCLF_AMOUNT,"+
+		"SUM(NVL(T.YHJR_AMOUNT, 0)) AS YHJR_AMOUNT,      "+
+		"SUM(NVL(T.BGF_AMOUNT, 0)) AS BGF_AMOUNT,        "+
+		"SUM(NVL(T.CLSYF_AMOUNT, 0)) AS CLSYF_AMOUNT,    "+
+		"SUM(NVL(T.ZDF_AMOUNT, 0)) AS ZDF_AMOUNT,        "+
+		"SUM(NVL(T.CLF_AMOUNT, 0)) AS CLF_AMOUNT,        "+
+		"SUM(NVL(T.TXF_AMOUNT, 0)) AS TXF_AMOUNT,        "+
+		"SUM(NVL(T.PROFIT, 0)) AS PROFIT                 "+
+		"FROM PMRT.TB_MRT_COST_UNIT_PROFIT T             ";
 	var sql = "";
 	if(group_level == "0") {
 		sql = "SELECT MAX('中国联通云南分公司') AS GROUPNAME,T.GROUP_ID_0 AS GROUPID," + col +
@@ -92,6 +107,7 @@ function addTable(data,level) {
 			"<th class='attend_th' colspan='6'>出帐收入</th>" +
 			"<th class='attend_th' rowspan='2'>成本费用合计</th>" +
 			"<th class='attend_th' colspan='6'>佣金</th>" +
+			"<th class='attend_th' rowspan='2'>紧密外包费用</th>" +
 			"<th class='attend_th' rowspan='2'>渠道补贴</th>" +
 			"<th class='attend_th' rowspan='2'>终端销售亏损</th>" +
 			"<th class='attend_th' rowspan='2'>卡成本</th>" +
@@ -122,7 +138,7 @@ function addTable(data,level) {
 	var area_code;
 	
 	if(data == undefined || data == null || data == '' || data.length < 1){
-		temp+=("<tr><td colspan='27' style='text-align:center;color: red'>对不起，没有匹配到您想要的数据！</td></tr>");
+		temp+=("<tr><td colspan='28' style='text-align:center;color: red'>对不起，没有匹配到您想要的数据！</td></tr>");
 		click_flag = 0;
 	}else{
 		var rowNum = data.length;
@@ -210,20 +226,35 @@ function showSub(element){//element：被点击的元素
 	    click_flag = 1;
 	    var sql = "";
 	    var col = 
-			"SUM(NVL(T.INCOME_TOTAL, 0)) AS INCOME_TOTAL,SUM(NVL(T.INCOME_2G, 0)) AS INCOME_2G," +
-			"SUM(NVL(T.INCOME_3G, 0)) AS INCOME_3G,SUM(NVL(T.INCOME_4G, 0)) AS INCOME_4G," +
-			"SUM(NVL(T.INCOME_KD, 0)) AS INCOME_KD,SUM(NVL(T.INCOME_ZX, 0)) AS INCOME_ZX," +
-			"SUM(NVL(T.GRIDDING_TOTAL, 0)) AS GRIDDING_TOTAL,SUM(NVL(T.COMM_TOTAL, 0)) AS COMM_TOTAL," +
-			"SUM(NVL(T.COMM_2G, 0)) AS COMM_2G,SUM(NVL(T.COMM_3G, 0)) AS COMM_3G," +
-			"SUM(NVL(T.COMM_4G, 0)) AS COMM_4G,SUM(NVL(T.COMM_HARDLINK, 0)) AS COMM_HARDLINK,SUM(NVL(T.COMM_GY, 0)) AS COMM_GY," +
-			"SUM(NVL(T.CHANNEL, 0)) AS CHANNEL,SUM(NVL(T.ZDBT_AMOUNT, 0)) AS ZDBT_AMOUNT," +
-			"SUM(NVL(T.KVB_AMOUNT, 0)) AS KVB_AMOUNT,SUM(NVL(T.FZF_AMOUNT, 0)) AS FZF_AMOUNT," +
-			"SUM(NVL(T.SDWYF_AMOUNT, 0)) AS SDWYF_AMOUNT," +
-			"SUM(NVL(T.ADS_AMOUNT, 0)) AS ADS_AMOUNT,SUM(NVL(T.YWYPCLF_AMOUNT, 0)) AS YWYPCLF_AMOUNT," +
-			"SUM(NVL(T.YHJR_AMOUNT, 0)) AS YHJR_AMOUNT,SUM(NVL(T.BGF_AMOUNT, 0)) AS BGF_AMOUNT," +
-			"SUM(NVL(T.CLSYF_AMOUNT, 0)) AS CLSYF_AMOUNT,SUM(NVL(T.ZDF_AMOUNT, 0)) AS ZDF_AMOUNT," +
-			"SUM(NVL(T.CLF_AMOUNT, 0)) AS CLF_AMOUNT,SUM(NVL(T.TXF_AMOUNT, 0)) AS TXF_AMOUNT,SUM(NVL(T.PROFIT, 0)) AS PROFIT " +
-			"FROM PMRT.TB_MRT_COST_UNIT_PROFIT T ";
+	    	"SUM(NVL(T.INCOME_TOTAL, 0)) AS INCOME_TOTAL,    "+
+	    	"SUM(NVL(T.INCOME_2G, 0)) AS INCOME_2G,          "+
+	    	"SUM(NVL(T.INCOME_3G, 0)) AS INCOME_3G,          "+
+	    	"SUM(NVL(T.INCOME_4G, 0)) AS INCOME_4G,          "+
+	    	"SUM(NVL(T.INCOME_KD, 0)) AS INCOME_KD,          "+
+	    	"SUM(NVL(T.INCOME_ZX, 0)) AS INCOME_ZX,          "+
+	    	"SUM(NVL(T.GRIDDING_TOTAL, 0)) AS GRIDDING_TOTAL,"+
+	    	"SUM(NVL(T.COMM_TOTAL, 0)) AS COMM_TOTAL,        "+
+	    	"SUM(NVL(T.COMM_2G, 0)) AS COMM_2G,              "+
+	    	"SUM(NVL(T.COMM_3G, 0)) AS COMM_3G,              "+
+	    	"SUM(NVL(T.COMM_4G, 0)) AS COMM_4G,              "+
+	    	"SUM(NVL(T.COMM_HARDLINK, 0)) AS COMM_HARDLINK,  "+
+	    	"SUM(NVL(T.COMM_GY, 0)) AS COMM_GY,              "+
+	    	"SUM(NVL(T.FEE_JMWB, 0)) AS FEE_JMWB,            "+
+	    	"SUM(NVL(T.CHANNEL, 0)) AS CHANNEL,              "+
+	    	"SUM(NVL(T.ZDBT_AMOUNT, 0)) AS ZDBT_AMOUNT,      "+
+	    	"SUM(NVL(T.KVB_AMOUNT, 0)) AS KVB_AMOUNT,        "+
+	    	"SUM(NVL(T.FZF_AMOUNT, 0)) AS FZF_AMOUNT,        "+
+	    	"SUM(NVL(T.SDWYF_AMOUNT, 0)) AS SDWYF_AMOUNT,    "+
+	    	"SUM(NVL(T.ADS_AMOUNT, 0)) AS ADS_AMOUNT,        "+
+	    	"SUM(NVL(T.YWYPCLF_AMOUNT, 0)) AS YWYPCLF_AMOUNT,"+
+	    	"SUM(NVL(T.YHJR_AMOUNT, 0)) AS YHJR_AMOUNT,      "+
+	    	"SUM(NVL(T.BGF_AMOUNT, 0)) AS BGF_AMOUNT,        "+
+	    	"SUM(NVL(T.CLSYF_AMOUNT, 0)) AS CLSYF_AMOUNT,    "+
+	    	"SUM(NVL(T.ZDF_AMOUNT, 0)) AS ZDF_AMOUNT,        "+
+	    	"SUM(NVL(T.CLF_AMOUNT, 0)) AS CLF_AMOUNT,        "+
+	    	"SUM(NVL(T.TXF_AMOUNT, 0)) AS TXF_AMOUNT,        "+
+	    	"SUM(NVL(T.PROFIT, 0)) AS PROFIT                 "+
+	    	"FROM PMRT.TB_MRT_COST_UNIT_PROFIT T             ";
 	    if(_level == 0) {
 	    	sql = "SELECT MAX('中国联通云南分公司') AS GROUPNAME,T.GROUP_ID_0 AS GROUPID," + col +
 			" WHERE T.group_id_0 = '"+query_code+"' AND T.DEAL_DATE BETWEEN '"+querydate+"' and '"+endQueryDate+"' " +
