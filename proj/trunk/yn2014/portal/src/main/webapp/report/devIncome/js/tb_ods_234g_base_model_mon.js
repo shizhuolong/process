@@ -1,6 +1,6 @@
 var nowData = [];
-var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","SUBSCRIPTION_ID","DEVICE_NUMBER","INNET_DATE","REGION_ID","ORIGINAL_CHNL","DEVELOPER","IS_ON","IS_NEW","PRODUCT_ID","PRODUCT_NAME","PRODUCT_FEE","NET_TYPE","YUYIN_MAX","GPRS_MAX","SMS_MAX","YUYIN","GPRS","SMS","IS_SW","IS_JD","IS_LOW_DBH","IS_LOW_DZT","IS_ZLWB","CZ_AMOUNT","IS_CZ","IS_LOW_DBH_01","IS_LOW_DBH_02","IS_LOW_DBH_03","IS_LOW_DBH_04","IS_LOW_DBH_ALL"];
-var title=[["地市","营服中心","账期","用户编号","电话号码","入网日期","归属地市","开户渠道","发展人","是否在网","是否新入网","套餐id","套餐名称","套餐月费","用户类型","套包内语音","套包内流量","套包内短信","当月语音(分钟)","当月流量(m)","当月短信(条)","是否三无","是否极低","是否低饱和","是否低质态","是否资料完备","当月出账金额","是否出账","入网第一月是否低饱和","入网第二月是否低饱和","入网第三月是否低饱和","入网第四月是否低饱和","综合入网第二月、第三月、第四月判断用户是否低饱和"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","SUBSCRIPTION_ID","DEVICE_NUMBER","INNET_DATE","ORIGINAL_CHNL","DEVELOPER","IS_ON","IS_NEW","PRODUCT_ID","PRODUCT_NAME","PRODUCT_FEE","NET_TYPE","YUYIN_MAX","GPRS_MAX","SMS_MAX","YUYIN","GPRS","SMS","IS_SW","IS_JD","IS_LOW_DBH","IS_LOW_DZT","IS_ZLWB","CZ_AMOUNT","IS_CZ"];
+var title=[["账期","地市","营服中心","用户编号","电话号码","入网日期","发展渠道","发展人","是否在网","是否新入网","套餐id","套餐名称","套餐月费（元）","用户类型","套包内语音（分钟）","套包内流量（m）","套包内短信（条）","当月语音(分钟)","当月流量(m)","当月短信(条)","是否三无","是否极低","是否低饱和","是否低质态","是否资料完备","当月出账金额（元）","是否出账"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -40,7 +40,6 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
-
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
@@ -50,11 +49,10 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	
 //条件
-	var sql = "SELECT T3.* FROM (SELECT T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON  T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
+	var sql = "SELECT "+getSql()+" FROM (SELECT T2.GROUP_ID_1,T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON  T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
 	if(time!=''){
-		sql+=" and T3.DEAL_DATE='"+time+"'";
+		sql+=" and to_date(t3.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
 	if(regionName!=''){
 		sql+=" and T3.GROUP_ID_1_NAME = '"+regionName+"'";
@@ -65,6 +63,7 @@ function search(pageNumber) {
 	if(phoneNumber!=''){
 		sql+=" and T3.DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
+	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 //权限
 	var orgLevel=$("#orgLevel").val();
 	//var code=$("#code").val();
@@ -103,9 +102,7 @@ function search(pageNumber) {
 }
 function listRegions(){
 	var sql="";
-	//条件
 	var sql = "SELECT DISTINCT group_id_1,GROUP_ID_1_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE WHERE GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND GROUP_ID_1_NAME <> '云南省本部' ";
-	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
@@ -183,7 +180,10 @@ function listUnits(regionName){
 		alert("获取基层单元信息失败");
 	}
 }
-
+function getSql(){
+	var s="T3.deal_date,T3.GROUP_ID_1_NAME,T3.UNIT_NAME,T3.subscription_id,T3.device_number,T3.innet_date,T3.original_chnl,T3.developer,case when T3.is_on='1' then '是' else '否' end is_on,case when T3.is_new='1' then '是' else '否' end is_new,T3.product_id,T3.product_name,T3.product_fee,case when T3.net_type='-1' then '固网' when T3.net_type='01' then '2G' when T3.net_type in('02','03') then '3G' when T3.net_type='50' then '4G' end net_type,T3.yuyin_max,T3.gprs_max,T3.sms_max,T3.yuyin,round(T3.gprs,2) gprs,T3.sms,case when T3.is_sw='1' then '是' else '否' end is_sw,case when T3.is_jd ='1' then '是' else '否' end is_jd ,case when T3.is_low_dbh ='1' then '是' else '否' end is_low_dbh ,case when T3.is_low_dzt ='1' then '是' else '否' end is_low_dzt ,case when T3.is_zlwb ='1' then '是' else '否' end is_zlwb ,T3.cz_amount,case when T3.is_cz ='1' then '是' else '否' end is_cz";
+	return s;
+}
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var sql="";
@@ -191,11 +191,9 @@ function downsAll(){
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	
-//条件
-	var sql = "SELECT T3.* FROM (SELECT T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON  T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
+	var sql = "SELECT "+getSql()+" FROM (SELECT T2.GROUP_ID_1,T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
 	if(time!=''){
-		sql+=" and T3.DEAL_DATE='"+time+"'";
+		sql+=" and to_date(t3.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
 	if(regionName!=''){
 		sql+=" and T3.GROUP_ID_1_NAME = '"+regionName+"'";
@@ -206,6 +204,7 @@ function downsAll(){
 	if(phoneNumber!=''){
 		sql+=" and T3.DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
+	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 //权限
 	var orgLevel=$("#orgLevel").val();
 	//var code=$("#code").val();
