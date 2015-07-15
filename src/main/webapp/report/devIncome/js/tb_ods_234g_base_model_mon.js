@@ -63,7 +63,6 @@ function search(pageNumber) {
 	if(phoneNumber!=''){
 		sql+=" and T3.DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
-	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 //权限
 	var orgLevel=$("#orgLevel").val();
 	//var code=$("#code").val();
@@ -73,6 +72,7 @@ function search(pageNumber) {
 	}else{
 		sql+=" and T3.GROUP_ID_1_NAME='"+cityName+"'";
 	}
+	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 	var csql = sql;
 	var cdata = query("select count(*) total from(" + csql+")");
 	var total = 0;
@@ -102,7 +102,7 @@ function search(pageNumber) {
 }
 function listRegions(){
 	var sql="";
-	var sql = "SELECT DISTINCT group_id_1,GROUP_ID_1_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE WHERE GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND GROUP_ID_1_NAME <> '云南省本部' ";
+	var sql = "SELECT DISTINCT t.group_id_1,t.GROUP_ID_1_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE t WHERE t.GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND t.GROUP_ID_1_NAME <> '云南省本部' ";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
@@ -114,7 +114,7 @@ function listRegions(){
 	}else{
 		sql+=" and t.GROUP_ID_4='"+code+"'";
 	}
-	sql+=" order by group_id_1 ";
+	sql+=" order by t.group_id_1 ";
 	var d=query(sql);
 	if (d) {
 		var h = '';
@@ -204,7 +204,6 @@ function downsAll(){
 	if(phoneNumber!=''){
 		sql+=" and T3.DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
-	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 //权限
 	var orgLevel=$("#orgLevel").val();
 	//var code=$("#code").val();
@@ -214,6 +213,7 @@ function downsAll(){
 	}else{
 		sql+=" and T3.GROUP_ID_1_NAME='"+cityName+"'";
 	}
+	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 	showtext = '低质态用户管控报表-'+time;
 	downloadExcel(sql,title,showtext);
 }
