@@ -111,7 +111,7 @@ function addTable(data,level) {
 			"<th class='attend_th' rowspan='2'>渠道补贴</th>" +
 			"<th class='attend_th' rowspan='2'>终端销售亏损</th>" +
 			"<th class='attend_th' rowspan='2'>卡成本</th>" +
-			"<th class='attend_th' rowspan='2'>房租(含租赁费)</th>" +
+			"<th class='attend_th' rowspan='2'>房租(含装修费)</th>" +
 			"<th class='attend_th' rowspan='2'>水电物业费</th>" +
 			"<th class='attend_th' rowspan='2'>广告宣传费</th>" +
 			"<th class='attend_th' rowspan='2'>业务用品印制及材料费</th>" +
