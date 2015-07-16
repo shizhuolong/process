@@ -213,9 +213,14 @@
 		FROM TAB_TASK_DETAIL T1
 		LEFT JOIN tab_target_sale T2 ON T1.TARGET_CODE=T2.CODE_2 AND T1.TARGET_TYPE=T2.CODE_1
 		<where>
-			<if test="taskCode!=null and taskCode!=''">
-				AND TASK_CODE=#{taskCode}
-			</if>
+			<choose>
+				<when test="taskCode!=null and taskCode!=''">
+					AND TASK_CODE=#{taskCode}
+				</when>
+				<otherwise>
+					t1.date_value = #{dateValue} and t1.org_type = 2
+				</otherwise>
+			</choose>
 			<if test="regionType==2">
 				AND GROUP_ID_1=#{regionCode} AND T1.ORG_TYPE = #{regionType}
 			</if>
