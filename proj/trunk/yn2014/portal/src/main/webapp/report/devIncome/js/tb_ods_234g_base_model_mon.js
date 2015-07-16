@@ -47,32 +47,41 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var phoneNumber=$("#phoneNumber").val();
 	var time=$("#time").val();
+	var code =$("#code").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 //条件
-	var sql = "SELECT "+getSql()+" FROM (SELECT T2.GROUP_ID_1,T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
+	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON T1  where 1 = 1 AND t1.deal_date ='"+time+"'";
 	if(time!=''){
-		sql+=" and to_date(t3.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
+		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
 	if(regionName!=''){
-		sql+=" and T3.GROUP_ID_1_NAME = '"+regionName+"'";
+		sql+=" and T1.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" and T3.UNIT_NAME = '"+unitName+"'";
+		sql+=" and T1.UNIT_NAME = '"+unitName+"'";
 	}
 	if(phoneNumber!=''){
-		sql+=" and T3.DEVICE_NUMBER like '%"+phoneNumber+"%'";
+		sql+=" and T1.DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
 //权限
+	
+	
 	var orgLevel=$("#orgLevel").val();
-	//var code=$("#code").val();
+	/*alert(orgLevel);*/
 	var cityName=$("#cityName").val();
 	if(orgLevel==1){
-		
+		sql+="  order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+	}else if(orgLevel==2){
+		sql+=" and T1.GROUP_ID_1='"+code+"' order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+	}else if(orgLevel==3){
+		alert("---->"+3);
+		sql+=" and T1.UNIT_ID='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+	}else if(orgLevel==4){
+		sql+=" and T1.GROUP_ID_4='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
 	}else{
-		sql+=" and T3.GROUP_ID_1_NAME='"+cityName+"'";
 	}
-	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
+	
 	var csql = sql;
 	var cdata = query("select count(*) total from(" + csql+")");
 	var total = 0;
@@ -102,7 +111,7 @@ function search(pageNumber) {
 }
 function listRegions(){
 	var sql="";
-	var sql = "SELECT DISTINCT t.group_id_1,t.GROUP_ID_1_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE t WHERE t.GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND t.GROUP_ID_1_NAME <> '云南省本部' ";
+	var sql = "SELECT DISTINCT t.group_id_1,t.GROUP_ID_1_NAME FROM PODS.TAB_ODS_234G_BASE_MODEL_MON t WHERE t.GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND t.GROUP_ID_1_NAME <> '云南省本部' ";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
@@ -141,7 +150,7 @@ function listRegions(){
 }
 function listUnits(regionName){
 	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PCDE.TAB_CDE_CHANL_HQ_CODE t where 1=1 ";
+	var sql = "select distinct t.UNIT_NAME from PODS.TAB_ODS_234G_BASE_MODEL_MON t where 1=1 ";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
@@ -181,7 +190,7 @@ function listUnits(regionName){
 	}
 }
 function getSql(){
-	var s="T3.deal_date,T3.GROUP_ID_1_NAME,T3.UNIT_NAME,T3.subscription_id,T3.device_number,T3.innet_date,T3.developer1,T3.developer,case when T3.is_on='1' then '是' else '否' end is_on,case when T3.is_new='1' then '是' else '否' end is_new,T3.product_id,T3.product_name,T3.product_fee,case when T3.net_type='-1' then '固网' when T3.net_type='01' then '2G' when T3.net_type in('02','03') then '3G' when T3.net_type='50' then '4G' end net_type,T3.yuyin_max,T3.gprs_max,T3.sms_max,T3.yuyin,round(T3.gprs,2) gprs,T3.sms,case when T3.is_sw='1' then '是' else '否' end is_sw,case when T3.is_jd ='1' then '是' else '否' end is_jd ,case when T3.is_low_dbh ='1' then '是' else '否' end is_low_dbh ,case when T3.is_low_dzt ='1' then '是' else '否' end is_low_dzt ,case when T3.is_zlwb ='1' then '是' else '否' end is_zlwb ,T3.cz_amount,case when T3.is_cz ='1' then '是' else '否' end is_cz";
+	var s="T1.deal_date,T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.subscription_id,T1.device_number,T1.innet_date,T1.developer1,T1.developer,case when T1.is_on='1' then '是' else '否' end is_on,case when T1.is_new='1' then '是' else '否' end is_new,T1.product_id,T1.product_name,T1.product_fee,case when T1.net_type='-1' then '固网' when T1.net_type='01' then '2G' when T1.net_type in('02','03') then '3G' when T1.net_type='50' then '4G' end net_type,T1.yuyin_max,T1.gprs_max,T1.sms_max,T1.yuyin,round(T1.gprs,2) gprs,T1.sms,case when T1.is_sw='1' then '是' else '否' end is_sw,case when T1.is_jd ='1' then '是' else '否' end is_jd ,case when T1.is_low_dbh ='1' then '是' else '否' end is_low_dbh ,case when T1.is_low_dzt ='1' then '是' else '否' end is_low_dzt ,case when T1.is_zlwb ='1' then '是' else '否' end is_zlwb ,T1.cz_amount,case when T1.is_cz ='1' then '是' else '否' end is_cz";
 	return s;
 }
 /////////////////////////下载开始/////////////////////////////////////////////
@@ -191,29 +200,33 @@ function downsAll(){
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	var sql = "SELECT "+getSql()+" FROM (SELECT T2.GROUP_ID_1,T2.GROUP_ID_1_NAME, T2.UNIT_NAME, T1.* FROM PODS.TB_ODS_234G_BASE_MODEL_MON T1,PCDE.TAB_CDE_CHANL_HQ_CODE T2 WHERE T1.ORIGINAL_CHNL = T2.HQ_CHAN_CODE AND t1.deal_date ='"+time+"') T3 where 1 = 1 ";
+	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON  T1 where 1 = 1 AND t1.deal_date ='"+time+"'";
 	if(time!=''){
-		sql+=" and to_date(t3.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
+		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
 	if(regionName!=''){
-		sql+=" and T3.GROUP_ID_1_NAME = '"+regionName+"'";
+		sql+=" and T1.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" and T3.UNIT_NAME = '"+unitName+"'";
+		sql+=" and T1.UNIT_NAME = '"+unitName+"'";
 	}
 	if(phoneNumber!=''){
-		sql+=" and T3.DEVICE_NUMBER like '%"+phoneNumber+"%'";
+		sql+=" and T1.DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
-	//var code=$("#code").val();
+	var code=$("#code").val();
 	var cityName=$("#cityName").val();
 	if(orgLevel==1){
-		
+		SQL+=" order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+	}else if(orgLevel==2){
+		sql+=" and T1.GROUP_ID_1='"+code+"' order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+	}else if(orgLevel==3){
+		sql+=" and T1.UNIT_ID='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+	}else if(orgLevel==4){
+		sql+=" and T1.GROUP_ID_4='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
 	}else{
-		sql+=" and T3.GROUP_ID_1_NAME='"+cityName+"'";
 	}
-	sql+=" order by T3.DEAL_DATE,T3.GROUP_ID_1";
 	showtext = '低质态用户管控报表-'+time;
 	downloadExcel(sql,title,showtext);
 }
