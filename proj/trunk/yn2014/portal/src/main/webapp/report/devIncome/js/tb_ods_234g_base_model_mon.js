@@ -56,7 +56,7 @@ function search(pageNumber) {
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
 	if(regionName!=''){
-		sql+=" and T1.GROUP_ID_1_NAME = '"+regionName+"'";
+		sql+=" and T1.GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(unitName!=''){
 		sql+=" and T1.UNIT_NAME = '"+unitName+"'";
@@ -75,7 +75,6 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and T1.GROUP_ID_1='"+code+"' order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
 	}else if(orgLevel==3){
-		alert("---->"+3);
 		sql+=" and T1.UNIT_ID='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
 	}else if(orgLevel==4){
 		sql+=" and T1.GROUP_ID_4='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
@@ -111,59 +110,60 @@ function search(pageNumber) {
 }
 function listRegions(){
 	var sql="";
-	var sql = "SELECT DISTINCT t.group_id_1,t.GROUP_ID_1_NAME FROM PODS.TAB_ODS_234G_BASE_MODEL_MON t WHERE t.GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND t.GROUP_ID_1_NAME <> '云南省本部' ";
+	var sqlregion="SELECT T1.REGION_NAME,T1.REGION_CODE FROM (";
+	 sql = " SELECT DISTINCT T.REGION_NAME,T.REGION_CODE FROM PORTAL.APDP_ORG T WHERE T.REGION_NAME<>'中国联通云南分公司'  ";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
-		
+		sql=sqlregion+sql+"  UNION ALL SELECT '云南省本部' AS REGION_NAME , '16099' AS REGION_CODE FROM DUAL) T1 ORDER BY T1.REGION_CODE ";
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
+		sql+=" and T.REGION_CODE='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
+		sql+=" and T.CODE ='"+code+"'";
 	}else{
-		sql+=" and t.GROUP_ID_4='"+code+"'";
+		sql+=" and T.CODE='"+code+"'";
 	}
-	sql+=" order by t.group_id_1 ";
+	
 	var d=query(sql);
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
+			h += '<option value="' + d[0].REGION_CODE
 					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
+					+ d[0].REGION_NAME + '</option>';
+			listUnits(d[0].REGION_CODE);
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+				h += '<option value="' + d[i].REGION_CODE + '">' + d[i].REGION_NAME + '</option>';
 			}
 		}
 		var $area = $("#regionName");
 		var $h = $(h);
 		$area.empty().append($h);
 		$area.change(function() {
-			listUnits($(this).val());
+			listUnits($(this).attr('value'));
 		});
 	} else {
 		alert("获取地市信息失败");
 	}
 }
-function listUnits(regionName){
+function listUnits(regionCode){
 	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PODS.TAB_ODS_234G_BASE_MODEL_MON t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
+	var sql = "SELECT  DISTINCT T.ORGNAME FROM PORTAL.APDP_ORG T WHERE  T.ORGLEVEL=3";
+	if(regionCode!=''){
+		sql+=" and t.REGION_CODE='"+regionCode+"' ";
 		//权限
 		var orgLevel=$("#orgLevel").val();
 		var code=$("#code").val();
 		if(orgLevel==1){
 			
 		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
+			sql+=" and t.REGION_CODE="+code;
 		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
+			sql+=" and t.CODE='"+code+"'";
 		}else{
-			sql+=" and t.grou_id_4='"+code+"'";
+			sql+=" and t.CODE='"+code+"'";
 		}
 	}else{
 		$unit.empty().append('<option value="" selected>请选择</option>');
@@ -173,13 +173,13 @@ function listUnits(regionName){
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
+			h += '<option value="' + d[0].ORGNAME
 					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
+					+ d[0].ORGNAME + '</option>';
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
+				h += '<option value="' + d[i].ORGNAME + '">' + d[i].ORGNAME + '</option>';
 			}
 		}
 		
@@ -205,7 +205,7 @@ function downsAll(){
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
 	if(regionName!=''){
-		sql+=" and T1.GROUP_ID_1_NAME = '"+regionName+"'";
+		sql+=" and T1.GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(unitName!=''){
 		sql+=" and T1.UNIT_NAME = '"+unitName+"'";
@@ -218,7 +218,7 @@ function downsAll(){
 	var code=$("#code").val();
 	var cityName=$("#cityName").val();
 	if(orgLevel==1){
-		SQL+=" order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+		sql+=" order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
 	}else if(orgLevel==2){
 		sql+=" and T1.GROUP_ID_1='"+code+"' order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
 	}else if(orgLevel==3){
