@@ -222,6 +222,16 @@
 		FROM PCDE.TB_CDE_CHANL_HQ_CODE HQ 
 		WHERE HQ.LOG_NO=#{log} AND HQ.LAT_NO=#{lat}
 	</select>
+	<select id="getJZPosition" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+	          T.LONGITUDE LOG_NO,
+	          T.LATITUDE LAT_NO,
+	          T.STATION_NAME,
+	          T.STATION_TYPE,
+	          T.STATION_SERIAL
+    	FROM PCDE.TAB_CDE_STATION_NE_ADDR_CODE T
+		WHERE T.LONGITUDE=#{log} AND T.LATITUDE=#{lat}
+	</select>
 	<select id="listChanlPositions" parameterType="java.util.Map" resultType="java.util.Map">
 		<if test="flag==2">
 			SELECT 
@@ -291,6 +301,69 @@
 		</if>
 		<if test="flag==1">
 			 GROUP BY HQ.GROUP_ID_3
+		</if>
+	</select>
+	<select id="listJZPositions" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="flag==2">
+			SELECT 
+			      T.LONGITUDE LOG_NO,
+	          	  T.LATITUDE LAT_NO,
+			      T.STATION_TYPE_CODE,
+			      T.STATION_NAME
+			FROM PCDE.TAB_CDE_STATION_NE_ADDR_CODE T
+		    WHERE 1=1
+			<if test="lat0!=0 and lat1!=0 and log0!=0 and log1!=0">
+				AND T.LATITUDE BETWEEN #{lat0} AND #{lat1}
+	        	AND T.LONGITUDE BETWEEN #{log0} AND #{log1}
+		        AND T.STATION_TYPE_CODE ${status}
+	        </if>
+        </if>
+        <if test="flag==1">
+			SELECT 
+		          AVG(T.LONGITUDE) LOG_NO,
+		          AVG(T.LATITUDE) LAT_NO,
+		          COUNT(*) NUM,
+		          T.UNIT_ID
+		    FROM PCDE.TAB_CDE_STATION_NE_ADDR_CODE T
+		    WHERE T.LONGITUDE IS NOT NULL
+		          AND T.LATITUDE IS NOT NULL
+		          AND T.STATION_TYPE_CODE ${status}
+		     <if test="flag==1 and code!=null">
+				 AND T.GROUP_ID_1=#{group} 
+			 </if>
+        </if>
+        <if test="flag==0">
+			SELECT 
+		          AVG(T.LONGITUDE) LOG_NO,
+		          AVG(T.LATITUDE) LAT_NO,
+		          COUNT(*) NUM,
+		          T.GROUP_ID_1
+		    FROM PCDE.TAB_CDE_STATION_NE_ADDR_CODE T
+		   WHERE  T.LONGITUDE IS NOT NULL
+		          AND T.LATITUDE IS NOT NULL
+		          AND T.STATION_TYPE_CODE ${status}
+        </if>
+		<if test="orgLevel==1">
+			
+		</if>
+	    <if test="orgLevel==2">
+			AND T.GROUP_ID_1=#{code} 
+		</if>
+		<if test="orgLevel==3">
+			AND T.UNIT_ID=#{code}
+		</if>
+		<if test="orgLevel==4">
+			AND 1=2
+		</if>
+		<if test="orgLevel>4">
+			AND 1=2
+		</if>
+		
+		<if test="flag==0">
+			 GROUP BY T.GROUP_ID_1
+		</if>
+		<if test="flag==1">
+			 GROUP BY T.UNIT_ID
 		</if>
 	</select>
 	

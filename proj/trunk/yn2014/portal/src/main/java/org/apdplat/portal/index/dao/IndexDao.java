@@ -48,8 +48,19 @@ public interface IndexDao {
 	 * @param params
 	 * @return
 	 */
+	public List<Map<String, Object>> getJZPosition(Map<String, Object> params);
+	/**
+	 * 查询基站位置
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> listJZPositions(Map<String, Object> params);
+	/**
+	 * 根据位置获取基站信息
+	 * @param params
+	 * @return
+	 */
 	public List<Map<String, Object>> getChanlPosition(Map<String, Object> params);
-	
 	/**
 	 * 最新公告
 	 * @param params

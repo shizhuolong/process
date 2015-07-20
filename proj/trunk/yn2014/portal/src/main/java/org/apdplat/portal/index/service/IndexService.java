@@ -72,6 +72,22 @@ public class IndexService {
 		return indexDao.getChanlPosition(params);
 	}
 	/**
+	 * 查询基站位置
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> listJZPositions(Map<String, Object> params){
+		return indexDao.listJZPositions(params);
+	}
+	/**
+	 * 根据位置获基站道信息
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> getJZPosition(Map<String, Object> params){
+		return indexDao.getJZPosition(params);
+	}
+	/**
 	 * 最新公告
 	 * @param params
 	 * @return
