@@ -43,7 +43,7 @@ public class OrUploadAction extends BaseAction{
 			String userId=request.getParameter("userId");
 			String regionCode=request.getParameter("regionCode");
 			request.getAttribute("userId");
-			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE HR_NO IN(SELECT hr_no FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where hr_no in (SELECT hr_no FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY where deal_date='"+time+"' and creator='"+userId+"' AND GROUP_ID_1 ='"+regionCode+"')) and deal_date='"+time+"' and creator='"+userId+"'"+" AND GROUP_ID_1='"+regionCode+"'";
+			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE  deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
 			SpringManager.getUpdateDao().update(csql);
 			String sql="insert into PTEMP.TB_TMP_JCDY_OUT_HR_SALARY select * from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where creator='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
@@ -112,14 +112,14 @@ public class OrUploadAction extends BaseAction{
 					for(int y=start;y<=end;y++){
 						Date date=new Date();
 						String createTime=s.format(date);
-						String sql="insert into "+resultTableName+"(DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,POST_LEVEL,SALARY_LEVEL,POST_SALARY,GENERAL_SUBS,DIFFICULT_AREAS,MERIT_PAY_1,MERIT_PAY_2,OTHER_PAY_1,OTHER_PAY_2,OVERTIME_PAY,FESTIVITY_PAY,CHINA_ONE_PAY,MULTI_WY,MULTI_WC,MULTI_JT,MULTI_TX,MULTI_DSR,OTHER2,SALARY_PAY_TOTAL,PROVIDE_AGE,TREATMENT,UNEMPLOYE,HOUSING,SUPPLEMENTARY,INCOME_TAX,OTHER_COST_1,OTHER_COST_1_ITEM,DEDUCTED_TOTAL,FACT_TOTAL)";
+						String sql="insert into "+resultTableName+"(DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,POST_LEVEL,POST_SALARY,MERIT_PAY_1,MERIT_PAY_2,OTHER_PAY_1,OTHER_PAY_2,OVERTIME_PAY,FESTIVITY_PAY,CHINA_ONE_PAY,MULTI_JT,MULTI_WC,MULTI_DSR,MULTI_4,OTHER1,OTHER2,SALARY_PAY_TOTAL,PROVIDE_AGE,TREATMENT,UNEMPLOYE,INCOME_TAX,OTHER_COST_1,OTHER_COST_1_ITEM,DEDUCTED_TOTAL,FACT_TOTAL)";
 						String values=" values('"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
 						HSSFRow row =sheet.getRow(y);
 						if(row==null) continue;
 						int cstart=row.getFirstCellNum();
 						int cend=row.getLastCellNum();
 						System.out.println(cstart+"："+cend);
-						if(cstart==0&&cend>=32){
+						if(cstart==0&&cend==27){
 							for(int i=cstart+1;i<cend;i++){
 								if(i==1){
 									values+=getCellValue(row.getCell(i));
