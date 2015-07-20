@@ -83,11 +83,16 @@
                  </div>
                  <div data-options="region:'center'">
                      <div id="main">
-                      
+                      	
                      	 <div style="width: 97%;float: left;border:1px solid #e7d4b3;padding:1%;margin-bottom:10px;">
-                         	 <div class="title"><i></i>渠道分布<div class="arrow-up-map" style="float:right;">&nbsp;</div></div>
+                         	 <style>
+                         	 	#qdtt:hover,#jztt:hover{background-color: rgba(129, 208, 177, 0.3);}
+                         	 	#qdtt,#jztt{margin-left:12px;}
+                         	 </style>
+                         	 <div class="title" style="height:25px;"><i></i><div id="qdtt" style="float:left;display:inline-block;width:80px;text-align:center;">渠道分布</div><div id="jztt" style="float:left;display:inline-block;width:80px;text-align:center;">基站分布</div><div class="arrow-up-map" style="float:right;">&nbsp;</div></div>
                              <div class="main-area-conFull" style="height: 500px;width: 1000px;">
-                             	<div id="qdfbFrame" style="position:absolute;top:50px;height: 100px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
+                             	<div id="qdfbFrame" style="position:absolute;top:50px;height: 120px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
+                             		<div style="margin:5px;" class="title"><i></i>渠道分布</div>
                              		<div style="margin:5px;"><img src="<%=request.getContextPath() %>/portal/index/images/location_red16.png"" />--上月无销量</div>
                              		<div style="margin:5px;"><img src="<%=request.getContextPath() %>/portal/index/images/location16.png"" />--上月有销量</div>
                              		<div style="margin:10px;font-size:12px;">
@@ -96,8 +101,15 @@
                              			<input style="vertical-align:-2px;" type="checkbox" name="zhzh" value="12"/>&nbsp;终止
                              		</div>
                              	</div>
+                             	<div id="jzfbFrame" style="position:absolute;top:50px;height: 60px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
+                             		<div style="margin:5px;" class="title"><i></i>基站分布</div>
+                                    <div style="margin:10px;font-size:12px;">
+                             			<input style="vertical-align:-2px;" type="checkbox" name="2G" value="2G" checked/>&nbsp;2G&nbsp;
+                             			<input style="vertical-align:-2px;" type="checkbox" name="3G" value="3G"/>&nbsp;3G&nbsp;
+                             		</div>
+                             	</div>
                              	<div id="qdfb" style="height: 500px;width: 980px;position:absolute;z-index:8888;"></div>
-                             	
+                             	<div id="jzfb" style="height: 500px;width: 980px;position:absolute;z-index:8888;"></div>
                              </div>
                          </div> 
                          <div class="main-area">
