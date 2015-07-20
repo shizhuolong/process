@@ -340,6 +340,51 @@ public class IndexAction extends BaseAction {
 		List<Map<String, Object>> list = indexService.getChanlPosition(params);
 		this.reponseJson(list);
 	}
+	/**
+	 * 查询基站位置
+	 * @param params
+	 * @return
+	 */
+	public void listJZPositions(){
+		User user = UserHolder.getCurrentLoginUser();
+		Org org = user.getOrg();
+		String orgLevel = org.getOrgLevel();
+		String orgCode = org.getCode();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orgLevel", orgLevel);
+		params.put("code", orgCode);
+		if(group!=null&&!group.trim().equals("")){
+			params.put("group", group);
+		}	
+		if(lat0 !=0) {
+			params.put("lat0", lat0);
+		}
+		if(lat1 != 0) {
+			params.put("lat1", lat1);
+		}
+		if(log0 != 0) {
+			params.put("log0", log0);
+		}
+		if(log1 !=0) {
+			params.put("log1", log1);
+		}
+		params.put("flag", flag);
+		params.put("status", " in("+status+")");
+		List<Map<String, Object>> list = indexService.listJZPositions(params);
+		this.reponseJson(list);
+	}
+	/**
+	 * 根据位置获取渠道信息
+	 * @param params
+	 * @return
+	 */
+	public void getJZPosition(){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("log", log);
+		params.put("lat", lat);
+		List<Map<String, Object>> list = indexService.getJZPosition(params);
+		this.reponseJson(list);
+	}
 	
 	/**
 	 * 最新公告
