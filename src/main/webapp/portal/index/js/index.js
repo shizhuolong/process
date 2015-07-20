@@ -601,6 +601,9 @@ function searchRealTimeDev() {
 }
 
 var status="'10'";
+var status1="'2G'";
+
+var firstClick=true;
 function showChanlMap() {
 	//
 	$(".arrow-up-map,.arrow-down-map").parent().click(function(){
@@ -612,6 +615,37 @@ function showChanlMap() {
 			$(this).next().slideDown();
 		}
 	}).css({cursor:'pointer'});
+	
+	$("#qdtt").click(function(event){
+		$("#jzfb,#jzfbFrame").hide();
+		$("#qdfb,#qdfbFrame").show();
+		$(this).css({backgroundColor:'rgba(129, 208, 177, 0.3)'});
+		$("#jztt").css({backgroundColor:''});
+		isLoad=false;
+		setTimeout(function(){
+			map.centerAndZoom(new BMap.Point(101, 24.709), 7);
+		},500);
+		if(firstClick){
+			firstClick=false;
+		}else{
+			$(this).find(".arrow-down-map").addClass("arrow-up-map").removeClass("arrow-down-map");
+			$(this).parent().next().slideDown();
+		}
+		event.stopPropagation();
+	});
+	$("#jztt").click(function(event){
+		$("#qdfb,#qdfbFrame").hide();
+		$("#jzfb,#jzfbFrame").show();
+		$(this).css({backgroundColor:'rgba(129, 208, 177, 0.3)'});
+		$("#qdtt").css({backgroundColor:''});
+		isLoad1=false;
+		setTimeout(function(){
+			map1.centerAndZoom(new BMap.Point(101, 24.709), 7);
+		},500);
+		$(this).find(".arrow-down-map").addClass("arrow-up-map").removeClass("arrow-down-map");
+		$(this).parent().next().slideDown();
+		event.stopPropagation();
+	});
 	//
 	var zsIcon = new BMap.Icon($("#ctx").val()+"/portal/index/images/location16.png", new BMap.Size(16,
 			16), {
@@ -634,11 +668,20 @@ function showChanlMap() {
 	var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
 	map.addControl(top_left_control);        
 	map.addControl(top_left_navigation);   
-	//处理悬浮层
-	//$(".BMap_mask").css({zIndex:8888}).append($("#qdfbFrame"));
 	map.centerAndZoom(new BMap.Point(101, 24.709), 7);
 	map.enableScrollWheelZoom();
+	//////////////////////////////////
+	var map1 = new BMap.Map("jzfb");
+	map1.disableScrollWheelZoom();
+	var top_left_control1 = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_left_navigation1 = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	map1.addControl(top_left_control1);        
+	map1.addControl(top_left_navigation1);   
+	//处理悬浮层
 	
+	map1.centerAndZoom(new BMap.Point(101, 24.709), 7);
+	map1.enableScrollWheelZoom();
+	//////////////////////////////////
 	/*var regions = [ "昆明市", "曲靖市", "玉溪市", "保山市", "昭通市", "丽江市", "普洱市", "临沧市",
 			"文山壮族苗族自治州 ", "红河哈尼族彝族自治州", "西双版纳", "楚雄彝族自治州", "大理白族自治州", "德宏",
 			"怒江傈僳族自治州", "迪庆藏族自治州" ];
@@ -659,6 +702,7 @@ function showChanlMap() {
 	
 	setInterval(function() {$(".anchorBL").hide();}, 50);
 	var isLoad=false;
+	var isLoad1=false;
 	//
 	
 	
@@ -675,6 +719,20 @@ function showChanlMap() {
 		}
 		isLoad=false;
 		map.centerAndZoom(new BMap.Point(101, 24.709), 7);
+	});
+	$("#jzfbFrame").find("INPUT[type='checkbox']").click(function(){
+		status1="";
+		$("#jzfbFrame").find("INPUT[type='checkbox']:checked").each(function(){
+			if(status1!=""){
+				status1+=",";
+			}
+			status1+="'"+$(this).val()+"'";
+		})
+		if(status1==""){
+			status1="''";
+		}
+		isLoad1=false;
+		map1.centerAndZoom(new BMap.Point(101, 24.709), 7);
 	});
 	
 	
@@ -867,6 +925,197 @@ function showChanlMap() {
 			});
 		}
 	});
+	
+	//////////////////////////////////////
+	// 地图加载完成时重新获取可视范围内的点
+	map1.addEventListener('tilesloaded',function(){
+		var bs = map1.getBounds(); // 获取可视区域
+		var bssw = bs.getSouthWest(); // 可视区域左下角
+		var bsne = bs.getNorthEast(); // 可视区域右上角
+		var log0 = bssw.lng<bsne.lng?bssw.lng:bsne.lng;
+		var log1 = bssw.lng>bsne.lng?bssw.lng:bsne.lng;
+		var lat0 = bssw.lat<bsne.lat?bssw.lat:bsne.lat;
+		var lat1 = bssw.lat>bsne.lat?bssw.lat:bsne.lat;
+		var  dlat=lat1-lat0;
+
+		if(dlat>2&&!isLoad1){
+			map1.clearOverlays();
+			$.ajax({
+				type : "POST",
+				dataType : 'json',
+				async : true,
+				cache : false,
+				url : $("#ctx").val()+"/index/index_listJZPositions.action",
+				data:{
+					flag:0//显示所有地市
+					,status:status1
+				},
+				success : function(data) {
+					isLoad1=true;
+					if (data && data.length > 0) {
+						for(var i=0;i<data.length;i++){
+							///////////////
+							var pt =new BMap.Point(data[i].LOG_NO, data[i].LAT_NO);
+							var marker = new BMap.Marker(pt,{icon:zsIcon1});
+							(function(){
+						        var group = data[i].GROUP_ID_1;
+						        marker.addEventListener('click',function(e){
+						        	var p=e.target;
+									var lon=p.getPosition().lng;
+									var lat=p.getPosition().lat;
+									map1.centerAndZoom(new BMap.Point(lon, lat), 10);
+						        	
+						        	$.ajax({
+										type : "POST",
+										dataType : 'json',
+										async : true,
+										cache : false,
+										url : $("#ctx").val()+"/index/index_listJZPositions.action",
+										data:{
+											flag:1,//点击地市显示所有营服中心
+											group:group
+											,status:status1
+										},
+										success : function(d) {
+											if(d&&d.length){
+												isLoad1=false;
+												map1.clearOverlays();
+												for(var i=0;i<d.length;i++){
+													var pt =new BMap.Point(d[i].LOG_NO, d[i].LAT_NO);
+													var marker = new BMap.Marker(pt,{icon:zsIcon1});
+													marker.addEventListener('click',function(e){
+														var p=e.target;
+														var lon=p.getPosition().lng;
+														var lat=p.getPosition().lat;
+														map1.centerAndZoom(new BMap.Point(lon, lat), 12);
+													});
+													
+													
+													map1.addOverlay(marker);
+													
+													var opts = {
+														position : pt,   // 指定文本标注所在的地理位置
+														offset   : new BMap.Size(-11, -10)    //设置文本偏移量
+													}
+													var label = new BMap.Label("&nbsp;"+d[i].NUM, opts);  // 创建文本标注对象
+													label.setStyle({
+														fontSize : "10px",
+														border:'none',
+														background:'transparent',
+														textAlign:'center',
+														height : "20px",
+														lineHeight : "20px",
+														fontFamily:"微软雅黑"
+													});
+													map1.addOverlay(label); 
+												}
+											}
+										}
+						        	});
+								}); 
+						    })();
+							map1.addOverlay(marker);
+							/////////////
+							var opts = {
+							  position : pt,   // 指定文本标注所在的地理位置
+							  offset   : new BMap.Size(-11, -10)    //设置文本偏移量
+							}
+							var label = new BMap.Label(data[i].NUM, opts);  // 创建文本标注对象
+								label.setStyle({
+									 fontSize : "10px",
+									 border:'none',
+									 background:'transparent',
+									 textAlign:'center',
+									 height : "20px",
+									 lineHeight : "20px",
+									 fontFamily:"微软雅黑"
+								 });
+							map1.addOverlay(label); 
+						}
+					}
+				}
+			});
+		}else if(dlat<=0.5){
+			isLoad1=false;
+			map1.clearOverlays();
+			$.ajax({
+				type : "POST",
+				dataType : 'json',
+				async : true,
+				cache : false,
+				url : $("#ctx").val()+"/index/index_listJZPositions.action",
+				data:{
+					lat0:lat0,
+					lat1:lat1,
+					log0:log0,
+					log1:log1,
+					flag:2
+					,status:status1
+				},
+				success : function(data) {
+					if (data && data.length > 0) {
+						for (var i = 0; i < data.length; i++) {
+							if (data[i] && data[i]['LOG_NO'] && data[i]['LAT_NO']) {
+								var pt = new BMap.Point(data[i]['LOG_NO'],
+										data[i]['LAT_NO']);
+								var tzsIcon=zsIcon;
+								if(data[i]["STATION_TYPE_CODE"]=='2G'){
+									tzsIcon=zsIcon;
+								}else{
+									tzsIcon=zsRedIcon;
+								}
+								var marker = new BMap.Marker(pt,{icon:tzsIcon,title:data[i]['STATION_NAME']});
+								marker.addEventListener('click',function(e){
+									var p=e.target;
+									var lon=p.getPosition().lng;
+									var lat=p.getPosition().lat;
+									
+									$.ajax({
+										type : "POST",
+										dataType : 'json',
+										async : true,
+										cache : false,
+										url : $("#ctx").val()+"/index/index_getJZPosition.action",
+										data:{
+											lat:lat,
+											log:lon
+										},
+										success : function(chanl) {
+											if(!chanl||chanl.length<=0) return;
+											chanl=chanl[0];
+											var h="<table>";
+											h+="<tr>";
+											h+="  <td style='width:60px;'>名称：</td><td>"+chanl["STATION_NAME"]+"</td>"
+											h+="</tr>";
+											h+="<tr>";
+											h+="  <td>编码：</td><td>"+chanl["STATION_SERIAL"]+"</td>"
+											h+="</tr>";
+											h+="<tr>";
+											h+="  <td>类型：</td><td>"+chanl["STATION_TYPE"]+"</td>"
+											h+="</tr>";
+											h+="</table>";
+										
+											var point = new BMap.Point(lon,lat);
+											var opts = {
+													title : "基站信息" , // 信息窗口标题
+													enableMessage:false//设置允许信息窗发送短息
+											};
+											var infoWindow = new BMap.InfoWindow(h,opts);  // 创建信息窗口对象 
+											map1.openInfoWindow(infoWindow,point); //开启信息窗口
+											/*$('.chanlImg').onload = function (){
+												infoWindow.redraw();
+											}*/
+										}
+									});
+								});
+								map1.addOverlay(marker);
+							}
+						}
+					}
+				}
+			});
+		}
+	});
 }
 //销售排行
 function showXsph() {
@@ -996,6 +1245,9 @@ function showXsph() {
 			});
 		}
 	});
+	
+	//
+	$("#qdtt").trigger("click");
 }
 function isNull(obj){
 	if(obj==0||obj=='0'){
