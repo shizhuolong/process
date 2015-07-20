@@ -43,7 +43,7 @@ public class HrUploadAction extends BaseAction{
 			String userId=request.getParameter("userId");
 			String regionCode=request.getParameter("regionCode");
 			request.getAttribute("userId");
-			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE HR_NO IN(SELECT hr_no FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where hr_no in (SELECT hr_no FROM PTEMP.TB_TMP_JCDY_HR_SALARY where deal_date='"+time+"' and creator='"+userId+"' AND GROUP_ID_1 ='"+regionCode+"')) and deal_date='"+time+"' and creator='"+userId+"'"+" AND GROUP_ID_1='"+regionCode+"'";
+			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE  deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
 			SpringManager.getUpdateDao().update(csql);
 			String sql="insert into PTEMP.TB_TMP_JCDY_HR_SALARY select * from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
@@ -119,7 +119,7 @@ public class HrUploadAction extends BaseAction{
 						int cstart=row.getFirstCellNum();
 						int cend=row.getLastCellNum();
 						System.out.println(cstart+"："+cend);
-						if(cstart==0&&cend>=32){
+						if(cstart==0&&cend==32){
 							for(int i=cstart+1;i<cend;i++){
 								if(i==1){
 									values+=getCellValue(row.getCell(i));
