@@ -71,13 +71,13 @@ function search(pageNumber) {
 	/*alert(orgLevel);*/
 	var cityName=$("#cityName").val();
 	if(orgLevel==1){
-		sql+="  order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+		/*sql+="  order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID"*/;
 	}else if(orgLevel==2){
-		sql+=" and T1.GROUP_ID_1='"+code+"' order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+		sql+=" and T1.GROUP_ID_1='"+code+"'"/*'+ order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID"*/;	
 	}else if(orgLevel==3){
-		sql+=" and T1.UNIT_ID='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+		sql+=" and T1.UNIT_ID='"+code+"'"/*'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID "*/;
 	}else if(orgLevel==4){
-		sql+=" and T1.GROUP_ID_4='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+		sql+=" and T1.GROUP_ID_4='"+code+"'"/*'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID "*/;
 	}else{
 	}
 	
@@ -218,13 +218,13 @@ function downsAll(){
 	var code=$("#code").val();
 	var cityName=$("#cityName").val();
 	if(orgLevel==1){
-		sql+=" order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";
+		/*sql+=" order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID";*/
 	}else if(orgLevel==2){
-		sql+=" and T1.GROUP_ID_1='"+code+"' order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+		sql+=" and T1.GROUP_ID_1='"+code+"'" /*order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID */;
 	}else if(orgLevel==3){
-		sql+=" and T1.UNIT_ID='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+		sql+=" and T1.UNIT_ID='"+code+"'"/*order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID */;
 	}else if(orgLevel==4){
-		sql+=" and T1.GROUP_ID_4='"+code+"'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID ";
+		sql+=" and T1.GROUP_ID_4='"+code+"'" /*order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID */;
 	}else{
 	}
 	showtext = '低质态用户管控报表-'+time;
