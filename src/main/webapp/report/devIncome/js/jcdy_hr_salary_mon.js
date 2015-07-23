@@ -90,7 +90,7 @@ function search(pageNumber) {
 				var tsql="";
 				if(v==1){
 					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON tt                        ";
+					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                        ";
 					tsql+=" where tt.unit_id = '"+code+"'                                            ";
 					tsql+="   and tt.deal_date = '"+time+"'                                      ";
 					tsql+=" union                                                                ";
@@ -428,10 +428,10 @@ function search(pageNumber) {
 			if(isResp==0){
 				//判断
 				sql="";
-				sql+=" select '销售积分' type,HJXSJF sl,HQ_ALLJF tj,UNIT_RATIO qy,UNIT_ALLJF qytj,UNIT_ALLJF*10 sumxc from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON t ";
+				sql+=" select '销售积分' type,t.HJXSJF sl,t.HQ_ALLJF tj,tr.UNIT_RATIO qy,t.UNIT_ALLJF qytj,t.UNIT_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
 				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' AND HJXSJF>0 ";
 				sql+=" UNION ALL ";
-				sql+=" select '受理积分' type, SL_ALLJF sl,SL_SVR_ALL_CRE tj,SL_UNIT_RATIO qy,UNIT_SL_ALLJF qytj,UNIT_SL_ALLJF*10 sumxc from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON t ";
+				sql+=" select '受理积分' type, t.SL_ALLJF sl,t.SL_SVR_ALL_CRE tj,tr.UNIT_RATIO qy,t.UNIT_SL_ALLJF qytj,t.UNIT_SL_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
 				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' AND SL_ALLJF>0 ";
 				sql+=" UNION ALL ";
 				sql+=" select '维系积分' type, CRE sl,HQ_CRE tj,tr.unit_ratio qy,UNIT_CRE qytj,UNIT_CRE*10  sumxc from pmrt.TB_MRT_JCDY_WX_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
@@ -499,7 +499,7 @@ function search(pageNumber) {
 				sql+="          round(sum(nvl(tr.all_jf_money, 0)), 2) xsslm  ";
 				sql+="     from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                        ";
 				sql+="     left join (select *                                          ";
-				sql+="                  from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON        ";
+				sql+="                  from pmrt.TB_JCDY_JF_ALL_MON         ";//pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON
 				sql+="                 where deal_date = '"+date+"'                     ";
 				sql+="                   and unit_id = '"+uId+"') tr                       ";
 				sql+="       on tr.hr_no = t.hr_id                                      ";
@@ -523,7 +523,7 @@ function search(pageNumber) {
 				sql+="                  sum(nvl(tr.all_jf_money, 0)) xsslm                   ";
 				sql+="             from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                ";
 				sql+="             left join (select *                                  ";
-				sql+="                         from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON ";
+				sql+="                         from pmrt.TB_JCDY_JF_ALL_MON  ";
 				sql+="                        where deal_date = '"+date+"'              ";
 				sql+="                          and unit_id = '"+uId+"') tr                ";
 				sql+="               on tr.hr_no = t.hr_id                              ";
@@ -786,7 +786,7 @@ function downsAll(){
 				var tsql="";
 				if(v==1){
 					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON tt                        ";
+					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                        ";
 					tsql+=" where tt.unit_id = '"+code+"'                                            ";
 					tsql+="   and tt.deal_date = '"+time+"'                                      ";
 					tsql+=" union                                                                ";
