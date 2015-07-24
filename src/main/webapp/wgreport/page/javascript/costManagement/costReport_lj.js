@@ -1,7 +1,7 @@
 var click_flag = 0;
 var _execute = $.Project.execute; 
 var defaultMsgDom = $('#searchTime');
-var tablecode = ["income_total","income_2g","income_3g", "income_4g","income_kd","income_zx",
+var tablecode = ["income_total","income_2g","income_3g", "income_4g","income_kd","income_zx","income_gh",
                  "gridding_total","comm_total","comm_2g", "comm_3g", "comm_4g","comm_hardlink",
                  "comm_gy","fee_jmwb","channel","zdbt_amount","kvb_amount","fzf_amount",
                  "sdwyf_amount","ads_amount","ywypclf_amount","yhjr_amount",
@@ -28,6 +28,7 @@ function initTable(sql){
 		"SUM(NVL(T.INCOME_4G, 0)) AS INCOME_4G,          "+
 		"SUM(NVL(T.INCOME_KD, 0)) AS INCOME_KD,          "+
 		"SUM(NVL(T.INCOME_ZX, 0)) AS INCOME_ZX,          "+
+		"SUM(NVL(T.INCOME_GH, 0)) AS INCOME_GH,          "+
 		"SUM(NVL(T.GRIDDING_TOTAL, 0)) AS GRIDDING_TOTAL,"+
 		"SUM(NVL(T.COMM_TOTAL, 0)) AS COMM_TOTAL,        "+
 		"SUM(NVL(T.COMM_2G, 0)) AS COMM_2G,              "+
@@ -104,12 +105,12 @@ function addTable(data,level) {
 	var temp = "";
 	temp += "<thead>" +
 			"<tr><th class='attend_th' rowspan='2'>营销架构</th>" +
-			"<th class='attend_th' colspan='6'>出帐收入</th>" +
+			"<th class='attend_th' colspan='7'>出帐收入(扣减赠费、退费)</th>" +
 			"<th class='attend_th' rowspan='2'>成本费用合计</th>" +
 			"<th class='attend_th' colspan='6'>佣金</th>" +
 			"<th class='attend_th' rowspan='2'>紧密外包费用</th>" +
 			"<th class='attend_th' rowspan='2'>渠道补贴</th>" +
-			"<th class='attend_th' rowspan='2'>终端销售亏损</th>" +
+			"<th class='attend_th' rowspan='2'>终端补贴</th>" +
 			"<th class='attend_th' rowspan='2'>卡成本</th>" +
 			"<th class='attend_th' rowspan='2'>房租(含装修费)</th>" +
 			"<th class='attend_th' rowspan='2'>水电物业费</th>" +
@@ -125,7 +126,7 @@ function addTable(data,level) {
 			"</tr><tr>" +
 	"<th class='attend_th'>合计</th><th class='attend_th'>2G</th>" +
 	"<th class='attend_th'>3G</th><th class='attend_th'>4G</th>" +
-	"<th class='attend_th'>宽带</th><th class='attend_th'>租线</th>" +
+	"<th class='attend_th'>宽带</th><th class='attend_th'>专租线</th><th class='attend_th'>固话</th>" +
 	"<th class='attend_th'>合计</th><th class='attend_th'>2G</th>" +
 	"<th class='attend_th'>3G</th><th class='attend_th'>4G</th>" +
 	"<th class='attend_th'>固网</th><th class='attend_th'>公共佣金</th>" +
@@ -138,7 +139,7 @@ function addTable(data,level) {
 	var area_code;
 	
 	if(data == undefined || data == null || data == '' || data.length < 1){
-		temp+=("<tr><td colspan='28' style='text-align:center;color: red'>对不起，没有匹配到您想要的数据！</td></tr>");
+		temp+=("<tr><td colspan='29' style='text-align:center;color: red'>对不起，没有匹配到您想要的数据！</td></tr>");
 		click_flag = 0;
 	}else{
 		var rowNum = data.length;
@@ -232,6 +233,7 @@ function showSub(element){//element：被点击的元素
 	    	"SUM(NVL(T.INCOME_4G, 0)) AS INCOME_4G,          "+
 	    	"SUM(NVL(T.INCOME_KD, 0)) AS INCOME_KD,          "+
 	    	"SUM(NVL(T.INCOME_ZX, 0)) AS INCOME_ZX,          "+
+	    	"SUM(NVL(T.INCOME_GH, 0)) AS INCOME_GH,          "+
 	    	"SUM(NVL(T.GRIDDING_TOTAL, 0)) AS GRIDDING_TOTAL,"+
 	    	"SUM(NVL(T.COMM_TOTAL, 0)) AS COMM_TOTAL,        "+
 	    	"SUM(NVL(T.COMM_2G, 0)) AS COMM_2G,              "+
