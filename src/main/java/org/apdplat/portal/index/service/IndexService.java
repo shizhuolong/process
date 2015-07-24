@@ -104,6 +104,14 @@ public class IndexService {
 		return indexDao.listXsph(params);
 	}
 	/**
+	 * 积分排行
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> listJfph(Map<String, Object> params) {
+		return indexDao.listJfph(params);
+	}
+	/**
 	 * 获取公告内容
 	 * @param params
 	 * @return
