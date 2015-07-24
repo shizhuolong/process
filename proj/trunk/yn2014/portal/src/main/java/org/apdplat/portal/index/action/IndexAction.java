@@ -419,6 +419,29 @@ public class IndexAction extends BaseAction {
 		this.reponseJson(indexService.listXsph(params));
 	}
 	/**
+	 * 积分排行
+	 * @param params
+	 * @return
+	 */
+	public void listJfph() {
+		User user = UserHolder.getCurrentLoginUser();
+		Org org = user.getOrg();
+		String orgLevel = org.getOrgLevel();
+		String orgCode = org.getCode();
+		String hrId=user.getHrId();
+		
+		Calendar c=Calendar.getInstance();
+		c.add(Calendar.DATE, -1);
+		String curMonth = new SimpleDateFormat("yyyyMM").format(c.getTime());
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orgLevel", orgLevel);
+		params.put("code", orgCode);
+		params.put("hrId", hrId);
+		params.put("dealDate", curMonth);
+		this.reponseJson(indexService.listJfph(params));
+	}
+	/**
 	 * 获取公告内容
 	 */
 	public void getBullById() {

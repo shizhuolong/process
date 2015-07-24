@@ -390,6 +390,23 @@
 		order by RANK asc) t
 		where rownum&lt;21
 	</select>
+	<select id="listJfph" parameterType="java.util.Map" resultType="java.util.Map" >
+		select rownum,t.* from
+		(SELECT *
+  			FROM PMRT.TB_MRT_JCDY_JF_RANK_MON t
+ 		 WHERE t.deal_date=#{dealDate}
+ 		<if test="orgLevel==2">
+			and t.GROUP_ID_1=#{code}
+		</if>
+		<if test="orgLevel==3">
+			and t.UNIT_ID=#{code}
+		</if>
+		<if test="orgLevel>3">
+			and t.HR_NO=#{hrId}
+		</if>
+		order by PRO_RANK asc) t
+		where rownum&lt;21
+	</select>
 	<select id="getBullById" parameterType="java.util.Map" resultType="java.util.Map" useCache="false" >
 		SELECT * 
 			FROM portal.tab_portal_bulletin T

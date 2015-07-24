@@ -73,6 +73,12 @@ public interface IndexDao {
 	 * @return
 	 */
 	public List<Map<String, Object>> listXsph(Map<String, Object> params);
+	/**
+	 * 积分排行
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> listJfph(Map<String, Object> params);
 	
 	/**
 	 * 根据公告ID获取公告内容
