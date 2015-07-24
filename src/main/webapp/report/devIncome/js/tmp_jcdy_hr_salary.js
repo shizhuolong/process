@@ -10,6 +10,7 @@ function downloadFile() {
 }
 //完成
 function complete(){
+	$("#upload").hide();
 	var flag=checkOptions();
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel<=2){

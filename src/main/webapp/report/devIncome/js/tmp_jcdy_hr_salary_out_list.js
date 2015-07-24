@@ -94,6 +94,7 @@ function confirmImport(){
 	var regionCode=$("#cityCode").val();
 	if(totalCount){
 		if(confirm("确认导入？")){
+			$("#confirmBtn").hide();
 			$.ajax({
 				type:"POST",
 				dataType:'json',
@@ -111,6 +112,7 @@ function confirmImport(){
 			   			window.location.href=paths+"/report/devIncome/jsp/tmp_jcdy_hr_out_salary.jsp";
 			   		}else{
 			   			alert("入库失败,请重试");
+			   			$("#confirmBtn").show();
 			   		}
 			    }
 			});
