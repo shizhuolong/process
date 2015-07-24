@@ -6,12 +6,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -36,6 +40,9 @@ public class OrUploadAction extends BaseAction{
 	private String time;
 	private String regionCode;
 	private String userId;
+	
+	@Resource
+	DataSource dataSource;
 	public void confirmTax(){
 		boolean r=false;
 		try{
@@ -47,8 +54,22 @@ public class OrUploadAction extends BaseAction{
 			SpringManager.getUpdateDao().update(csql);
 			String sql="insert into PTEMP.TB_TMP_JCDY_OUT_HR_SALARY select * from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where creator='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
+			//调用存储过程
+			Connection conn = dataSource.getConnection();
+			CallableStatement stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
+			stmt.setString(1,time+"08");
+			stmt.setString(2,regionCode);
+			stmt.registerOutParameter(3,java.sql.Types.DECIMAL);
+			stmt.executeUpdate();
+			int num=stmt.getInt(3);
+			if(num!=0){
+				r=false;
+				return;
+			}
+			//////////
 			r=true;
 		}catch(Exception e){
+			e.printStackTrace();
 			r=false;
 		}
 		Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
