@@ -207,9 +207,9 @@
                                      </div>
                                      
                                      
-                                     <div title="销售排行" style="padding:0;">
+                                     <div title="销售排名" style="padding:0;">
                                      	<ul id="chose-place-count" class="bold clearfix">
-	                                        <li>本月销售排行—<i class="fa830b"><%=curMonth %></i></li>
+	                                        <li>本月销售排名—<i class="fa830b"><%=curMonth %></i></li>
 	                                    </ul>
                                          <div class="default-dt dt-autoH">
                                              <table class="default-table"  style=" " id="xsphTable">
@@ -219,9 +219,9 @@
 														<th rowspan='2'>营服中心</th>
 														<th rowspan='2'>人员姓名</th>
 														<th colspan='5'>发展量</th>
-														<th rowspan='2'>本月全省排行</th>
-														<th rowspan='2'>本月地市排行</th>
-														<th rowspan='2'>本月营服中心排行</th>
+														<th rowspan='2'>本月全省排名</th>
+														<th rowspan='2'>本月地市排名</th>
+														<th rowspan='2'>本月营服中心排名</th>
 													</tr>
 													<tr>
 														<th>2G</th>
@@ -229,6 +229,30 @@
 														<th>4G</th>
 														<th>上网卡</th>
 														<th>合计</th>
+													</tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 </tbody>        
+                                             </table>
+                                         </div>
+                                     </div>
+                                     
+                                     <div title="积分排名" style="padding:0;">
+                                     	<ul id="chose-place-count" class="bold clearfix">
+	                                        <li>本月积分排名—<i class="fa830b"><%=curMonth %></i></li>
+	                                    </ul>
+                                         <div class="default-dt dt-autoH">
+                                             <table class="default-table"  style=" " id="jfphTable">
+                                                 <thead>	 	 	 	
+                                                     <tr>
+														<th class="first">地市</th>
+														<th>营服中心</th>
+														<th>人员姓名</th>
+														<th>本月累计积分</th>
+														<th>本月累计薪酬</th>
+														<th>本月全省排名</th>
+														<th>本月地市排名</th>
+														<th>本月营服中心排名</th>
 													</tr>
                                                  </thead>
                                                  <tbody>

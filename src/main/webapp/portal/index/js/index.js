@@ -28,8 +28,10 @@ $(function(){
 	//显示渠道分布地图
 	showChanlMap();
 	$(".arrow-up-map,arrow-down-map").parent().trigger("click");
-	//销售排行
+	//销售排名
 	showXsph();
+	//积分排名
+	showJfph();
 });
 
 //游离渠道
@@ -1059,7 +1061,7 @@ function showChanlMap() {
 								var pt = new BMap.Point(data[i]['LOG_NO'],
 										data[i]['LAT_NO']);
 								var tzsIcon=zsIcon;
-								if(data[i]["STATION_TYPE_CODE"]=='2G'){
+								if($.trim(data[i]["STATION_TYPE_CODE"])=='2G'){
 									tzsIcon=zsIcon;
 								}else{
 									tzsIcon=zsRedIcon;
@@ -1116,8 +1118,9 @@ function showChanlMap() {
 			});
 		}
 	});
+	$("#qdtt").trigger("click");
 }
-//销售排行
+//销售排名
 function showXsph() {
 	$.ajax({
 		url:$("#ctx").val()+"/index/index_listXsph.action",
@@ -1245,9 +1248,132 @@ function showXsph() {
 			});
 		}
 	});
-	
-	//
-	$("#qdtt").trigger("click");
+}
+//积分排名
+function showJfph() {
+	$.ajax({
+		url:$("#ctx").val()+"/index/index_listJfph.action",
+		type:'POST',
+		dataType:'json',
+		async:true,
+		success:function(data){
+			var str = "";
+			if(data==null || data.length==0) {
+				str+= "<tr>";
+				str+= "<td colspan='8' align='center'>暂无数据</td>";
+				str+= "</tr>";
+			} else {
+				for(var i=0; i<data.length; i++) {
+					str+= "<tr USER_NAME='"+isNull(data[i].USER_NAME)+"' HR_NO='"+isNull(data[i].HR_NO)+"'>";
+					str+="<td>"+isNull(data[i].AREA_NAME)+"</td>";
+					str+="<td>"+isNull(data[i].UNIT_NAME)+"</td>";
+					str+="<td>"+isNull(data[i].USER_NAME)+"</td>";
+					str+="<td>"+isNull(data[i].ALL_JF)+"</td>";
+					str+="<td>"+isNull(data[i].ALL_JF_MONEY)+"</td>";
+					str+="<td>"+isNull(data[i].PRO_RANK)+"</td>";
+					str+="<td>"+isNull(data[i].GROUP_RANK)+"</td>";
+					str+="<td>"+isNull(data[i].UNIT_RANK)+"</td>";
+					str+= "</tr>";
+				}
+			}
+			$("#jfphTable tbody").empty().append(str);
+			
+			//
+			/*$("#xsphTable tbody").find("TR").each(function(){
+				var $tr=$(this);
+				var $2g=$tr.find("TD:eq(3)");
+				var $3g=$tr.find("TD:eq(4)");
+				var $4g=$tr.find("TD:eq(5)");
+				var $swk=$tr.find("TD:eq(6)");
+				
+				if(!$2g.text()||$.trim($2g.text())==''||$.trim($2g.text())=='0'){
+					
+				}else{
+					$2g.html("<a href='#' >"+$2g.text()+"</a>");
+					$2g.click(function(){
+						var hrNo=$tr.attr("HR_NO");
+						var userName=$tr.attr("USER_NAME");
+						var time=$("#time").val();
+						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='2GDK','2GHY'";
+						//window.parent.openWindow(userName+"-2G发展详细",null,url);
+						art.dialog.open(url,{
+							id:'xsphDetailDialog',
+							title:userName+"-2G发展详细",
+							width:'530px',
+							height:'320px',
+							lock:true,
+							resize:false
+						});
+					});
+					
+				}
+				if(!$3g.text()||$.trim($3g.text())==''||$.trim($3g.text())=='0'){
+					
+				}else{
+					$3g.html("<a href='#' >"+$3g.text()+"</a>");
+					$3g.click(function(){
+						var hrNo=$tr.attr("HR_NO");
+						var userName=$tr.attr("USER_NAME");
+						var time=$("#time").val();
+						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='3GDK','3GHY'";
+						//window.parent.openWindow(userName+"-3G发展详细",null,url);
+						art.dialog.open(url,{
+							id:'xsphDetailDialog',
+							title:userName+"-3G发展详细",
+							width:'530px',
+							height:'320px',
+							lock:true,
+							resize:false
+						});
+					});
+					
+				}
+				if(!$4g.text()||$.trim($4g.text())==''||$.trim($4g.text())=='0'){
+					
+				}else{
+					$4g.html("<a href='#' >"+$4g.text()+"</a>");
+					$4g.click(function(){
+						var hrNo=$tr.attr("HR_NO");
+						var userName=$tr.attr("USER_NAME");
+						var time=$("#time").val();
+						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='4GDK','4GHY'";
+						//window.parent.openWindow(userName+"-4G发展详细",null,url);
+						art.dialog.open(url,{
+							id:'xsphDetailDialog',
+							title:userName+"-4G发展详细",
+							width:'530px',
+							height:'320px',
+							lock:true,
+							resize:false
+						});
+					});
+					
+				}
+				
+				if(!$swk.text()||$.trim($swk.text())==''||$.trim($swk.text())=='0'){
+					
+				}else{
+					$swk.html("<a href='#' >"+$swk.text()+"</a>");
+					$swk.click(function(){
+						var hrNo=$tr.attr("HR_NO");
+						var userName=$tr.attr("USER_NAME");
+						var time=$("#time").val();
+						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list_swk.jsp?hrNo="+hrNo+"&time="+time+"&itemCode=";
+						//window.parent.openWindow(userName+"-上网卡发展详细",null,url);
+						art.dialog.open(url,{
+							id:'xsphDetailDialog',
+							title:userName+"-上网卡发展详细",
+							width:'530px',
+							height:'320px',
+							lock:true,
+							resize:false
+						});
+					});
+					
+				}
+			});*/
+		}
+	});
 }
 function isNull(obj){
 	if(obj==0||obj=='0'){
