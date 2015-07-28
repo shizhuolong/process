@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>基站信息</title>
+<title>基站统计</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -44,10 +44,10 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
-	<div data-options="region:'west',split:false,title:'基站管理'" style="width:220px;padding:10px;">
+	<div data-options="region:'west',split:false,title:'基站统计'" style="width:220px;padding:10px;">
 		<div id="ztree" class="ztree"></div>
 	</div>
-	<div data-options="region:'center',title:'营业厅与营业员'">
+	<div data-options="region:'center',title:'基站统计'">
 		<div id="container">
 		<form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" />
