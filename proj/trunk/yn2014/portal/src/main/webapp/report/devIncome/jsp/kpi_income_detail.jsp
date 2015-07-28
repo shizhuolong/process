@@ -49,6 +49,8 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
+	<input type="hidden" id="realName" value="<%=user.getRealName()%>">
+	<input type="hidden" id="userName" value="<%=user.getUsername()%>">
 	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<form id="searchForm" method="post">
 		<table width="100%" style="margin: 10px 0; border: none;">
