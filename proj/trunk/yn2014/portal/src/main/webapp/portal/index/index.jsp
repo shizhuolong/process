@@ -22,6 +22,10 @@
 	
 	String time=new SimpleDateFormat("yyyyMM").format(cahour.getTime());
 	
+	Calendar caxc = Calendar.getInstance();
+	caxc.add(Calendar.MONTH,-1);
+	String xctime=new SimpleDateFormat("yyyyMM").format(caxc.getTime());
+	
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 %>
@@ -55,6 +59,8 @@
 <input type="hidden" id="code" value="<%=org.getCode()%>">
 <input type="hidden" id="orgId" value="<%=org.getId()%>">
 <input type="hidden" id="time" value="<%=time%>">
+<input type="hidden" id="xctime" value="<%=xctime%>">
+<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 <div>
  	<div id="container">
          <div id="content" style="width:99%;">
@@ -63,6 +69,50 @@
                  	<div id="left-menu">
                          <div id="left-menu">
                             <div id="my_menu" class="sdmenu">
+                            	<div>
+                                	<style>
+                             TABLE{
+			border-collapse: collapse;
+			border-top:solid #e7d4b3 1px;
+			border-right:solid #e7d4b3  1px;
+			width:100%;
+		}
+        .lch_DataHead TR TH{
+			height:30px;
+			background: none repeat scroll 0 0 #ffecc8;
+		}
+		.lch_DataBody TR:hover {
+			background-color: rgba(129, 208, 177, 0.3);
+		}
+		.lch_DataHead TR TH,.lch_DataBody TR TD{
+			border-left: 1px solid #e7d4b3;
+			color: #d28531;
+			font-size: 12px;
+			font-weight: bold;
+			text-align: center;
+			white-space: nowrap;
+			border-bottom: 1px solid #c0e2ef;
+			padding: 6px 12px;
+			box-sizing: border-box;
+		}
+		.lch_DataBody TR{
+			background-color: #fff;
+		}
+		.lch_DataBody TR TD{
+			text-align: left;
+    		color: #717171;
+    		font-family: "微软雅黑",Arial,"Simsun",sans-serif,SimSun,"宋体",Heiti,"黑体";
+    		font-weight: normal;
+		}
+                                	</style>
+                                    <span><i class="menu-toDo"></i>薪酬信息(<%=xctime %>)</span>
+                                   	<a href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
+                                    <a href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
+                                    <a href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
+                                    <a href="javascript:void(0);" id="xc_jftc">提成奖励: 0</a>
+                                    <a href="javascript:void(0);" id="xc_zxjl">专项奖励: 0</a>
+                                    <a href="javascript:void(0);" id="xc_sum">合计:0</a>
+                                </div>
                                 <div>
                                     <span><i class="menu-toDo"></i>待办工作</span>
                                     <a href="javascript:void(0);" onclick="openOrderWindow(this)" id="workOrderNum"></a>
@@ -71,6 +121,7 @@
                                     <span><i class="menu-toDo"></i>游离渠道</span>
                                     <a href="javascript:void(0);" onclick="searchfreeChannel(this)" id="freechannel">游离渠道:0</a>
                                 </div>
+                                
                                 <div>
                                     <span id="bulls"><i class="menu-note"></i>最新公告</span>
                                 </div>
@@ -82,36 +133,55 @@
                      </div>
                  </div>
                  <div data-options="region:'center'">
-                     <div id="main">
-                      	
-                     	 <div style="width: 97%;float: left;border:1px solid #e7d4b3;padding:1%;margin-bottom:10px;">
-                         	 <style>
-                         	 	#qdtt:hover,#jztt:hover{background-color: rgba(129, 208, 177, 0.3);}
-                         	 	#qdtt,#jztt{margin-left:12px;}
-                         	 </style>
-                         	 <div class="title" style="height:25px;"><i></i><div id="qdtt" style="float:left;display:inline-block;width:80px;text-align:center;">渠道分布</div><div id="jztt" style="float:left;display:inline-block;width:80px;text-align:center;">基站分布</div><div class="arrow-up-map" style="float:right;">&nbsp;</div></div>
-                             <div class="main-area-conFull" style="height: 500px;width: 1000px;">
-                             	<div id="qdfbFrame" style="position:absolute;top:50px;height: 120px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
-                             		<div style="margin:5px;" class="title"><i></i>渠道分布</div>
-                             		<div style="margin:5px;"><img src="<%=request.getContextPath() %>/portal/index/images/location_red16.png"" />--上月无销量</div>
-                             		<div style="margin:5px;"><img src="<%=request.getContextPath() %>/portal/index/images/location16.png"" />--上月有销量</div>
-                             		<div style="margin:10px;font-size:12px;">
-                             			<input style="vertical-align:-2px;" type="checkbox" name="zhch" value="10" checked/>&nbsp;正常&nbsp;
-                             			<input style="vertical-align:-2px;" type="checkbox" name="qsuan" value="11"/>&nbsp;清算&nbsp;
-                             			<input style="vertical-align:-2px;" type="checkbox" name="zhzh" value="12"/>&nbsp;终止
-                             		</div>
-                             	</div>
-                             	<div id="jzfbFrame" style="position:absolute;top:50px;height: 60px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
-                             		<div style="margin:5px;" class="title"><i></i>基站分布</div>
-                                    <div style="margin:10px;font-size:12px;">
-                             			<input style="vertical-align:-2px;" type="checkbox" name="2G" value="2G" checked/>&nbsp;2G&nbsp;
-                             			<input style="vertical-align:-2px;" type="checkbox" name="3G" value="3G"/>&nbsp;3G&nbsp;
-                             		</div>
-                             	</div>
-                             	<div id="qdfb" style="height: 500px;width: 980px;position:absolute;z-index:8888;"></div>
-                             	<div id="jzfb" style="height: 500px;width: 980px;position:absolute;z-index:8888;"></div>
-                             </div>
-                         </div> 
+                 	 <div id="main">
+							<div class="main-block">
+								<div id="chose-place">
+									<div class="easyui-tabs"
+										style="width: 100%; height: 500px; margin-top: 0px; position: relative;">
+										<div title="渠道分布" style="padding: 0;">
+											<!--  ul id="chose-place-count" class="bold clearfix">
+												<li>渠道分布<i class="fa830b"></i></li>
+											</ul-->
+											<div class="default-dt dt-autoH">
+												<div id="qdfbFrame" class="myItem" style="position:absolute;top:50px;height: 120px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
+				                             		<div style="margin:5px;" class="title"><i></i>渠道分布</div>
+				                             		<div style="margin:5px;"><img src="<%=request.getContextPath() %>/portal/index/images/location_red16.png" />--上月无销量</div>
+				                             		<div style="margin:5px;"><img src="<%=request.getContextPath() %>/portal/index/images/location16.png" />--上月有销量</div>
+				                             		<div style="margin:10px;font-size:12px;">
+				                             			<input style="vertical-align:-2px;" type="checkbox" name="zhch" value="10" checked/>&nbsp;正常&nbsp;
+				                             			<input style="vertical-align:-2px;" type="checkbox" name="qsuan" value="11"/>&nbsp;清算&nbsp;
+				                             			<input style="vertical-align:-2px;" type="checkbox" name="zhzh" value="12"/>&nbsp;终止
+				                             		</div>
+				                             	</div>
+												<div id="qdfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;"></div>
+											</div>
+										</div>
+										<div title="基站分布" style="padding: 0;">
+											<!-- ul id="chose-place-count" class="bold clearfix">
+												<li>基站分布<i class="fa830b"></i></li>
+											</ul-->
+											<div class="default-dt dt-autoH">
+												<div id="jzfbFrame" class="myItem" style="position:absolute;top:50px;height: 60px;width: 200px;border:solid #c3c3c3 1px;left:795px;float:right;z-index:99999;background-color:white;">
+				                             		<div style="margin:5px;" class="title"><i></i>基站分布</div>
+				                                    <div style="margin:10px;font-size:12px;">
+				                             			<input style="vertical-align:-2px;" type="checkbox" name="2G" value="2G" checked/>&nbsp;2G&nbsp;
+				                             			<input style="vertical-align:-2px;" type="checkbox" name="3G" value="3G"/>&nbsp;3G&nbsp;
+				                             		</div>
+				                             	</div>
+												<div id="jzfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;"></div>
+											</div>
+										</div>
+										
+										<!-- div title="薪酬信息" style="padding: 0;">
+											<div class="default-dt dt-autoH" style="margin-top:15px;">
+												<div id="xcfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;">
+				                             		<iframe name="xcfbWin" id="xcfbWin" scrolling="auto" frameborder="0" width="100%" height="100%" src="<%=request.getContextPath() %>/report/devIncome/jsp/jcdy_hr_salary_mon_index.jsp"></iframe>
+				                             	</div>
+											</div>
+										</div-->
+									</div>
+								</div>
+							</div>
                          <div class="main-area">
                          	<div class="title"><i></i>日发展量趋势—<%=curMonth %></div>
                          	<div class="main-area-conFull" id="income_dev_chart" style="height: 280px;width: 525px;">

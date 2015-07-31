@@ -27,13 +27,474 @@ $(function(){
 	qryTodoWorkOrderNum();
 	//显示渠道分布地图
 	showChanlMap();
-	$(".arrow-up-map,arrow-down-map").parent().trigger("click");
+	//$(".arrow-up-map,arrow-down-map").parent().trigger("click");
 	//销售排名
 	showXsph();
 	//积分排名
 	showJfph();
+	//积分薪酬
+	showJfxc();
 });
+//积分薪酬
+//获取数据
+function query(sql){
+	var ls=[];
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+		data:{
+           "sql":sql
+	   	}, 
+	   	success:function(data){
+	   		if(data&&data.length>0){
+	   			ls=data;
+	   		}
+	    }
+	});
+	return ls;
+}
+function isNull(obj){
+	if(obj==0||obj=='0'){
+		return 0;
+	}
+	if(obj == undefined || obj == null || obj == '') {
+		return "";
+	}
+	return obj;
+}
+function showJfxc(){
+	var time=$("#xctime").val();
+	var hrId=$("#hrId").val();
+	var uId='';
+	var sql="select * from PMRT.TB_MRT_JCDY_HR_SALARY_MON t ";
+	if(time!=''){
+		sql+=" where t.DEAL_DATE="+time;
+	}
+	if(hrId!=''&&hrId&&hrId!=null&&hrId!='null'){
+		$("#xc_hrNo").text("HR编码: "+hrId);
+	}
+	sql+=" and t.HR_ID='"+hrId+"'";
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:true,
+		cache:false,
+		url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+		data:{
+           "sql":sql
+	   	}, 
+	   	success:function(data){
+	   		if(data&&data.length>0){
+	   			uId=data[0].UNIT_ID;
+	   			uType=data[0].USER_TYPE;
+	   			$("#xc_gdxc").text("固定薪酬: "+data[0].FIXED_SALARY);
+	   			//////////
+	   			//固定薪酬
+	   			$("#xc_gdxc").click(function(){
+	   					var date=time;
+	   					var sql="select t.*,case t.user_type when 2 then '外包' when  1 then '合同内' end myuser_type  from pods.TB_ODS_JCDY_HR_SALARY t where t.hr_no='"+hrId+"' and t.deal_date='"+date+"'";
+	   					$.ajax({
+	   						type:"POST",
+	   						dataType:'json',
+	   						async:true,
+	   						cache:false,
+	   						url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+	   						data:{
+	   				           "sql":sql
+	   					   	}, 
+	   					   	success:function(d){
+		   					   	if(d&&d.length){
+			   						var h="<div style='padding:12px;padding-right:12px;max-height:300px;width:400px;overflow-y:auto;overflow-x:hidden;'>"
+			   							+"<table><thead class='lch_DataHead lch_DataBody'>"
+			   							+"<tr><th style='width:100px;text-align:left;'>员工工号</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["HR_NO"])+"</td></tr>"
+			   							 +"<tr><th style='width:100px;text-align:left;'>姓名</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["USER_NAME"])+"</td></tr>"
+			   							 +"<tr><th style='width:100px;text-align:left;'>岗位工资</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["POST_SALARY"])+"</td></tr>"
+			   							 +"<tr><th style='width:100px;text-align:left;'>综合补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["GENERAL_SUBS"])+"</td></tr>"
+			   							 +"<tr><th style='width:100px;text-align:left;'>合计</th><td style='width:100px;text-align:center;'>"+(parseFloat(isNull(d[0]["GENERAL_SUBS"]?d[0]["GENERAL_SUBS"]:0))+parseFloat(isNull(d[0]["POST_SALARY"]?d[0]["POST_SALARY"]:0)))+"</td></tr>"
+			   							+"</thead></table></div>";
+			   						art.dialog({
+			   						    title: '固定薪酬详细信息',
+			   						    content: h,
+			   						    padding: 0,
+			   						    lock:true
+			   						});
+			   					}else{
+			   						alert("获取固定薪酬详细信息失败");
+			   					}
+	   					   	}
+	   					});
+	   			});	   			
+	   			//////////
+	   			$("#xc_kpi").text("KPI绩效: "+data[0].BASE_SALARY);
+	   			$("#xc_kpi").click(function(){
+					var date=time;
+					var where ="  where t.deal_date='"+date+"' and t.unit_id='"+uId+"' and t.hr_id='"+hrId+"' ";
+					var sql="";
+					
+					sql+="  select HR_ID,                                                                             ";
+					sql+="         KPI_NAME,                                                                          ";
+					sql+="         KPI_WEIGHT*100||'%' KPI_WEIGHT,                                                                        ";
+					sql+="         KPI_VALUE KPI_VALUE,                                                                         ";
+					sql+="         nvl(KPI_WEIGHT, 0) * nvl(KPI_VALUE, 0) MUT_VALUE,0 am12,0 ammon,0 BUDGET_ML,0 BUDEGET_COST, 2 ordernum                        ";
+					sql+="    from PODS.TB_JCDY_KPI_RULE_MON t                                                        ";
+					sql+=where;
+					sql+="  union                                                                                     ";
+					sql+="  select nvl(t.task_dev, 0) || '',                                                         ";
+					sql+="         nvl(t.dev_count, 0) || '',                                                        ";
+					sql+="         nvl(t.task_income, 0)|| '',                                                            ";
+					sql+="         nvl(t.total_fee, 0) ,nvl(t.owefee, 0),nvl(t.AMOUNT_12,0),nvl(t.AMOUNT_MONTH,0),                                                              ";
+					sql+="        nvl(t.BUDGET_ML,0),nvl(t.BUDEGET_COST,0),1 ordernum                                                       ";
+					sql+="    from PODS.TB_ODS_KPI_ALL_MON t                                                         ";
+					sql+=where;
+					sql+="  UNION                                                                                     ";
+					sql+="  select HR_ID, NULL, BASE_SALARY|| '', t.MUT_VALUE , t.MUT_VALUE * BASE_SALARY,0,0,0,0,3 ordernum      ";
+					sql+="    from PODS.TB_JCDY_KPI_RESULT_MON t,                                                     ";
+					sql+="         (select '',                                                                        ";
+					sql+="                 '',                                                                        ";
+					sql+="                 0,                                                                         ";
+					sql+="                 0,                                                                         ";
+					sql+="                 sum(nvl(KPI_WEIGHT, 0) * nvl(KPI_VALUE, 0)) MUT_VALUE                      ";
+					sql+="            from PODS.TB_JCDY_KPI_RULE_MON t                                                ";
+					sql+=where;
+					sql+="           group by t.deal_date, t.unit_id, t.hr_id) t                                     ";
+					sql+=where;
+					
+					var d=query("select * from ("+  sql+") order by ordernum ");
+					var zszb=query("select KPI_NAME||':'||KPI_SCORE zszb from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where t.hr_id='"+hrId+"'");
+					var zs1="";
+					var zs2="";
+					if(zszb&&zszb.length){
+						for(var j=0;j<zszb.length;j++){
+							if(j<2){
+								zs1+="<td>"+zszb[j]["ZSZB"]+"</td>";
+							}else{
+								zs2+="<td>"+zszb[j]["ZSZB"]+"</td>";
+							}
+						}
+					}
+					if(zs2!=''){
+						zs2="<tr>"+zs2+"</tr>"
+					}
+					if(d&&d.length){
+						var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
+							+"<table><tbody class='lch_DataBody'><tr><td>HR编码:"+isNull(d[1]["HR_ID"])+"</td><td>发展任务数:"+isNull(d[0]["HR_ID"])+"</td><td>实际发展数:"+isNull(d[0]["KPI_NAME"])+"</td><td>收入任务:"+isNull(d[0]["KPI_WEIGHT"])+"</td><td>出账收入:"+isNull(d[0]["KPI_VALUE"])+"</td><td>欠费:"+isNull(d[0]["MUT_VALUE"])+"</td><tr>"
+							+"<tr><td>去年12月分收入:"+isNull(d[0]["AM12"])+"</td><td>本年累计月收入:"+isNull(d[0]["AMMON"])+"</td><td>毛利:"+isNull(d[0]["BUDGET_ML"])+"</td><td>成本预算:"+isNull(d[0]["BUDEGET_COST"])+"</td>"+zs1+"</tr>"+zs2+"<tbody></table>"
+							+"<table><thead class='lch_DataHead'><tr><th>KPI指标名称</th><th>KPI指标权重</th><th>KPI指标值</th><th>KPI指标值*KPI指标权重</th></tr></thead><tbody class='lch_DataBody'>";
+							for(var i=1;i<d.length;i++){
+									if(i==d.length-1){
+										h+="<tr><td>KPI基础薪酬合计"
+										+"</td><td>基础薪酬:"+isNull(d[i]["KPI_WEIGHT"])
+										+"</td><td>指标合计:"+isNull(d[i]["KPI_VALUE"])
+										+"</td><td>KPI绩效:"+isNull(d[i]["MUT_VALUE"])
+										+"</td></tr>";
+									}else{
+										//h+="<tr><td>"+isNull(d[i]["HR_ID"])
+										h+="<tr><td>"+isNull(d[i]["KPI_NAME"])
+										+"</td><td>"+isNull(d[i]["KPI_WEIGHT"])
+										+"</td><td>"+isNull(d[i]["KPI_VALUE"])
+										+"</td><td>"+isNull(d[i]["MUT_VALUE"])
+										+"</td></tr>";
+									}
+									
+							}
+							
+							h+="</tbody>"
+							+"</table>"
+							+"<br/>"
+							+"</div>";
+							if(d.length>=1){
+								art.dialog({
+								    title: '基础KPI绩效详细信息',
+								    content: h,
+								    padding: 0,
+								    lock:true
+								});
+							}
+					}else{
+						alert("获取基础KPI绩效详细信息失败");
+					}
+				});
+	   			//////////
+	   			$("#xc_jftc").text("提成奖励: "+data[0].JF_SALARY);
+	   			$("#xc_jftc").click(function(){
+	   				var date=time;
+	   				var js=uType;
+	   				var jss=[];
+	   				var isResp=0;
+	   				if(js&&js.length){
+	   					jss=js.split(",");
+	   					for(var i=0;i<jss.length;i++){
+	   						if($.trim(jss[i])=='营服中心责任人'){
+	   							isResp=1;
+	   							break;
+	   						}
+	   					}
+	   					for(var i=0;i<jss.length;i++){
+	   						if($.trim(jss[i])=='营业厅主任'){
+	   							if(isResp!=1){
+	   								isResp=2;
+	   							}
+	   							break;
+	   						}
+	   					}
+	   				}
+	   				var sql="";
+	   				if(isResp==0){
+	   					//判断
+	   					sql="";
+	   					sql+=" select '销售积分' type,t.HJXSJF sl,t.HQ_ALLJF tj,tr.UNIT_RATIO qy,t.UNIT_ALLJF qytj,t.UNIT_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
+	   					sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' AND HJXSJF>0 ";
+	   					sql+=" UNION ALL ";
+	   					sql+=" select '受理积分' type, t.SL_ALLJF sl,t.SL_SVR_ALL_CRE tj,tr.UNIT_RATIO qy,t.UNIT_SL_ALLJF qytj,t.UNIT_SL_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
+	   					sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' AND SL_ALLJF>0 ";
+	   					sql+=" UNION ALL ";
+	   					sql+=" select '维系积分' type, CRE sl,HQ_CRE tj,tr.unit_ratio qy,UNIT_CRE qytj,UNIT_CRE*10  sumxc from pmrt.TB_MRT_JCDY_WX_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
+	   					sql+=" WHERE T.HR_ID='"+hrId+"' AND DEAL_DATE='"+date+"' ";
+	   					
+	   					var d=query(sql);
+	   					
+	   					if(d&&d.length){
+	   						var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
+	   							+"<table><thead class='lch_DataHead'><tr><th>积分类型</th><th>原始积分</th><th>渠道（服务）调节后积分</th><th>区域系数</th><th>区域调节后积分</th><th>积分提成奖励（元）</th></tr></thead><tbody class='lch_DataBody'>";
+	   							var sh="";
+	   							var sumqy=0;
+	   							var sumxc=0;
+	   							for(var i=0;i<d.length;i++){
+	   									h+="<tr><td>"+isNull(d[i]["TYPE"])
+	   									+"</td><td>"+isNull(d[i]["SL"])
+	   									+"</td><td>"+isNull(d[i]["TJ"])
+	   									+"</td><td>"+isNull(d[i]["QY"])
+	   									+"</td><td>"+isNull(d[i]["QYTJ"])
+	   									+"</td><td>"+isNull(d[i]["SUMXC"])
+	   									+"</td></tr>";
+	   									sumqy+=d[i]["QYTJ"];
+	   									sumxc+=d[i]["SUMXC"];
+	   							}
+	   							
+	   							if(d.length>=2){
+	   								sh+="<tr><td colspan='4' style='text-align:center;'>合计"
+	   								+"</td><td>"+roundN(sumqy,2)
+	   								+"</td><td>"+roundN(sumxc,2)
+	   								+"</td></tr>";
+	   							}
+	   							h+=sh+"</tbody>"
+	   							+"</table>"
+	   							+"<font color='red' size='2'>业绩提成（积分薪酬）="
+	   							+"[(销售积分×渠道调节系数×区域调节系数)+(受理积分×服务调节系数×区域调节系数)+(专租线提成×渠道调节系数×区域调节系数)+(维系积分×渠道或服务调节系数×区域调节系数)]×积分单价<br/>"
+	   							+"备：以上积分中专租线提成已包括在销售积分中，当前积分单价=10元\/分</font><br/>"
+	   							+"</div>";
+	   							if(d.length>=1){
+	   								art.dialog({
+	   								    title: '业绩提成详细信息',
+	   								    content: h,
+	   								    padding: 0,
+	   								    lock:true
+	   								});
+	   							}
+	   					}else{
+	   						alert("获取业绩提成信息失败");
+	   					}
+	   				}else if(isResp==1){
+	   					//系数获取
+	   					var rasql="select nvl(t.unit_manager_ratio,1) radio from PCDE.TAB_CDE_GROUP_CODE t where t.unit_id='"+uId+"'";
+	   					var rad=query(rasql);
+	   					var radio=1;
+	   					if(rad&&rad.length){
+	   						radio=rad[0]["RADIO"];
+	   					}
+	   					//营服中心负责人单独处理
+	   					sql="";
+	   					sql+="   select t.hr_id,                                                ";
+	   					sql+="          max(t.name) name,                                                 ";
+	   					sql+="          round(sum(NVL(tr.UNIT_ALLJF, 0)), 2) xs,      ";
+	   					sql+="          round(sum(nvl(tr.unit_sl_alljf, 0)), 2) sl,   ";
+	   					sql+="          round(sum(nvl(tr.wx_unit_cre, 0)), 2) wx,   ";
+	   					sql+="          round(sum(nvl(tr.all_jf, 0)), 2) xssl,        ";
+	   					sql+="          round(sum(nvl(tr.all_jf_money, 0)), 2) xsslm  ";
+	   					sql+="     from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                        ";
+	   					sql+="     left join (select *                                          ";
+	   					sql+="                  from pmrt.TB_JCDY_JF_ALL_MON         ";//pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON
+	   					sql+="                 where deal_date = '"+date+"'                     ";
+	   					sql+="                   and unit_id = '"+uId+"') tr                       ";
+	   					sql+="       on tr.hr_no = t.hr_id                                      ";
+	   					sql+="    where t.unit_id = '"+uId+"'                                   ";
+	   					sql+="      and t.hr_id != '"+hrId+"'                                    ";
+	   					sql+="      and t.deal_date = '"+date+"'   group by t.hr_id                             ";
+	   					sql+="   union all                                                      ";
+	   					sql+="   select null hr_id,                                             ";
+	   					sql+="          '平均' name,                                              ";
+	   					sql+="          round(avg(nvl(xs, 0)), 2) xs,            ";
+	   					sql+="          round(avg(nvl(sl, 0)), 2) sl,            ";
+	   					sql+="          round(avg(nvl(wx, 0)), 2) wx,            ";
+	   					sql+="          round(avg(nvl(xssl, 0)), 2) xssl,        ";
+	   					sql+="          round(avg(nvl(xsslm, 0)), 2)*"+radio+" xsslm       ";
+	   					sql+="     from (select t.hr_id,                                        ";
+	   					sql+="                  max(t.name) name,                                         ";
+	   					sql+="                  sum(NVL(tr.UNIT_ALLJF, 0)) xs,                       ";
+	   					sql+="                  sum(nvl(tr.unit_sl_alljf, 0)) sl,                    ";
+	   					sql+="          		sum(nvl(tr.wx_unit_cre, 0))  wx,   ";
+	   					sql+="                  sum(nvl(tr.all_jf, 0)) xssl,                         ";
+	   					sql+="                  sum(nvl(tr.all_jf_money, 0)) xsslm                   ";
+	   					sql+="             from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                ";
+	   					sql+="             left join (select *                                  ";
+	   					sql+="                         from pmrt.TB_JCDY_JF_ALL_MON  ";
+	   					sql+="                        where deal_date = '"+date+"'              ";
+	   					sql+="                          and unit_id = '"+uId+"') tr                ";
+	   					sql+="               on tr.hr_no = t.hr_id                              ";
+	   					sql+="            where t.unit_id = '"+uId+"'                           ";
+	   					sql+="              and t.hr_id != '"+hrId+"'                           ";
+	   					sql+="              and t.deal_date = '"+date+"' group by t.hr_id)      ";
+	   					sql+="                                                                  ";
+	   					
+	   					var d=query(sql);
+	   					
+	   					if(d&&d.length){
+	   						var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
+	   							+"<table><thead class='lch_DataHead'><tr><th>姓名</th><th>销售积分</th><th>受理积分</th><th>维系积分</th><th>总积分</th><th>积分提成奖励（元）</th></tr></thead><tbody class='lch_DataBody'>";
+	   					
+	   							for(var i=0;i<d.length;i++){
+	   								if(d[i]["NAME"]=='平均'){
+	   									h+="<tr><td>"+isNull(d[i]["NAME"])
+	   									+"</td><td>"+isNull(d[i]["XS"])
+	   									+"</td><td>"+isNull(d[i]["SL"])
+	   									+"</td><td>"+isNull(d[i]["WX"])
+	   									+"</td><td>"+isNull(d[i]["XSSL"])
+	   									+"</td><td>"+isNull(d[i]["XSSLM"])
+	   									+"</td></tr>";
+	   								}else{
+	   									h+="<tr><td>"+isNull(d[i]["NAME"])
+	   									+"</td><td>"+isNull(d[i]["XS"])
+	   									+"</td><td>"+isNull(d[i]["SL"])
+	   									+"</td><td>"+isNull(d[i]["WX"])
+	   									+"</td><td>"+isNull(d[i]["XSSL"])
+	   									+"</td><td>"+isNull(d[i]["XSSLM"])
+	   									+"</td></tr>";
+	   								}	
+	   							}
+	   							h+="</tbody>"
+	   							+"</table>"
+	   							+"<font color='red' size='2'>备：营服中心负责人的业绩提成=该营服中心下所有人员（除负责人外）业绩提成的平均值*"+radio+"</font><br/>"
+	   							+"</div>";
+	   							if(d.length>=1){
+	   								art.dialog({
+	   								    title: '业绩提成详细信息',
+	   								    content: h,
+	   								    padding: 0,
+	   								    lock:true
+	   								});
+	   							}
+	   					}else{
+	   						alert("获取业绩提成信息失败");
+	   					}
+	   				}else if(isResp==2){
+	   					//系数获取
+	   					var rasql="select nvl(t.unit_head_ratio,1) radio from PCDE.TAB_CDE_GROUP_CODE t where t.unit_id='"+uId+"'";
+	   					var rad=query(rasql);
+	   					var radio=1;
+	   					if(rad&&rad.length){
+	   						radio=rad[0]["RADIO"];
+	   					}
+	   					//营业厅主任单独处理
+	   					sql="";
+	   					sql+=" select t.hr_id, t.name, t.jf_salary jf                                ";
+	   					sql+="   from (select t.*, 1 orderNum                                        ";
+	   					sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
+	   					sql+="          where deal_date = '"+date+"'                                   ";
+	   					sql+="            and t.hr_id <> '"+hrId+"'                                   ";
+	   					sql+="            and t.hr_id in                                             ";
+	   					sql+="                (SELECT distinct hr_id                                 ";
+	   					sql+="                   FROM portal.tab_portal_mag_person                   ";
+	   					sql+="                  where hq_chan_code in                                 ";
+	   					sql+="                        (SELECT distinct hq_chan_code                  ";
+	   					sql+="                           FROM portal.tab_portal_mag_person           ";
+	   					sql+="                          where hr_id = '"+hrId+"'                      ";
+	   					sql+="                            and hq_chan_code is not null))             ";
+	   					sql+="         union                                                         ";
+	   					sql+="         select t.*, 2 orderNum                                        ";
+	   					sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
+	   					sql+="          where deal_date = '"+date+"'                                   ";
+	   					sql+="            and t.hr_id = '"+hrId+"') t                                 ";
+	   					sql+="  order by t.orderNum                                                  ";
+	   					
+	   					
+	   					var d=query(sql);
+	   					
+	   					if(d&&d.length){
+	   						var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
+	   							+"<table><thead class='lch_DataHead'><tr><th>姓名</th><th>积分薪酬</th></tr></thead><tbody class='lch_DataBody'>";
+	   					
+	   							for(var i=0;i<d.length;i++){
+	   									h+="<tr><td>"+isNull(d[i]["NAME"])
+	   									+"</td><td>"+isNull(d[i]["JF"])
+	   									+"</td></tr>";	
+	   							}
+	   							h+="</tbody>"
+	   							+"</table>"
+	   							+"<font color='red' size='2'>备：营业厅主任的业绩提成=该营业厅下所有人员（包括营业厅主任）业绩提成的平均值*"+radio+"</font><br/>"
+	   							+"</div>";
+	   							if(d.length>=1){
 
+	   								art.dialog({
+	   								    title: '业绩提成详细信息',
+	   								    content: h,
+	   								    padding: 0,
+	   								    lock:true
+	   								});
+	   							}
+	   					}else{
+	   						alert("获取业绩提成信息失败");
+	   					}
+	   				}
+	   			});
+	   			//////////
+	   			$("#xc_zxjl").text("专项奖励: "+data[0].SPECIAL_AWARD);
+	   			$("#xc_zxjl").click(function(){
+					var date=time;
+					var sql="select t.*,case t.user_type when 2 then '外包' when  1 then '合同内' end myuser_type  from pods.TB_ODS_JCDY_HR_SALARY t where t.hr_no='"+hrId+"' and t.deal_date='"+date+"'";
+					$.ajax({
+   						type:"POST",
+   						dataType:'json',
+   						async:true,
+   						cache:false,
+   						url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+   						data:{
+   				           "sql":sql
+   					   	}, 
+   					   	success:function(d){
+	   					   	if(d&&d.length){
+	   							var h="<div style='padding:12px;padding-right:12px;max-height:300px;width:400px;overflow-y:auto;overflow-x:hidden;'>"
+	   								+"<table><thead class='lch_DataHead lch_DataBody'>"
+	   				 
+	   								+"<tr><th style='width:100px;text-align:left;'>员工工号</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["HR_NO"])+"</td></tr>"
+	   								 +"<tr><th style='width:100px;text-align:left;'>姓名</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["USER_NAME"])+"</td></tr>"
+	   								 +"<tr><th style='width:100px;text-align:left;'>绩效工资非经常项目1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MERIT_PAY_1"])+"</td></tr>"
+	   								 +"<tr><th style='width:100px;text-align:left;'>绩效工资非经常项目2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MERIT_PAY_2"])+"</td></tr>"
+	   								 +"<tr><th style='width:100px;text-align:left;'>其他奖励1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_PAY_1"])+"</td></tr>"
+	   								 +"<tr><th style='width:100px;text-align:left;'>其他奖励2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_PAY_2"])+"</td></tr>"
+	   								 +"<tr><th style='width:100px;text-align:left;'>合计</th><td style='width:100px;text-align:center;'>"+(parseFloat(isNull(d[0]["MERIT_PAY_1"]?d[0]["MERIT_PAY_1"]:0))+parseFloat(isNull(d[0]["MERIT_PAY_2"]?d[0]["MERIT_PAY_2"]:0))+parseFloat(isNull(d[0]["OTHER_PAY_1"]?d[0]["OTHER_PAY_1"]:0))+parseFloat(isNull(d[0]["OTHER_PAY_2"]?d[0]["OTHER_PAY_2"]:0)))+"</td></tr>"
+	   								+"</thead></table></div>";
+	   							art.dialog({
+	   							    title: '专项奖励详细信息',
+	   							    content: h,
+	   							    padding: 0,
+	   							    lock:true
+	   							});
+	   						}else{
+	   							alert("获取专项奖励详细信息失败");
+	   						}
+   					   	}
+					});
+				});
+	   			//////////
+	   			$("#xc_sum").text("合计: "+data[0].ALL_SALARY);
+	   		}
+	    }
+	});
+	
+}
 //游离渠道
 function freeChannel(){
 	$.ajax({
@@ -608,7 +1069,7 @@ var status1="'2G'";
 var firstClick=true;
 function showChanlMap() {
 	//
-	$(".arrow-up-map,.arrow-down-map").parent().click(function(){
+	/*$(".arrow-up-map,.arrow-down-map").parent().click(function(){
 		if($(this).find(".arrow-up-map").length){
 			$(this).find(".arrow-up-map").addClass("arrow-down-map").removeClass("arrow-up-map");
 			$(this).next().slideUp();
@@ -619,10 +1080,10 @@ function showChanlMap() {
 	}).css({cursor:'pointer'});
 	
 	$("#qdtt").click(function(event){
-		$("#jzfb,#jzfbFrame").hide();
+		$(".myItem").hide();
 		$("#qdfb,#qdfbFrame").show();
 		$(this).css({backgroundColor:'rgba(129, 208, 177, 0.3)'});
-		$("#jztt").css({backgroundColor:''});
+		$(".myItemTT").css({backgroundColor:''});
 		isLoad=false;
 		setTimeout(function(){
 			map.centerAndZoom(new BMap.Point(101, 24.709), 7);
@@ -636,10 +1097,10 @@ function showChanlMap() {
 		event.stopPropagation();
 	});
 	$("#jztt").click(function(event){
-		$("#qdfb,#qdfbFrame").hide();
+		$(".myItem").hide();
 		$("#jzfb,#jzfbFrame").show();
 		$(this).css({backgroundColor:'rgba(129, 208, 177, 0.3)'});
-		$("#qdtt").css({backgroundColor:''});
+		$(".myItemTT").css({backgroundColor:''});
 		isLoad1=false;
 		setTimeout(function(){
 			map1.centerAndZoom(new BMap.Point(101, 24.709), 7);
@@ -648,6 +1109,17 @@ function showChanlMap() {
 		$(this).parent().next().slideDown();
 		event.stopPropagation();
 	});
+	$("#xctt").click(function(event){
+		$(".myItem").hide();
+		$("#xcfb").show();
+		$(this).css({backgroundColor:'rgba(129, 208, 177, 0.3)'});
+		$(".myItemTT").css({backgroundColor:''});
+		$(this).find(".arrow-down-map").addClass("arrow-up-map").removeClass("arrow-down-map");
+		$(this).parent().next().slideDown();
+		//$("#searchBtn",document.frames('xcfbWin').document).trigger("click");
+		$("#xcfbWin").attr("src",$("#xcfbWin").attr("src"));
+		event.stopPropagation();
+	});*/
 	//
 	var zsIcon = new BMap.Icon($("#ctx").val()+"/portal/index/images/location16.png", new BMap.Size(16,
 			16), {
@@ -1118,7 +1590,7 @@ function showChanlMap() {
 			});
 		}
 	});
-	$("#qdtt").trigger("click");
+	//$("#xctt").trigger("click");
 }
 //销售排名
 function showXsph() {
