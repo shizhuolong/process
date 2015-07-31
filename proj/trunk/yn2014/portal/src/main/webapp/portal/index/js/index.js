@@ -1740,6 +1740,9 @@ function showJfph() {
 					str+="<td>"+isNull(data[i].AREA_NAME)+"</td>";
 					str+="<td>"+isNull(data[i].UNIT_NAME)+"</td>";
 					str+="<td>"+isNull(data[i].USER_NAME)+"</td>";
+					str+="<td>"+isNull(data[i].UNIT_ALLJF)+"</td>";
+					str+="<td>"+isNull(data[i].UNIT_SL_ALLJF)+"</td>";
+					str+="<td>"+isNull(data[i].WX_UNIT_CRE)+"</td>";
 					str+="<td>"+isNull(data[i].ALL_JF)+"</td>";
 					str+="<td>"+isNull(data[i].ALL_JF_MONEY)+"</td>";
 					str+="<td>"+isNull(data[i].PRO_RANK)+"</td>";
