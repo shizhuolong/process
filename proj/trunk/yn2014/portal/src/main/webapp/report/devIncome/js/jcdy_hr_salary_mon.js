@@ -513,7 +513,7 @@ function search(pageNumber) {
 				sql+="          round(avg(nvl(sl, 0)), 2) sl,            ";
 				sql+="          round(avg(nvl(wx, 0)), 2) wx,            ";
 				sql+="          round(avg(nvl(xssl, 0)), 2) xssl,        ";
-				sql+="          round(avg(nvl(xsslm, 0)), 2)*3 xsslm       ";
+				sql+="          round(avg(nvl(xsslm, 0)), 2)*"+radio+" xsslm       ";
 				sql+="     from (select t.hr_id,                                        ";
 				sql+="                  max(t.name) name,                                         ";
 				sql+="                  sum(NVL(tr.UNIT_ALLJF, 0)) xs,                       ";
