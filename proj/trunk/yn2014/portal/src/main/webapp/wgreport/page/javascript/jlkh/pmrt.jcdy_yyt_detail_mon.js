@@ -136,7 +136,7 @@ function search(pageNumber) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var sql= "SELECT * FROM  PMRT.TB_MRT_JCDY_YYT_DETAIL_MON  where 1=1 ";
+	var sql= "SELECT "+field.join(",")+" FROM  PMRT.TB_MRT_JCDY_YYT_DETAIL_MON  where 1=1 ";
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var userNumber=$.trim($("#userNumber").val());
