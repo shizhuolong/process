@@ -6,8 +6,10 @@
         <title>用户管理</title>
         <%@include file="../../include/common.jsp" %>
 	<script type="text/javascript" src="js/user.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 </head>
 <body>
+		<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
         <div id='form-div' style="width:100%; height:100%;">
         </div>
 </body>
