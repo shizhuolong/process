@@ -891,7 +891,138 @@ ModifyModel = function() {
         }
     };
 } ();
-
+//用户导出单独处理
+function exportUser(){
+	
+	var orgId=GridBaseModel.orgId;
+	var search=subordinate;
+	var userName='';
+	var realName='';
+	var w=GridBaseModel.propertyCriteria;
+	//alert(search);
+	if(w!=''){
+		var w=w.split(",");
+		for(var i=0;i<w.length;i++){
+			if(w[i].substring(0,"username:eq:".length)=="username:eq:"){
+				userName=w[i].substring("username:eq:".length);
+			}
+			if(w[i].substring(0,"realName:like:".length)=="realName:like:"){
+				realName=w[i].substring("realName:like:".length);
+			}
+		}
+	}
+	
+	var header=[["组织架构","用户名","姓名","密码",
+	             "备注","用户拥有的角色列表","用户拥有的用户组列表","用户拥有的岗位列表",
+	             "账号过期","账户锁定","信用过期","账户可用"
+	             ,"联系电话","邮箱","数据所有者名称","编号",
+	             "创建时间","上一次更新时间","更新次数"]];
+	var fileName="用户信息";
+	var sql="";
+	sql+=" SELECT o.orgname,                                                  ";
+	sql+="        u.username,                                                 ";
+	sql+="        u.realname,                                                 ";
+	sql+="        u.password,                                                 ";
+	sql+="        u.des,                                                      ";
+	sql+="        r.rolename rolelist,                  ";
+	sql+="        '' grouplist,                                               ";
+	sql+="        '' postlist,                                                ";
+	sql+="        case u.accountexpired                                       ";
+	sql+="          when 0 then                                               ";
+	sql+="           'N'                                                      ";
+	sql+="          else                                                      ";
+	sql+="           'Y'                                                      ";
+	sql+="        end accountexpired,                                         ";
+	sql+="        case u.accountlocked                                        ";
+	sql+="          when 0 then                                               ";
+	sql+="           'N'                                                      ";
+	sql+="          else                                                      ";
+	sql+="           'Y'                                                      ";
+	sql+="        end accountlocked,                                          ";
+	sql+="        case u.credentialsexpired                                   ";
+	sql+="          when 0 then                                               ";
+	sql+="           'N'                                                      ";
+	sql+="          else                                                      ";
+	sql+="           'Y'                                                      ";
+	sql+="        end credentialsexpired,                                     ";
+	sql+="        case u.enabled                                              ";
+	sql+="          when 0 then                                               ";
+	sql+="           'N'                                                      ";
+	sql+="          else                                                      ";
+	sql+="           'Y'                                                      ";
+	sql+="        end enabled,                                                ";
+	sql+="        u.phone,                                                    ";
+	sql+="        u.email,                                                    ";
+	sql+="        u1.username username1,                                                ";
+	sql+="        u.id,                                                       ";
+	sql+="        u.createtime,                                               ";
+	sql+="        u.updatetime,                                               ";
+	sql+="        u.version                                                   ";
+	sql+="   FROM portal.apdp_User u                                          ";
+	sql+="   left join portal.apdp_org o                                      ";
+	sql+="   on u.org_id=o.id                                                 ";
+	sql+="   left join portal.apdp_User u1                                    ";
+	sql+="   on u1.id=u.id                                                    ";
+	sql+="   left join (                                                      ";
+	sql+="        select max(ur.userid) userid                                ";
+	sql+="    ,PODS.my_raoth_concat(PODS.raothObj(r.rolename, ',')) rolename                             ";
+	sql+="        from                                                        ";
+	sql+="              portal.apdp_user_role ur,                             ";
+	sql+="              portal.apdp_role r                                    ";
+	sql+="       where ur.roleid=r.id                                         ";
+	sql+="       group by ur.userid                                           ";
+	sql+="   ) r on                                                           ";
+	sql+="   r.userid=u.id                                                    ";
+	sql+="  where 1=1 ";
+	if(search==true||search=='true'){
+		sql+="   and u.org_id in (select t.id                                     ";
+		sql+="                       from portal.apdp_org t                       ";
+		sql+="                      start with t.id = '"+orgId+"'                         ";
+		sql+="                     connect by prior t.id = t.parent_id)           ";
+	}else{
+		sql+="   and u.org_id ='"+orgId+"'  ";
+	}
+	if(userName!=''){
+		sql+="    and u.username = '"+userName+"'                             ";
+	}
+	if(realName!=''){
+		sql+="    and u.realname like '"+realName+"'                          ";
+	}
+	downloadExcel(sql,header,fileName);
+}
+//获取数据
+function downloadExcel(sql,header,fileName){
+	var headerStr=[];
+	for(var i=0;i<header.length;i++){
+		headerStr[i]=header[i].join(",");
+	}
+	headerStr=headerStr.join("||");
+	
+	var form = $("<form>");  
+	form.attr('style','display:none');  
+	form.attr('target','');  
+	form.attr('method','post');  
+	form.attr('action',$("#ctx").val()+"/devIncome/devIncome_export.action?only="+(new Date()).valueOf());  
+	  
+	var fileNameInput = $('<input>');  
+	fileNameInput.attr('type','hidden');  
+	fileNameInput.attr('name','fileName');  
+	fileNameInput.attr('value',fileName); 
+	var tableTitleInput = $('<input>');
+	tableTitleInput.attr('type','hidden');  
+	tableTitleInput.attr('name','tableTitle');  
+	tableTitleInput.attr('value',headerStr); 
+	var sqlInput = $('<input>');
+	sqlInput.attr('type','hidden');  
+	sqlInput.attr('name','sql');  
+	sqlInput.attr('value',sql); 
+	$('body').append(form);  
+	form.append(fileNameInput);
+	form.append(tableTitleInput);
+	form.append(sqlInput);   
+	form.submit();  
+	form.remove();  
+}
 //表格
 GridModel = function() {
     return {
@@ -942,7 +1073,7 @@ GridModel = function() {
             
             var commands=["create","updatePart","search","export","reset"];
             var tips=['增加(C)','修改(U)','高级搜索(S)','导出(E)',"重置密码(Z)"];
-            var callbacks=[GridBaseModel.create,GridBaseModel.modify,GridBaseModel.advancedsearch,GridBaseModel.exportData,GridModel.reset];
+            var callbacks=[GridBaseModel.create,GridBaseModel.modify,GridBaseModel.advancedsearch,/*GridBaseModel.exportData*/exportUser,GridModel.reset];
         
             var grid=GridBaseModel.getGrid(contextPath, namespace, action, pageSize, this.getFields(), this.getColumns(), commands,tips,callbacks,securityNamespace);   
      
