@@ -105,7 +105,7 @@
     		font-weight: normal;
 		}
                                 	</style>
-                                    <span><i class="menu-toDo"></i>薪酬信息(<%=xctime %>)</span>
+                                    <span id="xcTitle"><i class="menu-toDo"></i>薪酬信息(<%=xctime %>)</span>
                                    	<a href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
                                     <a href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
                                     <a href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
