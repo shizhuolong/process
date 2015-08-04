@@ -70,11 +70,13 @@ function showJfxc(){
 	var hrId=$("#hrId").val();
 	
 	var tsql="select max(t.deal_date) deal_date from PODS.TB_ODS_JCDY_HR_SALARY t where t.hr_no='"+hrId+"'";
-	var td=query(tsql);
-	if(td&&td.length>0){
-		time=td[0]["DEAL_DATE"];
-		$("#xcTitle").html('<i class="menu-toDo"></i>薪酬信息('+time+')');
-		$("#xctime").val(time);
+	if(hrId&&hrId!='null'){
+		var td=query(tsql);
+		if(td&&td.length>0&&td[0]){
+			time=td[0]["DEAL_DATE"];
+			$("#xcTitle").html('<i class="menu-toDo"></i>薪酬信息('+time+')');
+			$("#xctime").val(time);
+		}
 	}
 	
 	var uId='';
