@@ -137,7 +137,7 @@
 							<div class="main-block">
 								<div id="chose-place">
 									<div class="easyui-tabs"
-										style="width: 100%; height: 500px; margin-top: 0px; position: relative;">
+										style="height: 500px; margin-top: 0px; position: relative;">
 										<div title="渠道分布" style="padding: 0;">
 											<!--  ul id="chose-place-count" class="bold clearfix">
 												<li>渠道分布<i class="fa830b"></i></li>
@@ -171,7 +171,7 @@
 												<div id="jzfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;"></div>
 											</div>
 										</div>
-										
+										<a id="arrow-down" class="arrow-down-map" style="display:block;"></a>
 										<!-- div title="薪酬信息" style="padding: 0;">
 											<div class="default-dt dt-autoH" style="margin-top:15px;">
 												<div id="xcfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;">
@@ -365,6 +365,13 @@
                          height: (c.height() + newHeight - oldHeight)
                      });
                  }
+                 $("#arrow-down").toggle(function(){
+                	 $(this).addClass("arrow-up-map").removeClass("arrow-down-map");
+         			 $(this).parent().animate({height:"35px"});
+                 },function(){
+                	 $(this).addClass("arrow-down-map").removeClass("arrow-up-map");
+                	 $(this).parent().animate({height:"500px"});
+                 });
              </script>
          </div>
     </div>
