@@ -51,13 +51,14 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
+	var month=$("#month").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 //条件
 	var sql = " from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE= '"+time+"'";
+	if(month!=''){
+		sql+=" and t.DEAL_DATE= '"+month+"'";
 	}
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
@@ -90,7 +91,7 @@ function search(pageNumber) {
 					tsql+=" select tt.hr_no                                                      ";
 					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                        ";
 					tsql+=" where tt.unit_id = '"+code+"'                                            ";
-					tsql+="   and tt.deal_date = '"+time+"'                                      ";
+					tsql+="   and tt.deal_date = '"+month+"'                                      ";
 					tsql+=" union                                                                ";
 					tsql+=" select '"+hrId+"' from dual  ";
 				}else if(v==6){
@@ -130,10 +131,7 @@ function search(pageNumber) {
 			sql+=" and t.HR_ID='"+hrId+"'";
 		}
 	}
-	
-	
-	
-	var csql = sql;
+ 	var csql = sql;
 	var cdata = query("select count(*) total" + csql);
 	var total = 0;
 	if(cdata && cdata.length) {
@@ -148,7 +146,7 @@ function search(pageNumber) {
 	}
 
 	sql = "select * " + sql;
-
+	
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);

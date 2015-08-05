@@ -12,6 +12,7 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
 	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	String month= request.getParameter("cxmonth");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -39,8 +40,8 @@
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 	<input type="hidden" id="time" value="<%=time%>">
+	<input type="hidden" id="month" value="<%=month%>">
 		<div id="lchcontent" style=""></div>
 		<div class="page_count">
 			<div class="page_count_left">
