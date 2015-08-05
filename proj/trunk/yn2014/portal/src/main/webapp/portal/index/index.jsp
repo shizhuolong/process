@@ -133,7 +133,7 @@
                                     <a style="color:#fc9215;" href="javascript:void(0);" id="fact_total">实发合计:0</a>
                                 </div>
                                  <div>
-                                    <span id="xcTitle"><i class="menu-toDo"></i>我的积分(<%=xcday %>)</span>
+                                    <span id="xcTitle"><i class="menu-toDo"></i>我的积分(<%=time %>)</span>
                                    	<a style="color:#fc9215;" href="javascript:void(0);" id="unit_alljf">区域调节销售积分:0 </a>
                                     <a style="color:#fc9215;" href="javascript:void(0);" id="unit_sl_alljf">区域调节受理积分: 0</a>
                                     <a style="color:#fc9215;" href="javascript:void(0);" id="wx_unit_cre">维系积分: 0</a>
