@@ -78,9 +78,10 @@ function isNull(obj){
 }
 
 function showWdjf(){
+	var startDate=$("#time").val();
 	var deal_date=$("#xcday").val();
 	var hrId=$("#hrId").val();
-	var wdjf=query("SELECT T1.UNIT_ALLJF, T1.UNIT_SL_ALLJF, T1.WX_UNIT_CRE, T1.ALL_JF FROM PMRT.TB_JCDY_JF_ALL_DAY T1 WHERE T1.DEAL_DATE='"+deal_date+"' AND T1.HR_NO='"+hrId+"'");
+	var wdjf=query("SELECT SUM(NVL(T1.UNIT_ALLJF,0)) UNIT_ALLJF, SUM(NVL(T1.UNIT_SL_ALLJF,0)) UNIT_SL_ALLJF, SUM(NVL(T1.WX_UNIT_CRE,0)) WX_UNIT_CRE, SUM(NVL(T1.ALL_JF,0)) ALL_JF FROM PMRT.TB_JCDY_JF_ALL_DAY T1 WHERE T1.DEAL_DATE BETWEEN '"+startDate+"01' AND '"+deal_date+"' AND T1.HR_NO='"+hrId+"'");
 	if(wdjf&&wdjf.length>0&&wdjf[0]){
 		$("#unit_alljf").text("区域调节销售积分: "+wdjf[0].UNIT_ALLJF);
 		$("#unit_sl_alljf").text("区域调节受理积分: "+wdjf[0].UNIT_SL_ALLJF);
