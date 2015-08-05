@@ -34,6 +34,17 @@ $(function(){
 	showJfph();
 	//积分薪酬
 	showJfxc();
+	//我的积分
+	showWdjf();
+	
+	//处理薪酬信息滚动条问题
+	$("#topTabs").tabs({
+		onSelect:function(title){
+			if(title=='薪酬信息'){
+				$("#xcfbWin").attr("src",$("#xcfbWin").attr("src"));
+			}
+		}
+	});
 });
 //积分薪酬
 //获取数据
@@ -65,6 +76,18 @@ function isNull(obj){
 	}
 	return obj;
 }
+
+function showWdjf(){
+	var deal_date=$("#xcday").val();
+	var hrId=$("#hrId").val();
+	var wdjf=query("SELECT T1.UNIT_ALLJF, T1.UNIT_SL_ALLJF, T1.WX_UNIT_CRE, T1.ALL_JF FROM PMRT.TB_JCDY_JF_ALL_DAY T1 WHERE T1.DEAL_DATE='"+deal_date+"' AND T1.HR_NO='"+hrId+"'");
+	if(wdjf&&wdjf.length>0&&wdjf[0]){
+		$("#unit_alljf").text("区域调节销售积分: "+wdjf[0].UNIT_ALLJF);
+		$("#unit_sl_alljf").text("区域调节受理积分: "+wdjf[0].UNIT_SL_ALLJF);
+		$("#wx_unit_cre").text("维系积分: "+wdjf[0].WX_UNIT_CRE);
+		$("#all_jf").text("总积分: "+wdjf[0].ALL_JF);
+	}
+}
 function showJfxc(){
 	var time=$("#xctime").val();
 	var hrId=$("#hrId").val();
@@ -74,7 +97,7 @@ function showJfxc(){
 		var td=query(tsql);
 		if(td&&td.length>0&&td[0]){
 			time=td[0]["DEAL_DATE"];
-			$("#xcTitle").html('<i class="menu-toDo"></i>薪酬信息('+time+')');
+			$("#xcTitle").html('<i class="menu-toDo"></i>我的薪酬('+time+')');
 			$("#xctime").val(time);
 		}
 	}
@@ -86,6 +109,10 @@ function showJfxc(){
 	}
 	if(hrId!=''&&hrId&&hrId!=null&&hrId!='null'){
 		$("#xc_hrNo").text("HR编码: "+hrId);
+			var jfd=query("SELECT FACT_TOTAL FROM PODS.TB_ODS_JCDY_HR_SALARY WHERE DEAL_DATE ="+time+ "AND HR_NO='"+hrId+"'");
+		if(jfd&&jfd.length>0&&jfd[0]){
+			$("#fact_total").text("实发合计: "+jfd[0].FACT_TOTAL);
+		}
 	}
 	sql+=" and t.HR_ID='"+hrId+"'";
 	$.ajax({
@@ -127,13 +154,13 @@ function showJfxc(){
 			   							 +"<tr><th style='width:100px;text-align:left;'>合计</th><td style='width:100px;text-align:center;'>"+(parseFloat(isNull(d[0]["GENERAL_SUBS"]?d[0]["GENERAL_SUBS"]:0))+parseFloat(isNull(d[0]["POST_SALARY"]?d[0]["POST_SALARY"]:0)))+"</td></tr>"
 			   							+"</thead></table></div>";
 			   						art.dialog({
-			   						    title: '固定薪酬详细信息',
+			   						    title: '我的薪酬详细信息',
 			   						    content: h,
 			   						    padding: 0,
 			   						    lock:true
 			   						});
 			   					}else{
-			   						alert("获取固定薪酬详细信息失败");
+			   						alert("获取我的薪酬详细信息失败");
 			   					}
 	   					   	}
 	   					});
@@ -1734,133 +1761,71 @@ function showXsph() {
 }
 //积分排名
 function showJfph() {
-	$.ajax({
-		url:$("#ctx").val()+"/index/index_listJfph.action",
-		type:'POST',
-		dataType:'json',
-		async:true,
-		success:function(data){
-			var str = "";
-			if(data==null || data.length==0) {
-				str+= "<tr>";
-				str+= "<td colspan='8' align='center'>暂无数据</td>";
-				str+= "</tr>";
-			} else {
-				for(var i=0; i<data.length; i++) {
-					str+= "<tr USER_NAME='"+isNull(data[i].USER_NAME)+"' HR_NO='"+isNull(data[i].HR_NO)+"'>";
-					str+="<td>"+isNull(data[i].AREA_NAME)+"</td>";
-					str+="<td>"+isNull(data[i].UNIT_NAME)+"</td>";
-					str+="<td>"+isNull(data[i].USER_NAME)+"</td>";
-					str+="<td>"+isNull(data[i].UNIT_ALLJF)+"</td>";
-					str+="<td>"+isNull(data[i].UNIT_SL_ALLJF)+"</td>";
-					str+="<td>"+isNull(data[i].WX_UNIT_CRE)+"</td>";
-					str+="<td>"+isNull(data[i].ALL_JF)+"</td>";
-					str+="<td>"+isNull(data[i].ALL_JF_MONEY)+"</td>";
-					str+="<td>"+isNull(data[i].PRO_RANK)+"</td>";
-					str+="<td>"+isNull(data[i].GROUP_RANK)+"</td>";
-					str+="<td>"+isNull(data[i].UNIT_RANK)+"</td>";
-					str+= "</tr>";
-				}
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	var hrId=$("#hrId").val();
+	
+	if(orgLevel==1 || orgLevel==2){
+		
+		var title=[["地市","营服中心","销售积分","受理积分","维系积分","总积分","总积分金额","省排名","地市排名"]];
+		var field=["AREA_NAME","UNIT_NAME","UNIT_ALLJF","UNIT_SL_ALLJF","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY","PRO_RANK","GROUP_RANK"];
+		$("#jfphTable tbody").empty();
+		report = new LchReport({
+			title : title,
+			field : field,
+			rowParams : [],//第一个为rowId
+			content : "jfphTable",
+			orderCallBack : function(index, type) {
+				/*orderBy = " order by " + field[index] + " " + type + " ";*/
+				search(0);
+			},
+			getSubRowsCallBack : function($tr) {
+				return {
+					data : nowData,
+					extra : {}
+				};
 			}
-			$("#jfphTable tbody").empty().append(str);
+		});
+		search(0);
+	}else{
+		$.ajax({
+			url:$("#ctx").val()+"/index/index_listJfph.action",
+			type:'POST',
+			dataType:'json',
+			async:true,
+			success:function(data){
+				var str = "";
+				if(data==null || data.length==0) {
+					str+= "<tr>";
+					str+= "<td colspan='11' align='center'>暂无数据</td>";
+					str+= "</tr>";
+				} else {
+					for(var i=0; i<data.length; i++) {
+						str+= "<tr USER_NAME='"+isNull(data[i].USER_NAME)+"' HR_NO='"+isNull(data[i].HR_NO)+"'>";
+						str+="<td>"+isNull(data[i].AREA_NAME)+"</td>";
+						str+="<td>"+isNull(data[i].UNIT_NAME)+"</td>";
+						str+="<td>"+isNull(data[i].USER_NAME)+"</td>";
+						str+="<td>"+isNull(data[i].UNIT_ALLJF)+"</td>";
+						str+="<td>"+isNull(data[i].UNIT_SL_ALLJF)+"</td>";
+						str+="<td>"+isNull(data[i].WX_UNIT_CRE)+"</td>";
+						str+="<td>"+isNull(data[i].ALL_JF)+"</td>";
+						str+="<td>"+isNull(data[i].ALL_JF_MONEY)+"</td>";
+						str+="<td>"+isNull(data[i].PRO_RANK)+"</td>";
+						str+="<td>"+isNull(data[i].GROUP_RANK)+"</td>";
+						str+="<td>"+isNull(data[i].UNIT_RANK)+"</td>";
+						str+= "</tr>";
+					}
+				}
+				$("#jfphTable tbody").empty().append(str);
+	}
+	
 			
-			//
-			/*$("#xsphTable tbody").find("TR").each(function(){
-				var $tr=$(this);
-				var $2g=$tr.find("TD:eq(3)");
-				var $3g=$tr.find("TD:eq(4)");
-				var $4g=$tr.find("TD:eq(5)");
-				var $swk=$tr.find("TD:eq(6)");
-				
-				if(!$2g.text()||$.trim($2g.text())==''||$.trim($2g.text())=='0'){
-					
-				}else{
-					$2g.html("<a href='#' >"+$2g.text()+"</a>");
-					$2g.click(function(){
-						var hrNo=$tr.attr("HR_NO");
-						var userName=$tr.attr("USER_NAME");
-						var time=$("#time").val();
-						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='2GDK','2GHY'";
-						//window.parent.openWindow(userName+"-2G发展详细",null,url);
-						art.dialog.open(url,{
-							id:'xsphDetailDialog',
-							title:userName+"-2G发展详细",
-							width:'530px',
-							height:'320px',
-							lock:true,
-							resize:false
-						});
-					});
-					
-				}
-				if(!$3g.text()||$.trim($3g.text())==''||$.trim($3g.text())=='0'){
-					
-				}else{
-					$3g.html("<a href='#' >"+$3g.text()+"</a>");
-					$3g.click(function(){
-						var hrNo=$tr.attr("HR_NO");
-						var userName=$tr.attr("USER_NAME");
-						var time=$("#time").val();
-						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='3GDK','3GHY'";
-						//window.parent.openWindow(userName+"-3G发展详细",null,url);
-						art.dialog.open(url,{
-							id:'xsphDetailDialog',
-							title:userName+"-3G发展详细",
-							width:'530px',
-							height:'320px',
-							lock:true,
-							resize:false
-						});
-					});
-					
-				}
-				if(!$4g.text()||$.trim($4g.text())==''||$.trim($4g.text())=='0'){
-					
-				}else{
-					$4g.html("<a href='#' >"+$4g.text()+"</a>");
-					$4g.click(function(){
-						var hrNo=$tr.attr("HR_NO");
-						var userName=$tr.attr("USER_NAME");
-						var time=$("#time").val();
-						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='4GDK','4GHY'";
-						//window.parent.openWindow(userName+"-4G发展详细",null,url);
-						art.dialog.open(url,{
-							id:'xsphDetailDialog',
-							title:userName+"-4G发展详细",
-							width:'530px',
-							height:'320px',
-							lock:true,
-							resize:false
-						});
-					});
-					
-				}
-				
-				if(!$swk.text()||$.trim($swk.text())==''||$.trim($swk.text())=='0'){
-					
-				}else{
-					$swk.html("<a href='#' >"+$swk.text()+"</a>");
-					$swk.click(function(){
-						var hrNo=$tr.attr("HR_NO");
-						var userName=$tr.attr("USER_NAME");
-						var time=$("#time").val();
-						var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list_swk.jsp?hrNo="+hrNo+"&time="+time+"&itemCode=";
-						//window.parent.openWindow(userName+"-上网卡发展详细",null,url);
-						art.dialog.open(url,{
-							id:'xsphDetailDialog',
-							title:userName+"-上网卡发展详细",
-							width:'530px',
-							height:'320px',
-							lock:true,
-							resize:false
-						});
-					});
-					
-				}
-			});*/
-		}
+		
 	});
 }
+}
+
+
 function isNull(obj){
 	if(obj==0||obj=='0'){
 		return 0;
@@ -1869,4 +1834,92 @@ function isNull(obj){
 		return "";
 	}
 	return obj;
+}
+
+
+function roundN(number,fractionDigits){   
+    with(Math){   
+        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
+    }   
+}  
+
+
+
+var pageSize =12;
+//分页
+function initPagination(totalCount) {
+	$("#totalCount").html(totalCount);
+	$("#pagination").pagination(totalCount, {
+		callback : search,
+		items_per_page : pageSize,
+		link_to : "###",
+		prev_text : '上页', //上一页按钮里text  
+		next_text : '下页', //下一页按钮里text  
+		num_display_entries : 5,
+		num_edge_entries : 2
+	});
+}
+
+
+
+function search(pageNumber) {
+	pageNumber = pageNumber + 1;
+	var start = pageSize * (pageNumber - 1);
+	var end = pageSize * pageNumber;
+	
+	var time=$("#curMonthJfpm").val();
+	/*var regionName=$("#regionName").val();
+	var unitName=$("#unitName").val();
+	var userName=$("#userName").val();*/
+//条件
+	var sql = " from PMRT.TB_MRT_JCDY_UNITJF_RANK_MON t where 1=1 ";
+	if(time!=''){
+		sql+=" and t.DEAL_DATE= '"+time+"' ";
+	}
+	
+//权限
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	if(orgLevel==1){
+		sql+=" ORDER BY T.GROUP_ID_1";
+	}else if(orgLevel==2){
+		sql+=" and t.GROUP_ID_1="+code+" ORDER BY T.UNIT_ID ";
+	}else{
+		
+	}
+
+	var csql = sql;
+	var cdata = query("select count(*) total" + csql);
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}else{
+		return;
+	}
+
+	/*//排序
+	if (orderBy != '') {
+		sql += orderBy;
+	}*/
+
+	sql = "select * " + sql;
+	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
+			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+	var d = query(sql);
+	if (pageNumber == 1) {
+		initPagination(total);
+	}
+	nowData = d;
+
+	report.showSubRow();
+	///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
+	$(".page_count").width($("#lch_DataHead").width());
+	$("#lch_DataBody").find("TR").each(function(){
+		var area=$(this).find("TD:eq(0)").find("A").text();
+		if(area)
+			$(this).find("TD:eq(0)").empty().text(area);
+	});
 }
