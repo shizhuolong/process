@@ -1,8 +1,8 @@
 ﻿var nowData = [];
-var title=[["HR编码","人员姓名","角色类型","人员薪酬（元）","","","",""],
-           ["","","","固定薪酬","基础KPI绩效","积分提成奖励","专项奖励","合计"]
+var title=[["HR编码","人员姓名","人员薪酬（元）","","","",""],
+           ["","","固定薪酬","基础KPI绩效","积分提成奖励","专项奖励","合计"]
 ];
-var field=["HR_ID","NAME","USER_TYPE","FIXED_SALARY","BASE_SALARY","JF_SALARY","SPECIAL_AWARD","ALL_SALARY"];
+var field=["HR_ID","NAME","FIXED_SALARY","BASE_SALARY","JF_SALARY","SPECIAL_AWARD","ALL_SALARY"];
 var orderBy = '';
 var report = null;
 $(function() {
@@ -57,7 +57,7 @@ function search(pageNumber) {
 //条件
 	var sql = " from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
 	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
+		sql+=" and t.DEAL_DATE= '"+time+"'";
 	}
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
@@ -77,9 +77,7 @@ function search(pageNumber) {
 		
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
-	}else/* if(orgLevel==3)*/{
-		//sql+=" and t.UNIT_ID='"+code+"'";
-	//}else{
+	}else {
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
 		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
 		var rd=query(rsql);
@@ -194,35 +192,6 @@ function search(pageNumber) {
 						 +"<tr><th style='width:100px;text-align:left;'>岗位工资</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["POST_SALARY"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>综合补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["GENERAL_SUBS"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>合计</th><td style='width:100px;text-align:center;'>"+(parseFloat(isNull(d[0]["GENERAL_SUBS"]?d[0]["GENERAL_SUBS"]:0))+parseFloat(isNull(d[0]["POST_SALARY"]?d[0]["POST_SALARY"]:0)))+"</td></tr>"
-							
-						 /* +"<tr><th style='width:100px;text-align:left;'>艰苦地区补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["DIFFICULT_AREAS"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>绩效工资_非经常项目1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MERIT_PAY_1"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>绩效工资_非经常项目2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MERIT_PAY_2"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他奖励_非经常项目1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_PAY_1"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他奖励_非经常项目2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_PAY_2"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>加班工资</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OVERTIME_PAY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>过节费</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["FESTIVITY_PAY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>独生子女费</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["CHINA_ONE_PAY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(WY物业)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_WY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(WC误餐)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_WC"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(JT交通)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_JT"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(TX通信)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_TX"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>低收入补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_DSR"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_4"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER1"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER2"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>应发合计数</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["SALARY_PAY_TOTAL"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>养老保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["PROVIDE_AGE"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>医疗保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["TREATMENT"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>失业保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["UNEMPLOYE"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>住房公积金缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["HOUSING"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>补充养老保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["SUPPLEMENTARY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>个人所得税</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["INCOME_TAX"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他扣款1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_COST_1"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他扣款项</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_COST_1_ITEM"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>应扣合计数</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["DEDUCTED_TOTAL"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>实发数</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["FACT_TOTAL"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>人员类型</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MYUSER_TYPE"])+"</td></tr>"*/
 						+"</thead></table></div>";
 					art.dialog({
 					    title: '固定薪酬详细信息',
@@ -250,39 +219,11 @@ function search(pageNumber) {
 		 
 						+"<tr><th style='width:100px;text-align:left;'>员工工号</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["HR_NO"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>姓名</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["USER_NAME"])+"</td></tr>"
-						// +"<tr><th style='width:100px;text-align:left;'>岗位等级</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["POST_LEVEL"])+"</td></tr>"
-						// +"<tr><th style='width:100px;text-align:left;'>薪档</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["SALARY_LEVEL"])+"</td></tr>"
-						// +"<tr><th style='width:100px;text-align:left;'>岗位工资</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["POST_SALARY"])+"</td></tr>"
-						// +"<tr><th style='width:100px;text-align:left;'>综合补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["GENERAL_SUBS"])+"</td></tr>"
-						// +"<tr><th style='width:100px;text-align:left;'>艰苦地区补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["DIFFICULT_AREAS"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>绩效工资非经常项目1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MERIT_PAY_1"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>绩效工资非经常项目2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MERIT_PAY_2"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>其他奖励1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_PAY_1"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>其他奖励2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_PAY_2"])+"</td></tr>"
 						 +"<tr><th style='width:100px;text-align:left;'>合计</th><td style='width:100px;text-align:center;'>"+(parseFloat(isNull(d[0]["MERIT_PAY_1"]?d[0]["MERIT_PAY_1"]:0))+parseFloat(isNull(d[0]["MERIT_PAY_2"]?d[0]["MERIT_PAY_2"]:0))+parseFloat(isNull(d[0]["OTHER_PAY_1"]?d[0]["OTHER_PAY_1"]:0))+parseFloat(isNull(d[0]["OTHER_PAY_2"]?d[0]["OTHER_PAY_2"]:0)))+"</td></tr>"
-						/* +"<tr><th style='width:100px;text-align:left;'>加班工资</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OVERTIME_PAY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>过节费</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["FESTIVITY_PAY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>独生子女费</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["CHINA_ONE_PAY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(WY物业)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_WY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(WC误餐)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_WC"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(JT交通)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_JT"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>综合补贴(TX通信)</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_TX"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>低收入补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_DSR"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他补贴</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MULTI_4"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER1"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他2</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER2"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>应发合计数</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["SALARY_PAY_TOTAL"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>养老保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["PROVIDE_AGE"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>医疗保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["TREATMENT"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>失业保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["UNEMPLOYE"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>住房公积金缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["HOUSING"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>补充养老保险缴费_个人</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["SUPPLEMENTARY"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>个人所得税</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["INCOME_TAX"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他扣款1</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_COST_1"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>其他扣款项</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["OTHER_COST_1_ITEM"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>应扣合计数</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["DEDUCTED_TOTAL"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>实发数</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["FACT_TOTAL"])+"</td></tr>"
-						 +"<tr><th style='width:100px;text-align:left;'>人员类型</th><td style='width:100px;text-align:center;'>"+isNull(d[0]["MYUSER_TYPE"])+"</td></tr>"*/
 						+"</thead></table></div>";
 					art.dialog({
 					    title: '专项奖励详细信息',
@@ -295,9 +236,6 @@ function search(pageNumber) {
 				}
 			});
 		}
-		/*select HR_ID,KPI_NAME,KPI_WEIGHT,KPI_VALUE from PODS.TB_JCDY_KPI_RULE_MON t 
-		 UNION 
-		 select HR_ID,NULL,NULL, BASE_SALARY from PODS.TB_JCDY_KPI_RESULT_MON t*/
 		//基础KPI绩效
 		var $kpiTd=$(this).find("TD:eq(4)");
 		if(!$kpiTd.text()||$.trim($kpiTd.text())==''||$.trim($kpiTd.text())=='0'){}else{
@@ -634,101 +572,8 @@ function search(pageNumber) {
 		});
 	});
 }
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
+
+
 function isNull(obj){
 	if(obj==0||obj=='0'){
 		return 0;
@@ -743,103 +588,3 @@ function roundN(number,fractionDigits){
         return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
     }   
 }   
-/////////////////////////下载开始/////////////////////////////////////////////
-function downsAll(){
-	var sql="";
-	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
-	var userName=$("#userName").val();
-	//条件
-	var sql = " from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
-	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
-	}
-	if(userName!=''){
-		sql+=" and t.NAME like '%"+userName+"%'";
-	}
-	
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else/* if(orgLevel==3)*/{
-		//sql+=" and t.UNIT_ID='"+code+"'";
-	//}else{
-		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
-		var rd=query(rsql);
-		if(rd&&rd.length){
-			var hrsql="";
-			for(var i=0;i<rd.length;i++){
-				var v=rd[i]["USER_CODE"];
-				var tsql="";
-				if(v==1){
-					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                        ";
-					tsql+=" where tt.unit_id = '"+code+"'                                            ";
-					tsql+="   and tt.deal_date = '"+time+"'                                      ";
-					tsql+=" union                                                                ";
-					tsql+=" select '"+hrId+"' from dual  ";
-				}else if(v==6){
-					tsql+=" SELECT distinct hr_id                                                ";
-					tsql+="   FROM portal.tab_portal_mag_person                                  ";
-					tsql+=" where hq_chan_code in (                                              ";
-					tsql+="   SELECT distinct hq_chan_code                                       ";
-					tsql+="     FROM portal.tab_portal_mag_person                                ";
-					tsql+="   where hr_id = '"+hrId+"'                                           ";
-					tsql+="     and hq_chan_code is not null                                     ";
-					tsql+=" )                                                                    ";      
-				}else if(v==7){
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a                                ";
-					tsql+=" where a.f_hr_id in (                                                 ";
-					tsql+="       select hr_id                                                   ";
-					tsql+="         from portal.tab_portal_grp_person t                          ";
-					tsql+="       where t.user_type = 1                                          ";
-					tsql+=" )                                                                    ";
-					tsql+=" and a.f_hr_id='"+hrId+"'                                             ";
-					tsql+=" union                                                                ";
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"'       ";
-				}
-				if(tsql!=""&&hrsql!=""){
-					hrsql+=" union "+tsql;
-				}else{
-					hrsql+=tsql;
-				}
-				
-			}
-			if(hrsql!=""){
-				sql+=" and t.HR_ID in("+hrsql+")";
-			}else{
-				sql+=" and t.HR_ID='"+hrId+"'";
-			}
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-
-	sql = "select DEAL_DATE,GROUP_ID_1_NAME,UNIT_NAME,HR_ID,NAME,USER_TYPE,FIXED_SALARY,BASE_SALARY,JF_SALARY,SPECIAL_AWARD,ALL_SALARY " + sql;
-	
-	var title=[["账期","地市","基层单元","HR编码","人员姓名","角色类型","人员薪酬（元）","","","",""],
-	           ["","","","","","","固定薪酬","基础KPI绩效","积分提成奖励","专项奖励","合计"]
-	];
-	showtext = '人员薪酬-'+time;
-	downloadExcel(sql,title,showtext);
-}
-/////////////////////////下载结束/////////////////////////////////////////////
