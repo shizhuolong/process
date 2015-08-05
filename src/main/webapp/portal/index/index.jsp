@@ -9,6 +9,7 @@
 	Calendar c=Calendar.getInstance();
 	c.add(Calendar.DATE, -1);
 	String curMonth = new SimpleDateFormat("yyyy年MM月").format(c.getTime());
+	String curMonthJfpm = new SimpleDateFormat("yyyyMM").format(c.getTime());
 	Calendar ca = Calendar.getInstance();
 	ca.add(Calendar.DATE, -1);
 	String lastday = new SimpleDateFormat( "yyyy年MM月dd日").format(ca.getTime());
@@ -26,8 +27,13 @@
 	caxc.add(Calendar.MONTH,-1);
 	String xctime=new SimpleDateFormat("yyyyMM").format(caxc.getTime());
 	
+	Calendar cday = Calendar.getInstance();
+	cday.add(Calendar.DATE,-1);
+	String xcday=new SimpleDateFormat("yyyyMMdd").format(cday.getTime());
+	
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
+	String org_level=org.getOrgLevel();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -47,10 +53,16 @@
 <%-- <script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/echarts/build/dist/echarts-all.js"></script> --%>
 <script src="<%=request.getContextPath()%>/portal/index/echarts/build/dist/echarts.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=LoQz3WDvhfXEVMZ53qowzIQP"></script>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/index.js"></script>
+
+<script ype="text/javascript">
+	<%-- var state = "<%=state%>";
+	var unit_id ="<%=unit_id%>"; --%>
+	var org_level="<%=org_level%>";
+</script>
 </head>
 <body>
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -61,6 +73,8 @@
 <input type="hidden" id="time" value="<%=time%>">
 <input type="hidden" id="xctime" value="<%=xctime%>">
 <input type="hidden" id="hrId" value="<%=user.getHrId()%>">
+<input type="hidden" id="xcday" value="<%=xcday%>">
+<input type="hidden" id="curMonthJfpm" value="<%=curMonthJfpm%>">
 <div>
  	<div id="container">
          <div id="content" style="width:99%;">
@@ -104,14 +118,26 @@
     		font-family: "微软雅黑",Arial,"Simsun",sans-serif,SimSun,"宋体",Heiti,"黑体";
     		font-weight: normal;
 		}
+		.myClass{
+			color:#fc9215;
+		}
                                 	</style>
-                                    <span id="xcTitle"><i class="menu-toDo"></i>薪酬信息(<%=xctime %>)</span>
-                                   	<a href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
-                                    <a href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
-                                    <a href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
-                                    <a href="javascript:void(0);" id="xc_jftc">提成奖励: 0</a>
-                                    <a href="javascript:void(0);" id="xc_zxjl">专项奖励: 0</a>
-                                    <a href="javascript:void(0);" id="xc_sum">合计:0</a>
+                                
+                                    <span id="xcTitle"><i class="menu-toDo"></i>我的薪酬(<%=xctime %>)</span>
+                                   	<a style="color:#fc9215;" href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_jftc">提成奖励: 0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_zxjl">专项奖励: 0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_sum">合计:0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="fact_total">实发合计:0</a>
+                                </div>
+                                 <div>
+                                    <span id="xcTitle"><i class="menu-toDo"></i>我的积分(<%=xcday %>)</span>
+                                   	<a style="color:#fc9215;" href="javascript:void(0);" id="unit_alljf">区域调节销售积分:0 </a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="unit_sl_alljf">区域调节受理积分: 0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="wx_unit_cre">维系积分: 0</a>
+                                    <a style="color:#fc9215;" href="javascript:void(0);" id="all_jf">总积分: 0</a>
                                 </div>
                                 <div>
                                     <span><i class="menu-toDo"></i>待办工作</span>
@@ -136,7 +162,7 @@
                  	 <div id="main">
 							<div class="main-block">
 								<div id="chose-place">
-									<div class="easyui-tabs"
+									<div id="topTabs" class="easyui-tabs"
 										style="height: 500px; margin-top: 0px; position: relative;">
 										<div title="渠道分布" style="padding: 0;">
 											<!--  ul id="chose-place-count" class="bold clearfix">
@@ -172,13 +198,17 @@
 											</div>
 										</div>
 										<a id="arrow-down" class="arrow-down-map" style="display:block;"></a>
-										<!-- div title="薪酬信息" style="padding: 0;">
+										 <div title="薪酬信息" style="padding: 0;">
 											<div class="default-dt dt-autoH" style="margin-top:15px;">
 												<div id="xcfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;">
+												<% if(org_level.equals("1") || org_level.equals("2")){ %>
+				                             		<iframe name="xcfbWin" id="xcfbWin" scrolling="auto" frameborder="0" width="100%" height="100%" src="<%=request.getContextPath() %>/report/devIncome/jsp/tb_mrt_jcdy_hr_salary_mon.jsp"></iframe>
+					                			<% }else{%>
 				                             		<iframe name="xcfbWin" id="xcfbWin" scrolling="auto" frameborder="0" width="100%" height="100%" src="<%=request.getContextPath() %>/report/devIncome/jsp/jcdy_hr_salary_mon_index.jsp"></iframe>
+					                			<% }%>
 				                             	</div>
 											</div>
-										</div-->
+										</div>
 									</div>
 								</div>
 							</div>
