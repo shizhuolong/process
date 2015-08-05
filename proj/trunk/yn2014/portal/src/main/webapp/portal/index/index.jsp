@@ -33,7 +33,6 @@
 	
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
-	String org_level=org.getOrgLevel();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -58,11 +57,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/index.js"></script>
 
-<script ype="text/javascript">
-	<%-- var state = "<%=state%>";
-	var unit_id ="<%=unit_id%>"; --%>
-	var org_level="<%=org_level%>";
-</script>
 </head>
 <body>
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -198,14 +192,10 @@
 											</div>
 										</div>
 										<a id="arrow-down" class="arrow-down-map" style="display:block;"></a>
-										 <div title="薪酬信息" style="padding: 0;">
+										 <div title="团队薪酬" style="padding: 0;">
 											<div class="default-dt dt-autoH" style="margin-top:15px;">
 												<div id="xcfb" class="myItem" style="height: 500px;width: 100%;position:absolute;z-index:8888;">
-												<% if(org_level.equals("1") || org_level.equals("2")){ %>
-				                             		<iframe name="xcfbWin" id="xcfbWin" scrolling="auto" frameborder="0" width="100%" height="100%" src="<%=request.getContextPath() %>/report/devIncome/jsp/tb_mrt_jcdy_hr_salary_mon.jsp"></iframe>
-					                			<% }else{%>
-				                             		<iframe name="xcfbWin" id="xcfbWin" scrolling="auto" frameborder="0" width="100%" height="100%" src="<%=request.getContextPath() %>/report/devIncome/jsp/jcdy_hr_salary_mon_index.jsp"></iframe>
-					                			<% }%>
+				                             		<iframe name="xcfbWin" id="xcfbWin" scrolling="auto" frameborder="0" width="100%" height="100%" src=""></iframe>
 				                             	</div>
 											</div>
 										</div>

@@ -40,7 +40,7 @@ $(function(){
 	//处理薪酬信息滚动条问题
 	$("#topTabs").tabs({
 		onSelect:function(title){
-			if(title=='薪酬信息'){
+			if(title=='团队薪酬'){
 				$("#xcfbWin").attr("src",$("#xcfbWin").attr("src"));
 			}
 		}
@@ -102,6 +102,13 @@ function showJfxc(){
 			$("#xctime").val(time);
 		}
 	}
+	//动态处理公众薪酬
+	var orgLevel=$("#orgLevel").val();
+	var src=$("#ctx").val()+"/report/devIncome/jsp/jcdy_hr_salary_mon_index.jsp?cxmonth="+time;
+	if(orgLevel<3){
+		src=$("#ctx").val()+"/report/devIncome/jsp/tb_mrt_jcdy_hr_salary_mon.jsp?cxmonth="+time;
+	}
+	$("#xcfbWin").attr("src",src);
 	
 	var uId='';
 	var sql="select * from PMRT.TB_MRT_JCDY_HR_SALARY_MON t ";
@@ -110,7 +117,7 @@ function showJfxc(){
 	}
 	if(hrId!=''&&hrId&&hrId!=null&&hrId!='null'){
 		$("#xc_hrNo").text("HR编码: "+hrId);
-			var jfd=query("SELECT FACT_TOTAL FROM PODS.TB_ODS_JCDY_HR_SALARY WHERE DEAL_DATE ="+time+ "AND HR_NO='"+hrId+"'");
+			var jfd=query("SELECT FACT_TOTAL FROM PODS.TB_ODS_JCDY_HR_SALARY WHERE DEAL_DATE ="+time+ " AND HR_NO='"+hrId+"'");
 		if(jfd&&jfd.length>0&&jfd[0]){
 			$("#fact_total").text("实发合计: "+jfd[0].FACT_TOTAL);
 		}
