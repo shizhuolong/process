@@ -32,7 +32,7 @@ $(function(){
 	showXsph();
 	//积分排名
 	showJfph();
-	//积分薪酬
+	//团队薪酬
 	showJfxc();
 	//我的积分
 	showWdjf();
@@ -46,7 +46,7 @@ $(function(){
 		}
 	});
 });
-//积分薪酬
+//团队薪酬
 //获取数据
 function query(sql){
 	var ls=[];
@@ -1772,29 +1772,41 @@ function showJfph() {
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	
+	var time =$("#xctime").val();
 	if(orgLevel==1 || orgLevel==2){
+		var thead="<tr><th>地市</th><th>营服中心</th><th>销售积分</th><th>受理积分</th><th>维系积分</th><th>总积分</th><th>总积分金额</th><th>省排名</th><th>地市排名</th></tr>";
+		$("#jfphTable thead").empty().append(thead);
 		
-		var title=[["地市","营服中心","销售积分","受理积分","维系积分","总积分","总积分金额","省排名","地市排名"]];
-		var field=["AREA_NAME","UNIT_NAME","UNIT_ALLJF","UNIT_SL_ALLJF","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY","PRO_RANK","GROUP_RANK"];
-		$("#jfphTable tbody").empty();
-		report = new LchReport({
-			title : title,
-			field : field,
-			rowParams : [],//第一个为rowId
-			content : "jfphTable",
-			orderCallBack : function(index, type) {
-				/*orderBy = " order by " + field[index] + " " + type + " ";*/
-				search(0);
-			},
-			getSubRowsCallBack : function($tr) {
-				return {
-					data : nowData,
-					extra : {}
-				};
+		var sql ="SELECT * FROM  PMRT.TB_MRT_JCDY_UNITJF_RANK_MON T WHERE T.DEAL_DATE='"+time+"' and rownum<17 ";
+		if(orgLevel==1){
+			sql+=" ORDER BY PRO_RANK,GROUP_RANK ASC,GROUP_ID_1,UNIT_ID";
+		}else if(orgLevel==2){
+			sql+=" and t.GROUP_ID_1="+code+" ORDER BY PRO_RANK,GROUP_RANK ASC,GROUP_ID_1,UNIT_ID ";
+		}else{
+			
+		}
+		var data=query(sql);
+		var str='';
+		if(data&&data.length>0){
+			for(var i=0;i<data.length;i++){
+				str+= "<tr>";
+				str+="<td>"+isNull(data[i].AREA_NAME)+"</td>";
+				str+="<td>"+isNull(data[i].UNIT_NAME)+"</td>";
+				str+="<td>"+isNull(data[i].UNIT_ALLJF)+"</td>";
+				str+="<td>"+isNull(data[i].UNIT_SL_ALLJF)+"</td>";
+				str+="<td>"+isNull(data[i].WX_UNIT_CRE)+"</td>";
+				str+="<td>"+isNull(data[i].ALL_JF)+"</td>";
+				str+="<td>"+isNull(data[i].ALL_JF_MONEY)+"</td>";
+				str+="<td>"+isNull(data[i].PRO_RANK)+"</td>";
+				str+="<td>"+isNull(data[i].GROUP_RANK)+"</td>";
+				str+= "</tr>";
 			}
-		});
-		search(0);
+		}else{
+			str+= "<tr>";
+			str+= "<td colspan='9' align='center'>暂无数据</td>";
+			str+= "</tr>";
+		}
+		$("#jfphTable tbody").empty().append(str);
 	}else{
 		$.ajax({
 			url:$("#ctx").val()+"/index/index_listJfph.action",
@@ -1852,82 +1864,3 @@ function roundN(number,fractionDigits){
 }  
 
 
-
-var pageSize =12;
-//分页
-function initPagination(totalCount) {
-	$("#totalCount").html(totalCount);
-	$("#pagination").pagination(totalCount, {
-		callback : search,
-		items_per_page : pageSize,
-		link_to : "###",
-		prev_text : '上页', //上一页按钮里text  
-		next_text : '下页', //下一页按钮里text  
-		num_display_entries : 5,
-		num_edge_entries : 2
-	});
-}
-
-
-
-function search(pageNumber) {
-	pageNumber = pageNumber + 1;
-	var start = pageSize * (pageNumber - 1);
-	var end = pageSize * pageNumber;
-	
-	var time=$("#curMonthJfpm").val();
-	/*var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
-	var userName=$("#userName").val();*/
-//条件
-	var sql = " from PMRT.TB_MRT_JCDY_UNITJF_RANK_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE= '"+time+"' ";
-	}
-	
-//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		sql+=" ORDER BY T.GROUP_ID_1";
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code+" ORDER BY T.UNIT_ID ";
-	}else{
-		
-	}
-
-	var csql = sql;
-	var cdata = query("select count(*) total" + csql);
-	var total = 0;
-	if(cdata && cdata.length) {
-		total = cdata[0].TOTAL;
-	}else{
-		return;
-	}
-
-	/*//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}*/
-
-	sql = "select * " + sql;
-	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
-	var d = query(sql);
-	if (pageNumber == 1) {
-		initPagination(total);
-	}
-	nowData = d;
-
-	report.showSubRow();
-	///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
-	$(".page_count").width($("#lch_DataHead").width());
-	$("#lch_DataBody").find("TR").each(function(){
-		var area=$(this).find("TD:eq(0)").find("A").text();
-		if(area)
-			$(this).find("TD:eq(0)").empty().text(area);
-	});
-}
