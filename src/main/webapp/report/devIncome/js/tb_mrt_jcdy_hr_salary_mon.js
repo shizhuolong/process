@@ -1,7 +1,7 @@
 var nowData = [];
 var title=[["地市","营服中心","销售积分","受理积分","维系积分","总积分","总积分金额","全省排名","地市排名"]];
 var field=["AREA_NAME","UNIT_NAME","UNIT_ALLJF","UNIT_SL_ALLJF","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY","RANK","GROUP_RANK"];
-var orderBy = '';
+var orderBy = ' ORDER BY  T.RANK,T.GROUP_RANK ASC ,T.GROUP_ID_1,T.UNIT_ID';
 var report = null;
 $(function() {
 	report = new LchReport({
@@ -58,9 +58,9 @@ function search(pageNumber) {
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
-		sql+=" ORDER BY T.GROUP_ID_1";
+		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code+" ORDER BY T.UNIT_ID";
+		sql+=" and t.GROUP_ID_1="+code;
 	}
 	
 	
@@ -80,7 +80,6 @@ function search(pageNumber) {
 
 	sql = "select * " + sql;
 	
-	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
 	if (pageNumber == 1) {

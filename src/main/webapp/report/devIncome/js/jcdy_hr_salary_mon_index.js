@@ -146,7 +146,6 @@ function search(pageNumber) {
 	}
 
 	sql = "select * " + sql;
-	
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
