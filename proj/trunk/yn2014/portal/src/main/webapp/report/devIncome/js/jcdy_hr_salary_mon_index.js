@@ -146,6 +146,7 @@ function search(pageNumber) {
 	}
 
 	sql = "select * " + sql;
+	alert(sql);
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
@@ -170,7 +171,7 @@ function search(pageNumber) {
 	
 	$("#lch_DataBody").find("TR").each(function(){
 		//固定薪酬
-		var $gdTd=$(this).find("TD:eq(3)");
+		var $gdTd=$(this).find("TD:eq(2)");
 		if(!$gdTd.text()||$.trim($gdTd.text())==''||$.trim($gdTd.text())=='0'){}else{
 			$gdTd.html("<a href='#' >"+$gdTd.text()+"</a>");
 			$gdTd.click(function(){
@@ -202,7 +203,7 @@ function search(pageNumber) {
 			});
 		}
 		//专项奖励     专项奖励=绩效工资非经常项目1+绩效工资非经常项目2+其他奖励1+其他奖励2
-		var $zxTd=$(this).find("TD:eq(6)");
+		var $zxTd=$(this).find("TD:eq(5)");
 		if(!$zxTd.text()||$.trim($zxTd.text())==''||$.trim($zxTd.text())=='0'){}else{
 			$zxTd.html("<a href='#' >"+$zxTd.text()+"</a>");
 			$zxTd.click(function(){
@@ -234,7 +235,7 @@ function search(pageNumber) {
 			});
 		}
 		//基础KPI绩效
-		var $kpiTd=$(this).find("TD:eq(4)");
+		var $kpiTd=$(this).find("TD:eq(3)");
 		if(!$kpiTd.text()||$.trim($kpiTd.text())==''||$.trim($kpiTd.text())=='0'){}else{
 			$kpiTd.html("<a href='#' >"+$kpiTd.text()+"</a>");
 			$kpiTd.click(function(){
@@ -330,7 +331,7 @@ function search(pageNumber) {
 		}
 		
 		//业绩提成单击处理
-		var $yjTd=$(this).find("TD:eq(5)");
+		var $yjTd=$(this).find("TD:eq(4)");
 		if(!$yjTd.text()||$.trim($yjTd.text())==''||$.trim($yjTd.text())=='0'){
 			return;
 		}
