@@ -59,7 +59,8 @@
 				</tr>
 			</table>
 		</form>
-		<div id="lchcontent"></div>
+		<div style="color:red;font-size:15px;">备注：基层营业员有受理记录，但还未归入积分指标体系的业务类型  1、请市场部确定该业务是否计算积分，若纳入计算需定义其积分标准。</div>
+		<div id="lchcontent" style="margin-top: 5px;"></div>
 		<div class="page_count">
 			<div class="page_count_left">
 				共有 <span id="totalCount"></span> 条数据

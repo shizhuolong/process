@@ -63,7 +63,8 @@
 				</tr>
 			</table>
 		</form>
-		<div id="lchcontent"></div>
+		<div style="color:red;font-size:15px;">备注：固网宽带已出积分但是未对应到渠道经理的用户清单  1、梳理渠道经理与小区的对应关系，并在系统中进行匹配处理，若为9开头的标准地址，则说明用户没有对应到有效的小区，请到BSS系统中进行修改匹配。</div>
+		<div id="lchcontent" style="margin-top: 5px;"></div>
 		<div class="page_count">
 			<div class="page_count_left">
 				共有 <span id="totalCount"></span> 条数据

@@ -64,7 +64,8 @@
 				</tr>
 			</table>
 		</form>
-		<div id="lchcontent"></div>
+		<div style="color:red;font-size:15px;">备注：已出积分但是没有对应到具体渠道的清单 1、 梳理渠道和渠道经理的对应关系，并在系统中进行匹配处理，若为X开头的渠道则说明是老的已终止渠道不需处理。</div>
+		<div id="lchcontent" style="margin-top: 5px;"></div>
 		<div class="page_count">
 			<div class="page_count_left">
 				共有 <span id="totalCount"></span> 条数据
