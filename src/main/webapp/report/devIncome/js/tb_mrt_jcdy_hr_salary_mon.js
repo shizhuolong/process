@@ -1,7 +1,7 @@
 var nowData = [];
-var title=[["地市","营服中心","销售积分","受理积分","维系积分","总积分","总积分金额","全省排名","地市排名"]];
-var field=["AREA_NAME","UNIT_NAME","UNIT_ALLJF","UNIT_SL_ALLJF","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY","RANK","GROUP_RANK"];
-var orderBy = ' ORDER BY  T.RANK,T.GROUP_RANK ASC ,T.GROUP_ID_1,T.UNIT_ID';
+var title=[["地市","营服中心","固定薪酬","基础kpi绩效","积分提成奖励","专项奖励","薪酬合计","实发数","全省排名"]];
+var field=["GROUP_ID_1_NAME","UNIT_NAME","FIXED_SALARY","BASE_SALARY","JF_SALARY","SPECIAL_AWARD","ALL_SALARY","FACT_TOTAL","PRO_RANK"];
+var orderBy = ' ORDER BY  ALL_SALARY DESC ';
 var report = null;
 $(function() {
 	report = new LchReport({
@@ -49,9 +49,39 @@ function search(pageNumber) {
 	
 	var time=$("#month").val();
 //条件
-	var sql = " from PMRT.TB_MRT_JCDY_UNITCRE_RANK_MON t where 1=1 ";
+	var sql =   "select T.GROUP_ID_1_NAME,                      "+
+				"       T.UNIT_NAME,                            "+
+				"       T.FIXED_SALARY,                         "+
+				"       T.BASE_SALARY,                          "+
+				"       T.JF_SALARY,                            "+
+				"       T.ALL_SALARY,                           "+
+				"       T.SPECIAL_AWARD,                        "+
+				"       T1.FACT_TOTAL,                          "+
+				"       T1.PRO_RANK                             "+
+				"  from (select GROUP_ID_1,                     "+
+				"               GROUP_ID_1_NAME,                "+
+				"               UNIT_ID,                        "+
+				"               UNIT_NAME,                      "+
+				"               SUM(FIXED_SALARY) FIXED_SALARY, "+
+				"               SUM(BASE_SALARY) BASE_SALARY,   "+
+				"               SUM(JF_SALARY) JF_SALARY,       "+
+				"               SUM(ALL_SALARY) ALL_SALARY,     "+
+				"               SUM(SPECIAL_AWARD) SPECIAL_AWARD"+
+				"          from PMRT.TB_MRT_JCDY_HR_SALARY_MON T"+
+				"         where 1 = 1                           ";
+	var join=   " left join (select GROUP_ID_1,                                     "+
+				"                    UNIT_ID,                                      "+
+				"                    sum(FACT_TOTAL) FACT_TOTAL,                   "+
+				"               RANK() OVER(ORDER BY SUM(FACT_TOTAL) DESC) PRO_RANK"+
+				"               from PODS.TB_ODS_JCDY_HR_SALARY                    "+
+				"              where 1 = 1                                         ";
+	var sqlGroup=" GROUP BY GROUP_ID_1, GROUP_ID_1_NAME, UNIT_ID, UNIT_NAME";
+	var sqlOrder="  ORDER BY ALL_SALARY DESC ";
+	var joinGroup="   GROUP BY GROUP_ID_1, UNIT_ID ";
 	if(time!=''){
-		sql+=" and t.DEAL_DATE= '"+time+"'";
+		sql+=" and DEAL_DATE= '"+time+"'";
+		join+=" and  DEAL_DATE= '"+time+"'";
+		
 	}
 	
 //权限
@@ -60,12 +90,14 @@ function search(pageNumber) {
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" and  GROUP_ID_1="+code;
+		join+=" and  GROUP_ID_1="+code;
 	}
 	
-	
-	var csql = sql;
-	var cdata = query("select count(*) total" + csql);
+	var resultSql = sql + sqlGroup + sqlOrder + ") T" + join + joinGroup +") T1 ON T.UNIT_ID = T1.UNIT_ID ";
+	alert(resultSql);
+	var csql = resultSql;
+	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -77,9 +109,8 @@ function search(pageNumber) {
 	if (orderBy != '') {
 		sql += orderBy;
 	}
-
-	sql = "select * " + sql;
 	
+	sql = "select ttt.* from ( select tt.*,rownum r from ( " + resultSql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
 	if (pageNumber == 1) {
