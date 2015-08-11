@@ -49,6 +49,9 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
+	var isSW=$("#isSW").val();
+	var isJD=$("#isJD").val();
+	var isZLWB=$("#isZLWB").val();
 //条件
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_LOWER_BASE_MODEL where 1 = 1 ";
 	if(time!=''){
@@ -62,6 +65,15 @@ function search(pageNumber) {
 	}
 	if(phoneNumber!=''){
 		sql+=" and DEVICE_NUMBER like '%"+phoneNumber+"%'";
+	}
+	if(isSW!=''){
+		sql+=" and IS_3_NULL_ALL= '"+isSW+"'";
+	}
+	if(isJD!=''){
+		sql+=" and IS_LOW_JD_ALL= '"+isJD+"'";
+	}
+	if(isZLWB!=''){
+		sql+=" and IS_ZLWB= '"+isZLWB+"'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
@@ -209,6 +221,9 @@ function downsAll(){
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
+	var isSW=$("#isSW").val();
+	var isJD=$("#isJD").val();
+	var isZLWB=$("#isZLWB").val();
 //条件
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_LOWER_BASE_MODEL where 1 = 1 ";
 	if(time!=''){
@@ -223,6 +238,15 @@ function downsAll(){
 	if(phoneNumber!=''){
 		sql+=" and DEVICE_NUMBER like '%"+phoneNumber+"%'";
 	}
+	if(isSW!=''){
+		sql+=" and IS_3_NULL_ALL= '"+isSW+"'";
+	}
+	if(isJD!=''){
+		sql+=" and IS_LOW_JD_ALL= '"+isJD+"'";
+	}
+	if(isZLWB!=''){
+		sql+=" and IS_ZLWB= '"+isZLWB+"'";
+	}
 //权限
 	var orgLevel=$("#orgLevel").val();
 	//var code=$("#code").val();
@@ -233,7 +257,7 @@ function downsAll(){
 		sql+=" and GROUP_ID_1_NAME='"+cityName+"'";
 	}
 	sql+=" order by GROUP_ID_1,UNIT_ID,HR_ID,GROUP_ID_4";
-	showtext = '低质态终生制用户报表-'+time;
+	showtext = '用户质态判定表-'+time;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
