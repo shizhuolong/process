@@ -17,7 +17,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>低质态终生制用户报表</title>
+<title>用户质态判定表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -63,6 +63,32 @@
 					<td width="7%">电话号码：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="phoneNumber" type="text" id="phoneNumber"/>
+					</td>
+					<td width="7%">三无：</td>
+					<td width="13%">
+						<select name="isSW" id="isSW" class="default-text-input wper80">
+						        <option value='' selected>全部</option>
+								<option value='1'>是</option>
+								<option value='0'>否</option>
+						</select>
+					</td>
+					</tr>
+					<tr>
+					<td width="7%" style="padding-left: 10px;">极低：</td>
+					<td width="13%">
+						<select name="isJD" id="isJD" class="default-text-input wper80">
+								<option value='' selected>全部</option>
+								<option value='1'>是</option>
+								<option value='0'>否</option>
+						</select>
+					</td>
+					<td width="7%">资料完备：</td>
+					<td width="13%">
+						<select name="isZLWB" id="isZLWB" class="default-text-input wper80">
+								<option value='' selected>全部</option>
+								<option value='1'>是</option>
+								<option value='0'>否</option>
+						</select>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
