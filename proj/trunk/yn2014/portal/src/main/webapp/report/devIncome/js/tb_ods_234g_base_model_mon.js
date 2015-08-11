@@ -50,6 +50,9 @@ function search(pageNumber) {
 	var code =$("#code").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
+	var isSW=$("#isSW").val();
+	var isJD=$("#isJD").val();
+	var isZLWB=$("#isZLWB").val();
 //条件
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON T1  where 1 = 1 AND t1.deal_date ='"+time+"'";
 	if(time!=''){
@@ -63,6 +66,15 @@ function search(pageNumber) {
 	}
 	if(phoneNumber!=''){
 		sql+=" and T1.DEVICE_NUMBER like '%"+phoneNumber+"%'";
+	}
+	if(isSW!=''){
+		sql+=" and T1.IS_SW= '"+isSW+"'";
+	}
+	if(isJD!=''){
+		sql+=" and T1.IS_JD= '"+isJD+"'";
+	}
+	if(isZLWB!=''){
+		sql+=" and T1.IS_ZLWB= '"+isZLWB+"'";
 	}
 //权限
 	
@@ -200,6 +212,9 @@ function downsAll(){
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
+	var isSW=$("#isSW").val();
+	var isJD=$("#isJD").val();
+	var isZLWB=$("#isZLWB").val();
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON  T1 where 1 = 1 AND t1.deal_date ='"+time+"'";
 	if(time!=''){
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
@@ -212,6 +227,15 @@ function downsAll(){
 	}
 	if(phoneNumber!=''){
 		sql+=" and T1.DEVICE_NUMBER like '%"+phoneNumber+"%'";
+	}
+	if(isSW!=''){
+		sql+=" and T1.IS_SW= '"+isSW+"'";
+	}
+	if(isJD!=''){
+		sql+=" and T1.IS_JD= '"+isJD+"'";
+	}
+	if(isZLWB!=''){
+		sql+=" and T1.IS_ZLWB= '"+isZLWB+"'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
@@ -227,7 +251,7 @@ function downsAll(){
 		sql+=" and T1.GROUP_ID_4='"+code+"'" /*order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID */;
 	}else{
 	}
-	showtext = '低质态用户管控报表-'+time;
+	showtext = '用户质态管控表-'+time;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
