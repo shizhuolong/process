@@ -162,7 +162,7 @@ jQuery(function(){
 				if(j > 4 && (strn[j]==null || strn[j]=="0" || strn[j]=="")){
 					res += "<td style='text-align: left'>0</td>";   
 				}else{
-					if(strn[j] == null || strn[j] == "") {
+					if(strn[j] == null || strn[j] == ""|| strn[j]=="default") {
 						res += "<td style='text-align: left;'>&nbsp;</td>";
 					}else {
 						res += "<td style='text-align: left;'>" + strn[j] + "</td>";
