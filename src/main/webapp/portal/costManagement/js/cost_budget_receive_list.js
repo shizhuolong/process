@@ -185,15 +185,64 @@ function init_sitem() {
 		data:{},
 		success:function(data){
 			var str = "<option value=''>请选择地市</option>";
+			if(data.length!=1){
 			for(var i=0;i<data.length;i++){
 				console.log(data[i]);
 				str += "<option value='"+data[i].ID+"'>"+data[i].NAME+"</option>";
-			}
+			 }
+		    }else{
+		    	listUnits(data[0].ID);
+		    }
 			//str += "</select>";
 			$("#group_id_1").empty().append(str);
+		  
 		},
 		error:function(){
 			alert("网络延迟");
 		}
 	});
+	$("#group_id_1").change(function(){
+		listUnits($(this).val());
+	});
+}
+function listUnits(regionCode){
+	var $unit=$("#unit_name");
+	var sql = "SELECT DISTINCT t.ORGNAME group_id_2_name FROM PORTAL.APDP_ORG t WHERE t.ORGLEVEL='3'";
+	if(regionCode!=''){
+		sql+=" and t.REGION_CODE='"+regionCode+"' ";
+		//权限
+		var orgLevel=$("#orgLevel").val();
+		var code=$("#code").val();
+		if(orgLevel==1){
+			
+		}else if(orgLevel==2){
+			//sql+=" and t.CODE="+code;
+		}else if(orgLevel==3){
+			sql+=" and t.CODE="+code;
+		}else{
+			//sql+=" and t.grou_id_4='"+code+"'";
+		}
+	}else{
+		$unit.empty().append('<option value="" selected>请选择</option>');
+		return;
+	}
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].GROUP_ID_2_NAME
+					+ '" selected >'
+					+ d[0].GROUP_ID_2_NAME + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].GROUP_ID_2_NAME + '">' + d[i].GROUP_ID_2_NAME + '</option>';
+			}
+		}
+		
+		var $h = $(h);
+		$unit.empty().append($h);
+	} else {
+		alert("获取基层单元信息失败");
+	}
 }
