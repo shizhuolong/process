@@ -1,9 +1,11 @@
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="org.apdplat.module.security.model.Org"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 	User user = UserHolder.getCurrentLoginUser();
+    Org org = user.getOrg();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css"/>
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery.blockUI.js"></script>
 <script type="text/javascript" type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery-ui.js"></script>
@@ -28,6 +31,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_budget_receive_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
     function isGrantedNew(role){
@@ -43,6 +48,8 @@
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<div id="smartForm">
 		<input type="hidden" name="resultMap.page" />
         <input type="hidden" name="resultMap.rows" />
@@ -72,9 +79,14 @@
 											</select>
 										</td>
 										<th style="width: 100px;">成本中心名称：</th>
-										<td style="width: 180px;">
-											<input type="text" id="unit_name" name="unit_name">
+										<td style="width: 120px;">
+										<select id="unit_name" name="unit_name">
+												<option value="">请选择</option>
+										</select>
 										</td>
+										<!-- <td style="width: 180px;">
+											<input type="text" id="unit_name" name="unit_name">
+										</td>  -->
 										<th style="width: 50px;">状态：</th>
 										<td style="width: 180px;">
 											<select class="default-text-input wper40" name="is_confirm" id="is_confirm">
