@@ -29,6 +29,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/wxyj_operator_mon.js"></script>
+<style>
+  #lch_DataHead TR TH, #lch_table_corner TR TH, #lch_DataBody TR TD, #lch_table_left TR TD {
+    min-width: 20px;
+}
+</style>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -59,18 +64,24 @@
 					<td width="13%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
-					<td width="7%">电话号码：</td>
+				</tr>
+				<tr height="35px">
+				    <td width="7%" style="padding-left: 10px;">电话号码：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="phoneNumber" type="text" id="phoneNumber"/>
 					</td>
-					<td width="3%">
+					<td width="7%">指标描述：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="itemDesc" type="text" id="itemDesc"/>
+					</td>
+				   <td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
-					</td>
-					<td width="3%">
+				   </td>
+				   <td width="3%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
-					</td>
-				</tr>
+				   </td>
+				 </tr>
 			</table>
 		</form>
 		<div id="lchcontent"></div>
