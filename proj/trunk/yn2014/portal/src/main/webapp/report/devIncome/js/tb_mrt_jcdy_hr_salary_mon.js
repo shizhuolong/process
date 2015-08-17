@@ -95,7 +95,6 @@ function search(pageNumber) {
 	}
 	
 	var resultSql = sql + sqlGroup + sqlOrder + ") T" + join + joinGroup +") T1 ON T.UNIT_ID = T1.UNIT_ID ";
-	alert(resultSql);
 	var csql = resultSql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
