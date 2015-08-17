@@ -53,6 +53,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
+	var itemDesc=$.trim($("#itemDesc").val());
 //条件
 	var sql = " from PMRT.TB_MRT_WXJF_QDJLNEW_MON t where 1=1 ";
 	if(time!=''){
@@ -69,6 +70,9 @@ function search(pageNumber) {
 	}
 	if(phoneNumber!=''){
 		sql+=" and t.DEVICE_NUMBER like '%"+phoneNumber+"%'";
+	}
+	if(itemDesc!=''){
+		sql+=" and t.ITEMDESC like '%"+itemDesc+"%'";
 	}
 	
 //权限
@@ -290,6 +294,7 @@ function downsAll(){
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 	var phoneNumber=$("#phoneNumber").val();
+	var itemDesc=$.trim($("#itemDesc").val());
 	//条件
 	var sql = " from PMRT.TB_MRT_WXJF_QDJLNEW_MON t where 1=1 ";
 	if(time!=''){
@@ -306,6 +311,9 @@ function downsAll(){
 	}
 	if(phoneNumber!=''){
 		sql+=" and t.DEVICE_NUMBER like '%"+phoneNumber+"%'";
+	}
+	if(itemDesc!=''){
+		sql+=" and t.ITEMDESC like '%"+itemDesc+"%'";
 	}
 	
 	//权限
