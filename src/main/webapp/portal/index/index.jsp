@@ -140,6 +140,7 @@
                                 <div>
                                     <span><i class="menu-toDo"></i>游离渠道</span>
                                     <a href="javascript:void(0);" onclick="searchfreeChannel(this)" id="freechannel">游离渠道:0</a>
+                                    <a href="javascript:void(0);" onclick="searchfreeCommunity(this)" id="freecommunity">游离小区:0</a>
                                 </div>
                                 
                                 <div>
@@ -199,6 +200,32 @@
 				                             	</div>
 											</div>
 										</div>
+										<div title="积分排名" style="padding:0;">
+                                     	<ul id="chose-place-count" class="bold clearfix">
+	                                        <li>本月积分排名—<i class="fa830b"><%=curMonth %></i></li>
+	                                    </ul>
+                                         <div class="default-dt dt-autoH">
+                                             <table class="default-table"  style=" " id="jfphTable">
+                                                 <thead>	 	 	 	
+                                                     <tr>
+														<th class="first">地市</th>
+														<th>营服中心</th>
+														<th>人员姓名</th>
+														<th>本月销售积分</th>
+														<th>本月受理积分</th>
+														<th>本月维系积分</th>
+														<th>本月累计积分</th>
+														<th>本月累计薪酬</th>
+														<th>本月全省排名</th>
+														<th>本月地市排名</th>
+														<th>本月营服中心排名</th>
+													</tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 </tbody>        
+                                             </table>
+                                         </div>
+                                     </div>
 									</div>
 								</div>
 							</div>
@@ -327,32 +354,7 @@
                                          </div>
                                      </div>
                                      
-                                     <div title="积分排名" style="padding:0;">
-                                     	<ul id="chose-place-count" class="bold clearfix">
-	                                        <li>本月积分排名—<i class="fa830b"><%=curMonth %></i></li>
-	                                    </ul>
-                                         <div class="default-dt dt-autoH">
-                                             <table class="default-table"  style=" " id="jfphTable">
-                                                 <thead>	 	 	 	
-                                                     <tr>
-														<th class="first">地市</th>
-														<th>营服中心</th>
-														<th>人员姓名</th>
-														<th>本月销售积分</th>
-														<th>本月受理积分</th>
-														<th>本月维系积分</th>
-														<th>本月累计积分</th>
-														<th>本月累计薪酬</th>
-														<th>本月全省排名</th>
-														<th>本月地市排名</th>
-														<th>本月营服中心排名</th>
-													</tr>
-                                                 </thead>
-                                                 <tbody>
-                                                 </tbody>        
-                                             </table>
-                                         </div>
-                                     </div>
+                                     
                                  </div>
                              </div>
                          </div>
