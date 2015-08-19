@@ -430,4 +430,13 @@
 		 </if>
 	</select>
 	
+	<!--游离小区  -->
+	<select id="freeCommunity" parameterType="java.util.Map" resultType="int" useCache="false">
+		SELECT count(*) FROM PCDE.TAB_CDE_6_STD T WHERE T.UNIT_NAME LIKE '%本部%' 
+			AND T.STATE='U'  AND T.IS_SIGN=1
+		 <if test="orgLevel==2">
+		 	AND T.GROUP_ID_1 = #{orgCode}
+		 </if>
+	</select>
+	
 </mapper>

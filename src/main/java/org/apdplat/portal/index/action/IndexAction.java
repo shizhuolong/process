@@ -491,4 +491,19 @@ public class IndexAction extends BaseAction {
 		int data = indexService.freeChannel(params);
 		this.reponseJson(data);
 	}
+	
+	/**
+	 * 游离小区
+	 */
+	public void freeCommunity(){
+		Map<String, Object> params = new HashMap<String,Object>();
+		User user = UserHolder.getCurrentLoginUser();
+		Org org = user.getOrg();
+		String orgCode = org.getCode();
+		String orgLevel = org.getOrgLevel();
+		params.put("orgCode", orgCode);
+		params.put("orgLevel",orgLevel);
+		int data = indexService.freeCommunity(params);
+		this.reponseJson(data);
+	}
 }
