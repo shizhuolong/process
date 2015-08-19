@@ -19,6 +19,8 @@ $(function(){
 	indexDocList();
 	//游离渠道数量
 	freeChannel();
+	//游离小区数量
+	freeCommunity();
 	//佣金下载
 	searchYj();
 	//实时发展
@@ -572,6 +574,40 @@ function searchfreeChannel(element) {
         }
     };
     parent.openWindow('游离渠道','computer', $("#ctx").val()+'/warningAndMonitor/freeChannel!index.action');
+	parent.switchFirstMenu('module-477161','预警监控');
+}
+
+//游离小区
+function freeCommunity(){
+	$.ajax({
+		url:$("#ctx").val()+"/index/index_freeCommunity.action",
+		type:'POST',
+		dataType:'json',
+		async:true,
+		success:function(data){
+			$("#freecommunity").html('游离小区：'+data);
+		}
+	});
+}
+
+function searchfreeCommunity(element) {
+	
+	var text = $(element).text();
+	if(text == '游离小区：0') {
+		return;
+	}
+	var lis=parent.document.getElementById("navi").getElementsByTagName("li");
+	for(var i=0;i<lis.length;i++){
+		if(lis[i].className=="select1"){
+			lis[i].className="";
+			lis[i].getElementsByTagName("a")[0].className="";
+		}
+		if(i==8) {
+			lis[i].className="select1";
+			lis[i].getElementsByTagName("a")[0].className="select";
+		}
+	};
+	parent.openWindow('游离小区','computer', $("#ctx").val()+'/warningAndMonitor/freeCommunity!index.action');
 	parent.switchFirstMenu('module-477161','预警监控');
 }
 
