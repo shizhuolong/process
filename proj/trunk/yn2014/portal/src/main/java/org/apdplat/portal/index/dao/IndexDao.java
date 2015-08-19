@@ -101,4 +101,11 @@ public interface IndexDao {
 	 */
 	public int freeChannel(Map<String, Object> params);
 	
+	/**
+	 * 游离小区
+	 * @param params
+	 * @return
+	 */
+	public int freeCommunity(Map<String, Object> params);
+	
 }
