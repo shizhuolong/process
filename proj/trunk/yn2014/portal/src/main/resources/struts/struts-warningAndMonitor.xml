@@ -13,6 +13,9 @@
 		<action name="freeChannel_*" class="org.apdplat.warningAndMonitor.resourceMonitor.action.FreeChannelAction" method="{1}">
 			<result name="success">/warningAndMonitor/resourceMonitor/jsp/free_channel_list.jsp</result>
         </action>
+		<action name="freeCommunity_*" class="org.apdplat.warningAndMonitor.resourceMonitor.action.FreeCommunityAction" method="{1}">
+			<result name="success">/warningAndMonitor/resourceMonitor/jsp/free_community_list.jsp</result>
+        </action>
         
 	</package>
 </struts>
