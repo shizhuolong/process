@@ -2,11 +2,11 @@ var nowData = [];
 var title=[["账期","地市","基层单元","HR编码","人员姓名","角色类型",
             "发展","","","","",
             "收入","","","","",
-            "欠费","","","",
+            "欠费","","","","",
             "存量","","","","",
             "毛利","","","","",
-            "考核得分权重",
-            "考核得分值",
+            "营业考核","",
+            
             "省级KPI权重",
             "省级KPI得分",
             "自设KPI得分",
@@ -17,10 +17,10 @@ var title=[["账期","地市","基层单元","HR编码","人员姓名","角色�
            ["","","","","","",
             "发展任务","发展完成","发展任务完成率","发展KPI得分","发展KPI权重",
             "收入任务","收入完成","收入任务完成率","收入KPI得分","收入KPI权重",
-            "欠费","欠费率","欠费KPI得分","欠费KPI权重",
-            "上年12月收入 ","本月累计达到收入","存量收入保有率","存量KPI得分","存量KPI权重",
+            "欠费","本月累计达到收入","欠费率","欠费KPI得分","欠费KPI权重",
+            "上年12月收入 ","存量收入","存量收入保有率","存量KPI得分","存量KPI权重",
             "毛利预算","毛利完成","毛利任务完成率","毛利KPI得分","毛利KPI权重",
-            "",
+            "考核得分权重","考核得分值",
             "",
             "",
             "",
@@ -31,7 +31,7 @@ var title=[["账期","地市","基层单元","HR编码","人员姓名","角色�
             ]
 ];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE",
-           "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_MONTH","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
+           "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","AMOUNT_MONTH","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_ALL","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
 var orderBy = '';
 var report = null;
 $(function() {
