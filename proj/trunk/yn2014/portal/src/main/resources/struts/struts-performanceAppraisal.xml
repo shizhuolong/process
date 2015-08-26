@@ -26,5 +26,9 @@
         	<result name="success">/performanceAppraisal/payment/jsp/unit_raito_config.jsp</result>
         </action>
         
+        <action name="zzxRatioConfig_*" class="org.apdplat.performanceAppraisal.payment.action.ZzxRatioConfigAction" method="{1}">
+        	<result name="success">/performanceAppraisal/payment/jsp/tab_cde_region_ratio.jsp</result>
+        </action>
+        
 	</package>
 </struts>
