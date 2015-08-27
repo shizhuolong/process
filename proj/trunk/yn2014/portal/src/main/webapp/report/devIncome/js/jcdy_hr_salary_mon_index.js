@@ -525,11 +525,7 @@ function search(pageNumber) {
 				sql+="            and t.hr_id in                                             ";
 				sql+="                (SELECT distinct hr_id                                 ";
 				sql+="                   FROM portal.tab_portal_mag_person                   ";
-				sql+="                  where hq_chan_code in                                 ";
-				sql+="                        (SELECT distinct hq_chan_code                  ";
-				sql+="                           FROM portal.tab_portal_mag_person           ";
-				sql+="                          where hr_id = '"+hrId+"'                      ";
-				sql+="                            and hq_chan_code is not null))             ";
+				sql+="              where f_hr_id in( '"+hrId+"'))                           ";
 				sql+="         union                                                         ";
 				sql+="         select t.*, 2 orderNum                                        ";
 				sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";

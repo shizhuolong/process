@@ -110,6 +110,23 @@ if(loginUser!=null){
             	
             	
             });
+            function configDesk(){
+            	//首先判断是否在首页，若不在首页则先打开首页
+            	var $desc=$("#navi").find("LI:first");
+            	if(!$desc.hasClass("select")){
+            		selectSwitch($desc[0]);
+            		switchFirstMenu('000','工作台');
+            		$("#center-panel").find("#indexPage:visible").find("IFRAME").unbind().load(function(){
+            			showConfigDialog();
+            		});
+            		
+            	}else{
+            		showConfigDialog();
+            	}
+            }
+            function showConfigDialog(){
+            	$("#center-panel").find("#indexPage:visible").find("IFRAME")[0].contentWindow.showConfigDialog(); 
+            }
 	</script>
     </head>
     <body id="apdplat_main">
@@ -132,6 +149,7 @@ if(loginUser!=null){
 					</ul>
                     <ul class="head-info-user clearfix mt5">
                         <li><a href="javascript:void(0);" onclick="logout();"><i id="logout-icon"></i>退出</a></li>
+                        <li><a href="javascript:void(0);" onclick='configDesk();'><i id="editPsw-icon"></i>工作台配置</a></li>
                         <li><a href="javascript:void(0);" onclick='ModifyWindow.show();'><i id="editPsw-icon"></i>修改密码</a></li>
                     	<li><span>服务热线：186-8790-6699&nbsp;&nbsp;&nbsp;QQ交流群：292595923</span></li>
                     </ul>
