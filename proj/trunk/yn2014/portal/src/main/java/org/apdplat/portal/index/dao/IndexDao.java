@@ -108,4 +108,9 @@ public interface IndexDao {
 	 */
 	public int freeCommunity(Map<String, Object> params);
 	
+	
+	public int addDesk(Map<String, Object> params);
+	
+    public int delDesk(String userId);
+	
 }

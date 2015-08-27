@@ -438,5 +438,13 @@
 		 	AND T.GROUP_ID_1 = #{orgCode}
 		 </if>
 	</select>
-	
+	<!-- 删除配置好的工作台 -->
+	<delete id="delDesk" parameterType="java.lang.String">
+        delete from portal.apdp_user_desk_element where userid=#{userId}
+    </delete>
+    <insert id="addDesk" parameterType="java.util.Map">
+		insert into portal.apdp_user_desk_element
+		SELECT #{userId} userId,REGEXP_SUBSTR(${moduleIds}, '[^,]+', 1, ROWNUM) moduleId  FROM DUAL 
+		CONNECT BY ROWNUM &lt;= LENGTH(${moduleIds}) - LENGTH(REPLACE(${moduleIds}, ',', '')) + 1
+	</insert>
 </mapper>

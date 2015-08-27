@@ -1,5 +1,6 @@
 package org.apdplat.portal.index.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -147,4 +148,17 @@ public class IndexService {
 	public int freeCommunity(Map<String, Object> params) {
 		return indexDao.freeCommunity(params);
 	}
+	/**
+	 * 保存工作台
+	 * @param params
+	 * @return
+	 */
+	public int saveDesk(String moduleIds,String userId){
+		indexDao.delDesk(userId);
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("moduleIds", moduleIds);
+		return indexDao.addDesk(params);
+	}
+	
 }
