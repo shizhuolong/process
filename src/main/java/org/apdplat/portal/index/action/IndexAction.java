@@ -44,6 +44,16 @@ public class IndexAction extends BaseAction {
 	private String log;
 	private String lat;
 	private String status="'10'";
+	
+	private String moduleIds;
+	public String getModuleIds() {
+		return moduleIds;
+	}
+
+	public void setModuleIds(String moduleIds) {
+		this.moduleIds = moduleIds;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -505,5 +515,16 @@ public class IndexAction extends BaseAction {
 		params.put("orgLevel",orgLevel);
 		int data = indexService.freeCommunity(params);
 		this.reponseJson(data);
+	}
+	/**
+	 * 保存工作台
+	 * @param params
+	 * @return
+	 */
+	public void saveDesk(){
+		User user = UserHolder.getCurrentLoginUser();
+		String userId=user.getId()+"";
+		int r=indexService.saveDesk(moduleIds, userId);
+		this.reponseJson(r);
 	}
 }
