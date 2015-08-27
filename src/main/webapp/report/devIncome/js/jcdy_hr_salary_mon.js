@@ -95,7 +95,7 @@ function search(pageNumber) {
 					tsql+="   and tt.deal_date = '"+time+"'                                      ";
 					tsql+=" union                                                                ";
 					tsql+=" select '"+hrId+"' from dual  ";
-				}else if(v==6){
+				}else if(v==6){//待改
 					tsql+=" SELECT distinct hr_id                                                ";
 					tsql+="   FROM portal.tab_portal_mag_person                                  ";
 					tsql+=" where hq_chan_code in (                                              ";
@@ -585,21 +585,17 @@ function search(pageNumber) {
 				sql+=" select t.hr_id, t.name, t.jf_salary jf                                ";
 				sql+="   from (select t.*, 1 orderNum                                        ";
 				sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
-				sql+="          where deal_date = '"+date+"'                                   ";
-				sql+="            and t.hr_id <> '"+hrId+"'                                   ";
+				sql+="          where deal_date = '"+date+"'                                 ";
+				sql+="            and t.hr_id <> '"+hrId+"'                                  ";
 				sql+="            and t.hr_id in                                             ";
 				sql+="                (SELECT distinct hr_id                                 ";
 				sql+="                   FROM portal.tab_portal_mag_person                   ";
-				sql+="                  where hq_chan_code in                                 ";
-				sql+="                        (SELECT distinct hq_chan_code                  ";
-				sql+="                           FROM portal.tab_portal_mag_person           ";
-				sql+="                          where hr_id = '"+hrId+"'                      ";
-				sql+="                            and hq_chan_code is not null))             ";
+				sql+="              where f_hr_id in( '"+hrId+"'))                           ";
 				sql+="         union                                                         ";
 				sql+="         select t.*, 2 orderNum                                        ";
 				sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
-				sql+="          where deal_date = '"+date+"'                                   ";
-				sql+="            and t.hr_id = '"+hrId+"') t                                 ";
+				sql+="          where deal_date = '"+date+"'                                 ";
+				sql+="            and t.hr_id = '"+hrId+"') t                                ";
 				sql+="  order by t.orderNum                                                  ";
 				
 				
