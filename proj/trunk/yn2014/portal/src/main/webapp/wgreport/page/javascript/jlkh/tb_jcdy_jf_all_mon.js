@@ -1,5 +1,5 @@
 jQuery(function(){
-	var cols = ["deal_date","area_name","unit_name","user_name","hr_no","g2sll","swsll","g3sll","g4sll","kdsll","allsll","g2jf","swjf","g3jf","g4jf","gwjf","zhwj_jf","kdxfjf","jtzzsrjf","ztjf","hjxsjf","hq_alljf","unit_alljf","base_sljf","fw_jf","zzyw_jf","sl_alljf","sl_svr_all_cre","unit_sl_alljf","lyhzx_jf","cfyw_jf","zbjxy_jf","zfk_jf","llbdz_jf","wx_cre","wx_svr_cre","wx_unit_cre","all_jf","all_jf_money" ];
+	var cols = ["deal_date","area_name","unit_name","user_name","hr_no","user_role","g2sll","swsll","g3sll","g4sll","kdsll","allsll","g2jf","swjf","g3jf","g4jf","gwjf","zhwj_jf","kdxfjf","jtzzsrjf","ztjf","hjxsjf","hq_alljf","unit_alljf","base_sljf","fw_jf","zzyw_jf","sl_alljf","sl_svr_all_cre","unit_sl_alljf","lyhzx_jf","cfyw_jf","zbjxy_jf","zfk_jf","llbdz_jf","wx_cre","wx_svr_cre","wx_unit_cre","all_jf","all_jf_money" ];
 	//excel导出
 	$("#exceldown").click(downsAll);
 	regionSelect();
@@ -20,7 +20,7 @@ jQuery(function(){
 		} 
 	});
 	var _limit=15;
-	var sql = "SELECT DEAL_DATE,AREA_NAME,UNIT_NAME,USER_NAME,HR_NO,G2SLL,SWSLL,G3SLL,G4SLL,KDSLL,ALLSLL,G2JF," +
+	var sql = "SELECT DEAL_DATE,AREA_NAME,UNIT_NAME,USER_NAME,HR_NO,USER_ROLE,G2SLL,SWSLL,G3SLL,G4SLL,KDSLL,ALLSLL,G2JF," +
 			"SWJF,G3JF,G4JF,GWJF,ZHWJ_JF,KDXFJF,JTZZSRJF,ZTJF,HJXSJF,HQ_ALLJF,UNIT_ALLJF,BASE_SLJF,FW_JF,ZZYW_JF,SL_ALLJF," +
 			"SL_SVR_ALL_CRE,UNIT_SL_ALLJF ,LYHZX_JF,CFYW_JF,ZBJXY_JF,ZFK_JF,LLBDZ_JF,WX_CRE,WX_SVR_CRE,WX_UNIT_CRE,ALL_JF,ALL_JF_MONEY FROM PMRT.TB_JCDY_JF_ALL_MON " +
 			"WHERE DEAL_DATE ="+deal_date;
@@ -38,7 +38,7 @@ jQuery(function(){
 		var head="";
 		head +="<tr class='attend_th'>" +
 			"<th class='attend_th'>账期</th><th class='attend_th'>地市</th><th class='attend_th'>基层单元</th>" +
-			"<th class='attend_th'>人员姓名</th><th class='attend_th'>hr编码</th><th class='attend_th'>2g发展量</th>" +
+			"<th class='attend_th'>人员姓名</th><th class='attend_th'>hr编码</th><th class='attend_th'>角色类型</th><th class='attend_th'>2g发展量</th>" +
 			"<th class='attend_th'>上网卡发展量</th><th class='attend_th'>3g发展量</th><th class='attend_th'>4g发展量</th>" +
 			"<th class='attend_th'>宽带发展量</th><th class='attend_th'>总受理量</th><th class='attend_th'>2g发展积分</th>" +
 			"<th class='attend_th'>上网卡发展积分</th><th class='attend_th'>3g发展积分</th><th class='attend_th'>4g发展积分</th>" +
@@ -61,7 +61,7 @@ jQuery(function(){
 		var user_name = $.trim($("#user_name").val());
 		var unit_name = $.trim($("#unit_name").val());
 		var fsql = getSelect();
-		var sql = "SELECT DEAL_DATE,AREA_NAME,UNIT_NAME,USER_NAME,HR_NO,G2SLL,SWSLL,G3SLL,G4SLL,KDSLL,ALLSLL,G2JF,SWJF," +
+		var sql = "SELECT DEAL_DATE,AREA_NAME,UNIT_NAME,USER_NAME,HR_NO,USER_ROLE,G2SLL,SWSLL,G3SLL,G4SLL,KDSLL,ALLSLL,G2JF,SWJF," +
 				"G3JF,G4JF,GWJF,ZHWJ_JF,KDXFJF,JTZZSRJF,ZTJF,HJXSJF,HQ_ALLJF,UNIT_ALLJF,BASE_SLJF,FW_JF,ZZYW_JF,SL_ALLJF," +
 				"SL_SVR_ALL_CRE,UNIT_SL_ALLJF ,LYHZX_JF,CFYW_JF,ZBJXY_JF,ZFK_JF,LLBDZ_JF,WX_CRE,WX_SVR_CRE,WX_UNIT_CRE,ALL_JF,ALL_JF_MONEY FROM PMRT.TB_JCDY_JF_ALL_MON " +
 				"WHERE DEAL_DATE = " + deal_date +fsql;
@@ -258,7 +258,7 @@ function downsAll(){
 	var user_name = $.trim($("#user_name").val());
 	var unit_name = $.trim($("#unit_name").val());
 	var fsql = getSelect();
-	var sql =  "SELECT DEAL_DATE,AREA_NAME,UNIT_NAME,USER_NAME,HR_NO,G2SLL,SWSLL,G3SLL,G4SLL,KDSLL,ALLSLL,G2JF,SWJF," +
+	var sql =  "SELECT DEAL_DATE,AREA_NAME,UNIT_NAME,USER_NAME,HR_NO,USER_ROLE,G2SLL,SWSLL,G3SLL,G4SLL,KDSLL,ALLSLL,G2JF,SWJF," +
 				"G3JF,G4JF,GWJF,ZHWJ_JF,KDXFJF,JTZZSRJF,ZTJF,HJXSJF,HQ_ALLJF,UNIT_ALLJF,BASE_SLJF,FW_JF,ZZYW_JF,SL_ALLJF," +
 				"SL_SVR_ALL_CRE,UNIT_SL_ALLJF ,LYHZX_JF,CFYW_JF,ZBJXY_JF,ZFK_JF,LLBDZ_JF,WX_CRE,WX_SVR_CRE,WX_UNIT_CRE,ALL_JF,ALL_JF_MONEY FROM PMRT.TB_JCDY_JF_ALL_MON " +
 				"WHERE DEAL_DATE = " + deal_date +fsql ;
@@ -279,7 +279,7 @@ function downsAll(){
 	sql+=" ORDER BY GROUP_ID_1"
 	var showtext="Sheet";
 	   var showtext1="result";
-	   var _head=['账期','地市','基层单元','人员姓名','hr编码','2g发展量','上网卡发展量','3g发展量','4g发展量','宽带发展量','总受理量','2g发展积分','上网卡发展积分','3g发展积分','4g发展积分','固网发展积分','智慧沃家积分','宽带续费积分','集团专租线积分','质态积分','合计销售积分','渠道调节销售积分','区域调节销售积分','基础服务积分','服务积分','增值业务积分','总受理积分','服务调节受理积分','区域调节受理积分','老用户专享积分','存费业务积分','自备机续约积分','主副卡积分','流量语音包定制积分','维系积分','维系服务积分','维系区域积分','总积分','总积分金额'];
+	   var _head=['账期','地市','基层单元','人员姓名','hr编码','角色类型','2g发展量','上网卡发展量','3g发展量','4g发展量','宽带发展量','总受理量','2g发展积分','上网卡发展积分','3g发展积分','4g发展积分','固网发展积分','智慧沃家积分','宽带续费积分','集团专租线积分','质态积分','合计销售积分','渠道调节销售积分','区域调节销售积分','基础服务积分','服务积分','增值业务积分','总受理积分','服务调节受理积分','区域调节受理积分','老用户专享积分','存费业务积分','自备机续约积分','主副卡积分','流量语音包定制积分','维系积分','维系服务积分','维系区域积分','总积分','总积分金额'];
 	   _execute(3001,{type:12,
 			     data:{
 			    	  sql:sql,
