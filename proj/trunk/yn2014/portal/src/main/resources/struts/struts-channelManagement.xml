@@ -20,9 +20,9 @@
         </action>
         
         <action name="grpManager_*" class="org.apdplat.portal.channelManagement.action.GrpManagerAction" method="{1}">
-			<result name="success">/portal/grpManagement/jsp/grp_manage_list.jsp</result>
+			<result name="success">/portal/channelManagement/jsp/grp_manage_list.jsp</result>
         </action>
-        
+
         <action name="channelResource_*" class="org.apdplat.portal.channelManagement.action.ChannelResourceAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/channel_resource_list.jsp</result>
 			<result name="chanlInfo">/portal/channelManagement/jsp/channel_resource_details.jsp</result>
