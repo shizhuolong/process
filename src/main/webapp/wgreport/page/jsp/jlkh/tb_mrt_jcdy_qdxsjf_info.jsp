@@ -54,11 +54,11 @@
 		<div class="search-div" style="width: 100%;" id="contions"> 
 			<table>
 				<tr>
-					<td align="right" style="width:30px;">帐期</td>
+					<td align="left" style="width:30px;">帐期</td>
 					<td>
 						<input type="text" style="width:100px" class="Wdate" id="deal_date" readonly="readonly" value="<%=currentday %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/>
 					</td>
-					<td align="right">地市名称</td>
+					<td align="left">地市名称</td>
 					<td>
 						<div class="mutiSelect" style="width: 150px; font-size: 12px;">
 							<div class="ct" style="height: 16px; width: 150px">
@@ -69,23 +69,27 @@
 							</ul>
 						</div>
 					</td>
-					<td align="right">营服中心</td>
+					<td align="left">营服中心</td>
 					<td>
 						<input type="text" name="unit_name" id="unit_name">
 					</td>
-					<td align="right">人员姓名</td>
+					<td align="left">人员姓名</td>
 					<td>
 						<input type="text" name="user_name" id="user_name" style="width: 152px;">
 					</td>
 					</tr>
 					<tr>
-					<td align="right">用户号码</td>
+					<td align="left">用户号码</td>
 					<td>
 						<input type="text" name="service_num" id="service_num" style="width: 152px;">
 					</td>
-					<td align="right">业务描述</td>
+					<td align="left">业务描述</td>
 					<td>
 						<input type="text" name="itemdesc" id="itemdesc" style="width: 152px;">
+					</td>
+					<td align="left">备注</td>
+					<td>
+						<input type="text" name="remark" id="remark" style="width: 152px;">
 					</td>
 					<td align="left" colspan="3">
 						<input type="button" id="search" class="btn-search" style="float:left;"/>
