@@ -1,4 +1,4 @@
-var cols = ["deal_date","area_name","unit_name","user_name","hr_no","subscription_id","service_num","join_date","operator_id","hq_chanl_code","product_id","itemcode","itemdesc","itemvalue","developer_id","hq_chan_name","source_cre","hq_ratio","hq_cre","unit_ratio","unit_cre","unit_money"];
+var cols = ["deal_date","area_name","unit_name","user_name","hr_no","subscription_id","service_num","join_date","operator_id","hq_chanl_code","product_id","itemcode","itemdesc","itemvalue","developer_id","hq_chan_name","source_cre","hq_ratio","hq_cre","unit_ratio","unit_cre","unit_money","remark"];
 jQuery(function(){
 	//excel导出
 	$("#exceldown").click(downsAll);
@@ -33,7 +33,7 @@ jQuery(function(){
 	init(sql);
 	function init(sql){ 
 		var head="";
-		head +="<tr class='attend_th'><th class='attend_th'>账期</th><th class='attend_th'>地市</th><th class='attend_th'>营服中心</th><th class='attend_th'>人员姓名</th><th class='attend_th'>HR编码</th><th class='attend_th'>用户编码</th><th class='attend_th'>用户号码</th><th class='attend_th'>入网时间</th><th class='attend_th'>操作员工号</th><th class='attend_th'>渠道编码</th><th class='attend_th'>套餐编码</th><th class='attend_th'>指标编码</th><th class='attend_th'>指标描述</th><th class='attend_th'>指标值</th><th class='attend_th'>发展人编码</th><th class='attend_th'>渠道名称</th><th class='attend_th'>原始积分</th><th class='attend_th'>渠道系数</th><th class='attend_th'>乘渠道系数后积分</th><th class='attend_th'>区域系数</th><th class='attend_th'>乘区域系数后积分</th><th class='attend_th'>积分金额</th></tr>";
+		head +="<tr class='attend_th'><th class='attend_th'>账期</th><th class='attend_th'>地市</th><th class='attend_th'>营服中心</th><th class='attend_th'>人员姓名</th><th class='attend_th'>HR编码</th><th class='attend_th'>用户编码</th><th class='attend_th'>用户号码</th><th class='attend_th'>入网时间</th><th class='attend_th'>操作员工号</th><th class='attend_th'>渠道编码</th><th class='attend_th'>套餐编码</th><th class='attend_th'>指标编码</th><th class='attend_th'>指标描述</th><th class='attend_th'>指标值</th><th class='attend_th'>发展人编码</th><th class='attend_th'>渠道名称</th><th class='attend_th'>原始积分</th><th class='attend_th'>渠道系数</th><th class='attend_th'>乘渠道系数后积分</th><th class='attend_th'>区域系数</th><th class='attend_th'>乘区域系数后积分</th><th class='attend_th'>积分金额</th><th class='attend_th'>备注</th></tr>";
 		$("#tableData thead").empty(); 
 		$("#tableData tbody").empty(); 
 		$("#tableData thead").append(head);
@@ -46,6 +46,7 @@ jQuery(function(){
 		var unit_name = $.trim($("#unit_name").val());
 		var service_num=$.trim($("#service_num").val());
 		var itemdesc=$.trim($("#itemdesc").val());
+		var remark=$("#remark").val();
 		var fsql = getSelect();
 		var c=cols.join(",");
 		var sql = "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO  WHERE DEAL_DATE = " + deal_date +fsql;
@@ -68,6 +69,9 @@ jQuery(function(){
 		}
 		if(itemdesc!=""){
 			sql+=" AND ITEMDESC LIKE '%"+itemdesc+"%' ";
+		}
+		if(remark!=""){
+			sql+=" AND REMARK LIKE '%"+remark+"%' ";
 		}
 		init(sql);
 	});
@@ -249,6 +253,7 @@ function downsAll(){
 	var unit_name = $.trim($("#unit_name").val());
 	var service_num = $.trim($("#service_num").val());
 	var itemdesc=$.trim($("#itemdesc").val());
+	var remark=$("#remark").val();
 	var fsql = getSelect();
 	var c=cols.join(",");
 	var sql =  "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO  WHERE DEAL_DATE = " + deal_date +fsql ;
@@ -272,9 +277,12 @@ function downsAll(){
 	if(itemdesc != "") {
 		sql += " AND ITEMDESC LIKE '%"+itemdesc+"%' ";
 	}
+	if(remark != "") {
+		sql += " AND REMARK LIKE '%"+remark+"%' ";
+	}
 	var showtext="Sheet";
 	   var showtext1="result";
-	   var _head=["账期","地市","营服中心","人员姓名","HR编码","用户编码","用户号码","入网时间","操作员工号","渠道编码","套餐编码","指标编码","指标描述","指标值","发展人编码","渠道名称","原始积分","渠道系数","乘渠道系数后积分","区域系数","乘区域系数后积分","积分金额"];
+	   var _head=["账期","地市","营服中心","人员姓名","HR编码","用户编码","用户号码","入网时间","操作员工号","渠道编码","套餐编码","指标编码","指标描述","指标值","发展人编码","渠道名称","原始积分","渠道系数","乘渠道系数后积分","区域系数","乘区域系数后积分","积分金额","备注"];
 	   _execute(3001,{type:12,
 			     data:{
 			    	  sql:sql,
