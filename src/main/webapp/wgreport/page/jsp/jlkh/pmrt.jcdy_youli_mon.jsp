@@ -68,6 +68,6 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-<div style="color:red;font-size:15px;">备注：基层营业员有受理记录，但还未归入积分指标体系的业务类型<br/>  1、请市场部确定该业务是否计算积分，若纳入计算需定义其积分标准。</div>
+<div style="color:red;font-size:10px;">备注：基层营业员有受理记录，但还未归入积分指标体系的业务类型<br/>  1、请市场部确定该业务是否计算积分，若纳入计算需定义其积分标准。</div>
 </body>
 </html>

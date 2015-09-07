@@ -73,7 +73,7 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-		<div style="color:red;font-size:15px;">备注：已出积分但是没有对应到具体基层人员的清单 <br/> 1、梳理积分和基层人员的业务对应关系，并在系统中进行匹配处理<br/>  2、渠道系数为空关注游离渠道绑定和系数设置</div>
+		<div style="color:red;font-size:10px;">备注：已出积分但是没有对应到具体基层人员的清单 <br/> 1、梳理积分和基层人员的业务对应关系，并在系统中进行匹配处理<br/>  2、渠道系数为空关注游离渠道绑定和系数设置</div>
 
 </body>
 <script>
