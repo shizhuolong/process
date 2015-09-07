@@ -72,7 +72,7 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-		<div style="color:red;font-size:15px;">备注：固网专租线净增已出积分但是没有对应到具体人员的清单<br/>  1、梳理专线与发展人的对应关系，并在系统中进行匹配处理。</div>
+		<div style="color:red;font-size:10px;">备注：固网专租线净增已出积分但是没有对应到具体人员的清单<br/>  1、梳理专线与发展人的对应关系，并在系统中进行匹配处理。</div>
 
 </body>
 </html>
