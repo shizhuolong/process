@@ -33,10 +33,10 @@
 	<input type="hidden" id="itemCode" value="<%=itemCode%>">
 	
 		<form id="searchForm" method="post">
-			<table width="100%" style="margin: 10px 0;border:none;">
+			<table width="100%" style="border:none;">
 				<tr height="35px">
-					<td width="80%">&nbsp;</td>
-					<td width="20%"><a class="default-btn" href="#" id="exportBtn"
+					<td width="1%" style="background-color:LightBlue;"></td>
+					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-btn" href="#" id="exportBtn"
 						onclick="downsAll()">导出</a></td>
 				</tr>
 			</table>
@@ -54,8 +54,8 @@
 </body>
 <script>
 var nowData = [];
-var field = ["HR_NO","DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","RELE_OFFICE_ID","PRODUCT_ID","PRODUCT_NAME","DEVELOPER_ID","HQ_CHANL_CODE","FD_CHANL_CODE"];
-var title=[["HR编码","账期","用户编码","用户号码","入网时间","操作员编码","部门","套餐编码","套餐名称","发展人编码","渠道编码","总部编码"]];
+var field = ["DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","PRODUCT_ID","PRODUCT_NAME","DEVELOPER_ID","HQ_CHANL_CODE"];
+var title=[["账期","用户编码","用户号码","入网时间","操作员编码","套餐编码","套餐名称","发展人编码","渠道编码"]];
 var orderBy = ' order by DEAL_DATE asc ';
 var report = null;
 $(function() {
@@ -78,7 +78,7 @@ $(function() {
 	search(0);
 });
 
-var pageSize = 15;
+var pageSize = 10;
 //分页
 function initPagination(totalCount) {
 	$("#totalCount").html(totalCount);
@@ -103,18 +103,15 @@ function search(pageNumber) {
 	var itemCode = $("#itemCode").val();
 	var sql = "";
 	sql+=" SELECT                                                                              ";
-	sql+="     t.hr_no,                                                                        ";
 	sql+="     t.deal_date ,                                                                   ";
 	sql+="     t.subscription_id,                                                              ";
 	sql+="     t.service_num,                                                                  ";
 	sql+="     TO_CHAR(t.join_date, 'yyyy-MM-dd hh24:SS:mm') join_date,                        ";
 	sql+="     t.operator_id,                                                                  ";
-	sql+="     t.rele_office_id,                                                               ";
 	sql+="     t.product_id,                                                                   ";
 	sql+="     T.PRODUCT_NAME,                                                                 ";
 	sql+="     t.developer_id,                                                                 ";
-	sql+="     t.hq_chanl_code,                                                                ";
-	sql+=" 	t.fd_chanl_code                                                                    ";
+	sql+="     t.hq_chanl_code                                                                ";
 	sql+=" FROM (SELECT B.HR_NO, B.AREA_NAME, B.UNIT_NAME, B.USER_NAME, A.*                    ";
 	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
 	sql+="                (select group_id_1_name AREA_NAME,                                   ";
@@ -124,7 +121,7 @@ function search(pageNumber) {
 	sql+="                        USER_CODE       USER_CODE                                    ";
 	sql+="                   from portal.tab_portal_mag_person) b                              ";
 	sql+="          WHERE A.OPERATOR_ID = B.USER_CODE                                          ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                                   ";
+	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="         UNION ALL                                                                   ";
 	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
 	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
@@ -135,7 +132,7 @@ function search(pageNumber) {
 	sql+="                        HQ_CHAN_CODE                                                 ";
 	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON) B                              ";
 	sql+="          WHERE A.HQ_CHANL_CODE = B.HQ_CHAN_CODE                                     ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                                   ";
+	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="            AND A.HQ_CHANL_CODE NOT IN                                               ";
 	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person)              ";
 	sql+="         UNION ALL                                                                   ";
@@ -193,18 +190,15 @@ function downsAll() {
 //上网卡的表TB_MRT_JCDY_SWK_DEV_DAY ，
 	var sql = "";
 	sql+=" SELECT                                                                              ";
-	sql+="     t.hr_no,                                                                        ";
 	sql+="     t.deal_date ,                                                                   ";
 	sql+="     t.subscription_id,                                                              ";
 	sql+="     t.service_num,                                                                  ";
 	sql+="     TO_CHAR(t.join_date, 'yyyy-MM-dd hh24:SS:mm') join_date,                        ";
 	sql+="     t.operator_id,                                                                  ";
-	sql+="     t.rele_office_id,                                                               ";
 	sql+="     t.product_id,                                                                   ";
 	sql+="     T.PRODUCT_NAME,                                                                 ";
 	sql+="     t.developer_id,                                                                 ";
-	sql+="     t.hq_chanl_code,                                                                ";
-	sql+=" 	t.fd_chanl_code                                                                    ";
+	sql+="     t.hq_chanl_code                                                                ";
 	sql+=" FROM (SELECT B.HR_NO, B.AREA_NAME, B.UNIT_NAME, B.USER_NAME, A.*                    ";
 	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
 	sql+="                (select group_id_1_name AREA_NAME,                                   ";
@@ -214,7 +208,7 @@ function downsAll() {
 	sql+="                        USER_CODE       USER_CODE                                    ";
 	sql+="                   from portal.tab_portal_mag_person) b                              ";
 	sql+="          WHERE A.OPERATOR_ID = B.USER_CODE                                          ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                                   ";
+	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="         UNION ALL                                                                   ";
 	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
 	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
@@ -225,7 +219,7 @@ function downsAll() {
 	sql+="                        HQ_CHAN_CODE                                                 ";
 	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON) B                              ";
 	sql+="          WHERE A.HQ_CHANL_CODE = B.HQ_CHAN_CODE                                     ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                                   ";
+	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="            AND A.HQ_CHANL_CODE NOT IN                                               ";
 	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person)              ";
 	sql+="         UNION ALL                                                                   ";

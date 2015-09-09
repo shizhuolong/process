@@ -1743,8 +1743,8 @@ function showXsph() {
 						art.dialog.open(url,{
 							id:'xsphDetailDialog',
 							title:userName+"-上网卡发展详细",
-							width:'800px',
-							height:'320px',
+							width:'1200px',
+							height:'420px',
 							lock:true,
 							resize:false
 						});

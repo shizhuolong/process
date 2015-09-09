@@ -37,7 +37,7 @@
 	<input type="hidden" id="itemCode" value="<%=itemCode%>">
 	
 		<form id="searchForm" method="post">
-			<table width="100%" style="margin: 2px 0;border:none;">
+			<table width="100%" style="border:none;">
 				<tr height="35px">
 					<td width="1%" style="background-color:LightBlue;"></td>
 					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-btn" href="#" id="exportBtn"
@@ -133,7 +133,6 @@ function search(pageNumber) {
 	sql+="		t.service_num,                                                                         ";
 	sql+="		t.join_date,                                                                           ";
 	sql+="		t.operator_id,                                                                         ";
-	sql+="		t.office_id,                                                                           ";
 	sql+="		t.product_id,                                                                          ";
 	sql+="		t.developer_id,                                                                        ";
 	sql+="		t.itemdesc,                                                                            ";
@@ -192,19 +191,15 @@ function downsAll() {
 //上网卡的表TB_MRT_JCDY_SWK_DEV_DAY ，
 	var sql = "";
 	sql+="	select                                                                                     ";
-	sql+="		t.hr_no,                                                                               ";
 	sql+="		t.deal_date,                                                                           ";
 	sql+="		t.subscription_id,                                                                     ";
 	sql+="		t.service_num,                                                                         ";
 	sql+="		t.join_date,                                                                           ";
 	sql+="		t.operator_id,                                                                         ";
-	sql+="		t.office_id,                                                                           ";
 	sql+="		t.product_id,                                                                          ";
 	sql+="		t.developer_id,                                                                        ";
 	sql+="		t.itemdesc,                                                                            ";
-	sql+="		t.hq_chanl_code,                                                                       ";
-	sql+="		t.hq_chan_name,                                                                        ";
-	sql+="		t.fd_chanl_code                                                                        ";
+	sql+="		t.hq_chan_name                                                                        ";
 	sql+="	from(                                                                                      ";
 	sql+="		select * from pmrt.TB_MRT_JCDY_JKXSJF_DAY                                              ";
 	sql+="		UNION                                                                                  ";
