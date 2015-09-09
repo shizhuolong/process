@@ -1760,7 +1760,7 @@ function showJfph() {
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var time =$("#time").val();
+	var time =$("#curMonthJfpm").val();
 	if(orgLevel==1 || orgLevel==2){
 		var thead="<tr><th>地市</th><th>营服中心</th><th>销售积分</th><th>受理积分</th><th>维系积分</th><th>总积分</th><th>总积分金额</th><th>省排名</th><th>地市排名</th></tr>";
 		$("#jfphTable thead").empty().append(thead);
