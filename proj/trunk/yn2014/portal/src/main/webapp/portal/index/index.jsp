@@ -177,20 +177,20 @@ $(function(){
                                 	</style>
                                 
                                     <span id="xcTitle"><i class="menu-toDo"></i>我的薪酬(<%=xctime %>)</span>
-                                   	<a style="color:#fc9215;" href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_jftc">提成奖励: 0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_zxjl">专项奖励: 0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="xc_sum">合计:0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="fact_total">实发合计:0</a>
+                                   	<a style="color:#191970;" href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="xc_jftc">提成奖励: 0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="xc_zxjl">专项奖励: 0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="xc_sum">合计:0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="fact_total">实发合计:0</a>
                                 </div>
                                  <div classType="left-module" moduleid="left-2" title="我的积分">
-                                    <span id="xcTitle"><i class="menu-toDo"></i>我的积分(<%=time %>)</span>
-                                   	<a style="color:#fc9215;" href="javascript:void(0);" id="unit_alljf">区域调节销售积分:0 </a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="unit_sl_alljf">区域调节受理积分: 0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="wx_unit_cre">维系积分: 0</a>
-                                    <a style="color:#fc9215;" href="javascript:void(0);" id="all_jf">总积分: 0</a>
+                                    <span id="jfTitle"><i class="menu-toDo"></i>我的积分(<%=time %>)</span>
+                                   	<a style="color:#191970;" href="javascript:void(0);" id="unit_alljf">区域调节销售积分:0 </a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="unit_sl_alljf">区域调节受理积分: 0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="wx_unit_cre">维系积分: 0</a>
+                                    <a style="color:#191970;" href="javascript:void(0);" id="all_jf">总积分: 0</a>
                                 </div>
                                 <div classType="left-module" moduleid="left-3" title="待办工作">
                                     <span><i class="menu-toDo"></i>待办工作</span>
