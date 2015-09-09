@@ -1679,8 +1679,8 @@ function showXsph() {
 						art.dialog.open(url,{
 							id:'xsphDetailDialog',
 							title:userName+"-2G发展详细",
-							width:'530px',
-							height:'320px',
+							width:'1200px',
+							height:'420px',
 							lock:true,
 							resize:false
 						});
@@ -1700,8 +1700,8 @@ function showXsph() {
 						art.dialog.open(url,{
 							id:'xsphDetailDialog',
 							title:userName+"-3G发展详细",
-							width:'530px',
-							height:'320px',
+							width:'1200px',
+							height:'420px',
 							lock:true,
 							resize:false
 						});
@@ -1721,8 +1721,8 @@ function showXsph() {
 						art.dialog.open(url,{
 							id:'xsphDetailDialog',
 							title:userName+"-4G发展详细",
-							width:'530px',
-							height:'320px',
+							width:'1200px',
+							height:'420px',
 							lock:true,
 							resize:false
 						});
@@ -1743,7 +1743,7 @@ function showXsph() {
 						art.dialog.open(url,{
 							id:'xsphDetailDialog',
 							title:userName+"-上网卡发展详细",
-							width:'530px',
+							width:'800px',
 							height:'320px',
 							lock:true,
 							resize:false
@@ -1760,12 +1760,12 @@ function showJfph() {
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var time =$("#xctime").val();
+	var time =$("#time").val();
 	if(orgLevel==1 || orgLevel==2){
 		var thead="<tr><th>地市</th><th>营服中心</th><th>销售积分</th><th>受理积分</th><th>维系积分</th><th>总积分</th><th>总积分金额</th><th>省排名</th><th>地市排名</th></tr>";
 		$("#jfphTable thead").empty().append(thead);
 		
-		var sql ="SELECT * FROM  PMRT.TB_MRT_JCDY_UNITJF_RANK_MON T WHERE T.DEAL_DATE='"+time+"' and rownum<17 ";
+		var sql ="SELECT * FROM  PMRT.TB_MRT_JCDY_UNITJF_RANK_MON T WHERE T.DEAL_DATE='"+time+"'  ";
 		if(orgLevel==1){
 			sql+=" ORDER BY PRO_RANK,GROUP_RANK ASC,GROUP_ID_1,UNIT_ID";
 		}else if(orgLevel==2){
@@ -1773,7 +1773,7 @@ function showJfph() {
 		}else{
 			
 		}
-		var data=query(sql);
+		var data=query("select t.* from ("+sql+") t where rownum<17 ");
 		var str='';
 		if(data&&data.length>0){
 			for(var i=0;i<data.length;i++){
