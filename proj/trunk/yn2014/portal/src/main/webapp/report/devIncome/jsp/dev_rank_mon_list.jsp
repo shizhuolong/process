@@ -17,26 +17,30 @@
 <title>用户发展详细列表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 
 <!-- script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/income_and_dev_day_list.js"></script-->
 </head>
-<body class="" style="overflow-x:auto;">
+<body class="" style="overflow-x:auto;min-width:800px;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="hrNo" value="<%=hrNo%>">
 	<input type="hidden" id="time" value="<%=time%>">
 	<input type="hidden" id="itemCode" value="<%=itemCode%>">
 	
 		<form id="searchForm" method="post">
-			<table width="100%" style="margin: 10px 0;border:none;">
+			<table width="100%" style="margin: 2px 0;border:none;">
 				<tr height="35px">
-					<td width="80%">&nbsp;</td>
-					<td width="20%"><a class="default-btn" href="#" id="exportBtn"
+					<td width="1%" style="background-color:LightBlue;"></td>
+					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-btn" href="#" id="exportBtn"
 						onclick="downsAll()">导出</a></td>
 				</tr>
 			</table>
@@ -54,8 +58,10 @@
 </body>
 <script>
 var nowData = [];
-var field = ["HR_NO","DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","DEVELOPER_ID","ITEMDESC","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE"];               
-var title=[["HR编码","账期 ","用户编号","用户号码 ","入网时间 ","操作员工号","部门编码"," 套餐编码","发展人编码","业务描述  ","所属渠道"," 渠道名称 ","渠道总部编码"]];
+var field = ["DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","PRODUCT_ID","DEVELOPER_ID","ITEMDESC","HQ_CHAN_NAME"];               
+var title=[["账期 ","用户编号","用户号码 ","入网时间 ","操作员工号"," 套餐编码","发展人编码","业务描述  "," 渠道名称 "]];
+//var field = ["HR_NO","DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","DEVELOPER_ID","ITEMDESC","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE"];               
+//var title=[["HR编码","账期 ","用户编号","用户号码 ","入网时间 ","操作员工号","部门编码"," 套餐编码","发展人编码","业务描述  ","所属渠道"," 渠道名称 ","渠道总部编码"]];
 var orderBy = ' order by DEAL_DATE asc ';
 var report = null;
 /*
@@ -95,7 +101,7 @@ $(function() {
 	search(0);
 });
 
-var pageSize = 15;
+var pageSize = 10;
 //分页
 function initPagination(totalCount) {
 	$("#totalCount").html(totalCount);
