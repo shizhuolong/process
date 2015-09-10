@@ -85,7 +85,7 @@ $(function(){
 				if(orgLevel==1){//省
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where 1=1 ';//
+					where=' where 1=1 ';
 					orgLevel=2;
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
