@@ -8,6 +8,7 @@
 		this.title=options.title;
 		this.content=options.content;
 		this.field=options.field;
+		this.css=options.css;
 		this.rowParams=options.rowParams;
 		this.getSubRows=options.getSubRowsCallBack;//获取数据回调函数
 		this.afterShowSubRows=options.afterShowSubRows;
@@ -411,8 +412,28 @@
 						showSubRowFuncThis.showSubRow($thisTr);
 				});
 			}
-			//var end = new Date().getTime();//起始时间
-			//alert(end-start);
+			//样式处理
+			if(this.css instanceof Array&&this.css.length>0){
+				var csses=this.css;
+				$("#lch_DataBody").find("TR").each(function(){
+					for(var i=0;i<csses.length;i++){
+						var css=csses[i];
+						if(css.eq!=undefined){
+							$(this).find("TD:eq("+css.eq+")").css(css.css);
+						}
+						if(css.gt!=undefined &&css.lt==undefined){
+							$(this).find("TD:gt("+css.gt+")").css(css.css);
+						}
+						if(css.gt==undefined&&css.lt!=undefined){
+							$(this).find("TD:lt("+css.lt+")").css(css.css);
+						}
+						if(css.gt!=undefined&&css.lt!=undefined){
+							$(this).find("TD:gt("+css.gt+"):lt("+css.lt+")").css(css.css);
+						}
+					}
+				});
+			}
+			
 			if(this.afterShowSubRows){
 				this.afterShowSubRows();
 			}
