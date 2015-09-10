@@ -93,6 +93,7 @@ var nowData = [];
 
 			],
 			field : field,
+			css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
 			rowParams : [],//第一个为rowId
 			content : "lchcontent",
 			orderCallBack : function(index, type) {

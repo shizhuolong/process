@@ -144,6 +144,7 @@ $(function(){
 
 		],
 		field:["ROW_NAME"].concat(field),
+		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
 		rowParams:["ROW_ID","PER_TYPE"],//第一个为rowId
 		content:"content",
 		orderCallBack:function(index,type){

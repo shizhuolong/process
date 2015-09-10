@@ -34,6 +34,7 @@ $(function(){
 		        "合计","ADSL在网用户数","LAN在网用户数","EOC在网用户数","FTTH在网用户数",
 		        "合计","ADSL出账用户数","LAN出账用户数","EOC出账用户数","FTTH出账用户数"]],
 		field:["ROW_NAME"].concat(field),
+		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
 		rowParams:["ROW_ID"],//第一个为rowId
 		content:"content",
 		orderCallBack:function(index,type){

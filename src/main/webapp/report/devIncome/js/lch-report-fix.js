@@ -412,6 +412,14 @@
 						showSubRowFuncThis.showSubRow($thisTr);
 				});
 			}
+			
+			
+			
+			if(this.resizeTable){
+				this.resizeTable();
+			}
+			this.renderLeft();
+			
 			//样式处理
 			if(this.css instanceof Array&&this.css.length>0){
 				var csses=this.css;
@@ -433,14 +441,9 @@
 					}
 				});
 			}
-			
 			if(this.afterShowSubRows){
 				this.afterShowSubRows();
 			}
-			if(this.resizeTable){
-				this.resizeTable();
-			}
-			this.renderLeft();
 		},
 		renderLeft:function(){
 			//处理左边
