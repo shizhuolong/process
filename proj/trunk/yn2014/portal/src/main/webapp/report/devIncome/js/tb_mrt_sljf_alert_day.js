@@ -7,7 +7,8 @@ $(function(){
 		],
 		field:["ROW_NAME"].concat(field),
 		css:[
-		     {gt:0,lt:2,css:{color:"#FF4500"}}
+		     {gt:0,lt:2,css:{color:"#FF4500"}},
+		     {gt:0,css:{textAlign:"right"}}
 		    ],
 		rowParams:["ROW_ID","ROW_NAME"],//第一个为rowId
 		content:"content",
