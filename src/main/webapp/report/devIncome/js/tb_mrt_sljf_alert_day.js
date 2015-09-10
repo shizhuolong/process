@@ -3,7 +3,7 @@ var orderBy='';
 $(function(){
 	var report=new LchReport({
 		title:[
-["组织架构","总积分波动","受理量波动","本月受理量","本月基础积分","本月服务积分","本月增值业务积分","本月受理原始积分","本月调节受理积分","本月积分提成","上月受理量","上月基础积分","上月服务积分","上月增值业务积分","上月受理原始积分","上月调节受理积分","上月积分提成"]
+["组织架构","总积分波动","受理量波动","本日受理量","本日基础积分","本日服务积分","本日增值业务积分","本日受理原始积分","本日调节受理积分","本日积分提成","上日受理量","上日基础积分","上日服务积分","上日增值业务积分","上日受理原始积分","上日调节受理积分","上日积分提成"]
 		],
 		field:["ROW_NAME"].concat(field),
 		css:[
@@ -21,13 +21,13 @@ $(function(){
 				var qdate = $.trim($("#time").val());
 				var hrId=$tr.attr("row_id");
 				var user=$tr.attr("row_name");
-				var sql="select * from pmrt.tb_mrt_sljf_detail_alert_mon where hr_id='"+hrId+"' and thisny='"+qdate+"'";
+				var sql="select * from pmrt.tb_mrt_sljf_detail_alert_day@ynsyn13 where hr_id='"+hrId+"' and thisny='"+qdate+"'";
 				var d=query(sql);
 				if(d&&d.length){
 					var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
-						+"<table><thead class='lch_DataHead'><tr><th>受理业务编码</th><th>受理业务描述</th><th>本月受理量 </th><th>上月受理量 </th></tr></thead><tbody class='lch_DataBody'>";
+						+"<table><thead class='lch_DataHead'><tr><th>受理业务编码</th><th>受理业务描述</th><th>本日受理量 </th><th>上日受理量 </th></tr></thead><tbody class='lch_DataBody'>";
 						for(var i=0;i<d.length;i++){
-							//<th>本月账期</th><th>上月账期</th><th>HR编码</th>
+							//<th>本日账期</th><th>上日账期</th><th>HR编码</th>
 								/*h+="<tr><td>"+isNull(d[i]["THISNY"])
 								+"</td><td>"+isNull(d[i]["LASTNY"])
 								+"</td><td>"+isNull(d[i]["HR_ID"])*/
@@ -42,7 +42,7 @@ $(function(){
 						+"</div>";
 						if(d.length>=1){
 							art.dialog({
-							    title: '月受理人员明细波动 -'+user+"("+qdate+")",
+							    title: '日受理人员明细波动 -'+user+"("+qdate+")",
 							    content: h,
 							    padding: 0,
 							    lock:true
@@ -84,7 +84,7 @@ $(function(){
 				if(orgLevel==1){//省
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where 1=1 ';
+					where=' where 1=1 and group_id_1 is not null ';
 					orgLevel=2;
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
@@ -98,7 +98,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+','+getSumSql(field)+' from pmrt.tb_mrt_sljf_alert_mon t ';
+			var sql='select '+preField+','+getSumSql(field)+' from pmrt.tb_mrt_sljf_alert_day@ynsyn13 t ';
 			
 			
 			if(where!=''&&qdate!=''){
@@ -202,7 +202,7 @@ function downsAll() {
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from pmrt.tb_mrt_sljf_alert_mon t';
+			+ ' from pmrt.tb_mrt_sljf_alert_day@ynsyn13 t';
 	if (where != '') {
 		sql += where;
 	}
@@ -210,8 +210,8 @@ function downsAll() {
 		sql += orderBy;
 	}
 	
-	showtext = '月受理波动报表-' + qdate;
-	var title=[["地市名称","营服名称","姓名","HR编码","本月账期","上月账期","总积分波动","受理量波动","本月受理量","本月基础积分","本月服务积分","本月增值业务积分","本月受理原始积分","本月调节受理积分","本月积分提成","上月受理量","上月基础积分","上月服务积分","上月增值业务积分","上月受理原始积分","上月调节受理积分","上月积分提成"]];
+	showtext = '日受理波动报表-' + qdate;
+	var title=[["地市名称","营服名称","姓名","HR编码","本日账期","上日账期","总积分波动","受理量波动","本日受理量","本日基础积分","本日服务积分","本日增值业务积分","本日受理原始积分","本日调节受理积分","本日积分提成","上日受理量","上日基础积分","上日服务积分","上日增值业务积分","上日受理原始积分","上日调节受理积分","上日积分提成"]];
 
 	downloadExcel(sql,title,showtext);
 }
