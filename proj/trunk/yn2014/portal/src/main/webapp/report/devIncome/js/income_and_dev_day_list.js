@@ -167,13 +167,11 @@ function search(pageNumber) {
 
 	var sql = "";
 	if (agentId != 'undefined') {
-		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY t where t.deal_date='"
-				+ month + "' and t.unit_id='" + unitId
+		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY partition(P"+month+") t where  t.unit_id='" + unitId
 				+ "' and t.per_type='" + agentType
 				+ "' and  t.AGENT_M_USERID='" + agentId + "' ";
 	} else {
-		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY t where t.deal_date='"
-				+ month + "' and t.unit_id='" + unitId
+		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY partition(P"+month+") t where  t.unit_id='" + unitId
 				+ "' and t.per_type='" + agentType
 				+ "' and t.AGENT_M_USERID is null ";
 	}
@@ -228,13 +226,11 @@ function downsAll() {
 
 	var sql = "";
 	if (agentId != 'undefined') {
-		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY t where t.deal_date='"
-				+ month + "' and t.unit_id='" + unitId
+		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY partition(P"+month+") t where  t.unit_id='" + unitId
 				+ "' and t.per_type='" + agentType
 				+ "' and t.AGENT_M_USERID='" + agentId + "' ";
 	} else {
-		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY t where t.deal_date='"
-				+ month + "' and t.unit_id='" + unitId
+		sql += "  from PMRT.TAB_MRT_TARGET_CH_DAY partition(P"+month+") t where t.unit_id='" + unitId
 				+ "' and t.per_type='" + agentType
 				+ "' and t.AGENT_M_USERID is null ";
 	}

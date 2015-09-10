@@ -186,8 +186,8 @@ $(function(){
 					where=' where t.GROUP_ID_0=\''+code+"\' ";
 					orgLevel=2;
 					
-					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.TAB_MRT_TARGET_CH_DAY t ';
-					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  and  t.DEAL_DATE='+qdate+' ';
+					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.TAB_MRT_TARGET_CH_DAY partition(P'+qdate+') t ';
+					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  ';
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
@@ -205,11 +205,11 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+','+sumSql+' from PMRT.TAB_MRT_TARGET_CH_DAY t';
+			var sql='select '+preField+','+sumSql+' from PMRT.TAB_MRT_TARGET_CH_DAY partition(P'+qdate+') t ';
 			
-			if(where!=''&&qdate!=''){
+			/*if(where!=''&&qdate!=''){
 				where+=' and  t.DEAL_DATE='+qdate+' ';
-			}
+			}*/
 			if(where!=''){
 				sql+=where;
 			}
@@ -287,12 +287,12 @@ function downsAll() {
 	} else if (orgLevel >= 4) {//
 		where = " where t.GROUP_ID_4='" + code + "' ";
 	}
-	if(where!=''&&qdate!=''){
+	/*if(where!=''&&qdate!=''){
 		where+=' and  t.DEAL_DATE='+qdate+' ';
-	}
+	}*/
 
 	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from PMRT.TAB_MRT_TARGET_CH_DAY t';
+			+ ' from PMRT.TAB_MRT_TARGET_CH_DAY partition(P'+qdate+')  t ';
 	if (where != '') {
 		sql += where;
 	}
