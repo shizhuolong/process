@@ -22,7 +22,7 @@ TABLE{
 			border-bottom: 1px solid #c0e2ef;
 			padding: 6px 12px;
 			box-sizing: border-box;
-			min-width:10px;
+			min-width:120px;
 		}
 		#lch_DataBody TR,#lch_table_left TR{
 			background-color: #fff;
