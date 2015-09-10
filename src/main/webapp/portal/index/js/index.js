@@ -1777,7 +1777,7 @@ function showJfph() {
 		var str='';
 		if(data&&data.length>0){
 			for(var i=0;i<data.length;i++){
-				str+= "<tr>";
+				str+= "<tr unitId='"+data[i].UNIT_ID+"' dealDate='"+data[i].DEAL_DATE+"' unitName='"+data[i].UNIT_NAME+"'>";
 				str+="<td>"+isNull(data[i].AREA_NAME)+"</td>";
 				str+="<td>"+isNull(data[i].UNIT_NAME)+"</td>";
 				str+="<td>"+isNull(data[i].UNIT_ALLJF)+"</td>";
@@ -1795,6 +1795,22 @@ function showJfph() {
 			str+= "</tr>";
 		}
 		$("#jfphTable tbody").empty().append(str);
+		$("#jfphTable tbody").find("TR").click(function(){
+			var unitId=$(this).attr("unitId");
+			var unitName=$(this).attr("unitName");
+			var dealDate=$(this).attr("dealDate");
+			if(unitId&&unitId!=''){
+				var url=$("#ctx").val()+"/report/devIncome/jsp/jfph_rank_index_detail.jsp?unitId="+unitId+"&dealDate="+dealDate;
+				art.dialog.open(url,{
+					id:'jfPhProAndAreaDetailDialog',
+					title:unitName+"-"+dealDate,
+					width:'1200px',
+					//height:'420px',
+					lock:true,
+					resize:false
+				});
+			}
+		});
 	}else{
 		$.ajax({
 			url:$("#ctx").val()+"/index/index_listJfph.action",
