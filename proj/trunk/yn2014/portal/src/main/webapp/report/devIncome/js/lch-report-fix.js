@@ -713,3 +713,6 @@ String.prototype.startWith = function(str) {
 		return false;
 	return true;
 }
+
+
+LchReport.RIGHT_ALIGN={textAlign:"right"};
