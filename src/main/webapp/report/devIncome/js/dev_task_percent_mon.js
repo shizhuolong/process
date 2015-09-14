@@ -9,6 +9,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
+		css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
 		rowParams : ["HR_ID","USER_TYPE_DESC","TAEGET_NAME"],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
