@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td>积分单价:</td>
-					<td><input type="text" required="true" class="easyui-numberbox" missingMessage="积分单价不能为空" precision="4" name="money" id="money"></td>
+					<td><input type="text" required="true" class="" missingMessage="积分单价不能为空" precision="4" name="money" id="money"></td>
 				</tr>
 				<tr>
 	                <td colspan="2" style="padding-left: 120px;">
