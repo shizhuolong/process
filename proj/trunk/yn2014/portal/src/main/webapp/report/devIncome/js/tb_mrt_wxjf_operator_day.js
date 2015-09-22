@@ -86,11 +86,9 @@ function search(pageNumber) {
 		
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
-	}else/* if(orgLevel==3)*/{
-		//sql+=" and t.UNIT_ID='"+code+"'";
-	//}else{
+	}else{
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
+		/*var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
 		var rd=query(rsql);
 		if(rd&&rd.length){
 			var hrsql="";
@@ -139,11 +137,12 @@ function search(pageNumber) {
 			}
 		}else{
 			sql+=" and t.HR_ID='"+hrId+"'";
-		}
+		}*/
+		 var hrIds=_jf_power(hrId);
+		 if(hrIds!=""){
+		   sql+=" and t.HR_ID in("+hrIds+") ";
+		 }
 	}
-	
-	
-	
 	var csql = sql;
 	var cdata = query("select count(*) total" + csql);
 	var total = 0;
@@ -152,14 +151,11 @@ function search(pageNumber) {
 	}else{
 		return;
 	}
-
 	//排序
 	if (orderBy != '') {
 		sql += orderBy;
 	}
-
 	sql = "select * " + sql;
-
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
@@ -167,7 +163,6 @@ function search(pageNumber) {
 		initPagination(total);
 	}
 	nowData = d;
-
 	report.showSubRow();
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
@@ -326,18 +321,16 @@ function downsAll(){
 		
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
-	}else/* if(orgLevel==3)*/{
-		//sql+=" and t.UNIT_ID='"+code+"'";
-	//}else{
+	}else{
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
-		var rd=query(rsql);
-		if(rd&&rd.length){
-			var hrsql="";
-			for(var i=0;i<rd.length;i++){
+		/*var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
+		var rd=query(rsql);*/
+		/*if(rd&&rd.length){
+			var hrsql="";*/
+			/*for(var i=0;i<rd.length;i++){
 				var v=rd[i]["USER_CODE"];
-				var tsql="";
-				if(v==1){
+				var tsql="";*/
+/*				if(v==1){
 					tsql+=" select tt.hr_no                                                      ";
 					tsql+="   from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON tt                        ";
 					tsql+=" where tt.unit_id = '"+code+"'                                            ";
@@ -365,21 +358,26 @@ function downsAll(){
 					tsql+=" union                                                                ";
 					tsql+=" select distinct a.hr_id                                              ";
 					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"'       ";
-				}
-				if(tsql!=""&&hrsql!=""){
+				}*/
+				/*if(tsql!=""&&hrsql!=""){
 					hrsql+=" union "+tsql;
 				}else{
 					hrsql+=tsql;
-				}
-			}
+				}*/
+		 var hrIds=_jf_power(hrId);
+		 if(hrIds!=""){
+		   sql+=" and t.HR_ID in("+hrIds+") ";
+		 }
+		   /*}
 			if(hrsql!=""){
 				sql+=" and t.HR_ID in("+hrsql+")";
 			}else{
 				sql+=" and t.HR_ID='"+hrId+"'";
-			}
-		}else{
+			}*/
+			
+		/*}else{
 			sql+=" and t.HR_ID='"+hrId+"'";
-		}
+		}*/
 	}
 	//排序
 	if (orderBy != '') {
