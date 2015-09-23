@@ -13,7 +13,10 @@ $(function(){
 		title:title,
 		field:["GROUPNAME"].concat(field),
 		css:[
-		     {gt:0,css:LchReport.RIGHT_ALIGN}
+		     {gt:0,css:LchReport.RIGHT_ALIGN},
+		     {eq:1,css:LchReport.SUM_PART_STYLE},
+		     {eq:9,css:LchReport.SUM_PART_STYLE},
+		     {eq:8,css:LchReport.SUM_STYLE}
 		    ],
 		rowParams:["GROUPID","GROUPNAME"],//第一个为rowId
 		content:"lchcontent",
