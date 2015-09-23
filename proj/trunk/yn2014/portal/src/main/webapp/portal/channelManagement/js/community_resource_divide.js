@@ -11,7 +11,7 @@ $(function() {
 	//关闭dailog
 	$("#cancleBtn").click(function(){
 		var win = artDialog.open.origin;//来源页面
-		win.art.dialog({id: 'networkDivideDialog'}).close();
+		win.art.dialog({id: 'communityDivideDialog'}).close();
 
 	});
 	$("#saveBtn").click(function(){
