@@ -603,7 +603,7 @@ String.prototype.startWith = function(str) {
 
 
 LchReport.RIGHT_ALIGN={textAlign:"right"};
-LchReport.SUM_STYLE={background:'lightcoral'};
+LchReport.SUM_STYLE={background:'lightyellow'};
 LchReport.SUM_PART_STYLE={background:'lightcyan'};
 
 function _jf_power(hrId){
