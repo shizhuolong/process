@@ -39,9 +39,9 @@
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time %>" id="time">
+					<td width="20%">
+						<input type="text" style="width:90px;float:left;" class="Wdate default-text-input wper80"	onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time%>" id="starttime"/><span style="float:left;">至</span>
+						<input type="text" style="float:left;width:90px;" class="Wdate default-text-input wper80"	onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time%>" id="endtime"/>
 					</td>
 					<td width="4%">地市：</td>
 					<td width="13%">
