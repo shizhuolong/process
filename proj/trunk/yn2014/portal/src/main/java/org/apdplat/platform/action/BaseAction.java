@@ -41,7 +41,11 @@ public class BaseAction extends ActionSupport {
 	
 	protected void outJsonPlainString(HttpServletResponse response, String json){
 		 
-		response.setContentType("text/json;charset=UTF-8");
+		//response.setContentType("text/json;charset=UTF-8");
+		//设置编码及文件格式   
+		response.setContentType("text/html;charset=UTF-8");
+		//设置不使用缓存   
+		response.setHeader("Cache-Control","no-cache"); 
 		try {
 		  outString(response, json);
 		} catch (Exception e) {
