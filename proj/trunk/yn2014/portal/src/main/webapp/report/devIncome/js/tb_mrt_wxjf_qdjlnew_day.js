@@ -50,16 +50,15 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var phoneNumber=$("#phoneNumber").val();
-	var time=$("#time").val();
+	var starttime=$("#starttime").val();
+	var endtime=$("#endtime").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 	var itemDesc=$.trim($("#itemDesc").val());
 //条件
 	var sql = " from PMRT.TB_MRT_WXJF_QDJLNEW_DAY t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
+	sql+=" and t.DEAL_DATE BETWEEN '"+starttime+"' and '"+endtime+"'";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
@@ -151,10 +150,8 @@ function search(pageNumber) {
 		return;
 	}
 
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
+	orderBy=" order by t.deal_date "
+	sql += orderBy;
 
 	sql = "select * " + sql;
 
@@ -290,7 +287,8 @@ function roundN(number,fractionDigits){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var sql="";
-	var time=$("#time").val();
+	var starttime=$("#starttime").val();
+	var endtime=$("#endtime").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
@@ -298,9 +296,7 @@ function downsAll(){
 	var itemDesc=$.trim($("#itemDesc").val());
 	//条件
 	var sql = " from PMRT.TB_MRT_WXJF_QDJLNEW_DAY t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
+	sql+=" and t.DEAL_DATE BETWEEN '"+starttime+"' and '"+endtime+"'";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
@@ -381,13 +377,12 @@ function downsAll(){
 		}
 	}
 	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
+	orderBy=" order by t.deal_date "
+	sql += orderBy;
 
 	sql = "select "+field.join(",") + sql;
 	
-	showtext = ' 渠道经理维系日积分-'+time;
+	showtext = ' 渠道经理维系日积分-'+starttime+"-"+endtime;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
