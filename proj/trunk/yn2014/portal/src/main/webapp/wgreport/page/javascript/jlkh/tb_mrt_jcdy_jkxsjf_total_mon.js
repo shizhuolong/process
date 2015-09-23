@@ -35,6 +35,11 @@ jQuery(function(){
 	}else if(group_level==2){
 		sql += "AND t.GROUP_ID_1 = '"+group_id+"' ";
 	}else{
+		 var hrIds=_jf_power(hrId);
+		 if(hrIds!=""){
+		   sql+=" and t.HR_NO in("+hrIds+") ";
+		 }
+		/*
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
 		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
 		var rd=query(rsql);
@@ -86,7 +91,7 @@ jQuery(function(){
 		}else{
 			sql+=" and t.HR_NO='"+hrId+"'";
 		}
-	}
+	*/}
 	init(sql);
 	function init(sql){ 
 		var head="";
@@ -113,6 +118,11 @@ jQuery(function(){
 		}else if(group_level==2) {
 			sql += " AND t.GROUP_ID_1 = '"+group_id+"' ";
 		}else{
+			 var hrIds=_jf_power(hrId);
+			 if(hrIds!=""){
+			   sql+=" and t.HR_NO in("+hrIds+") ";
+			 }
+			/*
 			//1-营服中心责任人、6-营业厅主人、7-行业总监
 			var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
 			var rd=query(rsql);
@@ -164,7 +174,7 @@ jQuery(function(){
 			}else{
 				sql+=" and t.HR_NO='"+hrId+"'";
 			}
-		}/*else if(group_level == 3) {
+		*/}/*else if(group_level == 3) {
 			sql += " AND UNIT_ID = '"+group_id+"' ";
 		}else {
 			sql += " 1=2 ";
@@ -358,6 +368,11 @@ function downsAll(){
 	}else if(group_level==2) {
 		sql += " AND t.GROUP_ID_1 = '"+group_id+"' ";
 	}else{
+		var hrIds=_jf_power(hrId);
+		if(hrIds!=""){
+		   sql+=" and t.HR_NO in("+hrIds+") ";
+		}
+		/*
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
 		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
 		var rd=query(rsql);
@@ -409,7 +424,7 @@ function downsAll(){
 		}else{
 			sql+=" and t.HR_NO='"+hrId+"'";
 		}
-	}
+	*/}
 	if(unit_name != "") {
 		sql += " AND t.UNIT_NAME LIKE '%"+unit_name+"%' ";
 	}
