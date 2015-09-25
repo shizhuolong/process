@@ -85,7 +85,7 @@ function search(pageNumber) {
 	"  FROM (SELECT T.*, T1.F_HR_ID                              "+
 	"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON T             "+
 	"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID         "+
-	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON) T1 "+
+	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where f_hr_id<>hr_id) T1 "+
 	"            ON T.HR_ID = T1.HR_ID                           "+
 	"         WHERE T.DEAL_DATE = '"+time+"' ) T                 "+
 	"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                  "+
@@ -293,7 +293,7 @@ function downsAll(){
 	"  FROM (SELECT T.*, T1.F_HR_ID                              "+
 	"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON T             "+
 	"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID         "+
-	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON) T1 "+
+	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where f_hr_id<>hr_id) T1 "+
 	"            ON T.HR_ID = T1.HR_ID                           "+
 	"         WHERE T.DEAL_DATE = '"+time+"' ) T                 "+
 	"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                  "+
