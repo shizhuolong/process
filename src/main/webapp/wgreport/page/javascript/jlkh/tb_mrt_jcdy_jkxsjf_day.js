@@ -29,14 +29,23 @@ jQuery(function(){
 			"T.UNIT_CRE,T.UNIT_MONEY FROM " +
 			"PMRT.TB_MRT_JCDY_JKXSJF_DAY T "+
 			" WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' ";
-			if(group_level == 1) {
+			/*if(group_level == 1) {
 			}else if(group_level==2) {
 				sql += "AND T.GROUP_ID_1 = '"+group_id+"' ";
 			}else if(group_level == 3) {
 				sql += "AND T.UNIT_ID = '"+group_id+"' ";
 			}else {
 				sql += " 1=2";
-			}
+			}*/
+	if(group_level == 1) {
+	}else if(group_level==2) {
+		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
+	}else{
+		var hrIds=_jf_power(hrId);
+		if(hrIds!=""){
+		   sql+=" and T.HR_NO in("+hrIds+") ";
+		}
+	}	
 			sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	init(sql);
 	function init(sql){ 
@@ -81,14 +90,23 @@ jQuery(function(){
 		if(service_num!=null && service_num.length != 0){
 			sql+="AND T.SERVICE_NUM = '"+service_num+"' ";
 		}
-		if(group_level == 1) {
+		/*if(group_level == 1) {
 		}else if(group_level==2) {
 			sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 		}else if(group_level == 3) {
 			sql += " AND T.UNIT_ID = '"+group_id+"' ";
 		}else {
 			sql += " 1=2 ";
-		}
+		}*/
+		if(group_level == 1) {
+		}else if(group_level==2) {
+			sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
+		}else{
+			var hrIds=_jf_power(hrId);
+			if(hrIds!=""){
+			   sql+=" and T.HR_NO in("+hrIds+") ";
+			}
+		}	
 		if(unit_name != "") {
 			sql += " AND T.UNIT_NAME LIKE '%"+unit_name+"%' ";
 		}
@@ -288,14 +306,23 @@ function downsAll(){
 	if(service_num!=null && service_num.length != 0){
 		sql+="AND T.SERVICE_NUM = '"+service_num+"' ";
 	}
-	if(group_level == 1) {
+	/*if(group_level == 1) {
 	}else if(group_level==2) {
 		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 	}else if(group_level == 3) {
 		sql += " AND T.UNIT_ID = '"+group_id+"' ";
 	}else {
 		sql += " 1=2 ";
-	}
+	}*/
+	if(group_level == 1) {
+	}else if(group_level==2) {
+		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
+	}else{
+		var hrIds=_jf_power(hrId);
+		if(hrIds!=""){
+		   sql+=" and T.HR_NO in("+hrIds+") ";
+		}
+	}	
 	if(unit_name != "") {
 		sql += " AND T.UNIT_NAME LIKE '%"+unit_name+"%' ";
 	}

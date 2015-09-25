@@ -13,6 +13,7 @@
 	Org org = user.getOrg();
 	String orgLevel = org.getOrgLevel();
 	String orgCode = org.getCode();
+	String hrId=user.getHrId();
 %>
 <html>
   <head>
@@ -21,6 +22,7 @@
 	var group_id = "<%=orgCode%>";
 	var group_level = "<%=orgLevel%>";
 	var deal_date = "<%=currentday%>";
+	var hrId="<%=hrId%>";
 </script>
 
 <link href="<%=path%>/wgreport/bireport/nresources/default/css/reset.css" rel="stylesheet" type="text/css" />
@@ -39,8 +41,8 @@
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/common.jquery.js"></script>
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/plus.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/helper.js"></script>
-
 <script type="text/javascript" src="<%=path %>/wgreport/page/javascript/jlkh/tb_mrt_jcdy_jkxsjf_total_day.js"></script>
 
 <style type="text/css">
