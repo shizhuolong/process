@@ -13,7 +13,11 @@ $(function() {
 		rowParams : ["HR_ID","USER_TYPE_DESC","TAEGET_NAME"],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
-			orderBy = " order by " + field[index] + " " + type + " ";
+			if(index==8){
+				orderBy = " order by PER_CENT1 " + type + " ";
+			}else{
+				orderBy = " order by " + field[index] + " " + type + " ";
+			}
 			search(0);
 		},
 		getSubRowsCallBack : function($tr) {
@@ -68,11 +72,11 @@ function search(pageNumber) {
 	view+="        t.TARGET_CODE,                                            ";
 	view+="        t.TARGET_TYPE,                                            ";
 	view+="        t.TAEGET_NAME,                                            ";
-	view+="        t.UP_TARGET_NUM,                                          ";
+	view+="        to_number(nvl(t.UP_TARGET_NUM,0)) UP_TARGET_NUM,          ";
 	view+="        t.USER_TYPE_DESC,                                         ";
 	view+="        t.HR_ID,                                                  ";
 	view+="        t.NAME,                                                   ";
-	view+="        f.DEV finish_dev,                                         ";
+	view+="        to_number(nvl(f.DEV,0)) finish_dev,                       ";
 	view+="        f.deal_date finish_date,                                  ";
 	view+="        case                                                      ";
 	view+="          when to_number(nvl(t.UP_TARGET_NUM, 0)) = 0 then        ";
@@ -81,7 +85,15 @@ function search(pageNumber) {
 	view+="           round(to_number(nvl(f.DEV, 0)) /                       ";
 	view+="                 to_number(nvl(t.UP_TARGET_NUM, 0)),              ";
 	view+="                 4) * 100 || '%'                                  ";
-	view+="        end per_cent                                              ";
+	view+="        end per_cent,                                             ";
+	view+="        case                                                      ";
+	view+="          when to_number(nvl(t.UP_TARGET_NUM, 0)) = 0 then        ";
+	view+="           -1                                                     ";
+	view+="          else                                                    ";
+	view+="           round(to_number(nvl(f.DEV, 0)) /                       ";
+	view+="                 to_number(nvl(t.UP_TARGET_NUM, 0)),              ";
+	view+="                 4) * 100                                         ";
+	view+="        end per_cent1                                             ";
 	view+="                                                                  ";
 	view+="   from V_PERSON_TASK_DETAIL t                                    ";
 	view+="   left join V_PERSON_TASK_FINISH_DETAIL f                        ";
