@@ -26,16 +26,25 @@ jQuery(function(){
 	var sql = "SELECT T.AREA_NAME,T.UNIT_NAME,T.USER_NAME,T.HR_NO,SUM(T.SOURCE_CRE) AS SOURCE_CRE,SUM(T.HQ_CRE) AS HQ_CRE," +
 			"SUM(T.UNIT_CRE) AS UNIT_CRE,SUM(T.UNIT_MONEY) AS UNIT_MONEY FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_DAY T " +
 			"WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' ";
-			if(group_level == 1) {
+			/*if(group_level == 1) {
 			}else if(group_level==2) {
 				sql += "AND T.GROUP_ID_1 = '"+group_id+"' ";
 			}else if(group_level == 3) {
 				sql += "AND T.UNIT_ID = '"+group_id+"' ";
 			}else {
 				sql += " 1=2 ";
-			}
-			sql += " GROUP BY T.AREA_NAME, T.UNIT_NAME, T.USER_NAME, T.HR_NO " +
-					" ORDER BY T.AREA_NAME";
+			}*/
+	if(group_level == 1) {
+	}else if(group_level==2) {
+		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
+	}else{
+		var hrIds=_jf_power(hrId);
+		if(hrIds!=""){
+		   sql+=" and T.HR_NO in("+hrIds+") ";
+		}
+	}	
+	sql += " GROUP BY T.AREA_NAME, T.UNIT_NAME, T.USER_NAME, T.HR_NO " +
+		" ORDER BY T.AREA_NAME";
 	init(sql);
 	function init(sql){ 
 		var head="";
@@ -61,14 +70,23 @@ jQuery(function(){
 		var sql = "SELECT T.AREA_NAME,T.UNIT_NAME,T.USER_NAME,T.HR_NO,SUM(T.SOURCE_CRE) AS SOURCE_CRE,SUM(T.HQ_CRE) AS HQ_CRE," +
 		"SUM(T.UNIT_CRE) AS UNIT_CRE,SUM(T.UNIT_MONEY) AS UNIT_MONEY FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_DAY T " +
 		"WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' " + fsql;
-		if(group_level == 1) {
+		/*if(group_level == 1) {
 		}else if(group_level==2) {
 			sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 		}else if(group_level == 3) {
 			sql += " AND T.UNIT_ID = '"+group_id+"' ";
 		}else {
 			sql += " 1=2 ";
-		}
+		}*/
+		if(group_level == 1) {
+		}else if(group_level==2) {
+			sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
+		}else{
+			var hrIds=_jf_power(hrId);
+			if(hrIds!=""){
+			   sql+=" and T.HR_NO in("+hrIds+") ";
+			}
+		}	
 		if(unit_name != "") {
 			sql += " AND T.UNIT_NAME LIKE '%"+unit_name+"%' ";
 		}
@@ -256,14 +274,23 @@ function downsAll(){
 	var sql = "SELECT T.AREA_NAME,T.UNIT_NAME,T.USER_NAME,T.HR_NO,SUM(T.SOURCE_CRE) AS SOURCE_CRE,SUM(T.HQ_CRE) AS HQ_CRE," +
 	"SUM(T.UNIT_CRE) AS UNIT_CRE,SUM(T.UNIT_MONEY) AS UNIT_MONEY FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_DAY T " +
 	"WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' " + fsql;
-	if(group_level == 1) {
+	/*if(group_level == 1) {
 	}else if(group_level==2) {
 		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 	}else if(group_level == 3) {
 		sql += " AND T.UNIT_ID = '"+group_id+"' ";
 	}else {
 		sql += " 1=2 ";
-	}
+	}*/
+	if(group_level == 1) {
+	}else if(group_level==2) {
+		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
+	}else{
+		var hrIds=_jf_power(hrId);
+		if(hrIds!=""){
+		   sql+=" and T.HR_NO in("+hrIds+") ";
+		}
+	}	
 	if(unit_name != "") {
 		sql += " AND T.UNIT_NAME LIKE '%"+unit_name+"%' ";
 	}
