@@ -46,6 +46,10 @@
 						<input type="text"  class="Wdate default-text-input wper20" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="month">
 					</td>
+					<td width="5%" style="padding-left: 10px;display:none;">环比</td>
+					<td width="20%" style="display:none;">
+						<input type="checkbox"   id="mmBtn"/>
+					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>
