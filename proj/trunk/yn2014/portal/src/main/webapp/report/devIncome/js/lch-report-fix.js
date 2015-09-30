@@ -438,6 +438,19 @@
 						if(css.gt!=undefined&&css.lt!=undefined){
 							$(this).find("TD:gt("+css.gt+"):lt("+css.lt+")").css(css.css);
 						}
+						
+						if(css.array!=undefined){
+							var filter="";
+							for(var i=0;i<css.array.length;i++){
+								if(filter.length>0){
+									filter+=",";
+								}
+								filter+="TD:eq("+css.array[i]+")";
+							}
+							if(filter!=""){
+								$(this).find(filter).css(css.css);
+							}
+						}
 					}
 				});
 			}
