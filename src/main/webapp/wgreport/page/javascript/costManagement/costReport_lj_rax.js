@@ -1,11 +1,11 @@
 var field= ["INCOME_TOTAL","INCOME_2G","INCOME_3G", "INCOME_4G","INCOME_KD","INCOME_ZX","INCOME_GH",
             "GRIDDING_TOTAL","COMM_TOTAL","COMM_2G", "COMM_3G", "COMM_4G","COMM_HARDLINK",
-            "COMM_GY","FEE_JMWB","CHANNEL","ZDBT_AMOUNT","KVB_AMOUNT","FZF_AMOUNT",
+            "COMM_GY","FEE_JMWB","XJ_YXFY","CHANNEL","ZDBT_AMOUNT","KVB_AMOUNT","FZF_AMOUNT",
             "SDWYF_AMOUNT","ADS_AMOUNT","YWYPCLF_AMOUNT","YHJR_AMOUNT",
-            "BGF_AMOUNT","CLSYF_AMOUNT","ZDF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT","PROFIT"];
+            "BGF_AMOUNT","CLSYF_AMOUNT","ZDF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT","XJ_XZFY","PROFIT"];
 
-var title=[["营销架构","出帐收入(扣减赠费、退费)","","","","","","","成本费用合计","佣金","","","","","","紧密外包费用","渠道补贴","终端销售亏损","卡成本","营业厅房租","水电物业费","广告宣传费","业务用品印制及材料费","客户接入成本（含开通费及终端）","办公费","车辆使用费","招待费","差旅费","通信费","毛利润"],
-            ["","合计","2G","3G","4G","宽带","专租线","固话","","合计","2G","3G","4G","固网","公共佣金","","","","","","","","","","","","","","",""]]
+var title=[["营销架构","出帐收入(扣减赠费、退费)","","","","","","","成本费用合计","佣金","","","","","","紧密外包费用","客户接入成本（含开通费及终端）","渠道补贴","终端补贴","卡成本","营业厅房租","水电物业费","广告宣传费","业务用品印制及材料费","营销费用小计","办公费","车辆使用费","招待费","差旅费","通信费","行政费用小计","毛利润"],
+            ["","合计","2G","3G","4G","宽带","专租线","固话","","合计","2G","3G","4G","固网","公共佣金","","","","","","","","","","","","","","","","",""]];
 
 var orderBy='';	
 $(function(){
@@ -16,6 +16,8 @@ $(function(){
 		     {gt:0,css:LchReport.RIGHT_ALIGN},
 		     {eq:1,css:LchReport.SUM_PART_STYLE},
 		     {eq:9,css:LchReport.SUM_PART_STYLE},
+		     {eq:24,css:LchReport.SUM_PART_STYLE},
+		     {eq:30,css:LchReport.SUM_PART_STYLE},
 		     {eq:8,css:LchReport.SUM_STYLE}
 		    ],
 		rowParams:["GROUPID","GROUPNAME"],//第一个为rowId
@@ -117,11 +119,13 @@ function getSumSql() {
 		"SUM(NVL(T.ADS_AMOUNT, 0)) AS ADS_AMOUNT,        "+
 		"SUM(NVL(T.YWYPCLF_AMOUNT, 0)) AS YWYPCLF_AMOUNT,"+
 		"SUM(NVL(T.YHJR_AMOUNT, 0)) AS YHJR_AMOUNT,      "+
+		"SUM(NVL(T.XJ_YXFY, 0)) AS XJ_YXFY,              "+
 		"SUM(NVL(T.BGF_AMOUNT, 0)) AS BGF_AMOUNT,        "+
 		"SUM(NVL(T.CLSYF_AMOUNT, 0)) AS CLSYF_AMOUNT,    "+
 		"SUM(NVL(T.ZDF_AMOUNT, 0)) AS ZDF_AMOUNT,        "+
 		"SUM(NVL(T.CLF_AMOUNT, 0)) AS CLF_AMOUNT,        "+
 		"SUM(NVL(T.TXF_AMOUNT, 0)) AS TXF_AMOUNT,        "+
+		"SUM(NVL(T.XJ_XZFY, 0)) AS XJ_XZFY,              "+
 		"SUM(NVL(T.PROFIT, 0)) AS PROFIT                 "+
 		"FROM PMRT.TB_MRT_COST_UNIT_PROFIT@YNSYN13 T     ";
 	return s;
