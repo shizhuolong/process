@@ -4,75 +4,75 @@ var field=["ACCT_2_CHW_NUM",
            "ACCT_2_LLW_NUM",  
            "ACCT_2_JSK_NUM",  
            "ACCT_2_OT_NUM",   
-           "ACCT_2G_NUM",     
+           "ACCT_2G_NUM",    
            "ACCT_3_DK_NUM",   
            "ACCT_3_GJSF_NUM", 
            "ACCT_3_CFSJ_NUM", 
            "ACCT_3_CFSF_NUM", 
            "ACCT_3_ZBJ_NUM",  
            "ACCT_3_SWK_NUM",
-           "ACCT_3_OT_NUM",///
-           "ACCT_3G_NUM",     
+           "ACCT_3_OT_NUM",
+           "ACCT_3G_NUM", 
            "ACCT_4_BDDK_NUM", 
            "ACCT_4_HYHJ_NUM",  
            "ACCT_4_CFSF_NUM",  
            "ACCT_4_GJSF_NUM",  
            "ACCT_4_CFSJ_NUM",  
            "ACCT_4_HYHJ1_NUM", 
-           "ACCT_4_CFSF1_NUM",//
-           "ACCT_4_OT_NUM",//
-           "ACCT_4G_NUM",     
+           "ACCT_4_CFSF1_NUM",
+           "ACCT_4_OT_NUM",
+           "ACCT_4G_NUM",    
            "ACCT_ADSL_NUM",   
            "ACCT_LAN_NUM",    
            "ACCT_EOC_NUM",    
            "ACCT_FTTH_NUM",   
            "ACCT_10M_NUM", 
-           "ACCT_BB_NUM",  
+           "ACCT_BB_NUM", 
            "DEV_2_CHW_NUM",   
            "DEV_2_SHW_NUM",   
            "DEV_2_BDW_NUM",   
            "DEV_2_LLW_NUM",   
            "DEV_2_JSK_NUM",   
            "DEV_2_OT_NUM",    
-           "DEV_2G_NUM",      
+           "DEV_2G_NUM",    
            "DEV_3_DK_NUM",    
            "DEV_3_GJSF_NUM",  
            "DEV_3_CFSJ_NUM",  
            "DEV_3_CFSF_NUM",  
            "DEV_3_ZBJ_NUM",   
            "DEV_3_SWK_NUM",
-           "DEV_3_OT_NUM",///
-           "DEV_3G_NUM",      
+           "DEV_3_OT_NUM",
+           "DEV_3G_NUM",     
            "DEV_4_BDDK_NUM",  
            "DEV_4_HYHJ_NUM",  
            "DEV_4_CFSF_NUM",  
            "DEV_4_GJSF_NUM",  
            "DEV_4_CFSJ_NUM",  
            "DEV_4_HYHJ1_NUM", 
-           "DEV_4_CFSF1_NUM",//
-           "DEV_4_OT_NUM",//
-           "DEV_4G_NUM",      
+           "DEV_4_CFSF1_NUM",
+           "DEV_4_OT_NUM",
+           "DEV_4G_NUM",     
            "DEV_ADSL_NUM",    
            "DEV_LAN_NUM",     
            "DEV_EOC_NUM",     
            "DEV_FTTH_NUM",       
            "DEV_10M_NUM",
-           "DEV_BB_NUM", 
+           "DEV_BB_NUM",
            "SR_2_CHW_NUM",    
            "SR_2_SHW_NUM",    
            "SR_2_BDW_NUM",    
            "SR_2_LLW_NUM",    
            "SR_2_JSK_NUM",    
            "SR_2_OT_NUM",     
-           "SR_2G_NUM",       
+           "SR_2G_NUM",      
            "SR_3_DK_NUM",     
            "SR_3_GJSF_NUM",   
            "SR_3_CFSJ_NUM",   
            "SR_3_CFSF_NUM",   
            "SR_3_ZBJ_NUM",    
            "SR_3_SWK_NUM",
-           "SR_3_OT_NUM",/////
-           "SR_3G_NUM",       
+           "SR_3_OT_NUM",
+           "SR_3G_NUM",      
            "SR_4_BDDK_NUM",   
            "SR_4_HYHJ_NUM",   
            "SR_4_CFSF_NUM",   
@@ -87,8 +87,8 @@ var field=["ACCT_2_CHW_NUM",
            "SR_EOC_NUM",      
            "SR_FTTH_NUM",      
            "SR_10M_NUM", 
-           "SR_BB_NUM",  
-           "DEV_ZZX_NUM",     
+           "SR_BB_NUM", 
+           "DEV_ZZX_NUM",    
            "SR_ZZX_NUM",
            "DEV_NET_NUM",
            "SR_NET_NUM",
@@ -104,10 +104,83 @@ var field=["ACCT_2_CHW_NUM",
            "MOU_4G",          
            "FLOW_4G",        
            "AVG_FLOW_4G"];
+var mmf=[//需要环比的字段
+"ACCT_2G_NUM",
+"ACCT_3G_NUM",
+"ACCT_4G_NUM",
+"ACCT_BB_NUM",
+"DEV_2G_NUM",
+"DEV_3G_NUM",
+"DEV_4G_NUM",
+"DEV_BB_NUM",
+"DEV_ZZX_NUM",
+"DEV_NET_NUM",
+"SR_2G_NUM",
+"SR_3G_NUM",
+"SR_4G_NUM",
+"SR_BB_NUM",
+"SR_ZZX_NUM",
+"SR_NET_NUM"];
+
+var avgf=[//需要平均值的字段
+         "MOU_2G",
+         "MOU_3G",
+         "MOU_4G",
+         "AVG_FLOW_2G",
+         "AVG_FLOW_3G",
+         "AVG_FLOW_4G"
+         ];
+var avg0=[//分子
+          "CALL_TIME_2G",
+          "CALL_TIME_3G",
+          "CALL_TIME_4G",
+          "FLOW_2G",
+          "FLOW_3G",
+          "FLOW_4G"
+          ];
+var avg1=[//分母
+          "ACCT_2G_NUM",
+          "ACCT_3G_NUM",
+          "ACCT_4G_NUM",
+          "ACCT_2G_NUM",
+          "ACCT_3G_NUM",
+          "ACCT_4G_NUM"
+          ];
+function getSumField(){
+	var fs="";
+	if($("#mmBtn").attr("checked")){//环比处理
+		for(var i=0;i<field.length;i++){
+			if(fs.length>0){
+				fs+=",";
+			}
+			var index=avgf.indexOf(field[i]);
+			if(index>=0){
+				fs+="case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end "+avgf[index];
+			}else if(mmf.indexOf(field[i])>=0){
+				fs+="case sum(LAST_"+field[i]+") when 0 then '-%' else to_char((nvl(sum("+field[i]+"),0)-sum(LAST_"+field[i]+"))*100/sum(LAST_"+field[i]+"),'fm99999999999990.00')||'%' end "+field[i];
+			}else{
+				fs+="sum(t."+field[i]+") "+field[i];
+			}
+		}
+	}else{//非环比处理
+		for(var i=0;i<field.length;i++){
+			if(fs.length>0){
+				fs+=",";
+			}
+			var index=avgf.indexOf(field[i]);
+			if(index>=0){
+				fs+="case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end "+avgf[index];
+			}else{
+				fs+="sum(t."+field[i]+") "+field[i];
+			}
+		}
+	}
+	return fs;
+}
 var orderBy='';	
 $(function(){
 	
-	var sumSql=" sum(t.ACCT_2_CHW_NUM) ACCT_2_CHW_NUM,sum(t.ACCT_2_SHW_NUM) ACCT_2_SHW_NUM,sum(t.ACCT_2_BDW_NUM) ACCT_2_BDW_NUM,sum(t.ACCT_2_LLW_NUM) ACCT_2_LLW_NUM,sum(t.ACCT_2_JSK_NUM) ACCT_2_JSK_NUM,sum(t.ACCT_2_OT_NUM) ACCT_2_OT_NUM,sum(t.ACCT_2G_NUM) ACCT_2G_NUM,sum(t.ACCT_3_DK_NUM) ACCT_3_DK_NUM,sum(t.ACCT_3_GJSF_NUM) ACCT_3_GJSF_NUM,sum(t.ACCT_3_CFSJ_NUM) ACCT_3_CFSJ_NUM,sum(t.ACCT_3_CFSF_NUM) ACCT_3_CFSF_NUM,sum(t.ACCT_3_ZBJ_NUM) ACCT_3_ZBJ_NUM,sum(t.ACCT_3_SWK_NUM) ACCT_3_SWK_NUM,sum(t.ACCT_3_OT_NUM) ACCT_3_OT_NUM,sum(t.ACCT_3G_NUM) ACCT_3G_NUM,sum(t.ACCT_4_BDDK_NUM) ACCT_4_BDDK_NUM,sum(t.ACCT_4_HYHJ_NUM) ACCT_4_HYHJ_NUM,sum(t.ACCT_4_CFSF_NUM) ACCT_4_CFSF_NUM,sum(t.ACCT_4_GJSF_NUM) ACCT_4_GJSF_NUM,sum(t.ACCT_4_CFSJ_NUM) ACCT_4_CFSJ_NUM,sum(t.ACCT_4_HYHJ1_NUM) ACCT_4_HYHJ1_NUM,sum(t.ACCT_4_CFSF1_NUM) ACCT_4_CFSF1_NUM,sum(t.ACCT_4_OT_NUM) ACCT_4_OT_NUM,sum(t.ACCT_4G_NUM) ACCT_4G_NUM,sum(t.ACCT_ADSL_NUM) ACCT_ADSL_NUM,sum(t.ACCT_LAN_NUM) ACCT_LAN_NUM,sum(t.ACCT_EOC_NUM) ACCT_EOC_NUM,sum(t.ACCT_FTTH_NUM) ACCT_FTTH_NUM,sum(t.ACCT_10M_NUM) ACCT_10M_NUM,sum(t.ACCT_BB_NUM) ACCT_BB_NUM,sum(t.DEV_2_CHW_NUM) DEV_2_CHW_NUM,sum(t.DEV_2_SHW_NUM) DEV_2_SHW_NUM,sum(t.DEV_2_BDW_NUM) DEV_2_BDW_NUM,sum(t.DEV_2_LLW_NUM) DEV_2_LLW_NUM,sum(t.DEV_2_JSK_NUM) DEV_2_JSK_NUM,sum(t.DEV_2_OT_NUM) DEV_2_OT_NUM,sum(t.DEV_2G_NUM) DEV_2G_NUM,sum(t.DEV_3_DK_NUM) DEV_3_DK_NUM,sum(t.DEV_3_GJSF_NUM) DEV_3_GJSF_NUM,sum(t.DEV_3_CFSJ_NUM) DEV_3_CFSJ_NUM,sum(t.DEV_3_CFSF_NUM) DEV_3_CFSF_NUM,sum(t.DEV_3_ZBJ_NUM) DEV_3_ZBJ_NUM,sum(t.DEV_3_SWK_NUM) DEV_3_SWK_NUM,sum(t.DEV_3_OT_NUM) DEV_3_OT_NUM,sum(t.DEV_3G_NUM) DEV_3G_NUM,sum(t.DEV_4_BDDK_NUM) DEV_4_BDDK_NUM,sum(t.DEV_4_HYHJ_NUM) DEV_4_HYHJ_NUM,sum(t.DEV_4_CFSF_NUM) DEV_4_CFSF_NUM,sum(t.DEV_4_GJSF_NUM) DEV_4_GJSF_NUM,sum(t.DEV_4_CFSJ_NUM) DEV_4_CFSJ_NUM,sum(t.DEV_4_HYHJ1_NUM) DEV_4_HYHJ1_NUM,sum(t.DEV_4_CFSF1_NUM) DEV_4_CFSF1_NUM,sum(t.DEV_4_OT_NUM) DEV_4_OT_NUM,sum(t.DEV_4G_NUM) DEV_4G_NUM,sum(t.DEV_ADSL_NUM) DEV_ADSL_NUM,sum(t.DEV_LAN_NUM) DEV_LAN_NUM,sum(t.DEV_EOC_NUM) DEV_EOC_NUM,sum(t.DEV_FTTH_NUM) DEV_FTTH_NUM,sum(t.DEV_10M_NUM) DEV_10M_NUM,sum(t.DEV_BB_NUM) DEV_BB_NUM,sum(t.SR_2_CHW_NUM) SR_2_CHW_NUM,sum(t.SR_2_SHW_NUM) SR_2_SHW_NUM,sum(t.SR_2_BDW_NUM) SR_2_BDW_NUM,sum(t.SR_2_LLW_NUM) SR_2_LLW_NUM,sum(t.SR_2_JSK_NUM) SR_2_JSK_NUM,sum(t.SR_2_OT_NUM) SR_2_OT_NUM,sum(t.SR_2G_NUM) SR_2G_NUM,sum(t.SR_3_DK_NUM) SR_3_DK_NUM,sum(t.SR_3_GJSF_NUM) SR_3_GJSF_NUM,sum(t.SR_3_CFSJ_NUM) SR_3_CFSJ_NUM,sum(t.SR_3_CFSF_NUM) SR_3_CFSF_NUM,sum(t.SR_3_ZBJ_NUM) SR_3_ZBJ_NUM,sum(t.SR_3_SWK_NUM) SR_3_SWK_NUM,sum(t.SR_3_OT_NUM) SR_3_OT_NUM,sum(t.SR_3G_NUM) SR_3G_NUM,sum(t.SR_4_BDDK_NUM) SR_4_BDDK_NUM,sum(t.SR_4_HYHJ_NUM) SR_4_HYHJ_NUM,sum(t.SR_4_CFSF_NUM) SR_4_CFSF_NUM,sum(t.SR_4_GJSF_NUM) SR_4_GJSF_NUM,sum(t.SR_4_CFSJ_NUM) SR_4_CFSJ_NUM,sum(t.SR_4_HYHJ1_NUM) SR_4_HYHJ1_NUM,sum(t.SR_4_CFSF1_NUM) SR_4_CFSF1_NUM,sum(t.SR_4_OT_NUM) SR_4_OT_NUM,sum(t.SR_4G_NUM) SR_4G_NUM,sum(t.SR_ADSL_NUM) SR_ADSL_NUM,sum(t.SR_LAN_NUM) SR_LAN_NUM,sum(t.SR_EOC_NUM) SR_EOC_NUM,sum(t.SR_FTTH_NUM) SR_FTTH_NUM,sum(t.SR_10M_NUM) SR_10M_NUM,sum(t.SR_BB_NUM) SR_BB_NUM,sum(t.DEV_ZZX_NUM) DEV_ZZX_NUM,sum(t.SR_ZZX_NUM) SR_ZZX_NUM,sum(t.DEV_NET_NUM ) DEV_NET_NUM,sum(t.SR_NET_NUM ) SR_NET_NUM,sum(t.CALL_TIME_2G) CALL_TIME_2G,case  sum(t.ACCT_2G_NUM) when 0 then 0 else  round( sum(t.CALL_TIME_2G)/sum(t.ACCT_2G_NUM),2) end MOU_2G,sum(t.FLOW_2G) FLOW_2G,case  sum(t.ACCT_2G_NUM) when 0 then 0 else  round( sum(t.FLOW_2G)/sum(t.ACCT_2G_NUM),2) end AVG_FLOW_2G,sum(t.CALL_TIME_3G) CALL_TIME_3G,case  sum(t.ACCT_3G_NUM) when 0 then 0 else  round( sum(t.CALL_TIME_3G)/sum(t.ACCT_3G_NUM),2) end MOU_3G,sum(t.FLOW_3G) FLOW_3G,case  sum(t.ACCT_3G_NUM) when 0 then 0 else  round( sum(t.FLOW_3G)/sum(t.ACCT_3G_NUM),2) end AVG_FLOW_3G,sum(t.CALL_TIME_4G) CALL_TIME_4G,case  sum(t.ACCT_4G_NUM) when 0 then 0 else round(sum(t.CALL_TIME_4G)/sum(t.ACCT_4G_NUM),2) end  MOU_4G,sum(t.FLOW_4G) FLOW_4G,case  sum(t.ACCT_4G_NUM) when 0 then 0 else round( sum(t.FLOW_4G)/sum(t.ACCT_4G_NUM),2) end  AVG_FLOW_4G ";
+	var sumSql=getSumField();//" sum(t.ACCT_2_CHW_NUM) ACCT_2_CHW_NUM,sum(t.ACCT_2_SHW_NUM) ACCT_2_SHW_NUM,sum(t.ACCT_2_BDW_NUM) ACCT_2_BDW_NUM,sum(t.ACCT_2_LLW_NUM) ACCT_2_LLW_NUM,sum(t.ACCT_2_JSK_NUM) ACCT_2_JSK_NUM,sum(t.ACCT_2_OT_NUM) ACCT_2_OT_NUM,sum(t.ACCT_2G_NUM) ACCT_2G_NUM,sum(t.ACCT_3_DK_NUM) ACCT_3_DK_NUM,sum(t.ACCT_3_GJSF_NUM) ACCT_3_GJSF_NUM,sum(t.ACCT_3_CFSJ_NUM) ACCT_3_CFSJ_NUM,sum(t.ACCT_3_CFSF_NUM) ACCT_3_CFSF_NUM,sum(t.ACCT_3_ZBJ_NUM) ACCT_3_ZBJ_NUM,sum(t.ACCT_3_SWK_NUM) ACCT_3_SWK_NUM,sum(t.ACCT_3_OT_NUM) ACCT_3_OT_NUM,sum(t.ACCT_3G_NUM) ACCT_3G_NUM,sum(t.ACCT_4_BDDK_NUM) ACCT_4_BDDK_NUM,sum(t.ACCT_4_HYHJ_NUM) ACCT_4_HYHJ_NUM,sum(t.ACCT_4_CFSF_NUM) ACCT_4_CFSF_NUM,sum(t.ACCT_4_GJSF_NUM) ACCT_4_GJSF_NUM,sum(t.ACCT_4_CFSJ_NUM) ACCT_4_CFSJ_NUM,sum(t.ACCT_4_HYHJ1_NUM) ACCT_4_HYHJ1_NUM,sum(t.ACCT_4_CFSF1_NUM) ACCT_4_CFSF1_NUM,sum(t.ACCT_4_OT_NUM) ACCT_4_OT_NUM,sum(t.ACCT_4G_NUM) ACCT_4G_NUM,sum(t.ACCT_ADSL_NUM) ACCT_ADSL_NUM,sum(t.ACCT_LAN_NUM) ACCT_LAN_NUM,sum(t.ACCT_EOC_NUM) ACCT_EOC_NUM,sum(t.ACCT_FTTH_NUM) ACCT_FTTH_NUM,sum(t.ACCT_10M_NUM) ACCT_10M_NUM,sum(t.ACCT_BB_NUM) ACCT_BB_NUM,sum(t.DEV_2_CHW_NUM) DEV_2_CHW_NUM,sum(t.DEV_2_SHW_NUM) DEV_2_SHW_NUM,sum(t.DEV_2_BDW_NUM) DEV_2_BDW_NUM,sum(t.DEV_2_LLW_NUM) DEV_2_LLW_NUM,sum(t.DEV_2_JSK_NUM) DEV_2_JSK_NUM,sum(t.DEV_2_OT_NUM) DEV_2_OT_NUM,sum(t.DEV_2G_NUM) DEV_2G_NUM,sum(t.DEV_3_DK_NUM) DEV_3_DK_NUM,sum(t.DEV_3_GJSF_NUM) DEV_3_GJSF_NUM,sum(t.DEV_3_CFSJ_NUM) DEV_3_CFSJ_NUM,sum(t.DEV_3_CFSF_NUM) DEV_3_CFSF_NUM,sum(t.DEV_3_ZBJ_NUM) DEV_3_ZBJ_NUM,sum(t.DEV_3_SWK_NUM) DEV_3_SWK_NUM,sum(t.DEV_3_OT_NUM) DEV_3_OT_NUM,sum(t.DEV_3G_NUM) DEV_3G_NUM,sum(t.DEV_4_BDDK_NUM) DEV_4_BDDK_NUM,sum(t.DEV_4_HYHJ_NUM) DEV_4_HYHJ_NUM,sum(t.DEV_4_CFSF_NUM) DEV_4_CFSF_NUM,sum(t.DEV_4_GJSF_NUM) DEV_4_GJSF_NUM,sum(t.DEV_4_CFSJ_NUM) DEV_4_CFSJ_NUM,sum(t.DEV_4_HYHJ1_NUM) DEV_4_HYHJ1_NUM,sum(t.DEV_4_CFSF1_NUM) DEV_4_CFSF1_NUM,sum(t.DEV_4_OT_NUM) DEV_4_OT_NUM,sum(t.DEV_4G_NUM) DEV_4G_NUM,sum(t.DEV_ADSL_NUM) DEV_ADSL_NUM,sum(t.DEV_LAN_NUM) DEV_LAN_NUM,sum(t.DEV_EOC_NUM) DEV_EOC_NUM,sum(t.DEV_FTTH_NUM) DEV_FTTH_NUM,sum(t.DEV_10M_NUM) DEV_10M_NUM,sum(t.DEV_BB_NUM) DEV_BB_NUM,sum(t.SR_2_CHW_NUM) SR_2_CHW_NUM,sum(t.SR_2_SHW_NUM) SR_2_SHW_NUM,sum(t.SR_2_BDW_NUM) SR_2_BDW_NUM,sum(t.SR_2_LLW_NUM) SR_2_LLW_NUM,sum(t.SR_2_JSK_NUM) SR_2_JSK_NUM,sum(t.SR_2_OT_NUM) SR_2_OT_NUM,sum(t.SR_2G_NUM) SR_2G_NUM,sum(t.SR_3_DK_NUM) SR_3_DK_NUM,sum(t.SR_3_GJSF_NUM) SR_3_GJSF_NUM,sum(t.SR_3_CFSJ_NUM) SR_3_CFSJ_NUM,sum(t.SR_3_CFSF_NUM) SR_3_CFSF_NUM,sum(t.SR_3_ZBJ_NUM) SR_3_ZBJ_NUM,sum(t.SR_3_SWK_NUM) SR_3_SWK_NUM,sum(t.SR_3_OT_NUM) SR_3_OT_NUM,sum(t.SR_3G_NUM) SR_3G_NUM,sum(t.SR_4_BDDK_NUM) SR_4_BDDK_NUM,sum(t.SR_4_HYHJ_NUM) SR_4_HYHJ_NUM,sum(t.SR_4_CFSF_NUM) SR_4_CFSF_NUM,sum(t.SR_4_GJSF_NUM) SR_4_GJSF_NUM,sum(t.SR_4_CFSJ_NUM) SR_4_CFSJ_NUM,sum(t.SR_4_HYHJ1_NUM) SR_4_HYHJ1_NUM,sum(t.SR_4_CFSF1_NUM) SR_4_CFSF1_NUM,sum(t.SR_4_OT_NUM) SR_4_OT_NUM,sum(t.SR_4G_NUM) SR_4G_NUM,sum(t.SR_ADSL_NUM) SR_ADSL_NUM,sum(t.SR_LAN_NUM) SR_LAN_NUM,sum(t.SR_EOC_NUM) SR_EOC_NUM,sum(t.SR_FTTH_NUM) SR_FTTH_NUM,sum(t.SR_10M_NUM) SR_10M_NUM,sum(t.SR_BB_NUM) SR_BB_NUM,sum(t.DEV_ZZX_NUM) DEV_ZZX_NUM,sum(t.SR_ZZX_NUM) SR_ZZX_NUM,sum(t.DEV_NET_NUM ) DEV_NET_NUM,sum(t.SR_NET_NUM ) SR_NET_NUM,sum(t.CALL_TIME_2G) CALL_TIME_2G,case  sum(t.ACCT_2G_NUM) when 0 then 0 else  round( sum(t.CALL_TIME_2G)/sum(t.ACCT_2G_NUM),2) end MOU_2G,sum(t.FLOW_2G) FLOW_2G,case  sum(t.ACCT_2G_NUM) when 0 then 0 else  round( sum(t.FLOW_2G)/sum(t.ACCT_2G_NUM),2) end AVG_FLOW_2G,sum(t.CALL_TIME_3G) CALL_TIME_3G,case  sum(t.ACCT_3G_NUM) when 0 then 0 else  round( sum(t.CALL_TIME_3G)/sum(t.ACCT_3G_NUM),2) end MOU_3G,sum(t.FLOW_3G) FLOW_3G,case  sum(t.ACCT_3G_NUM) when 0 then 0 else  round( sum(t.FLOW_3G)/sum(t.ACCT_3G_NUM),2) end AVG_FLOW_3G,sum(t.CALL_TIME_4G) CALL_TIME_4G,case  sum(t.ACCT_4G_NUM) when 0 then 0 else round(sum(t.CALL_TIME_4G)/sum(t.ACCT_4G_NUM),2) end  MOU_4G,sum(t.FLOW_4G) FLOW_4G,case  sum(t.ACCT_4G_NUM) when 0 then 0 else round( sum(t.FLOW_4G)/sum(t.ACCT_4G_NUM),2) end  AVG_FLOW_4G ";
 	
 	var report=new LchReport({
 		title:[
@@ -160,7 +233,7 @@ $(function(){
 				showAgentList($tr);
 				return null;
 			}
-			
+			sumSql=getSumField();
 			
 			var preField='';
 			var where='';
@@ -262,6 +335,9 @@ $(function(){
 		//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 		///////////////////////////////////////////
 	});
+	$("#mmBtn").click(function(){
+		$("#searchBtn").trigger("click");
+	});
 });
 /**
  * 查看渠道经理下的渠道列表
@@ -279,13 +355,34 @@ function showAgentList($tr){
 	window.parent.openWindow(text,null,url);
 }
 /////////////////////////下载开始/////////////////////////////////////////////
+function getdownField(field){
+	var fs="";
+	if($("#mmBtn").attr("checked")){
+		for(var i=0;i<field.length;i++){
+			if(fs.length>0){
+				fs+=",";
+			}
+			if(mmf.indexOf(field[i])>=0){
+				fs+="case LAST_"+field[i]+" when 0 then '-%' else to_char((nvl("+field[i]+",0)-LAST_"+field[i]+")*100/LAST_"+field[i]+",'fm99999999999990.00')||'%' end "+field[i];
+			}else{
+				fs+=field[i];
+			}
+		}
+	}else{
+		fs=field.join(",");
+	}
+	return fs;
+}
 function downsAll() {
 	var qdate = $.trim($("#month").val());
 	
 	var preField=' t.group_id_1_name,t.unit_name,t.agent_m_name,case t.PER_TYPE when \'1\' then \'客户经理\' when \'2\' then \'渠道经理\' else \'小区经理\' end  PER_TYPE ,t.HR_ID,t.group_id_4_name,t.state,t.HQ_CHAN_CODE,t.DEAL_DATE ';
 	var where='';
 	var orderBy=" order by t.group_id_1_name,t.unit_name,t.agent_m_name,t.PER_TYPE ,t.HR_ID,t.group_id_4_name,t.HQ_CHAN_CODE,t.DEAL_DATE ";
-	var fieldSql=field.join(",");
+	var fieldSql=getdownField(field);
+	
+	
+	
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
