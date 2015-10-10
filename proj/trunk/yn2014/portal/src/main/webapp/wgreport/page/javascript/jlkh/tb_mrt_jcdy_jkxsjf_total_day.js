@@ -38,7 +38,7 @@ jQuery(function(){
 	}else if(group_level==2) {
 		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 	}else{
-		var hrIds=_jf_power(hrId);
+		var hrIds=_jf_power(hrId,endDate);
 		if(hrIds!=""){
 		   sql+=" and T.HR_NO in("+hrIds+") ";
 		}
@@ -82,7 +82,7 @@ jQuery(function(){
 		}else if(group_level==2) {
 			sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 		}else{
-			var hrIds=_jf_power(hrId);
+			var hrIds=_jf_power(hrId,endDate);
 			if(hrIds!=""){
 			   sql+=" and T.HR_NO in("+hrIds+") ";
 			}
@@ -286,7 +286,7 @@ function downsAll(){
 	}else if(group_level==2) {
 		sql += " AND T.GROUP_ID_1 = '"+group_id+"' ";
 	}else{
-		var hrIds=_jf_power(hrId);
+		var hrIds=_jf_power(hrId,endDate);
 		if(hrIds!=""){
 		   sql+=" and T.HR_NO in("+hrIds+") ";
 		}
