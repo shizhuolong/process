@@ -47,7 +47,7 @@ function listRegions(){
 	var sql="";
 	var time=$("#time").val();
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PORTAL.VIEW_U_PORTAL_PERSON t where 1=1 ";
+	var sql = "select distinct t.GROUP_ID_1_NAME from PORTAL.VIEW_U_PORTAL_PERSON t where 1=1 and t.deal_date='"+time+"' ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -92,7 +92,7 @@ function listRegions(){
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PORTAL.VIEW_U_PORTAL_PERSON t where 1=1 ";
+	var sql = "select distinct t.UNIT_NAME from PORTAL.VIEW_U_PORTAL_PERSON t where 1=1 and t.deal_date='"+time+"' ";
 	
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
@@ -145,7 +145,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 //条件
-	var sql = " from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON) tr on t.hr_no=tr.HR_ID   where 1=1  ";
+	var sql = " from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON AND DEAL_DATE='"+time+"') tr on t.hr_no=tr.HR_ID   where 1=1  ";
 	if(time!=''){
 		sql+=" and t.DEAL_DATE='"+time+"' ";
 	}
@@ -167,57 +167,12 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and tr.GROUP_ID_1="+code;
 	}else{
-		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
-		var rd=query(rsql);
-		if(rd&&rd.length){
-			var hrsql="";
-			for(var i=0;i<rd.length;i++){
-				var v=rd[i]["USER_CODE"];
-				var tsql="";
-				if(v==1){
-					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON tt                        ";
-					tsql+=" where tt.unit_id = '"+code+"'                                            ";
-					tsql+="   and tt.deal_date = '"+time+"'                                      ";
-					tsql+=" union                                                                ";
-					tsql+=" select '"+hrId+"' from dual  ";
-				}else if(v==6){
-					tsql+=" SELECT distinct hr_id                                                ";
-					tsql+="   FROM portal.tab_portal_mag_person                                  ";
-					tsql+=" where hq_chan_code in (                                              ";
-					tsql+="   SELECT distinct hq_chan_code                                       ";
-					tsql+="     FROM portal.tab_portal_mag_person                                ";
-					tsql+="   where hr_id = '"+hrId+"'                                           ";
-					tsql+="     and hq_chan_code is not null                                     ";
-					tsql+=" )                                                                    ";      
-				}else if(v==7){
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a                                ";
-					tsql+=" where a.f_hr_id in (                                                 ";
-					tsql+="       select hr_id                                                   ";
-					tsql+="         from portal.tab_portal_grp_person t                          ";
-					tsql+="       where t.user_type = 1                                          ";
-					tsql+=" )                                                                    ";
-					tsql+=" and a.f_hr_id='"+hrId+"'                                             ";
-					tsql+=" union                                                                ";
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"'       ";
-				}
-				if(tsql!=""&&hrsql!=""){
-					hrsql+=" union "+tsql;
-				}else{
-					hrsql+=tsql;
-				}
-			}
-			if(hrsql!=""){
-				sql+=" and t.HR_NO in("+hrsql+")";
-			}else{
-				sql+=" and t.HR_NO='"+hrId+"'";
-			}
-		}else{
-			sql+=" and t.HR_NO='"+hrId+"'";
-		}
+		 var hrIds=_jf_power(hrId,time);
+		 if(hrIds!=""){
+		   sql+=" and t.HR_NO in("+hrIds+") ";
+		 }else{
+		   sql+=" and 1=2 "; 
+		 }
 	}
 	
 	
@@ -288,11 +243,7 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-/*function roundN(number,fractionDigits){   
-    with(Math){   
-        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
-    }   
-}   */
+
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var sql="SELECT DEAL_DATE,tr.GROUP_ID_1_NAME,tr.UNIT_NAME                                       "+
@@ -330,7 +281,7 @@ function downsAll(){
 	",DEDUCTED_TOTAL                                                                                "+
 	",FACT_TOTAL                                                                                    "+
 	",CASE USER_TYPE WHEN 1.00 then '合同内' else '外包' end user_type                                  "+
-	"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON) tr on t.hr_no=tr.HR_ID   where 1=1 ";
+	"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON and deal_date='"+time+"') tr on t.hr_no=tr.HR_ID where 1=1 ";
 	
 	var time=$("#time").val();
 	var userName=$.trim($("#userName").val());
@@ -359,57 +310,12 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" and tr.GROUP_ID_1="+code;
 	}else{
-		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
-		var rd=query(rsql);
-		if(rd&&rd.length){
-			var hrsql="";
-			for(var i=0;i<rd.length;i++){
-				var v=rd[i]["USER_CODE"];
-				var tsql="";
-				if(v==1){
-					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON tt                        ";
-					tsql+=" where tt.unit_id = '"+code+"'                                            ";
-					tsql+="   and tt.deal_date = '"+time+"'                                      ";
-					tsql+=" union                                                                ";
-					tsql+=" select '"+hrId+"' from dual  ";
-				}else if(v==6){
-					tsql+=" SELECT distinct hr_id                                                ";
-					tsql+="   FROM portal.tab_portal_mag_person                                  ";
-					tsql+=" where hq_chan_code in (                                              ";
-					tsql+="   SELECT distinct hq_chan_code                                       ";
-					tsql+="     FROM portal.tab_portal_mag_person                                ";
-					tsql+="   where hr_id = '"+hrId+"'                                           ";
-					tsql+="     and hq_chan_code is not null                                     ";
-					tsql+=" )                                                                    ";      
-				}else if(v==7){
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a                                ";
-					tsql+=" where a.f_hr_id in (                                                 ";
-					tsql+="       select hr_id                                                   ";
-					tsql+="         from portal.tab_portal_grp_person t                          ";
-					tsql+="       where t.user_type = 1                                          ";
-					tsql+=" )                                                                    ";
-					tsql+=" and a.f_hr_id='"+hrId+"'                                             ";
-					tsql+=" union                                                                ";
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"'       ";
-				}
-				if(tsql!=""&&hrsql!=""){
-					hrsql+=" union "+tsql;
-				}else{
-					hrsql+=tsql;
-				}
-			}
-			if(hrsql!=""){
-				sql+=" and t.HR_NO in("+hrsql+")";
-			}else{
-				sql+=" and t.HR_NO='"+hrId+"'";
-			}
-		}else{
-			sql+=" and t.HR_NO='"+hrId+"'";
-		}
+		 var hrIds=_jf_power(hrId,time);
+		 if(hrIds!=""){
+		   sql+=" and t.HR_NO in("+hrIds+") ";
+		 }else{
+		   sql+=" and 1=2 "; 
+		 }
 	}
 	
 	var title=[["账期","地市","营服中心","员工工号","姓名","岗位等级","薪档","固定薪酬","","艰苦地区补贴","KPI绩效","积分提成","专项奖励","","","","加班工资","过节费","福利及补贴","","","","","","","应发合计数","养老保险缴费_个人","医疗保险缴费_个人","失业保险缴费_个人","住房公积金缴费_个人","补充养老保险缴费_个人","个人所得税","其他扣款1","其他扣款项","应扣合计数","实发数","人员类型"],
