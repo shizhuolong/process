@@ -85,7 +85,7 @@ function search(pageNumber) {
 	"  FROM (SELECT T.*, T1.F_HR_ID                              "+
 	"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON T             "+
 	"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID         "+
-	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where f_hr_id<>hr_id) T1 "+
+	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where deal_date='"+time+"' and f_hr_id<>hr_id) T1 "+
 	"            ON T.HR_ID = T1.HR_ID                           "+
 	"         WHERE T.DEAL_DATE = '"+time+"' ) T                 "+
 	"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                  "+
@@ -93,7 +93,7 @@ function search(pageNumber) {
 	"   AND T1.USER_CODE IN (6, 7)                               "+
 	"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                  "+
 	"    ON T.UNIT_ID = T2.UNIT_ID                               "+
-	"   AND T2.user_CODE = 1   WHERE 1 = 1                       ";
+	"   AND T2.user_CODE = 1 WHERE 1 = 1  and T1.deal_date='"+time+"' AND T2.deal_date='"+time+"'                     ";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
@@ -155,12 +155,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-//function roundN(number,fractionDigits){   
-//    with(Math){   
-//        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
-//    }   
-//}   
-
 
 function listRegions(){
 	var sql="";
@@ -168,12 +162,11 @@ function listRegions(){
 	//条件
 	var sql = "select distinct t.GROUP_ID_1_NAME from PODS.TB_ODS_JCDY_INCOME_HR_MON t where 1=1 and group_id_1_name is not null ";
 	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
+		
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	/*var hrId=$("#hrId").val();*/
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
@@ -182,7 +175,6 @@ function listRegions(){
 		sql+=" and t.UNIT_ID='"+code+"'";
 	}else{
 		sql+=" and t.UNIT_ID='"+code+"'";
-		/*sql+=" and t.HR_ID='"+hrId+"'";*/
 	}
 	//排序
 	if (orderBy != '') {
@@ -217,7 +209,6 @@ function listUnits(regionName){
 	var time=$("#time").val();
 	var sql = "select distinct t.UNIT_NAME from PODS.TB_ODS_JCDY_INCOME_HR_MON t where 1=1 ";
 	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
 	}
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
@@ -233,7 +224,6 @@ function listUnits(regionName){
 			sql+=" and t.UNIT_ID='"+code+"'";
 		}else{
 			sql+=" and t.UNIT_ID='"+code+"'";
-			/*sql+=" and t.HR_ID='"+hrId+"'";*/
 		}
 	}else{
 		$unit.empty().append('<option value="" selected>请选择</option>');
@@ -293,7 +283,7 @@ function downsAll(){
 	"  FROM (SELECT T.*, T1.F_HR_ID                              "+
 	"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON T             "+
 	"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID         "+
-	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where f_hr_id<>hr_id) T1 "+
+	"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where deal_date='"+time+"' AND f_hr_id<>hr_id) T1 "+
 	"            ON T.HR_ID = T1.HR_ID                           "+
 	"         WHERE T.DEAL_DATE = '"+time+"' ) T                 "+
 	"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                  "+
@@ -301,7 +291,7 @@ function downsAll(){
 	"   AND T1.USER_CODE IN (6, 7)                               "+
 	"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                  "+
 	"    ON T.UNIT_ID = T2.UNIT_ID                               "+
-	"   AND T2.user_CODE = 1   WHERE 1=1                         ";
+	"   AND T2.user_CODE = 1  WHERE 1=1 AND T1.deal_date='"+time+"' AND T2.deal_date='"+time+"'                         ";
 	
 
 	var regionName=$.trim($("#regionName").val());
@@ -309,10 +299,7 @@ function downsAll(){
 	var userName=$.trim($("#userName").val());
 	var userCode=$.trim($("#userCode").val());
 	var regionCode=$.trim($("#regionCode").val());
-	//条件
-	/*if(time!=''){
-		sql+=" AND DEAL_DATE='"+time+"' ";
-	}*/
+	
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
@@ -339,7 +326,6 @@ function downsAll(){
 		sql+=" and T.UNIT_ID ='"+code+"'";
 	}else{
 		sql+=" and T.UNIT_ID ='"+code+"'";
-	/*	sql+=" and T.GROUP_ID_1 ='"+regionCode+"'";*/
 	}
 	sql+=" ORDER BY T.GROUP_ID_1,T.UNIT_ID";
 	var title=[["账期","地市","地市名称","基层单元编码","基层单元名称","编码","姓名","角色类型","渠道编码","用户编号","用户号码","类型","收入","上级HR编码","归属上级姓名","责任人编码","责任人"]];
