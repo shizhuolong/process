@@ -101,11 +101,11 @@ function search(pageNumber) {
 					if(isGrantedNew(UPDATE_ROLE)) {
 						//已绑定
 						if(isBind == "1") {
-							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hr_id='"+n['HR_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
+							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						} else {
-							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
-							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hr_id='"+n['HR_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
+							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						}
 					}else {
 						content += "<td>&nbsp;&nbsp;&nbsp;</td>";
@@ -134,11 +134,13 @@ function bindPerson(obj) {
 	var unit_id = $(obj).attr("unit_id");
 	var id = $(obj).attr("id");
 	var group_id_code = $(obj).attr("group_id_code");
+	var old_hr_id = $(obj).attr("hr_id");
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_manager_bind_person.jsp";
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('unit_id',unit_id);
 	art.dialog.data('id',id);
 	art.dialog.data('group_id_code',group_id_code);
+	art.dialog.data('old_hr_id',old_hr_id);
 	art.dialog.open(url,{
 		id:'bindPersonDialog',
 		width:'530px',
@@ -151,6 +153,7 @@ function bindPerson(obj) {
 //解绑
 function unBindPerson(ele) {
 	var group_id_code = $(ele).attr("group_id_code");
+	var hr_id = $(ele).attr("hr_id");
 	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
 		$.ajax({
 			type:"POST",
@@ -158,7 +161,8 @@ function unBindPerson(ele) {
 			cache:false,
 			url:$("#ctx").val()+"/channelManagement/channelManager_updateBindPerson.action",
 			data:{
-				"group_id_code":group_id_code
+				"group_id_code":group_id_code,
+				"old_hr_id":hr_id
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
