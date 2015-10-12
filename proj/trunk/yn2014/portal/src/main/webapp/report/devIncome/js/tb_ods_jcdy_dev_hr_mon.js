@@ -160,7 +160,7 @@ function search(pageNumber) {
 		+"  FROM (SELECT T.*, T1.F_HR_ID                               "
 		+"          FROM PODS.TB_ODS_JCDY_DEV_HR_MON T                 "
 		+"    LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                "
-		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where f_hr_id<>hr_id) T1  "
+		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where deal_date='"+time+"' AND f_hr_id<>hr_id) T1  "
 		+"            ON T.HR_ID = T1.HR_ID                            "
 		+"         WHERE T.DEAL_DATE = '"+time+"') T                   "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                   "
@@ -168,7 +168,7 @@ function search(pageNumber) {
 		+"   AND T1.USER_CODE IN (6, 7)                                "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                   "
 		+"    ON T.UNIT_ID = T2.UNIT_ID                                "
-		+"   AND T2.user_CODE = 1 WHERE 1=1                            ";
+		+"   AND T2.user_CODE = 1 WHERE 1=1 AND T1.deal_date='"+time+"' AND T2.deal_date='"+time+"'                          ";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
@@ -273,7 +273,7 @@ function downsAll(){
 		+"  FROM (SELECT T.*, T1.F_HR_ID                               "
 		+"          FROM PODS.TB_ODS_JCDY_DEV_HR_MON T                 "
 		+"    LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                "
-		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where f_hr_id<>hr_id) T1  "
+		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where deal_date='"+time+"' AND f_hr_id<>hr_id) T1  "
 		+"            ON T.HR_ID = T1.HR_ID                            "
 		+"         WHERE T.DEAL_DATE = '"+time+"') T                   "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                   "
@@ -281,7 +281,7 @@ function downsAll(){
 		+"   AND T1.USER_CODE IN (6, 7)                                "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                   "
 		+"    ON T.UNIT_ID = T2.UNIT_ID                                "
-		+"   AND T2.user_CODE = 1 WHERE 1=1                            ";
+		+"   AND T2.user_CODE = 1 WHERE 1=1 AND T1.deal_date='"+time+"' AND T2.deal_date='"+time+"'                          ";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
