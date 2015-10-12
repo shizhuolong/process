@@ -130,11 +130,11 @@ function search(pageNumber) {
 	sql+="                        name,                                                        ";
 	sql+="                        hr_id HR_NO,                                                 ";
 	sql+="                        HQ_CHAN_CODE                                                 ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON  deal_date='"+time+"') B                              ";
+	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON where deal_date='"+time+"') B                              ";
 	sql+="          WHERE A.HQ_CHANL_CODE = B.HQ_CHAN_CODE                                     ";
 	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="            AND A.HQ_CHANL_CODE NOT IN                                               ";
-	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person  deal_date='"+time+"')              ";
+	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person where deal_date='"+time+"')              ";
 	sql+="         UNION ALL                                                                   ";
 	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
 	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
@@ -143,7 +143,7 @@ function search(pageNumber) {
 	sql+="                        name,                                                        ";
 	sql+="                        hr_id HR_NO,                                                 ";
 	sql+="                        DEVELOPER                                                    ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_GRP_PERSON  deal_date='"+time+"') B                              ";
+	sql+="                   FROM PORTAL.TAB_PORTAL_GRP_PERSON where deal_date='"+time+"') B                              ";
 	sql+="          WHERE (A.DEVELOPER_ID = B.DEVELOPER or                                     ";
 	sql+="                A.fd_chanl_code = B.developer)                                       ";
 	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"') t  where t.hr_no='"+hrNo+"'                              ";
@@ -206,7 +206,7 @@ function downsAll() {
 	sql+="                        name            USER_NAME,                                   ";
 	sql+="                        hr_id           HR_NO,                                       ";
 	sql+="                        USER_CODE       USER_CODE                                    ";
-	sql+="                   from portal.tab_portal_mag_person  deal_date='"+time+"') b                              ";
+	sql+="                   from portal.tab_portal_mag_person where deal_date='"+time+"') b                              ";
 	sql+="          WHERE A.OPERATOR_ID = B.USER_CODE                                          ";
 	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="         UNION ALL                                                                   ";
@@ -217,11 +217,11 @@ function downsAll() {
 	sql+="                        name,                                                        ";
 	sql+="                        hr_id HR_NO,                                                 ";
 	sql+="                        HQ_CHAN_CODE                                                 ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON  deal_date='"+time+"') B                              ";
+	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON where deal_date='"+time+"') B                              ";
 	sql+="          WHERE A.HQ_CHANL_CODE = B.HQ_CHAN_CODE                                     ";
 	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
 	sql+="            AND A.HQ_CHANL_CODE NOT IN                                               ";
-	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person  deal_date='"+time+"')              ";
+	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person where deal_date='"+time+"')              ";
 	sql+="         UNION ALL                                                                   ";
 	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
 	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
@@ -230,12 +230,13 @@ function downsAll() {
 	sql+="                        name,                                                        ";
 	sql+="                        hr_id HR_NO,                                                 ";
 	sql+="                        DEVELOPER                                                    ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_GRP_PERSON  deal_date='"+time+"') B                              ";
+	sql+="                   FROM PORTAL.TAB_PORTAL_GRP_PERSON where deal_date='"+time+"') B                              ";
 	sql+="          WHERE (A.DEVELOPER_ID = B.DEVELOPER or                                     ";
 	sql+="                A.fd_chanl_code = B.developer)                                       ";
 	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"') t  where t.hr_no='"+hrNo+"'                              ";
 
 
+	
 	if (orderBy != '') {
 		sql += orderBy;
 	}
