@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>营业厅与营业员</title>
+<title>唯一身份管理</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_person_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/tab_portal_qj_person_list.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 </head>
@@ -38,10 +38,10 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
-	<div data-options="region:'west',split:false,title:'营业厅与营业员'" style="width:220px;padding:10px;">
+	<div data-options="region:'west',split:false,title:'唯一身份管理'" style="width:220px;padding:10px;">
 		<div id="ztree" class="ztree"></div>
 	</div>
-	<div data-options="region:'center',title:'营业厅与营业员'">
+	<div data-options="region:'center',title:'唯一身份管理'">
 		<div id="container">
 		<form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" />
@@ -50,21 +50,20 @@
                 <tr height="35px">
                     <td width="6%" style="padding-left:10px;">姓名：</td>
                     <td width="15%"><input class="default-text-input wper80" id="name" name="name" type="text"/></td>
-                    <td width="5%">联系电话：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="phone" name="phone" type="text"/></td>
-                	<!-- <td width="5%" rowspan="3"><a class="default-btn" href="#" id="searchBtn">查询</a></td> -->
+                    <td width="5%" style="padding-left:10px;">营服中心：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="unit_name" name="unit_name" type="text"/></td>
                 </tr>
                 <tr height="35px">
-                	<td width="5%" style="padding-left:10px;">营业厅编码：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="hq_chan_code" name="hq_chan_code" type="text"/></td>
-                    <td width="5%">营业厅名称：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="hq_chan_name" name="hq_chan_name" type="text"/></td>
+                    <td width="6%" style="padding-left:10px;">工作类别：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="job_type" name="job_type" type="text"/></td>
+                    <td width="5%" style="padding-left:10px;">岗位：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="job" name="job" type="text"/></td>
                 </tr>
                 <tr height="35px">
-                	<td width="6%" style="padding-left:10px;">工位：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="user_code" name="user_code" type="text"/></td>
-                    <td width="5%">工号：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="user_log_code" name="user_log_code" type="text"/></td>
+                	<td width="6%" style="padding-left:10px;">HR编码：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="hr_id" name="hr_id" type="text"/></td>
+                    <td width="5%" style="padding-left:10px;">申效时间：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="active_time" name="active_time" type="text"/></td>
                 </tr>
                 <tr>
 					<td colspan="4">
@@ -81,12 +80,13 @@
 					<table class="default-table sticky-enabled">
 						<thead>
 							<tr>
-								<th class="first">姓名</th>
-								<th>联系电话</th>
-								<th>营业厅编码</th>
-								<th>营业厅名称</th>
-								<th>工位</th>
-								<th>工号</th>
+								<th class="first">营服中心</th>
+								<th>姓名</th>
+								<th>类别</th>
+								<th>岗位</th>
+								<th>HR编码</th>
+								<th>从业类型</th>
+								<th>申效时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>

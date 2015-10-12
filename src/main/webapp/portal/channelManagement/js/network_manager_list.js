@@ -107,7 +107,7 @@ function search(pageNumber) {
 						if(isBind == "1") {
 							content += "<td>" +
 									//"<a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-							"<a href='#' id='"+n['STD_6_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							"<a href='#' id='"+n['STD_6_ID']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						} else {
 							content += "<td><a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;";
 						}
@@ -159,6 +159,7 @@ function bindPerson(obj) {
 //解绑
 function unBindPerson(ele) {
 	var std_6_id = $(ele).attr("id");
+	var old_hr_id = $(ele).attr("hr_id");
 	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
 		$.ajax({
 			type:"POST",
@@ -166,7 +167,8 @@ function unBindPerson(ele) {
 			cache:false,
 			url:$("#ctx").val()+"/channelManagement/networkManager_deleteBindPerson.action",
 			data:{
-				"std_6_id":std_6_id
+				"std_6_id":std_6_id,
+				"old_hr_id":old_hr_id
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({

@@ -11,7 +11,7 @@ $(function() {
 	var setting = {
 		async : {
 			enable : true,
-			url : $("#ctx").val()+"/channelManagement/businessHallPerson_listTreeNode.action",
+			url : $("#ctx").val()+"/channelManagement/qjPerson_listTreeNode.action",
 			autoParam : ["id=orgId","orgLevel=orgLevel","code=code"]
 		},
 		callback:{
@@ -37,11 +37,11 @@ $(function() {
 	});
 	$("#resetBtn").click(function(){
 		$("#name").val("");
-		$("#phone").val("");
-		$("#hq_chan_code").val("");
-		$("#hq_chan_name").val("");
-		$("#user_code").val("");
-		$("#user_log_code").val("");
+		$("#unit_name").val("");
+		$("#job_type").val("");
+		$("#job").val("");
+		$("#hr_id").val("");
+		$("#active_time").val("");
 	});
 	
 	$("#downloadExcel").click(function(){
@@ -53,38 +53,38 @@ $(function() {
 });
 function del(obj){
 	var hr_id=obj.attr("hr_id");
-	var user_code=obj.attr("user_code");
-	var regionCode=obj.attr("regioncode");
 	var path=$("#ctx").val();
-	if(confirm('确认解绑吗?')){
-	  window.location.href=path+"/channelManagement/businessHallPerson_del.action?hr_id="+hr_id+"&user_code="+user_code+"&regionCode="+regionCode;
+	if(confirm('确认刪除吗?')){
+	  window.location.href=path+"/channelManagement/qjPerson_del.action?hr_id="+hr_id;
 	}
-	//window.location.reload();
 }
 function add() {
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/business_hall_person_add.jsp";
+	var url = $("#ctx").val()+"/portal/channelManagement/jsp/tab_portal_qj_person_add.jsp";
 	art.dialog.open(url,{
 		id:'add',
-		width:'420px',
-		height:'170px',
+		width:'520px',
+		height:'180px',
 		padding:'0 0',
 		lock:true,
 		resize:false,
-		title:'增加营业员配置'
+		title:'增加唯一身份管理'
 	});
 }
-function update(obj) {
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/business_hall_person_update.jsp";
-	var hr_id=obj.attr("hr_id");
-	var user_code=obj.attr("user_code");
+/*function update(obj) {
+	var url = $("#ctx").val()+"/portal/channelManagement/jsp/tab_portal_qj_person_update.jsp";
+	var job_type=obj.attr("job_type");
+	var job=obj.attr("job");
 	var regionCode=obj.attr("regioncode");
-	var unit_name=obj.attr("unit_name");
+	var hr_id=obj.attr("hr_id");
 	var name=obj.attr("name");
+	var unit_name=obj.attr("unit_name");
+	
 	art.dialog.data('hr_id',hr_id);
-	art.dialog.data('user_code',user_code);
+	art.dialog.data('job_type',job_type);
 	art.dialog.data('regionCode',regionCode);
 	art.dialog.data('unit_name',unit_name);
 	art.dialog.data('name',name);
+	art.dialog.data('job',job);
 	art.dialog.open(url,{
 		id:'update',
 		width:'420px',
@@ -92,22 +92,23 @@ function update(obj) {
 		padding:'0 0',
 		lock:true,
 		resize:false,
-		title:'修改营业员配置'
+		title:'修改唯一身份管理'
 	});
-}
+}*/
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var name = $.trim($("#name").val());
-	var phone = $.trim($("#phone").val());
-	var hq_chan_code = $.trim($("#hq_chan_code").val());
-	var hq_chan_name = $.trim($("#hq_chan_name").val());
-	var user_code = $.trim($("#user_code").val());
-	var user_log_code = $.trim($("#user_log_code").val());
+	var unit_name = $.trim($("#unit_name").val());
+	var job_type = $.trim($("#job_type").val());
+	var job = $.trim($("#job").val());
+	var hr_id = $.trim($("#hr_id").val());
+	var active_time = $.trim($("#active_time").val());
+	
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		cache:false,
-		url:$("#ctx").val()+"/channelManagement/businessHallPerson_queryMagPerson.action",
+		url:$("#ctx").val()+"/channelManagement/qjPerson_queryMagPerson.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
@@ -115,11 +116,11 @@ function search(pageNumber) {
            "resultMap.orgLevel":orgLevel,
            "resultMap.code":code,
            	"name":name,
-           	"hq_chan_code":hq_chan_code,
-           	"hq_chan_name":hq_chan_name,
-           	"phone":phone,
-           	"user_code":user_code,
-           	"user_log_code":user_log_code
+           	"unit_name":unit_name,
+           	"job_type":job_type,
+           	"job":job,
+           	"hr_id":hr_id,
+           	"active_time":active_time
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -130,17 +131,18 @@ function search(pageNumber) {
 	   		if(pageNumber == 1) {
 				initPagination(pages.pagin.totalCount);
 			}
-	   		var content="";
+	   		var content="";/*isNull(n['ACTIVE_TIME'])*/
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
+				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['NAME'])+"</td>"
-				+"<td>"+isNull(n['PHONE'])+"</td>"
-				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
-				+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
-				+"<td>"+isNull(n['USER_CODE'])+"</td>"
-				+"<td>"+isNull(n['USER_LOG_CODE'])+"</td>"+
-				"<td>"+"<a onclick='update($(this))' user_code='"+isNull(n['USER_CODE'])+"' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' name='"+isNull(n['NAME'])+"' unit_name='"+isNull(n['UNIT_NAME'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
-				"<a onclick='del($(this))' user_code='"+isNull(n['USER_CODE'])+"' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>解绑</a></td>";
+				+"<td>"+isNull(n['JOB_TYPE'])+"</td>"
+				+"<td>"+isNull(n['JOB'])+"</td>"
+				+"<td>"+isNull(n['HR_ID'])+"</td>"
+				+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
+				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"+
+			"<td>"/*+"<a onclick='update($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' name='"+isNull(n['NAME'])+"' unit_name='"+isNull(n['UNIT_NAME'])+"' job='"+isNull(n['JOB'])+"' job_type='"+isNull(n['JOB_TYPE'])+"' href='#'>修改</a>&nbsp;&nbsp;" +*/
+			+"<a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
 			});
 			if(content != "") {
@@ -175,57 +177,38 @@ function isNull(obj){
 	return obj;
 }
 
-
 function downloadExcel() {
 	var name = $.trim($("#name").val());
-	var phone = $.trim($("#phone").val());
-	var hq_chan_code = $.trim($("#hq_chan_code").val());
-	var hq_chan_name = $.trim($("#hq_chan_name").val());
-	var user_code = $.trim($("#user_code").val());
-	var user_log_code = $.trim($("#user_log_code").val());
-	
+	var unit_name = $.trim($("#unit_name").val());
+	var job_type = $.trim($("#job_type").val());
+	var job = $.trim($("#job").val());
+	var hr_id = $.trim($("#hr_id").val());
+	var active_time = $.trim($("#active_time").val());
 	var sql = "";
-	if(orgLevel=="1") {
-		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
-				"T.USER_CODE,T.USER_LOG_CODE " +
-				"FROM PORTAL.TAB_PORTAL_MAG_PERSON T WHERE 1=1 ";
-	}else if(orgLevel == "2") {
-		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
-				"T.USER_CODE,T.USER_LOG_CODE " +
-				"FROM PORTAL.TAB_PORTAL_MAG_PERSON T " +
-				"WHERE T.GROUP_ID_1 = '"+code+"' ";
+	 if(orgLevel == "2") {
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"'";
 	}else if(orgLevel == "3") {
-		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
-				"T.USER_CODE,T.USER_LOG_CODE FROM PORTAL.TAB_PORTAL_MAG_PERSON T " +
-				"WHERE T.UNIT_ID = '"+code+"' ";
-	}else {
-		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
-				"T.USER_CODE,T.USER_LOG_CODE " +
-				"FROM PORTAL.TAB_PORTAL_MAG_PERSON T WHERE 1=2 ";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"'";
 	}
-	if(hq_chan_code != "") {
-		sql += "AND T.HQ_CHAN_CODE='"+hq_chan_code+"' ";
+	if(name!=""){
+		sql+=" AND NAME LIKE '%"+name+"%'"; 
 	}
-	if(phone != "") {
-		sql += "AND T.PHONE='"+phone+"' ";
+	if(job_type!=""){
+		sql+=" AND JOB_TYPE LIKE '%"+job_type+"%'"; 
 	}
-	if(name != "") {
-		sql += "AND T.NAME LIKE '%"+name+"%' ";
+	if(job!=""){
+		sql+=" AND JOB LIKE '%"+job+"%'"; 
 	}
-	if(hq_chan_name != "") {
-		sql += "AND T.HQ_CHAN_NAME LIKE '%"+hq_chan_name+"%' ";
+	if(hr_id!=""){
+		sql+=" AND HR_ID LIKE '%"+hr_id+"%'"; 
 	}
-	if(user_code != "") {
-		sql += "AND T.USER_CODE='"+user_code+"' ";
+	if(active_time!=""){
+		sql+=" AND ACTIVE_TIME LIKE '%"+active_time+"%'"; 
 	}
-	if(user_log_code != "") {
-		sql += "AND T.USER_LOG_CODE='"+user_log_code+"' ";
-	}
-	sql += " ORDER BY T.NAME";
-	console.log(sql);
+	sql += " ORDER BY GROUP_ID_1,UNIT_ID,HR_ID";
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['姓名','联系电话','营业厅编码','营业厅名称','工位','工号'];
+   var _head=['营服','姓名','类别','岗位','HR编码','从业类型','申效时间'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
