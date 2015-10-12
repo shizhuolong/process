@@ -104,7 +104,11 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and 地市编码 ="+code;
 	}else {
-		sql+=" and 地市编码="+regionCode;
+		/*sql+=" and 地市编码="+regionCode;*/
+		 var hrIds=_jf_power(hrId,time);
+		 if(hrIds!=""){
+		   sql+=" and HR编码  in("+hrIds+") ";
+		 }
 	}
 	
 	
@@ -266,7 +270,11 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" and 地市编码 ="+code;
 	}else {
-		sql+=" and 地市编码="+regionCode;
+		/*sql+=" and 地市编码="+regionCode;*/
+		 var hrIds=_jf_power(hrId,time);
+		 if(hrIds!=""){
+		   sql+=" and HR编码  in("+hrIds+") ";
+		 }
 	}
 	
 	sql+=" ORDER BY 地市编码";
