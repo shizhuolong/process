@@ -44,6 +44,7 @@ public class UnitManagerAction extends BaseAction {
 	public void queryMobPerson() {
 		try {
 			String name = request.getParameter("name");
+			String month = request.getParameter("month");
 			String hq_chan_code = request.getParameter("hq_chan_code");
 			String hq_chan_name = request.getParameter("hq_chan_name");
 			String hr_id = request.getParameter("hr_id");
@@ -56,6 +57,9 @@ public class UnitManagerAction extends BaseAction {
 			}
 			if(name != null && !"".equals(name.trim())) {
 				resultMap.put("name", "%"+name+"%");
+			}
+			if(month != null && !"".equals(month.trim())) {
+				resultMap.put("month",month);
 			}
 			if(hq_chan_name != null && !"".equals(hq_chan_name.trim())) {
 				resultMap.put("hq_chan_name", "%"+hq_chan_name+"%");
@@ -77,11 +81,13 @@ public class UnitManagerAction extends BaseAction {
 	public void listBindPerson() {
 		try {
 			String id = request.getParameter("id");
+			String month = request.getParameter("month");
 			String group_id_1 = request.getParameter("group_id_1");
 			String unit_id = request.getParameter("unit_id");
 			String name = request.getParameter("name");
 			String username = request.getParameter("username");
 			resultMap.put("id", id);
+			resultMap.put("month", month);
 			resultMap.put("group_id_1", group_id_1);
 			resultMap.put("unit_id", unit_id);
 			if(name != null && !"".equals(name.trim())) {
@@ -113,6 +119,7 @@ public class UnitManagerAction extends BaseAction {
 		try {
 			String userid = request.getParameter("userid");
 			String name = request.getParameter("name");
+			String month = request.getParameter("month");
 			String username = request.getParameter("username");
 			String phone = request.getParameter("phone");
 			String group_id_code = request.getParameter("group_id_code");
@@ -120,6 +127,7 @@ public class UnitManagerAction extends BaseAction {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("userid", userid);
 			params.put("name", name);
+			params.put("month", month);
 			params.put("username", username);
 			params.put("phone", phone);
 			params.put("group_id_code", group_id_code);
@@ -138,8 +146,10 @@ public class UnitManagerAction extends BaseAction {
 	public void updateBindPerson() {
 		try {
 			String group_id_code = request.getParameter("group_id_code");
+			String month = request.getParameter("month");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("group_id_code", group_id_code);
+			params.put("month", month);
 			unitMangerService.updateBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
