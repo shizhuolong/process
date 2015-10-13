@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+String deal_date = request.getParameter("deal_date");
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,6 +19,7 @@
 </head>
 <body style="min-width:500px;">
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+<input type="hidden" id="deal_date" value="<%=deal_date%>">
 <div id="container" style="min-height: 310px;">
 	<div style="width: 500px;">
 		<form>
