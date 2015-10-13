@@ -48,6 +48,7 @@ public class ChannelManagerAction extends BaseAction {
 			String hq_chan_name = request.getParameter("hq_chan_name");
 			String hr_id = request.getParameter("hr_id");
 			String unit_name = request.getParameter("unit_name");
+			String deal_date = request.getParameter("deal_date");
 			if(hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 				resultMap.put("hq_chan_code", hq_chan_code);
 			}
@@ -62,6 +63,9 @@ public class ChannelManagerAction extends BaseAction {
 			}
 			if(unit_name != null && !"".equals(unit_name.trim())) {
 				resultMap.put("unit_name", "%"+unit_name+"%");
+			}
+			if(deal_date != null && !"".equals(deal_date.trim())) {
+				resultMap.put("deal_date", deal_date);
 			}
 			Object result = channelMangerService.queryMobPerson(resultMap);
 			this.reponseJson(result);
@@ -117,6 +121,7 @@ public class ChannelManagerAction extends BaseAction {
 			String phone = request.getParameter("phone");
 			String group_id_code = request.getParameter("group_id_code");
 			String hr_id = request.getParameter("hr_id");
+			String deal_date = request.getParameter("deal_date");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("userid", userid);
 			params.put("name", name);
@@ -124,6 +129,7 @@ public class ChannelManagerAction extends BaseAction {
 			params.put("phone", phone);
 			params.put("group_id_code", group_id_code);
 			params.put("hr_id", hr_id);
+			params.put("deal_date", deal_date);
 			channelMangerService.saveBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"绑定成功\"}");
 		} catch (Exception e) {
@@ -138,8 +144,10 @@ public class ChannelManagerAction extends BaseAction {
 	public void updateBindPerson() {
 		try {
 			String group_id_code = request.getParameter("group_id_code");
+			String deal_date = request.getParameter("deal_date");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("group_id_code", group_id_code);
+			params.put("deal_date", deal_date);
 			channelMangerService.updateBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
