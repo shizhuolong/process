@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
+/**
+ * @author only
+ *
+ */
 @Service
 public class GrpMangerService {
 
@@ -37,4 +41,49 @@ public class GrpMangerService {
 		result.put("pagin", rows.getPaginator());
 		return result;
 	}
+	
+	/**
+	 * 查询发展人编码
+	 * @param resultMap
+	 * @return
+	 */
+	public Object searchDevNum(Map<String, String> params) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		PageList<Map<String, Object>> rows = dao.searchDevNum(params);
+		result.put("rows", rows);
+		result.put("pagin", rows.getPaginator());
+		return result;
+	}
+	/**
+	 * 删除集客经理
+	 * @param map
+	 * @return 
+	 */
+	public int delGrpPerson(Map<String, Object> map) {
+		return dao.delGrpPerson(map);
+	}
+
+	/**
+	 * 查询Hr编码
+	 * @param resultMap
+	 * @return
+	 */
+	public Map<String, Object> searchHrNum(Map<String, String> params) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		PageList<Map<String, Object>> rows = dao.searchHrNum(params);
+		result.put("rows", rows);
+		result.put("pagin", rows.getPaginator());
+		return result;
+	}
+
+	/**
+	 * 新增集客经理
+	 * @param resultMap
+	 * @return
+	 */
+	public int addGrpManager(Map<String, Object> params) {
+		return dao.addGrpManager(params);
+	}
+
+	
 }
