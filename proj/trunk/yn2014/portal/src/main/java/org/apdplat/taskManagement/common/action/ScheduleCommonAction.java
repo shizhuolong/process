@@ -31,7 +31,17 @@ public class ScheduleCommonAction extends BaseAction{
 	private String task_region_code;
 	private String type;
 	private String userType;
+	private String month;
+
 	
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
 	public void qryIndexInfoList() {
 		
 		List<Map<String,String>> list = scheduleCommonService.qryIndexInfoList(code1);
@@ -56,8 +66,14 @@ public class ScheduleCommonAction extends BaseAction{
 			if(task_region_code == null || "".equals(task_region_code.trim())) {
 				throw new BusiException("地域编码不能为空！");
 			}
-			List<Map<String,String>> list = new ArrayList<Map<String,String>>(); 
 			params.put("task_region_code", task_region_code);
+			if(month == null || "".equals(month.trim())) {
+				throw new BusiException("账期不能为空！");
+			}
+			params.put("month", month);
+			
+			List<Map<String,String>> list = new ArrayList<Map<String,String>>(); 
+			
 			if(userType != null && !"".equals(userType.trim()) && !"null".equals(userType.trim())) {
 				//渠道经理,查询下级渠道
 				if("2".equals(userType.trim())) {
