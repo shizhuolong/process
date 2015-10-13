@@ -93,13 +93,13 @@ function search(pageNumber) {
 		+"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID          "
 		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON) T1  "
 		+"            ON T.HR_ID = T1.HR_ID                            "
-		+"         WHERE T.DEAL_DATE = '"+time+"') T                   "
+		+"         WHERE T.DEAL_DATE = '"+time+"' AND T1.deal_date='"+time+"') T                   "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                   "
 		+"    ON T.F_HR_ID = T1.HR_ID                                  "
 		+"   AND T1.USER_CODE IN (6, 7)                                "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                   "
 		+"    ON T.UNIT_ID = T2.UNIT_ID                                "
-		+"   AND T2.user_CODE = 1 WHERE 1=1                            ";
+		+"   AND T2.user_CODE = 1 WHERE 1=1 AND T2.deal_date='"+time+"'                           ";
 	if(cityName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+cityName+"%'";
 	}
@@ -203,13 +203,13 @@ function downsAll(){
 		+"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID          "
 		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON) T1  "
 		+"            ON T.HR_ID = T1.HR_ID                            "
-		+"         WHERE T.DEAL_DATE = '"+time+"') T                   "
+		+"         WHERE T.DEAL_DATE = '"+time+"' AND T1.DEAL_DATE = '"+time+"') T                   "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                   "
 		+"    ON T.F_HR_ID = T1.HR_ID                                  "
 		+"   AND T1.USER_CODE IN (6, 7)                                "
 		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                   "
 		+"    ON T.UNIT_ID = T2.UNIT_ID                                "
-		+"   AND T2.user_CODE = 1 WHERE 1=1                            ";
+		+"   AND T2.user_CODE = 1 WHERE 1=1 AND T2.DEAL_DATE = '"+time+"'                           ";
 	if(cityName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+cityName+"%'";
 	}
