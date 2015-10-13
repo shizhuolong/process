@@ -27,14 +27,21 @@ $(function() {
 	$("#searchBtn").click(function(){
 		search(0);
 	});
+	
+	//打开新增弹窗
+	$("#addBtn").click(function(){
+		addGrpPerson();
+	});
+	
 	$("#resetBtn").click(function(){
 		$("INPUT[name='name']").val("");
 		$("INPUT[name='chanCode']").val("");
-		$("INPUT[name='chanName']").val("");
 		$("INPUT[name='phone']").val("");
 		$("#type").val("");
 		$("INPUT[name='developer']").val("");
 	});
+	
+	
 	$("#downloadExcel").click(function(){
 		downloadExcel();
 	});
@@ -43,10 +50,11 @@ $(function() {
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	
-	var name=null,chanCode=null,chanName=null,type=null,phone=null;
+	var name=null,chanCode=null,type=null,phone=null,month=null,dealDate=null;
+	dealDate=$.trim($("#dealDate").val());
+	month=$.trim($("#month").val());
 	name=$.trim($("INPUT[name='name']").val());
 	chanCode=$.trim($("INPUT[name='chanCode']").val());
-	chanName=$.trim($("INPUT[name='chanName']").val());
 	phone=$.trim($("INPUT[name='phone']").val());
 	type=$.trim($("#type").val());
 	var developer=$.trim($("INPUT[name='developer']").val());
@@ -63,7 +71,7 @@ function search(pageNumber) {
            "name":name,
            "phone":phone,
            "chanCode":chanCode,
-           "chanName":chanName,
+           "dealDate":dealDate,
            "type":type,
            "developer":developer
 	   	}, 
@@ -73,27 +81,83 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		$.each(pages.rows,function(i,n){
-				content+="<tr>"
-				+"<td>"+isNull(n['user_type'])+"</td>"
-				+"<td>"+isNull(n['NAME'])+"</td>"
-				+"<td>"+isNull(n['PHONE'])+"</td>"
-				+"<td>"+isNull(n['DEVELOPER'])+"</td>"
-				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
-				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
-				+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>";
-				content+="</tr>";
-			});
+	   		
+	   			$("#addBtn").show();
+	   			$.each(pages.rows,function(i,n){
+					content+="<tr>"
+					+"<td>"+isNull(n['user_type'])+"</td>"
+					+"<td>"+isNull(n['NAME'])+"</td>"
+					+"<td>"+isNull(n['PHONE'])+"</td>"
+					+"<td>"+isNull(n['DEVELOPER'])+"</td>"
+					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+					+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+					+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
+					+"<td class='operater'><a href='#'  dealDate='"+dealDate+"'id='developer' dev_num='"+n['DEVELOPER']+"' onclick='del(this);'>删除</a></td>";
+					content+="</tr>";
+				});
+	   		
 			if(content != "") {
 				$("#dataBody").html(content);
+				if(dealDate!=month){
+					$("#addBtn").hide();
+					$(".operater").empty();
+				}
 			}else {
-				$("#dataBody").html("<tr><td colspan='7'>暂无数据</td></tr>");
+				$("#dataBody").html("<tr><td colspan='8'>暂无数据</td></tr>");
 			}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
 		   alert("加载数据失败！");
 	    }
 	});
+}
+
+
+//新增集客经理
+/*$("#addBtn").click(function(){
+	var group_id_1 = $(ele).attr("group_id_1");
+	art.dialog.data('group_id_1',group_id_1);
+
+	alert(11);
+	
+});*/
+
+function addGrpPerson(){
+	var dealDate=$.trim($("#dealDate").val());
+	var url = $("#ctx").val()+"/portal/channelManagement/jsp/add_grp_person.jsp?dealDate="+dealDate;
+	art.dialog.open(url,{
+		id:'addGrpPerson',
+		width:'560px',
+		height:'305px',
+		/*padding:'12px',*/
+		lock:true,
+		resize:false
+	});
+}
+//删除集客经理
+function del(d){
+	var dev_num =$(d).attr("dev_num");
+	var dealDate=$(d).attr("dealDate");
+	if(confirm("确定删除集客经理吗？")){
+		$.ajax({
+			type:"POST",
+			dataType:'json',
+			cache:false,
+			url:$("#ctx").val()+"/channelManagement/grpManager_delGrpPerson.action",
+			data:{
+	           "dev_num":dev_num,
+	           "dealDate":dealDate
+		   	}, 
+		   	success:function(data){
+		   		if(data&& data>0){
+		   			search(0);
+		   		}else{
+		   			alert("删除失败");
+		   			search(0);
+		   		}
+		   	}
+		 });
+	}
 }
 
 function initPagination(totalCount) {
@@ -116,9 +180,9 @@ function isNull(obj){
 }
 
 function downloadExcel() {
+	var dealDate=$.trim($("#dealDate").val());
 	var name=$.trim($("INPUT[name='name']").val());
 	var chanCode=$.trim($("INPUT[name='chanCode']").val());
-	var chanName=$.trim($("INPUT[name='chanName']").val());
 	var phone=$.trim($("INPUT[name='phone']").val());
 	var type=$.trim($("#type").val());
 	var developer=$.trim($("INPUT[name='developer']").val());
@@ -135,6 +199,9 @@ function downloadExcel() {
 	}else if(level == "4") {
 		sql += "AND T.UNIT_ID='"+groupId+"' ";
 	}
+	if(dealDate != "") {
+		sql += "AND T.DEAL_DATE='"+dealDate+"' ";
+	}
 	if(type != "") {
 		sql += "AND T.User_Type='"+type+"' ";
 	}
@@ -146,9 +213,6 @@ function downloadExcel() {
 	}
 	if(chanCode != "") {
 		sql += "AND T.Hq_Chan_Code like '%"+chanCode+"%' ";
-	}
-	if(chanName != "") {
-		sql += "AND T.Hq_Chan_Name like '%"+chanName+"%' ";
 	}
 	if(developer != "") {
 		sql += "AND T.DEVELOPER = '"+developer+"' ";
