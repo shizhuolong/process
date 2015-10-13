@@ -3,66 +3,138 @@
 
 <mapper namespace="org.apdplat.portal.channelManagement.dao.GrpManagerDao">
 
-	<select id="listTreeNode" parameterType="java.util.Map" resultType="java.util.Map">
-	<!-- 
+	<select id="listTreeNode" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		<!-- <choose> <when test="level==0"> SELECT DISTINCT T.GROUP_ID_1 AS "id", 
+			T.GROUP_ID_1_NAME AS "name",1 as "lev" ,'86000' as "pId",'true' as "isParent" 
+			FROM PORTAL.TAB_PORTAL_GRP_PERSON T </when> <when test="level==1"> SELECT 
+			DISTINCT T.UNIT_ID AS "id", T.UNIT_NAME AS "name",2 as "lev" , T.group_id_1 
+			as "pId",'false' as "isParent" FROM PORTAL.TAB_PORTAL_MOB_PERSON T WHERE 
+			T.GROUP_ID_1 = #{groupId} </when> <otherwise> SELECT '86000' AS "id", '云南省' 
+			AS "name", '0' as "lev",'-1' as "pId",'true' as "isParent",'true' as "open" 
+			FROM DUAL </otherwise> </choose> -->
 		<choose>
-			<when test="level==0">
-				SELECT 
-       				DISTINCT T.GROUP_ID_1 AS "id", T.GROUP_ID_1_NAME AS "name",1 as "lev" ,'86000' as "pId",'true' as "isParent"
-				FROM PORTAL.TAB_PORTAL_GRP_PERSON T 
-			</when>
-			<when test="level==1">
-				SELECT 
-       				DISTINCT T.UNIT_ID AS "id", T.UNIT_NAME AS "name",2 as "lev" , T.group_id_1 as "pId",'false' as "isParent"
-				FROM PORTAL.TAB_PORTAL_MOB_PERSON T 
-				WHERE T.GROUP_ID_1 = #{groupId}
+			<when test="flag==0">
+				select t.id as "id",
+				t.code as "groupId",
+				t.orgname as
+				"name",
+				t.orglevel as "lev",
+				t.parent_id as "pId",
+				CASE t.orglevel
+				WHEN
+				'1' THEN 'true'
+				WHEN '2' THEN 'true'
+				ELSE 'false' END "isParent"
+				from
+				portal.apdp_org t
+				where t.code = #{groupId}
 			</when>
 			<otherwise>
-				SELECT '86000' AS "id", '云南省' AS "name", '0' as "lev",'-1' as "pId",'true' as "isParent",'true' as "open" FROM DUAL
+				select t.id as "id",
+				t.code as "groupId",
+				t.orgname as
+				"name",
+				t.orglevel as "lev",
+				t.parent_id as "pId",
+				CASE t.orglevel
+				WHEN
+				'1' THEN 'true'
+				WHEN '2' THEN 'true'
+				ELSE 'false' END "isParent"
+				from
+				portal.apdp_org t
+				where t.parent_id in(select o.id from
+				portal.apdp_org o where o.code =
+				#{groupId})
 			</otherwise>
 		</choose>
-		 -->
-		<choose>
-        	<when test="flag==0">
-        		select t.id        as "id",
-		               t.code      as "groupId",
-		               t.orgname   as "name",
-		               t.orglevel  as "lev",
-		               t.parent_id as "pId",
-		               CASE  t.orglevel
-	                   WHEN '1' THEN 'true'
-	                   WHEN '2' THEN 'true'
-	                   ELSE 'false' END "isParent"
-		        from portal.apdp_org t
-		        where t.code = #{groupId}
-        	</when>
-        	<otherwise>
-				select t.id        as "id",
-		               t.code      as "groupId",
-		               t.orgname   as "name",
-		               t.orglevel  as "lev",
-		               t.parent_id as "pId",
-		               CASE  t.orglevel
-	                   WHEN '1' THEN 'true'
-	                   WHEN '2' THEN 'true'
-	                   ELSE 'false' END "isParent"
-		        from portal.apdp_org t
-		        where t.parent_id in(select o.id from portal.apdp_org o where o.code = #{groupId})
-			</otherwise>
-        </choose>
 	</select>
+
+	<!--删除集客经理 -->
+	<delete id="delGrpPerson" parameterType="java.util.Map">
+		DELETE FROM
+		PORTAL.TAB_PORTAL_GRP_PERSON WHERE DEVELOPER =#{dev_num}
+		AND DEAL_DATE = #{dealDate}
+	</delete>
+	<!-- <update id="delGrpPerson" parameterType="java.util.Map">
+		UPDATE PORTAL.TAB_PORTAL_GRP_PERSON SET INACTIVE_TIME=TO_CHAR(SYSDATE,'YYYYMMDD')
+		,IS_VALUE=0 WHERE DEVELOPER =#{dev_num}
+	</update> -->
+
+	<!--查询发展人编码 -->
+	<select id="searchDevNum" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME
+		FROM PCDE.TB_CDE_CHANL_CODE T
+		LEFT JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T1
+		ON T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE
+		WHERE T.IS_DEVELOPER = 1
+		and T.FD_CHNL_CODE is not null
+		AND NOT EXISTS (SELECT 1
+		FROM PORTAL.TAB_PORTAL_GRP_PERSON
+		WHERE DEVELOPER = T.FD_CHNL_CODE AND DEAL_DATE=#{dealDate})
+		<if test="orgLevel==1">
+			AND 1=1
+		</if>
+		<if test="orgLevel==2">
+			AND T1.GROUP_ID_1=#{orgCode}
+		</if>
+		<if test="orgLevel==3">
+			AND T1.UNIT_ID=#{orgCode}
+		</if>
+		<if test="orgLevel==4">
+			AND T1.GROUP_ID_4=#{orgCode}
+		</if>
+		<if test="devNum!=null">
+			AND T.FD_CHNL_CODE=#{devNum}
+		</if>
+		<if test="unit_name!=null">
+			AND T1.UNIT_NAME LIKE #{unit_name}
+		</if>
+	</select>
+	
+	<!--新增集客经理  -->
+	<insert id="addGrpManager" parameterType="java.util.Map">
+		INSERT INTO PORTAL.TAB_PORTAL_GRP_PERSON
+		SELECT
+		T3.ID,T3.REALNAME,T3.USERNAME,T3.PHONE,T2.GROUP_ID_4,T2.UNIT_ID,T2.GROUP_ID_1,T2.HQ_CHAN_CODE
+		,2,T2.UNIT_NAME,T2.GROUP_ID_1_NAME,SYSDATE,'','绑定',#{grpType}
+		,'',T2.GROUP_ID_4_NAME,#{hrNum},#{devNum},'',#{userName},#{dealDate},'',1,#{dealDate}
+		FROM PCDE.TB_CDE_CHANL_CODE T4
+		JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T2
+		ON (T4.HQ_CHAN_CODE=T2.HQ_CHAN_CODE)
+		JOIN PORTAL.APDP_USER T3
+		ON (#{hrNum}=T3.HR_ID)
+		WHERE T2.GROUP_ID_1=#{regionCode} and T4.FD_CHNL_CODE=#{devNum}
+		and NOT EXISTS (SELECT 1 FROM PORTAL.TAB_PORTAL_GRP_PERSON T WHERE #{devNum}=T.DEVELOPER AND T.DEAL_DATE=#{dealDate})
+	</insert>
+	<!--查询HR编码  -->
+	<select id="searchHrNum" parameterType="java.util.Map" resultType="java.util.Map">
+		 SELECT T.HR_ID,T.USERNAME,T.REALNAME,T1.CODE  FROM PORTAL.APDP_USER T
+	     JOIN PORTAL.APDP_ORG T1
+	     ON T.ORG_ID=T1.ID
+	     WHERE T1.CODE=#{unit_id}
+	     AND T1.ORGLEVEL=3
+		<if test="grpType==0">
+		 AND T.HR_ID IN(SELECT HR_ID FROM PORTAL.TAB_PORTAL_MAG_PERSON WHERE DEAL_DATE =#{dealDate})
+		</if>
+	</select>
+	
+	
 	<select id="queryGrpPerson" parameterType="java.util.Map" resultType="java.util.Map">
-	SELECT
+		SELECT
 		CASE T.USER_TYPE
 		WHEN '1' THEN '渠道经理'
 		WHEN '2' THEN '客户经理'
-		ELSE '其他' END "user_type"
-		,T.NAME, T.PHONE,T.DEVELOPER,T.UNIT_NAME, T.HQ_CHAN_CODE, T.HQ_CHAN_NAME
-	FROM PORTAL.TAB_PORTAL_GRP_PERSON T
-
-	<where> 
+		ELSE
+		'其他' END "user_type"
+		,T.NAME, T.PHONE,T.DEVELOPER,T.UNIT_NAME,
+		T.HQ_CHAN_CODE, T.HQ_CHAN_NAME,T.ACTIVE_TIME
+		FROM PORTAL.TAB_PORTAL_GRP_PERSON T
+		WHERE T.IS_VALUE=1
 			<if test="level==1">
-				<!--如果是省公司则全部查出  -->
+				<!--如果是省公司则全部查出 -->
 			</if>
 			<if test="level==2">
 				AND T.Group_Id_1=#{groupId}
@@ -73,7 +145,7 @@
 			<if test="type!=null">
 				AND T.User_Type=#{type}
 			</if>
-			
+
 			<if test="name!=null">
 				AND T.Name like #{name}
 			</if>
@@ -83,13 +155,13 @@
 			<if test="chanCode!=null">
 				AND T.Hq_Chan_Code like #{chanCode}
 			</if>
-			<if test="chanName!=null">
-				AND T.Hq_Chan_Name like #{chanName}
+			<if test="dealDate!=null">
+				AND T.DEAL_DATE = #{dealDate}
 			</if>
 			<if test="developer!=null">
 				AND T.DEVELOPER = #{developer}
 			</if>
-	</where>
-	ORDER BY T.HQ_CHAN_CODE
+			
+		ORDER BY T.HQ_CHAN_CODE
 	</select>
 </mapper>

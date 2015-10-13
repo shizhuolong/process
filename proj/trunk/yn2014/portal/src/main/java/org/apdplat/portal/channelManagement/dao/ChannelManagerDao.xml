@@ -34,7 +34,8 @@
        		FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 
        			ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) 
        		LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
-    		ON (T.UNIT_ID = T3.UNIT_ID) WHERE T.LEV = 2
+    		ON (T.UNIT_ID = T3.UNIT_ID) WHERE T.LEV = 2 
+    		AND T.DEAL_DATE=#{deal_date}
     		<if test="hq_chan_code != null">
    				AND T.HQ_CHAN_CODE=#{hq_chan_code}
 	    	</if>
@@ -62,7 +63,8 @@
        			ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) 
        		LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
     			ON (T.UNIT_ID = T3.UNIT_ID)
-    		WHERE T.LEV = 2 AND T.GROUP_ID_1=#{code}
+    		WHERE T.LEV = 2 AND T.GROUP_ID_1=#{code} 
+    		AND T.DEAL_DATE=#{deal_date}
 	    	<if test="hq_chan_code != null">
     			AND T.HQ_CHAN_CODE=#{hq_chan_code}
 	    	</if>
@@ -90,7 +92,8 @@
        			ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) 
        		LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
     			ON (T.UNIT_ID = T3.UNIT_ID)
-    		WHERE T.LEV = 2 AND T.UNIT_ID=#{code}
+    		WHERE T.LEV = 2 AND T.UNIT_ID=#{code} 
+    		AND T.DEAL_DATE=#{deal_date}
 	    	<if test="hq_chan_code != null">
     			AND T.HQ_CHAN_CODE=#{hq_chan_code}
 	    	</if>
@@ -117,7 +120,8 @@
        		FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 
        			ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) 
        		LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
-    		ON (T.UNIT_ID = T3.UNIT_ID) WHERE 1=2
+    		ON (T.UNIT_ID = T3.UNIT_ID) WHERE 1=2 
+    		AND T.DEAL_DATE=#{deal_date}
 		</if>
 	</select>
 	
@@ -152,12 +156,14 @@
 	<update id="saveBindPerson" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_MOB_PERSON T
    			SET T.USERID = #{userid}, T.NAME = #{name}, T.ACCOUNT = #{username}, T.PHONE = #{phone}, T.HR_ID = #{hr_id}, T.UPDATE_TIME=sysdate
- 		WHERE T.GROUP_ID_CODE = #{group_id_code}
+ 		WHERE T.GROUP_ID_CODE = #{group_id_code} 
+ 		AND T.DEAL_DATE=#{deal_date}
 	</update>
 	
 	<update id="updateBindPerson" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_MOB_PERSON T
    			SET T.USERID = '', T.NAME = '', T.ACCOUNT = '', T.PHONE = '', T.HR_ID = ''
- 		WHERE T.GROUP_ID_CODE = #{group_id_code}
+ 		WHERE T.GROUP_ID_CODE = #{group_id_code} 
+ 		AND T.DEAL_DATE=#{deal_date}
 	</update>
 </mapper>

@@ -90,18 +90,21 @@
    			SET T.USERID='', T.NAME='',T.ACCOUNT='',T.PHONE='',T.HR_ID='',
    			T.UNIT_ID=#{unit_id},T.UNIT_NAME = #{unit_name}
  		WHERE T.GROUP_ID_CODE = #{group_id_4}
+ 		AND T.DEAL_DATE=to_char(sysdate,'yyyymm')
 	</update>
 	
 	<update id="updateGrpPerson" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_GRP_PERSON T 
 			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}
  		WHERE T.GROUP_ID_CODE = #{group_id_4}
+ 		AND T.DEAL_DATE=to_char(sysdate,'yyyymm')
 	</update>
 	
 	<update id="updateMagPerson" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_MAG_PERSON T 
 			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}
  		WHERE T.GROUP_ID_CODE = #{group_id_4}
+ 		AND T.DEAL_DATE=to_char(sysdate,'yyyymm')
 	</update>
 	
 	<select id="queryChanelInfo" parameterType="java.util.Map" resultType="java.util.Map">
@@ -130,7 +133,7 @@
    			AND T.GROUP_ID_4 = T3.GROUP_ID_4
    			AND T2.LEV = 2
    			AND T.GROUP_ID_4 = #{group_id_4}
-   		
+   			AND T2.DEAL_DATE=to_char(sysdate,'yyyymm')
 	</select>
 	
 	<select id="loadChanlDetails" parameterType="String" resultType="java.util.Map">
@@ -148,6 +151,7 @@
     	ON (T0.FD_CHNL_CODE = T.FD_CHNL_CODE) LEFT JOIN PORTAL.TAB_PORTAL_MOB_PERSON T1
     	ON (T.GROUP_ID_4 = T1.GROUP_ID_CODE)
    		WHERE T.GROUP_ID_4 = #{group_id_4}
+   		AND T1.DEAL_DATE=to_char(sysdate,'yyyymm')
 	</select>
 	
 </mapper>
