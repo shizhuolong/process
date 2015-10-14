@@ -43,58 +43,13 @@ $(function() {
 		$("#user_code").val("");
 		$("#user_log_code").val("");
 	});
-	
 	$("#downloadExcel").click(function(){
 		downloadExcel();
 	});
-	$("#addBtn").click(function(){
-		add();
-	});
+	
 });
-function del(obj){
-	var hr_id=obj.attr("hr_id");
-	var user_code=obj.attr("user_code");
-	var regionCode=obj.attr("regioncode");
-	var path=$("#ctx").val();
-	if(confirm('确认解绑吗?')){
-	  window.location.href=path+"/channelManagement/businessHallPerson_del.action?hr_id="+hr_id+"&user_code="+user_code+"&regionCode="+regionCode;
-	}
-	//window.location.reload();
-}
-function add() {
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/business_hall_person_add.jsp";
-	art.dialog.open(url,{
-		id:'add',
-		width:'420px',
-		height:'170px',
-		padding:'0 0',
-		lock:true,
-		resize:false,
-		title:'增加营业员配置'
-	});
-}
-function update(obj) {
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/business_hall_person_update.jsp";
-	var hr_id=obj.attr("hr_id");
-	var user_code=obj.attr("user_code");
-	var regionCode=obj.attr("regioncode");
-	var unit_name=obj.attr("unit_name");
-	var name=obj.attr("name");
-	art.dialog.data('hr_id',hr_id);
-	art.dialog.data('user_code',user_code);
-	art.dialog.data('regionCode',regionCode);
-	art.dialog.data('unit_name',unit_name);
-	art.dialog.data('name',name);
-	art.dialog.open(url,{
-		id:'update',
-		width:'420px',
-		height:'170px',
-		padding:'0 0',
-		lock:true,
-		resize:false,
-		title:'修改营业员配置'
-	});
-}
+
+
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var name = $.trim($("#name").val());
@@ -103,6 +58,7 @@ function search(pageNumber) {
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var user_code = $.trim($("#user_code").val());
 	var user_log_code = $.trim($("#user_log_code").val());
+	var deal_date=$("#time").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -119,7 +75,8 @@ function search(pageNumber) {
            	"hq_chan_name":hq_chan_name,
            	"phone":phone,
            	"user_code":user_code,
-           	"user_log_code":user_log_code
+           	"user_log_code":user_log_code,
+           	"deal_date":deal_date
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -138,9 +95,7 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
 				+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 				+"<td>"+isNull(n['USER_CODE'])+"</td>"
-				+"<td>"+isNull(n['USER_LOG_CODE'])+"</td>"+
-				"<td>"+"<a onclick='update($(this))' user_code='"+isNull(n['USER_CODE'])+"' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' name='"+isNull(n['NAME'])+"' unit_name='"+isNull(n['UNIT_NAME'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
-				"<a onclick='del($(this))' user_code='"+isNull(n['USER_CODE'])+"' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>解绑</a></td>";
+				+"<td>"+isNull(n['USER_LOG_CODE'])+"</td>";
 				content+="</tr>";
 			});
 			if(content != "") {
@@ -183,21 +138,22 @@ function downloadExcel() {
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var user_code = $.trim($("#user_code").val());
 	var user_log_code = $.trim($("#user_log_code").val());
+	var deal_date=$("#time").val();
 	
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
 				"T.USER_CODE,T.USER_LOG_CODE " +
-				"FROM PORTAL.TAB_PORTAL_MAG_PERSON T WHERE 1=1 ";
+				"FROM PORTAL.TAB_PORTAL_MAG_PERSON T WHERE 1=1 AND T.DEAL_DATE='"+deal_date+"' ";
 	}else if(orgLevel == "2") {
 		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
 				"T.USER_CODE,T.USER_LOG_CODE " +
 				"FROM PORTAL.TAB_PORTAL_MAG_PERSON T " +
-				"WHERE T.GROUP_ID_1 = '"+code+"' ";
+				"WHERE T.GROUP_ID_1 = '"+code+"' AND T.DEAL_DATE='"+deal_date+"' ";
 	}else if(orgLevel == "3") {
 		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
 				"T.USER_CODE,T.USER_LOG_CODE FROM PORTAL.TAB_PORTAL_MAG_PERSON T " +
-				"WHERE T.UNIT_ID = '"+code+"' ";
+				"WHERE T.UNIT_ID = '"+code+"' AND T.DEAL_DATE='"+deal_date+"' ";
 	}else {
 		sql = "SELECT T.NAME,T.PHONE,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME," +
 				"T.USER_CODE,T.USER_LOG_CODE " +
