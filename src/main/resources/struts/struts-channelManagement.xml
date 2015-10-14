@@ -33,9 +33,9 @@
         </action>
         <!--游离小区  -->
         <action name="freeCommunityManager_*" class="org.apdplat.portal.channelManagement.action.FreeCommunityManagerAction" method="{1}">
-			<result name="success">/portal/channelManagement/jsp/network_std6_list.jsp</result>
+			<result name="success">/warningAndMonitor/resourceMonitor/jsp/free_community_list.jsp</result>
         </action>
-        
+                
         <action name="networkManager_*" class="org.apdplat.portal.channelManagement.action.NetworkManagerAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/network_manager_list.jsp</result>
         </action>
@@ -59,6 +59,9 @@
         <action name="tabStation_*" class="org.apdplat.portal.channelManagement.action.TabStationAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/tab_cde_station_list.jsp</result>
         </action>
-
+        <!-- 唯一身份管理 -->
+        <action name="qjPerson_*" class="org.apdplat.portal.channelManagement.action.QJPersonAction" method="{1}">
+			<result name="success">/portal/channelManagement/jsp/tab_portal_qj_person_list.jsp</result>
+        </action>
 	</package>
 </struts>
