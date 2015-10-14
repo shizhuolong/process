@@ -56,6 +56,8 @@ function search(pageNumber) {
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var hr_id = $.trim($("#hr_id").val());
 	var unit_name = $.trim($("#unit_name").val());
+	var deal_date = $.trim($("#deal_date").val());
+	var month = $.trim($("#month").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -71,7 +73,8 @@ function search(pageNumber) {
            	"hq_chan_code":hq_chan_code,
            	"hq_chan_name":hq_chan_name,
            	"hr_id":hr_id,
-           	"unit_name":unit_name
+           	"unit_name":unit_name,
+           	"deal_date":deal_date
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -101,11 +104,11 @@ function search(pageNumber) {
 					if(isGrantedNew(UPDATE_ROLE)) {
 						//已绑定
 						if(isBind == "1") {
-							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hr_id='"+n['HR_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td class='operater'><a href='#'  deal_date='"+deal_date+"' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hr_id='"+n['HR_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
+							"<a href='#' deal_date='"+deal_date+"' group_id_code='"+n['GROUP_ID_CODE']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						} else {
-							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hr_id='"+n['HR_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
-							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td class='operater'><a href='#'  deal_date='"+deal_date+"' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hr_id='"+n['HR_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
+							"<a href='#' deal_date='"+deal_date+"' group_id_code='"+n['GROUP_ID_CODE']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						}
 					}else {
 						content += "<td>&nbsp;&nbsp;&nbsp;</td>";
@@ -118,6 +121,9 @@ function search(pageNumber) {
 			});
 			if(content != "") {
 				$("#dataBody").empty().html(content);
+				if(month!=deal_date){
+					$(".operater").empty();
+				}
 			}else {
 				$("#dataBody").empty().html("<tr><td colspan='9'>暂无数据</td></tr>");
 			}
@@ -134,13 +140,13 @@ function bindPerson(obj) {
 	var unit_id = $(obj).attr("unit_id");
 	var id = $(obj).attr("id");
 	var group_id_code = $(obj).attr("group_id_code");
-	var old_hr_id = $(obj).attr("hr_id");
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_manager_bind_person.jsp";
+	var deal_date = $(obj).attr("deal_date");
+	var url = $("#ctx").val()
+			+ "/portal/channelManagement/jsp/channel_manager_bind_person.jsp?deal_date="+deal_date;
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('unit_id',unit_id);
 	art.dialog.data('id',id);
 	art.dialog.data('group_id_code',group_id_code);
-	art.dialog.data('old_hr_id',old_hr_id);
 	art.dialog.open(url,{
 		id:'bindPersonDialog',
 		width:'530px',
@@ -153,7 +159,7 @@ function bindPerson(obj) {
 //解绑
 function unBindPerson(ele) {
 	var group_id_code = $(ele).attr("group_id_code");
-	var hr_id = $(ele).attr("hr_id");
+	var deal_date =$(ele).attr("deal_date");
 	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
 		$.ajax({
 			type:"POST",
@@ -162,7 +168,7 @@ function unBindPerson(ele) {
 			url:$("#ctx").val()+"/channelManagement/channelManager_updateBindPerson.action",
 			data:{
 				"group_id_code":group_id_code,
-				"old_hr_id":hr_id
+				"deal_date":deal_date
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
@@ -209,35 +215,35 @@ function downloadExcel() {
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var hr_id = $.trim($("#hr_id").val());
 	var unit_name = $.trim($("#unit_name").val());
-	
+	var deal_date =  $.trim($("#deal_date").val());
 	var sql = "";
 	if(orgLevel == "1") {
 		sql = "SELECT T.NAME,T.PHONE,T.UNIT_NAME,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE," +
 				"T.HQ_CHAN_NAME,T.HR_ID " +
 				"FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 " +
 				"ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3 " +
-				"ON (T.UNIT_ID = T3.UNIT_ID) WHERE T.LEV = 2 ";
+				"ON (T.UNIT_ID = T3.UNIT_ID) WHERE T.LEV = 2 AND T.DEAL_DATE="+deal_date;
 	}else if(orgLevel == "2") {
 		sql = "SELECT T.NAME,T.PHONE,T.UNIT_NAME,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE," +
 				"T.HQ_CHAN_NAME,T.HR_ID " +
 				"FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 " +
 				"ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) " +
 				"LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3 ON (T.UNIT_ID = T3.UNIT_ID) " +
-				"WHERE T.LEV = 2 AND T.GROUP_ID_1='"+code+"' ";
+				"WHERE T.LEV = 2 AND T.GROUP_ID_1='"+code+"' T.DEAL_DATE="+deal_date;
 	}else if(orgLevel == "3") {
 		sql = "SELECT T.NAME,T.PHONE,T.UNIT_NAME,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE," +
 				"T.HQ_CHAN_NAME,T.HR_ID " +
 				"FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 " +
 				"ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) " +
 				"LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3 ON (T.UNIT_ID = T3.UNIT_ID) " +
-				"WHERE T.LEV = 2 AND T.UNIT_ID='"+code+"' ";
+				"WHERE T.LEV = 2 AND T.UNIT_ID='"+code+"' T.DEAL_DATE="+deal_date;
 	}else {
 		sql = "SELECT T.NAME,T.PHONE,T.UNIT_NAME,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE," +
 				"T.HQ_CHAN_NAME,T.HR_ID " +
 				"FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 " +
 				"ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) " +
 				"LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3 " +
-				"ON (T.UNIT_ID = T3.UNIT_ID) WHERE 1=2 ";
+				"ON (T.UNIT_ID = T3.UNIT_ID) WHERE 1=2 T.DEAL_DATE="+deal_date;
 	}
 	if(hq_chan_code != "") {
 		sql += "AND T.HQ_CHAN_CODE='"+hq_chan_code+"' ";
