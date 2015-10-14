@@ -2,14 +2,12 @@ var group_id_1 = "";
 var unit_id = "";
 var id = "";
 var group_id_code = "";
-var old_hr_id="";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
 	unit_id = art.dialog.data('unit_id');
 	id = art.dialog.data('id');
 	group_id_code = art.dialog.data('group_id_code');
-	old_hr_id=art.dialog.data('old_hr_id');
 	listPerson(0);
 	$("#searchBtn").click(function(){
 		listPerson(0);
@@ -25,6 +23,7 @@ $(function() {
 			art.dialog.alert("请选择需要绑定的负责人!");
 			return false;
 		}
+		var deal_date = $("#deal_date").val();
 		var userid = $('input:radio:checked').val()
 		var name = $('input:radio:checked').attr("name");
 		var username = $('input:radio:checked').attr("username");
@@ -42,7 +41,7 @@ $(function() {
 	           "phone":phone,
 	           "group_id_code":group_id_code,
 	           "hr_id":hr_id,
-	           "old_hr_id":old_hr_id
+	           "deal_date":deal_date
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
