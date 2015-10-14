@@ -11,7 +11,7 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.MONTH, -1);
+	ca.add(Calendar.MONTH, 0);
 	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <html>
@@ -67,13 +67,12 @@
 						<option value=''>请选择</option>
 				    </select>
 				 </td>
-				 <td width="8%">人员姓名：<input type="text" style="width:100px;" readonly="true" name="name" id="name"/>
+				 <td width="8%">人员姓名：<input type="text"  required="true" class="easyui-validatebox" missingMessage="HR编码错误" style="width:100px;" readonly="true" name="name" id="name"/>
 				 </td>
 				</tr>
 				<tr>
 				 <td colspan='2' width="8%" style="padding-left: 10px;">生效时间：
-						<input type="text"  class="Wdate " 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" name="time" id="time">
+						<input type="text" readonly="true" value="<%=time%>" name="time" id="time"/>
 				 </td>
 				</tr>			
 				<tr>
