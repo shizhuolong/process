@@ -4,11 +4,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>公告管里</title>
+	<title>公告管理</title>
 	<link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 	<link href="<%=request.getContextPath()%>/portal/bullManagement/js/kindeditor/themes/default/default.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/portal/bullManagement/js/bull_manage_edit.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/portal/bullManagement/js/kindeditor/kindeditor-min.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/portal/bullManagement/js/kindeditor/lang/zh_CN.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
