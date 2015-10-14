@@ -21,7 +21,6 @@
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
-<link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
@@ -36,8 +35,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_person_list.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -84,7 +81,6 @@
 					<td colspan="4">
                         	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 300px;">查询</a>
                         	<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
-                        	<a class="default-btn fLeft mr10" href="#" id="addBtn" style="">新增</a>
                         	<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
                        </td>
 				</tr>
