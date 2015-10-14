@@ -47,7 +47,7 @@ public class BusinessHallPersonAction extends BaseAction {
 		String phone = request.getParameter("phone");
 		String user_code = request.getParameter("user_code");
 		String user_log_code = request.getParameter("user_log_code");
-		
+		String deal_date=request.getParameter("deal_date");
 		if(hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 			resultMap.put("hq_chan_code", hq_chan_code);
 		}
@@ -66,6 +66,7 @@ public class BusinessHallPersonAction extends BaseAction {
 		if(user_log_code != null && !"".equals(user_log_code.trim())) {
 			resultMap.put("user_log_code", user_log_code);
 		}
+		resultMap.put("deal_date",deal_date);
 		Object result = businessHallPersonService.queryMagPerson(resultMap);
 		this.reponseJson(result);
 	}
