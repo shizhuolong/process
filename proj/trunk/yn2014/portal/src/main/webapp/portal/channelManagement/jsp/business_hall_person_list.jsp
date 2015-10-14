@@ -97,8 +97,6 @@
 								<th>营业厅名称</th>
 								<th>工位</th>
 								<th>工号</th>
-								<th>操作</th>
-							</tr>
 						</thead>
 						<tbody id="dataBody">
 						</tbody>
