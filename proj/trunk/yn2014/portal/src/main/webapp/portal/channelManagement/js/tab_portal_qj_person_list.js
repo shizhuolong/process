@@ -2,12 +2,14 @@ var pageSize = 15;
 var orgId = "";
 var orgLevel = "";
 var code = "";
+var initMonth="";
 $(function() {
 	//从用户登录信息中获取初始化根节点
 	orgLevel = $("#orgLevel").val();
 	code = $("#code").val();
 	orgId = $("#orgId").val();
 	var initOrgName = $("#orgName").val();
+	initMonth=$("#time").val();
 	var setting = {
 		async : {
 			enable : true,
@@ -55,7 +57,7 @@ function del(obj){
 	var hr_id=obj.attr("hr_id");
 	var path=$("#ctx").val();
 	if(confirm('确认刪除吗?')){
-	  window.location.href=path+"/channelManagement/qjPerson_del.action?hr_id="+hr_id;
+	  window.location.href=path+"/channelManagement/qjPerson_del.action?hr_id="+hr_id+"&month="+initMonth+"";
 	}
 }
 function add() {
@@ -103,7 +105,7 @@ function search(pageNumber) {
 	var job = $.trim($("#job").val());
 	var hr_id = $.trim($("#hr_id").val());
 	var active_time = $.trim($("#active_time").val());
-	
+	var chooseMonth=$("#time").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -120,7 +122,8 @@ function search(pageNumber) {
            	"job_type":job_type,
            	"job":job,
            	"hr_id":hr_id,
-           	"active_time":active_time
+           	"active_time":active_time,
+            "chooseMonth":chooseMonth 
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -131,8 +134,24 @@ function search(pageNumber) {
 	   		if(pageNumber == 1) {
 				initPagination(pages.pagin.totalCount);
 			}
-	   		var content="";/*isNull(n['ACTIVE_TIME'])*/
-	   		$.each(pages.rows,function(i,n){
+	   		var content="";
+	   		if(orgLevel==1){
+	   			$("#addBtn").remove();
+		   		 $.each(pages.rows,function(i,n){
+					content+="<tr>"
+					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+					+"<td>"+isNull(n['NAME'])+"</td>"
+					+"<td>"+isNull(n['JOB_TYPE'])+"</td>"
+					+"<td>"+isNull(n['JOB'])+"</td>"
+					+"<td>"+isNull(n['HR_ID'])+"</td>"
+					+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
+					+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+				 +"<td></td>";
+					content+="</tr>";
+				 });
+	   		}else{
+	   		  if(chooseMonth==initMonth){
+	   		    $.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['NAME'])+"</td>"
@@ -140,11 +159,25 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['JOB'])+"</td>"
 				+"<td>"+isNull(n['HR_ID'])+"</td>"
 				+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
-				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"+
-			"<td>"/*+"<a onclick='update($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' name='"+isNull(n['NAME'])+"' unit_name='"+isNull(n['UNIT_NAME'])+"' job='"+isNull(n['JOB'])+"' job_type='"+isNull(n['JOB_TYPE'])+"' href='#'>修改</a>&nbsp;&nbsp;" +*/
-			+"<a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
+				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+			 +"<td><a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
-			});
+			 });
+	   	    }else{
+	   	    	$.each(pages.rows,function(i,n){
+					content+="<tr>"
+					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+					+"<td>"+isNull(n['NAME'])+"</td>"
+					+"<td>"+isNull(n['JOB_TYPE'])+"</td>"
+					+"<td>"+isNull(n['JOB'])+"</td>"
+					+"<td>"+isNull(n['HR_ID'])+"</td>"
+					+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
+					+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+					+"<td></td>";
+					content+="</tr>";
+				 });
+	   		}
+	   	   }
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {
@@ -184,12 +217,17 @@ function downloadExcel() {
 	var job = $.trim($("#job").val());
 	var hr_id = $.trim($("#hr_id").val());
 	var active_time = $.trim($("#active_time").val());
+	var chooseMonth=$("#time").val();
+	
 	var sql = "";
+	 if(orgLevel == "1") {
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+	 }
 	 if(orgLevel == "2") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"'";
-	}else if(orgLevel == "3") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"'";
-	}
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+	 }else if(orgLevel == "3") {
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+	 }
 	if(name!=""){
 		sql+=" AND NAME LIKE '%"+name+"%'"; 
 	}

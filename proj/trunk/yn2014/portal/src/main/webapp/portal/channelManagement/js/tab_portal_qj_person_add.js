@@ -37,7 +37,7 @@ $(function() {
 			        cache:false,
 			        url:$("#ctx").val()+"/channelManagement/qjPerson_checkIsHrIdRepeat.action",
 			        data:{
-			        	"hr_id":hr_id,
+			        	"hr_id":hr_id
 			        },
 			        success:function(r){
 			        	if(r.message){
@@ -106,7 +106,7 @@ function listemp_type(){
 }
 var user_code="";
 function listjob(){
-	var sql = "SELECT DISTINCT T.USER_TYPE,T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T union all select '后台支撑' as user_type,0 as user_code from dual";
+	var sql = "SELECT DISTINCT T.USER_TYPE,T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T union all select '渠道经理(固网)' as user_type, 2 as user_code from dual union all select '后台支撑' as user_type,0 as user_code from dual";
 	var d=query(sql);
 	if (d) {
 		var h = '';
@@ -136,14 +136,13 @@ function listjob_type(){
 function initName(){
 	var unit_name=$("#unit_name").val();
 	var hr_id=$("#hr_id").val();
-	var sql="SELECT DISTINCT T.NAME FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.UNIT_NAME='"+unit_name+"' AND T.HR_ID='"+hr_id+"'";
+	var sql="SELECT DISTINCT T.NAME FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.UNIT_NAME='"+unit_name+"' AND T.HR_ID='"+hr_id+"' AND T.DEAL_DATE=to_char(sysdate,'yyyymm')";
 	var d=query(sql);
 	if(d&&d.length>=1){
 	 var name=d[0].NAME;
 	 $("#name").val(name);
 	}else{
-		alert("主管编码错误");
-		//return;
+		//alert("主管编码错误");
 	}
 	
 }
