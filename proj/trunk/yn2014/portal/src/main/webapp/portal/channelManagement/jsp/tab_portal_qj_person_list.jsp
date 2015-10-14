@@ -1,11 +1,16 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.model.User"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
+	Calendar ca=Calendar.getInstance();
+	ca.add(Calendar.MONTH, 0);
+	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -18,6 +23,8 @@
 <link href="<%=request.getContextPath()%>/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/sdmenu.js"></script>
@@ -65,6 +72,13 @@
                     <td width="5%" style="padding-left:10px;">申效时间：</td>
                     <td width="15%"><input class="default-text-input wper80" id="active_time" name="active_time" type="text"/></td>
                 </tr>
+                <tr height="35px">
+                    <td width="6%" style="padding-left: 10px;">账期：</td>
+					<td width="15%">
+						<input type="text"  class="Wdate default-text-input wper80" 
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time">
+					</td>
+				 </tr>	
                 <tr>
 					<td colspan="4">
                         	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 250px;">查询</a>
