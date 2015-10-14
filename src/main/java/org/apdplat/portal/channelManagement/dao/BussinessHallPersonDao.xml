@@ -31,6 +31,9 @@
 				T.USER_CODE,T.USER_LOG_CODE
 			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
 			<where>
+			    <if test="deal_date != null">
+	    			AND T.DEAL_DATE=#{deal_date}
+		    	</if>
 				<if test="hq_chan_code != null">
 	    			AND T.HQ_CHAN_CODE=#{hq_chan_code}
 		    	</if>
@@ -58,6 +61,9 @@
 				T.USER_CODE,T.USER_LOG_CODE
 			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
 			WHERE T.GROUP_ID_1 = #{code}
+			<if test="deal_date != null">
+	    		AND T.DEAL_DATE=#{deal_date}
+		    </if>
 			<if test="hq_chan_code != null">
     			AND T.HQ_CHAN_CODE=#{hq_chan_code}
 	    	</if>
@@ -84,6 +90,9 @@
 				T.USER_CODE,T.USER_LOG_CODE
 			FROM PORTAL.TAB_PORTAL_MAG_PERSON T
 			WHERE T.UNIT_ID = #{code}
+			<if test="deal_date != null">
+	    		AND T.DEAL_DATE=#{deal_date}
+		    </if>
 			<if test="hq_chan_code != null">
     			AND T.HQ_CHAN_CODE=#{hq_chan_code}
 	    	</if>
