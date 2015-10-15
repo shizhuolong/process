@@ -92,7 +92,7 @@ function listPerson(pageNumber) {
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>" +
-					"<input type='radio' hr_id='"+n['HR_ID']+"' phone='"+n['PHONE']+"' username='"+n['USERNAME']+"' name='"+n['REALNAME']+"' name='ckperson' value='"+n['ID']+"'>" +
+					"<input type='radio' hr_id='"+isNull(n['HR_ID'])+"' phone='"+isNull(n['PHONE'])+"' username='"+isNull(n['USERNAME'])+"' name='"+isNull(n['REALNAME'])+"' name='ckperson' value='"+n['ID']+"'>" +
 				"</td>"
 				+"<td>"+isNull(n['REALNAME'])+"</td>"
 				+"<td>"+isNull(n['USERNAME'])+"</td>"
@@ -123,7 +123,7 @@ function initPagination(totalCount) {
 
 function isNull(obj){
 	if(obj == undefined || obj == null || obj == '') {
-		return "&nbsp;";
+		return "";
 	}
 	return obj;
 }
