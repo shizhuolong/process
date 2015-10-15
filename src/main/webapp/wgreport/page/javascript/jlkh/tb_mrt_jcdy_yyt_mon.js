@@ -34,7 +34,7 @@ function getRegionName(){
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" and t.地市编码="+code;
 	}else if(orgLevel==3){
 		sql+=" and t.UNIT_ID='"+code+"'";
 	}else{
@@ -45,7 +45,7 @@ function getRegionName(){
 	if(result.length==1){
 		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
 		$("#regionName").empty().append($(html));
-		getUnitName($("#regionName"));
+		//getUnitName($("#regionName"));
 	}else{
 		 html +="<option value=''>全部</option>";
 		    for(var i=0;i<result.length;i++){
