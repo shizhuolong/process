@@ -46,7 +46,7 @@ function getRegionName(){
 	if(result.length==1){
 		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
 		$("#regionName").empty().append($(html));
-		getUnitName($("#regionName"));
+		//getUnitName($("#regionName"));
 	}else{
 		 html +="<option value=''>全部</option>";
 		    for(var i=0;i<result.length;i++){
