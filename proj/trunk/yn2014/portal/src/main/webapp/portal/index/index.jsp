@@ -208,6 +208,9 @@ $(function(){
                                 <div classType="left-module" moduleid="left-6" title="文件下载">
                                     <span id="indexDocList"><i class="menu-fileDl"></i>文件下载</span>
                                 </div>
+                                <div classType="left-module" moduleid="left-7" title="访问统计">
+                                    <span id="indexAccessList"><i class="menu-note"></i>访问统计</span>
+                                </div>
                             </div>
                         </div>
                      </div>
