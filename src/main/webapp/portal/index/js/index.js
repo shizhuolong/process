@@ -18,6 +18,8 @@ $(function(){
 	listBulls();
 	//文件下载列表
 	indexDocList();
+	//访问统计
+	indexAccessList();
 	//游离渠道数量
 	freeChannel();
 	//游离小区数量
@@ -213,7 +215,7 @@ function showJfxc(){
 					sql+=where;
 					
 					var d=query("select * from ("+  sql+") order by ordernum ");
-					var zszb=query("select KPI_NAME||':'||KPI_SCORE zszb from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where t.hr_id='"+hrId+"'");
+					var zszb=query("select KPI_NAME||':'||KPI_SCORE zszb from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where t.deal_date='"+date+"' and t.hr_id='"+hrId+"'");
 					var zs1="";
 					var zs2="";
 					if(zszb&&zszb.length){
@@ -457,7 +459,7 @@ function showJfxc(){
 	   					sql+="            and t.hr_id in                                             ";
 	   					sql+="                (SELECT distinct hr_id                                 ";
 	   					sql+="                   FROM portal.tab_portal_mag_person                   ";
-	   					sql+="              where f_hr_id in( '"+hrId+"'))                           ";
+	   					sql+="              where f_hr_id in( '"+hrId+"') and t.deal_date='"+date+"')                           ";
 	   					sql+="         union                                                         ";
 	   					sql+="         select t.*, 2 orderNum                                        ";
 	   					sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
@@ -630,6 +632,47 @@ function indexDocList() {
 			}
 		}
 	});
+}
+//访问统计
+function indexAccessList() {
+	$.ajax({
+		url:$("#ctx").val()+"/index/index_listAccess.action",
+		type:'POST',
+		dataType:'json',
+		async:true,
+		success:function(data){
+			var str = "";
+			if(data != null && data.length > 0) {
+				for(var i=0; i<data.length; i++) {
+					str+="<a href='#' onclick='openUrl(\""+data[i].TEXT+"\",\""+data[i].URL+"\");'>"+data[i].TEXT+"【"+data[i].ACCESS_TIMES+"次】"+"</a>";
+				}
+			}
+			$("#indexAccessList").after(str);
+			if(str==""){
+				$("#indexAccessList").parent().addClass("collapsed");
+			}
+		}
+	});
+}
+function openUrl(text,url){
+	
+	//parent.switchFirstMenu('module-377341','经营管控');
+	var sql="";
+	sql+="select t2.id PID, t2.chinese PNAME ";
+	sql+="  from portal.apdp_module t1, ";
+	sql+="	       (select * ";
+	sql+="          from portal.apdp_module m ";
+	sql+="         start with m.chinese = '"+text+"' ";
+	sql+="        connect by prior m.parentmodule_id = m.id) t2 ";
+	sql+=" where t2.parentmodule_id = t1.id ";
+	sql+="   and t1.english = 'root' ";
+	var data=query("select t.* from ("+sql+") t where rownum<17 ");
+	parent.openWindow(text,'computer',url);
+	if(data&&data.length>0){
+		var pModuleId=data[0].PID;
+		var pModule=data[0].PNAME;
+		parent.switchFirstMenu('module-'+pModuleId,pModule);
+	}
 }
 //待办工单数
 function qryTodoWorkOrderNum() {
