@@ -1,12 +1,14 @@
 var group_id_1 = "";
 var unit_id = "";
 var id = "";
+var month = "";
 var group_id_code = "";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
 	unit_id = art.dialog.data('unit_id');
 	id = art.dialog.data('id');
+	month = art.dialog.data('month');
 	group_id_code = art.dialog.data('group_id_code');
 	listPerson(0);
 	$("#searchBtn").click(function(){
@@ -28,6 +30,7 @@ $(function() {
 		var username = $('input:radio:checked').attr("username");
 		var phone = $('input:radio:checked').attr("phone");
 		var hr_id = $('input:radio:checked').attr("hr_id");
+		var month = $('input:radio:checked').attr("month");
 		$.ajax({
 			type:"POST",
 			dataType:'json',
@@ -39,7 +42,8 @@ $(function() {
 	           "username":username,
 	           "phone":phone,
 	           "group_id_code":group_id_code,
-	           "hr_id":hr_id
+	           "hr_id":hr_id,
+	           "month":month
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
@@ -74,6 +78,7 @@ function listPerson(pageNumber) {
            "group_id_1" : group_id_1,
            "unit_id" : unit_id,
            "id" : id,
+           "month" : month,
            "name":name,
            "username":username
 	   	}, 
@@ -90,7 +95,7 @@ function listPerson(pageNumber) {
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>" +
-					"<input type='radio' hr_id='"+n['HR_ID']+"' phone='"+n['PHONE']+"' username='"+n['USERNAME']+"' name='"+n['REALNAME']+"' name='ckperson' value='"+n['ID']+"'>" +
+					"<input type='radio' month='"+month+"' hr_id='"+n['HR_ID']+"' phone='"+n['PHONE']+"' username='"+n['USERNAME']+"' name='"+n['REALNAME']+"' name='ckperson' value='"+n['ID']+"'>" +
 				"</td>"
 				+"<td>"+isNull(n['REALNAME'])+"</td>"
 				+"<td>"+isNull(n['USERNAME'])+"</td>"

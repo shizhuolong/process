@@ -50,6 +50,8 @@ $(function() {
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var name = $.trim($("#name").val());
+	var month = $.trim($("#month").val());
+	var curMonth=$("#month").attr("curMonth");
 	var hq_chan_code = $.trim($("#hq_chan_code").val());
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var hr_id = $.trim($("#hr_id").val());
@@ -66,6 +68,7 @@ function search(pageNumber) {
            "resultMap.orgLevel":orgLevel,
            "resultMap.code":code,
            	"name":name,
+        	"month":month,
            	"hq_chan_code":hq_chan_code,
            	"hq_chan_name":hq_chan_name,
            	"hr_id":hr_id,
@@ -94,14 +97,14 @@ function search(pageNumber) {
 				var isBind = n['ISBIND'];
 				//已划分营服中心
 				if(isDivision == "1") {
-					if(isGrantedNew(UPDATE_ROLE)) {
+					if(isGrantedNew(UPDATE_ROLE)&&month==curMonth) {
 						//已绑定
 						if(isBind == "1") {
-							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td><a href='#' month='"+month+"' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
+							"<a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						} else {
-							content += "<td><a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
-							"<a href='#' group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td><a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
+							"<a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						}
 					} else {
 						content += "<td>&nbsp;&nbsp;&nbsp;</td>";
@@ -126,6 +129,7 @@ function search(pageNumber) {
 
 //绑定人员
 function bindPerson(obj) {
+	var month = $(obj).attr("month");
 	var group_id_1 = $(obj).attr("group_id_1");
 	var unit_id = $(obj).attr("unit_id");
 	var id = $(obj).attr("id");
@@ -134,6 +138,7 @@ function bindPerson(obj) {
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('unit_id',unit_id);
 	art.dialog.data('id',id);
+	art.dialog.data('month',month);
 	art.dialog.data('group_id_code',group_id_code);
 	art.dialog.open(url,{
 		id:'bindPersonDialog',
@@ -147,6 +152,7 @@ function bindPerson(obj) {
 //解绑
 function unBindPerson(ele) {
 	var group_id_code = $(ele).attr("group_id_code");
+	var month = $(ele).attr("month");
 	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
 		$.ajax({
 			type:"POST",
@@ -154,7 +160,8 @@ function unBindPerson(ele) {
 			cache:false,
 			url:$("#ctx").val()+"/channelManagement/unitManager_updateBindPerson.action",
 			data:{
-				"group_id_code":group_id_code
+				"group_id_code":group_id_code,
+				"month":month
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
@@ -197,6 +204,7 @@ function isNull(obj){
 
 function downloadExcel() {
 	var name = $.trim($("#name").val());
+	var month = $.trim($("#month").val());
 	var hr_id = $.trim($("#hr_id").val());
 	var unit_name = $.trim($("#unit_name").val());
 	var sql = "";
@@ -205,7 +213,7 @@ function downloadExcel() {
 				"FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 " +
 				"ON (T.GROUP_ID_1 = T2.CODE AND T2.ORGLEVEL = 2) " +
 				"LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3 " +
-				"ON (T.UNIT_ID = T3.UNIT_ID) WHERE T.LEV = 1 ";
+				"ON (T.UNIT_ID = T3.UNIT_ID) WHERE T.LEV = 1  ";
 	}else if(orgLevel == "2") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.NAME,T.PHONE,T.HR_ID " +
 				"FROM PORTAL.TAB_PORTAL_MOB_PERSON T LEFT JOIN PORTAL.APDP_ORG T2 " +
@@ -234,6 +242,7 @@ function downloadExcel() {
 	if(hr_id != "") {
 		sql += "AND T.HR_ID='"+hr_id+"' ";
 	}
+	sql += " AND T.DEAL_DATE='"+month+"' ";
 	sql += " ORDER BY T.LEV, T.NAME";
 	
    var showtext="Sheet";
