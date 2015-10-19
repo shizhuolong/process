@@ -122,6 +122,7 @@
 					   AND NOT EXISTS (SELECT 1
 					          FROM PORTAL.VIEW_U_PORTAL_PERSON T5
 					         WHERE T.ID = T5.USERID
+					           AND T5.DEAL_DATE=to_char(sysdate,'yyyymm')
 					           AND T5.GROUP_ID_1 = #{areaCode}
 					           AND T5.UNIT_ID &lt;&gt; #{unitId})
 					   AND T.ENABLED = 1
