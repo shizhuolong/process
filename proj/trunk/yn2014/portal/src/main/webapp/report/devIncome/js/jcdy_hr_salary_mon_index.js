@@ -80,7 +80,7 @@ function search(pageNumber) {
 		sql+=" and t.GROUP_ID_1="+code;
 	}else {
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.HR_ID='"+hrId+"'";
+		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.TAB_PORTAL_QJ_PERSON T WHERE t.deal_date='"+month+"' and T.HR_ID='"+hrId+"'";///---
 		var rd=query(rsql);
 		if(rd&&rd.length){
 			var hrsql="";
@@ -89,9 +89,9 @@ function search(pageNumber) {
 				var tsql="";
 				if(v==1){
 					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                        ";
-					tsql+=" where tt.unit_id = '"+code+"'                                            ";
-					tsql+="   and tt.deal_date = '"+month+"'                                      ";
+					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                                    ";
+					tsql+=" where tt.unit_id = '"+code+"'                                        ";
+					tsql+="   and tt.deal_date = '"+month+"'                                     ";
 					tsql+=" union                                                                ";
 					tsql+=" select '"+hrId+"' from dual  ";
 				}else if(v==6){
@@ -100,21 +100,21 @@ function search(pageNumber) {
 					tsql+=" where hq_chan_code in (                                              ";
 					tsql+="   SELECT distinct hq_chan_code                                       ";
 					tsql+="     FROM portal.tab_portal_mag_person                                ";
-					tsql+="   where hr_id = '"+hrId+"'                                           ";
+					tsql+="   where hr_id = '"+hrId+"'   and deal_date='"+month+"'                ";///---
 					tsql+="     and hq_chan_code is not null                                     ";
-					tsql+=" )                                                                    ";      
+					tsql+=" )  and deal_date='"+month+"'                                          ";///---      
 				}else if(v==7){
 					tsql+=" select distinct a.hr_id                                              ";
 					tsql+="   from portal.tab_portal_grp_person a                                ";
 					tsql+=" where a.f_hr_id in (                                                 ";
 					tsql+="       select hr_id                                                   ";
 					tsql+="         from portal.tab_portal_grp_person t                          ";
-					tsql+="       where t.user_type = 1                                          ";
-					tsql+=" )                                                                    ";
+					tsql+="       where t.user_type = 1   and t.deal_date='"+month+"'             ";///---
+					tsql+=" )  and a.deal_date='"+month+"'                                        ";///---
 					tsql+=" and a.f_hr_id='"+hrId+"'                                             ";
 					tsql+=" union                                                                ";
 					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"'       ";
+					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"' and t.deal_date='"+month+"'      ";///---
 				}
 				if(tsql!=""&&hrsql!=""){
 					hrsql+=" union "+tsql;
@@ -273,7 +273,7 @@ function search(pageNumber) {
 				sql+=where;
 				
 				var d=query("select * from ("+  sql+") order by ordernum ");
-				var zszb=query("select KPI_NAME||':'||KPI_SCORE zszb from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where t.hr_id='"+hrId+"'");
+				var zszb=query("select KPI_NAME||':'||KPI_SCORE zszb from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where t.deal_date='"+date+"' and t.hr_id='"+hrId+"'");
 				var zs1="";
 				var zs2="";
 				if(zszb&&zszb.length){
@@ -364,13 +364,14 @@ function search(pageNumber) {
 				//判断
 				sql="";
 				sql+=" select '销售积分' type,t.HJXSJF sl,t.HQ_ALLJF tj,tr.UNIT_RATIO qy,t.UNIT_ALLJF qytj,t.UNIT_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
-				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' AND HJXSJF>0 ";
+				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"'  ";//AND HJXSJF>0
 				sql+=" UNION ALL ";
 				sql+=" select '受理积分' type, t.SL_ALLJF sl,t.SL_SVR_ALL_CRE tj,tr.UNIT_RATIO qy,t.UNIT_SL_ALLJF qytj,t.UNIT_SL_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
-				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' AND SL_ALLJF>0 ";
+				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"' ";//AND SL_ALLJF>0 
 				sql+=" UNION ALL ";
 				sql+=" select '维系积分' type, CRE sl,HQ_CRE tj,tr.unit_ratio qy,UNIT_CRE qytj,UNIT_CRE*10  sumxc from pmrt.TB_MRT_JCDY_WX_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
 				sql+=" WHERE T.HR_ID='"+hrId+"' AND DEAL_DATE='"+date+"' ";
+				
 				
 				var d=query(sql);
 				
@@ -525,7 +526,7 @@ function search(pageNumber) {
 				sql+="            and t.hr_id in                                             ";
 				sql+="                (SELECT distinct hr_id                                 ";
 				sql+="                   FROM portal.tab_portal_mag_person                   ";
-				sql+="              where f_hr_id in( '"+hrId+"'))                           ";
+				sql+="              where f_hr_id in( '"+hrId+"'))  and deal_date='"+date+"'                         ";
 				sql+="         union                                                         ";
 				sql+="         select t.*, 2 orderNum                                        ";
 				sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
