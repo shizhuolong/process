@@ -447,4 +447,24 @@
 		SELECT #{userId} userId,REGEXP_SUBSTR(${moduleIds}, '[^,]+', 1, ROWNUM) moduleId  FROM DUAL 
 		CONNECT BY ROWNUM &lt;= LENGTH(${moduleIds}) - LENGTH(REPLACE(${moduleIds}, ',', '')) + 1
 	</insert>
+	<update id="addAccessTimes" parameterType="java.util.Map">
+		MERGE INTO portal.apdp_module_access_times T
+		USING (SELECT * FROM DUAL) T1
+		ON (T.url = #{url} and T.Userid = #{userId})
+		WHEN MATCHED THEN
+		  UPDATE SET T.ACCESS_TIMES = T.ACCESS_TIMES + 1
+		WHEN NOT MATCHED THEN
+		  INSERT
+		    (url, text, userid, access_times)
+		  VALUES
+		    (#{url}, #{text}, #{userId}, 1)
+	</update>
+	<select id="listAccess" parameterType="java.util.Map" resultType="java.util.Map" useCache="false">
+		SELECT * FROM (
+			SELECT T.*
+  			FROM portal.apdp_module_access_times T
+  			WHERE T.USERID=#{userId}
+         	ORDER BY T.ACCESS_TIMES DESC)
+ 		 WHERE ROWNUM &lt;= #{number}
+	</select>
 </mapper>

@@ -527,4 +527,27 @@ public class IndexAction extends BaseAction {
 		int r=indexService.saveDesk(moduleIds, userId);
 		this.reponseJson(r);
 	}
+	/**
+	 * 添加访问次数
+	 */
+	
+	public void addAccessTimes(){
+		User user = UserHolder.getCurrentLoginUser();
+		String userId=user.getId()+"";
+		String url=this.request.getParameter("url");
+		String text=this.request.getParameter("text");
+		int r=indexService.addAccessTimes(userId, url,text);
+		this.reponseJson(r);
+	}
+	/**
+	 * 访问统计列表
+	 * @param params
+	 * @return
+	 */
+	public void listAccess(){
+		User user = UserHolder.getCurrentLoginUser();
+		String userId=user.getId()+"";
+		List<Map<String, Object>> list = indexService.listAccess(userId,5);
+		this.reponseJson(list);
+	}
 }

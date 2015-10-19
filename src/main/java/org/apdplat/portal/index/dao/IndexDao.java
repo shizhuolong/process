@@ -1,5 +1,6 @@
 package org.apdplat.portal.index.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,5 +113,17 @@ public interface IndexDao {
 	public int addDesk(Map<String, Object> params);
 	
     public int delDesk(String userId);
+    
+    /**
+	 * 添加访问次数
+	 */
+	
+	public int addAccessTimes(Map<String, Object> params);
+	/**
+	 * 访问统计列表
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> listAccess(Map<String, Object> params);
 	
 }
