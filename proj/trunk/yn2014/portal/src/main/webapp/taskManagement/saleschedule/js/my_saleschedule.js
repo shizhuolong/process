@@ -84,44 +84,44 @@ function getOperateStr(status,id,isNew,num,dateValue,userType,regionType) {
 	
 	var str = '';
 	if(isNew=='1') {	//省公司或地市任务
-		str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
+		str = '<a href="#" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
 		if(isGrantedNew(UPDATE_ROLE)) {	//
 			if(num > 0) {
-				str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" taskId="'+id+'" onclick="editRejectTask(this)">重排已拒绝任务</a>';
+				str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" taskId="'+id+'" onclick="editRejectTask(this)">重排已拒绝任务</a>';
 			}
 			if((cMonth==dateValue && status=='6') || (cMonth!=dateValue && paraValue=='0' && status=='6')) {
-				str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" taskId="'+id+'" onclick="cancelTask(this)">作废</a>';
+				str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" taskId="'+id+'" onclick="cancelTask(this)">作废</a>';
 			}
 		}
 	}else if(isNew=='2') {
 		if(userFlag == 'chnlManager') {
 			if(status=='2' && isGrantedNew(UPDATE_MANAGER_ROLE)) {	//上级已审批通过
-				str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="receiveTask(this)">认领</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" taskId="'+id+'" onclick="rejectTask(this)">拒绝</a>';
+				str = '<a href="#" taskId="'+id+'" onclick="receiveTask(this)">认领</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" taskId="'+id+'" onclick="rejectTask(this)">拒绝</a>';
 			}else if(status=='4' && isGrantedNew(UPDATE_MANAGER_ROLE)) {
 				if(regionType == '4' || (regionType == '10' && userType == '3')) {
-					str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
+					str = '<a href="#" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
 				} else {
-					str = '<a href="javascript:void(0)" taskId="'+id+'" userType="'+userType+'" onclick="resolveTask(this)">分解</a>';
+					str = '<a href="#" taskId="'+id+'" userType="'+userType+'" onclick="resolveTask(this)">分解</a>';
 				}
 			}else if(status=='6') {
-				str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
+				str = '<a href="#" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
 				if((cMonth==dateValue && isGrantedNew(UPDATE_MANAGER_ROLE)) || (cMonth!=dateValue && paraValue=='0' && isGrantedNew(UPDATE_MANAGER_ROLE))) {
-					str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" taskId="'+id+'" userType="'+userType+'" onclick="cancelTask(this)">作废</a>';
+					str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" taskId="'+id+'" userType="'+userType+'" onclick="cancelTask(this)">作废</a>';
 				}
 			}
 		} else {
 			if(status=='2' && isGrantedNew(UPDATE_ROLE)) {	//上级已审批通过
-				str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="receiveTask(this)">认领</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" taskId="'+id+'" onclick="rejectTask(this)">拒绝</a>';
+				str = '<a href="#" taskId="'+id+'" onclick="receiveTask(this)">认领</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" taskId="'+id+'" onclick="rejectTask(this)">拒绝</a>';
 			}else if(status=='4' && isGrantedNew(UPDATE_ROLE)) {
 				if(regionType == '4') {
-					str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
+					str = '<a href="#" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
 				} else {
-					str = '<a href="javascript:void(0)" taskId="'+id+'" userType="'+userType+'" onclick="resolveTask(this)">分解</a>';
+					str = '<a href="#" taskId="'+id+'" userType="'+userType+'" onclick="resolveTask(this)">分解</a>';
 				}
 			}else if(status=='6') {
-				str = '<a href="javascript:void(0)" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
+				str = '<a href="#" taskId="'+id+'" onclick="checkTask(this)">查看</a>';
 				if((cMonth==dateValue && isGrantedNew(UPDATE_ROLE)) || (cMonth!=dateValue && paraValue=='0' && isGrantedNew(UPDATE_ROLE))) {
-					str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" taskId="'+id+'" userType="'+userType+'" onclick="cancelTask(this)">作废</a>';
+					str += '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" taskId="'+id+'" userType="'+userType+'" onclick="cancelTask(this)">作废</a>';
 				}
 			}
 		}
