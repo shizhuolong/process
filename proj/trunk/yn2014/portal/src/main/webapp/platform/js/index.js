@@ -96,6 +96,17 @@ function openWindow(text,iconCls,url){
         scripts:true,
         html: '<iframe id="'+"windows"+id+'" name="'+"windows"+id+'" scrolling="auto" frameborder="0" width="100%" height="100%" onload="Ext.Msg.hide()" src="'+url+'"></iframe>'
     });
+    ///记录访问次数
+    Ext.Ajax.request({
+        url : contextPath + '/index/index_addAccessTimes.action',
+        params:{  
+            text:text,
+            url:url
+        }, 
+        success : function(response, options) {
+    	
+    	}
+    });
     tab.setActiveTab(n);
     id++;
 }
