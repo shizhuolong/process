@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apdplat.module.security.model.User;
+import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.portal.index.dao.IndexDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -160,5 +162,27 @@ public class IndexService {
 		params.put("moduleIds", moduleIds);
 		return indexDao.addDesk(params);
 	}
+	/**
+	 * 添加访问次数
+	 */
 	
+	public int addAccessTimes(String userId,String url,String text){
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("url", url);
+		params.put("text", text);
+		
+		return indexDao.addAccessTimes(params);
+	}
+	/**
+	 * 访问统计列表
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> listAccess(String userId,int number){
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("number", number);
+		return indexDao.listAccess(params);
+	}
 }
