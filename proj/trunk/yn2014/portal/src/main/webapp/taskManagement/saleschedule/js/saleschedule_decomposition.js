@@ -70,6 +70,7 @@ function getUnitTask() {
 //查询渠道经理
 function getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr) {
 	var task_region_code = $("#task_region_code").val();
+	var month = $("#dateValue").val();
 	if(targetIdArr.length<=0) {
 		art.dialog.alert("获取下级地域信息失败！");
 		return;
@@ -82,6 +83,7 @@ function getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr) {
 			url:path+"/taskManagement/common_getNextRegion.action",
 			data:{
 				task_region_code:task_region_code,
+				month:month,
 				type:"2,5,6,7",
 				userType:userType
 			},
