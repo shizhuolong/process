@@ -461,9 +461,22 @@
 	</update>
 	<select id="listAccess" parameterType="java.util.Map" resultType="java.util.Map" useCache="false">
 		SELECT * FROM (
-			SELECT T.*
-  			FROM portal.apdp_module_access_times T
-  			WHERE T.USERID=#{userId}
+         	SELECT 
+         		distinct T.*
+  			FROM 
+  				portal.apdp_module_access_times T,
+		        portal.apdp_module m,
+		        portal.apdp_user_role ur,
+		        portal.apdp_role_command rc,
+		        portal.apdp_command c
+        
+  		    WHERE T.USERID=#{userId}
+		          and m.chinese=T.text
+		          and ur.userid=T.Userid
+		          and rc.roleid=ur.roleid
+		          and c.id=rc.commandid
+		          and m.id=c.module_id
+          			and m.display=1
          	ORDER BY T.ACCESS_TIMES DESC)
  		 WHERE ROWNUM &lt;= #{number}
 	</select>
