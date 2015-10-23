@@ -101,9 +101,9 @@
 			USING (SELECT * FROM DUAL) T1 ON (T.HQ_CHANL_CODE = #{groupcode})
 		WHEN MATCHED THEN
   			UPDATE SET T.SERVER_RATIO = #{server_ratio}, T.RATIO = #{ratio}
-		WHEN NOT MATCHED THEN
+		<!-- WHEN NOT MATCHED THEN
   			INSERT(CHANL_NAME, HQ_CHANL_CODE, SERVER_RATIO, RATIO, GROUP_ID_1)
-  			VALUES (#{groupname}, #{groupcode}, #{server_ratio}, #{ratio}, #{group_id_1})
+  			VALUES (#{groupname}, #{groupcode}, #{server_ratio}, #{ratio}, #{group_id_1}) -->
 	</update>
 	
 </mapper>
