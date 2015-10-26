@@ -65,6 +65,7 @@ function listPerson(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var name = $.trim($("#name").val());
 	var username = $.trim($("#username").val());
+	var deal_date = $.trim($("#deal_date").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -77,7 +78,8 @@ function listPerson(pageNumber) {
            "unit_id" : unit_id,
            "id" : id,
            "name":name,
-           "username":username
+           "username":username,
+           "deal_date":deal_date
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
