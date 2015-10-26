@@ -145,7 +145,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 //条件
-	var sql = " from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON AND DEAL_DATE='"+time+"') tr on t.hr_no=tr.HR_ID   where 1=1  ";
+	var sql = " from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON WHERE DEAL_DATE='"+time+"') tr on t.hr_no=tr.HR_ID   where 1=1  ";
 	if(time!=''){
 		sql+=" and t.DEAL_DATE='"+time+"' ";
 	}
@@ -246,6 +246,7 @@ function search(pageNumber) {
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var time=$("#time").val();
 	var sql="SELECT DEAL_DATE,tr.GROUP_ID_1_NAME,tr.UNIT_NAME                                       "+
 	",HR_NO                                                                                         "+
 	",USER_NAME                                                                                     "+
@@ -281,9 +282,9 @@ function downsAll(){
 	",DEDUCTED_TOTAL                                                                                "+
 	",FACT_TOTAL                                                                                    "+
 	",CASE USER_TYPE WHEN 1.00 then '合同内' else '外包' end user_type                                  "+
-	"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON and deal_date='"+time+"') tr on t.hr_no=tr.HR_ID where 1=1 ";
+	"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON where deal_date='"+time+"') tr on t.hr_no=tr.HR_ID where 1=1 ";
 	
-	var time=$("#time").val();
+	
 	var userName=$.trim($("#userName").val());
 	
 	var regionName=$("#regionName").val();
