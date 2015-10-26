@@ -114,6 +114,16 @@ $(function(){
 		css:[{gt:0,css:LchReport.RIGHT_ALIGN},{array:[3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48],css:LchReport.SUM_STYLE}],
 		rowParams:["ROW_ID","PER_TYPE"],//第一个为rowId
 		content:"content",
+		afterShowSubRows:function(){
+			$("#lch_DataBody").find("TR").each(function(){
+				for(var i=1;i<=18;i++){
+				 var obj=$(this).find("td:eq("+3*i+")");	
+				 if(parseFloat(obj.text())>20){
+					 obj.css("background-color","red");
+				 };
+				}
+			});
+		},
 		orderCallBack:function(index,type){
 			if(index==0){
 				orderBy=" order by row_name "+type+" ";
