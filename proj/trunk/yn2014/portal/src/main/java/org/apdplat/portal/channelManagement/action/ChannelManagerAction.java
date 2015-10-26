@@ -24,6 +24,7 @@ public class ChannelManagerAction extends BaseAction {
 	private String orgId;
 	private String orgLevel;
 	private String code;
+	
 	private Map<String, String> resultMap;
 	
 	/**
@@ -85,9 +86,11 @@ public class ChannelManagerAction extends BaseAction {
 			String unit_id = request.getParameter("unit_id");
 			String name = request.getParameter("name");
 			String username = request.getParameter("username");
+			String deal_date = request.getParameter("deal_date");
 			resultMap.put("id", id);
 			resultMap.put("group_id_1", group_id_1);
 			resultMap.put("unit_id", unit_id);
+			resultMap.put("deal_date", deal_date);
 			if(name != null && !"".equals(name.trim())) {
 				resultMap.put("name", "%"+name+"%");
 			}
