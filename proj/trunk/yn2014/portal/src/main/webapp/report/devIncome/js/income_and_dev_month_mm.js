@@ -121,6 +121,14 @@ $(function(){
 				orderBy=" order by "+field[index-1]+" "+type+" ";
 			}
 			report.showSubRow();
+			$("#lch_DataBody").find("TR").each(function(){
+				for(var i=1;i<=18;i++){
+				 var obj=$(this).find("td:eq("+3*i+")");	
+				 if(parseFloat(obj.text())>20){
+					 obj.css("background-color","red");
+				 };
+				}
+			});
 		},
 		getSubRowsCallBack:function($tr){
 			if($tr&&$tr.attr("orgLevel")==4){
@@ -215,11 +223,27 @@ $(function(){
 	});
 	report.showSubRow();
 	report.showAllCols(0);
-	
+	$("#lch_DataBody").find("TR").each(function(){
+		//$(this).find("TD:eq("+css.eq+")").css(css.css);
+		for(var i=1;i<=18;i++){
+		 var obj=$(this).find("td:eq("+3*i+")");
+		 if(parseFloat(obj.text())>20){
+			 obj.css("background-color","red");
+		 };
+		}
+	});
 
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		report.showAllCols(0);
+		$("#lch_DataBody").find("TR").each(function(){
+			for(var i=1;i<=18;i++){
+			 var obj=$(this).find("td:eq("+3*i+")");	
+			 if(parseFloat(obj.text())>20){
+				 obj.css("background-color","red");
+			 };
+			}
+		});
 	});
 });
 /**
