@@ -42,6 +42,7 @@
     <include file="struts/struts-monitorUserManagement.xml" />
     <include file="struts/struts-devIncome.xml" />
     <include file="struts/struts-warningAndMonitor.xml" />
+    <include file="struts/struts-qaManagement.xml" />
     
     
 </struts>
