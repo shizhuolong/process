@@ -127,6 +127,10 @@ if(loginUser!=null){
             function showConfigDialog(){
             	$("#center-panel").find("#indexPage:visible").find("IFRAME")[0].contentWindow.showConfigDialog(); 
             }
+            function searchQA(even){
+                openWindow('QA问题列表','computer', '<%=request.getContextPath()%>/portal/quest/jsp/comm_problem.jsp');
+                switchFirstMenu('module-477161','预警监控');
+            }
 	</script>
     </head>
     <body id="apdplat_main">
@@ -146,6 +150,7 @@ if(loginUser!=null){
                 <div id="head-info">
                 	<ul class="head-info-date clearfix">
                         <li>欢迎您：<a href="javascript:void(0);"><%=realName %> | <%=orgName%></a><span>&nbsp;&nbsp;</span><%=today %></li>
+                        <li><a href="javascript:void(0);" onclick="searchQA(this);"><i id="searchQA"></i>QA问题</a></li>
 					</ul>
                     <ul class="head-info-user clearfix mt5">
                         <li><a href="javascript:void(0);" onclick="logout();"><i id="logout-icon"></i>退出</a></li>
