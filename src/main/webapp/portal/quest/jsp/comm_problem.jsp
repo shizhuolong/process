@@ -31,20 +31,20 @@ String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 	 	#questDataBody{
 	 		margin-top:32px;
 			margin-left:50px;
-			width:80%;
+			width:90%;
 			float:left;
 			border:solid 1px #2F4F4F;
 		}
 		#commonDataBody{
 			margin-top:32px;
 			margin-left:50px;
-			width:80%;
+			width:90%;
 			float:left;
 			border:solid 1px #2F4F4F;
 			/* background:green; */
 		}
-		h1{
-			color:orange;
+		h2{
+			color:#8fde62;
 			text-align:center;
 			}
 		#rightTitle{
@@ -68,10 +68,10 @@ String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 		.menu{
 			position:fixed ;
 			padding:none;
-			margin:0px 20px 0px 20px;
+			margin:0px 20px 0px 50px;
 			height:30px;
 			width:90%;
-			background:#FF8C00; 
+			background:#F5DEB3; 
 			border-radius: 3px;
 		}
 		.menu li{
@@ -90,8 +90,8 @@ String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 			border-left: 1px solid #393942;
 			border-right: 1px solid #4f5058;
 			font-family: Helvetica, Arial, sans-serif;
-			font-weight: bold;
-			font-size: 17px;
+			/* font-weight: bold; */
+			font-size: 16px;
 			color: #f3f3f3;
 			text-shadow: 1px 1px 1px rgba(0,0,0,.6);
 			transition: color .2s ease-in-out;
@@ -134,7 +134,7 @@ String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 	  <li><a id="show_dataBody">用户提问</a></li>
 	 </ul>
 	 <div id="commonDataBody">
-		<h1>常见问题</h1>
+		<h2>常见问题</h2>
 		<!-- <button id="add_comment_quest_button" class="default-btn right mr10">添加常见问题</button> -->
 		<!-- <div id="add_comment_quest">
 			<div class="default-dt">
@@ -178,7 +178,7 @@ String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 		</div>
 	</div>
 	<div id="questDataBody" style="display:none">
-		<h1>用户提问</h1>
+		<h2>用户提问</h2>
 		<div id="userQuest">
 		
 		</div>

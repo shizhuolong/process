@@ -89,7 +89,7 @@ function commonQuestList(pageNumber){
 	   			$(".common_data_list_title").css({"margin":"5px 0 15px 20px","font-family":"arial","font-size":"14px","color":"#000000"});
 	   			$(".common_data_list_content").css({"margin":"5px 0 10px 20px","font-family":"楷体","font-size":"12px","color":"#000000","color":"#696969"});
 				$(".common_data_list_answer").css({"margin":"5px 0 5px 30px","font-family":"arial tahoma","font-size":"12px","color":"#000000"});
-				$(".common_data_list").css({"border-bottom":"solid 1px #B0C4DE","margin":"0 0 30px 14px","width":"90%"});
+				$(".common_data_list").css({"border-bottom":"solid 1px #B0C4DE","margin":"0 0 21px 50px","width":"90%"});
 	   		}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -115,7 +115,7 @@ function search(pageNumber){
 	   		var content="";
 	   		$.each(data,function(i,n){
 				content+="<div class='quest'>" +
-						"	<h2><span><a class='quest_title' askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+"' answerName='"+answerName+"' answerTime='"+answerTime+"'onclick='showAnswerDetail(this);'>"+isNull(n['QUEST_NAME'])+"</a></span></h2>" +
+						"	<h3><span><a class='quest_title' askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+"' answerName='"+answerName+"' answerTime='"+answerTime+"'onclick='showAnswerDetail(this);'>"+isNull(n['QUEST_NAME'])+"</a></span></h3>" +
 						"	<span class='quest_countent'>&nbsp;&nbsp;&nbsp;"+isNull(n['QUEST_CONTENT'])+"</span>" +
 						"	<div style='height:20px;'>" +
 						"		<span class='userName'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+isNull(n['ASK_NAME'])+"&nbsp;"+isNull(n['ASK_TIEM'])+"</span> "+
@@ -136,7 +136,7 @@ function search(pageNumber){
 				$(".quest_title").mouseout(function(){
 					$(this).css('color','#000000');
 				});
-				$(".quest").css({"border-radius":"5px","width":"80%","margin":"0 0 21px 50px","border-bottom":"solid 1px #B0C4DE"});
+				$(".quest").css({"border-radius":"5px","width":"90%","margin":"0 0 21px 50px","border-bottom":"solid 1px #B0C4DE"});
 				$(".userName").css("float","left");
 				$(".showAnswer").css("float","right");
 				$(".showAnswer A").css("text-decoration","none");
@@ -198,11 +198,11 @@ function showAnswerDetail(even){
 		   		answerDetail+="</div></div>";
 				if(answerDetail != "") {
 					$(even).parent().parent().parent().append(answerDetail);
-					$(".answerContentDetail").css({"margin-left":"20px","padding-left":"20px","resize":"none","width":"644px","height":"30px","max-width":"1000px","max-height":"100px"});
+					$(".answerContentDetail").css({"margin-left":"20px","padding-left":"20px","resize":"none","width":"85%","height":"30px","max-width":"1000px","max-height":"100px"});
 					$(".showAnswerDetail").css({"width":"704px"});
-					$(".answerDetail").css({"width":"704px","background":"#F0F0F0"});
+					$(".answerDetail").css({"width":"100%","background":"#F0F0F0"});
 					$(".answerTable").find("td").css({"padding-left":"5px","padding-right":"5px"});
-					$(".answerContent").find("td").css({"padding-left":"5px","padding-right":"5px","width":"auto","float":"left"});
+					$(".answerContent").find("td").css({"padding-left":"5px","padding-right":"5px","width":"80%","float":"left"});
 					$(".answerText").css({"font-family":"arial tahoma","font-size":"12px","margin-top":"8px"});
 					$(".answerButton").css({"float":"right","margin-right":"50px"});
 					$(".userMessageDetail").css({"height":"30px"});
@@ -239,7 +239,7 @@ function showAnswer(even){
 			"</div>                                                                                             ";
 			
 			$(even).parent().parent().parent().append(answer);
-			$(".answerContent").css({"margin-top":"20px","margin-left":"50px","resize":"none","width":"600px","height":"100px","max-width":"1000px","max-height":"100px"});
+			$(".answerContent").css({"margin-top":"20px","margin-left":"50px","resize":"none","width":"90%","height":"100px","max-width":"1000px","max-height":"100px"});
 			$(".answerButton").css({"float":"right","margin-right":"50px"});
 			$(".userMessage").css({"display":"block","margin-left":"24px","height":"24px"});
 			$(".answer").css({"background":"#F0F0F0","margin":"0 0 0 12px"});
