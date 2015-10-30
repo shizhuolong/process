@@ -241,7 +241,7 @@
 	
 	<!--查询登录用户是否是营服中心管理员  -->
 	<select id="ismanager" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT COUNT(*) NUM,UNIT_ID FROM PORTAL.VIEW_U_PORTAL_PERSON WHERE USERID = #{userid} 
+		SELECT COUNT(*) NUM,UNIT_ID FROM PORTAL.VIEW_U_PORTAL_PERSON WHERE T.DEAL_DATE=#{month} AND USERID = #{userid} 
 		GROUP BY UNIT_ID
 	</select>
 	
@@ -252,7 +252,7 @@
 		ON T1.USERID = T2.ID 
 		JOIN  PORTAL.APDP_ORG T3
 		ON T2.ORG_ID=T3.ID
-		WHERE T1.UNIT_ID = #{unit_id} AND T1.USER_CODE = '2' 
+		WHERE T1.DEAL_DATE=#{month} AND T1.UNIT_ID = #{unit_id} AND T1.USER_CODE = '2' 
 		<if test="realname != null">
 			AND T1.NAME LIKE #{realname}
 		</if>
@@ -266,7 +266,7 @@
 	
 	<!-- 查询日常巡检渠道 -->
 	<select id="queryRcChanl" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT T1.HQ_CHAN_NAME,T1.HQ_CHAN_CODE,T1.NAME,T1.PHONE, 1 AS CHLTYPE FROM PORTAL.TAB_PORTAL_MOB_PERSON T1 WHERE T1.USERID=#{userId}
+		SELECT T1.HQ_CHAN_NAME,T1.HQ_CHAN_CODE,T1.NAME,T1.PHONE, 1 AS CHLTYPE FROM PORTAL.TAB_PORTAL_MOB_PERSON T1 WHERE T1.DEAL_DATE=#{month} AND T1.USERID=#{userId}
 		<if test="group_id_4_name != null">
 			AND T1.HQ_CHAN_NAME LIKE #{group_id_4_name}
 		</if>
