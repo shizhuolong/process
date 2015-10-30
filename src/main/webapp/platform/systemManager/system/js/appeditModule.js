@@ -6,13 +6,12 @@ var currentId="-1";
 var currentName="功能菜单";
 
 var modulePropertyCriteriaPre="parentModule.id:eq:";
-var commandPropertyCriteriaPre="module.id:eq:";
 var propertyCriteria=modulePropertyCriteriaPre+currentId;
 var rootPropertyCriteria="parentModule.english:eq:root";
 
 var securityNamespace = 'systemManager/system';
-var namespace='appmodule';
-var action='app-edit-module';
+var namespace='module';
+var action='app-module';
 
 var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
         
@@ -37,7 +36,7 @@ CreateModel = function() {
                                     xtype:'textfield',
                                     inputType:'hidden',
                                     name:'model.parentModule.id',
-                                    value:currentId.substr(7)
+                                    value:currentId
                                 },{
                                     xtype:'textfield',
                                     cls : 'attr',
@@ -88,8 +87,8 @@ CreateModel = function() {
         		 return true;
              };
              CreateBaseModel.createSuccess=function(form, action){
-            	 currentNode.parentNode.reload();
-                 GridBaseModel.refresh();
+            	 GridBaseModel.refresh();
+            	 TreeModel.refreshTree(true);
              };
             CreateBaseModel.show( '新增菜单', 'editModule', 500, 300, this.getItems());
         }
@@ -99,12 +98,7 @@ CreateModel = function() {
 ModifyModel = function() {
     return {
         show: function(model) {
-                if(action=='edit-module'){
-                    ModuleModifyModel.show(model,true);
-                }
-                if(action=='edit-command'){
-                    CommandModifyModel.show(model,true);
-                }
+    		ModuleModifyModel.show(model,true);
         }
     };
 } ();
@@ -176,65 +170,14 @@ ModuleModifyModel = function() {
             return items;
         },
 
-        show: function(model) {
+        show: function(model,forceRefreshParentNode) {
             ModifyBaseModel.modifySuccess=function(form, action){
-                TreeModel.refreshTree();
+            	 //刷新表格
                 GridBaseModel.refresh();
+                //刷新树
+                TreeModel.refreshTree(forceRefreshParentNode);
             };
             ModifyBaseModel.show( '修改模块', 'editModule', 500, 300, this.getItems(model),model);
-        }
-    };
-} ();
-//修改命令
-CommandModifyModel = function() {
-    return {
-        getItems: function(model) {
-             var items = [{
-                        layout: 'form',
-                        defaults: {
-                            anchor:"90%"
-                        },
-                        items:[{
-                                    xtype:'textfield',
-                                    readOnly:true,
-                                    disabled:true,
-                                    fieldClass:'detail_field',
-                                    value: model.module,
-                                    fieldLabel: '父模块'
-                                },{
-                                    xtype:'textfield',
-                                    readOnly:true,
-                                    disabled:true,
-                                    cls : 'attr',
-                                    name: 'model.english',
-                                    value: model.english,
-                                    maxLength:50,
-                                    fieldLabel: '命令英文名称'
-                                },{
-                                    xtype:'textfield',
-                                    cls : 'attr',
-                                    name: 'model.chinese',
-                                    value: model.chinese,
-                                    maxLength:50,
-                                    fieldLabel: '命令中文名称'
-                                },{
-                                    xtype:'textfield',
-                                    cls : 'attr',
-                                    name: 'model.orderNum',
-                                    value: model.orderNum,
-                                    maxLength:50,
-                                    fieldLabel: '命令顺序'
-                                }]
-                }];
-            return items;
-        },
-
-        show: function(model) {
-            ModifyBaseModel.modifySuccess=function(form, action){
-                TreeModel.refreshTree();
-                GridBaseModel.refresh();
-            };
-            ModifyBaseModel.show('修改命令', 'editCommand', 500, 200, this.getItems(model),model);
         }
     };
 } ();
@@ -243,33 +186,33 @@ GridModel = function() {
     return {
         getFields: function(){
             var fields=[
- 				{name: 'id'},
- 				{name: 'version'},
-				{name: 'chinese'},
-				{name: 'english'},
-				{name: 'orderNum'},
-				{name: 'display'}
+                            {name: 'id'},
+			 				{name: 'version'},
+							{name: 'chinese'},
+							{name: 'english'},
+							{name: 'orderNum'},
+							{name: 'display'}
                     ];
            return fields;     
         },
         getColumns: function(){
             var columns=[
- 				{header: "编号", width: 20, dataIndex: 'id', sortable: true},
- 				{header: "版本", width: 20, dataIndex: 'version', sortable: true},
-				{header: "中文名称", width: 20, dataIndex: 'chinese', sortable: true,editor:new Ext.form.TextField()},
-				{header: "英文名称", width: 20, dataIndex: 'english', sortable: true},
-				{header: "顺序号", width: 20, dataIndex: 'orderNum', sortable: true,editor:new Ext.form.TextField()},
-				{header: "是否显示", width: 20, dataIndex: 'display', sortable: true}
-                        ];
+                            {header: "编号", width: 20, dataIndex: 'id', sortable: true},
+			 				{header: "版本", width: 20, dataIndex: 'version', sortable: true},
+							{header: "中文名称", width: 20, dataIndex: 'chinese', sortable: true,editor:new Ext.form.TextField()},
+							{header: "英文名称", width: 20, dataIndex: 'english', sortable: true},
+							{header: "顺序号", width: 20, dataIndex: 'orderNum', sortable: true,editor:new Ext.form.TextField()},
+							{header: "是否显示", width: 20, dataIndex: 'display', sortable: true} 
+						];
             return columns;           
         },
         getGrid: function(){
-            var pageSize=14;
+        	var pageSize=14;
 
             //修改单个属性回调
             GridBaseModel.updateAttrSuccess=function(response, opts){
-                TreeModel.refreshTree();
                 GridBaseModel.refresh();
+                TreeModel.refreshTree(false);
             };    
             //添加特殊参数
             GridBaseModel.storeURLParameter="?orderCriteria=orderNum:ASC";
@@ -286,10 +229,14 @@ GridModel = function() {
                    store.baseParams = {propertyCriteria:GridBaseModel.propertyCriteria};
                 });
             };
-                
-            var commands=["create","updatePart"];
-            var tips=['新增(C)','修改(U)'];
-            var callbacks=[GridBaseModel.create,GridBaseModel.modify];
+            //删除数据命令回调
+            GridBaseModel.removeSuccess=function(response,opts){
+                GridBaseModel.refresh();
+                TreeModel.refreshTree(false);
+            };  
+            var commands=["create","updatePart","delete"];
+            var tips=['新增(C)','修改(U)','删除(R)'];
+            var callbacks=[GridBaseModel.create,GridBaseModel.modify,GridBaseModel.remove];
 
             var grid=GridBaseModel.getGrid(contextPath, namespace, action, pageSize, this.getFields(), this.getColumns(), commands, tips, callbacks,securityNamespace);
 
@@ -303,61 +250,116 @@ GridModel = function() {
 //左部树
 TreeModel = function(){
     return{
-        getTree: function(){
+        getTreeWithContextMenu: function(){
             TreeBaseModel.onClick=this.onClick;
-            var tree = TreeBaseModel.getTree(treeDataUrl, currentName, "root", 'module');
+            TreeBaseModel.remove=this.remove;
+            TreeBaseModel.modify=this.modify;    
+
+            var create=true;
+            var remove=true;
+            var modify=true;
+            var tree = TreeBaseModel.getTreeWithContextMenu(treeDataUrl+"?node=null", '功能菜单', 'root', 'module', create, remove, modify);
             currentNode=TreeBaseModel.root;
             return tree;
         },
-        refreshTree: function(){
-            //重新加载当前节点
-            currentNode.reload();
-        },
-        select: function(node, event, callback){     
-            if(node.id.toString()=='root'){
-                GridBaseModel.grid.setTitle("已选中【"+currentName+"】");
-                GridBaseModel.propertyCriteria=rootPropertyCriteria;
-                GridBaseModel.changeURL(contextPath, namespace, action);
-                if(typeof(callback)=='function'){
-                    callback();
+        //当forceRefreshParentNode为true时表示需要强制刷新父节点
+        refreshTree: function(forceRefreshParentNode){
+        	if(!currentNode.isExpandable()){
+                //当前节点是叶子节点（新添加的节点是当前节点的第一个子节点）
+                if(currentNode.parentNode==null){
+                    TreeBaseModel.root.reload();
+                    TreeBaseModel.root.expand(false, true);
+                }else{
+                    //重新加载当前节点的父节点，这样才能把新添加的节点装载进来
+                    currentNode.parentNode.reload(
+                        // node loading is asynchronous, use a load listener or callback to handle results
+                        function(){
+                            //重新查找当前节点，因为已经重新加载过数据
+                            currentNode=TreeBaseModel.tree.getNodeById(currentId);
+                            //展开当前节点
+                            currentNode.expand(false, true);
+                        },
+                    this);
                 }
-                return;
-            }        
-            var type=node.id.toString().split("-")[0];
-            var id=node.id.toString().split("-")[1];
-            
-            //如果当前选择了模块，则需要刷新表格
-            //如果当前选中了命令，则忽略刷新表格
-            if(type=='module'){
-                currentNode=node;                
-                currentId=node.id;
-                currentName=node.text;
-                node.expand(false, true, function(){                    
-                    if(currentNode.childNodes[0] && currentNode.childNodes[0].id.toString().split("-")[0]=='command'){
-                        //切换到命令
-                        action='edit-command';
-                        propertyCriteria=commandPropertyCriteriaPre+id;                        
-                    }else{
-                        //切换到模块
-                        action='edit-module';
-                        propertyCriteria=modulePropertyCriteriaPre+id;
-                    }     
-                    GridBaseModel.grid.setTitle("已选中【"+currentName+"】");
-                    GridBaseModel.propertyCriteria=propertyCriteria;
-                    GridBaseModel.changeURL(contextPath, namespace, action);
-                    if(typeof(callback)=='function'){
-                        callback();
-                    }
-                },this);  
+            }else{
+                //重新加载当前节点
+                currentNode.reload(
+                    // node loading is asynchronous, use a load listener or callback to handle results
+                    function(){
+                        //展开当前节点
+                        currentNode.expand(false, true);
+                    },
+                this);
             }
         },
-        onClick: function(node, event) {   
-            TreeModel.select(node, event, function(){
-                GridBaseModel.refresh();
-            });
-        }
+        select: function(node,event){
+            node.expand(false, true);
+            currentNode=node;
+            currentId=node.id.split("-")[1];
+            currentName=node.text;
+            GridBaseModel.grid.setTitle("已选中【"+currentName+"】");
+            propertyCriteria=modulePropertyCriteriaPre+currentId;
+            GridBaseModel.propertyCriteria=propertyCriteria;
+        },
+        onClick: function(node, event) {
+            TreeModel.select(node, event);
+            GridBaseModel.refresh();
+        },
+        remove: function() {
+                if(currentNode.parentNode==TreeBaseModel.tree.getRootNode()){
+                    parent.Ext.ux.Toast.msg('操作提示：','不能删除根节点');  
+                    return;
+                }
+                //在删除当前节点之前记住父节点
+                var parentNode=currentNode.parentNode;
+                Ext.MessageBox.confirm("请确认","确实要删除【"+currentName+"】吗？",function(button,text){
+                    if(button == "yes"){
+                        parent.Ext.Ajax.request({
+                            url : GridBaseModel.deleteURL+'?time='+new Date().toString(),
+                            params : {
+                                ids : currentId
+                            },
+                            method : 'POST',
+                            success: function(response,options){
+                                var data=response.responseText;
+                                if("删除成功"==data){
+                                    TreeModel.select(parentNode);
+                                    GridBaseModel.refresh();
+                                    TreeModel.refreshTree(true);
+                                }else{
+                                    parent.Ext.MessageBox.alert('提示', "删除失败！");
+                                }
+                            },
+                            failure: function() {
+                                alert("删除失败！");
+                            }
+                        });
+                    }
+                });
+            },
+        modify: function() {
+                if(currentNode.parentNode==TreeBaseModel.tree.getRootNode()){
+                    parent.Ext.ux.Toast.msg('操作提示：','不能修改根节点');  
+                    return;
+                }
+                Ext.MessageBox.confirm("请确认","确实要修改【"+currentNode.text+"】吗？",function(button,text){
+                    if(button == "yes"){
+                        //query role detail info
+                        parent.Ext.Ajax.request({
+                                url : GridBaseModel.retrieveURL+currentId+'&time='+new Date().toString(),
+                                method : 'POST',
+                                success : function(response,options){
+                                    var data=response.responseText;
+                                    //返回的数据是对象，在外层加个括号才能正确执行eval
+                                    var model=eval('(' + data + ')');
+                                    ModifyModel.show(model,true);
+                                }
+                        });
+                    }
+                });
+            }
     }
-}();   
+}(); 
 //左边为树右边为表格的编辑视图
 EditModuleForm = function() {
     return {
@@ -365,7 +367,7 @@ EditModuleForm = function() {
                  var frm = new Ext.Viewport({
                     layout : 'border',
                     items: [
-                        TreeModel.getTree(),
+                        TreeModel.getTreeWithContextMenu(),
                         {
                             region:'center',
                             autoScroll:true,

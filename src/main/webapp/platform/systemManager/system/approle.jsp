@@ -3,12 +3,12 @@
 <html>
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>APP模块管理</title>
+        <title>APP角色管理</title>
         <%@include file="../../include/common.jsp" %>
-	<script type="text/javascript" src="js/appeditModule.js"></script>
+	<script type="text/javascript" src="js/approle.js"></script>
 </head>
 <body>
-        <div id='form-div' style="width:100%; height:100%;">
+        <div id='grid-div' style="width:100%; height:100%;">
         </div>
 </body>
 </html>
