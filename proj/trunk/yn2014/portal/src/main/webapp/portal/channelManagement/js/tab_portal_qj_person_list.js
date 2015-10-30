@@ -246,7 +246,7 @@ function downloadExcel() {
 	sql += " ORDER BY GROUP_ID_1,UNIT_ID,HR_ID";
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['营服','姓名','类别','岗位','HR编码','从业类型','申效时间'];
+   var _head=['营服','姓名','类别','岗位','HR编码','从业类型','生效时间'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
