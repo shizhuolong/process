@@ -96,7 +96,7 @@ $(function(){
 					"GROUP BY GROUP_ID_1 ORDER BY GROUPID";
 				}else if(orgLevel==3){//营服中心
 					sql = "SELECT MAX(T.UNIT_NAME) AS GROUPNAME,T.UNIT_ID AS GROUPID," + getSumSql() +
-					" WHERE T.UNIT_ID = '"+group_id+"' AND T.DEAL_DATE BETWEEN '"+startdate+"' and '"+enddate+"' " +
+					" WHERE T.UNIT_ID = '"+code+"' AND T.DEAL_DATE BETWEEN '"+startdate+"' and '"+enddate+"' " +
 					"GROUP BY UNIT_ID ORDER BY GROUPID";
 				}else{
 					return {data:[],extra:{}};
