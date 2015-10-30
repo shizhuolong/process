@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -51,6 +53,9 @@ public class ChanlInspectionAction extends BaseAction {
 		String userid  =user.getId().toString();
 		Map<String,String> usermap = new HashMap<String,String>();
 		usermap.put("userid", userid);
+		Calendar ca=Calendar.getInstance();
+		String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+		usermap.put("month", month);
 		Map<String, Object> result = new HashMap<String,Object>();
 		result = chanlInspectionService.ismanager(usermap);
 		if(result!=null){
@@ -88,6 +93,8 @@ public class ChanlInspectionAction extends BaseAction {
 			String username = request.getParameter("username");
 			String phone = request.getParameter("phone");
 			String unit_id = request.getParameter("unit_id");
+			String month = request.getParameter("month");
+			
 			if(realname!=null && !"".equals(realname.trim())){
 				resultMap.put("realname", "%"+realname+"%");
 			}
@@ -96,6 +103,9 @@ public class ChanlInspectionAction extends BaseAction {
 			}
 			if(phone!=null && !"".equals(phone.trim())){
 				resultMap.put("phone", phone);
+			}
+			if(month!=null && !"".equals(month.trim())){
+				resultMap.put("month", month);
 			}
 			resultMap.put("unit_id", unit_id);
 			resultMap.put("code", org.getCode());
@@ -115,11 +125,15 @@ public class ChanlInspectionAction extends BaseAction {
 		try{
 	        String group_id_4_name = request.getParameter("group_id_4_name");
 			String hq_chanl_code = request.getParameter("hq_chanl_code");
+			String month = request.getParameter("month");
 			if(group_id_4_name != null && !"".equals(group_id_4_name.trim())) {
 				resultMap.put("group_id_4_name", "%"+group_id_4_name+"%");
 			}
 			if(hq_chanl_code != null && !"".equals(hq_chanl_code.trim())) {
 				resultMap.put("hq_chanl_code", hq_chanl_code);
+			}
+			if(month != null && !"".equals(month.trim())) {
+				resultMap.put("month", month);
 			}
 			Object result = chanlInspectionService.queryRcChanl(resultMap);
 			this.reponseJson(result);
