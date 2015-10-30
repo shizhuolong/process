@@ -13,10 +13,13 @@
         <class>org.apdplat.module.dictionary.model.DicItem</class>
         <class>org.apdplat.module.module.model.Command</class>
         <class>org.apdplat.module.module.model.Module</class>
+        <class>org.apdplat.module.module.model.AppModule</class>
         <class>org.apdplat.module.security.model.Org</class>
         <class>org.apdplat.module.security.model.Position</class>
         <class>org.apdplat.module.security.model.Role</class>
+        <class>org.apdplat.module.security.model.AppRole</class>
         <class>org.apdplat.module.security.model.User</class>
+        <class>org.apdplat.module.security.model.AppUser</class>
         <class>org.apdplat.module.security.model.UserGroup</class>
         <class>org.apdplat.module.system.model.BackupScheduleConfig</class>
         <class>org.apdplat.module.info.model.InfoType</class>
