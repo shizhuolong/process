@@ -33,13 +33,13 @@ $(function(){
 	   		$("#account").html(data[0].ACCOUNT);
 	   		$("#phone").html(data[0].PHONE);
 	   		if(data[0].IMGFORNT != null && data[0].IMGFORNT != "") {
-	   			$("#imgfornt").attr("src","http://130.86.10.70:10006/portal/"+data[0].IMGFORNT);
+	   			$("#imgfornt").attr("src","http://130.86.10.199:10006/portal/"+data[0].IMGFORNT);
 	   		}
 	   		if(data[0].IMGMIDDLE != null && data[0].IMGMIDDLE != "") {
-	   			$("#imgmiddle").attr("src","http://130.86.10.70:10006/portal/"+data[0].IMGMIDDLE);
+	   			$("#imgmiddle").attr("src","http://130.86.10.199:10006/portal/"+data[0].IMGMIDDLE);
 	   		}
 	   		if(data[0].IMGLATER != null && data[0].IMGLATER != "") {
-	   			$("#imglater").attr("src","http://130.86.10.70:10006/portal/"+data[0].IMGLATER);
+	   			$("#imglater").attr("src","http://130.86.10.199:10006/portal/"+data[0].IMGLATER);
 	   		}
 	   	}
 	});

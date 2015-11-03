@@ -415,7 +415,7 @@
 		return true;
 	}
 	function selectPic(type){
-		var picRoot="http://130.86.10.70:10006/portal";
+		var picRoot="http://130.86.10.199:10006/portal";
 		var picName="",picUrl="";
 		$.ajax({
 			type:"POST",
