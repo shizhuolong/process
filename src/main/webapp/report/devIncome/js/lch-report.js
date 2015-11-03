@@ -620,59 +620,31 @@ LchReport.SUM_STYLE={background:'lightyellow'};
 LchReport.SUM_PART_STYLE={background:'lightcyan'};
 
 function _jf_power(hrId,month){
-	var sql="";
-	if(!month){
-		sql+="   select to_char(wm_concat(hr_id)) hrids from (                ";
-		sql+="                                                                ";
-		sql+="   select ''''||hr_id||'''' hr_id from (SELECT user_code        ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_QJ_PERSON              ";
-		sql+="                 where hr_id = '"+hrId+"'                       ";
-		sql+="                union                                           ";
-		sql+="                SELECT user_code                                ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_QJ_PERSON              ";
-		sql+="                 where hr_id = '"+hrId+"') t1,                  ";
-		sql+="               (SELECT distinct hr_id, 6 user_type              ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_MAG_PERSON             ";
-		sql+="                 WHERE F_HR_ID = '"+hrId+"'                     ";
-		sql+="                union                                           ";
-		sql+="                SELECT distinct t2.hr_id, 1 user_type           ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_MOB_PERSON t1,         ";
-		sql+="                       PORTAL.TAB_PORTAL_MOB_PERSON t2          ";
-		sql+="                 WHERE t1.LEV = 1                               ";
-		sql+="                   and t1.hr_id = '"+hrId+"'                    ";
-		sql+="                   and t2.unit_id = t1.unit_id                  ";
-		sql+="                ) t2                                            ";
-		sql+="    where t1.user_code = t2.user_type                           ";
-		sql+="    union                                                       ";
-		sql+="    SELECT ''''||'"+hrId+"'||'''' HR_ID FROM DUAL)              ";
-	}else{
-		if(month.length==8){
-			month=month.substring(0,6);
-		}
-		sql+="   select to_char(wm_concat(hr_id)) hrids from (                ";
-		sql+="                                                                ";
-		sql+="   select ''''||hr_id||'''' hr_id from (SELECT user_code        ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_QJ_PERSON              ";
-		sql+="                 where hr_id = '"+hrId+"' and deal_date='"+month+"' ";
-		sql+="                union                                           ";
-		sql+="                SELECT user_code                                ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_QJ_PERSON              ";
-		sql+="                 where hr_id = '"+hrId+"' and deal_date='"+month+"'  ) t1,   ";
-		sql+="               (SELECT distinct hr_id, 6 user_type              ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_MAG_PERSON             ";
-		sql+="                 WHERE F_HR_ID = '"+hrId+"' and deal_date='"+month+"'                     ";
-		sql+="                union                                           ";
-		sql+="                SELECT distinct t2.hr_id, 1 user_type           ";
-		sql+="                  FROM PORTAL.TAB_PORTAL_MOB_PERSON t1,         ";
-		sql+="                       PORTAL.TAB_PORTAL_MOB_PERSON t2          ";
-		sql+="                 WHERE t1.LEV = 1                               ";
-		sql+="                   and t1.hr_id = '"+hrId+"'  and t1.deal_date='"+month+"'  and t2.deal_date='"+month+"'                  ";
-		sql+="                   and t2.unit_id = t1.unit_id                  ";
-		sql+="                ) t2                                            ";
-		sql+="    where t1.user_code = t2.user_type                           ";
-		sql+="    union                                                       ";
-		sql+="    SELECT ''''||'"+hrId+"'||'''' HR_ID FROM DUAL)              ";
-	}
+  if(month.length==8){
+		month=month.substring(0,6);
+  }	
+  var sql="select to_char(wm_concat(hr_id)) hrids                              "+
+	"  from (select '''' || hr_id || '''' hr_id                                "+
+	"          from (SELECT distinct hr_id                                     "+
+	"                  FROM PORTAL.TAB_PORTAL_MAG_PERSON                       "+
+	"                 WHERE F_HR_ID = '"+hrId+"'                               "+
+	"                   and deal_date = '"+month+"'                            "+
+	"                union                                                     "+
+	"                SELECT DISTINCT T.HR_ID                                   "+
+	"                FROM PORTAL.VIEW_U_PORTAL_PERSON T                        "+
+	"                WHERE T.UNIT_ID IN (                                      "+
+	"                                      SELECT T1.UNIT_ID                   "+
+	"                                      FROM PORTAL.TAB_PORTAL_MOB_PERSON t1"+
+	"                                      WHERE t1.LEV = 1                    "+
+	"                                     and t1.hr_id = '"+hrId+"'            "+
+	"                                       and t1.deal_date = '"+month+"'     "+
+	"                                       )                                  "+
+	"                   AND T.DEAL_DATE='"+month+"'                            "+
+	"                   ) t2                                                   "+
+	"                                                                          "+
+	"        union                                                             "+
+	"        SELECT '''' || '0851547' || '''' HR_ID FROM DUAL                  "+
+	"          )                                                               ";
 
 	var d=query(sql);
 	var r="''";
