@@ -759,7 +759,7 @@ function _jf_power(hrId,month){
 		"                   ) t2                                                   "+
 		"                                                                          "+
 		"        union                                                             "+
-		"        SELECT '''' || '0851547' || '''' HR_ID FROM DUAL                  "+
+		"        SELECT '''' || '"+hrId+"' || '''' HR_ID FROM DUAL                  "+
 		"          )                                                               ";
 
 		var d=query(sql);
