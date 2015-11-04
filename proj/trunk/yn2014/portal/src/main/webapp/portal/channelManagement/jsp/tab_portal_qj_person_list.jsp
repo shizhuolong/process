@@ -69,7 +69,7 @@
                 <tr height="35px">
                 	<td width="6%" style="padding-left:10px;">HR编码：</td>
                     <td width="15%"><input class="default-text-input wper80" id="hr_id" name="hr_id" type="text"/></td>
-                    <td width="5%" style="padding-left:10px;">申效时间：</td>
+                    <td width="5%" style="padding-left:10px;">生效时间：</td>
                     <td width="15%"><input class="default-text-input wper80" id="active_time" name="active_time" type="text"/></td>
                 </tr>
                 <tr height="35px">
@@ -100,7 +100,7 @@
 								<th>岗位</th>
 								<th>HR编码</th>
 								<th>从业类型</th>
-								<th>申效时间</th>
+								<th>生效时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
