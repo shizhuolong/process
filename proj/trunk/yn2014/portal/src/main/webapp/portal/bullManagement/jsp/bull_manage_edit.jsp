@@ -41,11 +41,11 @@
 							<option value="0">不置顶</option>
 					    </select>
 					</td>
-					<td width="10%">领导首页显示：</td>
+					<td width="10%">类型：</td>
 					<td width="15%">
 						<select id="isManage" class="default-text-input wper60" name="isManage">
-							<option value="1">显示</option>
-							<option value="0">不显示</option>
+							<option value="1">系统公告</option>
+							<option value="0">政策通知</option>
 					    </select>
 					</td>
 				</tr>
