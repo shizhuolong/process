@@ -53,12 +53,12 @@
 							<option value="0">不置顶</option>
 					    </select>
 					</td>
-					<td width="6%">领导首页显示：</td>
+					<td width="6%">公告类型：</td>
 					<td width="15%">
 						<select id="isManage" class="default-text-input wper80" name="type">
 							<option value="">请选择</option>
-							<option value="1">显示</option>
-							<option value="0">不显示</option>
+							<option value="1">系统公告</option>
+							<option value="0">政策通知</option>
 					    </select>
 					</td>
 					<td width="5%" colspan="2"><a class="default-btn" href="#"
