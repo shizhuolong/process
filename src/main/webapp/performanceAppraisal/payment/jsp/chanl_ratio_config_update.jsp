@@ -23,6 +23,7 @@
 				<input type="hidden" name="groupcode" id="groupcode">
 				<input type="hidden" name="groupname" id="groupname">
 				<input type="hidden" name="group_id_1" id="group_id_1">
+				<input type="hidden" name="month" id="month">
 				<table class="default-table sticky-enabled">
 				<tr>
 					<td style="width: 75px;">渠道编码:</td>
