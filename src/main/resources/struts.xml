@@ -43,6 +43,6 @@
     <include file="struts/struts-devIncome.xml" />
     <include file="struts/struts-warningAndMonitor.xml" />
     <include file="struts/struts-qaManagement.xml" />
-    
+    <include file="struts/struts-bulletin.xml" />
     
 </struts>
