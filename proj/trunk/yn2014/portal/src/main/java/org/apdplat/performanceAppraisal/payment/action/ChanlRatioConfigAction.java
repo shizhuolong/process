@@ -23,7 +23,6 @@ public class ChanlRatioConfigAction extends BaseAction {
 	private String orgLevel;
 	private String code;
 	private Map<String, String> resultMap;
-	
 	/**
 	 * 查询组织架构树
 	 */
@@ -46,6 +45,7 @@ public class ChanlRatioConfigAction extends BaseAction {
 			String status = request.getParameter("status");
 			String ratio = request.getParameter("ratio");
 			String server_ratio = request.getParameter("server_ratio");
+			String month = request.getParameter("month");
 			if(hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 				resultMap.put("hq_chan_code", hq_chan_code);
 			}
@@ -60,6 +60,9 @@ public class ChanlRatioConfigAction extends BaseAction {
 			}
 			if(server_ratio != null && !"".equals(server_ratio.trim())) {
 				resultMap.put("server_ratio", server_ratio);
+			}
+			if(month != null && !"".equals(month.trim())) {
+				resultMap.put("month", month);
 			}
 			Object result = chanlRatioConfigService.list(resultMap);
 			this.reponseJson(result);
@@ -98,12 +101,14 @@ public class ChanlRatioConfigAction extends BaseAction {
 			String server_ratio = request.getParameter("server_ratio");
 			String ratio = request.getParameter("ratio");
 			String group_id_1 = request.getParameter("group_id_1");
+			String month = request.getParameter("month");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("groupcode", groupcode);
 			params.put("groupname", groupname);
 			params.put("group_id_1", group_id_1);
 			params.put("ratio", ratio);
 			params.put("server_ratio", server_ratio);
+			params.put("month", month);
 			chanlRatioConfigService.updateChanlRatio(params);
 			this.reponseJson("操作成功");
 		} catch (Exception e) {
@@ -136,6 +141,5 @@ public class ChanlRatioConfigAction extends BaseAction {
 	public void setResultMap(Map<String, String> resultMap) {
 		this.resultMap = resultMap;
 	}
-	
-	
+		
 }
