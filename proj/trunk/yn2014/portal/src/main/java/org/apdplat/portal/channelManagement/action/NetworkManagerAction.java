@@ -119,6 +119,7 @@ public class NetworkManagerAction extends BaseAction {
 			params.put("unit_id", unit_id);
 			params.put("unit_name", unit_name);
 			networkMangerService.saveBindPerson(params);
+			networkMangerService.insertIntoAllPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
 			logger.error("绑定名单制小区负责人失败",e);
@@ -132,10 +133,13 @@ public class NetworkManagerAction extends BaseAction {
 	public void deleteBindPerson() {
 		try {
 			String std_6_id = request.getParameter("std_6_id");
+			String old_hr_id = request.getParameter("old_hr_id");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("std_6_id", std_6_id);
+			params.put("old_hr_id", old_hr_id);
 			System.out.println("============================="+std_6_id);
 			networkMangerService.deleteBindPerson(params);
+			networkMangerService.saveBindAllPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
 			logger.error("解除名单制小区绑定的负责人失败",e);
