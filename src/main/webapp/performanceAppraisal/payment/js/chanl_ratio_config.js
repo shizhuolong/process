@@ -53,6 +53,7 @@ function search(pageNumber) {
 	var status = $.trim($("#status").val());
 	var ratio = $.trim($("#ratio").val());
 	var server_ratio = $.trim($("#server_ratio").val());
+	var month = $("#month").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -68,7 +69,8 @@ function search(pageNumber) {
            "group_id_4_name":group_id_4_name,
            "status":status,
            "ratio":ratio,
-           "server_ratio":server_ratio
+           "server_ratio":server_ratio,
+           "month":month
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -91,7 +93,7 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
 				+"<td>"+isNull(n['STATUS'])+"</td>";
 				if(isGrantedNew(UPDATE_ROLE)) {
-					content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' onclick='editChanlConfig(this);'>修改</a></td>";
+					content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
 				} else {
 					content+="<td>&nbsp;</td>";
 				}
@@ -112,7 +114,9 @@ function search(pageNumber) {
 //编辑渠道系数
 function editChanlConfig(ele) {
 	var hq_chan_code = $(ele).attr("hq_chan_code");
+	var month=$(ele).attr("month");
 	art.dialog.data('hq_chan_code',hq_chan_code);
+	art.dialog.data('month',month);
 	var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/chanl_ratio_config_update.jsp";
 	art.dialog.open(url,{
 		id:'updateChanlConfig',
@@ -152,6 +156,7 @@ function downloadExcel() {
 	var status = $.trim($("#status").val());
 	var ratio = $.trim($("#ratio").val());
 	var server_ratio = $.trim($("#server_ratio").val());
+	var month = $("#month").val();
 	var sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.HQ_CHAN_CODE,T.GROUP_ID_4_NAME," +
 			"T3.CHANL_TYPE_NAME as CHNL_TYPE,TO_CHAR(T2.RATIO, 'fm9999999990.0000') AS RATIO," +
 			"TO_CHAR(T2.SERVER_RATIO, 'fm9999999990.0000') AS SERVER_RATIO," +
@@ -160,7 +165,7 @@ function downloadExcel() {
 			"ON (T.FD_CHNL_CODE = T1.FD_CHNL_CODE) LEFT JOIN PTEMP.ALL_CHL_RATIO_LIST T2 " +
 			"ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE) " +
 			"LEFT JOIN PTEMP.TB_TEMP_JCDY_CHANL_TYPE T3 " +
-			"ON (T2.CHNL_TYPE = T3.CHANL_TYPE_CODE) WHERE T.IS_SIGN = 1 "
+			"ON (T2.CHNL_TYPE = T3.CHANL_TYPE_CODE) WHERE T.IS_SIGN = 1 AND T2.DEAL_DATE='"+month+"' ";
 			if(orgLevel == 2) {
 				sql += "AND T.GROUP_ID_1 = '"+code+"' ";
 			}
