@@ -47,6 +47,7 @@ $(function(){
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
 					preField=" '云南省'  ROW_NAME ";
+					groupBy=' group by group_id_0 ';
 					orgLevel++;
 				}else if(orgLevel==2){//市
 					preField=' group_id_1 ROW_ID,group_id_1_name ROW_NAME';
@@ -186,11 +187,7 @@ function listRegions(){
 }
 function listUnits(regionName){
 	var $unit=$("#unitName");
-	var time=$("#time").val();
 	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
