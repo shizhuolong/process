@@ -1,11 +1,16 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.model.User"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
+	Calendar ca=Calendar.getInstance();
+	ca.add(Calendar.MONTH, 0);
+	String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -18,6 +23,8 @@
 <link href="<%=request.getContextPath()%>/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/sdmenu.js"></script>
@@ -60,11 +67,11 @@ function isGrantedNew(role){
             <input type="hidden" name="resultMap.rows" />
           	<table style="margin-top: 10px;">
           		<tr>
-                	<td align="right">渠道编码：</td>
+                	<td align="">渠道编码：</td>
                     <td><input class="default-text-input wper140" name="hq_chan_code" id="hq_chan_code" type="text"/></td>
-                    <td align="right">渠道名称：</td>
-                    <td><input class="default-text-input" style="width: 250px;" name="group_id_4_name" id="group_id_4_name" type="text"/></td>
-                    <td align="right">渠道状态：</td>
+                    <td align="">渠道名称：</td>
+                    <td><input class="default-text-input" style="width: 150px;" name="group_id_4_name" id="group_id_4_name" type="text"/></td>
+                    <td align="">渠道状态：</td>
                     <td>
 	                    <select class="default-text-input" style="width: 80px;" name="status" id="status">
 							<option value="">全部</option>
@@ -78,7 +85,7 @@ function isGrantedNew(role){
 					</td>
                 </tr>
                 <tr>
-                	<td align="right">是否配置渠道系数：</td>
+                	<td align="">是否配置渠道系数：</td>
                 	<td>
                 		<select class="default-text-input" style="width: 80px;" name="ratio" id="ratio">
 							<option value="">全部</option>
@@ -86,14 +93,19 @@ function isGrantedNew(role){
 							<option value="0">否</option>
 						</select>
                 	</td>
-                	<td align="right">是否配置服务系数：</td>
-                	<td colspan="3" style="padding: 15px 0px;">
+                	<td align="">是否配置服务系数：</td>
+                	<td colspan="" style="padding: 15px 0px;">
                 		<select class="default-text-input" style="width: 80px;" name="server_ratio" id="server_ratio">
 							<option value="">全部</option>
 							<option value="1">是</option>
 							<option value="0">否</option>
 						</select>
                 	</td>
+                     <td>账期：</td>
+					<td>
+						<input type="text"  class="Wdate default-text-input wper80" 
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month%>" readonly="readonly" id="month"/>
+					</td> 
                 </tr>
                 <tr height="35px">
                 	<td colspan="4" align="center">
