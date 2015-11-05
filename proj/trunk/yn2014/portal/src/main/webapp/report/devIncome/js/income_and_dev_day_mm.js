@@ -91,7 +91,7 @@ $(function(){
 				for(var i=1;i<=18;i++){
 				 var obj=$(this).find("td:eq("+3*i+")");	
 				 if(parseFloat(obj.text())>20){
-					 obj.css("background-color","red");
+					  obj.css("color","red");
 				 };
 				}
 			});
@@ -193,7 +193,7 @@ $(function(){
 		for(var i=1;i<=18;i++){
 		 var obj=$(this).find("td:eq("+3*i+")");	
 		 if(parseFloat(obj.text())>20){
-			 obj.css("background-color","red");
+			  obj.css("color","red");
 		 };
 		}
 	});
@@ -205,7 +205,7 @@ $(function(){
 			for(var i=1;i<=18;i++){
 			 var obj=$(this).find("td:eq("+3*i+")");	
 			 if(parseFloat(obj.text())>20){
-				 obj.css("background-color","red");
+				  obj.css("color","red");
 			 };
 			}
 		});
