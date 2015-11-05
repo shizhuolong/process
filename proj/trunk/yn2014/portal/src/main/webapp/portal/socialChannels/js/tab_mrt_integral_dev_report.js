@@ -1,8 +1,8 @@
 var nowData = [];
 var field=[
-"账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","手工录入积分",""
+"账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否可以兑换","手工录入积分",""
 ];
-var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","手工录入积分","提交"]];
+var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否可以兑换","手工录入积分","提交"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -10,7 +10,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:4,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:9,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
@@ -55,6 +55,7 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
+	var userName=$("#userName").val();
 	var orderBy="";
 	var sql=getSql();
 //条件
@@ -66,6 +67,9 @@ function search(pageNumber) {
 	}
 	if(unitName!=''){
 		sql+=" and UNIT_NAME = '"+unitName+"'";
+	}
+	if(userName!=''){
+		sql+=" and HR_ID_NAME = '"+userName+"'";
 	}
 	
 //权限
@@ -99,13 +103,21 @@ function search(pageNumber) {
 	nowData = d;
 
 	report.showSubRow();
-	$("#lch_DataBody").find("TR").each(function(){
-		 var obj=$(this).find("td:eq(18)");
-		 var sub=$(this).find("td:eq(19)");
-		 var h="<input name='is_jf' id='is_jf' type='text' id='is_jf'/>";
-		 var h1="<button name='sub' id='sub' id='sub'>提交</button>";
-	     obj.append(h);
-	     sub.append(h1);
+	$("#lch_DataBody").find("TR").each(function(i){
+		 var obj=$(this).find("td:eq(19)");
+		 var is_jf=$(this).find("td:eq(19)").text();
+		 var hq_code=$(this).find("td:eq(5)").text();
+		 var sub=$(this).find("td:eq(20)");
+		 var is_dh=$(this).find("td:eq(18)").text().trim();
+		 if(is_dh=="0"){
+		   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
+		   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
+	       obj.empty().append(h);
+	       sub.append(h1);
+	     }else{
+	    	 var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
+		     obj.empty().append(h);
+	     }
 	});
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
@@ -116,6 +128,32 @@ function search(pageNumber) {
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)
 			$(this).find("TD:eq(0)").empty().text(area);
+	});
+}
+function update(obj){
+	var hq_code=$(obj).attr("hq_code");
+	var i=$(obj).attr("i");
+	var is_jf=$.trim($("#"+i).val());
+	var month=$(obj).attr("month");
+	if(isNaN(is_jf)||$.trim(is_jf)==""){
+		alert("请输入数字");
+		return;
+	}
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/bulletin/edit_update.action",
+		data:{
+	       "hq_code":hq_code,
+	       "is_jf":is_jf,
+	       "month":month 
+	   	}, 
+	   	success:function(data){
+	   		alert("修改成功");
+	   		search(0);
+	    }
 	});
 }
 function getSql(){
@@ -137,9 +175,10 @@ function getSql(){
 	",NVL(LJ_JF_QS,0) 本半年累计清算积分                               "+
 	",NVL(LJ_JF_DH,0) 本半年累计可兑积分                               "+
 	",DECODE(INTEGRAL_GRADE,'D',NULL,NVL(LJ_COMM,0)) 本半年累计可兑金额,"+
-	"IS_JF 手工录入积分"+
+	"IS_JF 手工录入积分,"+
+	"IS_DH 是否可以兑换"+
 	" FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT                            "+
-	" WHERE INTEGRAL_SUB = 1                                           ";
+	" WHERE INTEGRAL_SUB = 1                                          ";
 	return s;
 }
 function listRegions(){
@@ -233,15 +272,6 @@ function listUnits(regionName){
 		alert("获取基层单元信息失败");
 	}
 }
-function isNull(obj){
-	if(obj==0||obj=='0'){
-		return 0;
-	}
-	if(obj == undefined || obj == null || obj == '') {
-		return "";
-	}
-	return obj;
-}
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var time=$("#time").val();
@@ -275,6 +305,7 @@ function downsAll(){
 		sql+=" and GROUP_ID_4="+code;
 	}
 	sql+=orderBy;
+	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","积分","是否可以兑换"]];
 	showtext = '兑换薪酬新增报表-'+time;
 	downloadExcel(sql,title,showtext);
 }
