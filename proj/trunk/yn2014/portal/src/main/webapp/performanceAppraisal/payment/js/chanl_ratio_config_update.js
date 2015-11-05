@@ -1,7 +1,9 @@
 var pageSize = 5;
 var hq_chan_code = "";
+var month="";
 $(function() {
 	hq_chan_code = art.dialog.data('hq_chan_code');
+	month = art.dialog.data('month');
 	loadData();
 	//关闭dailog
 	$("#cancleBtn").click(function(){
@@ -63,6 +65,7 @@ function loadData() {
         	$("#groupcode").val(r[0].HQ_CHAN_CODE);
         	$("#groupname").val(r[0].GROUP_ID_4_NAME);
         	$("#group_id_1").val(r[0].GROUP_ID_1);
+        	$("#month").val(month);
         }
     });
 }
