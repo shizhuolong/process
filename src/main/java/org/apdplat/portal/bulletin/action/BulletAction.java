@@ -28,7 +28,7 @@ public class BulletAction extends BaseAction {
 		
 	public void update() {
 		try {
-			Integer is_jf=Integer.parseInt(request.getParameter("is_jf"));
+			double is_jf=Double.parseDouble(request.getParameter("is_jf"));
 			String hq_code=request.getParameter("hq_code");
 			String month=request.getParameter("month");
 			Map<String,Object> m=new HashMap<String,Object>();
