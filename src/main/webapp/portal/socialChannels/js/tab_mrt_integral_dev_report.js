@@ -108,7 +108,7 @@ function search(pageNumber) {
 		 var is_jf=$(this).find("td:eq(19)").text();
 		 var hq_code=$(this).find("td:eq(5)").text();
 		 var sub=$(this).find("td:eq(20)");
-		 var is_dh=$(this).find("td:eq(18)").text().trim();
+		 var is_dh=$.trim($(this).find("td:eq(18)").text());
 		 if(is_dh=="0"){
 		   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
 		   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
