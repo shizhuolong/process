@@ -50,7 +50,7 @@ function loadData() {
         async:true,
         cache:false,
         url:$("#ctx").val()+'/assessment/chanlRatioConfig_loadChanlRatio.action',
-        data:{hq_chan_code:hq_chan_code},
+        data:{"hq_chan_code":hq_chan_code,"month":month},
         success:function(data){
         	var r = $.parseJSON(data);
         	$("#hq_chan_code").html(r[0].HQ_CHAN_CODE);
