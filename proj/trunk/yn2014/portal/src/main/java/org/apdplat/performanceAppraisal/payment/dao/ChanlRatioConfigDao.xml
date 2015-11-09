@@ -93,12 +93,12 @@
     		ON (T.FD_CHNL_CODE = T1.FD_CHNL_CODE)
   		LEFT JOIN PTEMP.ALL_CHL_RATIO_LIST T2
     		ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE)
- 		WHERE T.IS_SIGN = 1 AND T.HQ_CHAN_CODE = #{hq_chan_code}
+ 		WHERE T.IS_SIGN = 1 AND T.HQ_CHAN_CODE = #{hq_chan_code} AND T2.DEAL_DATE=#{month}
 	</select>
 	
 	<update id="updateChanlRatio" parameterType="java.util.Map">
 		MERGE INTO PTEMP.ALL_CHL_RATIO_LIST T
-			USING (SELECT * FROM DUAL) T1 ON (T.HQ_CHANL_CODE = #{groupcode})
+			USING (SELECT * FROM DUAL) T1 ON (T.HQ_CHANL_CODE = #{groupcode} AND T.DEAL_DATE=#{month})
 		WHEN MATCHED THEN
   			UPDATE SET T.SERVER_RATIO = #{server_ratio}, T.RATIO = #{ratio}
 		 WHEN NOT MATCHED THEN

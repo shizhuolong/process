@@ -85,8 +85,10 @@ public class ChanlRatioConfigAction extends BaseAction {
 	 */
 	public void loadChanlRatio() {
 		String hq_chan_code = request.getParameter("hq_chan_code");
+		String month = request.getParameter("month");
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("hq_chan_code", hq_chan_code);
+		params.put("month", month);
 		List<Map<String, Object>> list = chanlRatioConfigService.loadChanlRatio(params);
 		this.reponseJson(list);
 	}
