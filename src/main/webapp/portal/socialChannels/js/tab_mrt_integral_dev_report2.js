@@ -111,7 +111,7 @@ function downsAll() {
 	var qdate = $.trim($("#month").val());
 	var preField=' group_id_1_name,unit_name,hr_id_name,group_id_4_name ';
 	var where=' WHERE INTEGRAL_SUB = 1';
-	var orderBy=" order by group_id_1,unit_id,hr_id,group_id_4,group_id_4_name ";
+	var orderBy=" order by group_id_1,unit_id,hr_id,group_id_4 ";
 	var hr_id_name = $("#userName").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
