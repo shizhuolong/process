@@ -34,9 +34,13 @@ $(function(){
 					where+=' and group_id_1=\''+code+"\' ";
 					orderBy=" order by unit_id";
 				}else if(orgLevel==4){
-					preField=' hr_id_name ROW_NAME';
+					preField=' hr_id ROW_ID,hr_id_name ROW_NAME';
 					groupBy=' group by hr_id,hr_id_name ';
 					where+=' and unit_id=\''+code+"\' ";
+				}else if(orgLevel==5){
+					preField=' group_id_4_name ROW_NAME';
+					groupBy=' group by group_id_4,group_id_4_name ';
+					where+=' and hr_id=\''+code+"\' ";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -59,9 +63,9 @@ $(function(){
 					groupBy=' group by unit_id,unit_name ';
 					where+=' and unit_id=\''+code+"\' ";
 					orgLevel++;
-				}else if(orgLevel==4){//人员
+				}else if(orgLevel==4){
 					var hrId = $("#hrId").val();
-					preField=' hr_id_name ROW_NAME';
+					preField=' hr_id ROW_ID,hr_id_name ROW_NAME';
 					groupBy=' group by hr_id,hr_id_name ';
 					where+=' and hr_id=\''+hrId+"\' ";
 					orgLevel++;
@@ -105,13 +109,13 @@ $(function(){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var qdate = $.trim($("#month").val());
-	var preField=' group_id_1_name,unit_name,hr_id_name ';
+	var preField=' group_id_1_name,unit_name,hr_id_name,group_id_4_name ';
 	var where=' WHERE INTEGRAL_SUB = 1';
-	var orderBy=" order by group_id_1,unit_id,hr_id ";
+	var orderBy=" order by group_id_1,unit_id,hr_id,group_id_4 ";
 	var hr_id_name = $("#userName").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	var groupBy=" group by group_id_1,group_id_1_name,unit_id,unit_name,hr_id,hr_id_name";
+	var groupBy=" group by group_id_1,group_id_1_name,unit_id,unit_name,hr_id,hr_id_name,group_id_4,group_id_4_name";
 	var fieldSql=getSumField();
 		
 	//先根据用户信息得到前几个字段
@@ -139,8 +143,8 @@ function downsAll() {
 	var sql = 'select ' + preField + fieldSql
 			+ ' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
 	sql += where+groupBy+orderBy;
-	showtext = '累计汇总月报' + qdate; 
-	var title=[["地市","营服中心","人员","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","已兑积分"]];
+	showtext = '当月汇总月报' + qdate; 
+	var title=[["地市","营服中心","人员","渠道","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","已兑积分"]];
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
