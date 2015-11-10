@@ -109,7 +109,7 @@ function search(pageNumber) {
 		 var hq_code=$(this).find("td:eq(5)").text();
 		 var sub=$(this).find("td:eq(20)");
 		 var is_dh=$.trim($(this).find("td:eq(18)").text());
-		 if(is_dh=="0"){
+		 if(is_dh=="是"){
 		   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
 		   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
 	       obj.empty().append(h);
@@ -176,7 +176,7 @@ function getSql(){
 	",NVL(LJ_JF_DH,0) 本半年累计可兑积分                               "+
 	",DECODE(INTEGRAL_GRADE,'D',NULL,NVL(LJ_COMM,0)) 本半年累计可兑金额,"+
 	"IS_JF 手工录入积分,"+
-	"IS_DH 是否可以兑换"+
+	"CASE WHEN IS_DH='0' then '是' else '否' end 是否可以兑换"+
 	" FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT                            "+
 	" WHERE INTEGRAL_SUB = 1                                          ";
 	return s;
