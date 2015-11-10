@@ -48,7 +48,7 @@ function search(pageNumber) {
 	
 	var time=$("#time").val();
 	var user_type=$.trim($("#user_type").val());
-	var hr_id=$.trim($("#hr_id").val());
+	var hr_id=$.trim($("#hrId").val());
 	var developer=$.trim($("#developer").val());
 	var orderBy="";
 	var sql=getSql();
@@ -72,11 +72,11 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and GROUP_ID_1="+code;
 		orderBy=" order by unit_id,hr_id";
-	}else if(orgLevel==3){
-		sql+=" and UNIT_ID="+code;
-		orderBy=" order by hr_id";
 	}else{
-		sql+=" and 1=2";
+		var hrIds=_jf_power(hr_id,time);
+		if(hrIds!=""){
+		   sql+=" and HR_ID in("+hrIds+") ";
+		}
 	}
 	var cdata = query("select count(*) total from(" + sql+")");
 	var total = 0;
@@ -120,7 +120,7 @@ function getSql(){
 function downsAll(){
 	var time=$("#time").val();
 	var user_type=$.trim($("#user_type").val());
-	var hr_id=$.trim($("#hr_id").val());
+	var hr_id=$.trim($("#hrId").val());
 	var developer=$.trim($("#developer").val());
 	var orderBy="";
 	var sql=getSql();
@@ -144,11 +144,11 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" and GROUP_ID_1="+code;
 		orderBy=" order by unit_id,hr_id";
-	}else if(orgLevel==3){
-		sql+=" and UNIT_ID="+code;
-		orderBy=" order by hr_id";
 	}else{
-		sql+=" and 1=2";
+		var hrIds=_jf_power(hr_id,time);
+		if(hrIds!=""){
+		   sql+=" and HR_ID in("+hrIds+") ";
+		}
 	}
 	sql+=orderBy;
 	showtext = '直销发展日报-'+time;
