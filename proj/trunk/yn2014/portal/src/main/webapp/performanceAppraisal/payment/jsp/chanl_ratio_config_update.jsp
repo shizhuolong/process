@@ -18,7 +18,7 @@
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 <div id="container" style="min-height: 130px;">
 	<div class="default-dt" style="width: 620px;">
-		<div class="sticky-wrap" style="height: 155px;">
+		<div class="sticky-wrap" style="height: 100px;">
 			<form id="updateChanlRatioForm" method="POST">
 				<input type="hidden" name="groupcode" id="groupcode">
 				<input type="hidden" name="groupname" id="groupname">
@@ -46,11 +46,19 @@
 					</td>
 				</tr>
 				<tr>
-	                <td colspan="4" style="padding-left: 240px;">
+				    <td>包含之后账期:</td>
+				    <td colspan="3">
+				     <input type="checkbox" name="is_all" id="is_all" value="0"/>
+				     <span style="color:red;margin-left:20px;">备注:若勾选，则该账期及以后账期的数据将被修改,若不勾，则只修改当前账期的数据。</span>
+				    </td>
+	                
+				</tr>
+				<tr>
+				    <td colspan="4" style="padding-left: 230px;">
 		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
 		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn">取消</a>
 	                </td>
-				</tr>
+	            </tr>
 			</table>
 		</form>
 		</div>
