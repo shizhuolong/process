@@ -34,10 +34,10 @@
   		LEFT JOIN PCDE.TB_CDE_CHANL_HQ_CODE T1
     		ON (T.FD_CHNL_CODE = T1.FD_CHNL_CODE)
   		LEFT JOIN PTEMP.ALL_CHL_RATIO_LIST T2
-    		ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE)
+    		ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE AND T2.DEAL_DATE=#{month})
     	LEFT JOIN PTEMP.TB_TEMP_JCDY_CHANL_TYPE T3
     		ON (T2.CHNL_TYPE = T3.CHANL_TYPE_CODE)
- 		WHERE T.IS_SIGN = 1 AND T2.DEAL_DATE=#{month}
+ 		WHERE T.IS_SIGN = 1 
  		<if test="orgLevel==2">
  			AND T.GROUP_ID_1 = #{code}
  		</if>
@@ -92,18 +92,36 @@
   		LEFT JOIN PCDE.TB_CDE_CHANL_HQ_CODE T1
     		ON (T.FD_CHNL_CODE = T1.FD_CHNL_CODE)
   		LEFT JOIN PTEMP.ALL_CHL_RATIO_LIST T2
-    		ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE)
- 		WHERE T.IS_SIGN = 1 AND T.HQ_CHAN_CODE = #{hq_chan_code} AND T2.DEAL_DATE=#{month}
+    		ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE AND T2.DEAL_DATE=#{month})
+ 		WHERE T.IS_SIGN = 1 AND T.HQ_CHAN_CODE = #{hq_chan_code} 
 	</select>
 	
 	<update id="updateChanlRatio" parameterType="java.util.Map">
-		MERGE INTO PTEMP.ALL_CHL_RATIO_LIST T
+	 <if test="is_all == 0">
+		 merge into PTEMP.ALL_CHL_RATIO_LIST t                                          
+    using (select to_char(add_months(to_date(#{month}, 'yyyymm'), level - 1),
+                          'yyyymm') deal_date                               
+             from dual                                                      
+           connect by to_char(add_months(to_date(#{month}, 'yyyymm'),   
+                                         level - 1),                       
+                              'yyyymm') between #{month} and            
+                      (select max(deal_date) from PTEMP.ALL_CHL_RATIO_LIST)) t1       
+    on (T.HQ_CHANL_CODE = #{groupcode} AND T.DEAL_DATE=t1.deal_date)            
+    when matched then                                                       
+      UPDATE SET T.SERVER_RATIO = #{server_ratio}, T.RATIO = #{ratio}                                       
+    when not matched then                                                   
+    INSERT(CHANL_NAME, HQ_CHANL_CODE, SERVER_RATIO, RATIO, GROUP_ID_1,DEAL_DATE)  
+ VALUES (#{groupname}, #{groupcode}, #{server_ratio}, #{ratio}, #{group_id_1},t1.deal_date)
+  </if>
+  <if test="is_all == null">
+    MERGE INTO PTEMP.ALL_CHL_RATIO_LIST T
 			USING (SELECT * FROM DUAL) T1 ON (T.HQ_CHANL_CODE = #{groupcode} AND T.DEAL_DATE=#{month})
 		WHEN MATCHED THEN
   			UPDATE SET T.SERVER_RATIO = #{server_ratio}, T.RATIO = #{ratio}
 		 WHEN NOT MATCHED THEN
   			INSERT(CHANL_NAME, HQ_CHANL_CODE, SERVER_RATIO, RATIO, GROUP_ID_1,DEAL_DATE)
   			VALUES (#{groupname}, #{groupcode}, #{server_ratio}, #{ratio}, #{group_id_1},#{month}) 
-	</update>
+  </if>
+</update>
 	
 </mapper>
