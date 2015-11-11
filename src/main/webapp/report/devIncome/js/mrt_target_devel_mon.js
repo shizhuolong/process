@@ -47,7 +47,8 @@ function search(pageNumber) {
 	
 	var time=$("#time").val();
 	var user_type=$.trim($("#user_type").val());
-	var hr_id=$.trim($("#hrId").val());
+	var hr_id=$.trim($("#hr_id").val());
+	var hrId=$("#hrId").val();
 	var developer=$.trim($("#developer").val());
 	var orderBy="";
 	var sql=getSql();
@@ -72,7 +73,7 @@ function search(pageNumber) {
 		sql+=" and GROUP_ID_1="+code;
 		orderBy=" order by unit_id,hr_id";
 	}else{
-		var hrIds=_jf_power(hr_id,time);
+		var hrIds=_jf_power(hrId,time);
 		if(hrIds!=""){
 		   sql+=" and HR_ID in("+hrIds+") ";
 		}
@@ -119,7 +120,8 @@ function getSql(){
 function downsAll(){
 	var time=$("#time").val();
 	var user_type=$.trim($("#user_type").val());
-	var hr_id=$.trim($("#hrId").val());
+	var hr_id=$.trim($("#hr_id").val());
+	var hrId=$.trim($("#hrId").val());
 	var developer=$.trim($("#developer").val());
 	var orderBy="";
 	var sql=getSql();
@@ -144,7 +146,7 @@ function downsAll(){
 		sql+=" and GROUP_ID_1="+code;
 		orderBy=" order by unit_id,hr_id";
 	}else{
-		var hrIds=_jf_power(hr_id,time);
+		var hrIds=_jf_power(hrId,time);
 		if(hrIds!=""){
 		   sql+=" and HR_ID in("+hrIds+") ";
 		}
