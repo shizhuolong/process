@@ -98,6 +98,8 @@ public class ChanlRatioConfigAction extends BaseAction {
 	 */
 	public void updateChanlRatio() {
 		try {
+			String is_all=request.getParameter("is_all");
+			System.out.println(is_all);
 			String groupcode = request.getParameter("groupcode");
 			String groupname = request.getParameter("groupname");
 			String server_ratio = request.getParameter("server_ratio");
@@ -111,6 +113,7 @@ public class ChanlRatioConfigAction extends BaseAction {
 			params.put("ratio", ratio);
 			params.put("server_ratio", server_ratio);
 			params.put("month", month);
+			params.put("is_all", is_all);
 			chanlRatioConfigService.updateChanlRatio(params);
 			this.reponseJson("操作成功");
 		} catch (Exception e) {
