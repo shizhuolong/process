@@ -51,13 +51,13 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="3%">营服中心：</td>
+					<td width="5%">营服中心：</td>
 					<td width="10%">
 						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="3%">人员姓名：</td>
+					<td width="5%">人员姓名：</td>
 					<td width="10%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
