@@ -121,10 +121,6 @@ function search(pageNumber) {
 			      var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
 				  obj.empty().append(h);
 			 }
-		 } else {
-			  //$("#lch_DataBody").find("TR:eq(0)").find("TH:eq(0)").find("td:eq(19)").text("兑换积分");
-			  //var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
-			  //obj.empty().append(h);
 		 }
 	});
 	 if(!isGrantedNew(UPDATE_ROLE)) {
