@@ -1,19 +1,5 @@
 var common_editor='';
 $(function(){
-	/*KindEditor.ready(function(K) {
-		common_editor = K.create('#common_quest_answer', {
-			resizeType : 1,
-			allowPreviewEmoticons : false,
-			allowImageUpload : false,
-			items : [ 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor',
-			          'bold', 'italic', 'underline', 'removeformat', '|',
-			          'justifyleft', 'justifycenter', 'justifyright',
-			          'insertorderedlist', 'insertunorderedlist', '|',
-			          'emoticons', 'image', 'link' ]
-		});
-	});*/
-	
-	
 	/*查询常用问题列表*/
 	commonQuestList();
 	
@@ -23,21 +9,6 @@ $(function(){
 	}else{
 		$("#comm_quest_add").hide();
 	}
-	
-	/*$("#add_comment_quest_button").click(function(){
-		$("#common_quest_name").attr("value","");
-		$("#common_quest_countent").attr("value","");
-		$("#common_quest_answer").attr("value","");
-		$("#add_comment_quest").show();
-		
-		
-	});*/
-	/*$("#cancleBtn").click(function(){
-		$("#common_quest_name").attr("value","");
-		$("#common_quest_countent").attr("value","");
-		$("#common_quest_answer").attr("value","");
-		$("#add_comment_quest").hide();
-	});*/
 	$("#user_quest_add").click(function(){
 		addQuset();
 	});
@@ -45,7 +16,6 @@ $(function(){
 		addCommonQuset();
 	});
 	$("#show_commonDataBody").click(function(){
-		/*show_commonDataBody();*/
 		$("#questDataBody").hide();
 		$("#commonDataBody").show();
 		commonQuestList(0);
@@ -55,22 +25,15 @@ $(function(){
 		$("#questDataBody").show();
 		search(0);
 	});
-	/*$("#saveBtn").click(function(){
-		addCommonQuest();
-	});*/
 });
 
 //查询常见问题列表
 function commonQuestList(pageNumber){
-	var questType ='0';
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		cache:false,
 		url:$("#ctx").val()+"/qaManagement/qaManagement_commonQuestList.action",
-		data:{
-			"questType":questType
-		},
 	   	success:function(data){
 	   		if(data.msg) {
 	   			alert(data.msg);
@@ -98,10 +61,9 @@ function commonQuestList(pageNumber){
 	});
 	
 }
-
+/*查询用户提问问题*/
 function search(pageNumber){
 	var answerName = $("#userName").val();
-	var answerTime = $("#dealDate").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -115,13 +77,12 @@ function search(pageNumber){
 	   		var content="";
 	   		$.each(data,function(i,n){
 				content+="<div class='quest'>" +
-						"	<h3><span><a class='quest_title' askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+"' answerName='"+answerName+"' answerTime='"+answerTime+"'onclick='showAnswerDetail(this);'>"+isNull(n['QUEST_NAME'])+"</a></span></h3>" +
+						"	<h3><span><a class='quest_title' askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+/*"' answerName='"+answerName+"' answerTime='"+answerTime+*/"'onclick='showAnswerDetail(this);'>"+isNull(n['QUEST_NAME'])+"</a></span></h3>" +
 						"	<span class='quest_countent'>&nbsp;&nbsp;&nbsp;"+isNull(n['QUEST_CONTENT'])+"</span>" +
 						"	<div style='height:20px;'>" +
-						"		<span class='userName'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+isNull(n['ASK_NAME'])+"&nbsp;"+isNull(n['ASK_TIEM'])+"</span> "+
+						"		<span class='userName'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+isNull(n['ASK_NAME'])+"&nbsp;&nbsp;&nbsp;"+isNull(n['ASK_TIME'])+"</span> "+
 						"		<span class='showAnswer'>" +
-						"			<a askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='showAnswer(this);'>回复</a>&nbsp;|&nbsp;" +
-						"			<a askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='showAnswerDetail(this);'>查看回复</a>" +
+						"			<a askId='"+isNull(n['ID'])+"' askName='"+isNull(n['ASK_NAME'])+"' askTime='"+isNull(n['ASK_TIEM'])+"' answerName='"+answerName+/*"' answerTime='"+answerTime+*/"' onclick='showAnswerDetail(this);'>查看回复  »</a>" +
 						"		</span>" +
 						"	</div>" +
 						"</div>";
@@ -139,7 +100,7 @@ function search(pageNumber){
 				$(".quest").css({"border-radius":"5px","width":"90%","margin":"0 0 21px 50px","border-bottom":"solid 1px #B0C4DE"});
 				$(".userName").css("float","left");
 				$(".showAnswer").css("float","right");
-				$(".showAnswer A").css("text-decoration","none");
+				$(".showAnswer A").css({"text-decoration":"none","text-align":"center","font-size":"12px","color":"#FF6633","height":"20px","background-color":"#C8C8C8","padding":"0 10px"});
 			}else {
 				$("#userQuest").empty().html("<tr><td colspan='6'>暂无数据</td></tr>");
 			}
@@ -149,33 +110,35 @@ function search(pageNumber){
 	    }
 	});
 }
-
+/*
+ * 显示问题详细列表
+ */
 function showAnswerDetail(even){
-	$(even).parent().parent().parent().parent().find(".answer").empty();
-	$(even).parent().parent().parent().parent().find(".answerDetail").empty();
-	/*count=0;
-	count+=1;*/
+	/*$(even).parent().parent().parent().parent().find(".answer").empty();
+	$(even).parent().parent().parent().parent().find(".answerDetail").empty();*/
+	
+	$("#userQuest").find(".answerDetail").remove();
+	/*$(".answerDetail").empty();*/
 	var answerName=$(even).attr("answerName");
-	var answerTime=$(even).attr("answerTime");
 	var askName=$(even).attr("askName");
-	var askTime=$(even).attr("askTime");
 	var fdId=$(even).attr("askId");
 	var userName=$("#userName").val();
-	/*if(count==1){*/
 		var answerDetail=
 			"<div class='answerDetail'>" +
-			/*"	<div class='answerDetail'>                                                                               "+
+			"	<div class='answerDetailCount'>                                                                               "+
 			"		<div class='answerAreaDetail'>                                                                        "+
 			"			 <textarea style='margin-top:4px'; class='answerContentDetail' name='contentDetail' placeholder='请输入回复内容'></textarea>   "+
 			"		</div>                                                                                          "+
-			"		<div class='userMessageDetail'>" +
-			"			<a  style='margin: 0 50px'class='default-btn fLeft ml10 answerButton'  askId='"+fdId+"' askName='"+askName+"' askTime='"+askTime+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this);'>提 交</a>"+
+			"		<div class='userAnswerButton'>" +
+			"			<a  style='margin: 0 100px 'class='answerButton'  askId='"+fdId+"' askName='"+askName+"' answerName='"+answerName+"' onclick='addAnswer(this);'>回  复  »</a>"+
 			"		</div> " +
 			"	</div>" +
-			"	<div class='showAnswerDetail'>";*/
+			
+			"	<div class='showAnswerDetail'>";
 		$.ajax({
 			type:"POST",
 			dataType:'json',
+			async:false,
 			cache:false,
 			url:$("#ctx").val()+"/qaManagement/qaManagement_answerDetail.action",
 			data:{
@@ -188,26 +151,27 @@ function showAnswerDetail(even){
 		   		}
 		   		answerDetail+="<div class='answerTable'>";
 		   		$.each(data,function(i,n){
-		   			if(isNull("ANSWER_NAME")==userName){
-		   				answerDetail+="<div  class='answerContent'><span class='answerText'>&nbsp;&nbsp;<a fdId='"+fdId+"' name='"+isNull(n['ANSWER_NAME'])+"' onclick='addDetailAnswer(this)'>"+isNull(n['ANSWER_NAME'])+"</a >："+isNull(n['ANSWER_CONTENT'])+"</span></div>";
-		   			}else{
-		   				answerDetail+="<div  class='answerContent'><span cla<span='answerText'>&nbsp;&nbsp;<a fdId='"+fdId+"' name='"+isNull(n['ANSWER_NAME'])+"' onclick='addDetailAnswer(this)'>"+isNull(n['ANSWER_NAME'])+"</a>&nbsp;回复&nbsp;<a fdId='"+fdId+"' name='"+isNull(n['ASK_NAME'])+"' onclick='addDetailAnswer(this)'>"+isNull(n['ASK_NAME'])+"</a>："+isNull(n['ANSWER_CONTENT'])+"</span></div>";
-		   			}
+		   				answerDetail+=
+		   						"<div  class='answerContent'><span cla<span='answerText'>&nbsp;&nbsp;" +
+		   						"<span>"+isNull(n['ANSWER_TIME'])+"</span>&nbsp;&nbsp;" +
+		   						"<a fdId='"+fdId+"' name='"+isNull(n['ANSWER_NAME'])+"' onclick='addDetailAnswer(this)'>"+isNull(n['ANSWER_NAME'])+"</a>" +
+		   						"&nbsp;回复&nbsp;" +
+		   						"<a fdId='"+fdId+"' name='"+isNull(n['ASK_NAME'])+"' onclick='addDetailAnswer(this)'>"+isNull(n['ASK_NAME'])+"</a>："+isNull(n['ANSWER_CONTENT'])+"</span></div>";
 				});
-		   		/*answerDetail+="</div>";*/
+		   		answerDetail+="</div>";
 		   		answerDetail+="</div></div>";
 				if(answerDetail != "") {
 					$(even).parent().parent().parent().append(answerDetail);
-					$(".answerContentDetail").css({"margin-left":"20px","padding-left":"20px","resize":"none","width":"85%","height":"30px","max-width":"1000px","max-height":"100px"});
-					$(".showAnswerDetail").css({"width":"704px"});
+					$(".answerContentDetail").css({"margin-left":"20px","padding-left":"20px","resize":"none","width":"85%","height":"70px","max-width":"1000px","max-height":"100px"});
+					$(".showAnswerDetail").css({"width":"100%"});
 					$(".answerDetail").css({"width":"100%","background":"#F0F0F0"});
 					$(".answerTable").find("td").css({"padding-left":"5px","padding-right":"5px"});
-					$(".answerContent").find("td").css({"padding-left":"5px","padding-right":"5px","width":"80%","float":"left"});
+					$(".answerContent").find("td").css({"padding-left":"5px","padding-right":"5px","width":"100%","float":"left"});
 					$(".answerText").css({"font-family":"arial tahoma","font-size":"12px","margin-top":"8px"});
-					$(".answerButton").css({"float":"right","margin-right":"50px"});
-					$(".userMessageDetail").css({"height":"30px"});
+					$(".answerButton").css({"text-align":"center","font-size":"12px","color":"#FF6633","float":"right","margin-right":"100px","height":"20px","background-color":"#C8C8C8","padding":"0 20px"});
+					$(".userAnswerButton").css({"height":"20px"});
 				}else {
-					$("#dataBody").empty().html("<tr><td colspan='6'>暂无数据</td></tr>");
+					$("#dataBody").empty().html("暂无数据");
 				}
 		   	},
 		   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -218,35 +182,12 @@ function showAnswerDetail(even){
 
 
 
-function showAnswer(even){
-	$(even).parent().parent().parent().parent().find(".answer").empty();
-	$(even).parent().parent().parent().parent().find(".answerDetail").empty();
-	var answerName=$(even).attr("answerName");
-	var answerTime=$(even).attr("answerTime");
-	var askName=$(even).attr("askName");
-	var askTime=$(even).attr("askTime");
-	var askId=$(even).attr("askId");
-	var num = $(even).attr("num");
-		var answer=
-			"<div class='answer'>                                                                               "+
-			"	<div class='answerArea'>                                                                        "+
-			"		 <textarea class='answerContent' name='content' placeholder='请输入回复内容'></textarea>   "+
-			"	</div>                                                                                          "+
-			"	<div class='userMessage'>" +
-			"		<span>&nbsp;&nbsp;"+answerName+"&nbsp;&nbsp;"+answerTime+"&nbsp;&nbsp;</span>" +
-			"		<input type='button' value='回复' class='answerButton' askId='"+askId+"' askName='"+askName+"'  answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this);'/>" +
-			"	</div>       "+
-			"</div>                                                                                             ";
-			
-			$(even).parent().parent().parent().append(answer);
-			$(".answerContent").css({"margin-top":"20px","margin-left":"50px","resize":"none","width":"90%","height":"100px","max-width":"1000px","max-height":"100px"});
-			$(".answerButton").css({"float":"right","margin-right":"50px"});
-			$(".userMessage").css({"display":"block","margin-left":"24px","height":"24px"});
-			$(".answer").css({"background":"#F0F0F0","margin":"0 0 0 12px"});
-}
-
+/*
+ *显示回复列表点击人员名称时候回复框 
+ */
 function addDetailAnswer(even){
-	$(even).parent().parent().parent().find(".answerByName").empty();
+	/*$(even).parent().parent().parent().find(".answerByName").empty();*/
+	$(".answerByName").empty();
 	var askName = $(even).attr('name');
 	var fdId =$(even).attr("fdId");
 	var answerName = $("#userName").val();
@@ -255,19 +196,22 @@ function addDetailAnswer(even){
 		"<div class='answerByName'>" +
 		"	<div class='answerByNameArea'>" +
 		"		<textarea class='answerByNameCount' name='answerByNameCount' placeholder='请输入回复内容'></textarea>" +
+		"		<button  class='answerByNameButton' style='margin: 0 50px'  askId='"+fdId+"' askName='"+askName+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this)'>回  复</button>" +
 		"	<div>" +
-		/*"	<div class='answerByNameMessage'>" +*/
-		"		<button  class='default-btn fLeft ml10 answerByNameButton' style='margin: 0 50px'  askId='"+fdId+"' askName='"+askName+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this)'>回复</button>" +
-		/*"	</div>" +*/
 		"</div>";
-	$(even).parent().after(answerArea);
+	if(askName==answerName){
+		
+	}else{
+		$(even).parent().after(answerArea);
+	}
 	$(".answerByName").css({"margin":"0 0 5px 20px"});
-	$(".answerByNameCount").css({"resize":"none","width":"644px","height":"100px","max-width":"1000px","max-height":"100px"});
-	$(".answerByNameButton").css({"float":"right","margin-right":"50px"});	
-	$(".answerByNameCount").css({"margin-left":"20px"});
+	$(".answerByNameCount").css({"resize":"none","width":"89%","height":"50px","max-height":"100px"});
+	$(".answerByNameButton").css({"text-align":"center","font-size":"12px","color":"#FF6633","float":"right","margin-right":"100px","height":"20px","background-color":"#C8C8C8","padding":"0 10px"});	
+	$(".answerByNameArea").css({"height":"70px"});
+	
 }
 
-
+//添加问题回复
 function addAnswer(even){
 	var fdId=$(even).attr("askId");
 	var answerName=$(even).attr("answerName");
@@ -308,7 +252,7 @@ function addAnswer(even){
 	$(even).parent().parent().parent().find(".answer").hide();
 	search(0);
 }
-
+//添加用户提问
 function addQuset(){
 	var userName= $("#userName").val();
 	var dealDate=$("#dealDate").val();
@@ -320,6 +264,7 @@ function addQuset(){
 	});
 }
 
+//添加常见问题
 function addCommonQuset(){
 	var userName= $("#userName").val();
 	var dealDate=$("#dealDate").val();
@@ -407,3 +352,34 @@ function show_commonDataBody(){
 	$("#questDataBody").hide();
 	$("#commonDataBody").show();
 }*/
+
+
+/*function showAnswer(even){
+$(even).parent().parent().parent().parent().find(".answer").empty();
+$(even).parent().parent().parent().parent().find(".answerDetail").empty();
+$(".answer").empty();
+$(".answerDetail").empty();
+var answerName=$(even).attr("answerName");
+var answerTime=$(even).attr("answerTime");
+var askName=$(even).attr("askName");
+var askTime=$(even).attr("askTime");
+var askId=$(even).attr("askId");
+var num = $(even).attr("num");
+	var answer=
+		"<div class='answer'>                                                                               "+
+		"	<div class='answerArea'>                                                                        "+
+		"		 <textarea class='answerContent' name='content' placeholder='请输入回复内容'></textarea>   "+
+		"	</div>                                                                                          "+
+		"	<div class='userMessage'>" +
+		"		<span>&nbsp;&nbsp;"+answerName+"&nbsp;&nbsp;"+answerTime+"&nbsp;&nbsp;</span>" +
+		"		<input type='button' value='回复' class='answerButton' askId='"+askId+"' askName='"+askName+"'  answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this);'/>" +
+		"	</div>       "+
+		"</div>                                                                                             ";
+		
+		$(even).parent().parent().parent().append(answer);
+		$(".answerContent").css({"margin-top":"20px","margin-left":"50px","resize":"none","width":"100%","max-width":"1000px"});
+		$(".answerButton").css({"float":"right","margin-right":"50px"});
+		$(".userMessage").css({"display":"block","margin-left":"24px","height":"24px"});
+		$(".answer").css({"background":"#F0F0F0","margin":"0 0 0 12px"});
+}
+*/
