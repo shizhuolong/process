@@ -62,8 +62,8 @@ public class QaManagementService {
 	 * @param params
 	 * @return
 	 */
-	public List<Map<String, Object>> commonQuestList(Map<String, Object> params) {
-		return dao.commonQuestList(params);
+	public List<Map<String, Object>> commonQuestList() {
+		return dao.commonQuestList();
 	}
 
 }
