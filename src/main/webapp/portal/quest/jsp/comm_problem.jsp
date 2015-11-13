@@ -10,8 +10,8 @@
 User user = UserHolder.getCurrentLoginUser();
 Org org = user.getOrg();
 Calendar ca=Calendar.getInstance();
-ca.add(Calendar.DATE, 0);
-String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+ca.add(Calendar.SECOND, 0);
+String dealDate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
