@@ -45,7 +45,7 @@ public interface QaManagementDao {
 	 * @param params
 	 * @return
 	 */
-	List<Map<String, Object>> commonQuestList(Map<String, Object> params);
+	List<Map<String, Object>> commonQuestList();
 
 
 }
