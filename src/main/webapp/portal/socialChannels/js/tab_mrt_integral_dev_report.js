@@ -5,6 +5,7 @@ var field=[
 var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否兑换","手工录入兑换积分","提交"]];
 var orderBy='';	
 var report = null;
+var UPDATE_ROLE = "ROLE_MANAGER_WORKFLOWMANAGER_QDXJGL_REPORT_REPORT_UPDATEPART";
 $(function() {
 	listRegions();
 	report = new LchReport({
@@ -55,7 +56,7 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	var userName=$("#userName").val();
+	var userName=$.trim($("#userName").val());
 	var orderBy="";
 	var sql=getSql();
 //条件
@@ -69,7 +70,7 @@ function search(pageNumber) {
 		sql+=" and UNIT_NAME = '"+unitName+"'";
 	}
 	if(userName!=''){
-		sql+=" and HR_ID_NAME = '"+userName+"'";
+		sql+=" and HR_ID_NAME LIKE '%"+userName+"%'";
 	}
 	
 //权限
@@ -78,13 +79,13 @@ function search(pageNumber) {
 	if(orgLevel==1){
 		orderBy=" order by group_id_1,unit_id,group_id_4";
 	}else if(orgLevel==2){
-		sql+=" and GROUP_ID_1="+code;
+		sql+=" and GROUP_ID_1='"+code+"'";
 		orderBy=" order by unit_id,group_id_4";
 	}else if(orgLevel==3){
-		sql+=" and UNIT_ID="+code;
+		sql+=" and UNIT_ID='"+code+"'";
 		orderBy=" order by group_id_4";
 	}else{
-		sql+=" and GROUP_ID_4="+code;
+		sql+=" and GROUP_ID_4='"+code+"'";
 	}
 	var cdata = query("select count(*) total from(" + sql+")");
 	var total = 0;
@@ -109,16 +110,26 @@ function search(pageNumber) {
 		 var hq_code=$(this).find("td:eq(5)").text();
 		 var sub=$(this).find("td:eq(20)");
 		 var is_dh=$.trim($(this).find("td:eq(18)").text());
-		 if(is_dh=="否"){
-		   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
-		   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
-	       obj.empty().append(h);
-	       sub.append(h1);
-	     }else{
-	    	 var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
-		     obj.empty().append(h);
-	     }
+		
+		 if(isGrantedNew(UPDATE_ROLE)) {
+			 if(is_dh=="否"){
+				   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
+				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
+			       obj.empty().append(h);
+			       sub.append(h1);
+			 }else{
+			      var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
+				  obj.empty().append(h);
+			 }
+		 } else {
+			  //$("#lch_DataBody").find("TR:eq(0)").find("TH:eq(0)").find("td:eq(19)").text("兑换积分");
+			  //var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
+			  //obj.empty().append(h);
+		 }
 	});
+	 if(!isGrantedNew(UPDATE_ROLE)) {
+		 $("#lch_DataHead").find("TR:eq(0)").find("TH:eq(19)").text("兑换积分");
+	 }
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
@@ -277,6 +288,7 @@ function downsAll(){
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
+	var userName=$.trim($("#userName").val());
 	var sql=getSql();
 	var orderBy="";
 //条件
@@ -289,6 +301,9 @@ function downsAll(){
 	if(unitName!=''){
 		sql+=" and UNIT_NAME = '"+unitName+"'";
 	}
+	if(userName!=''){
+		sql+=" and HR_ID_NAME LIKE '%"+userName+"%'";
+	}
 	
 //权限
 	var orgLevel=$("#orgLevel").val();
@@ -296,13 +311,13 @@ function downsAll(){
 	if(orgLevel==1){
 		orderBy=" order by group_id_1,unit_id,group_id_4";
 	}else if(orgLevel==2){
-		sql+=" and GROUP_ID_1="+code;
+		sql+=" and GROUP_ID_1='"+code+"'";
 		orderBy=" order by unit_id,group_id_4";
 	}else if(orgLevel==3){
-		sql+=" and UNIT_ID="+code;
+		sql+=" and UNIT_ID='"+code+"'";
 		orderBy=" order by group_id_4";
 	}else{
-		sql+=" and GROUP_ID_4="+code;
+		sql+=" and GROUP_ID_4='"+code+"'";
 	}
 	sql+=orderBy;
 	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","积分","是否兑换"]];
