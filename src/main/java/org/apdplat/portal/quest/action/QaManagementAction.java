@@ -16,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author only
  *
  */
-/**
- * @author only
- *
- */
 @SuppressWarnings("serial")
 public class QaManagementAction extends BaseAction {
 	private final APDPlatLogger logger = new APDPlatLogger(getClass());
@@ -40,9 +36,7 @@ public class QaManagementAction extends BaseAction {
 	 */
 	public void commonQuestList(){
 		try {
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("questType", questType);
-			List<Map<String,Object>> list  = service.commonQuestList(params);
+			List<Map<String,Object>> list  = service.commonQuestList();
 			this.reponseJson(list);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,8 +57,8 @@ public class QaManagementAction extends BaseAction {
 			map.put("questName", questName);
 			map.put("questCountent", questCountent);
 			map.put("answerContent", answerContent);
-			map.put("askTime", askTime);
-			map.put("answerTime", answerTime);
+			/*map.put("askTime", askTime);
+			map.put("answerTime", answerTime);*/
 			map.put("askName", askName);
 			map.put("answerName", answerName);
 			map.put("fdId", fdId);
@@ -111,7 +105,7 @@ public class QaManagementAction extends BaseAction {
 			params.put("id", id);
 			params.put("askName", askName);
 			params.put("answerName", answerName);
-			params.put("answerTime", answerTime);
+			/*params.put("answerTime", answerTime);*/
 			params.put("answerContent", answerContent);
 			params.put("fdId", fdId);
 			params.put("questType", questType);
@@ -134,7 +128,7 @@ public class QaManagementAction extends BaseAction {
 			map.put("id", id);
 			map.put("questName", questName);
 			map.put("questCountent", questCountent);
-			map.put("askTime", askTime);
+			/*map.put("askTime", askTime);*/
 			map.put("askName", askName);
 			map.put("fdId", fdId);
 			map.put("questType", questType);
