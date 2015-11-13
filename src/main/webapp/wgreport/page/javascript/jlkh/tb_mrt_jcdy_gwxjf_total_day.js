@@ -44,9 +44,9 @@ jQuery(function(){
 		head +="<tr class='attend_th'>" +
 				"<th class='attend_th'>地市名称</th>" +
 				"<th class='attend_th'>营服中心</th><th class='attend_th'>人员姓名</th>" +
-				"<th class='attend_th'>HR编码</th><th class='attend_th'>宽带续费</th>" +
-				"<th class='attend_th'>10M以下</th><th class='attend_th'>10M以上</th>" +
-				"<th class='attend_th'>固移融合</th><th class='attend_th'>积分合计</th>" +
+				"<th class='attend_th'>HR编码</th><th class='attend_th'>宽带续费原始积分</th>" +
+				"<th class='attend_th'>10M以下原始积分</th><th class='attend_th'>10M以上原始积分</th>" +
+				"<th class='attend_th'>固移融合原始积分</th><th class='attend_th'>原始积分合计</th>" +
 				"<th class='attend_th'>乘渠道系数后积分</th><th class='attend_th'>乘区域系数后积分</th>" +
 				"<th class='attend_th'>积分金额</th>" +
 				"</tr>";
@@ -283,7 +283,7 @@ function downsAll(){
 	
 	var showtext="Sheet";
 	   var showtext1="result";
-	   var _head=['地市名称','营服中心','人员姓名','HR编码','宽带续费','10M以下','10M以上','固移融合','积分合计',
+	   var _head=['地市名称','营服中心','人员姓名','HR编码','宽带续费原始积分','10M以下原始积分','10M以上原始积分','固移融合原始积分','原始积分合计',
 	              '乘渠道系数后积分','乘区域系数后积分','积分金额'];
 	   _execute(3001,{type:12,
 			     data:{
