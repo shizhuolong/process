@@ -100,7 +100,7 @@ function search(pageNumber){
 				$(".quest").css({"border-radius":"5px","width":"90%","margin":"0 0 21px 50px","border-bottom":"solid 1px #B0C4DE"});
 				$(".userName").css("float","left");
 				$(".showAnswer").css("float","right");
-				$(".showAnswer A").css({"text-decoration":"none","text-align":"center","font-size":"12px","color":"#FF6633","height":"20px","background-color":"#C8C8C8","padding":"0 10px"});
+				$(".showAnswer A").css({"text-decoration":"none","text-align":"center","font-size":"12px","color":"#FF6347","line-height":"20px","background-color":"#C8C8C8","padding":"0 10px"});
 			}else {
 				$("#userQuest").empty().html("<tr><td colspan='6'>暂无数据</td></tr>");
 			}
@@ -168,7 +168,7 @@ function showAnswerDetail(even){
 					$(".answerTable").find("td").css({"padding-left":"5px","padding-right":"5px"});
 					$(".answerContent").find("td").css({"padding-left":"5px","padding-right":"5px","width":"100%","float":"left"});
 					$(".answerText").css({"font-family":"arial tahoma","font-size":"12px","margin-top":"8px"});
-					$(".answerButton").css({"text-align":"center","font-size":"12px","color":"#FF6633","float":"right","margin-right":"100px","height":"20px","background-color":"#C8C8C8","padding":"0 20px"});
+					$(".answerButton").css({"text-align":"center","font-size":"12px","color":"#FF6633","float":"right","margin-right":"100px","line-height":"20px","background-color":"#C8C8C8","padding":"0 20px"});
 					$(".userAnswerButton").css({"height":"20px"});
 				}else {
 					$("#dataBody").empty().html("暂无数据");
@@ -187,7 +187,7 @@ function showAnswerDetail(even){
  */
 function addDetailAnswer(even){
 	/*$(even).parent().parent().parent().find(".answerByName").empty();*/
-	$(".answerByName").empty();
+	$(".answerByName").remove();
 	var askName = $(even).attr('name');
 	var fdId =$(even).attr("fdId");
 	var answerName = $("#userName").val();
@@ -196,7 +196,7 @@ function addDetailAnswer(even){
 		"<div class='answerByName'>" +
 		"	<div class='answerByNameArea'>" +
 		"		<textarea class='answerByNameCount' name='answerByNameCount' placeholder='请输入回复内容'></textarea>" +
-		"		<button  class='answerByNameButton' style='margin: 0 50px'  askId='"+fdId+"' askName='"+askName+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this)'>回  复</button>" +
+		"		<a  class='answerByNameButton' style='margin: 0 50px'  askId='"+fdId+"' askName='"+askName+"' answerName='"+answerName+"' answerTime='"+answerTime+"' onclick='addAnswer(this)'>回  复  »</a>" +
 		"	<div>" +
 		"</div>";
 	if(askName==answerName){
@@ -205,9 +205,9 @@ function addDetailAnswer(even){
 		$(even).parent().after(answerArea);
 	}
 	$(".answerByName").css({"margin":"0 0 5px 20px"});
-	$(".answerByNameCount").css({"resize":"none","width":"89%","height":"50px","max-height":"100px"});
-	$(".answerByNameButton").css({"text-align":"center","font-size":"12px","color":"#FF6633","float":"right","margin-right":"100px","height":"20px","background-color":"#C8C8C8","padding":"0 10px"});	
-	$(".answerByNameArea").css({"height":"70px"});
+	$(".answerByNameCount").css({"resize":"none","width":"89%"});
+	$(".answerByNameButton").css({"text-align":"center","font-size":"12px","color":"#FF6633","float":"right","margin-right":"100px","line-height":"20px","background-color":"#C8C8C8","padding":"0 20px"});	
+	$(".answerByNameArea").css({"height":"90px"});
 	
 }
 
