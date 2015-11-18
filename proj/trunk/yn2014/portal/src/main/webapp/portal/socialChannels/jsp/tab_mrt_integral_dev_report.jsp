@@ -72,6 +72,20 @@
 					<td width="13%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
+				</tr>
+				<tr height="35px">
+					<td width="7%">HR编码：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="hr_id" type="text" id="hr_id"/>
+					</td>
+					<td width="7%">渠道编码：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="fd_chnl_id" type="text" id="fd_chnl_id"/>
+					</td>
+					<td width="7%">等级：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="integral_grade" type="text" id="integral_grade"/>
+					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
