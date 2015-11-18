@@ -48,7 +48,7 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['ITEMCODE'])+"</td>"
 				+"<td>"+isNull(n['ITEMDESC'])+"</td>"
 				+"<td>"+isNull(n['BUSITYPE'])+"</td>"
-				+"<td>"+isNull(n['BUSIDESC'])+"</td>"
+				+"<td style='color:#4095ce'><a href='#'  onclick='open1();'>"+isNull(n['BUSIDESC'])+"</a></td>"
 				+"<td>"+isNull(n['CRE'])+"</td>"
 				+"<td>"+isNull(n['MONEY'])+"</td>"
 				+"<td>"+isNull(n['STATE'])+"</td>";
@@ -70,7 +70,18 @@ function search(pageNumber) {
 	    }
 	});
 }
-
+function open1(){
+		var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/mrt_234G_fzd_schme.jsp";
+		art.dialog.open(url,{
+			id:'open',
+			width:'1200px',
+			height:'400px',
+			padding:'0 0',
+			lock:true,
+			resize:false,
+			title:'活动明细'
+		});
+}
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
