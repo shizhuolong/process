@@ -110,8 +110,8 @@ function search(pageNumber) {
 		 var hq_code=$(this).find("td:eq(5)").text();
 		 var sub=$(this).find("td:eq(20)");
 		 var is_dh=$.trim($(this).find("td:eq(18)").text());
-		
-		 if(isGrantedNew(UPDATE_ROLE)) {
+		 if(lastmonth!=time){
+		  if(isGrantedNew(UPDATE_ROLE)) {
 			 if(is_dh=="否"){
 				   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
 				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
@@ -121,6 +121,12 @@ function search(pageNumber) {
 			      var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
 				  obj.empty().append(h);
 			 }
+		  }
+		 }else{
+			   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
+			   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
+		       obj.empty().append(h);
+		       sub.append(h1);
 		 }
 	});
 	 if(!isGrantedNew(UPDATE_ROLE)) {
