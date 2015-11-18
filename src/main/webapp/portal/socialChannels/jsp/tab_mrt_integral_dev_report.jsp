@@ -40,6 +40,7 @@
 	    }
 	    return true;
 	}
+	var lastmonth="<%=time%>";
 </script>
 </head>
 <body class="" style="overflow-x:auto;">
