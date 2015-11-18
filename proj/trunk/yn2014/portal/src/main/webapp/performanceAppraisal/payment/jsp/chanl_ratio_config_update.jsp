@@ -48,7 +48,7 @@
 				<tr>
 				    <td>包含之后账期:</td>
 				    <td colspan="3">
-				     <input type="checkbox" name="is_all" id="is_all" value="0"/>
+				     <input type="checkbox" name="is_all" id="is_all" checked value="0"/>
 				     <span style="color:red;margin-left:20px;">备注:若勾选，则该账期及以后账期的数据将被修改,若不勾，则只修改当前账期的数据。</span>
 				    </td>
 	                
