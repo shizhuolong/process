@@ -57,6 +57,9 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
+	var hr_id=$.trim($("#hr_id").val());
+	var fd_chnl_id=$.trim($("#fd_chnl_id").val());
+	var integral_grade=$.trim($("#integral_grade").val());
 	var orderBy="";
 	var sql=getSql();
 //条件
@@ -71,6 +74,15 @@ function search(pageNumber) {
 	}
 	if(userName!=''){
 		sql+=" and HR_ID_NAME LIKE '%"+userName+"%'";
+	}
+	if(hr_id!=''){
+		sql+=" and HR_ID='"+hr_id+"'";
+	}
+	if(fd_chnl_id!=''){
+		sql+=" and fd_chnl_id LIKE '%"+fd_chnl_id+"%'";
+	}
+	if(integral_grade!=''){
+		sql+=" and integral_grade='"+integral_grade+"'";
 	}
 	
 //权限
@@ -291,6 +303,9 @@ function downsAll(){
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
+	var hr_id=$.trim($("#hr_id").val());
+	var fd_chnl_id=$.trim($("#fd_chnl_id").val());
+	var integral_grade=$.trim($("#integral_grade").val());
 	var sql=getSql();
 	var orderBy="";
 //条件
@@ -306,7 +321,15 @@ function downsAll(){
 	if(userName!=''){
 		sql+=" and HR_ID_NAME LIKE '%"+userName+"%'";
 	}
-	
+	if(hr_id!=''){
+		sql+=" and HR_ID='"+hr_id+"'";
+	}
+	if(fd_chnl_id!=''){
+		sql+=" and fd_chnl_id LIKE '%"+fd_chnl_id+"%'";
+	}
+	if(integral_grade!=''){
+		sql+=" and integral_grade='"+integral_grade+"'";
+	}
 //权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
