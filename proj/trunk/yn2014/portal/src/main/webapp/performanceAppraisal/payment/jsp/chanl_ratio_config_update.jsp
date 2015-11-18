@@ -38,7 +38,7 @@
 				<tr>
 					<td>服务系数:</td>
 					<td>
-						<input type="text" required="true" class="easyui-numberbox" missingMessage="服务系数不能为空" precision="4" min="0.01" value="1.0000" name="server_ratio" id="server_ratio">
+						<input type="text" required="true" class="easyui-numberbox" missingMessage="服务系数不能为空" precision="4" min="0.0" value="1.0000" name="server_ratio" id="server_ratio">
 					</td>
 					<td style="width: 65px;">渠道系数:</td>
 					<td>
