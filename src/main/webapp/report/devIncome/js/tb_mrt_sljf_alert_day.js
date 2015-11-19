@@ -22,7 +22,7 @@ $(function(){
 				var qdate = $.trim($("#time").val());
 				var hrId=$tr.attr("row_id");
 				var user=$tr.attr("row_name");
-				var sql="select * from pmrt.tb_mrt_sljf_detail_alert_day@ynsyn13 where hr_id='"+hrId+"' and thisny='"+qdate+"'";
+				var sql="select * from pmrt.tb_mrt_sljf_detail_alert_day where hr_id='"+hrId+"' and thisny='"+qdate+"'";
 				var d=query(sql);
 				if(d&&d.length){
 					var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
@@ -99,7 +99,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+','+getSumSql(field)+' from pmrt.tb_mrt_sljf_alert_day@ynsyn13 t ';
+			var sql='select '+preField+','+getSumSql(field)+' from pmrt.tb_mrt_sljf_alert_day t ';
 			
 			
 			if(where!=''&&qdate!=''){
@@ -203,7 +203,7 @@ function downsAll() {
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from pmrt.tb_mrt_sljf_alert_day@ynsyn13 t';
+			+ ' from pmrt.tb_mrt_sljf_alert_day t';
 	if (where != '') {
 		sql += where;
 	}
