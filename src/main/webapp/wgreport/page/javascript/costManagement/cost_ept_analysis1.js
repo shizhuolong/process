@@ -98,7 +98,7 @@ function getSumSql() {
 		}
 		s += "SUM("+field[i]+") "+field[i];
 	}
-	return s+" from PMRT.JCDY_MRT_PROFIT_ANALYS_MON@ynsyn13";
+	return s+" from PMRT.JCDY_MRT_PROFIT_ANALYS_MON";
 }
 function getSql(field) {
 	var s = "";
@@ -108,7 +108,7 @@ function getSql(field) {
 		}
 		s += field[i];
 	}
-	return s+" from PMRT.JCDY_MRT_PROFIT_ANALYS_MON@ynsyn13";
+	return s+" from PMRT.JCDY_MRT_PROFIT_ANALYS_MON";
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
