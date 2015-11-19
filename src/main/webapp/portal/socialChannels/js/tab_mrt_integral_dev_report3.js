@@ -8,7 +8,7 @@ $(function(){
 		title:title,
 		field:["ROW_NAME"].concat(field),
 		//css:[{gt:0,css:LchReporRIGHT_ALIGN}],
-		rowParams:["ROW_ID"],//第一个为rowId
+		rowParams:["ROW_ID","UNIT_ID"],//第一个为rowId
 		content:"content",
 		getSubRowsCallBack:function($tr){
 			var preField='';
@@ -34,13 +34,14 @@ $(function(){
 					where+=' and group_id_1=\''+code+"\' ";
 					orderBy=" order by unit_id";
 				}else if(orgLevel==4){
-					preField=' hr_id ROW_ID,hr_id_name ROW_NAME';
-					groupBy=' group by hr_id,hr_id_name ';
+					preField=' unit_id,hr_id ROW_ID,hr_id_name ROW_NAME';
+					groupBy=' group by unit_id,hr_id,hr_id_name ';
 					where+=' and unit_id=\''+code+"\' ";
 				}else if(orgLevel==5){
+					var unit_id=$tr.attr("unit_id");
 					preField=' group_id_4_name ROW_NAME';
 					groupBy=' group by group_id_4,group_id_4_name ';
-					where+=' and hr_id=\''+code+"\' ";
+					where+=' and unit_id=\''+unit_id+'\' and hr_id=\''+code+"\' ";
 				}else{
 					return {data:[],extra:{}};
 				}
