@@ -106,13 +106,13 @@ function search(pageNumber) {
 	});
 }
 function getSql(){
-	var s="select "+field.join(",")+" from PMRT.TB_MRT_JCDY_ZW_MON@ynsyn13 where 1=1";
+	var s="select "+field.join(",")+" from PMRT.TB_MRT_JCDY_ZW_MON where 1=1";
 	return s;
 }
 function listRegions(){
 	var sql="";
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME,t.group_id_1 from PMRT.TB_MRT_JCDY_ZW_MON@ynsyn13 t where 1=1 ";
+	var sql = "select distinct t.GROUP_ID_1_NAME,t.group_id_1 from PMRT.TB_MRT_JCDY_ZW_MON t where 1=1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
