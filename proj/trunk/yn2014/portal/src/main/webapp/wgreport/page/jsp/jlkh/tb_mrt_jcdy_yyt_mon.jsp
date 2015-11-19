@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/page/javascript/jlkh/tb_mrt_jcdy_yyt_mon.js"></script>
 <style>
 #lch_DataHead TR TH,#lch_table_corner TR TH,#lch_DataBody TR TD,#lch_table_left TR TD{
-			min-width:150px;
+			min-width:220px;
 		}
 </style>
 </head>
