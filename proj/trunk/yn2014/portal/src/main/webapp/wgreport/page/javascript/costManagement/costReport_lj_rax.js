@@ -191,7 +191,7 @@ function getSumSql() {
 		"SUM(NVL(T.TXF_AMOUNT, 0)) AS TXF_AMOUNT,        "+
 		"SUM(NVL(T.XJ_XZFY, 0)) AS XJ_XZFY,              "+
 		"SUM(NVL(T.PROFIT, 0)) AS PROFIT                 "+
-		"FROM PMRT.TB_MRT_COST_UNIT_PROFIT@YNSYN13 T     ";*/
+		"FROM PMRT.TB_MRT_COST_UNIT_PROFIT T     ";*/
 	var s="";
 	for(var i=0;i<field.length;i++){
 		if(s.length>0){
