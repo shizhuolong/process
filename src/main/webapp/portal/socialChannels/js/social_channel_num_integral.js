@@ -8,7 +8,7 @@ $(function(){
 		,
 		field:["ROWNAME","DEAL_DATE"].concat(field),
 		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
-		rowParams:["CODE"],//第一个为rowId
+		rowParams:["CODE","UNIT_ID"],//第一个为rowId
 		content:"lchcontent",
 		getSubRowsCallBack:function($tr){
 
@@ -51,29 +51,23 @@ $(function(){
 		    if($tr){
 		    	 level=$tr.attr("orgLevel");
 		    	 code=$tr.attr("code");
+		    	 unitId=$tr.attr("unit_id");
 				if(level==2){
-					/*groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME";
-					orderBy=" ORDER BY T1.GROUP_ID_1";
-					sql="SELECT T1.GROUP_ID_1_NAME AS ROWNAME,T1.GROUP_ID_1 AS CODE,"+getSumSql(field)+where+groupBy+orderBy; 
-					level++;*/
 					 sql="SELECT T.DEAL_DATE,T.UNIT_ID AS CODE,T.UNIT_NAME AS ROWNAME,"+resultSql+" SELECT T1.UNIT_ID ,T1.UNIT_NAME,T1.DEAL_DATE, "+getSumSql(field);
 					 where+=" AND T1.GROUP_ID_1='"+code+"'";
 					 groupBy+=" GROUP BY T1.UNIT_ID,T1.UNIT_NAME,T1.DEAL_DATE";
-					 /*orderBy=" ORDER BY T1.UNIT_ID ";*/
 					 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,UNIT_ID,UNIT_NAME ORDER BY UNIT_ID";
 					 level++;
 				}else if(level==3){
-					 sql="SELECT T.DEAL_DATE,T.HR_ID AS CODE,T.HR_ID_NAME AS ROWNAME,"+resultSql+" SELECT T1.HR_ID ,T1.HR_ID_NAME,T1.DEAL_DATE, "+getSumSql(field);
+					 sql="SELECT T.UNIT_ID,T.DEAL_DATE,T.HR_ID AS CODE,T.HR_ID_NAME AS ROWNAME,"+resultSql+" SELECT T1.HR_ID,T1.UNIT_ID,T1.HR_ID_NAME,T1.DEAL_DATE, "+getSumSql(field);
 					 where+=" AND T1.UNIT_ID='"+code+"'";
-					 groupBy+=" GROUP BY T1.HR_ID,T1.HR_ID_NAME,T1.DEAL_DATE";
-					 /*orderBy=" ORDER BY T1.HR_ID ";*/
-					 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,HR_ID,HR_ID_NAME ORDER BY HR_ID";
+					 groupBy+=" GROUP BY T1.UNIT_ID,T1.HR_ID,T1.HR_ID_NAME,T1.DEAL_DATE";
+					 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,UNIT_ID,HR_ID,HR_ID_NAME ORDER BY HR_ID";
 					 level++;
 				}else if(level==4){
 					 sql="SELECT T.DEAL_DATE,T.GROUP_ID_4 AS CODE,T.GROUP_ID_4_NAME AS ROWNAME,"+resultSql+" SELECT T1.GROUP_ID_4 ,T1.GROUP_ID_4_NAME,T1.DEAL_DATE, "+getSumSql(field);
-					 where+=" AND T1.HR_ID='"+code+"'";
+					 where+=" AND T1.HR_ID='"+code+"' AND T1.UNIT_ID ='"+unitId+"'";
 					 groupBy+=" GROUP BY T1.GROUP_ID_4,T1.GROUP_ID_4_NAME,T1.DEAL_DATE";
-					/* orderBy=" ORDER BY T1.GROUP_ID_4 ";*/
 					 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,GROUP_ID_4,GROUP_ID_4_NAME ORDER BY GROUP_ID_4";
 					 level++;
 				}else{
@@ -83,44 +77,26 @@ $(function(){
 			 if(level==1){
 				 sql="SELECT T.DEAL_DATE,T.GROUP_ID_1 AS CODE,T.GROUP_ID_1_NAME AS ROWNAME,"+resultSql+" SELECT T1.GROUP_ID_1 ,T1.GROUP_ID_1_NAME,T1.DEAL_DATE, "+getSumSql(field);
 				 groupBy+=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.DEAL_DATE";
-				/* orderBy=" ORDER BY T1.GROUP_ID_1 ";*/
 				 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,GROUP_ID_1,GROUP_ID_1_NAME ORDER BY GROUP_ID_1";
 				 level++;
 			 }else if(level==2){
 				 sql="SELECT T.DEAL_DATE,T.UNIT_ID AS CODE,T.UNIT_NAME AS ROWNAME,"+resultSql+" SELECT T1.UNIT_ID ,T1.UNIT_NAME,T1.DEAL_DATE, "+getSumSql(field);
-				 where+=" aND T1.GROUP_ID_1='"+code+"'";
+				 where+=" AND T1.GROUP_ID_1='"+code+"'";
 				 groupBy+=" GROUP BY T1.UNIT_ID,T1.UNIT_NAME,T1.DEAL_DATE";
-				/* orderBy=" ORDER BY T1.UNIT_ID ";*/
 				 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,UNIT_ID,UNIT_NAME ORDER BY UNIT_ID";
 				 level++;
-				 /*where+=" AND T1.GROUP_ID_1='"+code+"'";
-				 groupBy=" GROUP BY T1.UNIT_ID,T1.UNIT_NAME";
-				 sql="SELECT T1.UNIT_NAME AS ROWNAME,T1.UNIT_ID AS CODE,"+getSumSql(field)+where+groupBy; 
-				 level++;*/
 			 }else if(level==3){
 				 sql="SELECT T.DEAL_DATE,T.HR_ID AS CODE,T.HR_ID_NAME AS ROWNAME,"+resultSql+" SELECT T1.HR_ID ,T1.HR_ID_NAME,T1.DEAL_DATE, "+getSumSql(field);
-				 where+=" aND T1.UNIT_ID='"+code+"'";
+				 where+=" AND T1.UNIT_ID='"+code+"'";
 				 groupBy+=" GROUP BY T1.HR_ID,T1.HR_ID_NAME,T1.DEAL_DATE";
-				/* orderBy=" ORDER BY T1.HR_ID ";*/
 				 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,HR_ID,HR_ID_NAME ORDER BY HR_ID";
 				 level++;
-				 
-				 /*
-				 where+=" AND T1.UNIT_ID='"+code+"'";
-				 groupBy=" GROUP BY T1.HR_ID,T1.HR_ID_NAME";
-				 sql="SELECT T1.HR_ID_NAME AS ROWNAME,T1.HR_ID AS CODE,"+getSumSql(field)+where+groupBy; 
-				 level++;*/
 			 }else{
 				 sql="SELECT T.DEAL_DATE,T.GROUP_ID_4 AS CODE,T.GROUP_ID_4_NAME AS ROWNAME,"+resultSql+" SELECT T1.GROUP_ID_4 ,T1.GROUP_ID_4_NAME,T1.DEAL_DATE, "+getSumSql(field);
-				 where+=" aND T1.HR_ID='"+code+"'";
+				 where+=" AND T1.HR_ID='"+code+"'";
 				 groupBy+=" GROUP BY T1.GROUP_ID_4,T1.GROUP_ID_4_NAME,T1.DEAL_DATE";
-				 /*orderBy=" ORDER BY T1.GROUP_ID_4 ";*/
 				 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,GROUP_ID_4,GROUP_ID_4_NAME ORDER BY GROUP_ID_4";
 				 level++;
-				 /*where+=" AND T1.HR_ID='"+code+"'";
-				 groupBy=" GROUP BY T1.GROUP_ID_4,T1.GROUP_ID_4_NAME";
-				 sql="SELECT T1.GROUP_ID_4_NAME AS ROWNAME,T1.GROUP_ID_4 AS CODE,"+getSumSql(field)+where+groupBy; 
-				 level++;*/
 			 }
 			}
 			var d=query(sql);

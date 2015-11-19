@@ -8,7 +8,7 @@ $(function(){
 		,
 		field:["ROWNAME"].concat(field),
 		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
-		rowParams:["CODE"],//第一个为rowId
+		rowParams:["CODE","UNIT_ID"],//第一个为rowId
 		content:"lchcontent",
 		getSubRowsCallBack:function($tr){
 
@@ -26,6 +26,7 @@ $(function(){
 		    if($tr){
 		    	 level=$tr.attr("orgLevel");
 		    	 code=$tr.attr("code");
+		    	 unitId=$tr.attr("unit_id");
 				if(level==2){
 					/*groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME";
 					orderBy=" ORDER BY T1.GROUP_ID_1";
@@ -38,12 +39,12 @@ $(function(){
 					level++;
 				}else if(level==3){
 					where+=" AND T1.UNIT_ID='"+code+"'";
-					groupBy=" GROUP BY T1.HR_ID,T1.HR_ID_NAME";
+					groupBy=" GROUP BY T1.UNIT_ID,T1.HR_ID,T1.HR_ID_NAME";
 					orderBy=" ORDER BY T1.HR_ID";
-					sql="SELECT T1.HR_ID_NAME AS ROWNAME,T1.HR_ID AS CODE,"+getSumSql(field)+where+groupBy+orderBy; 
+					sql="SELECT T1.UNIT_ID,T1.HR_ID_NAME AS ROWNAME,T1.HR_ID AS CODE,"+getSumSql(field)+where+groupBy+orderBy; 
 					level++;
 				}else if(level==4){
-					where+=" AND T1.HR_ID='"+code+"'";
+					where+=" AND T1.HR_ID='"+code+"' AND T1.UNIT_ID='"+unitId+"'";
 					groupBy=" GROUP BY T1.GROUP_ID_4,T1.GROUP_ID_4_NAME";
 					orderBy=" ORDER BY T1.GROUP_ID_4";
 					sql="SELECT T1.GROUP_ID_4_NAME AS ROWNAME,T1.GROUP_ID_4 AS CODE,"+getSumSql(field)+where+groupBy+orderBy; 
