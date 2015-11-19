@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["账期","地市","基层单元","HR编码","人员姓名","角色类型",
+var title=[["地市","基层单元","账期","HR编码","人员姓名","角色类型",
             "发展","","","","",
             "收入","","","","",
             "欠费","","","","",
@@ -30,7 +30,7 @@ var title=[["账期","地市","基层单元","HR编码","人员姓名","角色�
             ""
             ]
 ];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE",
+var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID","NAME","USER_ROLE",
            "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","AMOUNT_MONTH","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_ALL","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
 var orderBy = '';
 var report = null;
@@ -147,7 +147,7 @@ function search(pageNumber) {
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
-	$(".page_count").width($("#lch_DataHead").width());
+	//$(".page_count").width($("#lch_DataHead").width());
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)
