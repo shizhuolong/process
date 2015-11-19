@@ -39,7 +39,7 @@
 	}
 	function getSql(){
 		var fs=field.join(",");
-		return "select "+fs+" from pmrt.TB_MRT_234G_FZD_SCHEME@ynsyn13 where 1=1";
+		return "select "+fs+" from pmrt.TB_MRT_234G_FZD_SCHEME where 1=1";
 	}
 	//列表信息
 	function search(pageNumber) {
