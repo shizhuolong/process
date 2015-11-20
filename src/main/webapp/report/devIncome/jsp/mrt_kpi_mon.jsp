@@ -33,7 +33,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/mrt_kpi_mon.js"></script>
 <style>
 #lch_DataHead TR TH,#lch_table_corner TR TH,#lch_DataBody TR TD,#lch_table_left TR TD{
-			min-width:150px;
+			min-width:100px;
 		}
 </style>
 </head>
