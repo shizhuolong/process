@@ -463,7 +463,6 @@
 			var h="<table class='lch_DataBody' style='position:relative;'></table>";
 			$("#lch_table_left").empty().append(h);
 			var $lt=$("#lch_table_left").find("TABLE");
-			$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").hide();
 			$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").each(function(index){
 				var $td=$("<tr><td>"+$(this).html()+"</td></tr>");
 				var pThis=this;
@@ -478,6 +477,7 @@
 				}
 				$lt.append($td);
 			});
+			$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").hide();
 			$("#lch_table_left").find("TD").css({borderRight:'0px'});
 			$("#lch_table_body").trigger("scroll");
 		},
