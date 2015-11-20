@@ -1,17 +1,20 @@
 var nowData = [];
-var field=[
-"GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HQ_CHAN_CODE","HQ_CHAN_NAME","HR_ID","NAME","USER_NO","DEVICE_NUMBER","ACCT_DATE","ITEMCODE","ITEMDESC","ITEMVALUE","OPERATOR_ID","SCHEME_ID","SCHEME_NAME","PRODUCT_ID","CRE","HQ_RATIO","UNIT_RATIO","HQ_CRE","UNIT_CRE"
-];
-var title=[["地市","营服中心","账期","渠道编码","渠道名称","HR编码","人员姓名","用户编号","用户号码","办理日期","指标编码","指标描述","指标值","操作员编码","活动编码","活动名称","套餐编码","原始积分","渠道系数","营服系数","渠道调节后的积分","营服调节后积分"]];
+
+	var field=[
+				"UNIT_NAME","HR_ID","NAME","GROUP_ID_1_NAME","HQ_CHAN_NAME","DEAL_DATE","HQ_CHAN_CODE","USER_NO","DEVICE_NUMBER","ACCT_DATE","ITEMCODE","ITEMDESC","ITEMVALUE","OPERATOR_ID","SCHEME_ID","SCHEME_NAME","PRODUCT_ID","CRE","HQ_RATIO","UNIT_RATIO","HQ_CRE","UNIT_CRE"
+			];
+	var title=[["营服中心","HR编码","人员姓名","地市","渠道名称","账期","渠道编码","用户编号","用户号码","办理日期","指标编码","指标描述","指标值","操作员编码","活动编码","活动名称","套餐编码","原始积分","渠道系数","营服系数","渠道调节后的积分","营服调节后积分"]];
 var orderBy='';	
 var report = null;
 $(function() {
+	
 	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:16,css:LchReport.RIGHT_ALIGN},{eq:4,css:{minWidth:'200px'}}],
-		tableCss:{leftWidth:150},
+		lock:3,
+		css:[{eq:1,css:{minWidth:'120px'}},{eq:3,css:{minWidth:'100px'}},{eq:4,css:{minWidth:'240px'}},{eq:7,css:{minWidth:'155px'}},{eq:9,css:{minWidth:'115px'}},{eq:11,css:{minWidth:'160px'}},{eq:13,css:{minWidth:'115px'}},{eq:15,css:{minWidth:'500px'}},{gt:16,css:LchReport.RIGHT_ALIGN}],
+		tableCss:{leftWidth:350},
 		rowParams : ["DEAL_DATE","HR_ID","UNIT_ID"],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
@@ -238,6 +241,10 @@ function roundN(number,fractionDigits){
 }   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var field=[
+"DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HQ_CHAN_NAME","HQ_CHAN_CODE","HR_ID","NAME","USER_NO","DEVICE_NUMBER","ACCT_DATE","ITEMCODE","ITEMDESC","ITEMVALUE","OPERATOR_ID","SCHEME_ID","SCHEME_NAME","PRODUCT_ID","CRE","HQ_RATIO","UNIT_RATIO","HQ_CRE","UNIT_CRE"
+];
+var title=[["账期","地市","营服中心","渠道名称","渠道编码","HR编码","人员姓名","用户编号","用户号码","办理日期","指标编码","指标描述","指标值","操作员编码","活动编码","活动名称","套餐编码","原始积分","渠道系数","营服系数","渠道调节后的积分","营服调节后积分"]];
 	var sql="";
 	var starttime=$("#starttime").val();
 	var endtime=$("#endtime").val();
