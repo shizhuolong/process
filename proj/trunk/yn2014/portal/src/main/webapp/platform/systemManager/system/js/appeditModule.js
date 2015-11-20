@@ -42,9 +42,9 @@ CreateModel = function() {
                                     cls : 'attr',
                                     name: 'model.english',
                                     maxLength:50,
-                                    fieldLabel: '模块英文名称',
+                                    fieldLabel: '模块KEY',
                                     allowBlank: false,
-                                    blankText : '英文名称不能为空'
+                                    blankText : '模块KEY不能为空'
                                 },{
                                     xtype:'textfield',
                                     cls : 'attr',
@@ -124,9 +124,9 @@ ModuleModifyModel = function() {
                                     name: 'model.english',
                                     value: model.english,
                                     maxLength:50,
-                                    fieldLabel: '模块英文名称',
+                                    fieldLabel: '模块KEY',
                                     allowBlank: false,
-                                    blankText : '英文名称不能为空'
+                                    blankText : '模块KEY不能为空'
                                 },{
                                     xtype:'textfield',                                  
                                     cls : 'attr',
@@ -200,7 +200,7 @@ GridModel = function() {
                             {header: "编号", width: 20, dataIndex: 'id', sortable: true},
 			 				{header: "版本", width: 20, dataIndex: 'version', sortable: true},
 							{header: "中文名称", width: 20, dataIndex: 'chinese', sortable: true,editor:new Ext.form.TextField()},
-							{header: "英文名称", width: 20, dataIndex: 'english', sortable: true},
+							{header: "模块KEY", width: 20, dataIndex: 'english', sortable: true},
 							{header: "顺序号", width: 20, dataIndex: 'orderNum', sortable: true,editor:new Ext.form.TextField()},
 							{header: "是否显示", width: 20, dataIndex: 'display', sortable: true} 
 						];
