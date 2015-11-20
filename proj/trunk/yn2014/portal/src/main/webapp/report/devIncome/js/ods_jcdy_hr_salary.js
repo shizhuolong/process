@@ -235,7 +235,7 @@ function search(pageNumber) {
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
+	$(".page_count").width($("#lch_DataHead").width());
 
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();

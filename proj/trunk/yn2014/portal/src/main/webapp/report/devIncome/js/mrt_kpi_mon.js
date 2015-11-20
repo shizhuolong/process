@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["地市","基层单元","账期","HR编码","人员姓名","角色类型",
+var title=[["基层单元","人员姓名","HR编码","地市","账期","角色类型",
             "发展","","","","",
             "收入","","","","",
             "欠费","","","","",
@@ -30,7 +30,8 @@ var title=[["地市","基层单元","账期","HR编码","人员姓名","角色�
             ""
             ]
 ];
-var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID","NAME","USER_ROLE",
+
+var field=["UNIT_NAME","NAME","HR_ID","GROUP_ID_1_NAME","DEAL_DATE","USER_ROLE",
            "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","AMOUNT_MONTH","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_ALL","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
 var orderBy = '';
 var report = null;
@@ -39,7 +40,9 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
+		lock:3,
+		css:[{gt:5,css:LchReport.RIGHT_ALIGN},{eq:1,css:{minWidth:'100px'}},{eq:3,css:{minWidth:'140px'}}],
+		tableCss:{leftWidth:350},
 		rowParams : ["DEAL_DATE","HR_ID","UNIT_ID","USER_ROLE"],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
@@ -265,6 +268,39 @@ function roundN(number,fractionDigits){
 }   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var title=[["地市","基层单元","账期","HR编码","人员姓名","角色类型",
+	            "发展","","","","",
+	            "收入","","","","",
+	            "欠费","","","","",
+	            "存量","","","","",
+	            "毛利","","","","",
+	            "营业考核","",
+	            
+	            "省级KPI权重",
+	            "省级KPI得分",
+	            "自设KPI得分",
+	            "汇总KPI得分",
+	            "基础绩效基数（元）",
+	            "基础绩效薪酬（元）"
+	            ],
+	           ["","","","","","",
+	            "发展任务","发展完成","发展任务完成率","发展KPI得分","发展KPI权重",
+	            "收入任务","收入完成","收入任务完成率","收入KPI得分","收入KPI权重",
+	            "欠费","本月累计达到收入","欠费率","欠费KPI得分","欠费KPI权重",
+	            "上年12月收入 ","存量收入","存量收入保有率","存量KPI得分","存量KPI权重",
+	            "毛利预算","毛利完成","毛利任务完成率","毛利KPI得分","毛利KPI权重",
+	            "考核得分权重","考核得分值",
+	            "",
+	            "",
+	            "",
+	            "",
+	            "",
+	            "",
+	            ""
+	            ]
+	];
+	var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID","NAME","USER_ROLE",
+	           "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","AMOUNT_MONTH","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_ALL","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
 	var sql="";
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
