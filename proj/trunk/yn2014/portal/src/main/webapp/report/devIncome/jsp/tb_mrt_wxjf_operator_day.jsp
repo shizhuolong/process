@@ -33,7 +33,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_mrt_wxjf_operator_day.js"></script>
 <style>
   #lch_DataHead TR TH, #lch_table_corner TR TH, #lch_DataBody TR TD, #lch_table_left TR TD {
-    min-width: 220px;
+    min-width: 90px;
 }
 </style>
 </head>
