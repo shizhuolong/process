@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["帐期","地市","地市编码","基层单元名称","姓名","HR编码","用户编号","用户号码","入网日期","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","指标编码","指标描述","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","渠道名称","总部编码","SOURCE_CRE","SOURCE_CODE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY","UNIT_ID"]];
+var title=[["帐期","地市","地市编码","基层单元名称","姓名","HR编码","用户编号","用户号码","入网日期","操作员","部门","产品ID","指标编码","指标描述","指标值","发展人编码","渠道编码","渠道名称","总部编码","原始积分","原始积分编码","渠道系数","渠道调节积分","营服系数","区域调节积分","金额","营服编码"]];
 var field=["DEAL_DATE","AREA_NAME","GROUP_ID_1","UNIT_NAME","USER_NAME","HR_NO","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","ITEMCODE","ITEMDESC","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE","SOURCE_CRE","SOURCE_CODE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY","UNIT_ID"];
 var orderBy = '';
 var report = null;
@@ -223,7 +223,7 @@ function downsAll(){
 		sql+=" and GROUP_ID_1="+regionCode;
 	}
 	sql+=" ORDER BY GROUP_ID_1";
-	var title=[["帐期","地市","地市编码","基础单元名称","姓名","HR编码","用户编号","用户号码","入网日期","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","指标编码","指标描述","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","渠道名称","总部编码","SOURCE_CRE","SOURCE_CODE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY","UNIT_ID"]];
+	var title=[["帐期","地市","地市编码","基层单元名称","姓名","HR编码","用户编号","用户号码","入网日期","操作员","部门","产品ID","指标编码","指标描述","指标值","发展人编码","渠道编码","渠道名称","总部编码","原始积分","原始积分编码","渠道系数","渠道调节积分","营服系数","区域调节积分","金额","营服编码"]];
 	showtext = '未归集到基层人员的积分-'+time;
 	downloadExcel(sql,title,showtext);
 }

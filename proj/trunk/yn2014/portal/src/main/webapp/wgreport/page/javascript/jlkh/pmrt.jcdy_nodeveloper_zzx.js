@@ -1,5 +1,5 @@
 var nowData = [];
-var title=["账期","地市","地市编码","用户编号","用户号码","入网时间","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","ITEMCODE","指标描述","面值","发展人编码","渠道编码","总部编码","原始积分"];
+var title=["账期","地市","地市编码","用户编号","用户号码","入网时间","操作员","部门","产品ID","指标编码","指标描述","面值","发展人编码","渠道编码","总部编码","原始积分"];
 var field=["DEAL_DATE","REGION_NAME_ABBR","GROUP_ID_1","用户编号","用户号码","入网时间","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","ITEMCODE","指标描述","面值","发展人编码","渠道编码","总部编码","原始积分"];
 var orderBy = '';
 var report = null;
@@ -158,7 +158,7 @@ function downsAll(){
 		sql+=" AND GROUP_ID_1='"+regionCode+"' ";
 	}
 	sql+=" order by GROUP_ID_1";
-	var title=[["DEAL_DATE","REGION_NAME_ABBR","GROUP_ID_1","用户编号","用户号码","入网时间","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","ITEMCODE","指标描述","面值","发展人编码","渠道编码","总部编码","原始积分"]];
+	var title=["账期","地市","地市编码","用户编号","用户号码","入网时间","操作员","部门","产品ID","指标编码","指标描述","面值","发展人编码","渠道编码","总部编码","原始积分"];
 	showtext = '未归集到发展人的专线积分-'+time;
 	downloadExcel(sql,title,showtext);
 }
