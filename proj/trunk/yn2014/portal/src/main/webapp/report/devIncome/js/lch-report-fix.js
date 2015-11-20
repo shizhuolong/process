@@ -9,6 +9,7 @@
 		this.content=options.content;
 		this.field=options.field;
 		this.css=options.css;
+		this.tableCss=options.tableCss;
 		this.rowParams=options.rowParams;
 		this.getSubRows=options.getSubRowsCallBack;//获取数据回调函数
 		this.afterShowSubRows=options.afterShowSubRows;
@@ -479,6 +480,10 @@
 			});
 			$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").hide();
 			$("#lch_table_left").find("TD").css({borderRight:'0px'});
+			if(this.tableCss&&this.tableCss.leftWidth){
+				$("#lch_table_left").find("TD").css({width:(this.tableCss.leftWidth-2)+'px', minWidth:(this.tableCss.leftWidth-2)+'px'});
+			}
+			$("#lch_table_left").find("TD").css({borderRight:'0px'});
 			$("#lch_table_body").trigger("scroll");
 		},
 		hideSubRow:function($tr){
@@ -579,6 +584,10 @@
 			$("#lch_page").width(winx);
 			$("#lch_condition").width(winx);
 			var leftCx=270;
+			//初始化左边固定栏宽度
+			if(this.tableCss&&this.tableCss.leftWidth){
+				leftCx=this.tableCss.leftWidth;
+			}
 			var pageCy=0;
 			var topCy=$("#lch_DataHead").height()-1;
 			var searchCy=$("#lch_body").find("TR:eq(0)").height();
