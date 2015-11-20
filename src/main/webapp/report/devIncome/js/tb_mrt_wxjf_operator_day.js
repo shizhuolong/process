@@ -10,7 +10,8 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:16,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:16,css:LchReport.RIGHT_ALIGN},{eq:4,css:{minWidth:'200px'}}],
+		tableCss:{leftWidth:150},
 		rowParams : ["DEAL_DATE","HR_ID","UNIT_ID"],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
