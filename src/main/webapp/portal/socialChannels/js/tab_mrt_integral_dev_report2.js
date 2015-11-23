@@ -110,13 +110,13 @@ $(function(){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var qdate = $.trim($("#month").val());
-	var preField=' group_id_1_name,unit_name,hr_id_name,group_id_4_name ';
+	var preField=' group_id_1_name,unit_name,hr_id_name,group_id_4_name,fd_chnl_id';
 	var where=' WHERE INTEGRAL_SUB = 1';
 	var orderBy=" order by group_id_1,unit_id,hr_id,group_id_4 ";
 	var hr_id_name = $("#userName").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	var groupBy=" group by group_id_1,group_id_1_name,unit_id,unit_name,hr_id,hr_id_name,group_id_4,group_id_4_name";
+	var groupBy=" group by group_id_1,group_id_1_name,unit_id,unit_name,hr_id,hr_id_name,group_id_4,group_id_4_name,fd_chnl_id";
 	var fieldSql=getSumField();
 		
 	//先根据用户信息得到前几个字段
@@ -145,7 +145,7 @@ function downsAll() {
 			+ ' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
 	sql += where+groupBy+orderBy;
 	showtext = '累计汇总报表' + qdate;
-	var title=[["地市","营服中心","人员","渠道","S","","","","","A","","","","","B","","","","","C","","","","","其他","","","","","D"],["","","","","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分"]];
+	var title=[["地市","营服中心","人员","渠道","渠道编码","S","","","","","A","","","","","B","","","","","C","","","","","其他","","","","","D"],["","","","","","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分"]];
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
