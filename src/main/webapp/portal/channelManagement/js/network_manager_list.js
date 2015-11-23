@@ -58,6 +58,7 @@ function search(pageNumber) {
 	var name = $.trim($("#name").val());
 	var account = $.trim($("#account").val());
 	var hr_id = $.trim($("#hr_id").val());
+	var deal_date = $.trim($("#deal_date").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -74,7 +75,8 @@ function search(pageNumber) {
            "std_6_name":std_6_name,
            "name":name,
            "account":account,
-           "hr_id":hr_id
+           "hr_id":hr_id,
+           "deal_date":deal_date
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -88,6 +90,7 @@ function search(pageNumber) {
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
+				+"<td>"+isNull(n['DEAL_DATE'])+"</td>"
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['STD_6_ID'])+"</td>"
@@ -107,7 +110,8 @@ function search(pageNumber) {
 						if(isBind == "1") {
 							content += "<td>" +
 									//"<a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-							"<a href='#' id='"+n['STD_6_ID']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+									//"<a href='#' id='"+n['STD_6_ID']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a>" +
+									"</td>";
 						} else {
 							content += "<td><a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;";
 						}
@@ -215,6 +219,7 @@ function downloadExcel() {
 	var name = $.trim($("#name").val());
 	var account = $.trim($("#account").val());
 	var hr_id = $.trim($("#hr_id").val());
+	var deal_date = $.trim($("#deal_date").val());
 	
 	var sql = "";
 	if(orgLevel == "1") {
@@ -265,6 +270,9 @@ function downloadExcel() {
 	}
 	if(hr_id != "") {
 		sql += " AND T2.HR_ID = '"+hr_id+"' ";
+	}
+	if(deal_date != "") {
+		sql += " AND T2.DEAL_DATE = '"+deal_date+"' ";
 	}
 	sql += " ORDER BY T2.GROUP_ID_1, T2.UNIT_ID, T2.STD_ID_6";
 	var showtext="Sheet";
