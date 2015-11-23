@@ -37,6 +37,8 @@ public class NetworkManagerAction extends BaseAction {
 			String name = request.getParameter("name");
 			String account = request.getParameter("account");
 			String hr_id = request.getParameter("hr_id");
+			String deal_date = request.getParameter("deal_date");
+			
 			if(unit_name != null && !"".equals(unit_name.trim())) {
 				resultMap.put("unit_name", "%"+unit_name+"%");
 			}
@@ -54,6 +56,9 @@ public class NetworkManagerAction extends BaseAction {
 			}
 			if(hr_id != null && !"".equals(hr_id.trim())) {
 				resultMap.put("hr_id", hr_id);
+			}
+			if(deal_date != null && !"".equals(deal_date.trim())) {
+				resultMap.put("deal_date", deal_date);
 			}
 			Object result = networkMangerService.listNetworkPerson(resultMap);
 			this.reponseJson(result);
