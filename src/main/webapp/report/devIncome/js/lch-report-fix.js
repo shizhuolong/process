@@ -427,9 +427,9 @@
 			
 			
 			
-			if(this.resizeTable){
+			/*if(this.resizeTable){
 				this.resizeTable();
-			}
+			}*/
 			this.renderLeft();
 			
 			//样式处理
@@ -472,6 +472,12 @@
 			if(this.afterShowSubRows){
 				this.afterShowSubRows();
 			}
+			var pThis=this;
+			setTimeout(function(){
+				if(pThis.resizeTable){
+					pThis.resizeTable();
+				}
+			});
 		},
 		renderLeft:function(){
 			//处理左边
@@ -616,8 +622,6 @@
 			if($page&&$page.length){
 				$page.appendTo($("#lch_page"));
 			}
-			this.resizeTable();
-			
 		},
 		resizeTable:function(){
 			var winx=$(window).width();
