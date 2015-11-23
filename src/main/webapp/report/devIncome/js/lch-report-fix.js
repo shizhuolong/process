@@ -6,6 +6,7 @@
 			return;
 		}
 		this.title=options.title;
+		this.lock=options.lock;
 		this.content=options.content;
 		this.field=options.field;
 		this.css=options.css;
@@ -190,9 +191,19 @@
 			//左上角
 			$("#lch_table_corner").empty().append("<table class='lch_DataHead' height='100%' width='100%'></table>");
 			$("#lch_table_corner").find("table").append($("#lch_DataHead").html());
-			$("#lch_table_corner").find("table").find("TR").find("TH:not([x='0'])").remove();
+			if(this.lock){
+				for(var i=0;i<this.lock;i++){
+					$("#lch_DataHead").find("TR").find("TH[x='"+i+"']").hide();
+					$("#lch_table_corner").find("table").find("TR").find("TH[x='"+i+"']").attr("delete",'1');
+				}
+				$("#lch_table_corner").find("table").find("TR").find("TH:not([delete='1'])").remove();
+				$("#lch_table_corner").find("TH").css({borderLeft:'0px'});
+			}else{
+				$("#lch_table_corner").find("table").find("TR").find("TH:not([x='0'])").remove();
+				$("#lch_DataHead").find("TR").find("TH[x='0']").hide();
+			}
 			$("#lch_table_corner").find("TH").css({borderRight:'0px'});
-			$("#lch_DataHead").find("TR").find("TH[x='0']").hide();
+			
 		},
 		OnOrder:function(callback){
 			//初始化排序开始
@@ -429,6 +440,9 @@
 						var css=csses[i];
 						if(css.eq!=undefined){
 							$(this).find("TD:eq("+css.eq+")").css(css.css);
+							if(css.css&&css.css.minWidth){
+								var $ttd=$("#lch_DataHead").find("TH[x='"+css.eq+"']:visible:last").css({minWidth:css.css.minWidth});
+							}
 						}
 						if(css.gt!=undefined &&css.lt==undefined){
 							$(this).find("TD:gt("+css.gt+")").css(css.css);
@@ -461,30 +475,57 @@
 		},
 		renderLeft:function(){
 			//处理左边
-			var h="<table class='lch_DataBody' style='position:relative;'></table>";
-			$("#lch_table_left").empty().append(h);
-			var $lt=$("#lch_table_left").find("TABLE");
-			$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").each(function(index){
-				var $td=$("<tr><td>"+$(this).html()+"</td></tr>");
-				var pThis=this;
-				
-				var $page=$(".page_count");
-				if($page&&$page.length){
-					$td.find("TD").html($td.find("TD").find("A").text());
-				}else{
-					$td.click(function(){
-						$(pThis).find("A").trigger("click");
-					});
+			if(!this.lock){
+				var h="<table class='lch_DataBody' style='position:relative;'></table>";
+				$("#lch_table_left").empty().append(h);
+				var $lt=$("#lch_table_left").find("TABLE");
+				$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").each(function(index){
+					var $td=$("<tr><td>"+$(this).html()+"</td></tr>");
+					var pThis=this;
+					
+					var $page=$(".page_count");
+					if($page&&$page.length){
+						$td.find("TD").html($td.find("TD").find("A").text());
+					}else{
+						$td.click(function(){
+							$(pThis).find("A").trigger("click");
+						});
+					}
+					$lt.append($td);
+				});
+				$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").hide();
+				$("#lch_table_left").find("TD").css({borderRight:'0px'});
+				if(this.tableCss&&this.tableCss.leftWidth){
+					$("#lch_table_left").find("TD").css({width:(this.tableCss.leftWidth-2)+'px', minWidth:(this.tableCss.leftWidth-2)+'px'});
 				}
-				$lt.append($td);
-			});
-			$("#lch_DataBody").find("TR:visible").find("TD:eq(0)").hide();
-			$("#lch_table_left").find("TD").css({borderRight:'0px'});
-			if(this.tableCss&&this.tableCss.leftWidth){
-				$("#lch_table_left").find("TD").css({width:(this.tableCss.leftWidth-2)+'px', minWidth:(this.tableCss.leftWidth-2)+'px'});
+				$("#lch_table_left").find("TD").css({borderRight:'0px'});
+				$("#lch_table_body").trigger("scroll");
+			}else{
+				var lock=this.lock;
+				var h="<table class='lch_DataBody' style='position:relative;'></table>";
+				$("#lch_table_left").empty().append(h);
+				var $lt=$("#lch_table_left").find("TABLE");
+				$("#lch_DataBody").find("TR:visible").each(function(index){
+					var td="<tr>";
+					$(this).find("TD:lt("+lock+")").each(function(){
+						td+="<td>"+$(this).html()+"</td>";
+					});
+					td+="</tr>";
+					var $td=$(td);
+					$td.find("TD A").each(function(){
+						var text=$(this).text();
+						$(this).parent().html(text);
+					});
+					var pThis=this;
+					$lt.append($td);
+				});
+				$("#lch_DataBody").find("TR:visible").find("TD:lt("+lock+")").hide();
+				$("#lch_table_left").find("TD:last").css({borderRight:'0px'});
+				/*if(this.tableCss&&this.tableCss.leftWidth){
+					$("#lch_table_left").find("TD").css({width:(this.tableCss.leftWidth-2)+'px', minWidth:(this.tableCss.leftWidth-2)+'px'});
+				}*/
+				$("#lch_table_body").trigger("scroll");
 			}
-			$("#lch_table_left").find("TD").css({borderRight:'0px'});
-			$("#lch_table_body").trigger("scroll");
 		},
 		hideSubRow:function($tr){
 			$tr.hide();
@@ -588,6 +629,7 @@
 			if(this.tableCss&&this.tableCss.leftWidth){
 				leftCx=this.tableCss.leftWidth;
 			}
+			
 			var pageCy=0;
 			var topCy=$("#lch_DataHead").height()-1;
 			var searchCy=$("#lch_body").find("TR:eq(0)").height();
