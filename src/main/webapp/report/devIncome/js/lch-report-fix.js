@@ -427,9 +427,9 @@
 			
 			
 			
-			/*if(this.resizeTable){
+			if(this.resizeTable){
 				this.resizeTable();
-			}*/
+			}
 			this.renderLeft();
 			
 			//样式处理
@@ -473,11 +473,13 @@
 				this.afterShowSubRows();
 			}
 			var pThis=this;
-			setTimeout(function(){
-				if(pThis.resizeTable){
-					pThis.resizeTable();
-				}
-			});
+			if(this.lock){
+				setTimeout(function(){
+					if(pThis.resizeTable){
+						pThis.resizeTable();
+					}
+				});
+			}
 		},
 		renderLeft:function(){
 			//处理左边
