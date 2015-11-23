@@ -47,9 +47,13 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['SOURCECODE'])+"</td>"
 				+"<td>"+isNull(n['ITEMCODE'])+"</td>"
 				+"<td>"+isNull(n['ITEMDESC'])+"</td>"
-				+"<td>"+isNull(n['BUSITYPE'])+"</td>"
-				+"<td style='color:#4095ce'><a href='#'  onclick='open1();'>"+isNull(n['BUSIDESC'])+"</a></td>"
-				+"<td>"+isNull(n['CRE'])+"</td>"
+				+"<td>"+isNull(n['BUSITYPE'])+"</td>";
+				if(isNull(n['BUSIDESC'])=="存费送费、存费送业务"||isNull(n['BUSIDESC'])=="存费送费"){
+					content+="<td style='color:#4095ce'><a href='#' onclick='open1();'>"+isNull(n['BUSIDESC'])+"</a></td>";
+				}else{
+					content+="<td>"+isNull(n['BUSIDESC'])+"</td>";
+				}
+				content+="<td>"+isNull(n['CRE'])+"</td>"
 				+"<td>"+isNull(n['MONEY'])+"</td>"
 				+"<td>"+isNull(n['STATE'])+"</td>";
 				if(isGrantedNew(UPDATE_ROLE)) {
