@@ -7,7 +7,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <meta name="Excel Workbook Frameset">
 <meta http-equiv=Content-Type content="text/html; charset=utf-8">
 <meta name=ProgId content=Excel.Sheet>
-<meta name=Generator content="Microsoft Excel 14">
+<meta name=Generator content="Microsoft Excel 12">
 <link rel=File-List href="kpidesc.files/filelist.xml">
 <![if !supportTabStrip]>
 <link id="shLink" href="kpidesc.files/sheet001.htm">
@@ -22,8 +22,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
  var c_lTabs=4;
 
  var c_rgszSh=new Array(c_lTabs);
- c_rgszSh[0] = "KPI指标明细表";
- c_rgszSh[1] = "总办会通过的指标";
+ c_rgszSh[0] = "KPIָ����ϸ��";
+ c_rgszSh[1] = "�ܰ��ͨ���ָ��";
  c_rgszSh[2] = "Sheet1";
  c_rgszSh[3] = "Sheet2";
 
@@ -55,7 +55,7 @@ function fnGetIEVer()
 function fnBuildFrameset()
 {
  var szHTML="<frameset rows=\"*,18\" border=0 width=0 frameborder=no framespacing=0>"+
-  "<frame src=\""+document.all.item("shLink")[0].href+"\" name=\"frSheet\" noresize>"+
+  "<frame src=\""+document.all.item("shLink")[1].href+"\" name=\"frSheet\" noresize>"+
   "<frameset cols=\"54,*\" border=0 width=0 frameborder=no framespacing=0>"+
   "<frame src=\"\" name=\"frScroll\" marginwidth=0 marginheight=0 scrolling=no>"+
   "<frame src=\"\" name=\"frTabs\" marginwidth=0 marginheight=0 scrolling=no>"+
@@ -93,7 +93,7 @@ function fnBuildTabStrip()
  szHTML =
   "<html><head>"+
   "<style>A:link,A:visited,A:active {text-decoration:none;"+"color:"+c_rgszClr[3]+";}"+
-  ".clTab {cursor:hand;background:"+c_rgszClr[1]+";font:9pt 宋体;padding-left:3px;padding-right:3px;text-align:center;}"+
+  ".clTab {cursor:hand;background:"+c_rgszClr[1]+";font:9pt ����;padding-left:3px;padding-right:3px;text-align:center;}"+
   ".clBorder {background:"+c_rgszClr[2]+";font:1pt;}"+
   "</style></head><body onload=\"parent.fnInit();\" onselectstart=\"event.returnValue=false;\" ondragstart=\"event.returnValue=false;\" bgcolor="+c_rgszClr[4]+
   " topmargin=0 leftmargin=0><table id=tbTabs cellpadding=0 cellspacing=0>";
@@ -303,11 +303,11 @@ function fnSetActiveSheet(iSh)
  <x:ExcelWorkbook>
   <x:ExcelWorksheets>
    <x:ExcelWorksheet>
-    <x:Name>KPI指标明细表</x:Name>
+    <x:Name>KPIָ����ϸ��</x:Name>
     <x:WorksheetSource HRef="kpidesc.files/sheet001.htm"/>
    </x:ExcelWorksheet>
    <x:ExcelWorksheet>
-    <x:Name>总办会通过的指标</x:Name>
+    <x:Name>�ܰ��ͨ���ָ��</x:Name>
     <x:WorksheetSource HRef="kpidesc.files/sheet002.htm"/>
    </x:ExcelWorksheet>
    <x:ExcelWorksheet>
@@ -324,6 +324,7 @@ function fnSetActiveSheet(iSh)
   <x:WindowWidth>19320</x:WindowWidth>
   <x:WindowTopX>0</x:WindowTopX>
   <x:WindowTopY>120</x:WindowTopY>
+  <x:ActiveSheet>1</x:ActiveSheet>
   <x:ProtectStructure>False</x:ProtectStructure>
   <x:ProtectWindows>False</x:ProtectWindows>
  </x:ExcelWorkbook>
@@ -331,11 +332,11 @@ function fnSetActiveSheet(iSh)
 </head>
 
 <frameset rows="*,39" border=0 width=0 frameborder=no framespacing=0>
- <frame src="kpidesc.files/sheet001.htm" name="frSheet">
+ <frame src="kpidesc.files/sheet002.htm" name="frSheet">
  <frame src="kpidesc.files/tabstrip.htm" name="frTabs" marginwidth=0 marginheight=0>
  <noframes>
   <body>
-   <p>此页面使用了框架，而您的浏览器不支持框架。</p>
+   <p>��ҳ��ʹ���˿�ܣ�������������֧�ֿ�ܡ�</p>
   </body>
  </noframes>
 </frameset>
