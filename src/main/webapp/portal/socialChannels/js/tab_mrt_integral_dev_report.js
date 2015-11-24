@@ -46,9 +46,10 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
-
+var countPage=0;
 //列表信息
 function search(pageNumber) {
+	countPage=pageNumber;
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
@@ -186,7 +187,7 @@ function update(obj){
 	   	}, 
 	   	success:function(data){
 	   		alert("修改成功");
-	   		search(0);
+	   		search(countPage);
 	    }
 	});
 }
