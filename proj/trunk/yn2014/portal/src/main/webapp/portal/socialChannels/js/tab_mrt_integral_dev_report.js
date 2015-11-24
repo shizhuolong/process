@@ -126,7 +126,7 @@ function search(pageNumber) {
 		  if(isGrantedNew(UPDATE_ROLE)) {
 			 if(is_dh=="否"){
 				   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
-				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
+				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=isupdate(this)>提交</button>";
 			       obj.empty().append(h);
 			       sub.append(h1);
 			 }else{
@@ -154,6 +154,15 @@ function search(pageNumber) {
 		if(area)
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
+}
+function isupdate(obj){
+	alert("当前账期只能录入,不能修改");
+	if(confirm("确认录入？")){
+	    update(obj);
+	}else{
+		var i=$(obj).attr("i");
+		$("#"+i).val("");
+	}
 }
 function update(obj){
 	var hq_code=$(obj).attr("hq_code");
