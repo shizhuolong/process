@@ -126,7 +126,7 @@ function search(pageNumber) {
 		  if(isGrantedNew(UPDATE_ROLE)) {
 			 if(is_dh=="否"){
 				   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
-				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=isupdate(this)>提交</button>";
+				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=isupdate(this) style='cursor:pointer'>提交</button>";
 			       obj.empty().append(h);
 			       sub.append(h1);
 			 }else{
@@ -136,7 +136,7 @@ function search(pageNumber) {
 		  }
 		 }else{
 			   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
-			   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this)>提交</button>";
+			   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this) style='cursor:pointer'>提交</button>";
 		       obj.empty().append(h);
 		       sub.append(h1);
 		 }
