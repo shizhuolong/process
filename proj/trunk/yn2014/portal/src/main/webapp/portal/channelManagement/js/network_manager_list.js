@@ -109,8 +109,8 @@ function search(pageNumber) {
 						//已绑定
 						if(isBind == "1") {
 							content += "<td>" +
-									//"<a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-									//"<a href='#' id='"+n['STD_6_ID']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a>" +
+									"<a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
+									"<a href='#' id='"+n['STD_6_ID']+"' hr_id='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a>" +
 									"</td>";
 						} else {
 							content += "<td><a href='#' orgId='"+n['ID']+"' group_id_1='"+n['GROUP_ID_1']+"' group_id_1_name='"+n['GROUP_ID_1_NAME']+"' unit_name='"+n['UNIT_NAME']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['STD_6_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;";
@@ -127,7 +127,7 @@ function search(pageNumber) {
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {
-				$("#dataBody").empty().html("<tr><td colspan='8'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='10'>暂无数据</td></tr>");
 			}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -144,6 +144,7 @@ function bindPerson(obj) {
 	var orgId = $(obj).attr("orgId");
 	var group_id_1_name = $(obj).attr("group_id_1_name");
 	var unit_name = $(obj).attr("unit_name");
+	var deal_date = $.trim($("#deal_date").val());
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/network_manager_bind_person.jsp";
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('unit_id',unit_id);
@@ -151,6 +152,7 @@ function bindPerson(obj) {
 	art.dialog.data('orgId',orgId);
 	art.dialog.data('group_id_1_name',group_id_1_name);
 	art.dialog.data('unit_name',unit_name);
+	art.dialog.data('deal_date',deal_date);
 	art.dialog.open(url,{
 		id:'networkBindPersonDialog',
 		width:'530px',
@@ -164,6 +166,7 @@ function bindPerson(obj) {
 function unBindPerson(ele) {
 	var std_6_id = $(ele).attr("id");
 	var old_hr_id = $(ele).attr("hr_id");
+	var deal_date = $.trim($("#deal_date").val());
 	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
 		$.ajax({
 			type:"POST",
@@ -172,7 +175,8 @@ function unBindPerson(ele) {
 			url:$("#ctx").val()+"/channelManagement/networkManager_deleteBindPerson.action",
 			data:{
 				"std_6_id":std_6_id,
-				"old_hr_id":old_hr_id
+				"old_hr_id":old_hr_id,
+				"deal_date":deal_date
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
