@@ -79,10 +79,12 @@ public class NetworkManagerAction extends BaseAction {
 			String orgId = request.getParameter("orgId");
 			String name = request.getParameter("name");
 			String username = request.getParameter("username");
+			String deal_date = request.getParameter("deal_date");
 			resultMap.put("std_6_id", std_6_id);
 			resultMap.put("group_id_1", group_id_1);
 			resultMap.put("unit_id", unit_id);
 			resultMap.put("orgId", orgId);
+			resultMap.put("deal_date", deal_date);
 			if(name != null && !"".equals(name.trim())) {
 				resultMap.put("name", "%"+name+"%");
 			}
@@ -112,6 +114,7 @@ public class NetworkManagerAction extends BaseAction {
 			String group_id_1_name = request.getParameter("group_id_1_name");
 			String unit_id = request.getParameter("unit_id");
 			String unit_name = request.getParameter("unit_name");
+			String deal_date = request.getParameter("deal_date");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("userid", userid);
 			params.put("name", name);
@@ -123,6 +126,7 @@ public class NetworkManagerAction extends BaseAction {
 			params.put("group_id_1_name", group_id_1_name);
 			params.put("unit_id", unit_id);
 			params.put("unit_name", unit_name);
+			params.put("deal_date", deal_date);
 			networkMangerService.saveBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
@@ -138,10 +142,11 @@ public class NetworkManagerAction extends BaseAction {
 		try {
 			String std_6_id = request.getParameter("std_6_id");
 			String old_hr_id = request.getParameter("old_hr_id");
+			String deal_date = request.getParameter("deal_date");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("std_6_id", std_6_id);
 			params.put("old_hr_id", old_hr_id);
-			System.out.println("============================="+std_6_id);
+			params.put("deal_date", deal_date);
 			networkMangerService.deleteBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
