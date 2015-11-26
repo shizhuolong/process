@@ -4,6 +4,7 @@ var std_6_id = "";
 var group_id_1_name = "";
 var unit_name = "";
 var orgId = "";
+var deal_date="";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
@@ -12,6 +13,7 @@ $(function() {
 	orgId = art.dialog.data('orgId');
 	group_id_1_name = art.dialog.data('group_id_1_name');
 	unit_name = art.dialog.data('unit_name');
+	deal_date = art.dialog.data('deal_date');
 	listPerson(0);
 	$("#searchBtn").click(function(){
 		listPerson(0);
@@ -46,7 +48,8 @@ $(function() {
 	           "group_id_1_name":group_id_1_name,
 	           "unit_name":unit_name,
 	           "unit_id":unit_id,
-	           "group_id_1":group_id_1
+	           "group_id_1":group_id_1,
+	           "deal_date":deal_date
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
@@ -83,7 +86,8 @@ function listPerson(pageNumber) {
            "std_6_id" : std_6_id,
            "orgId":orgId,
            "name":name,
-           "username":username
+           "username":username,
+           "deal_date":deal_date
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
