@@ -125,7 +125,7 @@
 					<tbody id="dataBody">
 					</tbody>
 					<tr>
-						<td colspan="9">
+						<td colspan="10">
 							</div>
 								<div class="page_count">
 									<div class="page_count_left">
