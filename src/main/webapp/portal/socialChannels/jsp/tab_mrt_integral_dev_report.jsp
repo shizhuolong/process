@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/socialChannels/js/tab_mrt_integral_dev_report.js"></script>
 <script type="text/javascript">
-	var privileges='<%=user.getAuthoritiesStr()%>';
+	<%-- var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
 	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
 	        return true;
@@ -40,7 +40,7 @@
 	    }
 	    return true;
 	}
-	var lastmonth="<%=time%>";
+	var lastmonth="<%=time%>"; --%>
 </script>
 </head>
 <body class="" style="overflow-x:auto;">

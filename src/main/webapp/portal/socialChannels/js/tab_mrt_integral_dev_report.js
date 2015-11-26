@@ -1,11 +1,11 @@
 var nowData = [];
 var field=[
-"账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否兑换","手工录入兑换积分",""
+"账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否兑换","已兑换积分","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分"
 ];
-var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否兑换","手工录入兑换积分","提交"]];
+var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","是否兑换","已兑换积分","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分"]];
 var orderBy='';	
 var report = null;
-var UPDATE_ROLE = "ROLE_MANAGER_WORKFLOWMANAGER_QDXJGL_REPORT_REPORT_UPDATEPART";
+//var UPDATE_ROLE = "ROLE_MANAGER_WORKFLOWMANAGER_QDXJGL_REPORT_REPORT_UPDATEPART";
 $(function() {
 	listRegions();
 	report = new LchReport({
@@ -117,7 +117,7 @@ function search(pageNumber) {
 	nowData = d;
 
 	report.showSubRow();
-	$("#lch_DataBody").find("TR").each(function(i){
+	/*$("#lch_DataBody").find("TR").each(function(i){
 		 var obj=$(this).find("td:eq(19)");
 		 var is_jf=$(this).find("td:eq(19)").text();
 		 var hq_code=$(this).find("td:eq(5)").text();
@@ -144,7 +144,7 @@ function search(pageNumber) {
 	});
 	 if(!isGrantedNew(UPDATE_ROLE)) {
 		 $("#lch_DataHead").find("TR:eq(0)").find("TH:eq(19)").text("兑换积分");
-	 }
+	 }*/
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
@@ -156,7 +156,7 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function isupdate(obj){
+/*function isupdate(obj){
 	alert("当前账期只能录入,不能修改");
 	if(confirm("确认录入？")){
 	    update(obj);
@@ -190,7 +190,7 @@ function update(obj){
 	   		search(countPage);
 	    }
 	});
-}
+}*/
 function getSql(){
 	var s=" SELECT DEAL_DATE 账期                                             "+
 	",GROUP_ID_1_NAME  地市                                            "+
@@ -210,8 +210,11 @@ function getSql(){
 	",NVL(LJ_JF_QS,0) 本半年累计清算积分                               "+
 	",NVL(LJ_JF_DH,0) 本半年累计可兑积分                               "+
 	",DECODE(INTEGRAL_GRADE,'D',NULL,NVL(LJ_COMM,0)) 本半年累计可兑金额,"+
-	"IS_JF 手工录入兑换积分,"+
-	"CASE WHEN IS_DH='0' then '否' else '是' end 是否兑换"+
+	"IS_JF 已兑换积分,"+
+	"CASE WHEN IS_DH='0' then '否' else '是' end 是否兑换,"+
+	"IS_JF_LJ_ALL 自201506账期累计已兑积分,"+
+	"IS_COMM_LJ_ALL 自201506账期累计已兑金额,"+
+	"IS_JF_SPLUS_ALL 自201506账期累计剩余积分"+
 	" FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT                            "+
 	" WHERE INTEGRAL_SUB = 1                                          ";
 	return s;
@@ -265,9 +268,6 @@ function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
 	var sql = "select distinct t.UNIT_NAME from  PMRT.TAB_MRT_INTEGRAL_DEV_REPORT t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
@@ -355,7 +355,7 @@ function downsAll(){
 		sql+=" and GROUP_ID_4='"+code+"'";
 	}
 	sql+=orderBy;
-	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","积分","是否兑换"]];
+	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","已兑换积分","是否兑换","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分"]];
 	showtext = '当期兑换报表-'+time;
 	downloadExcel(sql,title,showtext);
 }
