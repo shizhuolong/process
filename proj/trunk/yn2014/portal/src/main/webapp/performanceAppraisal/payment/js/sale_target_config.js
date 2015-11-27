@@ -50,6 +50,10 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['BUSITYPE'])+"</td>";
 				if(isNull(n['BUSIDESC'])=="存费送费、存费送业务"||isNull(n['BUSIDESC'])=="存费送费"){
 					content+="<td style='color:#4095ce'><a href='#' onclick='open1();'>"+isNull(n['BUSIDESC'])+"</a></td>";
+				}else if(isNull(n['BUSIDESC'])=="流量包、语音包定制"||isNull(n['BUSIDESC'])=="流量包"){
+					content+="<td style='color:#4095ce'><a href='#' onclick='open2();'>"+isNull(n['BUSIDESC'])+"</a></td>";
+				}else if(isNull(n['BUSIDESC'])=="自备机续约"){
+					content+="<td style='color:#4095ce'><a href='#' onclick='open3();'>"+isNull(n['BUSIDESC'])+"</a></td>";
 				}else{
 					content+="<td>"+isNull(n['BUSIDESC'])+"</td>";
 				}
@@ -86,6 +90,30 @@ function open1(){
 			title:'活动明细'
 		});
 }
+function open2(){
+	var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/llb_product.jsp";
+	art.dialog.open(url,{
+		id:'open',
+		width:'1200px',
+		height:'400px',
+		padding:'0 0',
+		lock:true,
+		resize:false,
+		title:'活动明细'
+	});
+}
+function open3(){
+	var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/tmp_wc_scheme.jsp";
+	art.dialog.open(url,{
+		id:'open',
+		width:'1200px',
+		height:'400px',
+		padding:'0 0',
+		lock:true,
+		resize:false,
+		title:'活动明细'
+	});
+}
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
@@ -103,7 +131,7 @@ function isNull(obj){
 	if(obj == undefined || obj == null || obj == '' || obj == null) {
 		return "&nbsp;";
 	}
-	return obj;
+	return $.trim(obj);
 }
 
 //重置
