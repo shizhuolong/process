@@ -473,13 +473,13 @@
 				this.afterShowSubRows();
 			}
 			var pThis=this;
-			if(this.lock){
+			//if(this.lock){
 				setTimeout(function(){
 					if(pThis.resizeTable){
 						pThis.resizeTable();
 					}
 				});
-			}
+			//}
 		},
 		renderLeft:function(){
 			//处理左边
