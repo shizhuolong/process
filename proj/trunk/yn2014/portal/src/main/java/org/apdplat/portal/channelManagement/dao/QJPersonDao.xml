@@ -126,6 +126,7 @@
        '' AS INACTIVE_TIME,
        '1' AS IS_VALUE,
       to_char(sysdate,'yyyymm') AS DEAL_DATE
+      ,0 is_logo
       FROM PCDE.TAB_CDE_GROUP_CODE T2
      JOIN PORTAL.APDP_USER T3
      ON (#{hr_id} = T3.HR_ID)
