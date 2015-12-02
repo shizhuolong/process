@@ -156,7 +156,7 @@ if(loginUser!=null){
                         <li><a href="javascript:void(0);" onclick="logout();"><i id="logout-icon"></i>退出</a></li>
                         <li><a href="javascript:void(0);" onclick='configDesk();'><i id="editPsw-icon"></i>工作台配置</a></li>
                         <li><a href="javascript:void(0);" onclick='ModifyWindow.show();'><i id="editPsw-icon"></i>修改密码</a></li>
-                    	<li><span>服务热线：186-8790-6699&nbsp;&nbsp;&nbsp;QQ交流群：292595923</span></li>
+                    	<li><span>服务热线：186-8790-6699&nbsp;&nbsp;&nbsp;QQ交流群：146461273</span></li>
                     </ul>
                 </div>
             </div>
