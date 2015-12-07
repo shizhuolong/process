@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelSubsidyPay.dao.ChannelSubsidyPayDao">
+	<select id="listByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT DEAL_DATE,
+	       GROUP_ID_1_NAME,
+	       UNIT_NAME,
+	       HR_ID,
+	       HR_ID_NAME,
+	       FD_CHNL_ID,
+	       GROUP_ID_4_NAME,
+	       DEPT_TYPE,
+	       HZ_MONTH,
+	       INTEGRAL_GRADE,
+	       nvl(ALL_JF_TOTAL, 0) ALL_JF_TOTAL,
+	       nvl(ALL_JF_QS, 0) ALL_JF_QS,
+	       NVL(ALL_JF_TOTAL, 0) + NVL(ALL_JF_QS, 0) MON_JF,
+	       DECODE(INTEGRAL_GRADE, 'D', NULL, NVL(COMM, 0)) MON_JE,
+	       NVL(LJ_JF_TOTAL, 0) LJ_JF_TOTAL,
+	       NVL(LJ_JF_QS, 0) LJ_JF_QS,
+	       NVL(LJ_JF_DH, 0) LJ_JF_DH,
+	       DECODE(INTEGRAL_GRADE, 'D', NULL, NVL(LJ_COMM, 0)) LJ_BN_JE,
+	       IS_JF,
+	       
+	       
+	       CASE
+			   WHEN T.HZ_MONTH &lt;= 3 THEN
+			    1.3 * nvl(IS_JF, 0) * 5 * 0.7
+			   WHEN T.HZ_MONTH &gt; 3 THEN
+			    CASE
+			      WHEN T.INTEGRAL_GRADE = 'S' THEN
+			       1.3 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			      WHEN T.INTEGRAL_GRADE = 'A' THEN
+			       1.2 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			      WHEN T.INTEGRAL_GRADE = 'B' THEN
+			       1.1 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			      WHEN T.INTEGRAL_GRADE = 'C' THEN
+			       1.0 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			    end
+			 
+			   ELSE
+			    0
+		   END IS_JF_JE,
+		   
+		   
+	       nvl(IS_JF_LJ_ALL,0)+nvl(IS_JF,0) IS_JF_LJ_ALL,
+	       
+	       
+	       nvl(IS_COMM_LJ_ALL,0)
+	       +
+	       CASE
+			   WHEN T.HZ_MONTH &lt;= 3 THEN
+			    1.3 * nvl(IS_JF, 0) * 5 * 0.7
+			   WHEN T.HZ_MONTH &gt; 3 THEN
+			    CASE
+			      WHEN T.INTEGRAL_GRADE = 'S' THEN
+			       1.3 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			      WHEN T.INTEGRAL_GRADE = 'A' THEN
+			       1.2 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			      WHEN T.INTEGRAL_GRADE = 'B' THEN
+			       1.1 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			      WHEN T.INTEGRAL_GRADE = 'C' THEN
+			       1.0 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+			    end
+			 
+			   ELSE
+			    0
+		   END IS_COMM_LJ_ALL,
+		   
+	       nvl(IS_JF_SPLUS_ALL,0)-nvl(IS_JF,0) IS_JF_SPLUS_ALL,
+	       STATUS
+	  FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
+ 	  WHERE T.INTEGRAL_SUB = 1
+	  AND T.INIT_ID = #{businessKey}
+	 <if test="channelCode != null">
+	 	AND T.FD_CHNL_ID= #{channelCode}
+	 </if>
+	 ORDER BY GROUP_ID_4_NAME,FD_CHNL_ID ASC
+	</select>
+	<select id="getDataListCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+		      COUNT(*) AS TOTALCOUNT
+		      FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
+		WHERE T.DEAL_DATE = #{dealDate} AND T.INTEGRAL_SUB = 1 AND T.INIT_ID IS NOT NULL
+	</select>
+	<select id="getAllRegionDealersByTaskId" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT O.CODE,O.REGION_NAME,MAX(P.TASK_ID) TASKID,MAX(P.ID) USERID,MAX(P.USERNAME) USERNAME,COUNT(P.ID)||'' USERCOUNT,TO_CHAR(WM_CONCAT(P.REALNAME)) USERNAMES  FROM  PORTAL.APDP_ORG O
+		LEFT JOIN (
+		  SELECT A.TASK_ID,U.USERNAME,U.ID,U.REALNAME,O.REGION_CODE FROM 
+		         PORTAL.TB_ACT_TASK_APPROVER A,
+		         PORTAL.APDP_USER U,
+		         PORTAL.APDP_ORG O
+		  WHERE A.USER_ID=U.ID
+		  AND A.TASK_ID=#{taskId}
+		  AND O.ID=U.ORG_ID) P
+		ON O.REGION_CODE=P.REGION_CODE
+		WHERE O.ORGLEVEL=2 AND O.CODE&lt;&gt;16017
+		GROUP BY O.CODE,O.REGION_NAME
+	</select>
+	<select id="getDealersByTaskIdAndRegionCode" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT O.CODE,O.ORGNAME,P.TASK_ID,P.ID USERID,P.USERNAME,P.REALNAME FROM  PORTAL.APDP_ORG O
+		LEFT JOIN (
+		  SELECT A.TASK_ID,U.USERNAME,U.ID,U.REALNAME,O.REGION_CODE FROM 
+		         PORTAL.TB_ACT_TASK_APPROVER A,
+		         PORTAL.APDP_USER U,
+		         PORTAL.APDP_ORG O
+		  WHERE A.USER_ID=U.ID
+		  AND A.TASK_ID=#{taskId}
+		  AND O.ID=U.ORG_ID) P
+		ON O.REGION_CODE=P.REGION_CODE
+		WHERE O.ORGLEVEL=2
+		AND O.CODE=#{code}
+	</select>
+	<update id="updateDataWorkNo" parameterType="java.util.Map">
+		UPDATE PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
+   			SET T.INIT_ID = #{workNo},T.STATUS=#{status}
+ 		WHERE T.DEAL_DATE = #{dealDate}
+   		AND T.GROUP_ID_1 = #{code}
+   		AND T.INTEGRAL_SUB = 1
+	</update>
+	<update id="updateJf" parameterType="java.util.Map">
+        UPDATE PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T SET T.is_jf=#{isJf} where T.fd_chnl_id=#{hqCode} and T.init_id=#{businessKey} AND T.INTEGRAL_SUB = 1
+    </update>
+    <update id="updateStatus" parameterType="String">
+		UPDATE PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
+	</update>
+</mapper>

@@ -81,7 +81,7 @@
 	</update>
 	
 	<delete id="deleteStd6BindPerson" parameterType="java.util.Map">
-		DELETE FROM PORTAL.TAB_PORTAL_NET_PERSON T WHERE T.STD_ID_6 = #{std_6_id}
+		DELETE FROM PORTAL.TAB_PORTAL_NET_PERSON T WHERE T.STD_ID_6 = #{std_6_id} and T.DEAL_DATE>=to_char(sysdate,'yyyyMM')
 	</delete>
 	
 	<update id="update" parameterType="java.util.Map">
