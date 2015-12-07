@@ -10,7 +10,7 @@
  				T2.PHONE,T2.HR_ID,CASE WHEN T3.IS_DEFAULT = 1 THEN 0 ELSE 1 END AS ISDIVIDE,
        			CASE WHEN T2.USERID IS NOT NULL THEN 1 ELSE 0 END AS ISBIND,T4.ID
   			FROM PCDE.TAB_CDE_6_STD T1 LEFT JOIN PORTAL.TAB_PORTAL_NET_PERSON T2
-    			ON (T1.STD_6_ID = T2.STD_ID_6)
+    			ON (T1.STD_6_ID = T2.STD_ID_6  AND T2.DEAL_DATE=#{deal_date})
   			LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
     			ON (T1.UNIT_ID = T3.UNIT_ID)
     		LEFT JOIN PORTAL.APDP_ORG T4 
@@ -35,7 +35,7 @@
  				AND T2.HR_ID = #{hr_id}
  			</if>
  			<if test="deal_date != null">
- 				AND T2.DEAL_DATE = #{deal_date}
+ 				AND (T2.DEAL_DATE = #{deal_date} or T2.DEAL_DATE is null)
  			</if>
  			ORDER BY T2.GROUP_ID_1, T2.UNIT_ID, T2.STD_ID_6
 		</if>	
@@ -45,7 +45,7 @@
  				T2.PHONE,T2.HR_ID,CASE WHEN T3.IS_DEFAULT = 1 THEN 0 ELSE 1 END AS ISDIVIDE,
        			CASE WHEN T2.USERID IS NOT NULL THEN 1 ELSE 0 END AS ISBIND,T4.ID
   			FROM PCDE.TAB_CDE_6_STD T1 LEFT JOIN PORTAL.TAB_PORTAL_NET_PERSON T2
-    			ON (T1.STD_6_ID = T2.STD_ID_6)
+    			ON (T1.STD_6_ID = T2.STD_ID_6  AND T2.DEAL_DATE=#{deal_date})
   			LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
     			ON (T1.UNIT_ID = T3.UNIT_ID)
     		LEFT JOIN PORTAL.APDP_ORG T4 
@@ -71,7 +71,7 @@
  				AND T2.HR_ID = #{hr_id}
  			</if>
  			<if test="deal_date != null">
- 				AND T2.DEAL_DATE = #{deal_date}
+ 				AND (T2.DEAL_DATE = #{deal_date} or T2.DEAL_DATE is null)
  			</if>
  			ORDER BY T2.GROUP_ID_1, T2.UNIT_ID, T2.STD_ID_6
 		</if>
@@ -81,7 +81,7 @@
  				T2.PHONE,T2.HR_ID,CASE WHEN T3.IS_DEFAULT = 1 THEN 0 ELSE 1 END AS ISDIVIDE,
        			CASE WHEN T2.USERID IS NOT NULL THEN 1 ELSE 0 END AS ISBIND,T4.ID
   			FROM PCDE.TAB_CDE_6_STD T1 LEFT JOIN PORTAL.TAB_PORTAL_NET_PERSON T2
-    			ON (T1.STD_6_ID = T2.STD_ID_6)
+    			ON (T1.STD_6_ID = T2.STD_ID_6 AND T2.DEAL_DATE=#{deal_date})
   			LEFT JOIN PCDE.TAB_CDE_GROUP_CODE T3
     			ON (T1.UNIT_ID = T3.UNIT_ID)
     		LEFT JOIN PORTAL.APDP_ORG T4 
@@ -107,7 +107,7 @@
  				AND T2.HR_ID = #{hr_id}
  			</if>
  			<if test="deal_date != null">
- 				AND T2.DEAL_DATE = #{deal_date}
+ 				AND (T2.DEAL_DATE = #{deal_date} or T2.DEAL_DATE is null)
  			</if>
  			ORDER BY T2.GROUP_ID_1, T2.UNIT_ID, T2.STD_ID_6
 		</if>
@@ -166,9 +166,9 @@
     		t.is_valid='1',t.hr_id=#{hr_id}
 		WHEN NOT MATCHED THEN
     		INSERT(USERID,NAME,ACCOUNT,PHONE,LEV,STD_ID_6,UNIT_ID,UNIT_NAME,GROUP_ID_1,
-    		GROUP_ID_1_NAME,CREATE_TIME,UPDATE_TIME,REMARK,IS_VALID,HR_ID) 
+    		GROUP_ID_1_NAME,CREATE_TIME,UPDATE_TIME,REMARK,IS_VALID,HR_ID,DEAL_DATE) 
     		VALUES(#{userid},#{name},#{username},#{phone},'2',#{std_6_id},#{unit_id},
-    		#{unit_name},#{group_id_1},#{group_id_1_name},sysdate,sysdate,'绑定','1',#{hr_id})
+    		#{unit_name},#{group_id_1},#{group_id_1_name},sysdate,sysdate,'绑定','1',#{hr_id},#{deal_date})
 	</insert>
 	
 	<delete id="deleteBindPerson" parameterType="java.util.Map">
