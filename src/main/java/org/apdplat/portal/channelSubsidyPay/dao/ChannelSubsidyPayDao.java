@@ -40,7 +40,9 @@ public interface ChannelSubsidyPayDao {
 	 */
 	public void updateDataWorkNo(Map<String, String> params);
 	
-	void updateJf(Map<String, Object> m);
+	public void updateJf(Map<String, Object> m);
+	public void updateJfLj(Map<String, Object> m);
+	public String getDealDateByWorkNo(Map<String, Object> m);
 	
 	/**
 	 * 更新状态
