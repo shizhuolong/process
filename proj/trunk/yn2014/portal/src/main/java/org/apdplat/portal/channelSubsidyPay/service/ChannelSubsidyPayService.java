@@ -136,5 +136,8 @@ public class ChannelSubsidyPayService {
 	
 	public void updateJf(Map<String, Object> m) {
 		channelSubsidyPayDao.updateJf(m);
+		String dealDate=channelSubsidyPayDao.getDealDateByWorkNo(m);
+		m.put("dealDate", dealDate);
+		channelSubsidyPayDao.updateJfLj(m);
 	}
 }
