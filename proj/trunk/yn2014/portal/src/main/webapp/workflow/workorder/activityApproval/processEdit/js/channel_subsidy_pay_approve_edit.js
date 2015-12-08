@@ -42,9 +42,9 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['FD_CHNL_ID'])+"</td>"
 				+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>";
-				if(taskId&&taskId=="commissionManagerAudit"){//如果是佣金管理员
-					content+="<td><input type='text' value='"+isNull(n['IS_JF'])+"' /><a href='#' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateJF(this);'>保存</a></td>";
-				}else{
+				if(taskId&&taskId=="commissionManagerAudit"&&n['INTEGRAL_GRADE']!='D'){//如果是佣金管理员
+					content+="<td><input type='text' value='"+isNull(n['IS_JF'])+"' /><a href='#' ljAll='"+n['LJ_JF_DH']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateJF(this);'>保存</a></td>";
+				}else{//1、数字要小于等于LJ_JF_DH 2、INTEGRAL_GRADE=‘D’ 不出现录入框 
 					content+="<td>"+isNull(n['IS_JF'])+"</td>";
 				}
 				content+="<td>"+isNull(n['IS_JF_JE'])+"</td>"
@@ -80,8 +80,16 @@ function updateJF(a){
 	var isJf=$.trim($(a).parent().find("INPUT").val());
 	var businessKey=$("#businessKey").val();
 	var hqCode=$(a).attr("hqCode");
+	var ljAll=$(a).attr("ljAll");
+	
 	if(isNaN(isJf)||$.trim(isJf)==""){
 		alert("请输入数字");
+		return;
+	}
+	ljAll=parseFloat(ljAll);
+	isJfNum=parseFloat(isJf);
+	if(isJfNum>ljAll){
+		alert("录入积分不能大于累计可兑换积分");
 		return;
 	}
 	$.ajax({
@@ -136,53 +144,10 @@ function downsAll(){
 	sql+=" 	       FD_CHNL_ID,                                                       ";
 	sql+=" 	       GROUP_ID_4_NAME,                                                  ";
 	sql+=" 	       IS_JF,                                                            ";
-	sql+=" 	                                                                         ";
-	sql+=" 	                                                                         ";
-	sql+=" 	       CASE                                                              ";
-	sql+=" 			   WHEN T.HZ_MONTH <= 3 THEN                                  ";
-	sql+=" 			    1.3 * nvl(IS_JF, 0) * 5 * 0.7                                ";
-	sql+=" 			   WHEN T.HZ_MONTH > 3 THEN                                   ";
-	sql+=" 			    CASE                                                         ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'S' THEN                           ";
-	sql+=" 			       1.3 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'A' THEN                           ";
-	sql+=" 			       1.2 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'B' THEN                           ";
-	sql+=" 			       1.1 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'C' THEN                           ";
-	sql+=" 			       1.0 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			    end                                                          ";
-	sql+=" 			                                                                 ";
-	sql+=" 			   ELSE                                                          ";
-	sql+=" 			    0                                                            ";
-	sql+=" 		   END IS_JF_JE,                                                     ";
-	sql+=" 		                                                                     ";
-	sql+=" 		                                                                     ";
-	sql+=" 	       nvl(IS_JF_LJ_ALL,0)+nvl(IS_JF,0) IS_JF_LJ_ALL,                    ";
-	sql+=" 	                                                                         ";
-	sql+=" 	                                                                         ";
-	sql+=" 	       nvl(IS_COMM_LJ_ALL,0)                                             ";
-	sql+=" 	       +                                                                 ";
-	sql+=" 	       CASE                                                              ";
-	sql+=" 			   WHEN T.HZ_MONTH <= 3 THEN                                  ";
-	sql+=" 			    1.3 * nvl(IS_JF, 0) * 5 * 0.7                                ";
-	sql+=" 			   WHEN T.HZ_MONTH > 3 THEN                                   ";
-	sql+=" 			    CASE                                                         ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'S' THEN                           ";
-	sql+=" 			       1.3 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'A' THEN                           ";
-	sql+=" 			       1.2 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'B' THEN                           ";
-	sql+=" 			       1.1 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			      WHEN T.INTEGRAL_GRADE = 'C' THEN                           ";
-	sql+=" 			       1.0 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)             ";
-	sql+=" 			    end                                                          ";
-	sql+=" 			                                                                 ";
-	sql+=" 			   ELSE                                                          ";
-	sql+=" 			    0                                                            ";
-	sql+=" 		   END IS_COMM_LJ_ALL,                                               ";
-	sql+=" 		                                                                     ";
-	sql+=" 	       nvl(IS_JF_SPLUS_ALL,0)-nvl(IS_JF,0) IS_JF_SPLUS_ALL,              ";
+	sql+=" 	       IS_COMM IS_JF_JE,                                                 ";
+	sql+=" 	       IS_JF_LJ_ALL IS_JF_LJ_ALL,                                        ";
+	sql+=" 	       IS_COMM_LJ_ALL IS_COMM_LJ_ALL,                                    ";
+	sql+=" 	       IS_JF_SPLUS_ALL  IS_JF_SPLUS_ALL,                                 ";
 	sql+=" 	       DEPT_TYPE,                                                        ";
 	sql+=" 	       INTEGRAL_GRADE,                                                   ";
 	sql+=" 	       nvl(ALL_JF_TOTAL, 0) ALL_JF_TOTAL,                                ";
