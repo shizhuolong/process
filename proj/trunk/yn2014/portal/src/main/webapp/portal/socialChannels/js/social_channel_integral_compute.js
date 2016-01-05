@@ -25,8 +25,8 @@ $(function() {
 	search(0);
 	
 	$("#searchBtn").click(function(){
-		listRegions();
 		search(0);
+		listRegions();
 	});
 });
 
@@ -55,6 +55,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
+	var phone=$.trim($("#phone").val());
 	var sql = "SELECT DEAL_DATE,                         "+
 	"       GROUP_ID_1_NAME,                   "+
 	"       UNIT_NAME,                         "+
@@ -114,7 +115,9 @@ function search(pageNumber) {
 	if(userName!=''){
 		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
 	}
-	
+	if(phone!=''){
+		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
+	}
 
 	
 	
@@ -257,6 +260,7 @@ function downsAll(){
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
+	var phone=$.trim($("#phone").val());
 	var sql = "SELECT DEAL_DATE,                         "+
 	"       GROUP_ID_1_NAME,                   "+
 	"       UNIT_NAME,                         "+
@@ -316,7 +320,9 @@ function downsAll(){
 	if(userName!=''){
 		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
 	}
-	
+	if(phone!=''){
+		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
+	}
 	
 	showtext = '社会渠道分等分级积分计算-'+dealDate;
 	downloadExcel(sql,title,showtext);

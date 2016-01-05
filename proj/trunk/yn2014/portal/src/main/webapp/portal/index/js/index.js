@@ -22,6 +22,8 @@ $(function(){
 	indexAccessList();
 	//游离渠道数量
 	freeChannel();
+	//未定位渠道数量
+	noPositionChannel();
 	//游离小区数量
 	freeCommunity();
 	//佣金下载
@@ -42,12 +44,16 @@ $(function(){
 	showJfxc();
 	//我的积分
 	showWdjf();
+	//KPI排名
+	showKpipm();
 	
 	//处理薪酬信息滚动条问题
 	$("#topTabs").tabs({
 		onSelect:function(title){
 			if(title=='团队薪酬'){
 				$("#xcfbWin").attr("src",$("#xcfbWin").attr("src"));
+			}else if(title=='KPI排名'){
+				$("#kpipmWin").attr("src",$("#kpipmWin").attr("src"));
 			}
 		}
 	});
@@ -94,6 +100,18 @@ function showWdjf(){
 		$("#wx_unit_cre").text("维系积分: "+wdjf[0].WX_UNIT_CRE);
 		$("#all_jf").text("总积分: "+wdjf[0].ALL_JF);
 	}
+}
+function showKpipm(){
+	var sql="SELECT MAX(T.DEAL_DATE) DEAL_DATE FROM  PMRT.TB_MRT_JCDY_KPI_RANK_MON T";
+	var d=query(sql);
+	
+	var time="";
+	if(d&&d.length>0){
+		time=d[0]["DEAL_DATE"]+"";
+	}
+	$("#kpiTime").text(time.substring(0, 4)+"年"+time.substring(4, 6)+"月");
+	var src=$("#ctx").val()+"/report/devIncome/jsp/kpi_score_rank_index.jsp?time="+time;
+	$("#kpipmWin").attr("src",src);
 }
 function showJfxc(){
 	var time=$("#xctime").val();
@@ -555,7 +573,37 @@ function freeChannel(){
 		}
 	});
 }
-
+//未定位渠道数量
+function noPositionChannel(){
+	//条件
+	var sql = "     SELECT  t.GROUP_ID_1_NAME,t.UNIT_NAME,t.GROUP_ID_4_NAME,t.HQ_CHAN_CODE FROM PCDE.TAB_CDE_CHANL_HQ_CODE t, "
+    +" PCDE.TB_CDE_CHANL_HQ_CODE wg                                "
+    +" WHERE t.HQ_CHAN_CODE=wg.HQ_CHAN_CODE                        "
+    +" AND wg.CHN_CDE_2 in('2010000','1010000')                    "
+    +" and wg.status<>12                                           ";
+	//权限
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	if(orgLevel==1){
+		
+	}else if(orgLevel==2){
+		sql+=" and t.GROUP_ID_1='"+code+"' ";
+	}else if(orgLevel==3){
+		sql+=" and t.UNIT_ID='"+code+"' ";
+	}else{
+		sql+=" and 1=2 ";
+	}
+	
+	
+	
+	var csql = sql;
+	var cdata = query("select count(*) total from(" + csql+")");
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}
+	$("#nopositionchannel").html('未定位渠道：'+total);
+}
 function searchfreeChannel(element) {
 	
 	var text = $(element).text();
@@ -575,6 +623,26 @@ function searchfreeChannel(element) {
     };
     parent.openWindow('游离渠道','computer', $("#ctx").val()+'/warningAndMonitor/freeChannel!index.action');
 	parent.switchFirstMenu('module-477161','预警监控');
+}
+function searchNoPositionChannel(element) {
+	
+	var text = $(element).text();
+	if(text == '未定位渠道：0') {
+		return;
+	}
+	var lis=parent.document.getElementById("navi").getElementsByTagName("li");
+	for(var i=0;i<lis.length;i++){
+        if(lis[i].className=="select1"){
+            lis[i].className="";
+            lis[i].getElementsByTagName("a")[0].className="";
+        }
+        if(i==8) {
+        	lis[i].className="select1";
+        	lis[i].getElementsByTagName("a")[0].className="select";
+        }
+    };
+    parent.openWindow('未定位渠道','computer', $("#ctx").val()+'/report/devIncome/jsp/no_position_channel.jsp');
+    parent.switchFirstMenu('module-477161','预警监控');
 }
 
 //游离小区

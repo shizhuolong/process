@@ -58,7 +58,7 @@
 						<option value=''>请选择</option>
 				    </select>
 				 </td>
-				 <td width="8%">主管编码：<input type="text" style="width:100px;" required="true" class="easyui-validatebox" missingMessage="HR编码不能为空" name="hr_id" id="hr_id"/>
+				 <td width="8%">HR编码：<input type="text" style="width:100px;" required="true" class="easyui-validatebox" missingMessage="HR编码不能为空" name="hr_id" id="hr_id"/>
 				 </td>
 				</tr>
 				<tr>
