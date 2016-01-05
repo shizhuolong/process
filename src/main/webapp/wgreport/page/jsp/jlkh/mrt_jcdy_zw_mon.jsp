@@ -53,6 +53,14 @@
 					<td width="13%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
+					<td width="7%">电话：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
+					</td>
+					<td width="7%">指标编码：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="item" type="text" id="item"/>
+					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
