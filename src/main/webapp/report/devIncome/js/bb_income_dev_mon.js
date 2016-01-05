@@ -230,7 +230,7 @@ function listRegions(){
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_BB_INCOME_DEV_MON t where 1=1 ";
+	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_BB_INCOME_DEV_MON t where 1=1 and t.UNIT_NAME is not null ";
 	if(time!=''){
 		//sql+=" and t.DEAL_DATE="+time;
 	}

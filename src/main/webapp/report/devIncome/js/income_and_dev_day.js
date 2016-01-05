@@ -110,9 +110,9 @@ var field=["DEV_2_CHW_NUM",    //      长话王发展量
            "SR_10M_NUM",       //      10M以上宽带收入             
            "SR_BB_NUM",        //      宽带收入    
                              //
-           "DEV_ZZX_NUM",      //      专租线发展量              
+           "DEV_ZZX_NUM",      //      专租线（不含ICT）发展量              
            "DEV_ZZX_NUM1",     //      (月累计)专租线发展量      
-           "SR_ZZX_NUM",       //      专租线收入               
+           "SR_ZZX_NUM",       //      专租线（不含ICT）收入               
            "DEV_NET_NUM",      //      固话发展量
            "SR_NET_NUM"];      //      固话收入
 var orderBy='';	

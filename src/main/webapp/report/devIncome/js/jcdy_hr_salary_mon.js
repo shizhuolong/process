@@ -503,10 +503,10 @@ function search(pageNumber) {
 				sql+="     left join (select *                                          ";
 				sql+="                  from pmrt.TB_JCDY_JF_ALL_MON         ";//pmrt.TB_MRT_JCDY_SALUNIT_DETAIL_MON
 				sql+="                 where deal_date = '"+date+"'                     ";
-				sql+="                   and unit_id = '"+uId+"') tr                       ";
+				sql+="                   and unit_id = '"+uId+"' ) tr                       ";
 				sql+="       on tr.hr_no = t.hr_id                                      ";
 				sql+="    where t.unit_id = '"+uId+"'                                   ";
-				sql+="      and t.hr_id != '"+hrId+"'                                    ";
+				sql+="      and t.hr_id != '"+hrId+"'  and exists (select 1 from portal.tab_portal_qj_person where hr_id=t.hr_id and IS_LOGO<>1 and deal_date='"+date+"')                                  ";
 				sql+="      and t.deal_date = '"+date+"'   group by t.hr_id                             ";
 				sql+="   union all                                                      ";
 				sql+="   select null hr_id,                                             ";
@@ -530,7 +530,7 @@ function search(pageNumber) {
 				sql+="                          and unit_id = '"+uId+"') tr                ";
 				sql+="               on tr.hr_no = t.hr_id                              ";
 				sql+="            where t.unit_id = '"+uId+"'                           ";
-				sql+="              and t.hr_id != '"+hrId+"'                           ";
+				sql+="              and t.hr_id != '"+hrId+"' and exists (select 1 from portal.tab_portal_qj_person where hr_id=t.hr_id and IS_LOGO<>1 and deal_date='"+date+"')                              ";
 				sql+="              and t.deal_date = '"+date+"' group by t.hr_id)      ";
 				sql+="                                                                  ";
 				
@@ -588,7 +588,7 @@ function search(pageNumber) {
 				sql+="   from (select t.*, 1 orderNum                                        ";
 				sql+="           from PMRT.TB_MRT_JCDY_HR_SALARY_MON t                       ";
 				sql+="          where deal_date = '"+date+"'                                 ";
-				sql+="            and t.hr_id <> '"+hrId+"'                                  ";
+				sql+="            and t.hr_id <> '"+hrId+"' and exists (select 1 from portal.tab_portal_qj_person where hr_id=t.hr_id and IS_LOGO<>1 and deal_date='"+date+"')                                    ";
 				sql+="            and t.hr_id in                                             ";
 				sql+="                (SELECT distinct hr_id                                 ";
 				sql+="                   FROM portal.tab_portal_mag_person                   ";
