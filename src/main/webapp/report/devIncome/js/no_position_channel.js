@@ -1,6 +1,7 @@
 var nowData = [];
-var title=[["账期","地市","营服中心","渠道编码","渠道名称","HR编码","人员姓名","用户编号","用户号码","办理日期","指标编码","指标描述","指标值","操作员编码","活动编码","活动名称","套餐编码","原始积分","渠道系数","营服系数","渠道调节后的积分","营服调节后积分"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","HR_ID","NAME","USER_NO","DEVICE_NUMBER","ACCT_DATE","ITEMCODE","ITEMDESC","ITEMVALUE","OPERATOR_ID","SCHEME_ID","SCHEME_NAME","PRODUCT_ID","CRE","HQ_RATIO","UNIT_RATIO","HQ_CRE","UNIT_CRE"];
+var title=[["地市","营服中心","渠道名称","渠道编码"]
+];
+var field=["GROUP_ID_1_NAME","UNIT_NAME","GROUP_ID_4_NAME","HQ_CHAN_CODE"];
 var orderBy = '';
 var report = null;
 $(function() {
@@ -8,9 +9,9 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:16,css:LchReport.RIGHT_ALIGN}],
+		css:[],
 		rowParams : [],//第一个为rowId
-		content : "lchcontent",
+		content : "content",
 		orderCallBack : function(index, type) {
 			orderBy = " order by " + field[index] + " " + type + " ";
 			search(0);
@@ -43,58 +44,48 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
-
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var phoneNumber=$("#phoneNumber").val();
-	var time=$("#time").val();
+	
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	var userName=$("#userName").val();
-	var itemDesc=$.trim($("#itemDesc").val());
+	var channelName=$("#channelName").val();
 //条件
-	var sql = " from PMRT.TB_MRT_WXJF_QDJLNEW_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
+	var sql = "     SELECT  t.GROUP_ID_1_NAME,t.UNIT_NAME,t.GROUP_ID_4_NAME,t.HQ_CHAN_CODE FROM PCDE.TAB_CDE_CHANL_HQ_CODE t, "
+    +" PCDE.TB_CDE_CHANL_HQ_CODE wg                                "
+    +" WHERE t.HQ_CHAN_CODE=wg.HQ_CHAN_CODE                        "
+    +" AND wg.CHN_CDE_2 in('2010000','1010000')                    "
+    +" and wg.status<>12                                           ";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
 		sql+=" and t.UNIT_NAME = '"+unitName+"'";
 	}
-	if(userName!=''){
-		sql+=" and t.NAME like '%"+userName+"%'";
-	}
-	if(phoneNumber!=''){
-		sql+=" and t.DEVICE_NUMBER like '%"+phoneNumber+"%'";
-	}
-	if(itemDesc!=''){
-		sql+=" and t.ITEMDESC like '%"+itemDesc+"%'";
+	if(channelName!=''){
+		sql+=" and t.GROUP_ID_4_NAME like '%"+channelName+"%'";
 	}
 	
 //权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	var hrId=$("#hrId").val();
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" and t.GROUP_ID_1='"+code+"' ";
+	}else if(orgLevel==3){
+		sql+=" and t.UNIT_ID='"+code+"' ";
 	}else{
-	  var hrIds=_jf_power(hrId,time);
-	  if(hrIds!=""){
-		   sql+=" and t.HR_ID in("+hrIds+") ";
-	  }
+		sql+=" and 1=2 ";
 	}
 	
 	
 	
 	var csql = sql;
-	var cdata = query("select count(*) total" + csql);
+	var cdata = query("select count(*) total from(" + csql+")");
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -107,7 +98,6 @@ function search(pageNumber) {
 		sql += orderBy;
 	}
 
-	sql = "select * " + sql;
 
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
@@ -123,6 +113,7 @@ function search(pageNumber) {
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	$(".page_count").width($("#lch_DataHead").width());
+
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)
@@ -131,24 +122,20 @@ function search(pageNumber) {
 }
 function listRegions(){
 	var sql="";
-	//var time=$("#time").val();
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TB_MRT_WXJF_QDJLNEW_MON t where 1=1 and group_id_1_name is not null ";
-	/*if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}*/
+	var sql = "select distinct t.GROUP_ID_1_NAME  from PCDE.TAB_CDE_CHANL_HQ_CODE t where 1=1 ";
+	
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	var hrId=$("#hrId").val();
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" and t.GROUP_ID_1='"+code+"' ";
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
+		sql+=" and t.UNIT_ID='"+code+"' ";
 	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
+		sql+=" and 1=2 ";
 	}
 	//排序
 	if (orderBy != '') {
@@ -180,25 +167,20 @@ function listRegions(){
 }
 function listUnits(regionName){
 	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_WXJF_QDJLNEW_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
+	var sql = "select distinct t.UNIT_NAME  from PCDE.TAB_CDE_CHANL_HQ_CODE t where 1=1 ";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
 		var orgLevel=$("#orgLevel").val();
 		var code=$("#code").val();
-		var hrId=$("#hrId").val();
 		if(orgLevel==1){
 			
 		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
+			sql+=" and t.GROUP_ID_1='"+code+"' ";
 		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
+			sql+=" and t.UNIT_ID='"+code+"' ";
 		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
+			sql+=" and 1=2 ";
 		}
 	}else{
 		$unit.empty().append('<option value="" selected>请选择</option>');
@@ -233,63 +215,45 @@ function isNull(obj){
 	}
 	return obj;
 }
-function roundN(number,fractionDigits){   
-    with(Math){   
-        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
-    }   
-}   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var sql="";
-	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
-	var userName=$("#userName").val();
-	var phoneNumber=$("#phoneNumber").val();
-	var itemDesc=$.trim($("#itemDesc").val());
-	//条件
-	var sql = " from PMRT.TB_MRT_WXJF_QDJLNEW_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
+	var channelName=$("#channelName").val();
+//条件
+	var sql = "     SELECT  t.GROUP_ID_1_NAME,t.UNIT_NAME,t.GROUP_ID_4_NAME,t.HQ_CHAN_CODE FROM PCDE.TAB_CDE_CHANL_HQ_CODE t, "
+    +" PCDE.TB_CDE_CHANL_HQ_CODE wg                                "
+    +" WHERE t.HQ_CHAN_CODE=wg.HQ_CHAN_CODE                        "
+    +" AND wg.CHN_CDE_2 in('2010000','1010000')                    "
+    +" and wg.status<>12                                           ";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
 		sql+=" and t.UNIT_NAME = '"+unitName+"'";
 	}
-	if(userName!=''){
-		sql+=" and t.NAME like '%"+userName+"%'";
-	}
-	if(phoneNumber!=''){
-		sql+=" and t.DEVICE_NUMBER like '%"+phoneNumber+"%'";
-	}
-	if(itemDesc!=''){
-		sql+=" and t.ITEMDESC like '%"+itemDesc+"%'";
+	if(channelName!=''){
+		sql+=" and t.GROUP_ID_4_NAME like '%"+channelName+"%'";
 	}
 	
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	var hrId=$("#hrId").val();
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" and t.GROUP_ID_1='"+code+"' ";
+	}else if(orgLevel==3){
+		sql+=" and t.UNIT_ID='"+code+"' ";
 	}else{
-	  var hrIds=_jf_power(hrId,time);
-	  if(hrIds!=""){
-		   sql+=" and t.HR_ID in("+hrIds+") ";
-	  }
+		sql+=" and 1=2 ";
 	}
 	//排序
 	if (orderBy != '') {
 		sql += orderBy;
 	}
-
-	sql = "select "+field.join(",") + sql;
 	
-	showtext = ' 渠道经理维系积分-'+time;
+	showtext = '未定位渠道';
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////

@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["账期","地市","营服中心","渠道编码","渠道名称","主管编码","人员姓名","用户编号","用户号码","办理日期","指标编码","指标描述","指标值","操作员编码","活动编码","活动名称","套餐编码","原始积分","渠道系数","营服系数","渠道调节后的积分","营服调节后积分"]];
+var title=[["账期","地市","营服中心","渠道编码","渠道名称","HR编码","人员姓名","用户编号","用户号码","办理日期","指标编码","指标描述","指标值","操作员编码","活动编码","活动名称","套餐编码","原始积分","渠道系数","营服系数","渠道调节后的积分","营服调节后积分"]];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","HR_ID","NAME","USER_NO","DEVICE_NUMBER","ACCT_DATE","ITEMCODE","ITEMDESC","ITEMVALUE","OPERATOR_ID","SCHEME_ID","SCHEME_NAME","PRODUCT_ID","CRE","HQ_RATIO","UNIT_RATIO","HQ_CRE","UNIT_CRE"];
 var orderBy = '';
 var report = null;

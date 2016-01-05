@@ -6,6 +6,7 @@
 			return;
 		}
 		this.title=options.title;
+		pageHeader=this.title;
 		this.lock=options.lock;
 		this.content=options.content;
 		this.field=options.field;
@@ -41,6 +42,11 @@
 				this.info("报表载体ID不能为空");
 			}
 			$content.append($table);	
+			//导出页面数据初始化
+			var $td=$('<td width="8%" style="padding-left:10px;">'
+			+'<a id="exportPageBtn" class="default-btn" onclick="downPageAll()" href="#">导出页面</a>'
+			+'</td>');
+			$("BODY").find("form").find("TABLE").find("TR:eq(0)").append($td);
 		},
 		showAllCols:function(type){
 			/*var showColFunc=this.showCol;
@@ -825,4 +831,76 @@ function _jf_power(hrId,month){
 			r=d[0]["HRIDS"];
 		}
 		return r;
+}
+
+var pageHeader=[];
+function downPageAll(){
+	var header=pageHeader;
+	//1.处理左边
+	var $l=$("#lch_table_left").find("TABLE").find("TR");
+	var data=[];
+	var isSub=false;
+	$l.each(function(index){
+		var $td=$(this).find("TD:eq(0)");
+		var v=$td.text();
+		if($td.find("A").length){
+			isSub=true;
+			v=$td.find("A").text();
+			var margin=$td.find("A").css("margin-left");
+			try{
+				margin=parseInt(margin);
+			}catch(e){}
+			if(margin){
+				var p="";
+				for(var i=0;i<margin;i+=12)
+					p+="--";
+				v="|"+p+">"+v;
+			}
+		}
+		data[index]=[v];
+	});
+	if(isSub){
+		var $b=$("#lch_table_body").find("TABLE:visible").find("TR:visible");
+		$b.each(function(index){
+			var r=[];
+			$(this).find("TD:gt(0)").each(function(i){
+				var text=$(this).text();
+				if($(this).find("A").length){
+					text=$(this).find("A").text();
+				}
+				r[i]=text;
+			});
+			data[index]=data[index].concat(r);
+		});
+	}else{
+		var $b=$("#lch_table_body").find("TABLE:visible").find("TR:visible");
+		$b.each(function(index){
+			var r=[];
+			$(this).find("TD").each(function(i){
+				var text=$(this).text();
+				if($(this).find("A").length){
+					text=$(this).find("A").text();
+				}
+				r[i]=text;
+			});
+			data[index]=r;
+		});
 	}
+	
+	
+	var sql="";
+	for(var i=0;i<data.length;i++){
+		if(sql!=''){
+			sql+=" union all ";
+		}
+		sql+=" select * from( select ";
+		
+		var tmp="";
+		for(var j=0;j<data[i].length;j++){
+			if(tmp!=''){ tmp+=","}
+			tmp+="'"+data[i][j]+"' as c"+j;
+		}
+		sql+=tmp+" from dual order by 1) ";
+	}
+	downloadExcel(sql,header,"data");
+}
