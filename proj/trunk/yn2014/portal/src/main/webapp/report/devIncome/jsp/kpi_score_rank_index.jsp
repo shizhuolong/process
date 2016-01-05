@@ -12,6 +12,10 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
 	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	String timeParam=request.getParameter("time");
+	if(timeParam!=null&&!timeParam.equals("")){
+		time=timeParam;
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,14 +32,20 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/kpi_score_rank.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/kpi_score_rank_index.js"></script>
+<style>
+	#lch_DataHead TR TH,#lch_table_corner TR TH,#lch_DataBody TR TD,#lch_table_left TR TD{
+		min-width:40px;
+	}
+</style>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-		<form id="searchForm" method="post">
+	<input type="hidden" id="time" value="<%=time%>">
+		<form id="searchForm" method="post" style="display:none;">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;">账期：</td>
@@ -69,7 +79,7 @@
 				</tr>
 			</table>
 		</form>
-		<div id="lchcontent"></div>
+		<div id="lchcontent" style="margin-right:120px;"></div>
 		<div class="page_count">
 			<div class="page_count_left">
 				共有 <span id="totalCount"></span> 条数据
