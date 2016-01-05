@@ -39,7 +39,7 @@ function search(pageNumber) {
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>"+isNull(n['BIGBUSI_CODE'])+"</td>"
-				+"<td>"+isNull(n['BIGBUSI_DESC'])+"</td>"
+				+"<td><a href='#' onclick='showDetail("+n['BIGBUSI_CODE']+");'>"+isNull(n['BIGBUSI_DESC'])+"</a></td>"
 				+"<td>"+isNull(n['CRE'])+"</td>"
 				+"<td>"+isNull(n['MONEY'])+"</td>";
 				if(isGrantedNew(UPDATE_ROLE)) {
@@ -61,6 +61,54 @@ function search(pageNumber) {
 	});
 }
 
+function showDetail(code){
+	var  sql="select t.bigbusi_desc,busi_code,busi_desc,sources  from ptemp.TB_JCDY_SLJF_BIG_BUSI t where t.bigbusi_code='"+code+"'";
+	var d=query(sql);
+	var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
+		+"<table><thead class='lch_DataHead'>"
+		+"<tr><th>大类描述</th>"
+		+"<th>业务小类编码</th>"
+		+"<th>业务小类描述</th>"
+		+"<th>来源</th></tr>"
+		+"</thead>"
+		+"<tbody class='lch_DataBody'>";
+		
+	for(var i=0;i<d.length;i++){
+		h+="<tr><td>"+isNull(d[i]["BIGBUSI_DESC"])
+		+"</td><td>"+isNull(d[i]["BUSI_CODE"])
+		+"</td><td>"+isNull(d[i]["BUSI_DESC"])
+		+"</td><td>"+isNull(d[i]["SOURCES"])
+		+"</td></tr>";
+	}
+	h+="</table></div>";
+	art.dialog({
+	    title: '详细信息',
+	    content: h,
+	    padding: 0,
+	    lock:true
+	});
+}
+//获取数据
+function query(sql){
+	var ls=[];
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+		data:{
+           "sql":sql
+	   	}, 
+	   	success:function(data){
+	   		if(data&&data.length>0){
+	   			ls=data;
+	   		}
+	    }
+	});
+	//loadWidowMessage(0);
+	return ls;
+}
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
