@@ -56,8 +56,13 @@ function getIndexInfoList() {
             	var htmlStr = '';
             	for(var i=0;i<data.length;i++) {
             		htmlStr += '<tr>';
-            		htmlStr += '<td style="text-align:center;"><input type="checkbox" name="selectIndexCheckbox" value="'+data[i].ID+'" '
+            		if(data[i].CODE_2=="totalscore"&&data[i].CODE_1=="score"){
+	            		htmlStr += '<td style="text-align:center;"><input readonly="readonly" checked type="checkbox" onclick="return false;" name="selectIndexCheckbox" value="'+data[i].ID+'" '
+	            			+' indexType="'+data[i].NAME_1+'" indexName="'+data[i].NAME_2+'" indexUnit="'+data[i].UNIT+'"/></td>';
+            		}else{
+            			htmlStr += '<td style="text-align:center;"><input type="checkbox" name="selectIndexCheckbox" value="'+data[i].ID+'" '
             			+' indexType="'+data[i].NAME_1+'" indexName="'+data[i].NAME_2+'" indexUnit="'+data[i].UNIT+'"/></td>';
+            		}
             		htmlStr += '<td style="text-align:center;">'+data[i].NAME_1+'</td>';
             		htmlStr += '<td style="text-align:center;">'+data[i].NAME_2+'</td>';
             		htmlStr += '</tr>';
@@ -104,9 +109,9 @@ function getSubordinateAreas() {
 //指标全选
 function selectIndexAll(){
 	if ($("#selectIndexAll").attr("checked")) {
-		$("input[name='selectIndexCheckbox']").attr("checked", true);
+		$("input[name='selectIndexCheckbox'][readonly!='readonly']").attr("checked", true);
 	} else {
-		$("input[name='selectIndexCheckbox']").attr("checked", false);
+		$("input[name='selectIndexCheckbox'][readonly!='readonly']").attr("checked", false);
 	}
 }
 
