@@ -48,7 +48,8 @@ public class WorkOrderService {
 	private RepositoryService repositoryService;
 	@Autowired
 	private HistoryService historyService;
-	
+	@Autowired
+	TaskTo4AService taskTo4AService;
 	/**
 	 * 启动流程实例
 	 * @param vo
@@ -76,6 +77,12 @@ public class WorkOrderService {
 		
 		processInstance =runtimeService.startProcessInstanceByKey(vo.getProcessKey(),
 						vo.getBusinessKey(), variables);
+		//添加代办同步云门户
+		try{
+			taskTo4AService.sendNewOrderTo4A(vo);
+		}catch(Exception e){e.printStackTrace();}
+		//添加短信发送
+		//////////////////////
 		return processInstance;
 	}
 	
@@ -378,6 +385,18 @@ public class WorkOrderService {
 		
 		return rsVo;
 	}
+	public WorkOrderVo getWorkOrderInfoByTaskId(String taskId,String type) {
+		
+		Task task = taskService.createTaskQuery().taskId(taskId).includeProcessVariables().includeTaskLocalVariables().singleResult();
+		
+		ProcessDefinition pdf = repositoryService.getProcessDefinition(task.getProcessDefinitionId());
+
+		WorkOrderVo rsVo = new WorkOrderVo(task,pdf,type);
+		List<HashMap> nextUserTaskList = getNextUserTask(taskId);
+		rsVo.setNextUserTaskList(nextUserTaskList);
+		
+		return rsVo;
+	}
 	
 	public List<HashMap> getNextUserTask(String taskId) {
 		List<HashMap> list =  new ArrayList<HashMap>();
@@ -483,6 +502,11 @@ public class WorkOrderService {
 		}
 
 		taskService.complete(workOrderVo.getTaskId(),variables);
+		//添加代办同步云门户
+		try{
+			taskTo4AService.sendDoingOrderTo4A(workOrderVo);
+		}catch(Exception e){e.printStackTrace();}
+		//添加短信发送
 	}
 
 	
