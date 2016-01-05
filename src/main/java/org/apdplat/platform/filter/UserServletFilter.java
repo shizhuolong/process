@@ -21,7 +21,7 @@ import org.slf4j.MDC;
 public class UserServletFilter implements Filter {
 	
 	private final APDPlatLogger logger = new APDPlatLogger(getClass());
-	private List<String> ignore = Arrays.asList(new String[]{"/login.jsp","/exception.jsp","/autoLogin.jsp","/exceptionForAutoLogin.jsp","/common/otherSysLogin!login.action","/appinterfaces/"});
+	private List<String> ignore = Arrays.asList(new String[]{"/login.jsp","/exception.jsp","/autoLogin.jsp","/exceptionForAutoLogin.jsp","/common/otherSysLogin!login.action","/appinterfaces/","/sso-protect"});
 
 	private final String USER_KEY = "username";
 	  

@@ -41,7 +41,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return result;
     }
 
-    @Override
+    public synchronized UserDetails loadUserByMail(String mail) throws DataAccessException {
+        try{
+        	 /* 取得用户 */
+            PropertyCriteria propertyCriteria = new PropertyCriteria(Criteria.or);
+            propertyCriteria.addPropertyEditor(new PropertyEditor("email", Operator.eq, "String",mail));
+            Page<User> page = serviceFacade.query(User.class, null, propertyCriteria);
+            User u=page.getModels().get(0);
+            return loadUserByUsername(u.getUsername());
+        }catch(Exception e){
+            throw e;
+        }
+    }
     public synchronized UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
         try{
         	 //spring security最新版本不保存上一次登录的用户名，所以在这里自己保存
@@ -60,7 +71,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             messages.put(TextEscapeUtils.escapeEntities(username), message);
         }
     }
-    
     public UserDetails load(String username) throws UsernameNotFoundException, DataAccessException {
         message = "密码不正确";
 

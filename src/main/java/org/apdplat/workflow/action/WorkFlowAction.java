@@ -12,8 +12,6 @@ import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JsonConfig;
-
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -32,6 +30,7 @@ import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.exception.BusiException;
 import org.apdplat.platform.util.Pagination;
 import org.apdplat.platform.util.ResultInfo;
+import org.apdplat.workflow.WorkflowConstant;
 import org.apdplat.workflow.common.BaseAction;
 import org.apdplat.workflow.service.WorkOrderService;
 import org.apdplat.workflow.util.DateJsonValueProcessor;
@@ -42,6 +41,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import net.sf.json.JsonConfig;
 
 
 
@@ -70,7 +71,7 @@ public class WorkFlowAction extends BaseAction{
 	@Autowired
 	private WorkOrderService workOrderService;
 	@Autowired
-	private HistoryService historyService;;
+	private HistoryService historyService;
 	
 	private File file;
 	private String fileFileName;
@@ -85,6 +86,16 @@ public class WorkFlowAction extends BaseAction{
 	private String approveUrl;
 	private String isNeedApprover;
 	
+	private String taskId;
+	
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+
 	/**
 	 * 部署流程
 	 */
@@ -258,7 +269,9 @@ public class WorkFlowAction extends BaseAction{
 	 * @return
 	 */
 	public String toProcessWaitDetail() {
-		
+		if(null==workOrderVo&&taskId!=null){
+			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(taskId, WorkflowConstant.WAIT);
+		}
 		String userId = UserHolder.getCurrentLoginUser().getId().toString();
 		if(userId.equals(workOrderVo.getStartMan())){//当前可修改页面
 			this.setApproveUrl(workOrderVo.getEditUrl());
@@ -274,6 +287,9 @@ public class WorkFlowAction extends BaseAction{
 	 * @return
 	 */
 	public String toProcessDoingDetail(){
+		if(null==workOrderVo&&taskId!=null){
+			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(taskId, WorkflowConstant.DOING);
+		}
 		this.setApproveUrl(workOrderVo.getNoEditUrl());//不可编辑的审批页面
 		return "toProcessDoingDetail";
 	}
@@ -282,6 +298,9 @@ public class WorkFlowAction extends BaseAction{
 	 * @return
 	 */
 	public String toProcessDoneDetail(){
+		if(null==workOrderVo&&taskId!=null){
+			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(taskId, WorkflowConstant.DONE);
+		}
 		this.setApproveUrl(workOrderVo.getNoEditUrl());//不可编辑的审批页面
 		return "toProcessDoneDetail";
 	}
