@@ -47,7 +47,7 @@ function listRegions(){
 	var sql="";
 	var time=$("#time").val();
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PORTAL.VIEW_U_PORTAL_PERSON t where 1=1 and t.deal_date='"+time+"' ";
+	var sql = "select distinct t.GROUP_ID_1_NAME from PORTAL.Tab_Portal_Qj_Person t where 1=1 and t.deal_date='"+time+"' ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -92,7 +92,7 @@ function listRegions(){
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PORTAL.VIEW_U_PORTAL_PERSON t where 1=1 and t.deal_date='"+time+"' ";
+	var sql = "select distinct t.UNIT_NAME from PORTAL.Tab_Portal_Qj_Person t where 1=1 and t.deal_date='"+time+"' ";
 	
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
@@ -145,7 +145,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 //条件
-	var sql = " from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON WHERE DEAL_DATE='"+time+"') tr on t.hr_no=tr.HR_ID   where 1=1  ";
+	var sql = " from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.Tab_Portal_Qj_Person WHERE DEAL_DATE='"+time+"') tr on t.hr_no=tr.HR_ID   where 1=1  ";
 	if(time!=''){
 		sql+=" and t.DEAL_DATE='"+time+"' ";
 	}
@@ -282,7 +282,7 @@ function downsAll(){
 	",DEDUCTED_TOTAL                                                                                "+
 	",FACT_TOTAL                                                                                    "+
 	",CASE USER_TYPE WHEN 1.00 then '合同内' else '外包' end user_type                                  "+
-	"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.VIEW_U_PORTAL_PERSON where deal_date='"+time+"') tr on t.hr_no=tr.HR_ID where 1=1 ";
+	"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HR_ID FROM PORTAL.Tab_Portal_Qj_Person where deal_date='"+time+"') tr on t.hr_no=tr.HR_ID where 1=1 ";
 	
 	
 	var userName=$.trim($("#userName").val());

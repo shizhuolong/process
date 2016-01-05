@@ -90,7 +90,7 @@ function search(pageNumber) {
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
 	}
-	
+	sql+=" and t.DEAL_DATE ="+time+" ";
 //权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
