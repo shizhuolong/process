@@ -50,6 +50,8 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['BUSITYPE'])+"</td>";
 				if(isNull(n['BUSIDESC'])=="存费送费、存费送业务"||isNull(n['BUSIDESC'])=="存费送费"){
 					content+="<td style='color:#4095ce'><a href='#' onclick='open1();'>"+isNull(n['BUSIDESC'])+"</a></td>";
+				}else if(isNull(n['BUSIDESC'])=="国际漫游"){
+					content+="<td style='color:#4095ce'><a href='#' onclick='openGjmy();'>"+isNull(n['BUSIDESC'])+"</a></td>";
 				}else if(isNull(n['BUSIDESC'])=="流量包、语音包定制"||isNull(n['BUSIDESC'])=="流量包"){
 					content+="<td style='color:#4095ce'><a href='#' onclick='open2();'>"+isNull(n['BUSIDESC'])+"</a></td>";
 				}else if(isNull(n['BUSIDESC'])=="自备机续约"){
@@ -77,6 +79,59 @@ function search(pageNumber) {
 		   alert("加载数据失败！");
 	    }
 	});
+}
+//获取数据
+function query(sql){
+	var ls=[];
+	//loadWidowMessage(1);
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+		data:{
+           "sql":sql
+	   	}, 
+	   	success:function(data){
+	   		if(data&&data.length>0){
+	   			ls=data;
+	   		}
+	    }
+	});
+	//loadWidowMessage(0);
+	return ls;
+}
+function openGjmy(){
+	var d=query("SELECT PRODUCT_ID,PRODUCT_NAME FROM PTEMP.TB_TMP_GJMY_PRODUCT");
+	var h=''
+		+'<div class="default-dt dt-autoH">                                  '
+		+'	<div class="sticky-wrap">                                         '
+		+'		<table class="default-table sticky-enabled">                  '
+		+'			<thead>                                                   '
+		+'				<tr>                                                  '
+		+'					<th class="first">产品ID</th>                    '
+		+'					<th>产品名称</th>                                  '
+		+'				</tr>                                                 '
+		+'			</thead>                                                  '
+		+'			<tbody id="dataBody">                                     ';
+		if(d&&d.length){
+			for(var i=0;i<d.length;i++){
+				h+="<tr><td>"+isNull(d[i]["PRODUCT_ID"])+"</td><td>"+isNull(d[i]["PRODUCT_NAME"])+"</td></tr>";
+			}
+		}
+		h+='			</tbody>                                                  '
+		+'		</table>                                                      '
+		+'	</div>                                                            '
+		+'</div>                                                             ';
+		
+		
+		art.dialog({
+			    title: '国际漫游',
+			    content: h,
+			    padding: 0,
+			    lock:true
+		});
 }
 function open1(){
 		var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/mrt_234G_fzd_schme.jsp";
