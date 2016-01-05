@@ -48,6 +48,9 @@ function search(pageNumber) {
 	var time=$("#month").val();
 	var regionName=$("#regionName").val();
 	var userName=$.trim($("#userName").val());
+	var phone=$.trim($("#phone").val());
+	var item=$.trim($("#item").val());
+	
 	var orderBy="";
 	var sql=getSql();
 	var hrId=$("#hrId").val();
@@ -61,7 +64,12 @@ function search(pageNumber) {
 	if(userName!=''){
 		sql+=" and NAME LIKE '%"+userName+"%'";
 	}
-	
+	if(phone!=''){
+		sql+=" and SERVICE_NUM LIKE '%"+phone+"%'";
+	}
+	if(item!=''){
+		sql+=" and ITEMCODE LIKE '%"+item+"%'";
+	}
 //权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -154,6 +162,8 @@ function downsAll(){
 	var time=$("#month").val();
 	var regionName=$("#regionName").val();
 	var userName=$.trim($("#userName").val());
+	var phone=$.trim($("#phone").val());
+	var item=$.trim($("#item").val());
 	var orderBy="";
 	var sql=getSql();
 	var hrId=$("#hrId").val();
@@ -167,7 +177,12 @@ function downsAll(){
 	if(userName!=''){
 		sql+=" and NAME LIKE '%"+userName+"%'";
 	}
-	
+	if(phone!=''){
+		sql+=" and SERVICE_NUM LIKE '%"+phone+"%'";
+	}
+	if(item!=''){
+		sql+=" and ITEMCODE LIKE '%"+item+"%'";
+	}
 //权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
