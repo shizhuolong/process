@@ -220,23 +220,38 @@ function downsAll() {
 	var enddate = $.trim($("#enddate").val());
 	var sql="";
 	if (orgLevel == 1) {//省
-		sql = "SELECT MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
+		sql = "SELECT MAX(T.GROUP_ID_1_NAME) AS AREANAME,MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
 		" WHERE T.DEAL_DATE BETWEEN '"+startdate+"' and '"+enddate+"' " +
 		"GROUP BY GROUP_ID_1,UNIT_ID ORDER BY GROUP_ID_1,UNIT_ID";
 	} else if (orgLevel == 2) {//市
-		sql = "SELECT MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
+		sql = "SELECT MAX(T.GROUP_ID_1_NAME) AS AREANAME,MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
 		" WHERE T.GROUP_ID_1 = '"+code+"' AND T.DEAL_DATE BETWEEN '"+startdate+"' and '"+enddate+"' " +
 		"GROUP BY UNIT_ID ORDER BY UNIT_ID";
 	} else if (orgLevel == 3) {//营服中心
-		sql = "SELECT MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
+		sql = "SELECT MAX(T.GROUP_ID_1_NAME) AS AREANAME,MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
 		" WHERE T.UNIT_ID = '"+code+"' AND T.DEAL_DATE BETWEEN '"+startdate+"' and '"+enddate+"' " +
 		"GROUP BY UNIT_ID ";
 	} else{
-		sql = "SELECT MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
+		sql = "SELECT MAX(T.GROUP_ID_1_NAME) AS AREANAME,MAX(T.UNIT_NAME) AS GROUPNAME," + getSumSql() +
 		" WHERE 1=2 " +
 		"GROUP BY UNIT_ID";
 	}
 	
 	showtext = '成本费用展现报表-' + startdate+"-"+enddate;
+	
+	var title=[["地市","营服中心","出帐收入(扣减赠费、退费)","","","","","","","成本费用合计","佣金","","","","","",
+	            
+	            "紧密外包费用","客户接入成本（含开通费及终端）"/**/,
+	            "渠道补贴","终端补贴",
+	            "卡成本","营业厅房租",
+	            "水电物业费","广告宣传费","业务用品印制及材料费",
+	            
+	            "营销费用小计"/**/,"办公费","车辆使用费",
+	            "招待费","差旅费","通信费","行政费用小计","毛利润"],
+	            ["","","合计","2G","3G","4G",
+	             "宽带","专租线","固话","","合计",
+	             "2G","3G","4G","固网","公共佣金",
+	             "","","","","","","","","","","","","","","","",""]];
+	
 	downloadExcel(sql,title,showtext);
 }
