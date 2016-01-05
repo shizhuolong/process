@@ -42,8 +42,8 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['FD_CHNL_ID'])+"</td>"
 				+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>";
-				if(taskId&&taskId=="commissionManagerAudit"&&n['INTEGRAL_GRADE']!='D'){//如果是佣金管理员
-					content+="<td><input type='text' value='"+isNull(n['IS_JF'])+"' /><a href='#' ljAll='"+n['LJ_JF_DH']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateJF(this);'>保存</a></td>";
+				if(taskId&&taskId=="commissionManagerAudit"&&n['INTEGRAL_GRADE']!='D'){//如果是佣金管理员--
+					content+="<td><input type='text' value='"+isNull(n['IS_JF'])+"' /><a href='#' ljAll='"+n['UP_JF']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateJF(this);'>保存</a>&nbsp;<font color='gray'>(最大:"+isNull(n['UP_JF'])+"分)</font></td>";
 				}else{//1、数字要小于等于LJ_JF_DH 2、INTEGRAL_GRADE=‘D’ 不出现录入框 
 					content+="<td>"+isNull(n['IS_JF'])+"</td>";
 				}
@@ -89,7 +89,11 @@ function updateJF(a){
 	ljAll=parseFloat(ljAll);
 	isJfNum=parseFloat(isJf);
 	if(isJfNum>ljAll){
-		alert("录入积分不能大于累计可兑换积分");
+		alert("录入积分不能大于当期可兑换对多积分");
+		return;
+	}
+	if(isJfNum<0){
+		alert("录入积分不能为负积分");
 		return;
 	}
 	$.ajax({
@@ -126,7 +130,10 @@ function initPagination(totalCount) {
 }
 
 function isNull(obj){
-	if(obj == undefined || obj == null || obj == '' || obj == null) {
+	if(obj==0){
+		return obj;
+	}
+	if(obj == undefined || obj == null || obj == '') {
 		return "&nbsp;";
 	}
 	return obj;
@@ -144,11 +151,13 @@ function downsAll(){
 	sql+=" 	       FD_CHNL_ID,                                                       ";
 	sql+=" 	       GROUP_ID_4_NAME,                                                  ";
 	sql+=" 	       IS_JF,                                                            ";
+	sql+=" 	       UP_JF,                                                            ";
 	sql+=" 	       IS_COMM IS_JF_JE,                                                 ";
 	sql+=" 	       IS_JF_LJ_ALL IS_JF_LJ_ALL,                                        ";
-	sql+=" 	       IS_COMM_LJ_ALL IS_COMM_LJ_ALL,                                    ";
 	sql+=" 	       IS_JF_SPLUS_ALL  IS_JF_SPLUS_ALL,                                 ";
+	sql+=" 	       IS_COMM_LJ_ALL IS_COMM_LJ_ALL,                                    ";
 	sql+=" 	       DEPT_TYPE,                                                        ";
+	sql+=" 	       HZ_MONTH,                                                        ";
 	sql+=" 	       INTEGRAL_GRADE,                                                   ";
 	sql+=" 	       nvl(ALL_JF_TOTAL, 0) ALL_JF_TOTAL,                                ";
 	sql+=" 	       nvl(ALL_JF_QS, 0) ALL_JF_QS,                                      ";
@@ -173,8 +182,8 @@ function downsAll(){
 	
 	
 	var title=[["账期","地市","营服中心","HR编码","人员姓名","渠道编码","渠道名称",
-	            "手工兑换积分","手工兑换金额","累计已兑积分","累计剩余积分","累计已兑金额",
-	            "渠道属性","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额",
+	            "手工兑换积分","最大可兑换积分","手工兑换金额","累计已兑积分","累计剩余积分","累计已兑金额",
+	            "渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额",
 	            "本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额"]];
 	var showtext =$("#workTitle").val();
 	downloadExcel(sql,title,showtext);
