@@ -61,6 +61,10 @@
 					<td width="10%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
+					<td width="5%">电话：</td>
+					<td width="10%">
+						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
+					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>

@@ -199,6 +199,7 @@ $(function(){
                                 <div classType="left-module" moduleid="left-4" title="游离渠道">
                                     <span><i class="menu-toDo"></i>游离渠道</span>
                                     <a href="javascript:void(0);" onclick="searchfreeChannel(this)" id="freechannel">游离渠道:0</a>
+                                    <a href="javascript:void(0);" onclick="searchNoPositionChannel(this)" id="nopositionchannel">未定位渠道:0</a>
                                     <a href="javascript:void(0);" onclick="searchfreeCommunity(this)" id="freecommunity">游离小区:0</a>
                                 </div>
                                 
@@ -308,6 +309,18 @@ $(function(){
 													<tbody>
 													</tbody>
 												</table>
+											</div>
+										</div>
+										<div class="sub-module" moduleid="center-1-5" subtitle="KPI排名" title="KPI排名" style="padding: 0;">
+											<div class="default-dt dt-autoH" style="margin-top: 15px;">
+												<ul id="chose-place-count" class="bold clearfix">
+													<li>KPI排名—<i class="fa830b" id="kpiTime"><%=prevMonth%></i></li>
+												</ul>
+												<div id="kpipm" class="myItem"
+													style="height: 500px; width: 100%; position: absolute; z-index: 8888;">
+													<iframe name="kpipmWin" id="kpipmWin" scrolling="auto"
+														frameborder="0" width="100%" height="100%" src=""></iframe>
+												</div>
 											</div>
 										</div>
 									</div>
