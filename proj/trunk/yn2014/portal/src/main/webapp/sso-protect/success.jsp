@@ -4,7 +4,7 @@
 <%@page import="com.sso.hp.utils.HttpUtil"%>
 <%@page import="com.ynunicom.sso.AppConstant"%>
 <%@page import="org.apache.struts2.ServletActionContext"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.List"%> 
 
 <%@page import="org.apdplat.platform.log.APDPlatLogger"%>
 <%@page import="org.apdplat.module.security.service.UserDetailsServiceImpl"%>
@@ -49,12 +49,11 @@
 		System.out.println("url===" + url);
 		Document doc = HttpUtil.XmlForSendRequest(url); //获取XML返回信息
 		System.out.println("doc======================" + doc);
-
 		String sePath = ServletActionContext.getServletContext().getRealPath("/sso-protect/server_rsa.cer");
 		System.out.println(sePath + "sePath");
 		boolean xm1 = XmlUtil.CheckSign(doc, sePath);
 		System.out.println("xm1=" + xm1 + "===" + XmlUtil.CheckSign(doc, sePath));
-
+	
 		if (XmlUtil.CheckSign(doc, sePath)) {//校验签名
 			String str = XmlUtil.GetStatus(doc);//获取返回SAML中的状态信息
 			System.out.println("str=" + str);
@@ -78,18 +77,16 @@
 		System.out.println(error_info + "=====error info");
 	}
 	if (status) {
-
-		System.out.println(userentry.getMail() + "================");
-		String mail=userentry.getMail().toLowerCase();
-		
+		String userName=userentry.getUserid();
 		APDPlatLogger LOG = new APDPlatLogger(this.getClass());
 		UserDetailsServiceImpl userDetailsServiceImpl=null;
-
-		if (userDetailsServiceImpl == null) {
-			userDetailsServiceImpl = SpringContextUtils.getBean("userDetailsServiceImpl");
-		}
+		userDetailsServiceImpl = SpringContextUtils.getBean("userDetailsServiceImpl");
 		if (userDetailsServiceImpl != null) {
-			userDetails = userDetailsServiceImpl.loadUserByMail(mail);
+			try{
+				userDetails = userDetailsServiceImpl.loadUserByUsername(userName);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 			if(userDetails!=null){
 				UserHolder.saveUserDetailsToContext(userDetails, (HttpServletRequest) request);
 			}else{
@@ -106,6 +103,9 @@
 <%
 	} else {
 		if (returnurl != null && returnurl.length() > 0) {
+			if(returnurl.contains("/portal/sso-protect/index.jsp")){
+				returnurl="/portal/platform/index.jsp";
+			}
 %>
 			<script type="text/javascript">document.location='<%=returnurl.replace("/sso-protect", "")%>';</script>
 <%
