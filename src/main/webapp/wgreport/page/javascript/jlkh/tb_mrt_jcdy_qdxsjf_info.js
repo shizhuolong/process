@@ -21,7 +21,7 @@ jQuery(function(){
 	});
 	var _limit=20;
 	var c=cols.join(",");
-	var sql = "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO  WHERE DEAL_DATE = "+deal_date;
+	var sql = "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO  partition(P"+deal_date+") WHERE 1 = 1 ";
 			if(group_level == 1) {
 			}else if(group_level==2) {
 				sql += "AND GROUP_ID_1 = '"+group_id+"' ";
@@ -49,7 +49,7 @@ jQuery(function(){
 		var remark=$("#remark").val();
 		var fsql = getSelect();
 		var c=cols.join(",");
-		var sql = "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO  WHERE DEAL_DATE = " + deal_date +fsql;
+		var sql = "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO partition(P"+deal_date+")  WHERE 1=1  "  +fsql;
 		if(group_level == 1) {
 		}else if(group_level==2) {
 			sql += " AND GROUP_ID_1 = '"+group_id+"' ";
@@ -256,7 +256,7 @@ function downsAll(){
 	var remark=$("#remark").val();
 	var fsql = getSelect();
 	var c=cols.join(",");
-	var sql =  "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO  WHERE DEAL_DATE = " + deal_date +fsql ;
+	var sql =  "select "+c+" from PMRT.TB_MRT_JCDY_QDXSJF_INFO partition(P"+deal_date+")  WHERE 1 = 1" +fsql ;
 	if(group_level == 1) {
 	}else if(group_level==2) {
 		sql += " AND GROUP_ID_1 = '"+group_id+"' ";
