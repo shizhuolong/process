@@ -96,6 +96,7 @@ function listPerson(pageNumber) {
 				+"<td>" +
 					"<input type='radio' hr_id='"+isNull(n['HR_ID'])+"' phone='"+isNull(n['PHONE'])+"' username='"+isNull(n['USERNAME'])+"' name='"+isNull(n['REALNAME'])+"' name='ckperson' value='"+n['ID']+"'>" +
 				"</td>"
+				+"<td>"+isNull(n['HR_ID'])+"</td>"
 				+"<td>"+isNull(n['REALNAME'])+"</td>"
 				+"<td>"+isNull(n['USERNAME'])+"</td>"
 				+"<td>"+isNull(n['PHONE'])+"</td>";
