@@ -40,6 +40,7 @@ String deal_date = request.getParameter("deal_date");
 					<thead>
 						<tr>
 							<th class="first">选择</th>
+							<th>HR编码</th>
 							<th>姓名</th>
 							<th>帐号</th>
 							<th>联系电话</th>
