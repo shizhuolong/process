@@ -25,6 +25,7 @@ $(function() {
 			        type: "POST",
 			        async:false,
 			        cache:false,
+			        dataType:"json",
 			        url:$("#ctx").val()+'/assessment/saleTargetConfig_validUpdateSaleTarget.action',
 			        data:{itemcode:itemcode,itemdesc:itemdesc,sourcecode:sourcecode},
 			        success:function(r){
