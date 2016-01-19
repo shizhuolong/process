@@ -59,7 +59,7 @@
 	
 	<update id="updateTarget" parameterType="java.util.Map">
 		 UPDATE PODS.TB_ODS_JCDY_SALLCRE T SET T.ITEMCODE = #{itemcode},T.ITEMDESC = #{itemdesc},
-		 T.BUSITYPE = #{busitype},T.BUSIDESC = #{busitype},
+		 T.BUSITYPE = #{busitype},T.BUSIDESC = #{busidesc},
 		 T.CRE =#{cre},T.MONEY =#{money},T.STATE = #{state} 
 		 WHERE T.SOURCECODE = #{sourcecode}
 	</update>
