@@ -42,27 +42,32 @@
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="20%">
-						<input type="text"  class="Wdate default-text-input wper20" 
+					<td width="15%">
+						<input type="text" class="Wdate default-text-input wper20" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="month">
 					</td>
 					<td width="5%" style="padding-left: 10px;display:none;">环比</td>
-					<td width="20%" style="display:none;">
-						<input type="checkbox"   id="mmBtn"/>
+					<td width="10%" style="display:none;">
+						<input type="checkbox" id="mmBtn"/>
 					</td>
-					<td width="5%">
+					<td width="2%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>
 					</td>
-					<td width="5%">
+					<td width="2%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
 	</form>
+	
 	<div id="content">
 	</div>
-<script>
-
-</script>
+	<div id="mark" style="color:red;font-size:15px;">
+		备注：</br>
+		1.发展收入优先直销发展人归集，归不到直销发展人的用户会归到渠道经理</br>
+        2.移网收入：剔除了挂账、赠费和退费</br>
+        3.固网收入：剔除挂账、赠费和帐后调账</br>
+        4.4G收入从201601账期开始也做剔除赠费操作
+	</div>
 </html>

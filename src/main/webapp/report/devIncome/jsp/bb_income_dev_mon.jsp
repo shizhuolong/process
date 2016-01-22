@@ -40,39 +40,45 @@
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="20%">
+					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper40" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="time">
 					</td>
 					<td width="4%">地市：</td>
-					<td width="15%">
+					<td width="10%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="8%">营服中心：</td>
-					<td width="15%">
+					<td width="10%">
 						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="8%">小区名称：</td>
-					<td width="15%">
+					<td width="10%">
 						<input class="default-text-input wper80" name="stdName" type="text" id="stdName"/>
 					</td>
-					<td width="5%">
+					<td width="2%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>
 					</td>
-					<td width="5%">
+					<td width="2%">
+						<a class="default-btn" href="#" id="showMark"
+						style="float: right; margin-right: 48px;">口径</a>
+					</td>
+					<td width="2%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
 	</form>
+	<div id="mark" style="display:none;color:red;font-size:15px;">
+		   备注：</br>
+		 1.发展收入直接对到渠道经理不存在优先发展人(昆明、省集客除外)</br>
+         2.收入：剔除挂账、赠费和帐后调账</br>                                                  
+	</div>
 	<div id="content">
 	</div>
-<script>
-
-</script>
 </html>
