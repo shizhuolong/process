@@ -33,8 +33,12 @@ var field=[
 var orderBy='';	
 $(function(){
 	listRegions();
-	
-	var report=new LchReport({
+	$("#showMark").mouseenter(function(){ 
+		$("#mark").show();
+	}).mouseleave(function(){ 
+		$("#mark").hide();
+	}); 
+var report=new LchReport({
 		title:[
 ["营销架构",
  
