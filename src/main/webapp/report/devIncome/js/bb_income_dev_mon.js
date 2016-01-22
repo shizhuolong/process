@@ -26,7 +26,11 @@ var field=[
 var orderBy='';	
 $(function(){
 	listRegions();
-	
+	$("#showMark").mouseenter(function(){ 
+		$("#mark").show();
+	}).mouseleave(function(){ 
+		$("#mark").hide();
+	}); 
 	var report=new LchReport({
 		title:[["营销架构","宽带收入","","","","","宽带发展量","","","","","宽带在网用户数","","","","","宽带出账用户数","","","",""],
 		       ["","合计","ADSL收入","LAN收入","EOC收入","FTTH收入",
