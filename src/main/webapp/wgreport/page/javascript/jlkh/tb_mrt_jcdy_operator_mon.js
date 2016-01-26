@@ -65,7 +65,7 @@ jQuery(function(){
 		if(user_name != "") {
 			sql += " AND USER_NAME LIKE '%"+user_name+"%' ";
 		}
-		sql+="ORDER BY GROUP_ID_1"
+		sql+=" ORDER BY GROUP_ID_1"
 		init(sql);
 	});
 	
@@ -162,7 +162,13 @@ jQuery(function(){
 					if(strn[j] == null || strn[j] == "") {
 						res += "<td style='text-align: left;'>&nbsp;</td>";
 					}else {
-						res += "<td style='text-align: left;'>" + strn[j] + "</td>";
+						if(j==2){
+							res += '<td style="text-align: left;"><a style="cursor:pointer;" href="javascript:openDetail(\''+strn[j]+'\');">' + strn[j] + '</a></td>';
+						}else if(j==3){
+							res += '<td style="text-align: left;"><a style="cursor:pointer;" href="javascript:openDetail(\''+strn[j-1]+'\');">' + strn[j] + '</a></td>';
+						}else{
+							res += "<td style='text-align: left;'>" + strn[j] + "</td>";
+						}
 					}
 				}
 			}  
@@ -233,7 +239,21 @@ function getSelect() {
 	} 
 	return filter;
 }
-
+function openDetail(hr_id){
+	var url = $("#ctx").val()+"/wgreport/page/jsp/jlkh/operator_mon_detail.jsp";
+	var deal_date=$("#deal_date").val();
+	art.dialog.data('deal_date',deal_date);
+	art.dialog.data('hr_id',hr_id);
+	art.dialog.open(url,{
+		id:'detailDialog',
+		width:'1300px',
+		height:'500px',
+		title:'受理积分明细',
+		lock:true,
+		resize:false
+	});
+	//$(".aui_dialog").find("tbody").find("tr:eq(0)").remove();
+}
 //导出excel
 function downsAll(){
 	
@@ -258,7 +278,7 @@ function downsAll(){
 	if(user_name != "") {
 		sql += " AND USER_NAME LIKE '%"+user_name+"%' ";
 	}
-	sql+="ORDER BY GROUP_ID_1"
+	sql+=" ORDER BY GROUP_ID_1"
 	var showtext="Sheet";
 	   var showtext1="result";
 	   var _head=["账期","营服中心","HR编码","人员姓名","总受理量","受理积分","服务积分","增值业务积分","总受理积分","服务调节积分","区域调节积分","积分金额"];
