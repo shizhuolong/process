@@ -32,6 +32,7 @@
 <link href="<%=path %>/wgreport/bireport/css/ana/modal-1.css" rel="stylesheet" type="text/css" />
 <link href="<%=path %>/wgreport/bireport/css/ana/img.css" rel="stylesheet" type="text/css" />
 <link href="<%=path %>/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="<%=path %>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=path%>/wgreport/bireport/js/main.js"></script>
@@ -40,6 +41,8 @@
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=path %>/wgreport/bireport/js/analize/helper.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 
 <script type="text/javascript" src="<%=path %>/wgreport/page/javascript/jlkh/tb_mrt_jcdy_operator_mon.js"></script>
 
