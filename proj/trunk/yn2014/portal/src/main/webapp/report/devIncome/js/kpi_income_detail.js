@@ -50,8 +50,8 @@ function search(pageNumber) {
 	var time=$.trim($("#time").val());
 	var regionName=$.trim($("#regionName").val());
 	var unitName=$.trim($("#unitName").val());
-	var userName=$.trim($("#userName").val());
-	var userCode=$.trim($("#userCode").val());
+	var userName=$.trim($("#useName").val());
+	var userPhone=$.trim($("#userPhone").val());
 	var regionCode=$.trim($("#regionCode").val());
 //条件
 	var sql = "SELECT T.DEAL_DATE 账期,                                    "+
@@ -103,8 +103,8 @@ function search(pageNumber) {
 	if(userName!=''){
 		sql+=" AND (T.NAME LIKE '%"+userName+"%' OR  T1.NAME LIKE '%"+userName+"%' OR T2.NAME LIKE '%"+userName+"%')";
 	}
-	if(userCode!=''){
-		sql+=" AND T.DEVICE_NUMBER ='"+userCode+"'";
+	if(userPhone!=''){
+		sql+=" AND T.DEVICE_NUMBER ='"+userPhone+"'";
 	}
 //权限
 	
@@ -296,8 +296,8 @@ function downsAll(){
 
 	var regionName=$.trim($("#regionName").val());
 	var unitName=$.trim($("#unitName").val());
-	var userName=$.trim($("#userName").val());
-	var userCode=$.trim($("#userCode").val());
+	var userName=$.trim($("#useName").val());
+	var userPhone=$.trim($("#userPhone").val());
 	var regionCode=$.trim($("#regionCode").val());
 	
 	if(regionName!=''){
@@ -309,8 +309,8 @@ function downsAll(){
 	if(userName!=''){
 		sql+=" AND (T.NAME LIKE '%"+userName+"%' OR  T1.NAME LIKE '%"+userName+"%' OR T2.NAME LIKE '%"+userName+"%')";
 	}
-	if(userCode!=''){
-		sql+=" AND T.DEVICE_NUMBER ='"+userCode+"'";
+	if(userPhone!=''){
+		sql+=" AND T.DEVICE_NUMBER ='"+userPhone+"'";
 	}
 	
 	
