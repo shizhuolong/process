@@ -22,11 +22,11 @@
    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
    <title>效益分析展现报表</title>
    <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
-   <link href="<%=path%>/report/devIncome/css/lch-report-fix.css" rel="stylesheet" type="text/css" />
+   <link href="<%=path%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
    <link href="<%=path %>/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
    <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
    <script type="text/javascript" src="<%=path%>/js/My97DatePicker/WdatePicker.js"></script>
-   <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report-fix.js"></script>
+   <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
    <script type="text/javascript" src="<%=path%>/wgreport/page/javascript/costManagement/cost_ept_analysis1.js"></script>
 </head>
   <body style="overflow-x:auto;">
