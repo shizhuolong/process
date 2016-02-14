@@ -218,7 +218,7 @@ function downsAll() {
 	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME,T1.HR_ID,T1.HR_ID_NAME,T1.GROUP_ID_4,T1.GROUP_ID_4_NAME";
 	var where="WHERE T1.INTEGRAL_SUB = '1' AND T1.DEAL_DATE ='"+month+"'";
 	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HR_ID,T1.GROUP_ID_4";
-	var sql="SELECT T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HR_ID_NAME,T1.GROUP_ID_4_NAME,"+getSumSql(field);
+	var sql="SELECT T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HR_ID_NAME,T1.GROUP_ID_4_NAME,T1.GROUP_ID_4,"+getSumSql(field);
 	var channelName=$.trim($("#channelName").val());
 	if(channelName!=""&&channelName!=null){
 		where+=" AND T1.CHANNEL_NAME LIKE '%"+channelName+"%'";
@@ -236,8 +236,8 @@ function downsAll() {
 	}
 	sql+=where+groupBy+orderBy;
 	showtext = '社会渠道积分分值分布月表-' + month;
-	var title=[["州市","营服中心","人员","渠道","S","","A","","B","","C","","D","","待评","","合计",""],
-	           ["","","","","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分"]]
+	var title=[["州市","营服中心","人员","渠道","渠道编码","S","","A","","B","","C","","D","","待评","","合计",""],
+	           ["","","","","","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分","渠道数量","平均积分"]];
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
