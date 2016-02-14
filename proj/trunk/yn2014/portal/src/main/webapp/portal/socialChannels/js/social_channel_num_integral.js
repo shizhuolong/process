@@ -290,10 +290,10 @@ function downsAll() {
 	var month = $("#month").val();
     var code=$("#code").val();
     var level=$("#orgLevel").val();
-	var groupBy=" GROUP BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME,T1.HR_ID,T1.HR_ID_NAME,T1.GROUP_ID_4,T1.GROUP_ID_4_NAME";
+	var groupBy=" GROUP BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME,T1.HR_ID,T1.HR_ID_NAME,T1.GROUP_ID_4,T1.GROUP_ID_4_NAME,T1.FD_CHNL_ID";
 	var where="  AND T1.DEAL_DATE ='"+month+"' AND T1.INTEGRAL_SUB = 1 ";
-	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HR_ID,T1.GROUP_ID_4 ";
-	var sql="SELECT T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HR_ID_NAME,T1.GROUP_ID_4_NAME,"+getSumSql(field);
+	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HR_ID,T1.GROUP_ID_4,T1.FD_CHNL_ID ";
+	var sql="SELECT T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HR_ID_NAME,T1.GROUP_ID_4_NAME,T1.FD_CHNL_ID,"+getSumSql(field);
 	var channelName=$.trim($("#channelName").val());
 	if(channelName!=""&&channelName!=null){
 		where+=" AND T1.CHANNEL_NAME LIKE '%"+channelName+"%'";
@@ -311,8 +311,8 @@ function downsAll() {
 	}
 	sql+=where+groupBy+orderBy;
 	showtext = '社会渠道积分分值分布月表-' + month;
-	var title=[["账期","地市","营服中心","人员名称","渠道名称","S","","","","A","","","","B","","","","C","","","","D","","","","待评","","",""],
-	           ["","","","","","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计"]]
+	var title=[["账期","地市","营服中心","人员名称","渠道名称","渠道编码","S","","","","A","","","","B","","","","C","","","","D","","","","待评","","",""],
+	           ["","","","","","","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计","合作营业厅","专营店","代理点","合计"]];
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////

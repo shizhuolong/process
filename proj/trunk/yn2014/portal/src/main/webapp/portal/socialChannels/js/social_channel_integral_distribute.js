@@ -215,10 +215,10 @@ function downsAll() {
 	var month = $("#month").val();
     var code=$("#code").val();
     var level=$("#orgLevel").val();
-	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME,T1.HR_ID,T1.HR_ID_NAME,T1.GROUP_ID_4,T1.GROUP_ID_4_NAME";
+	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME,T1.HR_ID,T1.HR_ID_NAME,T1.GROUP_ID_4,T1.GROUP_ID_4_NAME,T1.FD_CHNL_ID";
 	var where="WHERE T1.INTEGRAL_SUB = '1' AND T1.DEAL_DATE ='"+month+"'";
-	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HR_ID,T1.GROUP_ID_4";
-	var sql="SELECT T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HR_ID_NAME,T1.GROUP_ID_4_NAME,T1.GROUP_ID_4,"+getSumSql(field);
+	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HR_ID,T1.GROUP_ID_4,T1.FD_CHNL_ID";
+	var sql="SELECT T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HR_ID_NAME,T1.GROUP_ID_4_NAME,T1.FD_CHNL_ID,"+getSumSql(field);
 	var channelName=$.trim($("#channelName").val());
 	if(channelName!=""&&channelName!=null){
 		where+=" AND T1.CHANNEL_NAME LIKE '%"+channelName+"%'";
