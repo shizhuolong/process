@@ -72,31 +72,26 @@ function add() {
 		title:'增加唯一身份管理'
 	});
 }
-/*function update(obj) {
+function update(obj) {
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/tab_portal_qj_person_update.jsp";
-	var job_type=obj.attr("job_type");
 	var job=obj.attr("job");
-	var regionCode=obj.attr("regioncode");
 	var hr_id=obj.attr("hr_id");
-	var name=obj.attr("name");
-	var unit_name=obj.attr("unit_name");
-	
+	var is_logo=obj.attr("is_logo");
+	var chooseMonth=obj.attr("chooseMonth");
 	art.dialog.data('hr_id',hr_id);
-	art.dialog.data('job_type',job_type);
-	art.dialog.data('regionCode',regionCode);
-	art.dialog.data('unit_name',unit_name);
-	art.dialog.data('name',name);
 	art.dialog.data('job',job);
+	art.dialog.data('is_logo',is_logo);
+	art.dialog.data('chooseMonth',chooseMonth);
 	art.dialog.open(url,{
 		id:'update',
 		width:'420px',
-		height:'170px',
+		height:'140px',
 		padding:'0 0',
 		lock:true,
 		resize:false,
 		title:'修改唯一身份管理'
 	});
-}*/
+}
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var name = $.trim($("#name").val());
@@ -160,7 +155,8 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['HR_ID'])+"</td>"
 				+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
 				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
-			 +"<td><a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
+			 +"<td><a onclick='update($(this))' chooseMonth='"+chooseMonth+"' job='"+isNull(n['JOB'])+"' is_logo='"+isNull(n['IS_LOGO'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
+			 		"<a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
 			 });
 	   	    }else{
@@ -204,8 +200,8 @@ function initPagination(totalCount) {
 }
 
 function isNull(obj){
-	if(obj == undefined || obj == null || obj == '' || obj == null) {
-		return "&nbsp;";
+	if(obj == undefined || obj == null) {
+		return "";
 	}
 	return obj;
 }
