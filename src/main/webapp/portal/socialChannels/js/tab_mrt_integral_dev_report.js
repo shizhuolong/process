@@ -1,8 +1,8 @@
 var nowData = [];
 var field=[
-"账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分","手工录入兑换积分","IS_COMM","BJ_COMM"
+"账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分","手工录入兑换积分","手工录入兑换金额","应补结金额"
 ];
-var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分","手工录入兑换积分","手工录入兑换金额","应补结30%金额"]];
+var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","渠道属性","合作月份","渠道等级","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","自201506账期累计已兑积分","自201506账期累计已兑金额","自201506账期累计剩余积分","手工录入兑换积分","手工录入兑换金额","应补结金额"]];
 var orderBy='';	
 var report = null;
 var UPDATE_ROLE = "ROLE_MANAGER_WORKFLOWMANAGER_QDXJGL_REPORT_REPORT_UPDATEPART";
@@ -192,32 +192,32 @@ function update(obj){
 	});
 }
 function getSql(){
-	var s=" SELECT DEAL_DATE 账期                                             "+
-	",GROUP_ID_1_NAME  地市                                            "+
-	",UNIT_NAME  基层单元                                              "+
-	",HR_ID  HR编码                                                    "+
-	",HR_ID_NAME  人员名                                               "+
-	",FD_CHNL_ID  渠道编码                                             "+
-	",GROUP_ID_4_NAME  渠道名                                          "+
-	",DEPT_TYPE 渠道属性                                               "+
-	",HZ_MONTH 合作月份                                                "+
-	",integral_grade 渠道等级                                          "+
-	",nvl(ALL_JF_TOTAL,0) 本月积分                                     "+
-	",nvl(ALL_JF_QS,0) 本月清算积分                                    "+
-	",NVL(ALL_JF_TOTAL,0) + NVL(ALL_JF_QS,0) 本月可兑积分              "+
-	",DECODE(INTEGRAL_GRADE,'D',NULL,NVL(COMM,0)) 本月可兑金额         "+
-	",NVL(LJ_JF_TOTAL,0) 本半年累计积分                                "+
-	",NVL(LJ_JF_QS,0) 本半年累计清算积分                               "+
-	",NVL(LJ_JF_DH,0) 本半年累计可兑积分                               "+
-	",DECODE(INTEGRAL_GRADE,'D',NULL,NVL(LJ_COMM,0)) 本半年累计可兑金额,"+
-	"IS_JF 手工录入兑换积分,"+
-	"IS_JF_LJ_ALL 自201506账期累计已兑积分,"+
-	"IS_COMM_LJ_ALL 自201506账期累计已兑金额,"+
-	"IS_JF_SPLUS_ALL 自201506账期累计剩余积分,"+
-	"BJ_COMM BJ_COMM,"+
-	"IS_COMM IS_COMM"+
-	" FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT                            "+
-	" WHERE INTEGRAL_SUB = 1                                          ";
+	var s="SELECT DEAL_DATE 账期,                                                       "+
+	"       GROUP_ID_1_NAME 地市,                                                 "+
+	"       UNIT_NAME 基层单元,                                                   "+
+	"       HR_ID HR编码,                                                         "+
+	"       HR_ID_NAME 人员名,                                                    "+
+	"       FD_CHNL_ID 渠道编码,                                                  "+
+	"       GROUP_ID_4_NAME 渠道名,                                               "+
+	"       DEPT_TYPE 渠道属性,                                                   "+
+	"       HZ_MONTH 合作月份,                                                    "+
+	"       integral_grade 渠道等级,                                              "+
+	"       nvl(ALL_JF_TOTAL, 0) 本月积分,                                        "+
+	"       nvl(ALL_JF_QS, 0) 本月清算积分,                                       "+
+	"       NVL(ALL_JF_TOTAL, 0) + NVL(ALL_JF_QS, 0) 本月可兑积分,                "+
+	"       DECODE(INTEGRAL_GRADE, 'D', NULL, NVL(COMM, 0)) 本月可兑金额,         "+
+	"       NVL(LJ_JF_TOTAL, 0) 本半年累计积分,                                   "+
+	"       NVL(LJ_JF_QS, 0) 本半年累计清算积分,                                  "+
+	"       NVL(LJ_JF_DH, 0) 本半年累计可兑积分,                                  "+
+	"       DECODE(INTEGRAL_GRADE, 'D', NULL, NVL(LJ_COMM, 0)) 本半年累计可兑金额,"+
+	"       IS_JF_LJ_ALL 自201506账期累计已兑积分,                                "+
+	"       IS_COMM_LJ_ALL 自201506账期累计已兑金额,                              "+
+	"       IS_JF_SPLUS_ALL 自201506账期累计剩余积分,                             "+
+	"       IS_JF 手工录入兑换积分,                                               "+
+	"       IS_COMM 手工录入兑换金额,                                                 "+
+	"       BJ_COMM 应补结金额                                                 "+
+	"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT                                 "+
+	" WHERE INTEGRAL_SUB = 1                                                  ";
 	return s;
 }
 function listRegions(){
