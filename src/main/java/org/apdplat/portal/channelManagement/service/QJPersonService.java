@@ -33,9 +33,9 @@ public class QJPersonService {
 	public void insertToResult(Map<String, String> m) {
 		qjPersonDao.insertToResult(m);
 	}
-/*	public void updateToResult(Map<String, String> m) {
+	public void updateToResult(Map<String, String> m) {
 		qjPersonDao.updateToResult(m);
-	}*/
+	}
 	public Map<String, String> isHrIdRepeat(String hr_id) {
 		return qjPersonDao.isHrIdRepeat(hr_id);
 	}
