@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	String appid = AppConstant.appId;		//当前应用系统的APPID，根据实际情况填写
          String returnurl = request.getParameter("return");
   		 String jobId = request.getParameter("jobId");
-         returnurl = returnurl==null?"":returnurl;
+         returnurl = returnurl==null?"":returnurl; 
          
          String baseUrl = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
   		 jobId = jobId == null ? "" : jobId;
