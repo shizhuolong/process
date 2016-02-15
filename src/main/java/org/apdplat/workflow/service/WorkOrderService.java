@@ -79,6 +79,11 @@ public class WorkOrderService {
 						vo.getBusinessKey(), variables);
 		//添加代办同步云门户
 		try{
+			//发起的时候要注意组装参数
+			vo.setTaskId(vo.getBusinessKey());
+			vo.setStartManName(user.getRealName());
+			vo.setStartMan(user.getId()+"");
+			vo.setAssignee(vo.getNextDealer());
 			taskTo4AService.sendNewOrderTo4A(vo);
 		}catch(Exception e){e.printStackTrace();}
 		//添加短信发送
@@ -117,7 +122,27 @@ public class WorkOrderService {
 			return new Pagination();
 		}
 	}
-	
+	/**
+	 * 通过流程key查询用户的任务
+	 * @param vo
+	 * @return
+	 */
+	public WorkOrderVo qryTaskByKey(String key){
+		User user = UserHolder.getCurrentLoginUser();
+		String userId = user.getId().toString();
+		String processKey = formatBlankValueToNull(key);
+		
+		TaskQuery taskQuery = taskService.createTaskQuery().taskAssignee(userId).processDefinitionKey(processKey)
+				.processInstanceId(null).active().includeTaskLocalVariables().includeProcessVariables();
+		List<Task> taskList = taskQuery.listPage(0, 1);
+		if(null!=taskList&&taskList.size()>0){
+			Task task=taskList.get(0);
+			ProcessDefinition pdf = repositoryService.getProcessDefinition(task.getProcessDefinitionId());
+			return new WorkOrderVo(task,pdf,WorkflowConstant.WAIT);
+		}else{
+			return null;
+		}
+	}
 	/**
 	 * 查询待办任务列表
 	 * @param vo
@@ -506,7 +531,7 @@ public class WorkOrderService {
 		try{
 			taskTo4AService.sendDoingOrderTo4A(workOrderVo);
 		}catch(Exception e){e.printStackTrace();}
-		//添加短信发送
+		//添加短信发送 
 	}
 
 	
