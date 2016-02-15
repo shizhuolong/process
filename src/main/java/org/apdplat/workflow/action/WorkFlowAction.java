@@ -86,14 +86,16 @@ public class WorkFlowAction extends BaseAction{
 	private String approveUrl;
 	private String isNeedApprover;
 	
-	private String taskId;
+	private String jobId;
 	
-	public String getTaskId() {
-		return taskId;
+	
+
+	public String getJobId() {
+		return jobId;
 	}
 
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
 	}
 
 	/**
@@ -269,8 +271,8 @@ public class WorkFlowAction extends BaseAction{
 	 * @return
 	 */
 	public String toProcessWaitDetail() {
-		if(null==workOrderVo&&taskId!=null){
-			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(taskId, WorkflowConstant.WAIT);
+		if(null==workOrderVo&&jobId!=null){
+			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(jobId, WorkflowConstant.WAIT);
 		}
 		String userId = UserHolder.getCurrentLoginUser().getId().toString();
 		if(userId.equals(workOrderVo.getStartMan())){//当前可修改页面
@@ -281,14 +283,30 @@ public class WorkFlowAction extends BaseAction{
 			return "toProcessWaitReadOnlyDetail";
 		}
 	}
-	
+	/**
+	 * 待办审批跳转至工单明细审批界面
+	 * @return
+	 */
+	public String toProcess4ADetail() {
+		if(null==workOrderVo&&jobId!=null){
+			workOrderVo=this.workOrderService.qryTaskByKey(jobId);
+		}
+		String userId = UserHolder.getCurrentLoginUser().getId().toString();
+		if(userId.equals(workOrderVo.getStartMan())){//当前可修改页面
+			this.setApproveUrl(workOrderVo.getEditUrl());
+			return "toProcessWaitEditDetail";
+		}else{
+			this.setApproveUrl(workOrderVo.getNoEditUrl());//不可编辑的审批页面
+			return "toProcessWaitReadOnlyDetail";
+		}
+	}
 	/**
 	 * 跳转在办详细页面
 	 * @return
 	 */
 	public String toProcessDoingDetail(){
-		if(null==workOrderVo&&taskId!=null){
-			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(taskId, WorkflowConstant.DOING);
+		if(null==workOrderVo&&jobId!=null){
+			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(jobId, WorkflowConstant.DOING);
 		}
 		this.setApproveUrl(workOrderVo.getNoEditUrl());//不可编辑的审批页面
 		return "toProcessDoingDetail";
@@ -298,8 +316,8 @@ public class WorkFlowAction extends BaseAction{
 	 * @return
 	 */
 	public String toProcessDoneDetail(){
-		if(null==workOrderVo&&taskId!=null){
-			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(taskId, WorkflowConstant.DONE);
+		if(null==workOrderVo&&jobId!=null){
+			workOrderVo=this.workOrderService.getWorkOrderInfoByTaskId(jobId, WorkflowConstant.DONE);
 		}
 		this.setApproveUrl(workOrderVo.getNoEditUrl());//不可编辑的审批页面
 		return "toProcessDoneDetail";
