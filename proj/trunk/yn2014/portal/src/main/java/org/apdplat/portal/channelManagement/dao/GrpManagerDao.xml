@@ -78,17 +78,29 @@
 		SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME
          FROM PCDE.TB_CDE_CHANL_CODE T
          LEFT JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T1
-         ON T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE
+         ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE)
+         WHERE T.IS_DEVELOPER = 1
+         and T.FD_CHNL_CODE is not null
+         AND NOT EXISTS (SELECT 1
+         FROM PORTAL.TAB_PORTAL_GRP_PERSON
+         WHERE DEVELOPER = T.FD_CHNL_CODE AND DEAL_DATE=#{dealDate})
+         AND T.GROUP_ID_1=16001
+UNION ALL
+SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME
+         FROM PCDE.TB_CDE_CHANL_CODE T
+         LEFT JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T1
+         ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE)
          WHERE T.IS_DEVELOPER = 1
          and T.FD_CHNL_CODE is not null
          AND NOT EXISTS (SELECT 1
          FROM PORTAL.TAB_PORTAL_GRP_PERSON
          WHERE DEVELOPER = T.FD_CHNL_CODE AND DEAL_DATE=#{dealDate})
          AND EXISTS (SELECT 1
-                           FROM PCDE.TB_CDE_CHANL_HQ_CODE T0
-                           WHERE T0.CHN_CDE_1_NAME LIKE '%自有%'
-                           AND T0.HQ_CHAN_CODE=T.HQ_CHAN_CODE
-                           AND T0.GROUP_ID_1 !=16001)
+                     FROM PCDE.TB_CDE_CHANL_HQ_CODE T0
+                     WHERE T0.HQ_CHAN_CODE=T.HQ_CHAN_CODE
+                     AND   T0.CHN_CDE_1_NAME LIKE '%自有%'
+                      AND T0.GROUP_ID_1!=16001
+                     )
 		
 		<if test="orgLevel==2">
 			AND T1.GROUP_ID_1=#{orgCode}
