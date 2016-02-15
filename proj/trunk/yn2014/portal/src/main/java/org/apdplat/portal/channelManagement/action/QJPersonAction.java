@@ -98,12 +98,12 @@ public class QJPersonAction extends BaseAction {
 		qjPersonService.insertToResult(m);
 		this.reponseJson("新增成功");
 	}
-	/*public void update(){
+	public void update(){
 		Map<String,String> m=new HashMap<String,String>();
-		m.put("name",name.trim());
-		m.put("unit_name",unit_name);
 		m.put("job",job);
-		m.put("job_type",job_type);
+		m.put("user_code",user_code);
+		m.put("is_logo",request.getParameter("is_logo"));
+		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		m.put("hr_id",hr_id);
 		try {
 			qjPersonService.updateToResult(m);
@@ -112,7 +112,7 @@ public class QJPersonAction extends BaseAction {
 			this.reponseJson("修改失敗");
 		}
 		
-	}*/
+	}
     public String del(){
     	String hr_id=request.getParameter("hr_id");
     	String month = request.getParameter("month");
