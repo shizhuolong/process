@@ -18,7 +18,7 @@ import com.ynunicom.sso.dto.ReadingEntity;
  *lyz
  * */
 @Service
-public class TaskService {
+public class SsoTaskService {
 
 	
 	/**
@@ -180,10 +180,4 @@ public class TaskService {
 		 
 		 return "";
 	 }
-	 
-	 
-	 
-	 
-	 
-	 
 }
