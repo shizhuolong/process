@@ -32,7 +32,7 @@
 	    			AND T.UNIT_NAME LIKE #{unit_name}
 		    	</if>
 		    	<if test="name != null">
-		    		AND T.NAME LIKE #{name}
+		    		AND T.NAME LIKE #{name} 
 		    	</if>
 		    	<if test="job_type != null">
 		    		AND T.JOB_TYPE LIKE #{job_type}
@@ -126,7 +126,6 @@
        '' AS INACTIVE_TIME,
        '1' AS IS_VALUE,
       to_char(sysdate,'yyyymm') AS DEAL_DATE
-      ,0 is_logo
       FROM PCDE.TAB_CDE_GROUP_CODE T2
      JOIN PORTAL.APDP_USER T3
      ON (#{hr_id} = T3.HR_ID)
@@ -137,7 +136,8 @@
      AND T2.GROUP_ID_1 = #{code} 
      AND NOT EXISTS (SELECT * FROM  PORTAL.TAB_PORTAL_QJ_PERSON T5 WHERE #{hr_id}=T5.HR_ID AND T5.IS_VALUE='1' AND T5.DEAL_DATE=to_char(sysdate,'yyyymm'))
   </insert>  
-	<!-- <update id="updateToResult" parameterType="java.util.Map">
-	   UPDATE PORTAL.TAB_PORTAL_QJ_PERSON T SET T.UNIT_NAME=#{unit_name},T.NAME=#{name},T.JOB_TYPE=#{job_type},T.JOB=#{job}  WHERE T.HR_ID=#{hr_id}
-	</update>  -->
+  <update id="updateToResult" parameterType="java.util.Map">
+     UPDATE PORTAL.TAB_PORTAL_QJ_PERSON T SET T.JOB=#{job},T.USER_CODE=#{user_code},T.IS_LOGO=#{is_logo}
+     WHERE T.DEAL_DATE &gt;=#{chooseMonth} AND T.HR_ID=#{hr_id}
+  </update>  
 </mapper>
