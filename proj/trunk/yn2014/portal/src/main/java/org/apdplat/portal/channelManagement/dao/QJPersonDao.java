@@ -24,7 +24,7 @@ public interface QJPersonDao {
 	
 	public void insertToResult(Map<String, String> m);
     
-	/*public void updateToResult(Map<String, String> m);*/
+	public void updateToResult(Map<String, String> m);
 
 	public Map<String, String> isHrIdRepeat(String hr_id);
 }
