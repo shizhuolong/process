@@ -272,5 +272,5 @@
 			</list>
 		</property>
 	</bean>
-	
+	<bean id="ssoTaskService" class="com.ynunicom.sso.service.SsoTaskService"/>
 </beans>
