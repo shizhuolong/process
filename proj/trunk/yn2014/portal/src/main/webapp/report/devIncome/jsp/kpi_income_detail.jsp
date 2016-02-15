@@ -72,7 +72,7 @@
 				</select></td>
 				<td width="6%">人员名称：</td>
 				<td width="15%"><input class="default-text-input wper80"
-					name="userName" type="text" id="userName" /></td>
+					name="useName" type="text" id="useName" /></td>
 				<td width="6%">用户号码：</td>
 				<td width="15%"><input class="default-text-input wper80"
 					name=userPhone type="text" id="userPhone" /></td>
