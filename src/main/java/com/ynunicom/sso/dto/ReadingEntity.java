@@ -1,6 +1,5 @@
 package com.ynunicom.sso.dto;
 
-
 public class ReadingEntity {
 	private String readingCode;
     private String readingTitle;

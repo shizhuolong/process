@@ -15,7 +15,6 @@ public class HttpRequestUtil {
     	URL url = new URL(strUrl);
     	HttpURLConnection httpUrlConnection = (HttpURLConnection)url.openConnection();
     	httpUrlConnection.setRequestMethod(requestMethod);
-//    	if (content.length() > 0 ) 
     	httpUrlConnection.setRequestProperty("Content-type","application/json");
     	httpUrlConnection.setDoOutput(true); 
     	httpUrlConnection.setDoInput(true);

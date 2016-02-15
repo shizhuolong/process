@@ -8,7 +8,7 @@ public class PendingEntity {
     private String pendingUserID;
     private String pendingURL;
     private String pendingStatus;
-    private int pendingLevel;
+    private Integer pendingLevel;
     private String pendingCityCode;
     private String pendingSource;
     private String pendingSourceUserID;
@@ -59,11 +59,11 @@ public class PendingEntity {
 	public void setPendingStatus(String pendingStatus) {
 		this.pendingStatus = pendingStatus;
 	}
-	public int getPendingLevel() {
+	public Integer getPendingLevel() {
 		return pendingLevel;
 	}
-	public void setPendingLevel(int gLevelpendingLevel) {
-		this.pendingLevel = gLevelpendingLevel;
+	public void setPendingLevel(Integer pendingLevel) {
+		this.pendingLevel = pendingLevel;
 	}
 	public String getPendingCityCode() {
 		return pendingCityCode;
