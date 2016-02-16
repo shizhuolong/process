@@ -32,7 +32,7 @@
 				 </td>
 				</tr>
 				<tr>
-					<td>是否达标：
+					<td>是否打标：
 					<select name="is_logo" id="is_logo" class="easyui-validatebox">
 				       <option value=''>请选择</option>
 				       <option value='1'>是</option>
