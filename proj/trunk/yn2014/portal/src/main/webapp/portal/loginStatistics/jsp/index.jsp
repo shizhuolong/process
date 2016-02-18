@@ -56,6 +56,13 @@
                 	
                 </tr>
                 <tr height="35px">
+                	<td width="6%" style="padding-left:10px;" align="right">登录方式：</td>
+                    <td width="15%">
+                    	<select id='appName' name='appName' style='width:150px;height:20px;font-size: 12px; '>
+                    		<option value ="portal">基层单元web</option>
+                    		<option value ="appservice">基层单元app</option>
+                    	</select>
+                    </td>
                 	<td width="5%" style="padding-left:10px;" align="right">起始日期：</td>
                     <td width="15%">
                     	<input type="text" class="Wdate" id="startTime" readonly="readonly" onclick="new WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd', maxDate:'%y-%M-%d'})" value="<%=lastday %>" />

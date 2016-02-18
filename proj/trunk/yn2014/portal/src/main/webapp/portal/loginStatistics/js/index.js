@@ -23,6 +23,7 @@ function search(pageNumber) {
 	var queryOrgCode = $.trim($("#orgName option:selected").val());
 	var realname = $.trim($("#realname").val());
 	var username = $.trim($("#username").val());
+	var appName = $.trim($("#appName").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -37,8 +38,9 @@ function search(pageNumber) {
            "endTime":endTime,
            "queryOrgCode":queryOrgCode,
            "realname":realname,
-           "username":username
-	   	}, 
+           "username":username,
+           "appName":appName
+           }, 
 	   	success:function(data){
 	   		if(data.msg) {
 	   			alert(data.msg);
