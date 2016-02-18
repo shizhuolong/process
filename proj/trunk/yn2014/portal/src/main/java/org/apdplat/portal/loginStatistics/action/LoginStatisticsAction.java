@@ -32,8 +32,11 @@ public class LoginStatisticsAction extends BaseAction {
 		String username = request.getParameter("username");
 		String startTime = request.getParameter("startTime");
 		String endTime = request.getParameter("endTime");
+		String appName = request.getParameter("appName");
+		appName = "/"+appName;
 		resultMap.put("startTime", startTime);
 		resultMap.put("endTime", endTime);
+		resultMap.put("appName", appName);
 		if(queryOrgCode != null && !"".equals(queryOrgCode.trim())) {
 			resultMap.put("queryOrgCode", queryOrgCode);
 		}
