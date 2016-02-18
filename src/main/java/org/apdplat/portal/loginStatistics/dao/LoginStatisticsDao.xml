@@ -19,6 +19,7 @@
 		    	ON (T.USERNAME = T3.USERNAME)
 		 		WHERE T1.ENABLED = 1
 		   		AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
+		   		AND T.APPNAME=#{appName}
 		   		<if test="queryOrgCode != null">
 		   			AND T2.CODE = #{queryOrgCode}
 		   		</if>
@@ -56,6 +57,7 @@
 		                UNION
 		                SELECT ID FROM PORTAL.APDP_ORG T WHERE T.CODE = #{code}) T5
 		         WHERE T5.ID = T2.ID)
+		         AND T.APPNAME=#{appName}
 		         <if test="queryOrgCode != null">
 		   			AND T2.CODE = #{queryOrgCode}
 		   		</if>
