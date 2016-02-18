@@ -137,8 +137,8 @@ public class KpiUploadAction extends BaseAction{
 					//结果表重新导入覆盖之前的数据
 					String delRepeat="DELETE PMRT.TAB_MRT_JCDY_KPI_QJ_MON T                      "+
 							         "WHERE T.DEAL_DATE='"+time+"' AND T.GROUP_ID_1='"+regionCode+"' "+
-							         "AND   T.KPI_NAME IN (SELECT KPI_NAME FROM PCDE.IS_KPI_TEMP) "+
-							         "AND   T.HR_ID IN (SELECT Hr_id FROM PCDE.IS_KPI_TEMP)       ";
+							         "AND   T.KPI_NAME IN (SELECT KPI_NAME FROM PCDE.IS_KPI_TEMP WHERE DEAL_DATE='"+time+"') "+
+							         "AND   T.HR_ID IN (SELECT Hr_id FROM PCDE.IS_KPI_TEMP WHERE DEAL_DATE='"+time+"')       ";
 					SpringManager.getUpdateDao().update(delRepeat);
 					
 					String kpiWeight="SELECT * FROM (                                                                  "+
