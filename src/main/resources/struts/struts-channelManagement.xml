@@ -63,5 +63,9 @@
         <action name="qjPerson_*" class="org.apdplat.portal.channelManagement.action.QJPersonAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/tab_portal_qj_person_list.jsp</result>
         </action>
+        <!-- 营业厅厅主任-->
+        <action name="magPerson_*" class="org.apdplat.portal.channelManagement.action.MagPersonAction" method="{1}">
+			<result name="success">/portal/channelManagement/jsp/portal_mag_person_list.jsp</result>
+        </action>
 	</package>
 </struts>
