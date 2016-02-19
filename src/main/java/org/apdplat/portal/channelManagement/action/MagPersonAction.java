@@ -65,6 +65,7 @@ public class MagPersonAction extends BaseAction {
 		m.put("hr_id",request.getParameter("hr_id"));
 		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		m.put("hq_chan_code",request.getParameter("hq_chan_code"));
+		m.put("username",request.getParameter("username"));
 		try {
 			magPersonService.insertToResult(m);
 			this.reponseJson("新增成功");
@@ -76,7 +77,6 @@ public class MagPersonAction extends BaseAction {
 	
 	public void update(){
 		Map<String,String> m=new HashMap<String,String>();
-		String chooseMonth=request.getParameter("chooseMonth");
 		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		m.put("hr_id",request.getParameter("hr_id"));
 		m.put("hq_chan_code",request.getParameter("hq_chan_code"));
@@ -101,6 +101,7 @@ public class MagPersonAction extends BaseAction {
 		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		try {
 			magPersonService.del(m);
+			magPersonService.updateAfterDelete(m);
 		} catch (Exception e) {
 			this.reponseJson("删除失败");
 		}

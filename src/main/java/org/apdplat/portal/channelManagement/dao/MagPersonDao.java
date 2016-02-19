@@ -14,6 +14,7 @@ import java.util.Map;
 
 
 
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface MagPersonDao {
@@ -31,4 +32,6 @@ public interface MagPersonDao {
 	public void updateWithCode(Map<String, String> m);
 
 	public List<Map<String, String>> checkChanCode(Map<String, String> m);
+
+	public void updateAfterDelete(Map<String, String> m);
 }
