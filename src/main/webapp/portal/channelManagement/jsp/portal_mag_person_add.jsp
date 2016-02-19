@@ -38,24 +38,25 @@
 		<div class="sticky-wrap" style="height: 150px;">
 			<form id="add" method="POST">
 			<input type="hidden" id="code" name="code" value="<%=org.getCode()%>"/>
+			<input type="hidden" id="username" name="username" value="<%=user.getUsername()%>">
 			<input type="hidden" id="chooseMonth" name="chooseMonth"/>
-				<table>
-				<tr>
-				 <td>主管编码：<input type="text" style="margin-left:12px;" required="true" class="easyui-validatebox" missingMessage="主管编码不能为空" name="hr_id" id="hr_id"/>
-				 </td>
-				</tr>
-				<tr>
-				  <td>人员姓名：<input type="text" style="margin-left:12px;" required="true" readonly="true" class="easyui-validatebox" missingMessage="人员姓名不能为空" name="name" id="name"/>
-				  </td>
-				</tr>
+			  <table>
 				<tr>
 				 <td>营业厅编码：<input type="text" required="true" class="easyui-validatebox" missingMessage="营业厅编码不能为空" name="hq_chan_code" id="hq_chan_code"/>
 				 </td>
 				</tr>
 				<tr>
-				  <td valign="middle">营业厅名称：<textarea rows="3" cols="20" required="true" readonly="true" class="easyui-validatebox" missingMessage="营业厅名称不能为空" style="" readonly="true" name="hq_chan_name" id="hq_chan_name"></textarea>
-				  </td>
+				 <td>主管编码：<input type="text" style="margin-left:12px;" required="true" class="easyui-validatebox" missingMessage="主管编码不能为空" name="hr_id" id="hr_id"/>
+				 </td>
+				</tr>
+				<tr>
+				 <td>人员姓名：<input type="text" style="margin-left:12px;" required="true" readonly="true" class="easyui-validatebox" missingMessage="人员姓名不能为空" name="name" id="name"/>
+				 </td>
 				</tr>	
+				<tr>
+				 <td valign="middle">营业厅名称：<textarea rows="3" cols="20" required="true" readonly="true" class="easyui-validatebox" missingMessage="营业厅名称不能为空" style="" readonly="true" name="hq_chan_name" id="hq_chan_name"></textarea>
+				 </td>
+				</tr>
 				<tr>
 	                <td colspan="2" style="padding-left: 120px;">
 		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
