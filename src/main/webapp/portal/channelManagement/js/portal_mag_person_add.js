@@ -1,10 +1,11 @@
 var code="";
 var user_code="";
 var orgLevel="";
+var chooseMonth="";
 $(function() {
 	code=$("#code").val();
 	orgLevel=$("#orgLevel").val();
-	var chooseMonth=art.dialog.data('chooseMonth');
+	chooseMonth=art.dialog.data('chooseMonth');
 	$("#chooseMonth").val(chooseMonth);
 	$("#hr_id").blur(function(){
 		initName();
@@ -57,8 +58,46 @@ $(function() {
 });
 function initName(){
 	var hr_id=$.trim($("#hr_id").val());
-	var sql="SELECT T.REALNAME FROM PORTAL.APDP_USER T WHERE T.HR_ID='"+hr_id+"' AND T.ENABLED=1";
-	var d=query(sql);
+	var hq_chan_code=$.trim($("#hq_chan_code").val());
+	var sql="";
+	if(orgLevel==1){
+		sql="SELECT T.REALNAME FROM PORTAL.APDP_USER T                                   "+
+		"WHERE T.ORG_ID IN (                                                         "+
+		"                   SELECT T.PARENT_ID FROM PORTAL.APDP_ORG T                "+
+		"                    WHERE T.CODE IN                                         "+
+		"                       (SELECT T.GROUP_ID_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T"+
+		"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
+		"                        )                                                   "+
+		"AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     "+
+		"UNION ALL                                                                   "+
+		"SELECT REALNAME FROM PORTAL.APDP_USER T                                     "+
+		"WHERE T.ORG_ID  IN(                                                         "+
+		"SELECT ID FROM PORTAL.APDP_ORG T                                            "+
+		"WHERE T.ORGLEVEL=1                                                          "+
+		"START WITH T.CODE IN (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T  "+
+		"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
+		"CONNECT BY PRIOR T.PARENT_ID=T.ID)                                          "+
+		"AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     ";
+	}else{
+	  sql="SELECT T.REALNAME FROM PORTAL.APDP_USER T                                    "+
+           "WHERE T.ORG_ID  IN (                                                        "+
+           "                   SELECT T.PARENT_ID FROM PORTAL.APDP_ORG T                "+
+           "                    WHERE T.CODE IN                                         "+
+           "                       (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T"+
+           "                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
+           "                        )                                                   "+
+           "AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     "+
+           "UNION ALL                                                                   "+
+           "SELECT REALNAME FROM PORTAL.APDP_USER T                                     "+
+           "WHERE T.ORG_ID  IN(                                                         "+
+           "SELECT ID FROM PORTAL.APDP_ORG T                                            "+
+           "WHERE T.ORGLEVEL=2                                                          "+
+           "START WITH T.CODE IN (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T  "+
+           "                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
+           "CONNECT BY PRIOR T.PARENT_ID=T.ID)                                          "+
+           "AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                      ";
+	}
+	  var d=query(sql);
 	if(d&&d.length>=1){
 	 var name=d[0].REALNAME;
 	 $("#name").val(name);
@@ -69,9 +108,11 @@ function initName(){
 function initChanName(){
 	var hq_chan_code=$.trim($("#hq_chan_code").val());
 	if(orgLevel==1){
-		var sql="SELECT T.GROUP_ID_4_NAME FROM PCDE.TB_CDE_CHANL_HQ_CODE T WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"'";
+		var sql="SELECT T.GROUP_ID_4_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE T " +
+		"WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"'";
 	}else{
-		var sql="SELECT T.GROUP_ID_4_NAME FROM PCDE.TB_CDE_CHANL_HQ_CODE T WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"' AND T.GROUP_ID_1='"+code+"'";
+		var sql="SELECT T.GROUP_ID_4_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE T " +
+		"WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"' AND T.GROUP_ID_1='"+code+"'";
 	}
 	var d=query(sql);
 	if(d&&d.length>=1){
