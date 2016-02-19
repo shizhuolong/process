@@ -28,9 +28,11 @@ public class MagPersonService {
 		result.put("pagin", rows.getPaginator());
 		return result;
 	}
+	@Transactional
 	public void del(Map<String, String> m) {
 		magPersonDao.del(m);
 	}
+	@Transactional
 	public void insertToResult(Map<String, String> m) {
 		magPersonDao.insertToResult(m);
 	}
@@ -45,6 +47,10 @@ public class MagPersonService {
 
 	public List<Map<String, String>> checkChanCode(Map<String, String> m) {
 		return magPersonDao.checkChanCode(m);
+	}
+	@Transactional
+	public void updateAfterDelete(Map<String, String> m) {
+		 magPersonDao.updateAfterDelete(m);
 	}
 	
 }

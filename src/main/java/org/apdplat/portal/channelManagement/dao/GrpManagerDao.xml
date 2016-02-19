@@ -75,7 +75,8 @@
 		AND NOT EXISTS (SELECT 1
 		FROM PORTAL.TAB_PORTAL_GRP_PERSON
 		WHERE DEVELOPER = T.FD_CHNL_CODE AND DEAL_DATE=#{dealDate}) -->
-		SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME
+		SELECT * FROM(
+		SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME,T1.GROUP_ID_4,T1.GROUP_ID_1
          FROM PCDE.TB_CDE_CHANL_CODE T
          LEFT JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T1
          ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE)
@@ -86,7 +87,7 @@
          WHERE DEVELOPER = T.FD_CHNL_CODE AND DEAL_DATE=#{dealDate})
          AND T.GROUP_ID_1=16001
 UNION ALL
-SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME
+SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME,T1.GROUP_ID_4,T1.GROUP_ID_1
          FROM PCDE.TB_CDE_CHANL_CODE T
          LEFT JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T1
          ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE)
@@ -101,21 +102,22 @@ SELECT T.FD_CHNL_CODE, T1.UNIT_ID, T1.UNIT_NAME
                      AND   T0.CHN_CDE_1_NAME LIKE '%自有%'
                       AND T0.GROUP_ID_1!=16001
                      )
-		
+		)
+		WHERE 1=1
 		<if test="orgLevel==2">
-			AND T1.GROUP_ID_1=#{orgCode}
+			AND GROUP_ID_1=#{orgCode}
 		</if>
 		<if test="orgLevel==3">
-			AND T1.UNIT_ID=#{orgCode}
+			AND UNIT_ID=#{orgCode}
 		</if>
 		<if test="orgLevel==4">
-			AND T1.GROUP_ID_4=#{orgCode}
+			AND GROUP_ID_4=#{orgCode}
 		</if>
 		<if test="devNum!=null">
-			AND T.FD_CHNL_CODE=#{devNum}
+			AND FD_CHNL_CODE=#{devNum}
 		</if>
 		<if test="unit_name!=null">
-			AND T1.UNIT_NAME LIKE #{unit_name}
+			AND UNIT_NAME LIKE #{unit_name}
 		</if>
 	</select>
 	

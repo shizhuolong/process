@@ -68,15 +68,20 @@
 		</if>
 	</select>
 	
-	 <delete id="del" parameterType="java.util.Map">
+	<delete id="del" parameterType="java.util.Map">
 	    DELETE PORTAL.TAB_PORTAL_MAG_PERSON T
         WHERE T.DEAL_DATE=#{chooseMonth} AND T.HR_ID=#{hr_id} AND T.USER_TYPE=1 
 	</delete> 
-	 
+	
+	<update id="updateAfterDelete" parameterType="java.util.Map">
+	    UPDATE PORTAL.TAB_PORTAL_MAG_PERSON T SET T.F_HR_ID=''
+        WHERE T.DEAL_DATE=#{chooseMonth} AND T.F_HR_ID=#{hr_id} AND T.USER_TYPE=2
+	</update> 
+	
 	 <insert id="insertToResult" parameterType="java.util.Map">
 	    INSERT INTO PORTAL.TAB_PORTAL_MAG_PERSON
         SELECT T3.ID,T3.REALNAME,T3.USERNAME,T3.PHONE,'',1,T6.UNIT_ID,T6.GROUP_ID_1,T6.HQ_CHAN_CODE,T6.UNIT_NAME,T6.GROUP_ID_1_NAME,
-        SYSDATE,'','绑定',1,T6.GROUP_ID_4_NAME,'','',T3.HR_ID,'','',TO_CHAR(SYSDATE,'YYYYMMDD'),'',1,#{chooseMonth}
+        SYSDATE,'','绑定',1,T6.GROUP_ID_4_NAME,'','',T3.HR_ID,'',#{username},TO_CHAR(SYSDATE,'YYYYMMDD'),'',1,#{chooseMonth}
         FROM  PORTAL.APDP_USER T3
         JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T6
         ON   (#{hq_chan_code}=T6.HQ_CHAN_CODE) 
@@ -89,12 +94,21 @@
   
   <select id="checkChanCode" parameterType="java.util.Map" resultType="java.util.Map">
     <if test="orgLevel==1">
-        SELECT T.GROUP_ID_4_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
-        WHERE T.HQ_CHAN_CODE=#{hq_chan_code}
+         SELECT T.GROUP_ID_4_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
+        WHERE T.HQ_CHAN_CODE=#{hq_chan_code} 
+        AND T.UNIT_ID IN (SELECT UNIT_ID FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+                          WHERE T.DEAL_DATE = #{chooseMonth}
+                          AND   T.USER_TYPE=1
+                          AND   T.HR_ID=#{hr_id})
     </if>
     <if test="orgLevel==2">
         SELECT T.GROUP_ID_4_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
-        WHERE T.HQ_CHAN_CODE=#{hq_chan_code} AND T.GROUP_ID_1=#{code}
+        WHERE T.HQ_CHAN_CODE=#{hq_chan_code} 
+        AND T.GROUP_ID_1=#{code}
+        AND T.UNIT_ID IN (SELECT UNIT_ID FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+                          WHERE T.DEAL_DATE = #{chooseMonth}
+                          AND   T.USER_TYPE=1
+                          AND   T.HR_ID=#{hr_id})
     </if>   
   </select>
   
