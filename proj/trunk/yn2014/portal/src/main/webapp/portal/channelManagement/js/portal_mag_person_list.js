@@ -61,6 +61,7 @@ function del(obj){
 	var path=$("#ctx").val();
 	if(confirm('确认刪除吗?')){
 	  window.location.href=path+"/channelManagement/magPerson_delMagPerson.action?hr_id="+hr_id+"&chooseMonth="+initMonth;
+	  alert("删除成功！，请到营业员人员管理确认营业员人员与厅长的关系！")
 	  search(0);
 	}
 }
