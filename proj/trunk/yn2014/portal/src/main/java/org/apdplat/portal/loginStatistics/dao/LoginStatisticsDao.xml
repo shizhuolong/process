@@ -4,73 +4,32 @@
 <mapper namespace="org.apdplat.portal.loginStatistics.dao.LoginStatisticsDao">
 
 	<select id="searchUserLoginTimes" parameterType="java.util.Map" resultType="java.util.Map">
-		<choose>
-			<when test="orgLevel==1">
-				SELECT T2.ORGNAME,T1.REALNAME,T.USERNAME,T1.PHONE,COUNT(T.USERNAME) AS TIMES,
-       				TO_CHAR(T3.LOGINTIME, 'yyyy-MM-dd hh24:mi:ss') AS LOGINTIME
-		  		FROM PORTAL.APDP_LOG_USERLOGIN T JOIN PORTAL.APDP_USER T1
-		    		ON (T.USERNAME = T1.USERNAME)
-		  		JOIN PORTAL.APDP_ORG T2 
-		  			ON (T1.ORG_ID = T2.ID)
-		  		JOIN (SELECT T3.USERNAME, MAX(T3.LOGINTIME) LOGINTIME 
-		  				FROM PORTAL.APDP_LOG_USERLOGIN T3
-		         		WHERE TO_CHAR(T3.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
-		         		GROUP BY T3.USERNAME) T3
-		    	ON (T.USERNAME = T3.USERNAME)
-		 		WHERE T1.ENABLED = 1
-		   		AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
-		   		AND T.APPNAME=#{appName}
-		   		<if test="queryOrgCode != null">
-		   			AND T2.CODE = #{queryOrgCode}
-		   		</if>
-		   		<if test="username != null">
-		   			AND T1.USERNAME = #{username}
-		   		</if>
-		   		<if test="realname != null">
-		   			AND T1.REALNAME LIKE #{realname}
-		   		</if>
-		 		GROUP BY T2.ORGNAME, T1.REALNAME, T.USERNAME, T1.PHONE, T3.LOGINTIME
-		 		ORDER BY COUNT(T.USERNAME) DESC
-			</when>
-			<otherwise>
-				SELECT T2.ORGNAME,T1.REALNAME,T.USERNAME,T1.PHONE,COUNT(T.USERNAME) AS TIMES,
-       				TO_CHAR(T3.LOGINTIME, 'yyyy-MM-dd hh24:mi:ss') AS LOGINTIME
-		  		FROM PORTAL.APDP_LOG_USERLOGIN T JOIN PORTAL.APDP_USER T1
-		    		ON (T.USERNAME = T1.USERNAME)
-		  		JOIN PORTAL.APDP_ORG T2 
-		  			ON (T1.ORG_ID = T2.ID)
-		  		JOIN (SELECT T3.USERNAME, MAX(T3.LOGINTIME) LOGINTIME 
-		  				FROM PORTAL.APDP_LOG_USERLOGIN T3
-		         		WHERE TO_CHAR(T3.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
-		         		GROUP BY T3.USERNAME) T3
-		    	ON (T.USERNAME = T3.USERNAME)
-		 		WHERE T1.ENABLED = 1
-		   		AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND #{endTime}
-		   		AND EXISTS (SELECT 1
-		          FROM (SELECT T.ID
-		                  FROM PORTAL.APDP_ORG T
-		                 START WITH T.PARENT_ID =
-		                            (SELECT ID
-		                               FROM PORTAL.APDP_ORG T
-		                              WHERE T.CODE = #{code})
-		                CONNECT BY PRIOR T.ID = T.PARENT_ID
-		                UNION
-		                SELECT ID FROM PORTAL.APDP_ORG T WHERE T.CODE = #{code}) T5
-		         WHERE T5.ID = T2.ID)
-		         AND T.APPNAME=#{appName}
-		         <if test="queryOrgCode != null">
-		   			AND T2.CODE = #{queryOrgCode}
-		   		</if>
-		   		<if test="username != null">
-		   			AND T1.USERNAME = #{username}
-		   		</if>
-		   		<if test="realname != null">
-		   			AND T1.REALNAME LIKE #{realname}
-		   		</if>
-		 		GROUP BY T2.ORGNAME, T1.REALNAME, T.USERNAME, T1.PHONE, T3.LOGINTIME
-		 		ORDER BY COUNT(T.USERNAME) DESC
-			</otherwise>
-		</choose>
+		SELECT L.APPNAME,
+		       O.REGION_NAME AS ORGNAME,
+		       O.REGION_CODE,
+		       U.REALNAME ,
+		       U.USERNAME,
+		       U.PHONE,
+		       L.TIMES
+		  FROM (SELECT T.APPNAME, T.USERNAME, COUNT(T.USERNAME) AS TIMES
+		          FROM PORTAL.APDP_LOG_USERLOGIN T
+		         WHERE TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN #{startTime} AND
+		               #{endTime}
+		           AND T.APPNAME = #{appName}
+		         GROUP BY T.APPNAME, T.USERNAME) L,
+		       PORTAL.APDP_USER U,
+		       PORTAL.APDP_ORG O
+		 WHERE UPPER(U.USERNAME) = UPPER(L.USERNAME)
+		 AND U.ORG_ID=O.ID
+		 <if test="queryOrgCode != null">
+		   	AND O.region_code = #{queryOrgCode}
+		 </if>
+		 <if test="username != null">
+		   	AND U.USERNAME = #{username}
+		 </if>
+		 <if test="realname != null">
+		   	AND U.REALNAME LIKE #{realname}
+		 </if>
 	</select>
 	
 	<select id="searchSelectOrg" parameterType="java.util.Map" resultType="java.util.Map">
