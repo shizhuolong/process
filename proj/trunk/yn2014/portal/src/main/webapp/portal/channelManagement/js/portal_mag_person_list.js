@@ -14,7 +14,9 @@ $(function() {
 	$("#time").blur(function(){
 		chooseMonth=$("#time").val();
 		if(chooseMonth!=initMonth){
-			$("#addBtn").remove();
+			$("#addBtn").hide();
+		}else{
+			$("#addBtn").show();
 		}
 	});
 	var setting = {
