@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 
+
+
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface BussinessHallPersonDao {
@@ -21,5 +25,13 @@ public interface BussinessHallPersonDao {
 	 * @return
 	 */
 	public PageList<Map<String, Object>> queryMagPerson(Map<String, String> params);
+
+	public void del(Map<String, String> m);
+
+	public void insert(Map<String, String> m);
+
+	public void update(Map<String, String> m);
+
+	public void merge(Map<String, String> m);
 	
 }
