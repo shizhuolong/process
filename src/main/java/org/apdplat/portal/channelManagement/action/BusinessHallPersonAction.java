@@ -46,7 +46,7 @@ public class BusinessHallPersonAction extends BaseAction {
 		String hq_chan_name = request.getParameter("hq_chan_name");
 		String phone = request.getParameter("phone");
 		String user_code = request.getParameter("user_code");
-		String user_log_code = request.getParameter("user_log_code");
+		String f_hr_id = request.getParameter("f_hr_id");
 		String deal_date=request.getParameter("deal_date");
 		if(hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 			resultMap.put("hq_chan_code", hq_chan_code);
@@ -63,14 +63,54 @@ public class BusinessHallPersonAction extends BaseAction {
 		if(user_code != null && !"".equals(user_code.trim())) {
 			resultMap.put("user_code", user_code);
 		}
-		if(user_log_code != null && !"".equals(user_log_code.trim())) {
-			resultMap.put("user_log_code", user_log_code);
+		if(f_hr_id != null && !"".equals(f_hr_id.trim())) {
+			resultMap.put("f_hr_id", f_hr_id);
 		}
 		resultMap.put("deal_date",deal_date);
 		Object result = businessHallPersonService.queryMagPerson(resultMap);
 		this.reponseJson(result);
 	}
-
+	 public String del(){
+	    	String user_code=request.getParameter("user_code");
+	    	String deal_date=request.getParameter("deal_date");
+	    	Map<String,String> m=new HashMap<String,String>();
+	    	if(user_code != null && !"".equals(user_code.trim())) {
+				m.put("user_code",user_code);
+			}
+	    	m.put("deal_date",deal_date);
+	    	businessHallPersonService.del(m);
+	    	return "success";
+	    }
+	 public void save(){
+			Map<String,String> m=new HashMap<String,String>();
+			m.put("user_code",request.getParameter("user_code").trim());
+			m.put("hr_id",request.getParameter("hr_id").trim());
+			m.put("f_hr_id",request.getParameter("f_hr_id").trim());
+			m.put("deal_date",request.getParameter("deal_date"));
+			m.put("username",request.getParameter("username"));
+			try {
+				businessHallPersonService.insert(m);
+			} catch (Exception e) {
+				this.reponseJson("新增失败");
+			}
+			this.reponseJson("新增成功");
+		} 
+	 public void update(){
+			Map<String,String> m=new HashMap<String,String>();
+			m.put("user_code",request.getParameter("user_code"));
+			m.put("hq_chan_code",request.getParameter("hq_chan_code"));
+			m.put("hq_chan_name",request.getParameter("hq_chan_name"));
+			m.put("hr_id",request.getParameter("hr_id").trim());
+			m.put("f_hr_id",request.getParameter("f_hr_id").trim());
+			m.put("deal_date",request.getParameter("deal_date"));
+			try {
+				businessHallPersonService.update(m);
+				businessHallPersonService.merge(m);
+			} catch (Exception e) {
+				this.reponseJson("修改失败");
+			}
+			this.reponseJson("修改成功");
+		} 
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}
