@@ -16,13 +16,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>营业厅与营业员</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
@@ -36,6 +35,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_person_list.js"></script>
 </head>
 <body class="easyui-layout">
@@ -69,8 +70,8 @@
                 <tr height="35px">
                 	<td width="6%" style="padding-left:10px;">工位：</td>
                     <td width="15%"><input class="default-text-input wper80" id="user_code" name="user_code" type="text"/></td>
-                    <td width="5%">工号：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="user_log_code" name="user_log_code" type="text"/></td>
+                    <td width="5%">营业厅主任：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="f_hr_id" name="f_hr_id" type="text"/></td>
                 </tr>
                 <tr height="35px">
                     <td width="6%" style="padding-left: 10px;">账期：</td>
@@ -81,10 +82,11 @@
 				 </tr>	
                 <tr>
 					<td colspan="4">
-                        	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 300px;">查询</a>
+                        	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 250px;">查询</a>
+                        	<a class="default-btn fLeft mr10" href="#" id="addBtn">新增</a>
                         	<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
                         	<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
-                       </td>
+                    </td>
 				</tr>
             </table>
          </form>
@@ -98,7 +100,8 @@
 								<th>营业厅编码</th>
 								<th>营业厅名称</th>
 								<th>工位</th>
-								<th>工号</th>
+								<th>营业厅主任</th>
+								<th>操作</th>
 						</thead>
 						<tbody id="dataBody">
 						</tbody>
