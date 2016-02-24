@@ -106,7 +106,7 @@
 						<tbody id="dataBody">
 						</tbody>
 						<tr>
-							<td colspan="6">
+							<td colspan="7">
 								</div>
 									<div class="page_count">
 										<div class="page_count_left">
