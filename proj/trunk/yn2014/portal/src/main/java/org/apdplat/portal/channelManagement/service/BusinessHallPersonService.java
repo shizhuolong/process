@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apdplat.portal.channelManagement.dao.BussinessHallPersonDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -36,5 +37,21 @@ public class BusinessHallPersonService {
 		result.put("rows", rows);
 		result.put("pagin", rows.getPaginator());
 		return result;
+	}
+
+	public void del(Map<String, String> m) {
+		bussinessHallPersonDao.del(m);
+	}
+
+	public void insert(Map<String, String> m) {
+		bussinessHallPersonDao.insert(m);
+	}
+    @Transactional
+	public void update(Map<String, String> m) {
+		bussinessHallPersonDao.update(m);
+	}
+    @Transactional
+	public void merge(Map<String, String> m) {
+		bussinessHallPersonDao.merge(m);
 	}
 }
