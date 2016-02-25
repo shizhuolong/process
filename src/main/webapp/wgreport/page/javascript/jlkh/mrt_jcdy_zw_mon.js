@@ -1,5 +1,5 @@
-var field=["GROUP_ID_1","GROUP_ID_1_NAME","NAME","HR_ID","USER_ROLE","SERVICE_NUM","ITEMCODE","ITEMDESC","ARCH_DT","CRE"];
-var title=[["地市编码","地市","姓名","HR编码","角色","电话号码","指标编码","指标描述","受理日期","原始积分"]];
+var field=["GROUP_ID_1","GROUP_ID_1_NAME","NAME","HR_ID","USER_ROLE","SERVICE_NUM","ITEMCODE","ITEMDESC","ARCH_DT","CRE","HQ_CRE","UNIT_CRE"];
+var title=[["地市编码","地市","姓名","HR编码","角色","电话号码","指标编码","指标描述","受理日期","原始积分","渠道系数","营服系数"]];
 var nowData = [];
 var report=null;
 $(function() {
