@@ -26,8 +26,7 @@
 	
 	<select id="queryMagPerson" parameterType="java.util.Map" resultType="java.util.Map">
 		<if test="orgLevel==1">
-			SELECT * FROM PORTAL.TAB_PORTAL_MAG_PERSON T
-			<where>
+			SELECT * FROM PORTAL.TAB_PORTAL_MAG_PERSON T WHERE T.USER_TYPE='2'
 			    <if test="deal_date != null">
 	    			AND T.DEAL_DATE=#{deal_date}
 		    	</if>
@@ -49,12 +48,11 @@
 		    	<if test="f_hr_id != null">
 		    		AND T.F_HR_ID=#{f_hr_id}
 		    	</if>
-			</where>
 			ORDER BY T.NAME
 		</if>
 		<if test="orgLevel==2">
 			SELECT * FROM PORTAL.TAB_PORTAL_MAG_PERSON T
-			WHERE T.GROUP_ID_1 = #{code}
+			WHERE T.GROUP_ID_1 = #{code} AND USER_TYPE='2'
 			<if test="deal_date != null">
 	    		AND T.DEAL_DATE=#{deal_date}
 		    </if>
