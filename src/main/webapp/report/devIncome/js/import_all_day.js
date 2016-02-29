@@ -31,7 +31,7 @@ $(function() {
 //列表信息
 function search() {
 	time=$("#time").val();
-	sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_IMPORT_ALL_DAY@ynsyn13 WHERE DEAL_DATE='"+time+"' ORDER BY ID";
+	sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_IMPORT_ALL_DAY WHERE DEAL_DATE='"+time+"' ORDER BY ID";
 	var d = query(sql);
 	nowData = d;
 	report.showSubRow();
