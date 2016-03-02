@@ -19,13 +19,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>重点渠道发展日通报</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report-fix.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/import_all_day.js"></script>
 </head>
 <body class="" style="overflow-x:auto;">
