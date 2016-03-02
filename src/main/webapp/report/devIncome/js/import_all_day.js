@@ -11,6 +11,7 @@ $(function() {
 		title : title,
 		field : field,
 		css:[{gt:1,css:LchReport.RIGHT_ALIGN}],
+		lock:1,
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
@@ -35,6 +36,8 @@ function search() {
 	var d = query(sql);
 	nowData = d;
 	report.showSubRow();
+	$(".lch_DataBody").find("TR:eq(8)").find("TD").css("color","red");
+	$("#lch_DataBody").find("TR:eq(8)").find("TD").css("color","red");
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
