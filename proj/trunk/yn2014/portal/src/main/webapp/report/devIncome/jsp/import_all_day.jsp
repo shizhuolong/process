@@ -27,6 +27,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/import_all_day.js"></script>
+<style>
+  #lch_DataHead TR TH,#lch_DataBody TR TH{
+    min-width:50px;
+  }
+</style>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
