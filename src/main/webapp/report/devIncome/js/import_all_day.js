@@ -1,6 +1,6 @@
 var field=["CODE_TYPE","ALL_DEV_NUM","ALL_DEV_NUM1","LAST_DEV_NUM1","LAST_THIS_OCC","CODE_OCC","DEV_4G_NUM","DEV_4G_NUM1","LAST_4G_DEV","LAST_THIS_4G","DEV_3G_NUM","DEV_3G_NUM1","LAST_3G_DEV","LAST_THIS_3G","DEV_2G_NUM","DEV_2G_NUM1","LAST_2G_DEV","LAST_THIS_2G"];
 var title=[["渠道名称","移动网整体","","","","","4G","","","","3G","","","","2G","","",""],
-           ["","当日发展数","累计发展数","累计发展数较上月同期","累计发展数较上月同期比","各渠道发展用户数占比","当日发展数","累计发展数","累计发展数较上月同期","累计发展数较上月同期比","当日发展数","累计发展数","累计发展数较上月同期","累计发展数较上月同期比","当日发展数","累计发展数","累计发展数较上月同期","累计发展数较上月同期比"]];
+           ["","当日发展数","累计发展数","累计发展数<br>较上月同期","累计发展数较<br>上月同期比","各渠道发展<br>用户数占比","当日发展数","累计发展数","累计发展数<br>较上月同期","累计发展数<br>较上月同期比","当日发展数","累计发展数","累计发展数<br>较上月同期","累计发展数<br>较上月同期比","当日发展数","累计发展数","累计发展数<br>较上月同期","累计发展数较<br>上月同期比"]];
 var time="";
 var sql="";
 
@@ -11,6 +11,9 @@ $(function() {
 		title : title,
 		field : field,
 		css:[{gt:1,css:LchReport.RIGHT_ALIGN}],
+		tableCss : {
+			leftWidth : 140
+		},
 		lock:1,
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
