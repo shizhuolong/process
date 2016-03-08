@@ -125,7 +125,7 @@
 						<tr>
 							<td width="2%">HR编码：</td>
 							<td width="5%"><input class="default-text-input wper80"
-								id="hr_no" name="hr_no" type="text" /></td>
+								id="hr_id" name="hr_id" type="text" /></td>
 							<td width="5%"><a class="default-btn" href="#"
 								id="searchWithHrId">查询</a></td>
 						</tr>
