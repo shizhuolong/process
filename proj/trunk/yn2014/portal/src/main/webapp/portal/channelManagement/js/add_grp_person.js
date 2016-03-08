@@ -62,6 +62,9 @@ $(function() {
 	$("#searchBtn").click(function(){
 		listDevNum(0);
 	});
+	$("#searchWithHrId").click(function(){
+		listHrCode(0);
+	});
 	//关闭dailog
 	$("#cancleBtn").click(function(){
 		var win = artDialog.open.origin;//来源页面
@@ -96,6 +99,7 @@ function getGrpType(){
 //hr编码列表
 function listHrCode(pageNumber){
 	pageNumber = pageNumber + 1;
+	var hr_id=$.trim($("#hr_id").val());
 	var unit_id = $("#developDatas").find("INPUT[name='ckUnit']:checked").val();
 	var grpType = $('#grpType input[name="ckHr"]:checked ').val(); 
 	var dealDate = $.trim($("#dealDate").val());
@@ -109,7 +113,8 @@ function listHrCode(pageNumber){
            "resultMap.rows":pageSize,
            "unit_id" : unit_id,
            "grpType" : grpType,
-           "dealDate":dealDate
+           "dealDate":dealDate,
+           "hr_id":hr_id
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
