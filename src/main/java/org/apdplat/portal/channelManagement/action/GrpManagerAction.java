@@ -91,6 +91,9 @@ public class GrpManagerAction extends BaseAction {
 			if(dealDate!=null&&!dealDate.trim().equals("")){
 				resultMap.put("dealDate", dealDate);
 			}
+			if(request.getParameter("hr_id")!=null&&!request.getParameter("hr_id").equals("")){
+				resultMap.put("hr_id", "%"+request.getParameter("hr_id")+"%");
+			}
 			Map<String,Object> result = service.searchHrNum(resultMap);
 			this.reponseJson(result);
 		} catch (Exception e) {
