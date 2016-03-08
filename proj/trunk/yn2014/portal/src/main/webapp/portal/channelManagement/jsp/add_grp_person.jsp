@@ -44,7 +44,7 @@
 				<form>
 					<table width="100%" style="margin: 10px 0; height: auto;">
 						<tr>
-							<td width="7%">发展人编码：</td>
+							<td width="8%">发展人编码：</td>
 							<td width="15%"><input class="default-text-input wper80"
 								id="dev_code" name="dev_code" type="text" /></td>
 							<td width="7%">营服名称：</td>
@@ -119,6 +119,19 @@
 	<div class="title" id="step3" style="margin-top: 20px; height: auto;display:none;">
 		<i></i>第三步：选择HR编码
 		<div id="hr" style="width: 550px;height: auto;">
+		  <div style="width: 550px; height: auto;">
+				<form>
+					<table width="100%" style="margin: 10px 0; height: auto;">
+						<tr>
+							<td width="2%">HR编码：</td>
+							<td width="5%"><input class="default-text-input wper80"
+								id="hr_no" name="hr_no" type="text" /></td>
+							<td width="5%"><a class="default-btn" href="#"
+								id="searchWithHrId">查询</a></td>
+						</tr>
+					</table>
+				</form>
+			</div>
 			<div class="default-dt" style="width: 550px;height: auto;">
 				<div class="sticky-wrap" style="width: 550px;height: auto;">
 					<table class="default-table sticky-enabled" style="width: 550px;height: auto;">
