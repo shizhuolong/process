@@ -53,12 +53,13 @@ function search(pageNumber) {
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
-				+"<td>"+isNull(n['ORGNAME'])+"</td>"
-				+"<td>"+isNull(n['REALNAME'])+"</td>"
-				+"<td>"+isNull(n['USERNAME'])+"</td>"
-				+"<td>"+isNull(n['PHONE'])+"</td>"
-				+"<td>"+isNull(n['TIMES'])+"</td>"
-				+"<td>"+isNull(n['LOGINTIME'])+"</td>";
+					+"<td>"+isNull(n['REGION_NAME'])+"</td>"
+					+"<td>"+isNull(n['ORGNAME'])+"</td>"
+					+"<td>"+isNull(n['REALNAME'])+"</td>"
+					+"<td>"+isNull(n['USERNAME'])+"</td>"
+					+"<td>"+isNull(n['PHONE'])+"</td>"
+					+"<td>"+isNull(n['TIMES'])+"</td>"
+					+"<td>"+isNull(n['LOGINTIME'])+"</td>";
 				content+="</tr>";
 			});
 			if(content != "") {
@@ -130,58 +131,38 @@ function downloadExcel() {
 	var queryOrgCode = $.trim($("#orgName option:selected").val());
 	var realname = $.trim($("#realname").val());
 	var username = $.trim($("#username").val());
-	var sql = "";
-	if(orgLevel == 1) {
-		sql = "SELECT T2.ORGNAME,T1.REALNAME,T.USERNAME,T1.PHONE,COUNT(T.USERNAME) AS TIMES," +
-				"TO_CHAR(T3.LOGINTIME, 'yyyy-MM-dd hh24:mi:ss') AS LOGINTIME " +
-				"FROM PORTAL.APDP_LOG_USERLOGIN T JOIN PORTAL.APDP_USER T1 " +
-				"ON (T.USERNAME = T1.USERNAME) JOIN PORTAL.APDP_ORG T2 ON (T1.ORG_ID = T2.ID) " +
-				"JOIN (SELECT T3.USERNAME, MAX(T3.LOGINTIME) LOGINTIME " +
-				"FROM PORTAL.APDP_LOG_USERLOGIN T3 " +
-				"WHERE TO_CHAR(T3.LOGINTIME, 'yyyymmdd') BETWEEN '"+startTime+"' AND '"+endTime+"' "+
-				"GROUP BY T3.USERNAME) T3 ON (T.USERNAME = T3.USERNAME) WHERE T1.ENABLED = 1 " +
-				"AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN '"+startTime+"' AND '"+endTime+"' ";
-				if(queryOrgCode != "") {
-					sql += " AND T2.CODE = '"+queryOrgCode+"' ";
-				}
-				if(username != "") {
-					sql += " AND T1.USERNAME = '"+username+"' ";
-				}
-				if(realname != "") {
-					sql += " AND T1.REALNAME LIKE '%"+realname+"%' ";
-				}
-				sql += "GROUP BY T2.ORGNAME, T1.REALNAME, T.USERNAME, T1.PHONE, T3.LOGINTIME " +
-						"ORDER BY COUNT(T.USERNAME) DESC";
-	} else {
-		sql = "SELECT T2.ORGNAME,T1.REALNAME,T.USERNAME,T1.PHONE,COUNT(T.USERNAME) AS TIMES," +
-				"TO_CHAR(T3.LOGINTIME, 'yyyy-MM-dd hh24:mi:ss') AS LOGINTIME " +
-				"FROM PORTAL.APDP_LOG_USERLOGIN T JOIN PORTAL.APDP_USER T1 " +
-				"ON (T.USERNAME = T1.USERNAME) JOIN PORTAL.APDP_ORG T2 ON (T1.ORG_ID = T2.ID) " +
-				"JOIN (SELECT T3.USERNAME, MAX(T3.LOGINTIME) LOGINTIME " +
-				"FROM PORTAL.APDP_LOG_USERLOGIN T3 " +
-				"WHERE TO_CHAR(T3.LOGINTIME, 'yyyymmdd') BETWEEN '"+startTime+"' AND '"+endTime+"' "+
-				"GROUP BY T3.USERNAME) T3 ON (T.USERNAME = T3.USERNAME) WHERE T1.ENABLED = 1 " +
-				"AND TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN '"+startTime+"' AND '"+endTime+"' "+
-				"AND EXISTS (SELECT 1 FROM (SELECT T.ID FROM PORTAL.APDP_ORG T " +
-				"START WITH T.PARENT_ID = (SELECT ID FROM PORTAL.APDP_ORG T " +
-				"WHERE T.CODE = '"+code+"') CONNECT BY PRIOR T.ID = T.PARENT_ID UNION " +
-				"SELECT ID FROM PORTAL.APDP_ORG T WHERE T.CODE = '"+code+"') T5 " +
-				"WHERE T5.ID = T2.ID)";
-				if(queryOrgCode != "") {
-					sql += " AND T2.CODE = '"+queryOrgCode+"' ";
-				}
-				if(username != "") {
-					sql += " AND T1.USERNAME = '"+username+"' ";
-				}
-				if(realname != "") {
-					sql += " AND T1.REALNAME LIKE '%"+realname+"%' ";
-				}
-				sql += "GROUP BY T2.ORGNAME, T1.REALNAME, T.USERNAME, T1.PHONE, T3.LOGINTIME " +
-				"ORDER BY COUNT(T.USERNAME) DESC";
+	var appName = $.trim($("#appName").val());
+	var sql = "SELECT                                                                      "+
+				"       O.REGION_NAME,O.ORGNAME,                                            		   "+
+				"       U.REALNAME,                                                                    "+
+				"       U.USERNAME,                                                                    "+
+				"       U.PHONE,                                                                       "+
+				"       L.TIMES,                                                                       "+
+				"       L.LOGINTIME                                                                    "+
+				"  FROM (SELECT T.APPNAME,                                                             "+
+				"               T.USERNAME,                                                            "+
+				"               TO_CHAR(T.LOGINTIME, 'yyyymmdd') AS LOGINTIME,                         "+
+				"               COUNT(T.USERNAME) AS TIMES                                             "+
+				"          FROM PORTAL.APDP_LOG_USERLOGIN T                                            "+
+				"         WHERE TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN "+startTime+" AND "+endTime	+
+				"           AND T.APPNAME = '/"+appName+"'"												+
+				"         GROUP BY T.APPNAME, T.USERNAME, T.LOGINTIME) L,                              "+
+				"       PORTAL.APDP_USER U,                                                            "+
+				"       PORTAL.APDP_ORG O                                                              "+
+				" WHERE UPPER(U.USERNAME) = UPPER(L.USERNAME)                                          "+
+				"   AND U.ORG_ID = O.ID                                                                ";
+	if(queryOrgCode!=null&&queryOrgCode!=''){
+		sql+=" AND O.REGION_CODE ="+queryOrgCode;
+	}
+	if(realname!=null&&''!=realname){
+		sql+=" AND U.REALNAME LIKE '%"+realname+"%'";
+	}
+	if(username!=null&&''!=username){
+		sql+=" AND U.USERNAME ="+username;
 	}
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['用户归属','姓名','工号','联系电话','登录次数','最后登录时间'];
+   var _head=['地市','营服中心','姓名','工号','联系电话','登录次数','最后登录时间'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
