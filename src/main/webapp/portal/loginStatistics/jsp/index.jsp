@@ -86,7 +86,8 @@
 					<table class="default-table sticky-enabled">
 						<thead>
 							<tr>
-								<th class="first">用户归属</th>
+								<th class="first">地市</th>
+								<th>营服中心</th>
 								<th>姓名</th>
 								<th>工号</th>
 								<th>联系电话</th>
@@ -97,8 +98,7 @@
 						<tbody id="dataBody">
 						</tbody>
 						<tr>
-							<td colspan="6">
-								</div>
+							<td colspan="7">
 									<div class="page_count">
 										<div class="page_count_left">
 											共有 <span id="totalCount"></span> 条数据
@@ -108,7 +108,6 @@
 											<div id="pagination"></div>
 										</div>
 									</div>
-								</div>
 							</td>
 						</tr>
 					</table>
