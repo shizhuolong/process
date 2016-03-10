@@ -42,11 +42,13 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var deal_date=art.dialog.data('deal_date');
 	var hr_id=art.dialog.data('hr_id');
-	var sql="SELECT * FROM PTEMP.TB_JCDY_SLJF_ALLDETAIL_MON  "+
-	" WHERE OPERATOR_ID IN (SELECT USER_CODE                         "+
-	"                           FROM PORTAL.TAB_PORTAL_MAG_PERSON T "+
-	"                          WHERE T.DEAL_DATE = '"+deal_date+"'   "+
-	"                            AND T.HR_ID = '"+hr_id+"') AND NY='"+deal_date+"'         ";
+	var sql="SELECT A.*                                                "+
+	"  FROM PODS.TB_JCDY_SLJF_ALLDETAIL_MON PARTITION(P"+deal_date+") A"+
+	" WHERE  EXISTS (SELECT 1                                          "+
+	"          FROM PORTAL.TAB_PORTAL_MAG_PERSON T                     "+
+	"         WHERE T.DEAL_DATE = '"+deal_date+"'                      "+
+	"           AND T.HR_ID = '"+hr_id+"'                              "+
+	"           AND T.USER_CODE = A.OPERATOR_ID)                       ";
 
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
