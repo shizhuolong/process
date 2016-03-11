@@ -256,6 +256,7 @@ function roundN(number,fractionDigits){
 }   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标小类说明","指标类代码","指标类描述","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值 ","积分内部代码","积分值"]];
 	var dealDate=$("#dealDate").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
@@ -270,8 +271,8 @@ function downsAll(){
 	"       GROUP_ID_4_NAME,                   "+
 	"       SUBSCRIPTION_ID,                   "+
 	"       SERVICE_NUM,                       "+
-	"       BRAND_TYPE_ID,                     "+
-	"       INDEX_CODE,                        "+
+	"       BRAND_TYPE_ID,BRAND_TYPE,                    "+
+	"       INDEX_CODE,INDEX_DESC,                      "+
 	"       INDEX_VALUE,                       "+
 	"       INNET_DATE,                        "+
 	"       decode(NET_TYPE,                   "+
