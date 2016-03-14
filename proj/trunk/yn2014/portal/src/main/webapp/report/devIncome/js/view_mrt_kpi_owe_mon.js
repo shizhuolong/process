@@ -119,7 +119,7 @@ function listRegions(){
 	var sql="";
 	var time=$("#time").val();
 	//条件
-	var sql = "SELECT distinct T.地市名称  GROUP_ID_1_NAME,T.地市 from PMRT.VIEW_MRT_KPI_OWE_MON T WHERE 1=1 ";
+	var sql = "SELECT distinct T.地市名称  GROUP_ID_1_NAME,T.地市 from PMRT.VIEW_MRT_KPI_OWE_MON T WHERE 1=1 AND T.地市名称  IS NOT NULL";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
