@@ -56,6 +56,10 @@ function search(pageNumber) {
 					content+="<td style='color:#4095ce'><a href='#' onclick='open2();'>"+isNull(n['BUSIDESC'])+"</a></td>";
 				}else if(isNull(n['BUSIDESC'])=="自备机续约"){
 					content+="<td style='color:#4095ce'><a href='#' onclick='open3();'>"+isNull(n['BUSIDESC'])+"</a></td>";
+				}else if(isNull(n['BUSIDESC'])=="两年不缴费"){
+					content+="<td style='color:#4095ce'><a href='#' onclick='open4();'>"+isNull(n['BUSIDESC'])+"</a></td>";
+				}else if(isNull(n['BUSIDESC'])=="存费送礼"){
+					content+="<td style='color:#4095ce'><a href='#' onclick='open5();'>"+isNull(n['BUSIDESC'])+"</a></td>";
 				}else{
 					content+="<td>"+isNull(n['BUSIDESC'])+"</td>";
 				}
@@ -167,6 +171,30 @@ function open3(){
 		lock:true,
 		resize:false,
 		title:'活动明细'
+	});
+}
+function open4(){
+	var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/twoyear_scheme.jsp";
+	art.dialog.open(url,{
+		id:'open',
+		width:'1200px',
+		height:'400px',
+		padding:'0 0',
+		lock:true,
+		resize:false,
+		title:'活动套餐'
+	});
+}
+function open5(){
+	var url = $("#ctx").val()+"/performanceAppraisal/payment/jsp/cfsl_scheme.jsp";
+	art.dialog.open(url,{
+		id:'open',
+		width:'1200px',
+		height:'400px',
+		padding:'0 0',
+		lock:true,
+		resize:false,
+		title:'活动类型'
 	});
 }
 function initPagination(totalCount) {
