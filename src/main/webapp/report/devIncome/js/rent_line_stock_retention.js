@@ -325,7 +325,7 @@ function downsAll() {
 		return;
 	}
 	sql += orderBy;
-	showtext = '专租线存量收入保有率-' + time;
+	showtext = '专租线存量收入保有率-' + year;
 	downloadExcel(sql, title, showtext);
 }
 // ///////////////////////下载结束/////////////////////////////////////////////
