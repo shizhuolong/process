@@ -665,6 +665,14 @@ function _jf_power(hrId,month){
 var pageHeader=[];
 function downPageAll(){
 	var header=pageHeader;
+	//将header中的<br/>去掉
+	if(null!=header&&header.length>0&&header[0].length>0){
+		for(var i=0;i<header.length;i++){
+			for(var j=0;j<header[i].length;j++){
+				header[i][j]=header[i][j].replace(new RegExp(/<br\/>|<br>|<\/br>/g),'');
+			}
+		}
+	}
 	//1.处理左边
 	var $l=$("#lch_DataBody").find("TR:visible");
 	var data=[];
