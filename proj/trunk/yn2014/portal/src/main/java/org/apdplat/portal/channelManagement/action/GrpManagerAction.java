@@ -8,7 +8,6 @@ import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.portal.channelManagement.service.ChannelMangerService;
 import org.apdplat.portal.channelManagement.service.GrpMangerService;
 import org.springframework.beans.factory.annotation.Autowired;
 

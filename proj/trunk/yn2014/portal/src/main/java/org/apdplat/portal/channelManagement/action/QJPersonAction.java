@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apdplat.platform.action.BaseAction;
-import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.portal.channelManagement.service.QJPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 唯一身份管理
@@ -17,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @SuppressWarnings("serial")
 public class QJPersonAction extends BaseAction {
-	private final APDPlatLogger logger = new APDPlatLogger(getClass());
+	//private final APDPlatLogger logger = new APDPlatLogger(getClass());
 	
 	@Autowired
 	private QJPersonService qjPersonService;
