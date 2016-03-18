@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apdplat.platform.action.BaseAction;
-import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.portal.channelManagement.service.BusinessHallPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @SuppressWarnings("serial")
 public class BusinessHallPersonAction extends BaseAction {
-	private final APDPlatLogger logger = new APDPlatLogger(getClass());
+	//private final APDPlatLogger logger = new APDPlatLogger(getClass());
 	
 	@Autowired
 	private BusinessHallPersonService businessHallPersonService;

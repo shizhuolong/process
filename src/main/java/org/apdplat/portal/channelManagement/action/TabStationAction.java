@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.portal.channelManagement.service.BaseStationManagerService;
 import org.apdplat.portal.channelManagement.service.TabStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,7 +71,7 @@ public class TabStationAction extends BaseAction {
 			String isDivide = request.getParameter("isDivide");
 			String unitid=request.getParameter("unitid");
 			String basetype=request.getParameter("basetype");
-			String orgLevel=request.getParameter("orgLevel");
+			//String orgLevel=request.getParameter("orgLevel");
 			String dealdate=request.getParameter("dealdate");
 			if(station_addr_code != null && !"".equals(station_addr_code.trim())) {
 				resultMap.put("station_addr_code", "%"+station_addr_code+"%");
