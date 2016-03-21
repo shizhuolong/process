@@ -54,7 +54,7 @@ function search(pageNumber) {
 	var regionCode=$("#regionName").val();
 	var unitId=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
-	sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_INTEGRAL_GW_DETAIL T WHERE 1=1";
+	sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_INTEGRAL_GW_DETAIL T WHERE DEAL_DATE='"+dealDate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
