@@ -23,5 +23,9 @@
             <result name="success">/report/devIncome/jsp/is_kpi_list.jsp</result>
             <result name="error">/report/devIncome/jsp/is_kpi.jsp</result>            
         </action>
+        <action name="ZZXUpload_*" class="org.apdplat.report.devIncome.action.ZZXUploadAction" method="{1}">
+            <result name="success">/report/devIncome/jsp/zzx_ratio_list.jsp</result>
+            <result name="error">/report/devIncome/jsp/zzx_ratio.jsp</result>            
+        </action>
 	</package>
 </struts>
