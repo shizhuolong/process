@@ -108,3 +108,6 @@ function importToResult(){
  function repeatImport(){
 	 window.location.href=paths+"/report/devIncome/jsp/zzx_ratio.jsp";
  }
+ function back(){
+	 window.location.href=paths+"/report/devIncome/jsp/zzx_ratio_select.jsp";
+ }
