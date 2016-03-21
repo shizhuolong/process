@@ -41,6 +41,10 @@
 					    <td width="1%">
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="repeat" onclick="repeatImport()">重新导入</a>
 					    </td> 
+					    
+					    <td width="1%">
+						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="back" onclick="back()">返回</a>
+					    </td> 
 					</tr>
 				</table>
 	</div>
