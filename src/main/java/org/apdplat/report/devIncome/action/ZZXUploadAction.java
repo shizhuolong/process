@@ -135,7 +135,7 @@ public class ZZXUploadAction extends BaseAction{
 					String lsql="SELECT DISTINCT SUBSCRIPTION_ID FROM PTEMP.TB_TMP_GWZZJZ_RATIO_TEMP";
 					String rsql="SELECT SUBSCRIPTION_ID FROM PTEMP.TB_TMP_GWZZJZ_RATIO_TEMP";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
-						err.add("导入的excel中服务号码有重复数据");
+						err.add("导入的excel中用户编码有重复数据");
 					}
 				}
 				System.out.println("导入结束...");
