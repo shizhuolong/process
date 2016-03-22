@@ -1,6 +1,14 @@
 var pageSize = 15;
-//var UPDATE_ROLE = "ROLE_MANAGER_PERFORMANCEAPPRAISAL_KHJL_SLJFZBPZ_UPDATEPART";
+var UPDATE_ROLE = "ROLE_MANAGER_PERFORMANCEAPPRAISAL_KHJL_QXBBMENU_REPORT_UPDATEPART";
 $(function() {
+	var title="<th class='first'>帐期</th><th>地市</th><th>人员姓名</th><th>HR编码</th><th>基础薪酬</th>";
+	if(isGrantedNew(UPDATE_ROLE)) {
+		title+="<th>操作</th>";
+		$(".addBtn").show();
+		$("#dataTitle").empty().html(title);
+	}else{
+		$("#dataTitle").empty().html(title);
+	}
 	//查询地市
 	listRegions();
 	search(0);
@@ -53,14 +61,13 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td>"+isNull(n['NAME'])+"</td>"
 				+"<td>"+isNull(n['HR_ID'])+"</td>"
-				+"<td>"+isNull(n['BASESALARY'])+"</td>"
-				+"<td style='text-align: center;'><a href='#' style='text-align: center;'  hrId='"+n['HR_ID']+"' time='"+n['DEAL_DATE']+"' onclick='editKpiBseicByHrid(this);'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-				+"<a href='#' style='text-align: center;' hrId='"+n['HR_ID']+"' name='"+n['NAME']+"'  time='"+n['DEAL_DATE']+"'  onclick='delKpiBseicByHrid(this);'>删除</a></td>"
-				/*if(isGrantedNew(UPDATE_ROLE)) {
-					content+="<td><a href='#' style='text-align: center;' id='"+n['BIGBUSI_CODE']+"' onclick='editSljfTarget(this);'>修改</a></td>";
+				+"<td>"+isNull(n['BASESALARY'])+"</td>";
+				if(isGrantedNew(UPDATE_ROLE)) {
+					content+="<td style='text-align: center;'><a href='#' style='text-align: center;'  hrId='"+n['HR_ID']+"' time='"+n['DEAL_DATE']+"' onclick='editKpiBseicByHrid(this);'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					+"<a href='#' style='text-align: center;' hrId='"+n['HR_ID']+"' name='"+n['NAME']+"'  time='"+n['DEAL_DATE']+"'  onclick='delKpiBseicByHrid(this);'>删除</a></td>";
 				} else {
-					content+="<td>&nbsp;</td>";
-				}*/
+					/*content+="<td>&nbsp;</td>";*/
+				}
 				content+="</tr>";
 			});
 			if(content != "") {
@@ -226,7 +233,7 @@ function addKpiBaseConfig() {
 		padding:'0 0',
 		lock:true,
 		resize:false,
-		title:'添加KPI基础绩效'
+		title:'KPI基础绩效新增'
 	});
 }
 
@@ -245,7 +252,7 @@ function editKpiBseicByHrid(ele) {
 		padding:'0 0',
 		lock:true,
 		resize:false,
-		title:'修改KPI基础绩效'
+		title:'KPI基础绩效修改'
 	});
 }
 
