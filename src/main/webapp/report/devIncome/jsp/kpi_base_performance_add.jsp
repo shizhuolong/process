@@ -16,7 +16,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>KPI基础绩效新增</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
@@ -38,37 +38,37 @@
 			<form id="addKpiBasePerformance" method="POST">
 				<table class="default-table sticky-enabled">
 				<tr>
-					<td width="6%" style="padding-left: 10px;">账期：</td>
+					<td width="6%" style="padding-left: 10px;">账期</td>
 					<td width="15%">
-						<input type="text"  class="Wdate default-text-input wper	0" 
+						<input type="text"  class="Wdate default-text-input wper60" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
 				</tr>
 				<tr>
-					<td width="4%">地市：</td>
-					<td width="15%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+					<td width="4%">地市</td>
+					<td width="55%">
+						<select name="regionName" id="regionName" onchange="" class="default-text-input wper70">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<td width="8%">人员姓名：</td>
-					<td width="15%">
-						<select name="userName" id="userName" onchange="" class="default-text-input wper80">
+					<td width="8%">人员姓名</td>
+					<td width="45%">
+						<select name="userName" id="userName" onchange="" class="default-text-input wper70">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<td width="8%">HR编码：</td>
-					<td width="15%" id="hrCode">
+					<td width="8%">HR编码</td>
+					<td width="45%" id="hrCode">
 					</td>
 				</tr>
 				<tr>
-					<td width="8%">基础薪酬：</td>
-					<td width="15%">
-						<input class="default-text-input wper80" name="baseSalary" type="text" id="baseSalary"/>
+					<td width="8%">基础薪酬</td>
+					<td width="55%">
+						<input class="default-text-input wper60" name="baseSalary" type="text" id="baseSalary"/>
 					</td>
 				</tr>
 				<tr>
