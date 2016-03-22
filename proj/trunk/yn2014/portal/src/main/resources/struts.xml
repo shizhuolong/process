@@ -45,5 +45,5 @@
     <include file="struts/struts-qaManagement.xml" />
     <include file="struts/struts-bulletin.xml" />
     <include file="struts/struts-kpiManager.xml" />
-    
+    <include file="struts/struts-message.xml" />
 </struts>
