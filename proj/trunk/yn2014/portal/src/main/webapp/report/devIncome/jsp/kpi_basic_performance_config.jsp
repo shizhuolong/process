@@ -83,7 +83,7 @@ function isGrantedNew(role){
 						<a class="default-btn" href="#" id="resetBtn"
 						style="float: right; margin-right: 48px;">重置</a>
 					</td>
-					<td width="5%">
+					<td width="5%" class="addBtn" style="display:none;">
 						<a class="default-btn" href="#" id="addBtn"
 						style="float: right; margin-right: 48px;">新增</a>
 					</td>
@@ -97,13 +97,7 @@ function isGrantedNew(role){
 				<div class="sticky-wrap">
 					<table class="default-table sticky-enabled">
 						<thead>
-							<tr>
-								<th class="first">帐期</th>
-								<th>地市</th>
-								<th>人员姓名</th>
-								<th>HR编码</th>
-								<th>基础薪酬</th>
-								<th>操作</th>
+							<tr id="dataTitle">
 							</tr>
 						</thead>
 						<tbody id="dataBody">
