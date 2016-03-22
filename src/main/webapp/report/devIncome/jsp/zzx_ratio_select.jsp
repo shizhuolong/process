@@ -1,12 +1,17 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
      User user = UserHolder.getCurrentLoginUser();
      Org org = user.getOrg();
      String path = request.getContextPath();
+     Calendar ca=Calendar.getInstance();
+ 	 ca.add(Calendar.MONTH, -1);
+     String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <html>
 <head>
@@ -30,15 +35,28 @@
 <body class="" style="overflow-x:auto;margin:5px;margin-top:0;">
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<div class="search-div">
-				<table style="margin: 0px 0; border:none;width: 150px;">
+				<table style="margin: 0px 0; border:none;width: 70%;">
 					<tr>
+					    <td width="12%" style="padding-left: 10px;">生效时间：</td>
+					    <td width="20%">
+						  <input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						  onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time">
+					    </td>
+					    <td width="12%">服务号码：</td>
+					    <td width="20%">
+						  <input class="default-text-input wper80" name="device_number" type="text" id="device_number"/>
+					    </td>
 						<td width="1%">
 							<a style="cursor:pointer;" class="default-btn" id="exportBtn" onclick="downsAll()">导出</a>
 						</td>
 						
 					    <td width="1%">
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="importBtn" onclick="importBtn()">批量导入</a>
-					    </td> 
+					    </td>
+					    
+					     <td width="1%">
+						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="searchBtn">查询</a>
+					    </td>  
 					</tr>
 				</table>
 	</div>
