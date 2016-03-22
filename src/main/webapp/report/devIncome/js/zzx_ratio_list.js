@@ -21,9 +21,6 @@ $(function() {
 		}
 	});
 	search(0);
-	$("#searchBtn").click(function(){
-		search(0);
-	});
 });
 
 var pageSize = 15;
@@ -45,11 +42,10 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var username=$("#username").val();
-	sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_GWZZJZ_RATIO_TEMP ORDER BY SUBSCRIPTION_ID";
-	var csql = sql;
+	sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_GWZZJZ_RATIO_TEMP";
+	var cdata = query("select count(*) total from (" + sql+")");
+	sql+=" ORDER BY SUBSCRIPTION_ID";
 	downSql=sql;
-	var cdata = query("select count(*) total from (" + csql+")");
 	total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -75,7 +71,7 @@ function search(pageNumber) {
 	});
 }
 function downsAll() {
-	var showtext = '专租线项目系数配置';
+	var showtext = '专租线项目系数配置导入数据';
 	downloadExcel(downSql,title,showtext);
 }
 

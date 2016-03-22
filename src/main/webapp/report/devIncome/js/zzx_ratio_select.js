@@ -45,11 +45,15 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var username=$("#username").val();
-	sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_GWZZJZ_RATIO ORDER BY SUBSCRIPTION_ID";
-	var csql = sql;
+	var active_time=$("#time").val();
+	var device_number=$.trim($("#device_number").val());
+	sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_GWZZJZ_RATIO WHERE ACTIVE_TIME='"+active_time+"'";
+	if(device_number){
+		sql+=" AND DEVICE_NUMBER LIKE '%"+device_number+"%'";
+	}
+	var cdata = query("select count(*) total from (" + sql+")");
+	sql+=" ORDER BY SUBSCRIPTION_ID";
 	downSql=sql;
-	var cdata = query("select count(*) total from (" + csql+")");
 	total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
