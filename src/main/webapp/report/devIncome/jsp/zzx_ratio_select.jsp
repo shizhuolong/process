@@ -30,6 +30,16 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/zzx_ratio_select.js"></script>
 <script type="text/javascript">
     var paths="<%=path%>";
+    var privileges='<%=user.getAuthoritiesStr()%>';
+	function isGrantedNew(role){
+	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
+	        return true;
+	    }
+	    if(privileges.toString().indexOf(role)==-1){
+	        return false;
+	    }
+	    return true;
+	}
 </script>
 </head>
 <body class="" style="overflow-x:auto;margin:5px;margin-top:0;">
