@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 集客的客户经理及渠道经理
- * @author liyz
+ * @author only
  *
  */
 @SuppressWarnings("serial")
@@ -41,9 +41,77 @@ public class GrpManagerAction extends BaseAction {
 	private String hrNum;
 	private String userName;
 	private String regionCode;
+	private String chanName;
 
 	private Map<String, String> resultMap;
+	
+	/**
+	 * 更新集客经理信息
+	 */
+	public void updateGrpPerson(){
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("devNum",devNum );
+		params.put("hrNum", hrNum);
+		params.put("chanCode", chanCode);
+		params.put("chanName", chanName);
+		params.put("dealDate", dealDate);
+		int result =service.updateGrpPerson(params);
+		if(result==1){
+			resultMap = new HashMap<String,String>();
+			resultMap.put("SUCCESS", "修改集客经理成功");
+			this.reponseJson(resultMap);
+		}else{
+			logger.error("修改集客经理失败");
+			outJsonPlainString(response,"{\"msg\":\"修改集客经理失败\"}");
+		}
+	}
 
+	/**
+	 * 修改集客经理是验证HR编码
+	 */
+	public void checkHrCode(){
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("orgLevel", orgLevel);
+		params.put("hrNum", hrNum);
+		params.put("chanCode", chanCode);
+		try {
+			resultMap = service.checkHrCode(params);
+			if(resultMap!=null){
+				this.reponseJson(resultMap);
+			}else{
+				logger.error("hr编码填写错误");
+				outJsonPlainString(response,"{\"msg\":\"hr编码填写错误，请从新填写\"}");
+			}
+		} catch (Exception e) {
+			logger.error("hr编码验证失败",e);
+			outJsonPlainString(response,"{\"msg\":\"hr编码验证失败\"}");
+		}
+		
+	}
+	/**
+	 * 修改集客经理时验证渠道编码
+	 */
+	public void checkChannelCode(){
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("devNum", devNum);
+		params.put("chanCode", chanCode);
+		try {
+			resultMap= service.checkChannelCode(params);
+			if(resultMap!=null){
+				this.reponseJson(resultMap);
+			}else{
+				logger.error("渠道编码填写错误");
+				outJsonPlainString(response,"{\"msg\":\"渠道编码填写错误，请从新填写\"}");
+			}
+		} catch (Exception e) {
+			logger.error("渠道编码验证失败",e);
+			outJsonPlainString(response,"{\"msg\":\"渠道编码验证失败\"}");
+		}
+		
+		
+	}
+	
+	
 	public void addGrpManager(){
 		Map<String,Object> m = new HashMap<String,Object>();
 			if(grpType!=null&&!grpType.trim().equals("")){
@@ -328,6 +396,14 @@ public class GrpManagerAction extends BaseAction {
 	public void setResultMap(Map<String, String> resultMap) {
 		this.resultMap = resultMap;
 	}
-	
+
+	public String getChanName() {
+		return chanName;
+	}
+
+	public void setChanName(String chanName) {
+		this.chanName = chanName;
+	}
+
 	
 }
