@@ -3,14 +3,16 @@ $(function() {
 	//查询地市
 	listRegions();
 	//根据地市查询人员
-	$("#regionName").change(function(){
-		queryPersonByCity();
-	});
+		$("#regionName").change(function(){
+			var regionCode = $("#regionName").val();
+			queryPersonByCity(regionCode);
+		});
 	
 	//根据人员姓名设置好人编码
 	$("#userName").change(function(){
 		$("#hrCode").html("");
-		addHrCode();
+		var hrCode =$("#userName").find("option:selected").attr("hrId");
+		addHrCode(hrCode);
 	});
 	//关闭dailog
 	$("#cancleBtn").click(function(){
@@ -69,16 +71,14 @@ $(function() {
 });
 
 
-function addHrCode(){
-	var hrCode = $.trim($("#userName").find("option:selected").attr("hrId"));
+function addHrCode(hrCode){
 	if(hrCode!=''&&hrCode!=null){
 		$("#hrCode").html(hrCode);
 	}
 	
 }
 
-function queryPersonByCity(){
-	var regionCode = $.trim($("#regionName").val());
+function queryPersonByCity(regionCode){
 	var time = $.trim($("#time").val());
 	var month = $.trim($("#month").val());
 	var thisMonth = month+1;
@@ -99,6 +99,8 @@ function queryPersonByCity(){
 			if (d.length == 1) {
 				h += '<option value="' + d[0].NAME + '"  hrId="' + d[0].HR_ID + '" selected >'
 						+ d[0].NAME + '</option>';
+				$("#hrCode").html("");
+				addHrCode(d[0].HR_ID);
 			} else {
 				h += '<option value="" selected>请选择</option>';
 				for (var i = 0; i < d.length; i++) {
@@ -145,6 +147,7 @@ function listRegions(){
 			h += '<option value="' + d[0].GROUP_ID_1
 					+ '" selected >'
 					+ d[0].GROUP_ID_1_NAME + '</option>';
+			queryPersonByCity(d[0].GROUP_ID_1);
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {

@@ -63,7 +63,7 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['HR_ID'])+"</td>"
 				+"<td>"+isNull(n['BASESALARY'])+"</td>";
 				if(isGrantedNew(UPDATE_ROLE)) {
-					content+="<td style='text-align: center;'><a href='#' style='text-align: center;'  hrId='"+n['HR_ID']+"' time='"+n['DEAL_DATE']+"' onclick='editKpiBseicByHrid(this);'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+					content+="<td style='text-align: center;'><a href='#' style='text-align: center;'  hrId='"+n['HR_ID']+"' time='"+n['DEAL_DATE']+"' onclick='editKpiBseicByHrid(this);'>修改</a>&nbsp;&nbsp;&nbsp;"
 					+"<a href='#' style='text-align: center;' hrId='"+n['HR_ID']+"' name='"+n['NAME']+"'  time='"+n['DEAL_DATE']+"'  onclick='delKpiBseicByHrid(this);'>删除</a></td>";
 				} else {
 					/*content+="<td>&nbsp;</td>";*/
