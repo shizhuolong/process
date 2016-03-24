@@ -84,16 +84,17 @@ function search(pageNumber) {
 	   		
 	   			$("#addBtn").show();
 	   			$.each(pages.rows,function(i,n){
-					content+="<tr>"
-					+"<td>"+isNull(n['user_type'])+"</td>"
-					+"<td>"+isNull(n['NAME'])+"</td>"
-					+"<td>"+isNull(n['PHONE'])+"</td>"
-					+"<td>"+isNull(n['DEVELOPER'])+"</td>"
-					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
-					+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
-					+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
-					+"<td class='operater'><a href='#'  dealDate='"+dealDate+"'id='developer' dev_num='"+n['DEVELOPER']+"' onclick='del(this);'>删除</a></td>";
-					content+="</tr>";
+	   				content+="<tr>"+
+						"<td>"+isNull(n['user_type'])+"</td>"+
+						"<td>"+isNull(n['NAME'])+"</td>"+
+						"<td>"+isNull(n['PHONE'])+"</td>"+
+						"<td>"+isNull(n['DEVELOPER'])+"</td>"+
+						"<td>"+isNull(n['UNIT_NAME'])+"</td>"+
+						"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"+
+						"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"+
+						"<td class='operater'><a href='#'  dealDate='"+dealDate+"'id='developer' devNum='"+n['DEVELOPER']+"' onclick='updateGrpPerson(this);'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+						"<a href='#'  dealDate='"+dealDate+"'id='developer' dev_num='"+n['DEVELOPER']+"' onclick='del(this);'>删除</a></td>" +
+						"</tr>";
 				});
 	   		
 			if(content != "") {
@@ -122,6 +123,8 @@ function search(pageNumber) {
 	
 });*/
 
+
+//集客经理新增
 function addGrpPerson(){
 	var dealDate=$.trim($("#dealDate").val());
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/add_grp_person.jsp?dealDate="+dealDate;
@@ -129,11 +132,27 @@ function addGrpPerson(){
 		id:'addGrpPerson',
 		width:'560px',
 		height:'305px',
-		/*padding:'12px',*/
+		title:'集客的客户经理及渠道经理新增',
 		lock:true,
 		resize:false
 	});
 }
+
+//集客经理修改
+function updateGrpPerson(event){
+	var dealDate=$(event).attr("dealDate");
+	var devNum =$(event).attr("devNum");
+	var url = $("#ctx").val()+"/portal/channelManagement/jsp/grp_person_update.jsp?dealDate="+dealDate+"&devNum="+devNum;
+	art.dialog.open(url,{
+		id:'updateGrpPerson',
+		width:'800px',
+		height:'160px',
+		title:'集客的客户经理及渠道经理修改',
+		lock:true,
+		resize:false
+	});
+}
+
 //删除集客经理
 function del(d){
 	var dev_num =$(d).attr("dev_num");
