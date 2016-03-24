@@ -76,19 +76,19 @@ function isGrantedNew(role){
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						<a class="default-gree-btn fLeft mr10" href="#" id="resetBtn"
+						style="float: right; margin-right: 48px;">重置</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="resetBtn"
-						style="float: right; margin-right: 48px;">重置</a>
+						<a class="default-btn" href="#" id="searchBtn"
+						style="float: right; margin-right: 48px;">查询</a>
 					</td>
 					<td width="5%" class="addBtn" style="display:none;">
 						<a class="default-btn" href="#" id="addBtn"
 						style="float: right; margin-right: 48px;">新增</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downloadExcel()">导出</a>
+						<a class="default-gree-btn fLeft mr10" href="#" id="exportBtn" onclick="downloadExcel()">导出</a>
 					</td>
 				</tr>
 			</table>
