@@ -11,9 +11,41 @@ import java.util.Map;
 
 
 
+
+
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface GrpManagerDao {
+	
+	/**
+	 * 更新集客经理(1)
+	 * @param params
+	 * @return 
+	 */
+	public Object updateGrp(Map<String, String> params) throws Exception;
+
+	/**
+	 * 更新集客经理(2)
+	 * @param params
+	 * @return 
+	 */
+	public Object meregIntoGrp(Map<String, String> params) throws Exception;
+	
+	/**
+	 * 修改集客经理时候验证hr编码
+	 * @param params
+	 * @return
+	 */
+	public Map<String,String> checkHrCode(Map<String,String> params) throws Exception;
+	
+	/**
+	 * 修改集客经理时候验证渠道编码
+	 * @param params
+	 * @return
+	 */
+	public Map<String,String> checkChannelCode(Map<String,String> params) throws Exception;
 
 	/**
 	 * 查询集客的客户经理及渠道经理组织架构
@@ -56,5 +88,7 @@ public interface GrpManagerDao {
 	 * @return
 	 */
 	public int addGrpManager(Map<String, Object> params);
+
+	
 	
 }
