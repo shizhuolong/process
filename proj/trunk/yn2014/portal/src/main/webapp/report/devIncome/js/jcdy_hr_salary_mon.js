@@ -426,6 +426,7 @@ function search(pageNumber) {
 				}
 			}
 			var sql="";
+			var ssql="";
 			if(isResp==0){
 				//判断
 				sql="";
@@ -435,18 +436,17 @@ function search(pageNumber) {
 				sql+=" select '受理积分' type, t.SL_ALLJF sl,t.SL_SVR_ALL_CRE tj,tr.UNIT_RATIO qy,t.UNIT_SL_ALLJF qytj,t.UNIT_SL_ALLJF*10 sumxc from pmrt.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
 				sql+=" WHERE T.HR_NO='"+hrId+"' AND DEAL_DATE='"+date+"'  ";//AND SL_ALLJF>0
 				sql+=" UNION ALL ";
-				sql+=" select '维系积分' type, CRE sl,HQ_CRE tj,tr.unit_ratio qy,UNIT_CRE qytj,UNIT_CRE*10  sumxc from pmrt.TB_MRT_JCDY_WX_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
-				sql+=" WHERE T.HR_ID='"+hrId+"' AND DEAL_DATE='"+date+"' ";
-				
+				sql+=" select '维系积分' type,t.wx_cre sl,t.wx_svr_cre tg,tr.unit_ratio qy,t.wx_unit_cre qytj,t.wx_unit_cre*10 sumxc from PMRT.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id=t.unit_id ";
+				sql+=" WHERE T.HR_NO='"+hrId+"' AND t.DEAL_DATE='"+date+"' ";
+				ssql+=" select t.all_jf qytj, t.all_jf_money sumxc  from PMRT.TB_JCDY_JF_ALL_MON t left join PCDE.TAB_CDE_GROUP_CODE tr on tr.unit_id = t.unit_id ";
+				ssql+=" WHERE T.HR_NO = '"+hrId+"' AND t.DEAL_DATE='"+date+"' ";
 				var d=query(sql);
-				
+				var sd=query(ssql);
 				if(d&&d.length){
 					var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
 						+"<table><thead class='lch_DataHead'><tr><th>积分类型</th><th>原始积分</th><th>渠道（服务）调节后积分</th><th>区域系数</th><th>区域调节后积分</th><th>积分提成奖励（元）</th></tr></thead><tbody class='lch_DataBody'>";
 						var sh="";
-						var sumqy=0;
-						var sumxc=0;
-						for(var i=0;i<d.length;i++){
+						for(var i=1;i<d.length;i++){
 								h+="<tr><td>"+isNull(d[i]["TYPE"])
 								+"</td><td>"+isNull(d[i]["SL"])
 								+"</td><td>"+isNull(d[i]["TJ"])
@@ -454,14 +454,12 @@ function search(pageNumber) {
 								+"</td><td>"+isNull(d[i]["QYTJ"])
 								+"</td><td>"+isNull(d[i]["SUMXC"])
 								+"</td></tr>";
-								sumqy+=d[i]["QYTJ"];
-								sumxc+=d[i]["SUMXC"];
 						}
 						
-						if(d.length>=2){
+						if(sd.length==1){
 							sh+="<tr><td colspan='4' style='text-align:center;'>合计"
-							+"</td><td>"+roundN(sumqy,2)
-							+"</td><td>"+roundN(sumxc,2)
+							+"</td><td>"+isNull(sd[0]["QYTJ"])
+							+"</td><td>"+isNull(sd[0]["SUMXC"])
 							+"</td></tr>";
 						}
 						h+=sh+"</tbody>"
