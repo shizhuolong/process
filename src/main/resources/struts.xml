@@ -5,7 +5,10 @@
 <struts>
     <!-- 这是struts2唯一的一个配置文件 -->
     <!-- 约定优于配置 -->
-
+	<!-- 安全补丁替换jar包相应配置更改 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+	<constant name="struts.convention.action.mapallmatches" value="true"/>
+	<!-- end -->
     <!-- 打印详细错误信息  -->
     <constant name="struts.devMode" value="false"/>
     <!--设置浏览器不缓存静态内容 -->
