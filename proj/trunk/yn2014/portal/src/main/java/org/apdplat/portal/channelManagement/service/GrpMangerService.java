@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.portal.channelManagement.dao.GrpManagerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -16,9 +18,47 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
  */
 @Service
 public class GrpMangerService {
-
+	private final APDPlatLogger logger = new APDPlatLogger(getClass());
 	@Autowired
 	private GrpManagerDao dao;
+	
+	/**
+	 * 修改集客经理
+	 * @param params
+	 * @return
+	 */
+	@Transactional
+	public int updateGrpPerson(Map<String, String> params) {
+		try {
+			dao.updateGrp(params);
+			dao.meregIntoGrp(params);
+			return 1;
+		} catch (Exception e) {
+			logger.error("修改集客经理失败",e);
+			return 0;
+		}
+	}
+	
+	
+	/**
+	 * 修改集客经理时候验证hr编码
+	 * @param params
+	 * @return
+	 * @throws Exception 
+	 */
+	public Map<String,String> checkHrCode(Map<String,String> params) throws Exception{
+		return dao.checkHrCode(params);
+	}
+	
+	/**
+	 * 修改集客经理时候验证渠道编码
+	 * @param params
+	 * @return
+	 * @throws Exception 
+	 */
+	public Map<String,String>  checkChannelCode(Map<String,String> params) throws Exception{
+		return dao.checkChannelCode(params);
+	}
 	
 	/**
 	 * 查询集客的客户经理及渠道经理组织架构
@@ -84,6 +124,8 @@ public class GrpMangerService {
 	public int addGrpManager(Map<String, Object> params) {
 		return dao.addGrpManager(params);
 	}
+
+
 
 	
 }
