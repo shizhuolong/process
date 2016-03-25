@@ -446,7 +446,7 @@ function search(pageNumber) {
 					var h="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
 						+"<table><thead class='lch_DataHead'><tr><th>积分类型</th><th>原始积分</th><th>渠道（服务）调节后积分</th><th>区域系数</th><th>区域调节后积分</th><th>积分提成奖励（元）</th></tr></thead><tbody class='lch_DataBody'>";
 						var sh="";
-						for(var i=1;i<d.length;i++){
+						for(var i=0;i<d.length;i++){
 								h+="<tr><td>"+isNull(d[i]["TYPE"])
 								+"</td><td>"+isNull(d[i]["SL"])
 								+"</td><td>"+isNull(d[i]["TJ"])
