@@ -20,6 +20,7 @@ $(function() {
 				var result = "";
 				$.ajax({
 			        type: "POST",
+			        dataType:"joson",
 			        async:false,
 			        cache:false,
 			        url:$("#ctx").val()+'/assessment/saleTargetConfig_validSaleTarget.action',
