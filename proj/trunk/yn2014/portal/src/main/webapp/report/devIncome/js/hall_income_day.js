@@ -157,10 +157,10 @@ function listRegions(){
 	}
 }
 function downsAll() {
-	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,';
+	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE,';
 	var where='';
 	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.BUS_HALL_NAME";
-	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME"
+	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -174,7 +174,7 @@ function downsAll() {
 	}
 	var sql = 'SELECT' + preField + getSumSql()+where+groupBy+orderBy;
 	var showtext = '营业厅收入报表' + deal_date;
-	title=[["组织架构","渠道","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
-	       ["","","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
+	title=[["组织架构","渠道","经营模式","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
+	       ["","","","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
 	downloadExcel(sql,title,showtext);
 }
