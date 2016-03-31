@@ -45,7 +45,7 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					preField=' \'云南省 \' ROW_NAME,';
+					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,';
 					groupBy=' GROUP BY T1.GROUP_ID_0';
 					orgLevel=2;
 				}else if(orgLevel==2||orgLevel==3){//市
