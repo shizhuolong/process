@@ -51,9 +51,9 @@
 				</tr>
 				<tr>
 				    <td>厅长HR编码:</td>
-					<td><input type="text" required="true" class="easyui-validatebox" name="f_hr_id" id="f_hr_id"></td>
+					<td><input type="text" class="easyui-validatebox" name="f_hr_id" id="f_hr_id"></td>
 				    <td>厅长姓名:</td>
-					<td><input type="text" required="true" readonly="true" class="easyui-validatebox" name="name" id="name"></td>
+					<td><input type="text" readonly="true" class="easyui-validatebox" name="name" id="name"></td>
 				</tr>
 				<tr>
 	                <td colspan="4" style="padding-left: 120px;">
