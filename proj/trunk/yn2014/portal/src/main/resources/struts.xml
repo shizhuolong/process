@@ -49,4 +49,5 @@
     <include file="struts/struts-bulletin.xml" />
     <include file="struts/struts-kpiManager.xml" />
     <include file="struts/struts-message.xml" />
+    <include file="struts/struts-commission.xml" /><!-- 佣金管理 -->
 </struts>
