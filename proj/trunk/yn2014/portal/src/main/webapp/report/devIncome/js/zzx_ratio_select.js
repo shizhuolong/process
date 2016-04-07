@@ -4,11 +4,11 @@ var field=["SUBSCRIPTION_ID","DEVICE_NUMBER","RATIO","ITEMCODE","ITEMDESC","ACTI
 var report = null;
 var downSql="";
 var total;
-var UPDATE_ROLE = "ROLE_MANAGER_PERFORMANCEAPPRAISAL_KHJL_ZZXMENU_UPDATEPART";
+//var UPDATE_ROLE = "ROLE_MANAGER_PERFORMANCEAPPRAISAL_KHJL_ZZXMENU_UPDATEPART";
 $(function() {
-	if(!isGrantedNew(UPDATE_ROLE)){
+	/*if(!isGrantedNew(UPDATE_ROLE)){
 		$("#importBtn").remove();
-	}
+	}*/
 	report = new LchReport({
 		title : title,
 		field : field,
