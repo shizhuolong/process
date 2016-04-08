@@ -106,7 +106,11 @@
 	
 	<update id="update" parameterType="java.util.Map">
 	   UPDATE PORTAL.TAB_PORTAL_MAG_PERSON T SET T.HQ_CHAN_CODE=#{hq_chan_code},
-	   T.HQ_CHAN_NAME=#{hq_chan_name},T.HR_ID=#{hr_id},T.F_HR_ID=#{f_hr_id}
+	   T.HQ_CHAN_NAME=#{hq_chan_name},T.HR_ID=#{hr_id}
+	     <if test="@org.apache.commons.lang.StringUtils@isNotBlank(f_hr_id)">
+             ,T.F_HR_ID=#{f_hr_id}
+         </if>
+	   
        WHERE T.DEAL_DATE=#{deal_date} AND T.USER_CODE=#{user_code}
 	</update>
 	

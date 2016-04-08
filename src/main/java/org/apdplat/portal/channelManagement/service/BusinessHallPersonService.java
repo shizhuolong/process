@@ -16,24 +16,27 @@ public class BusinessHallPersonService {
 
 	@Autowired
 	private BussinessHallPersonDao bussinessHallPersonDao;
-	
+
 	/**
 	 * 查询渠营业厅与营业员组织架构
+	 * 
 	 * @param params
 	 * @return
 	 */
 	public List<Map<String, Object>> listTreeNode(Map<String, Object> params) {
 		return bussinessHallPersonDao.listTreeNode(params);
 	}
-	
+
 	/**
 	 * 询渠营业厅与营业员信息
+	 * 
 	 * @param params
 	 * @return
 	 */
 	public Object queryMagPerson(Map<String, String> params) {
-		Map<String,Object> result = new HashMap<String,Object>();
-		PageList<Map<String, Object>> rows = bussinessHallPersonDao.queryMagPerson(params);
+		Map<String, Object> result = new HashMap<String, Object>();
+		PageList<Map<String, Object>> rows = bussinessHallPersonDao
+				.queryMagPerson(params);
 		result.put("rows", rows);
 		result.put("pagin", rows.getPaginator());
 		return result;
@@ -46,12 +49,20 @@ public class BusinessHallPersonService {
 	public void insert(Map<String, String> m) {
 		bussinessHallPersonDao.insert(m);
 	}
-    @Transactional
+
+	@Transactional
 	public void update(Map<String, String> m) {
 		bussinessHallPersonDao.update(m);
 	}
-    @Transactional
+
+	@Transactional
 	public void merge(Map<String, String> m) {
+		bussinessHallPersonDao.merge(m);
+	}
+
+	@Transactional
+	public void updateBussiness(Map<String, String> m) {
+		bussinessHallPersonDao.update(m);
 		bussinessHallPersonDao.merge(m);
 	}
 }
