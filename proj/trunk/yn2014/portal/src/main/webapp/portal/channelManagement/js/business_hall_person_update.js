@@ -115,11 +115,51 @@ $(function() {
 	        	$("#name").val("");
 	        	alert("厅长HR编码错误！");
 	        }
+		}else{
+			$("#name").val("");
 		}
 	});
 	$("#saveBtn").click(function(){
 		var url = $("#ctx").val()+'/channelManagement/businessHallPerson_update.action';
-		$('#update').form('submit',{
+		var user_code = $.trim($("#user_code").val());
+		var hq_chan_code = $.trim($("#hq_chan_code").val());
+		var hq_chan_name = $.trim($("#hq_chan_name").val());
+		var hr_id = $.trim($("#hr_id").val());
+		var f_hr_id = $.trim($("#f_hr_id").val());
+		//alert("===============|"+f_hr_id+"|=========");
+		$.ajax({
+			type:"POST",
+			dataType:'json',
+			cache:false,
+			url:url,
+			data:{
+	           	"user_code":user_code,
+	           	"hq_chan_code":hq_chan_code,
+	           	"hq_chan_name":hq_chan_name,
+	           	"hr_id":hr_id,
+	           	"f_hr_id":f_hr_id,
+	           	"deal_date":deal_date
+		   	}, 
+		   	success:function(data){
+				//var d = $.parseJSON(r);
+				art.dialog({
+		   			title: '提示',
+		   		    content: data,
+		   		    icon: 'succeed',
+		   		    lock: true,
+		   		    ok: function () {
+		   		    	var win = artDialog.open.origin;//来源页面
+						win.art.dialog({id: 'update'}).close();
+						//调用父页面的search方法，刷新列表
+						win.search(0);
+		   		    }
+		   		});
+			}/*,
+		   	error:function(XMLHttpRequest, textStatus, errorThrown){
+			   alert("加载数据失败！");
+		    }*/
+		});
+		/*$('#update').form('submit',{
 			url:url,
 			dataType:"json",
 			onSubmit:function(){
@@ -144,7 +184,7 @@ $(function() {
 		   		    }
 		   		});
 			}
-		});
+		});*/
 	});
 });
 function initName(f_hr_id){
