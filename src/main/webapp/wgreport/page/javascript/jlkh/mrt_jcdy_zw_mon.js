@@ -93,7 +93,7 @@ function search(pageNumber) {
 	}else{
 		return;
 	}
-	sql+=orderBy;
+	//sql+=orderBy;
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
@@ -187,10 +187,10 @@ function downsAll(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
-		orderBy=" order by group_id_1,hr_id";
+		//orderBy=" order by group_id_1,hr_id";
 	}else if(orgLevel==2){
 		sql+=" and GROUP_ID_1='"+code+"'";
-		orderBy=" order by hr_id";
+		//orderBy=" order by hr_id";
 	}else{
 		 var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
