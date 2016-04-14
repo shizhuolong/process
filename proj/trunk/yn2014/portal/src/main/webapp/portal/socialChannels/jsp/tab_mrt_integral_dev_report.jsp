@@ -52,38 +52,38 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="5%" style="padding-left: 10px;text-align:right;">账期：</td>
 					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="13%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">营服中心：</td>
+					<td width="7%" style="text-align:right;">营服中心：</td>
 					<td width="13%">
 						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">人员姓名：</td>
-					<td width="13%">
+					<td width="7%" style="text-align:right;">人员姓名：</td>
+					<td width="13%" colspan="2">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
 				</tr>
 				<tr height="35px">
-					<td width="7%">HR编码：</td>
+					<td width="7%" style="text-align:right;">HR编码：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="hr_id" type="text" id="hr_id"/>
 					</td>
-					<td width="7%">渠道编码：</td>
+					<td width="7%" style="text-align:right;">渠道编码：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="fd_chnl_id" type="text" id="fd_chnl_id"/>
 					</td>
-					<td width="7%">等级：</td>
+					<td width="7%" style="text-align:right;">等级：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="integral_grade" type="text" id="integral_grade"/>
 					</td>
@@ -95,7 +95,7 @@
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 					<td width="3%">
-						<a class="default-gree-btn fLeft mr10" href="#" id="exportLevel" onclick="showLevelExp();">等级说明</a>
+						<a class="default-gree-btn" href="#" style="float: right; margin-left: 30px;" id="exportLevel" onclick="showLevelExp();">等级说明</a>
 					</td>
 				</tr>
 			</table>
