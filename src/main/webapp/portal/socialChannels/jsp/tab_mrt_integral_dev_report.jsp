@@ -28,6 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/socialChannels/js/tab_mrt_integral_dev_report.js"></script>
 <script type="text/javascript">
 	 var privileges='<%=user.getAuthoritiesStr()%>';
@@ -92,6 +93,9 @@
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+					<td width="3%">
+						<a class="default-gree-btn fLeft mr10" href="#" id="exportLevel" onclick="showLevelExp();">等级说明</a>
 					</td>
 				</tr>
 			</table>
