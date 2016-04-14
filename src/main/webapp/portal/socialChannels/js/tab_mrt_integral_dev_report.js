@@ -117,34 +117,6 @@ function search(pageNumber) {
 	nowData = d;
 
 	report.showSubRow();
-	/*$("#lch_DataBody").find("TR").each(function(i){
-		 var obj=$(this).find("td:eq(22)");
-		 var is_jf=$(this).find("td:eq(22)").text();
-		 var hq_code=$(this).find("td:eq(5)").text();
-		 var sub=$(this).find("td:eq(23)");
-		 var is_dh=$.trim($(this).find("td:eq(21)").text());
-		 if(lastmonth!=time){
-		  if(isGrantedNew(UPDATE_ROLE)) {
-			 if(is_dh=="否"){
-				   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
-				   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=isupdate(this) style='cursor:pointer'>提交</button>";
-			       obj.empty().append(h);
-			       sub.append(h1);
-			 }else{
-			      var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"' readonly='readonly'/>";
-				  obj.empty().append(h);
-			 }
-		  }
-		 }else{
-			   var h="<input name='is_jf' type='text' id='i"+i+"' value='"+is_jf+"'/>";
-			   var h1="<button hq_code='"+hq_code+"' month='"+time+"' i='i"+i+"' onclick=update(this) style='cursor:pointer'>提交</button>";
-		       obj.empty().append(h);
-		       sub.append(h1);
-		 }
-	});
-	 if(!isGrantedNew(UPDATE_ROLE)) {
-		 $("#lch_DataHead").find("TR:eq(0)").find("TH:eq(19)").text("兑换积分");
-	 }*/
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
@@ -363,3 +335,15 @@ function downsAll(){
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
+
+/**查看口径说明*/
+function showLevelExp(){
+	var url = $("#ctx").val()+"/portal/socialChannels/jsp/tab_mrt_integral_dev_report_explain.jsp";
+	art.dialog.open(url,{
+		id:'bindPersonDialog',
+		width:'800px',
+		height:'400px',
+		lock:true,
+		resize:false
+	});
+}
