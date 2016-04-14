@@ -29,7 +29,7 @@ $(function() {
 	});
 });
 function getRegionName(){
-	var sql="select distinct t.group_id_1_name regionName from PODS.TB_ODS_JCDY_DEV_HR_MON t where 1=1 ";
+	var sql="select distinct t.group_id_1_name regionName from PODS.TB_ODS_JCDY_DEV_HR_MON T WHERE T.GROUP_ID_1_NAME IS NOT NULL ";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	//var hrId=$("#hrId").val();
@@ -58,7 +58,7 @@ function getRegionName(){
 }
 function getUnitName(obj){
 	var regionName=obj.val();
-	var sql="select distinct t.unit_name unitName from PODS.TB_ODS_JCDY_DEV_HR_MON t where 1=1 ";
+	var sql="select distinct t.unit_name unitName from PODS.TB_ODS_JCDY_DEV_HR_MON t where T.UNIT_NAME IS NOT NULL ";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
