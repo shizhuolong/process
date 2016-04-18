@@ -88,7 +88,7 @@ function importToResult(){
 			   	success:function(data){
 			   		if(data&&data.ok){
 			   			alert("已经成功入库");
-			   			window.location.href=paths+"/report/devIncome/jsp/zzx_ratio.jsp";
+			   			window.location.href=paths+"/report/devIncome/jsp/zzx_ratio_select.jsp";
 			   		}else{
 			   			alert("入库失败,请重试");
 			   			$("#importBtn").show();
