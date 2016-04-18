@@ -57,23 +57,24 @@ function search(pageNumber) {
 	var hrId=$.trim($("#hrId").val());
 	var regionCode=$.trim($("#regionCode").val());
 //条件
-	var sql = "SELECT T.账期        ,"+
-				"T.地市        ,"+
-				"T.地市名称    ,"+
-				"T.基层单元编码,"+
-				"T.基层单元名称,"+
-				"T.hr编码      ,"+
-				"T.姓名        ,"+
-				"T.角色类型    ,"+
-				"T.用户编号    ,"+
-				"T.用户号码    ,"+
-				"T.类型        ,"+
-				"T.月累计收入 ,"+
-				"T.上年12月收入,"+
-				"T.上级hr编码  ,"+
-				"T.归属上级姓名,"+
-				"T.责任人编码  ,"+
-				"T.责任人     FROM PMRT.VIEW_MRT_KPI_INCOME_ALL_MON  T WHERE T.账期 = '"+time+"'";
+	var sql = "SELECT T.账期,                                               "+
+				"       T.地市,                                               "+
+				"       T.地市名称,                                           "+
+				"       T.基层单元编码,                                       "+
+				"       T.基层单元名称,                                       "+
+				"       T.hr编码,                                             "+
+				"       T.姓名,                                               "+
+				"       T.角色类型,                                           "+
+				"       T.用户编号,                                           "+
+				"       T.用户号码,                                           "+
+				"       T.类型,                                               "+
+				"       T.月累计收入,                                         "+
+				"       T.上年12月收入,                                       "+
+				"       T.上级hr编码,                                         "+
+				"       T.归属上级姓名,                                       "+
+				"       T.责任人编码,                                         "+
+				"       T.责任人                                              "+
+				"  FROM PMRT.VIEW_MRT_KPI_INCOME_ALL_MON PARTITION(P"+time+")T WHERE 1=1	";
 
 	if(regionName!=''){
 		sql+=" AND T.地市名称 like '%"+regionName+"%'";
@@ -241,23 +242,24 @@ function listUnits(regionName){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var time=$("#time").val();
-	var sql ="SELECT T.账期        ,"+
-					"T.地市        ,"+
-					"T.地市名称    ,"+
-					"T.基层单元编码,"+
-					"T.基层单元名称,"+
-					"T.hr编码      ,"+
-					"T.姓名        ,"+
-					"T.角色类型    ,"+
-					"T.用户编号    ,"+
-					"T.用户号码    ,"+
-					"T.类型        ,"+
-					"T.月累计收入 ,"+
-					"T.上年12月收入,"+
-					"T.上级hr编码  ,"+
-					"T.归属上级姓名,"+
-					"T.责任人编码  ,"+
-					"T.责任人     FROM PMRT.VIEW_MRT_KPI_INCOME_ALL_MON  T WHERE T.账期 = '"+time+"'";
+	var sql = "SELECT T.账期,                                               "+
+	"       T.地市,                                               "+
+	"       T.地市名称,                                           "+
+	"       T.基层单元编码,                                       "+
+	"       T.基层单元名称,                                       "+
+	"       T.hr编码,                                             "+
+	"       T.姓名,                                               "+
+	"       T.角色类型,                                           "+
+	"       T.用户编号,                                           "+
+	"       T.用户号码,                                           "+
+	"       T.类型,                                               "+
+	"       T.月累计收入,                                         "+
+	"       T.上年12月收入,                                       "+
+	"       T.上级hr编码,                                         "+
+	"       T.归属上级姓名,                                       "+
+	"       T.责任人编码,                                         "+
+	"       T.责任人                                              "+
+	"  FROM PMRT.VIEW_MRT_KPI_INCOME_ALL_MON PARTITION(P"+time+")T WHERE 1=1	";
 
 	var time=$.trim($("#time").val());
 	var regionName=$.trim($("#regionName").val());

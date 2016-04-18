@@ -54,56 +54,56 @@ function search(pageNumber) {
 	var userPhone=$.trim($("#userPhone").val());
 	var regionCode=$.trim($("#regionCode").val());
 //条件
-	var sql ="SELECT T.DEAL_DATE 账期,                                                                                   "+
-	"      T.GROUP_ID_1 地市,                                                                                   "+
-	"      T.GROUP_ID_1_NAME 地市名称,                                                                          "+
-	"      T.UNIT_ID 基层单元编码,                                                                              "+
-	"      T.UNIT_NAME 基层单元名称,                                                                            "+
-	"      T.HR_ID HR编码,                                                                                      "+
-	"      T.NAME 姓名,                                                                                         "+
-	"      T.HQ_CHAN_CODE 渠道编码,                                                                             "+
-	"      CASE                                                                                                 "+
-	"        WHEN T.USER_ROLE = 1 THEN                                                                          "+
-	"         '集客经理'                                                                                        "+
-	"        WHEN T.USER_ROLE = 2 THEN                                                                          "+
-	"         '渠道经理'                                                                                        "+
-	"        WHEN T.USER_ROLE = 3 THEN                                                                          "+
-	"         '固网经理'                                                                                        "+
-	"        WHEN T.USER_ROLE = 4 THEN                                                                          "+
-	"         '营业人员'                                                                                        "+
-	"        WHEN T.USER_ROLE IN (5, 6, 10) THEN                                                                "+
-	"         '营服总'                                                                                          "+
-	"        ELSE                                                                                               "+
-	"         ''                                                                                                "+
-	"      END 角色类型,                                                                                        "+
-	"      TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                                                                 "+
-	"      T.DEVICE_NUMBER 用户号码,                                                                            "+
-	"     DECODE(T.NET_TYPE,'01','2G','02','3G','03','SWK','04','4G','-1','GW') 类型,                           "+
-	"      T.TOTAL_FEE 收入,                                                                                    "+
-	"      T.F_HR_ID 上级HR编码,                                                                                "+
-	"      T1.NAME  归属上级姓名,                                                                               "+
-	"      T2.HR_ID 责任人编码,                                                                                 "+
-	"      T2.NAME  责任人                                                                                      "+
-	" FROM (SELECT T.*, T1.F_HR_ID                                                                              "+
-	"         FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+time+")T                                       "+
-	"         LEFT JOIN (                                                                                       "+
-	"         SELECT DISTINCT A.HR_ID,B.F_HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON A                              "+
-	"         LEFT JOIN (                                                                                       "+
-	"                    SELECT DISTINCT F_HR_ID, HR_ID                                                         "+
-	"                     FROM PORTAL.TAB_PORTAL_MAG_PERSON where DEAL_DATE='"+time+"' AND f_hr_id is not null  "+
-	"                    UNION                                                                                  "+
-	"                    SELECT DISTINCT F_HR_ID, HR_ID                                                         "+
-	"                     FROM PORTAL.TAB_PORTAL_GRP_PERSON where DEAL_DATE='"+time+"'  AND f_hr_id is not null)B"+
-	"          ON A.HR_ID=B.HR_ID                                                                               "+
-	"          WHERE A.DEAL_DATE='"+time+"'  ) T1                                                               "+
-	"           ON T.HR_ID = T1.HR_ID                                                                           "+
-	"       ) T                                                                                                 "+
-	" LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1                                                                  "+
-	"   ON T.F_HR_ID = T1.HR_ID AND T.DEAL_DATE=T1.DEAL_DATE                                                    "+
-	"  AND T1.USER_CODE IN (6, 7)                                                                               "+
-	" LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                                                                  "+
-	"   ON T.UNIT_ID = T2.UNIT_ID AND T.DEAL_DATE=T2.DEAL_DATE                                                  "+
-	"  AND T2.user_CODE = 1                                                                                     ";
+	var sql ="SELECT T.DEAL_DATE 账期,                                                          "+
+			"       T.GROUP_ID_1 地市,                                                         "+
+			"       T.GROUP_ID_1_NAME 地市名称,                                                "+
+			"       T.UNIT_ID 基层单元编码,                                                    "+
+			"       T.UNIT_NAME 基层单元名称,                                                  "+
+			"       T.HR_ID HR编码,                                                            "+
+			"       T.NAME 姓名,                                                               "+
+			"       T.HQ_CHAN_CODE 渠道编码,                                                   "+
+			"       CASE                                                                       "+
+			"         WHEN T.USER_ROLE = 1 THEN                                                "+
+			"          '集客经理'                                                              "+
+			"         WHEN T.USER_ROLE = 2 THEN                                                "+
+			"          '渠道经理'                                                              "+
+			"         WHEN T.USER_ROLE = 3 THEN                                                "+
+			"          '固网经理'                                                              "+
+			"         WHEN T.USER_ROLE = 4 THEN                                                "+
+			"          '营业人员'                                                              "+
+			"         WHEN T.USER_ROLE IN (5, 6, 10) THEN                                      "+
+			"          '营服总'                                                                "+
+			"         ELSE                                                                     "+
+			"          ''                                                                      "+
+			"       END 角色类型,                                                              "+
+			"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                                       "+
+			"       T.DEVICE_NUMBER 用户号码,                                                  "+
+			"       DECODE(T.NET_TYPE,'01','2G','02','3G','03','SWK','04','4G','-1','GW') 类型,"+
+			"       T.TOTAL_FEE 收入,                                                          "+
+			"       T.F_HR_ID 上级HR编码,                                                      "+
+			"       T1.NAME 归属上级姓名,                                                      "+
+			"       T2.HR_ID 责任人编码,                                                       "+
+			"       T2.NAME 责任人                                                             "+
+			"  FROM (SELECT T.*, T1.F_HR_ID                                                    "+
+			"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+time+") T              "+
+			"          LEFT JOIN (SELECT DISTINCT A.HR_ID, B.F_HR_ID                           "+
+			"                      FROM PORTAL.TAB_PORTAL_QJ_PERSON A                          "+
+			"                      LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                   "+
+			"                                  FROM PORTAL.TAB_PORTAL_MAG_PERSON               "+
+			"                                 WHERE DEAL_DATE = '"+time+"'                     "+
+			"                                   AND F_HR_ID IS NOT NULL) B                     "+
+			"                        ON A.HR_ID = B.HR_ID                                      "+
+			"                     WHERE A.DEAL_DATE = '"+time+"') T1                           "+
+			"            ON T.HR_ID = T1.HR_ID) T                                              "+
+			"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1                                        "+
+			"    ON T.F_HR_ID = T1.HR_ID                                                       "+
+			"   AND T.DEAL_DATE = T1.DEAL_DATE                                                 "+
+			"   AND T1.USER_CODE IN (6, 7)                                                     "+
+			"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                                        "+
+			"    ON T.UNIT_ID = T2.UNIT_ID                                                     "+
+			"   AND T.DEAL_DATE = T2.DEAL_DATE                                                 "+
+			"   AND T2.USER_CODE = 1                                                           ";
+
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
@@ -245,56 +245,55 @@ function listUnits(regionName){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var time=$("#time").val();
-	var sql = "SELECT T.DEAL_DATE 账期,                                                                                   "+
-	"      T.GROUP_ID_1 地市,                                                                                   "+
-	"      T.GROUP_ID_1_NAME 地市名称,                                                                          "+
-	"      T.UNIT_ID 基层单元编码,                                                                              "+
-	"      T.UNIT_NAME 基层单元名称,                                                                            "+
-	"      T.HR_ID HR编码,                                                                                      "+
-	"      T.NAME 姓名,                                                                                         "+
-	"      T.HQ_CHAN_CODE 渠道编码,                                                                             "+
-	"      CASE                                                                                                 "+
-	"        WHEN T.USER_ROLE = 1 THEN                                                                          "+
-	"         '集客经理'                                                                                        "+
-	"        WHEN T.USER_ROLE = 2 THEN                                                                          "+
-	"         '渠道经理'                                                                                        "+
-	"        WHEN T.USER_ROLE = 3 THEN                                                                          "+
-	"         '固网经理'                                                                                        "+
-	"        WHEN T.USER_ROLE = 4 THEN                                                                          "+
-	"         '营业人员'                                                                                        "+
-	"        WHEN T.USER_ROLE IN (5, 6, 10) THEN                                                                "+
-	"         '营服总'                                                                                          "+
-	"        ELSE                                                                                               "+
-	"         ''                                                                                                "+
-	"      END 角色类型,                                                                                        "+
-	"      TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                                                                 "+
-	"      T.DEVICE_NUMBER 用户号码,                                                                            "+
-	"     DECODE(T.NET_TYPE,'01','2G','02','3G','03','SWK','04','4G','-1','GW') 类型,                           "+
-	"      T.TOTAL_FEE 收入,                                                                                    "+
-	"      T.F_HR_ID 上级HR编码,                                                                                "+
-	"      T1.NAME  归属上级姓名,                                                                               "+
-	"      T2.HR_ID 责任人编码,                                                                                 "+
-	"      T2.NAME  责任人                                                                                      "+
-	" FROM (SELECT T.*, T1.F_HR_ID                                                                              "+
-	"         FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+time+")T                                       "+
-	"         LEFT JOIN (                                                                                       "+
-	"         SELECT DISTINCT A.HR_ID,B.F_HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON A                              "+
-	"         LEFT JOIN (                                                                                       "+
-	"                    SELECT DISTINCT F_HR_ID, HR_ID                                                         "+
-	"                     FROM PORTAL.TAB_PORTAL_MAG_PERSON where DEAL_DATE='"+time+"' AND f_hr_id is not null  "+
-	"                    UNION                                                                                  "+
-	"                    SELECT DISTINCT F_HR_ID, HR_ID                                                         "+
-	"                     FROM PORTAL.TAB_PORTAL_GRP_PERSON where DEAL_DATE='"+time+"'  AND f_hr_id is not null)B"+
-	"          ON A.HR_ID=B.HR_ID                                                                               "+
-	"          WHERE A.DEAL_DATE='"+time+"'  ) T1                                                               "+
-	"           ON T.HR_ID = T1.HR_ID                                                                           "+
-	"       ) T                                                                                                 "+
-	" LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1                                                                  "+
-	"   ON T.F_HR_ID = T1.HR_ID AND T.DEAL_DATE=T1.DEAL_DATE                                                    "+
-	"  AND T1.USER_CODE IN (6, 7)                                                                               "+
-	" LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                                                                  "+
-	"   ON T.UNIT_ID = T2.UNIT_ID AND T.DEAL_DATE=T2.DEAL_DATE                                                  "+
-	"  AND T2.user_CODE = 1                                                                                     ";
+	var sql ="SELECT T.DEAL_DATE 账期,                                                          "+
+			"       T.GROUP_ID_1 地市,                                                         "+
+			"       T.GROUP_ID_1_NAME 地市名称,                                                "+
+			"       T.UNIT_ID 基层单元编码,                                                    "+
+			"       T.UNIT_NAME 基层单元名称,                                                  "+
+			"       T.HR_ID HR编码,                                                            "+
+			"       T.NAME 姓名,                                                               "+
+			"       T.HQ_CHAN_CODE 渠道编码,                                                   "+
+			"       CASE                                                                       "+
+			"         WHEN T.USER_ROLE = 1 THEN                                                "+
+			"          '集客经理'                                                              "+
+			"         WHEN T.USER_ROLE = 2 THEN                                                "+
+			"          '渠道经理'                                                              "+
+			"         WHEN T.USER_ROLE = 3 THEN                                                "+
+			"          '固网经理'                                                              "+
+			"         WHEN T.USER_ROLE = 4 THEN                                                "+
+			"          '营业人员'                                                              "+
+			"         WHEN T.USER_ROLE IN (5, 6, 10) THEN                                      "+
+			"          '营服总'                                                                "+
+			"         ELSE                                                                     "+
+			"          ''                                                                      "+
+			"       END 角色类型,                                                              "+
+			"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                                       "+
+			"       T.DEVICE_NUMBER 用户号码,                                                  "+
+			"       DECODE(T.NET_TYPE,'01','2G','02','3G','03','SWK','04','4G','-1','GW') 类型,"+
+			"       T.TOTAL_FEE 收入,                                                          "+
+			"       T.F_HR_ID 上级HR编码,                                                      "+
+			"       T1.NAME 归属上级姓名,                                                      "+
+			"       T2.HR_ID 责任人编码,                                                       "+
+			"       T2.NAME 责任人                                                             "+
+			"  FROM (SELECT T.*, T1.F_HR_ID                                                    "+
+			"          FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+time+") T              "+
+			"          LEFT JOIN (SELECT DISTINCT A.HR_ID, B.F_HR_ID                           "+
+			"                      FROM PORTAL.TAB_PORTAL_QJ_PERSON A                          "+
+			"                      LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                   "+
+			"                                  FROM PORTAL.TAB_PORTAL_MAG_PERSON               "+
+			"                                 WHERE DEAL_DATE = '"+time+"'                     "+
+			"                                   AND F_HR_ID IS NOT NULL) B                     "+
+			"                        ON A.HR_ID = B.HR_ID                                      "+
+			"                     WHERE A.DEAL_DATE = '"+time+"') T1                           "+
+			"            ON T.HR_ID = T1.HR_ID) T                                              "+
+			"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1                                        "+
+			"    ON T.F_HR_ID = T1.HR_ID                                                       "+
+			"   AND T.DEAL_DATE = T1.DEAL_DATE                                                 "+
+			"   AND T1.USER_CODE IN (6, 7)                                                     "+
+			"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                                        "+
+			"    ON T.UNIT_ID = T2.UNIT_ID                                                     "+
+			"   AND T.DEAL_DATE = T2.DEAL_DATE                                                 "+
+			"   AND T2.USER_CODE = 1                                                           ";
 
 	var regionName=$.trim($("#regionName").val());
 	var unitName=$.trim($("#unitName").val());
