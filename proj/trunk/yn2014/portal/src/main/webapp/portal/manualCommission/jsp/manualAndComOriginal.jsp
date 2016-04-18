@@ -12,7 +12,9 @@
 	Calendar ca=Calendar.getInstance();
 	Calendar c=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
-	c.add(Calendar.DATE, -1);
+	//调用存过时间设置为本月第一天
+	c.add(Calendar.MONTH, 0);
+    c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天 
 	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	String day = new SimpleDateFormat("yyyyMMdd").format(c.getTime());
 	//登录用户工号
@@ -70,7 +72,7 @@
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 					<td width="3%" clospan="2">
-						<a class="default-gree-btn"  style="display:none;" href="#" id="callStoredBtn" onclick="callStored()">存过</a>
+						<a class="default-gree-btn"  style="display:none;" href="#" id="callStoredBtn" onclick="callStored(this);">存过</a>
 					</td>
 				</tr>
 				<tr>
