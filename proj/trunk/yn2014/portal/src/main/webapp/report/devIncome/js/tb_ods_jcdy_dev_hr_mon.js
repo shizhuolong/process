@@ -117,58 +117,63 @@ function search(pageNumber) {
 	var unitName=$.trim($("#unitName").val());
 	var userName=$.trim($("#userName").val());
 	var userPhone=$.trim($("#userPhone").val());
-	var sql = "SELECT T.DEAL_DATE 账期,                                "
-		+"       T.GROUP_ID_1 地市,                                     "
-		+"       T.GROUP_ID_1_NAME 地市名称,                             "
-		+"       T.UNIT_ID 基层单元编码,                                  "
-		+"       T.UNIT_NAME 基层单元名称,                                "
-		+"       T.HR_ID HR编码,                                        "
-		+"       T.NAME 姓名,                                           "
-		+"       CASE                                                  "
-		+"         WHEN T.USER_ROLE = 1 THEN                           "
-		+"          '集客经理'                                            "
-		+"         WHEN T.USER_ROLE = 2 THEN                           "
-		+"          '渠道经理'                                            "
-		+"         WHEN T.USER_ROLE = 3 THEN                           "
-		+"          '固网经理'                                            "
-		+"         WHEN T.USER_ROLE = 4 THEN                           "
-		+"          '营业人员'                                            "
-		+"         WHEN T.USER_ROLE IN (5, 6, 10) THEN                 "
-		+"          '营服总'                                             "
-		+"         ELSE                                                "
-		+"          ''                                                 "
-		+"       END 角色类型,                                            "
-		+"       T.HQ_CHAN_CODE  渠道编码,                                "
-		+"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                     "
-		+"       T.DEVICE_NUMBER 用户号码,                                "
-		+"       CASE                                                  "
-		+"         WHEN T.NET_TYPE = '04' THEN                         "
-		+"          '4G'                                               "
-		+"         WHEN T.NET_TYPE = '02' THEN                         "
-		+"          '2G'                                               "
-		+"         WHEN T.NET_TYPE = '03' THEN                         "
-		+"          '3G'                                               "
-		+"         WHEN T.NET_TYPE = '-1' THEN                         "
-		+"          '固网'                                              "
-		+"         ELSE                                                "
-		+"          ''                                                 "
-		+"       END 类型,                                              "
-		+"       T.F_HR_ID 上级HR编码,                                    "
-		+"       T1.NAME  归属上级姓名,                                    "
-		+"       T2.HR_ID 责任人编码,                                     "
-		+"       T2.NAME  责任人                                                                                                                          "
-		+"  FROM (SELECT T.*, T1.F_HR_ID                               "
-		+"          FROM PODS.TB_ODS_JCDY_DEV_HR_MON T                 "
-		+"    LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                "
-		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where deal_date='"+time+"' AND f_hr_id<>hr_id) T1  "
-		+"            ON T.HR_ID = T1.HR_ID                            "
-		+"         WHERE T.DEAL_DATE = '"+time+"') T                   "
-		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                   "
-		+"    ON T.F_HR_ID = T1.HR_ID                                  "
-		+"   AND T1.USER_CODE IN (6, 7)                                "
-		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                   "
-		+"    ON T.UNIT_ID = T2.UNIT_ID                                "
-		+"   AND T2.user_CODE = 1 WHERE 1=1 AND T1.deal_date='"+time+"' AND T2.deal_date='"+time+"'                          ";
+	var sql = "SELECT T.DEAL_DATE 账期,                                            "+
+				"       T2.GROUP_ID_1 地市,                                          "+
+				"       T2.GROUP_ID_1_NAME 地市名称,                                 "+
+				"       T2.UNIT_ID 基层单元编码,                                     "+
+				"       T2.UNIT_NAME 基层单元名称,                                   "+
+				"       T.HR_ID HR编码,                                              "+
+				"       T.NAME 姓名,                                                 "+
+				"       CASE                                                         "+
+				"         WHEN T.USER_ROLE = 1 THEN                                  "+
+				"          '集客经理'                                                "+
+				"         WHEN T.USER_ROLE = 2 THEN                                  "+
+				"          '渠道经理'                                                "+
+				"         WHEN T.USER_ROLE = 3 THEN                                  "+
+				"          '固网经理'                                                "+
+				"         WHEN T.USER_ROLE = 4 THEN                                  "+
+				"          '营业人员'                                                "+
+				"         WHEN T.USER_ROLE IN (5, 6, 10) THEN                        "+
+				"          '营服总'                                                  "+
+				"         ELSE                                                       "+
+				"          ''                                                        "+
+				"       END 角色类型,                                                "+
+				"       T.HQ_CHAN_CODE 渠道编码,                                     "+
+				"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                         "+
+				"       T.DEVICE_NUMBER 用户号码,                                    "+
+				"       CASE                                                         "+
+				"         WHEN T.NET_TYPE = '04' THEN                                "+
+				"          '4G'                                                      "+
+				"         WHEN T.NET_TYPE = '02' THEN                                "+
+				"          '2G'                                                      "+
+				"         WHEN T.NET_TYPE = '03' THEN                                "+
+				"          '3G'                                                      "+
+				"         WHEN T.NET_TYPE = '-1' THEN                                "+
+				"          '固网'                                                    "+
+				"         ELSE                                                       "+
+				"          ''                                                        "+
+				"       END 类型,                                                    "+
+				"       T.F_HR_ID 上级HR编码,                                        "+
+				"       T1.NAME 归属上级姓名,                                        "+
+				"       T2.HR_ID 责任人编码,                                         "+
+				"       T2.NAME 责任人                                               "+
+				"  FROM (SELECT T.*, T1.F_HR_ID                                      "+
+				"          FROM PODS.TB_ODS_JCDY_DEV_HR_MON PARTITION(P"+time+")T    "+
+				"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                 "+
+				"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON             "+
+				"                     WHERE DEAL_DATE = '"+time+"'                   "+
+				"                       AND F_HR_ID <> HR_ID) T1                     "+
+				"            ON T.HR_ID = T1.HR_ID                                   "+
+				"         ) T                                                        "+
+				"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1                          "+
+				"    ON T.F_HR_ID = T1.HR_ID                                         "+
+				"   AND T1.USER_CODE IN (6, 7)                                       "+
+				"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                          "+
+				"    ON T.UNIT_ID = T2.UNIT_ID                                       "+
+				"   AND T2.USER_CODE = 1                                             "+
+				" WHERE 1 = 1                                                        "+
+				"   AND T1.DEAL_DATE = '"+time+"'                                    "+
+				"   AND T2.DEAL_DATE = '"+time+"'                                    ";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
@@ -230,58 +235,63 @@ function downsAll(){
 	var unitName=$.trim($("#unitName").val());
 	var userName=$.trim($("#userName").val());
 	var userPhone=$.trim($("#userPhone").val());
-	var sql = "SELECT T.DEAL_DATE 账期,                                "
-		+"       T.GROUP_ID_1 地市,                                     "
-		+"       T.GROUP_ID_1_NAME 地市名称,                             "
-		+"       T.UNIT_ID 基层单元编码,                                  "
-		+"       T.UNIT_NAME 基层单元名称,                                "
-		+"       T.HR_ID HR编码,                                        "
-		+"       T.NAME 姓名,                                           "
-		+"       CASE                                                  "
-		+"         WHEN T.USER_ROLE = 1 THEN                           "
-		+"          '集客经理'                                            "
-		+"         WHEN T.USER_ROLE = 2 THEN                           "
-		+"          '渠道经理'                                            "
-		+"         WHEN T.USER_ROLE = 3 THEN                           "
-		+"          '固网经理'                                            "
-		+"         WHEN T.USER_ROLE = 4 THEN                           "
-		+"          '营业人员'                                            "
-		+"         WHEN T.USER_ROLE IN (5, 6, 10) THEN                 "
-		+"          '营服总'                                             "
-		+"         ELSE                                                "
-		+"          ''                                                 "
-		+"       END 角色类型,                                            "
-		+"       T.HQ_CHAN_CODE  渠道编码,                                                                                                 "
-		+"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                     "
-		+"       T.DEVICE_NUMBER 用户号码,                                "
-		+"       CASE                                                  "
-		+"         WHEN T.NET_TYPE = '04' THEN                         "
-		+"          '4G'                                               "
-		+"         WHEN T.NET_TYPE = '02' THEN                         "
-		+"          '2G'                                               "
-		+"         WHEN T.NET_TYPE = '03' THEN                         "
-		+"          '3G'                                               "
-		+"         WHEN T.NET_TYPE = '-1' THEN                         "
-		+"          '固网'                                              "
-		+"         ELSE                                                "
-		+"          ''                                                 "
-		+"       END 类型,                                              "
-		+"       T.F_HR_ID 上级HR编码,                                    "
-		+"       T1.NAME  归属上级姓名,                                    "
-		+"       T2.HR_ID 责任人编码,                                     "
-		+"       T2.NAME  责任人                                                                                                                          "
-		+"  FROM (SELECT T.*, T1.F_HR_ID                               "
-		+"          FROM PODS.TB_ODS_JCDY_DEV_HR_MON T                 "
-		+"    LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                "
-		+"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON where deal_date='"+time+"' AND f_hr_id<>hr_id) T1  "
-		+"            ON T.HR_ID = T1.HR_ID                            "
-		+"         WHERE T.DEAL_DATE = '"+time+"') T                   "
-		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T1                   "
-		+"    ON T.F_HR_ID = T1.HR_ID                                  "
-		+"   AND T1.USER_CODE IN (6, 7)                                "
-		+"  LEFT JOIN PORTAL.VIEW_U_PORTAL_PERSON T2                   "
-		+"    ON T.UNIT_ID = T2.UNIT_ID                                "
-		+"   AND T2.user_CODE = 1 WHERE 1=1 AND T1.deal_date='"+time+"' AND T2.deal_date='"+time+"'                          ";
+	var sql = "SELECT T.DEAL_DATE 账期,                                            "+
+				"       T2.GROUP_ID_1 地市,                                          "+
+				"       T2.GROUP_ID_1_NAME 地市名称,                                 "+
+				"       T2.UNIT_ID 基层单元编码,                                     "+
+				"       T2.UNIT_NAME 基层单元名称,                                   "+
+				"       T.HR_ID HR编码,                                              "+
+				"       T.NAME 姓名,                                                 "+
+				"       CASE                                                         "+
+				"         WHEN T.USER_ROLE = 1 THEN                                  "+
+				"          '集客经理'                                                "+
+				"         WHEN T.USER_ROLE = 2 THEN                                  "+
+				"          '渠道经理'                                                "+
+				"         WHEN T.USER_ROLE = 3 THEN                                  "+
+				"          '固网经理'                                                "+
+				"         WHEN T.USER_ROLE = 4 THEN                                  "+
+				"          '营业人员'                                                "+
+				"         WHEN T.USER_ROLE IN (5, 6, 10) THEN                        "+
+				"          '营服总'                                                  "+
+				"         ELSE                                                       "+
+				"          ''                                                        "+
+				"       END 角色类型,                                                "+
+				"       T.HQ_CHAN_CODE 渠道编码,                                     "+
+				"       TO_CHAR(T.SUBSCRIPTION_ID) 用户编号,                         "+
+				"       T.DEVICE_NUMBER 用户号码,                                    "+
+				"       CASE                                                         "+
+				"         WHEN T.NET_TYPE = '04' THEN                                "+
+				"          '4G'                                                      "+
+				"         WHEN T.NET_TYPE = '02' THEN                                "+
+				"          '2G'                                                      "+
+				"         WHEN T.NET_TYPE = '03' THEN                                "+
+				"          '3G'                                                      "+
+				"         WHEN T.NET_TYPE = '-1' THEN                                "+
+				"          '固网'                                                    "+
+				"         ELSE                                                       "+
+				"          ''                                                        "+
+				"       END 类型,                                                    "+
+				"       T.F_HR_ID 上级HR编码,                                        "+
+				"       T1.NAME 归属上级姓名,                                        "+
+				"       T2.HR_ID 责任人编码,                                         "+
+				"       T2.NAME 责任人                                               "+
+				"  FROM (SELECT T.*, T1.F_HR_ID                                      "+
+				"          FROM PODS.TB_ODS_JCDY_DEV_HR_MON PARTITION(P"+time+")T    "+
+				"          LEFT JOIN (SELECT DISTINCT F_HR_ID, HR_ID                 "+
+				"                      FROM PORTAL.TAB_PORTAL_MAG_PERSON             "+
+				"                     WHERE DEAL_DATE = '"+time+"'                   "+
+				"                       AND F_HR_ID <> HR_ID) T1                     "+
+				"            ON T.HR_ID = T1.HR_ID                                   "+
+				"         ) T                                                        "+
+				"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1                          "+
+				"    ON T.F_HR_ID = T1.HR_ID                                         "+
+				"   AND T1.USER_CODE IN (6, 7)                                       "+
+				"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                          "+
+				"    ON T.UNIT_ID = T2.UNIT_ID                                       "+
+				"   AND T2.USER_CODE = 1                                             "+
+				" WHERE 1 = 1                                                        "+
+				"   AND T1.DEAL_DATE = '"+time+"'                                    "+
+				"   AND T2.DEAL_DATE = '"+time+"'                                    ";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
 	}
