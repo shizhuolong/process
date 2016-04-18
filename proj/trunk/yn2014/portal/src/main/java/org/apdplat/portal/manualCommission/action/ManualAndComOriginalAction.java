@@ -31,16 +31,15 @@ public class ManualAndComOriginalAction extends BaseAction {
 			//1.建立数据库连接
 			conn = dataSource.getConnection();
 			//2.创建存储过程调用对象
-			CallableStatement stmt = conn.prepareCall("call PRC_TAB_MRT_COMM_CY_DATA_MON(?,?)");
+			CallableStatement stmt = conn.prepareCall("call PMRT.PRC_TAB_MRT_COMM_CY_DATA_MON(?,?)");
 			//3.设置传入参数（传入in值）
 			stmt.setString(1, dealDate);
-			stmt.executeUpdate();
 			//4.设置返回参数（设置out值）
 			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
 			//5.执行
 			stmt.executeUpdate();
 			int num = stmt.getInt(2);
-			if(num!=0){
+			if(num==0){
 				this.reponseJson(SUCCESS);
 			}else{
 				this.reponseJson(ERROR);
