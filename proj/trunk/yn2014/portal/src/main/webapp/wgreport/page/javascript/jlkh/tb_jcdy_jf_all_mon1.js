@@ -1,21 +1,25 @@
 var nowData = [];
-var title=[["地市","基层单元","人员姓名","hr编码","角色类型","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","总受理量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","裸机销售奖励积分","沃易购众筹积分","营业厅自提积分","MINI厅积分","合计销售积分","渠道调节销售积分","区域调节销售积分","基础服务积分","服务积分","增值业务积分","总受理积分","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","装维积分","维系积分","维系服务积分","维系区域积分","总积分","总积分金额"]];
-var field=["AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","ALLSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","LJJL_JF","WYG_JF","ZTD_JF","MINI_JF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","ZW_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
+var title=[["地市","基层单元","人员姓名","hr编码","角色类型","发展量","","","","","销售原始积分","","","","","","","","","","","","","","渠道调节销售积分","区域调节销售积分","总受理量","受理原始积分","","","","维系原始积分","","","","","","","","","维系服务积分","维系区域积分","总积分","总积分金额"],
+		   ["","","","","","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","裸机销售奖励积分","沃易购众筹积分","营业厅自提积分","MINI厅积分","合计","","","","基础服务积分","服务积分","增值业务积分","合计","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","装维积分","合计","","","",""]];
+
+var field=["AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","LJJL_JF","WYG_JF","ZTD_JF","MINI_JF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","ALLSLL","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","ZW_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
+var orderBy = '';
 var report = null;
 $(function() {
 	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
-		tableCss:{leftWidth:450},
-		css:[
-		     {gt:5,css:LchReport.RIGHT_ALIGN}
-		    // {eq:6,css:{minWidth:'50px',width:'50px'}},
-		    // {eq:7,css:{minWidth:'50px',width:'50px'}}
-		     ],
 		lock:4,
-		rowParams : [],
+		//css:[{gt:5,css:LchReport.RIGHT_ALIGN},{eq:1,css:{minWidth:'100px'}},{eq:3,css:{minWidth:'140px'}}],
+		css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
+		tableCss:{leftWidth:450},
+		rowParams : ["AREA_NAME"],//第一个为rowId
 		content : "lchcontent",
+		orderCallBack : function(index, type) {
+			orderBy = " order by " + field[index] + " " + type + " ";
+			search(0);
+		},
 		getSubRowsCallBack : function($tr) {
 			return {
 				data : nowData,
@@ -24,6 +28,7 @@ $(function() {
 		}
 	});
 	search(0);
+	
 	$("#searchBtn").click(function(){
 		search(0);
 	});
@@ -109,7 +114,8 @@ function search(pageNumber) {
 		if(area)
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
-}
+	}
+
 function listRegions(){
 	var sql = "select distinct t.AREA_NAME GROUP_ID_1_NAME from PMRT.TB_JCDY_JF_ALL_MON t where 1=1";
 	//权限
@@ -149,6 +155,8 @@ function listRegions(){
 		alert("获取地市信息失败");
 	}
 }
+
+
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var orgName=$("#orgName").val();
@@ -188,8 +196,22 @@ function listUnits(regionName){
 		$unit.empty().append($h);
 	} else {
 		alert("获取基层单元信息失败");
+	}}
+
+function isNull(obj){
+	if(obj==0||obj=='0'){
+		return 0;
 	}
+	if(obj == undefined || obj == null || obj == '') {
+		return "";
+	}
+	return obj;
 }
+function roundN(number,fractionDigits){   
+    with(Math){   
+        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
+    }   
+}   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var time=$("#time").val();
@@ -200,8 +222,10 @@ function downsAll(){
 	var name=$.trim($("#name").val());
 	//var title=[["账期","地市","基层单元","人员姓名","hr编码","角色类型","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","总受理量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","调节后质态积分","合计销售积分","渠道调节销售积分","区域调节销售积分","基础服务积分","服务积分","增值业务积分","总受理积分","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","维系积分","维系服务积分","维系区域积分","总积分","总积分金额"]];
 	//var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","ALLSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","ZTUNITJF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
-	var title=[["账期","地市","基层单元","人员姓名","hr编码","角色类型","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","总受理量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","裸机销售奖励积分","沃易购众筹积分","营业厅自提积分","MINI厅积分","合计销售积分","渠道调节销售积分","区域调节销售积分","基础服务积分","服务积分","增值业务积分","总受理积分","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","装维积分","维系积分","维系服务积分","维系区域积分","总积分","总积分金额"]];
-	var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","ALLSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","LJJL_JF","WYG_JF","ZTD_JF","MINI_JF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","ZW_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
+	var title=[["帐期","地市","基层单元","人员姓名","hr编码","角色类型","发展量","","","","","销售原始积分","","","","","","","","","","","","","","渠道调节销售积分","区域调节销售积分","总受理量","受理原始积分","","","","维系原始积分","","","","","","","","","维系服务积分","维系区域积分","总积分","总积分金额"],
+	 ["","","","","","","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","裸机销售奖励积分","沃易购众筹积分","营业厅自提积分","MINI厅积分","合计","","","","基础服务积分","服务积分","增值业务积分","合计","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","装维积分","合计","","","",""]
+	];
+	var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","LJJL_JF","WYG_JF","ZTD_JF","MINI_JF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","ALLSLL","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","ZW_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
 	//条件
 	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_JCDY_JF_ALL_MON WHERE DEAL_DATE='"+time+"'";
 	if(regionName!=''){
@@ -229,5 +253,5 @@ function downsAll(){
 	}
 	showtext = '积分月汇总-'+time;
 	downloadExcel(sql,title,showtext);
-}
+	}
 /////////////////////////下载结束/////////////////////////////////////////////
