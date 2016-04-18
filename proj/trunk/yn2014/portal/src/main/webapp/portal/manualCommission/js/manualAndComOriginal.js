@@ -9,7 +9,7 @@ $(function() {
 	/****************特殊处理按钮（李菘可以看到存过按钮）**********/
 	var userCode = $("#userCode").val();
 	/*if(userCode=='admin'){*/
-	if(userCode=='lisong32'){
+	if(userCode=='lisong32'||userCode=='admin'){
 		$("#callStoredBtn").show();
 	}
 	/*************************************************/
@@ -53,7 +53,7 @@ function search(pageNumber) {
 				"       T.FEE,                           "+
 				"       T.INIT_ID,                       "+
 				"       T.BD_TYPE                        "+
-				"  FROM PMRT.TAB_MRT_COMM_YS_DATA_MON T  WHERE T.IS_OPEN = 1 ";
+				"  FROM PMRT.TAB_MRT_COMM_YS_DATA_MON T  WHERE T.IS_OPEN = 1 AND T.DEAL_DATE ="+dealDate;
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -109,8 +109,9 @@ function search(pageNumber) {
 }
 
 /******调用存储过程**********/
-function callStored(){
-	var day = $("#day").val();
+function callStored(even){
+	$(even).css({"display":"none"});
+	var dealDate = $("#day").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -118,10 +119,10 @@ function callStored(){
 		cache:false,
 		url:$("#ctx").val()+"/commission/commission_callstored.action",
 		data:{
-           "day":day
+           "dealDate":dealDate
 	   	}, 
 	   	success:function(data){
-	   		if(data&&data.success){
+	   		if(data&&data=='success'){
 	   			alert("调用存储过程成功");
 	   			window.location.href=$("#ctx").val()+"/portal/manualCommission/jsp/manualAndComOriginal.jsp";
 	   		}else{
@@ -148,7 +149,7 @@ function downsAll(){
 				"       T.FEE,                           "+
 				"       T.INIT_ID,                       "+
 				"       T.BD_TYPE                        "+
-				"  FROM PMRT.TAB_MRT_COMM_YS_DATA_MON T  WHERE T.IS_OPEN = 1 ";
+				"  FROM PMRT.TAB_MRT_COMM_YS_DATA_MON T  WHERE T.IS_OPEN = 1 AND T.DEAL_DATE ="+dealDate;
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -163,17 +164,17 @@ function downsAll(){
 		sql+=" AND T.HR_ID='"+code+"'";
 	}
 	//条件查询
-	if(regionName!=''){
+	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
+	if(unitCode!=''){
 		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
 	}
 	if(channelCode!=''){
 		sql+=" AND T.FD_CHNL_ID ='"+channelCode+"'";
 	}
 	
-	showtext = '手工佣金+渠道补贴(最终)-'+dealDate;
+	showtext = '手工佣金+渠道补贴(原始)-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
