@@ -103,14 +103,56 @@ $(function(){
 	});
 });
 function getSumSql() {
-	var s = "";
-	for (var i = 0; i < field.length; i++) {
-		if (s.length > 0) {
-			s += ",";
-		}
-		s += "SUM("+field[i]+") "+field[i];
-	}
-	return s+" from PMRT.JCDY_MRT_PROFIT_ANALYS_MON";
+	var sql="SUM(INCOME_TOTAL) INCOME_TOTAL,                                                                            "+
+	"       SUM(INCOME_2G) INCOME_2G,                                                                           "+
+	"       SUM(INCOME_3G) INCOME_3G,                                                                           "+
+	"       SUM(INCOME_4G) INCOME_4G,                                                                           "+
+	"       SUM(INCOME_KD) INCOME_KD,                                                                           "+
+	"       SUM(INCOME_ZX) INCOME_ZX,                                                                           "+
+	"       SUM(COMM_TOTAL_ABS) COMM_TOTAL_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(COMM_TOTAL_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' COMM_TOTAL_RATE,        "+
+	"       SUM(COMM_2G_ABS) COMM_2G_ABS,                                                                       "+
+	"       TO_CHAR(ROUND(SUM(COMM_2G_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' COMM_2G_RATE,              "+
+	"       SUM(COMM_3G_ABS) COMM_3G_ABS,                                                                       "+
+	"       TO_CHAR(ROUND(SUM(COMM_3G_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' COMM_3G_RATE,              "+
+	"       SUM(COMM_4G_ABS) COMM_4G_ABS,                                                                       "+
+	"       TO_CHAR(ROUND(SUM(COMM_4G_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' COMM_4G_RATE,              "+
+	"       SUM(COMM_HARDLINK_ABS) COMM_HARDLINK_ABS,                                                           "+
+	"       TO_CHAR(ROUND(SUM(COMM_HARDLINK_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' COMM_HARDLINK_RATE,  "+
+	"       SUM(CHANNEL_ABS) CHANNEL_ABS,                                                                       "+
+	"       TO_CHAR(ROUND(SUM(CHANNEL_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' CHANNEL_RATE,              "+
+	"       SUM(ADS_AMOUNT_ABS) ADS_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(ADS_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' ADS_AMOUNT_RATE,        "+
+	"       SUM(YHJR_AMOUNT_ABS) YHJR_AMOUNT_ABS,                                                               "+
+	"       TO_CHAR(ROUND(SUM(YHJR_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' YHJR_AMOUNT_RATE,      "+
+	"       SUM(ZDBT_AMOUNT_ABS) ZDBT_AMOUNT_ABS,                                                               "+
+	"       TO_CHAR(ROUND(SUM(ZDBT_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' ZDBT_AMOUNT_RATE,      "+
+	"       SUM(KVB_AMOUNT_ABS) KVB_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(KVB_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' KVB_AMOUNT_RATE,        "+
+	"       SUM(FZF_AMOUNT_ABS) FZF_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(FZF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' FZF_AMOUNT_RATE,        "+
+	"       SUM(SDWYF_AMOUNT_ABS) SDWYF_AMOUNT_ABS,                                                             "+
+	"       TO_CHAR(ROUND(SUM(SDWYF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' SDWYF_AMOUNT_RATE,    "+
+	"       SUM(YWYPCLF_AMOUNT_ABS) YWYPCLF_AMOUNT_ABS,                                                         "+
+	"       TO_CHAR(ROUND(SUM(YWYPCLF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' YWYPCLF_AMOUNT_RATE,"+
+	"       SUM(XJ_YXFY_ABS) XJ_YXFY_ABS,                                                                       "+
+	"       TO_CHAR(ROUND(SUM(XJ_YXFY_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' XJ_YXFY_RATE,              "+
+	"       SUM(CLSYF_AMOUNT_ABS) CLSYF_AMOUNT_ABS,                                                             "+
+	"       TO_CHAR(ROUND(SUM(CLSYF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' CLSYF_AMOUNT_RATE,    "+
+	"       SUM(ZDF_AMOUNT_ABS) ZDF_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(ZDF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' ZDF_AMOUNT_RATE,        "+
+	"       SUM(BGF_AMOUNT_ABS) BGF_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(BGF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' BGF_AMOUNT_RATE,        "+
+	"       SUM(CLF_AMOUNT_ABS) CLF_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(CLF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' CLF_AMOUNT_RATE,        "+
+	"       SUM(TXF_AMOUNT_ABS) TXF_AMOUNT_ABS,                                                                 "+
+	"       TO_CHAR(ROUND(SUM(TXF_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' TXF_AMOUNT_RATE,        "+
+	"       SUM(XJ_XZFY_ABS) XJ_XZFY_ABS,                                                                       "+
+	"       TO_CHAR(ROUND(SUM(XJ_XZFY_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' XJ_XZFY_RATE,              "+
+	"       SUM(OTHER_AMOUNT_ABS) OTHER_AMOUNT_ABS,                                                             "+
+	"       TO_CHAR(ROUND(SUM(OTHER_AMOUNT_ABS)/SUM(INCOME_TOTAL),4)*100,'fm990.00')||'%' OTHER_AMOUNT_RATE     "+
+	"  from PMRT.JCDY_MRT_PROFIT_ANALYS_MON                                                                     ";
+	return sql;
 }
 function getSql(field) {
 	var s = "";
