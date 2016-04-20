@@ -59,6 +59,9 @@ function search(pageNumber) {
 			});
 			if(content != "") {
 				$("#dataBody").empty().html(content);
+				$("#dataBody").find("TR").each(function(){
+					$(this).find("TD:gt(3)").css({"text-align":"right"});
+				});
 			}else {
 				$("#dataBody").empty().html("<tr><td colspan='12'>暂无数据</td></tr>");
 			}

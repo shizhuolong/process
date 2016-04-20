@@ -8,7 +8,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		/*css:[{gt:4,css:LchReport.RIGHT_ALIGN}],*/
+		css:[{eq:5,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
