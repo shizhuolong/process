@@ -11,7 +11,7 @@ $(function() {
 		title : title,
 		field : field,
 		css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
-		rowParams : ["DEAL_DATE","HR_ID","UNIT_ID","USER_TYPE"],//第一个为rowId
+		rowParams : ["DEAL_DATE","HR_ID","UNIT_ID","USER_TYPE","USER_CODE"],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
 			orderBy = " order by " + field[index] + " " + type + " ";
@@ -56,7 +56,7 @@ function search(pageNumber) {
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 //条件
-	var sql = " from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
+	var sql = " from PMRT.TB_MRT_JCDY_HR_SALARY_MON t LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T1 ON T.HR_ID=T1.HR_ID AND T1.DEAL_DATE="+time+" where 1=1 ";
 	if(time!=''){
 		sql+=" and t.DEAL_DATE="+time;
 	}
@@ -150,7 +150,7 @@ function search(pageNumber) {
 		sql += orderBy;
 	}
 
-	sql = "select * " + sql;
+	sql = "select t.*,t1.USER_CODE " + sql;
 
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
@@ -405,10 +405,16 @@ function search(pageNumber) {
 			var date=$yjTd.parent().attr("deal_date");
 			var hrId=$yjTd.parent().attr("hr_id");
 			var uId=$yjTd.parent().attr("unit_id");
-			var js=$yjTd.parent().attr("user_type");
-			var jss=[];
+			var js=$yjTd.parent().attr("user_code");
+			//var js=$yjTd.parent().attr("user_type");
+			//var jss=[];
 			var isResp=0;
-			if(js&&js.length){
+			if(js==1){
+				isResp=1;
+			}else{
+				isResp=2;
+			}
+			/*if(js&&js.length){
 				jss=js.split(",");
 				for(var i=0;i<jss.length;i++){
 					if($.trim(jss[i])=='营服中心责任人'){
@@ -424,7 +430,7 @@ function search(pageNumber) {
 						break;
 					}
 				}
-			}
+			}*/
 			var sql="";
 			var ssql="";
 			if(isResp==0){
