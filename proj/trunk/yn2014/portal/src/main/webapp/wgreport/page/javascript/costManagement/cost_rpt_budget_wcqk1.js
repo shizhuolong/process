@@ -89,58 +89,123 @@ $(function(){
 });
 function getSumSql() {
 	var s = 
-		"sum(income_total_ys) income_total_ys,                                                                                          "+
-		"sum(income_total_sj) income_total_sj,                                                                                          "+
-		"sum(income_total_sy) income_total_sy,                                                                                          "+
-		"CASE WHEN sum(income_total_ys) = 0 THEN 0 ELSE round(sum(income_total_sj)/sum(income_total_ys),2) END AS income_total_rate,     "+
-		"sum(comm_total_ys) comm_total_ys,                                                                                              "+
-		"sum(comm_total_sj) comm_total_sj,                                                                                              "+
-		"sum(comm_total_sy) comm_total_sy,                                                                                              "+
-		"CASE WHEN sum(comm_total_ys) = 0 THEN 0 ELSE round(sum(comm_total_sj)/sum(comm_total_ys),2) END AS comm_total_rate,             "+
-		"sum(channel_ys) channel_ys,                                                                                                    "+
-		"sum(channel_sj) channel_sj,                                                                                                    "+
-		"sum(channel_sy) channel_sy,                                                                                                    "+
-		"CASE WHEN sum(channel_ys) = 0 THEN 0 ELSE round(sum(channel_sj)/sum(channel_ys),2) END AS channel_rate,                         "+
-		"sum(ads_amount_ys) ads_amount_ys,                                                                                              "+
-		"sum(ads_amount_sj) ads_amount_sj,                                                                                              "+
-		"sum(ads_amount_sy) ads_amount_sy,                                                                                              "+
-		"CASE WHEN sum(ads_amount_ys) = 0 THEN 0 ELSE round(sum(ads_amount_sj)/sum(ads_amount_ys),2) END AS ads_amount_rate,             "+
-		"sum(yhjr_amount_ys) yhjr_amount_ys,                                                                                            "+
-		"sum(yhjr_amount_sj) yhjr_amount_sj,                                                                                            "+
-		"sum(yhjr_amount_sy) yhjr_amount_sy,                                                                                            "+
-		"CASE WHEN sum(yhjr_amount_ys) = 0 THEN 0 ELSE round(sum(yhjr_amount_sj)/sum(yhjr_amount_ys),2) END AS yhjr_amount_rate,         "+
-		"sum(clsyf_amount_ys) clsyf_amount_ys,                                                                                          "+
-		"sum(clsyf_amount_sj) clsyf_amount_sj,                                                                                          "+
-		"sum(clsyf_amount_sy) clsyf_amount_sy,                                                                                          "+
-		"CASE WHEN sum(clsyf_amount_ys) = 0 THEN 0 ELSE round(sum(clsyf_amount_sj)/sum(clsyf_amount_ys),2) END AS clsyf_amount_rate,     "+
-		"sum(zdf_amount_ys) zdf_amount_ys,                                                                                              "+
-		"sum(zdf_amount_sj) zdf_amount_sj,                                                                                              "+
-		"sum(zdf_amount_sy) zdf_amount_sy,                                                                                              "+
-		"CASE WHEN sum(zdf_amount_ys) = 0 THEN 0 ELSE round(sum(zdf_amount_sj)/sum(zdf_amount_ys),2) END AS zdf_amount_rate,             "+
-		"sum(bgf_amount_ys) bgf_amount_ys,                                                                                              "+
-		"sum(bgf_amount_sj) bgf_amount_sj,                                                                                              "+
-		"sum(bgf_amount_sy) bgf_amount_sy,                                                                                              "+
-		"CASE WHEN sum(bgf_amount_ys) = 0 THEN 0 ELSE round(sum(bgf_amount_sj)/sum(bgf_amount_ys),2) END AS bgf_amount_rate,             "+
-		"sum(clf_amount_ys) clf_amount_ys,                                                                                              "+
-		"sum(clf_amount_sj) clf_amount_sj,                                                                                              "+
-		"sum(clf_amount_sy) clf_amount_sy,                                                                                              "+
-		"CASE WHEN sum(clf_amount_ys) = 0 THEN 0 ELSE round(sum(clf_amount_sj)/sum(clf_amount_ys),2) END AS clf_amount_rate,             "+
-		"sum(txf_amount_ys) txf_amount_ys,                                                                                              "+
-		"sum(txf_amount_sj) txf_amount_sj,                                                                                              "+
-		"sum(txf_amount_sy) txf_amount_sy,                                                                                              "+
-		"CASE WHEN sum(txf_amount_ys) = 0 THEN 0 ELSE round(sum(txf_amount_sj)/sum(txf_amount_ys),2) END AS txf_amount_rate,             "+
-		"sum(fzf_amount_ys) fzf_amount_ys,                                                                                              "+
-		"sum(fzf_amount_sj) fzf_amount_sj,                                                                                              "+
-		"sum(fzf_amount_sy) fzf_amount_sy,                                                                                              "+
-		"CASE WHEN sum(fzf_amount_ys) = 0 THEN 0 ELSE round(sum(fzf_amount_sj)/sum(fzf_amount_ys),2) END AS fzf_amount_rate,             "+
-		"sum(sdwyf_amount_ys) sdwyf_amount_ys,                                                                                          "+
-		"sum(sdwyf_amount_sj) sdwyf_amount_sj,                                                                                          "+
-		"sum(sdwyf_amount_sy) sdwyf_amount_sy,                                                                                          "+
-		"CASE WHEN sum(sdwyf_amount_ys) = 0 THEN 0 ELSE round(sum(sdwyf_amount_sj)/sum(sdwyf_amount_ys),2) END AS sdwyf_amount_rate,     "+
-		"sum(other_amount_ys) other_amount_ys,                                                                                          "+
-		"sum(other_amount_sj) other_amount_sj,                                                                                          "+
-		"sum(other_amount_sy) other_amount_sy,                                                                                          "+
-		"CASE WHEN sum(other_amount_ys) = 0 THEN 0 ELSE round(sum(other_amount_sj)/sum(other_amount_ys),2) END AS other_amount_rate from PMRT.TB_MRT_COST_UNIT_YSWCQK ";
+		"sum(income_total_ys) income_total_ys,                                            "+
+		"       sum(income_total_sj) income_total_sj,                                     "+
+		"       sum(income_total_sy) income_total_sy,                                     "+
+		"       CASE                                                                      "+
+		"         WHEN sum(income_total_ys) = 0 THEN                                      "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(income_total_sj) / sum(income_total_ys),4)*100)||'%' "+
+		"       END AS income_total_rate,                                                 "+
+		"       sum(comm_total_ys) comm_total_ys,                                         "+
+		"       sum(comm_total_sj) comm_total_sj,                                         "+
+		"       sum(comm_total_sy) comm_total_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(comm_total_ys) = 0 THEN                                        "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(comm_total_sj) / sum(comm_total_ys),4)*100)||'%'     "+
+		"       END AS comm_total_rate,                                                   "+
+		"       sum(channel_ys) channel_ys,                                               "+
+		"       sum(channel_sj) channel_sj,                                               "+
+		"       sum(channel_sy) channel_sy,                                               "+
+		"       CASE                                                                      "+
+		"         WHEN sum(channel_ys) = 0 THEN                                           "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(channel_sj) / sum(channel_ys), 4)*100)||'%'          "+
+		"       END AS channel_rate,                                                      "+
+		"       sum(ads_amount_ys) ads_amount_ys,                                         "+
+		"       sum(ads_amount_sj) ads_amount_sj,                                         "+
+		"       sum(ads_amount_sy) ads_amount_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(ads_amount_ys) = 0 THEN                                        "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(ads_amount_sj) / sum(ads_amount_ys), 4)*100)||'%'    "+
+		"       END AS ads_amount_rate,                                                   "+
+		"       sum(yhjr_amount_ys) yhjr_amount_ys,                                       "+
+		"       sum(yhjr_amount_sj) yhjr_amount_sj,                                       "+
+		"       sum(yhjr_amount_sy) yhjr_amount_sy,                                       "+
+		"       CASE                                                                      "+
+		"         WHEN sum(yhjr_amount_ys) = 0 THEN                                       "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(yhjr_amount_sj) / sum(yhjr_amount_ys), 4)*100)||'%'  "+
+		"       END AS yhjr_amount_rate,                                                  "+
+		"       sum(clsyf_amount_ys) clsyf_amount_ys,                                     "+
+		"       sum(clsyf_amount_sj) clsyf_amount_sj,                                     "+
+		"       sum(clsyf_amount_sy) clsyf_amount_sy,                                     "+
+		"       CASE                                                                      "+
+		"         WHEN sum(clsyf_amount_ys) = 0 THEN                                      "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(clsyf_amount_sj) / sum(clsyf_amount_ys),4)*100)||'%' "+
+		"       END AS clsyf_amount_rate,                                                 "+
+		"       sum(zdf_amount_ys) zdf_amount_ys,                                         "+
+		"       sum(zdf_amount_sj) zdf_amount_sj,                                         "+
+		"       sum(zdf_amount_sy) zdf_amount_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(zdf_amount_ys) = 0 THEN                                        "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(zdf_amount_sj) / sum(zdf_amount_ys), 4)*100)||'%'    "+
+		"       END AS zdf_amount_rate,                                                   "+
+		"       sum(bgf_amount_ys) bgf_amount_ys,                                         "+
+		"       sum(bgf_amount_sj) bgf_amount_sj,                                         "+
+		"       sum(bgf_amount_sy) bgf_amount_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(bgf_amount_ys) = 0 THEN                                        "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(bgf_amount_sj) / sum(bgf_amount_ys),4)*100)||'%'     "+
+		"       END AS bgf_amount_rate,                                                   "+
+		"       sum(clf_amount_ys) clf_amount_ys,                                         "+
+		"       sum(clf_amount_sj) clf_amount_sj,                                         "+
+		"       sum(clf_amount_sy) clf_amount_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(clf_amount_ys) = 0 THEN                                        "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(clf_amount_sj) / sum(clf_amount_ys), 4)*100)||'%'    "+
+		"       END AS clf_amount_rate,                                                   "+
+		"       sum(txf_amount_ys) txf_amount_ys,                                         "+
+		"       sum(txf_amount_sj) txf_amount_sj,                                         "+
+		"       sum(txf_amount_sy) txf_amount_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(txf_amount_ys) = 0 THEN                                        "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(txf_amount_sj) / sum(txf_amount_ys),4)*100)||'%'     "+
+		"       END AS txf_amount_rate,                                                   "+
+		"       sum(fzf_amount_ys) fzf_amount_ys,                                         "+
+		"       sum(fzf_amount_sj) fzf_amount_sj,                                         "+
+		"       sum(fzf_amount_sy) fzf_amount_sy,                                         "+
+		"       CASE                                                                      "+
+		"         WHEN sum(fzf_amount_ys) = 0 THEN                                        "+
+		"         '0%'                                                                    "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(fzf_amount_sj) / sum(fzf_amount_ys),4)*100)||'%'     "+
+		"       END AS fzf_amount_rate,                                                   "+
+		"       sum(sdwyf_amount_ys) sdwyf_amount_ys,                                     "+
+		"       sum(sdwyf_amount_sj) sdwyf_amount_sj,                                     "+
+		"       sum(sdwyf_amount_sy) sdwyf_amount_sy,                                     "+
+		"       CASE                                                                      "+
+		"         WHEN sum(sdwyf_amount_ys) = 0 THEN                                      "+
+		"         '0%'                                                                    "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(sdwyf_amount_sj) / sum(sdwyf_amount_ys), 4)*100)||'%'"+
+		"       END AS sdwyf_amount_rate,                                                 "+
+		"       sum(other_amount_ys) other_amount_ys,                                     "+
+		"       sum(other_amount_sj) other_amount_sj,                                     "+
+		"       sum(other_amount_sy) other_amount_sy,                                     "+
+		"       CASE                                                                      "+
+		"         WHEN sum(other_amount_ys) = 0 THEN                                      "+
+		"          '0%'                                                                   "+
+		"         ELSE                                                                    "+
+		"          to_char(round(sum(other_amount_sj) / sum(other_amount_ys), 4)*100)||'%'"+
+		"       END AS other_amount_rate from PMRT.TB_MRT_COST_UNIT_YSWCQK ";
 	return s;
 }
 function getSql(field) {
