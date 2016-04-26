@@ -20,8 +20,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
-import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.util.Struts2Utils;
 import org.apdplat.wgreport.common.SpringManager;
@@ -111,7 +109,7 @@ public class ZZXUploadAction extends BaseAction{
 					int end=sheet.getLastRowNum();
 					for(int y=start;y<=end;y++){
 						String sql="insert into "+resultTableName+"(CREATOR,CREATE_TIME,SUBSCRIPTION_ID,DEVICE_NUMBER,RATIO,ITEMCODE,ITEMDESC,ACTIVE_TIME,INACTIVE_TIME)";
-						String values=" values('"+username+"',sysdate";
+						String values=" values('"+username+"',TO_CHAR(SYSDATE,'yyyymmdd hh:mm')";
 						HSSFRow row =sheet.getRow(y);
 						if(row==null) continue;
 						int cstart=row.getFirstCellNum();
