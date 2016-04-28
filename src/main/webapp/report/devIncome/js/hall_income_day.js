@@ -21,7 +21,7 @@ function search(){
 		field=["THIS_2G_SR1","LAST_2G_SR1","THIS_3G_SR1","LAST_3G_SR1","THIS_4G_SR1","LAST_4G_SR1","THIS_NET_SR1","LAST_NET_SR1","ALL_SR1","LAST_ALL1"];
 	}else{
 		title=[["组织架构","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
-		       ["","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
+		       ["","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
 		field=["THIS_2G_SR","LAST_2G_SR","THIS_2G_SR1","LAST_2G_SR1","THIS_3G_SR","LAST_3G_SR","THIS_3G_SR1","LAST_3G_SR1","THIS_4G_SR","LAST_4G_SR","THIS_4G_SR1","LAST_4G_SR1","THIS_NET_SR","LAST_NET_SR","THIS_NET_SR1","LAST_NET_SR1","ALL_SR","LAST_ALL","ALL_SR1","LAST_ALL1"];
 	}
 	var report=new LchReport({
@@ -86,53 +86,104 @@ function search(){
 		}
 	});
 	report.showSubRow();
-///////////////////////////////////////////
+    ///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 }
 function getSumSql() {
-	var s="ROUND(SUM(NVL(T1.THIS_2G_SR,0)),2) THIS_2G_SR                                                                                                          "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_2G_SR,0)) <> 0                                                                               "+
-	"                                              THEN (SUM(NVL(T1.THIS_2G_SR,0))-SUM(NVL(T1.LAST_2G_SR,0)))*100 / SUM(NVL(T1.LAST_2G_SR,0))      "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_2G_SR                                            "+
-	",ROUND(SUM(NVL(T1.THIS_2G_SR1,0)),2) THIS_2G_SR1                                                                                                       "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_2G_SR1,0)) <> 0                                                                              "+
-	"                                              THEN (SUM(NVL(T1.THIS_2G_SR1,0))-SUM(NVL(T1.LAST_2G_SR1,0)))*100 / SUM(NVL(T1.LAST_2G_SR1,0))   "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_2G_SR1                                           "+
-	",ROUND(SUM(NVL(T1.THIS_3G_SR,0)),2) THIS_3G_SR                                                                                                         "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_3G_SR,0)) <> 0                                                                               "+
-	"                                              THEN (SUM(NVL(T1.THIS_3G_SR,0))-SUM(NVL(T1.LAST_3G_SR,0)))*100 / SUM(NVL(T1.LAST_3G_SR,0))      "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_3G_SR                                            "+
-	",ROUND(SUM(NVL(T1.THIS_3G_SR1,0)),2) THIS_3G_SR1                                                                                                       "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_3G_SR1,0)) <> 0                                                                              "+
-	"                                              THEN (SUM(NVL(T1.THIS_3G_SR1,0))-SUM(NVL(T1.LAST_3G_SR1,0)))*100 / SUM(NVL(T1.LAST_3G_SR1,0))   "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_3G_SR1                                           "+
-	",ROUND(SUM(NVL(T1.THIS_4G_SR,0)),2) THIS_4G_SR                                                                                                         "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_4G_SR,0)) <> 0                                                                               "+
-	"                                              THEN (SUM(NVL(T1.THIS_4G_SR,0))-SUM(NVL(T1.LAST_4G_SR,0)))*100 / SUM(NVL(T1.LAST_4G_SR,0))      "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_4G_SR                                            "+
-	",ROUND(SUM(NVL(T1.THIS_4G_SR1,0)),2) THIS_4G_SR1                                                                                                       "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_4G_SR1,0)) <> 0                                                                              "+
-	"                                              THEN (SUM(NVL(T1.THIS_4G_SR1,0))-SUM(NVL(T1.LAST_4G_SR1,0)))*100 / SUM(NVL(T1.LAST_4G_SR1,0))   "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_4G_SR1                                           "+
-	",ROUND(SUM(NVL(T1.THIS_NET_SR,0)),2) THIS_NET_SR                                                                                                       "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_NET_SR,0)) <> 0                                                                              "+
-	"                                              THEN (SUM(NVL(T1.THIS_NET_SR,0))-SUM(NVL(T1.LAST_NET_SR,0)))*100 / SUM(NVL(T1.LAST_NET_SR,0))   "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_NET_SR                                           "+
-	",ROUND(SUM(NVL(T1.THIS_NET_SR1,0)),2) THIS_NET_SR1                                                                                                     "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_NET_SR1,0)) <> 0                                                                             "+
-	"                                              THEN (SUM(NVL(T1.THIS_NET_SR1,0))-SUM(NVL(T1.LAST_NET_SR1,0)))*100 / SUM(NVL(T1.LAST_NET_SR1,0))"+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_NET_SR1                                          "+
-	",ROUND(SUM(NVL(T1.ALL_SR,0)),2) ALL_SR                                                                                                                 "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_ALL,0)) <> 0                                                                                 "+
-	"                                              THEN (SUM(NVL(T1.ALL_SR,0))-SUM(NVL(T1.LAST_ALL,0)))*100 / SUM(NVL(T1.LAST_ALL,0))              "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_ALL                                              "+
-	",ROUND(SUM(NVL(T1.ALL_SR1,0)),2) ALL_SR1                                                                                                               "+
-	",TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_ALL1,0)) <> 0                                                                                "+
-	"                                              THEN (SUM(NVL(T1.ALL_SR1,0))-SUM(NVL(T1.LAST_ALL1,0)))*100 / SUM(NVL(T1.LAST_ALL1,0))           "+
-	"                                              ELSE 0 END ,'FM99999999990.99')) || '%' LAST_ALL1                                             "+
-	"FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY T1 WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'";
+    var s="ROUND(SUM(NVL(T1.THIS_2G_SR, 0)),3) THIS_2G_SR,                                       "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_2G_SR, 0)) <> 0 THEN                              "+
+	"                      (SUM(NVL(T1.THIS_2G_SR, 0)) - SUM(NVL(T1.LAST_2G_SR, 0))) * 100 /     "+
+	"                      SUM(NVL(T1.LAST_2G_SR, 0))                                            "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_2G_SR,                                  "+
+	"      ROUND(SUM(NVL(T1.THIS_2G_SR, 0)),3) THIS_2G_SR1,                                      "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_2G_SR, 0)) <> 0 THEN                              "+
+	"                      (SUM(NVL(T1.THIS_2G_SR, 0)) - SUM(NVL(T1.LAST_2G_SR, 0))) * 100 /     "+
+	"                      SUM(NVL(T1.LAST_2G_SR1, 0))                                           "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_2G_SR1,                                 "+
+	"      ROUND(SUM(NVL(T1.THIS_3G_SR, 0)),3) THIS_3G_SR,                                       "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_3G_SR, 0)) <> 0 THEN                              "+
+	"                      (SUM(NVL(T1.THIS_3G_SR, 0)) - SUM(NVL(T1.LAST_3G_SR, 0))) * 100 /     "+
+	"                      SUM(NVL(T1.LAST_3G_SR, 0))                                            "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_3G_SR,                                  "+
+	"      ROUND(SUM(NVL(T1.THIS_3G_SR, 0)),3) THIS_3G_SR1,                                      "+
+	"       TRIM('.' FROM TO_CHAR(CASE                                                           "+
+	"                     WHEN SUM(NVL(T1.LAST_3G_SR, 0)) <> 0 THEN                              "+
+	"                      (SUM(NVL(T1.THIS_3G_SR, 0)) - SUM(NVL(T1.LAST_3G_SR, 0))) * 100 /     "+
+	"                      SUM(NVL(T1.LAST_3G_SR, 0))                                            "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_3G_SR1,                                 "+
+	"      ROUND(SUM(NVL(T1.THIS_4G_SR, 0)),3) THIS_4G_SR,                                       "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_4G_SR, 0)) <> 0 THEN                              "+
+	"                      (SUM(NVL(T1.THIS_4G_SR, 0)) - SUM(NVL(T1.LAST_4G_SR, 0))) * 100 /     "+
+	"                      SUM(NVL(T1.LAST_4G_SR, 0))                                            "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_4G_SR,                                  "+
+	"      ROUND(SUM(NVL(T1.THIS_4G_SR, 0)),3) THIS_4G_SR1,                                      "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_4G_SR, 0)) <> 0 THEN                              "+
+	"                      (SUM(NVL(T1.THIS_4G_SR, 0)) - SUM(NVL(T1.LAST_4G_SR, 0))) * 100 /     "+
+	"                      SUM(NVL(T1.LAST_4G_SR, 0))                                            "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_4G_SR1,                                 "+
+	"      ROUND(SUM(NVL(T1.THIS_NET_SR, 0)),3) THIS_NET_SR,                                     "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_NET_SR, 0)) <> 0 THEN                             "+
+	"                      (SUM(NVL(T1.THIS_NET_SR, 0)) - SUM(NVL(T1.LAST_NET_SR, 0))) * 100 /   "+
+	"                      SUM(NVL(T1.LAST_NET_SR, 0))                                           "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_NET_SR,                                 "+
+	"      ROUND(SUM(NVL(T1.THIS_NET_SR, 0)),3) THIS_NET_SR1,                                    "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_NET_SR, 0)) <> 0 THEN                             "+
+	"                      (SUM(NVL(T1.THIS_NET_SR, 0)) - SUM(NVL(T1.LAST_NET_SR, 0))) * 100 /   "+
+	"                      SUM(NVL(T1.LAST_NET_SR, 0))                                           "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_NET_SR1,                                "+
+	"      ROUND(SUM(NVL(T1.ALL_SR, 0)),3) ALL_SR,                                               "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_ALL1, 0)) <> 0 THEN                               "+
+	"                      (SUM(NVL(T1.ALL_SR1, 0)) - SUM(NVL(T1.LAST_ALL1, 0))) * 100 /         "+
+	"                      SUM(NVL(T1.LAST_ALL1, 0))                                             "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_ALL,                                    "+
+	"      ROUND(SUM(NVL(T1.ALL_SR, 0)),3) ALL_SR1,                                              "+
+	"      TRIM('.' FROM TO_CHAR(CASE                                                            "+
+	"                     WHEN SUM(NVL(T1.LAST_ALL, 0)) <> 0 THEN                                "+
+	"                      (SUM(NVL(T1.ALL_SR, 0)) - SUM(NVL(T1.LAST_ALL, 0))) * 100 /           "+
+	"                      SUM(NVL(T1.LAST_ALL, 0))                                              "+
+	"                     ELSE                                                                   "+
+	"                      0                                                                     "+
+	"                   END,                                                                     "+
+	"                   'FM99999999990.99')) || '%' LAST_ALL1                                    "+
+	" FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY T1                                                    "+
+	"WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                ";
 	
 	return s;
 }
@@ -191,6 +242,6 @@ function downsAll() {
 	var sql = 'SELECT' + preField + getSumSql()+where+groupBy+orderBy;
 	var showtext = '营业厅收入报表' + startDate+"-"+endDate;
 	title=[["账期","组织架构","渠道","经营模式","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
-	       ["","","","","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
+	       ["","","","","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
 	downloadExcel(sql,title,showtext);
 }
