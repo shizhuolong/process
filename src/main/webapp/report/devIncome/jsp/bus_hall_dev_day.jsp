@@ -36,15 +36,29 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="8%" style="padding-left: 10px;">开始账期：</td>
 					<td width="20%">
-						<input type="text"  class="Wdate default-text-input wper40" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=month %>" id="time">
+						<input type="text"  class="Wdate default-text-input wper40" readonly="true"
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="startDate">
+					</td>
+					<td width="8%" style="padding-left: 10px;">结束账期：</td>
+					<td width="20%">
+						<input type="text"  class="Wdate default-text-input wper40" readonly="true"
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="endDate">
 					</td>
 					<td width="4%">地市：</td>
 					<td width="15%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
+						</select>
+					</td>
+					<td width="8%">经营模式：</td>
+					<td width="15%">
+						<select name="operateType" id="operateType" class="default-text-input wper80">
+								<option value=''>请选择</option>
+								<option value='自营'>自营</option>
+								<option value='他营'>他营</option>
+								<option value='柜台外包'>柜台外包</option>
 						</select>
 					</td>
 					<td width="5%">
