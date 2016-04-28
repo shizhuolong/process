@@ -1,11 +1,30 @@
 var field=["THIS_2G_NUM","LAST_2G_NUM","THIS_2G_NUM1","LAST_2G_NUM1","THIS_3G_NUM","LAST_3G_NUM","THIS_3G_NUM1","LAST_3G_NUM1","THIS_4G_NUM","LAST_4G_NUM","THIS_4G_NUM1","LAST_4G_NUM1","THIS_NET_NUM","LAST_NET_NUM","THIS_NET_NUM1","LAST_NET_NUM1","THIS_WX_NUM","LAST_WX_NUM","THIS_WX_NUM1","LAST_WX_NUM1","ALL_NUM","LAST_ALL","ALL_NUM1","LAST_ALL_NUM1"];
 var title="";
-var deal_date="";
+var field="";
+var startDate="";
+var endDate="";
 var regionName="";
+var operateType="";
 $(function(){
 	listRegions();
-	title=[["组织架构","2G发展","","","","3G发展","","","","4G发展","","","","固网发展","","","","维系","","","","合计(含维系)","","",""],
-	       ["","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
+	search();
+	$("#searchBtn").click(function(){
+		$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
+		search();
+	});
+});
+function search(){
+	startDate=$("#startDate").val();
+	endDate=$("#endDate").val();
+	if(startDate!=endDate){
+		title=[["组织架构","2G发展（万元）","","3G发展（万元）","","4G发展（万元）","","固网（万元）","","合计（万元）",""],
+		       ["","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
+		field=["THIS_2G_NUM1","LAST_2G_NUM1","THIS_3G_NUM1","LAST_3G_NUM1","THIS_4G_NUM1","LAST_4G_NUM1","THIS_NET_NUM1","LAST_NET_NUM1","ALL_NUM1","LAST_ALL1"];
+	}else{
+		title=[["组织架构","2G发展（万元）","","","","3G发展（万元）","","","","4G发展（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
+		       ["","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
+		field=["THIS_2G_NUM","LAST_2G_NUM","THIS_2G_NUM1","LAST_2G_NUM1","THIS_3G_NUM","LAST_3G_NUM","THIS_3G_NUM1","LAST_3G_NUM1","THIS_4G_NUM","LAST_4G_NUM","THIS_4G_NUM1","LAST_4G_NUM1","THIS_NET_NUM","LAST_NET_NUM","THIS_NET_NUM1","LAST_NET_NUM1","ALL_NUM","LAST_ALL","ALL_NUM1","LAST_ALL1"];
+	}
 	var report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -23,8 +42,8 @@ $(function(){
 			var groupBy='';
 			var code='';
 			var orgLevel='';
-			deal_date = $("#time").val();
 			regionName=$("#regionName").val();
+			operateType=$("#operateType").val();
 			
 			if($tr){
 				code=$tr.attr("row_id");
@@ -60,24 +79,21 @@ $(function(){
 			if(regionName!=""){
 				where+=" AND T1.GROUP_ID_1_NAME='"+regionName+"'";
 			}
+			if(operateType!=""){
+				where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
+			}
 			var sql='SELECT'+preField+getSumSql()+where+groupBy;
 			var d=query(sql);
 			return {data:d,extra:{orgLevel:orgLevel}};
 		}
 	});
 	report.showSubRow();
-///////////////////////////////////////////
+    ///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
-	$("#searchBtn").click(function(){
-		report.showSubRow();
-///////////////////////////////////////////
-		$("#lch_DataHead").find("TH").unbind();
-		$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-		///////////////////////////////////////////
-	});
-});
+	
+}
 function getSumSql() {
 	var s="ROUND(SUM(NVL(T1.THIS_2G_NUM,0)),2) THIS_2G_NUM                                                                                                                 "+
 	"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_2G_NUM,0)) <> 0                                                                                 "+
@@ -127,7 +143,7 @@ function getSumSql() {
 	"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T1.LAST_ALL_NUM1,0)) <> 0                                                                               "+
 	"                                                    THEN (SUM(NVL(T1.ALL_NUM1,0))-SUM(NVL(T1.LAST_ALL_NUM1,0)))*100 / SUM(NVL(T1.LAST_ALL_NUM1,0))     "+
 	"                                                    ELSE 0 END ,'FM99999999990.99')) || '%' LAST_ALL_NUM1                                            "+
-	"FROM PMRT.TB_MRT_BUS_HALL_DEV_DAY T1 WHERE T1.DEAL_DATE='"+deal_date+"'";
+	"FROM PMRT.TB_MRT_BUS_HALL_DEV_DAY T1 WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'";
 	
 	return s;
 }
@@ -165,10 +181,10 @@ function listRegions(){
 	}
 }
 function downsAll() {
-	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE,';
+	var preField=' T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE,';
 	var where='';
-	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.BUS_HALL_NAME";
-	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE";
+	var orderBy=" ORDER BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.BUS_HALL_NAME";
+	var groupBy=" GROUP BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -180,9 +196,12 @@ function downsAll() {
 	if(regionName!=""){
 		where+=" AND T1.GROUP_ID_1_NAME='"+regionName+"'";
 	}
+	if(operateType!=""){
+		where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
+	}
 	var sql = 'SELECT' + preField + getSumSql()+where+groupBy+orderBy;
-	var showtext = '营业厅发展报表' + deal_date;
-	title=[["组织架构","渠道","经营模式","2G发展","","","","3G发展","","","","4G发展","","","","固网发展","","","","维系","","","","合计(含维系)","","",""],
-		       ["","","","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
+	var showtext = '营业厅发展报表' + startDate+"-"+endDate;
+	title=[["账期","组织架构","渠道","经营模式","2G发展","","","","3G发展","","","","4G发展","","","","固网发展","","","","维系","","","","合计(含维系)","","",""],
+		       ["","","","","当日","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比","当月","当日环比","累计","累计环比"]];
 	downloadExcel(sql,title,showtext);
 }
