@@ -102,13 +102,14 @@ function search(pageNumber) {
 			"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                                        "+
 			"    ON T.UNIT_ID = T2.UNIT_ID                                                     "+
 			"   AND T.DEAL_DATE = T2.DEAL_DATE                                                 "+
-			"   AND T2.USER_CODE = 1                                                           ";
+			"   AND T2.USER_CODE = 1                                                           "+
+			"   WHERE 1 =1                                                         ";
 
 	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
+		sql+=" AND T.GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME like '%"+unitName+"%'";
+		sql+=" AND T.UNIT_ID = '"+unitName+"'";
 	}
 	if(userName!=''){
 		sql+=" AND (T.NAME LIKE '%"+userName+"%' OR  T1.NAME LIKE '%"+userName+"%' OR T2.NAME LIKE '%"+userName+"%')";
@@ -164,7 +165,7 @@ function listRegions(){
 	var sql="";
 	var time=$("#time").val();
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1  ";
+	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -179,14 +180,14 @@ function listRegions(){
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
+			h += '<option value="' + d[0].GROUP_ID_1
 					+ '" selected >'
 					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
+			listUnits(d[0].GROUP_ID_1);
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
 			}
 		}
 		var $area = $("#regionName");
@@ -199,12 +200,12 @@ function listRegions(){
 		alert("获取地市信息失败");
 	}
 }
-function listUnits(regionName){
+function listUnits(regionCode){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_JCDY_HR_SALARY_MON t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
+	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1='"+regionCode+"' ";
 		//权限
 		var orgLevel=$("#orgLevel").val();
 		var code=$("#code").val();
@@ -226,13 +227,13 @@ function listUnits(regionName){
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
+			h += '<option value="' + d[0].UNIT_ID
 					+ '" selected >'
 					+ d[0].UNIT_NAME + '</option>';
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
+				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
 			}
 		}
 		
@@ -293,8 +294,8 @@ function downsAll(){
 			"  LEFT JOIN PORTAL.TAB_PORTAL_QJ_PERSON T2                                        "+
 			"    ON T.UNIT_ID = T2.UNIT_ID                                                     "+
 			"   AND T.DEAL_DATE = T2.DEAL_DATE                                                 "+
-			"   AND T2.USER_CODE = 1                                                           ";
-
+			"   AND T2.USER_CODE = 1                                                           "+
+			"   WHERE 1 =1                                                         ";
 	var regionName=$.trim($("#regionName").val());
 	var unitName=$.trim($("#unitName").val());
 	var userName=$.trim($("#useName").val());
@@ -302,10 +303,10 @@ function downsAll(){
 	var regionCode=$.trim($("#regionCode").val());
 	
 	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
+		sql+=" AND T.GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME like '%"+unitName+"%'";
+		sql+=" AND T.UNIT_ID = '"+unitName+"'";
 	}
 	if(userName!=''){
 		sql+=" AND (T.NAME LIKE '%"+userName+"%' OR  T1.NAME LIKE '%"+userName+"%' OR T2.NAME LIKE '%"+userName+"%')";
