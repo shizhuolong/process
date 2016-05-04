@@ -164,6 +164,7 @@ function search(pageNumber) {
 function listRegions(){
 	var sql="";
 	var time=$("#time").val();
+	var regionCode = $("#regionCode").val();
 	//条件
 	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
 	//权限
@@ -171,10 +172,8 @@ function listRegions(){
 	var code=$("#code").val();
 	if(orgLevel==1){
 		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
 	}else{
-		sql+=" and t.UNIT_ID='"+code+"'";
+		sql+=" and t.GROUP_ID_1="+regionCode;
 	}
 	var d=query(sql);
 	if (d) {
