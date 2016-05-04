@@ -4,9 +4,9 @@ var field= ["账期","地市","地市名称","基层单元编码","基层单元�
 var report = null;
 $(function() {
 	getRegionName();
-	$("#regionName").change(function(){
-		getUnitName($(this));
-	});
+	/*$("#regionName").change(function(){
+		listUnits($(this));
+	});*/
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -29,68 +29,84 @@ $(function() {
 	});
 });
 function getRegionName(){
-	var sql="select distinct t.group_id_1_name regionName from PODS.TB_ODS_JCDY_DEV_HR_MON T WHERE T.GROUP_ID_1_NAME IS NOT NULL ";
+	var sql="";
+	var time=$("#time").val();
+	var regionCode = $("#regionCode").val();
+	//条件
+	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
+	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	//var hrId=$("#hrId").val();
 	if(orgLevel==1){
 		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
 	}else{
-		sql+=" and 1=2";
+		sql+=" and t.GROUP_ID_1="+regionCode;
 	}
-	var result=query(sql);
-	 var html="";
-	if(result.length==1){
-		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
-		$("#regionName").empty().append($(html));
-		getUnitName($("#regionName"));
-	}else{
-		 html +="<option value=''>全部</option>";
-		    for(var i=0;i<result.length;i++){
-		    	html+="<option value="+result[i].REGIONNAME+">"+result[i].REGIONNAME+"</option>";
-		    }
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].GROUP_ID_1
+					+ '" selected >'
+					+ d[0].GROUP_ID_1_NAME + '</option>';
+			listUnits(d[0].GROUP_ID_1);
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+			}
+		}
+		var $area = $("#regionName");
+		var $h = $(h);
+		$area.empty().append($h);
+		$area.change(function() {
+			listUnits($(this).val());
+		});
+	} else {
+		alert("获取地市信息失败");
 	}
-    $("#regionName").empty().append($(html));
 }
-function getUnitName(obj){
-	var regionName=obj.val();
-	var sql="select distinct t.unit_name unitName from PODS.TB_ODS_JCDY_DEV_HR_MON t where T.UNIT_NAME IS NOT NULL ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(regionName!=""){
-		sql+=" and group_id_1_name='"+regionName+"'";
+function listUnits(regionCode){
+	var $unit=$("#unitName");
+	var time=$("#time").val();
+	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1='"+regionCode+"' ";
+		//权限
+		var orgLevel=$("#orgLevel").val();
+		var code=$("#code").val();
+		var hrId=$("#hrId").val();
 		if(orgLevel==1){
 			
 		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1='"+code+"'";
+			sql+=" and t.GROUP_ID_1="+code;
 		}else if(orgLevel==3){
 			sql+=" and t.UNIT_ID='"+code+"'";
 		}else{
-			sql+=" and 1=2";
+			sql+=" and t.UNIT_ID='"+code+"'";
 		}
 	}else{
-		$("#unitName").empty().append('<option value="" selected>请选择</option>');
+		$unit.empty().append('<option value="" selected>请选择</option>');
 		return;
 	}
-	var data=query(sql);
-	var html="";
-	if(data){
-	if(data.length==1){
-		html+="<option selected value="+data[0].UNITNAME+">"+data[0].UNITNAME+"</option>";
-	}else{
-		html+="<option value=''>全部</option>";
-		for(var i=0;i<data.length;i++){
-			html+="<option value="+data[i].UNITNAME+">"+data[i].UNITNAME+"</option>";
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].UNIT_ID
+					+ '" selected >'
+					+ d[0].UNIT_NAME + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
+			}
 		}
-	 }
-	 $("#unitName").empty().append($(html));
-	}else{
-		alert("获取营服中心信息失败");
+		
+		var $h = $(h);
+		$unit.empty().append($h);
+	} else {
+		alert("获取基层单元信息失败");
 	}
 }
 var pageSize = 15;
@@ -175,13 +191,13 @@ function search(pageNumber) {
 				"   AND T1.DEAL_DATE = '"+time+"'                                    "+
 				"   AND T2.DEAL_DATE = '"+time+"'                                    ";
 	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
+		sql+=" AND T.GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME like '%"+unitName+"%'";
+		sql+=" AND T.UNIT_ID = '"+unitName+"'";
 	}
 	if(userPhone!=''){
-		sql+=" AND T.DEVICE_NUMBER like '%"+userPhone+"%'";
+		sql+=" AND T.DEVICE_NUMBER = '"+userPhone+"'";
 	}
 	if(userName!=''){
 		sql+=" AND (T.NAME LIKE '%"+userName+"%' OR  T1.NAME LIKE '%"+userName+"%' OR T2.NAME LIKE '%"+userName+"%' )";
@@ -293,13 +309,13 @@ function downsAll(){
 				"   AND T1.DEAL_DATE = '"+time+"'                                    "+
 				"   AND T2.DEAL_DATE = '"+time+"'                                    ";
 	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
+		sql+=" AND T.GROUP_ID_1_NAME  '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME like '%"+unitName+"%'";
+		sql+=" AND T.UNIT_IDE = '"+unitName+"'";
 	}
 	if(userPhone!=''){
-		sql+=" AND T.DEVICE_NUMBER like '%"+userPhone+"%'";
+		sql+=" AND T.DEVICE_NUMBER = '"+userPhone+"'";
 	}
 	if(userName!=''){
 		sql+=" AND (T.NAME LIKE '%"+userName+"%' OR  T1.NAME LIKE '%"+userName+"%' OR T2.NAME LIKE '%"+userName+"%' )";
