@@ -52,5 +52,13 @@ public class MagPersonService {
 	public void updateAfterDelete(Map<String, String> m) {
 		 magPersonDao.updateAfterDelete(m);
 	}
+    @Transactional
+	public Map<String, Object> isHrNumOver(Map<String, String> m) {
+		return magPersonDao.isHrNumOver(m);
+	}
+
+	public void delQjPerson(Map<String, String> m) {
+		magPersonDao.delQjPerson(m);
+	}
 	
 }

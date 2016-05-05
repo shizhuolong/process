@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apdplat.portal.channelManagement.dao.UnitManagerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -56,6 +57,7 @@ public class UnitMangerService {
 	 * 保存绑定营服中心负责人
 	 * @param params
 	 */
+	@Transactional
 	public void saveBindPerson(Map<String, String> params) throws Exception {
 		unitManagerDao.saveBindPerson(params);
 	}
@@ -63,7 +65,12 @@ public class UnitMangerService {
 	/**
 	 * 营服中心负责人解绑
 	 */
+	@Transactional
 	public void updateBindPerson(Map<String, String> params) throws Exception {
 		unitManagerDao.updateBindPerson(params);
+	}
+	@Transactional
+	public void deleteQjPerson(Map<String, String> params) {
+		unitManagerDao.deleteQjPerson(params);
 	}
 }
