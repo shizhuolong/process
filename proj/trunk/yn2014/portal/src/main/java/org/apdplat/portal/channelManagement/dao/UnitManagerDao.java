@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface UnitManagerDao {
@@ -39,4 +40,8 @@ public interface UnitManagerDao {
 	 * 营服中心负责人解绑
 	 */
 	public void updateBindPerson(Map<String, String> params);
+    /**
+     * 删除唯一身份
+     * */
+	public void deleteQjPerson(Map<String, String> params);
 }

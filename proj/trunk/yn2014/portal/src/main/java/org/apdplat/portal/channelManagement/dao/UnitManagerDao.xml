@@ -160,4 +160,9 @@
    			SET T.USERID = '', T.NAME = '', T.ACCOUNT = '', T.PHONE = '', T.HR_ID = ''
  		WHERE T.GROUP_ID_CODE = #{group_id_code} AND T.DEAL_DATE=#{month}
 	</update>
+	
+	<delete id="deleteQjPerson" parameterType="java.util.Map">
+	    DELETE PORTAL.TAB_PORTAL_QJ_PERSON T
+        WHERE T.DEAL_DATE=#{month} AND T.HR_ID=#{hrId} AND T.USER_CODE=1
+	</delete>
 </mapper>
