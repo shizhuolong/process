@@ -3,6 +3,7 @@ var unit_id = "";
 var id = "";
 var month = "";
 var group_id_code = "";
+var hrId="";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
@@ -10,6 +11,7 @@ $(function() {
 	id = art.dialog.data('id');
 	month = art.dialog.data('month');
 	group_id_code = art.dialog.data('group_id_code');
+	hrId = art.dialog.data('hrId');
 	listPerson(0);
 	$("#searchBtn").click(function(){
 		listPerson(0);
@@ -21,6 +23,7 @@ $(function() {
 
 	});
 	$("#saveBtn").click(function(){
+	  if(confirm("以前的营服总将在唯一身份表中删除!")){
 		if($('input:radio:checked').length<=0) {
 			art.dialog.alert("请选择需要绑定的负责人!");
 			return false;
@@ -43,6 +46,7 @@ $(function() {
 	           "phone":phone,
 	           "group_id_code":group_id_code,
 	           "hr_id":hr_id,
+	           "hrId":hrId,
 	           "month":month
 		   	}, 
 		   	success:function(data){
@@ -60,6 +64,7 @@ $(function() {
 		   		});
 		   	}
 		});
+	   }
 	});
 });
 

@@ -62,9 +62,24 @@ function del(obj){
 	var hr_id=obj.attr("hr_id");
 	var path=$("#ctx").val();
 	if(confirm('确认刪除吗?')){
-	  window.location.href=path+"/channelManagement/magPerson_delMagPerson.action?hr_id="+hr_id+"&chooseMonth="+initMonth;
-	  alert("删除成功！，请到营业员人员管理确认营业员人员与厅长的关系！")
-	  search(0);
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,//true是异步，false是同步
+		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
+		url:path+"/channelManagement/magPerson_delMagPerson.action",
+		data:{
+	       "hr_id":hr_id,
+	       "chooseMonth":chooseMonth
+	   	}, 
+	   	success:function(data){
+	   		alert(data);
+	   	    search(0);
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert("请求出错！");
+        }
+	});
 	}
 }
 function add() {
