@@ -94,17 +94,24 @@ public class MagPersonAction extends BaseAction {
 			this.reponseJson("修改失败");
 		}
 	}
-	public String delMagPerson(){
-		Map<String,String> m=new HashMap<String,String>();
+	public void delMagPerson(){
+		Map<String, String> m=new HashMap<String,String>();
 		m.put("hr_id",request.getParameter("hr_id"));
 		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		try {
-			magPersonService.del(m);
-			magPersonService.updateAfterDelete(m);
+			Map<String,Object> result=magPersonService.isHrNumOver(m);
+			if(Integer.parseInt(result.get("HR_NUM").toString())>0){
+				this.reponseJson("该营业厅主任下还有营业员没有清理,请到营业员管理里面处理！");
+			}else{
+				magPersonService.del(m);
+				magPersonService.updateAfterDelete(m);
+				magPersonService.delQjPerson(m);
+				this.reponseJson("该营业厅主任在唯一身份表中删除！");
+			}
 		} catch (Exception e) {
-			this.reponseJson("删除失败");
+			e.printStackTrace();
+			this.reponseJson("删除失败！");
 		}
-		return "success";
 	}
    
 	public Map<String, String> getResultMap() {

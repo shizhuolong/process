@@ -124,6 +124,7 @@ public class UnitManagerAction extends BaseAction {
 			String phone = request.getParameter("phone");
 			String group_id_code = request.getParameter("group_id_code");
 			String hr_id = request.getParameter("hr_id");
+			String hrId = request.getParameter("hrId");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("userid", userid);
 			params.put("name", name);
@@ -132,7 +133,9 @@ public class UnitManagerAction extends BaseAction {
 			params.put("phone", phone);
 			params.put("group_id_code", group_id_code);
 			params.put("hr_id", hr_id);
+			params.put("hrId", hrId);
 			unitMangerService.saveBindPerson(params);
+			unitMangerService.deleteQjPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"绑定成功\"}");
 		} catch (Exception e) {
 			logger.error("绑定营服中心负责人失败",e);
@@ -147,10 +150,13 @@ public class UnitManagerAction extends BaseAction {
 		try {
 			String group_id_code = request.getParameter("group_id_code");
 			String month = request.getParameter("month");
+			String hrId = request.getParameter("hrId");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("group_id_code", group_id_code);
 			params.put("month", month);
+			params.put("hrId", hrId);
 			unitMangerService.updateBindPerson(params);
+			unitMangerService.deleteQjPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
 			logger.error("解绑操作失败",e);
