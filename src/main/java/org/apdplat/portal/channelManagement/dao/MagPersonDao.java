@@ -15,6 +15,10 @@ import java.util.Map;
 
 
 
+
+
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface MagPersonDao {
@@ -34,4 +38,8 @@ public interface MagPersonDao {
 	public List<Map<String, String>> checkChanCode(Map<String, String> m);
 
 	public void updateAfterDelete(Map<String, String> m);
+
+	public Map<String, Object> isHrNumOver(Map<String, String> m);
+
+	public void delQjPerson(Map<String, String> m);
 }

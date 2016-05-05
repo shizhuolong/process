@@ -78,6 +78,17 @@
         WHERE T.DEAL_DATE=#{chooseMonth} AND T.F_HR_ID=#{hr_id} AND T.USER_TYPE=2
 	</update> 
 	
+	<select id="isHrNumOver" parameterType="java.util.Map" resultType="java.util.Map">
+	    SELECT COUNT(1) HR_NUM
+        FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+        WHERE T.DEAL_DATE=#{chooseMonth} AND T.F_HR_ID=#{hr_id}
+	</select>
+	
+	<delete id="delQjPerson" parameterType="java.util.Map">
+	    DELETE PORTAL.TAB_PORTAL_QJ_PERSON T
+        WHERE T.DEAL_DATE=#{chooseMonth} AND T.HR_ID=#{hr_id} AND T.USER_CODE=6
+	</delete>
+	
 	 <insert id="insertToResult" parameterType="java.util.Map">
 	    INSERT INTO PORTAL.TAB_PORTAL_MAG_PERSON
         SELECT T3.ID,T3.REALNAME,T3.USERNAME,T3.PHONE,'',1,T6.UNIT_ID,T6.GROUP_ID_1,T6.HQ_CHAN_CODE,T6.UNIT_NAME,T6.GROUP_ID_1_NAME,
