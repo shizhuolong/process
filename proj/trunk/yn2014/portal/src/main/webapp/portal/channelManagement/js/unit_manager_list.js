@@ -100,11 +100,11 @@ function search(pageNumber) {
 					if(isGrantedNew(UPDATE_ROLE)&&month==curMonth) {
 						//已绑定
 						if(isBind == "1") {
-							content += "<td><a href='#' month='"+month+"' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
-							"<a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td><a href='#' month='"+month+"' group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hrId='"+n['HR_ID']+"' onclick='bindPerson(this);'>修改</a>&nbsp;&nbsp;" +
+							"<a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' hrId='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						} else {
-							content += "<td><a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
-							"<a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' onclick='unBindPerson(this);'>解绑</a></td>";
+							content += "<td><a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' group_id_1='"+n['GROUP_ID_1']+"' unit_id='"+n['UNIT_ID']+"' id='"+n['ID']+"' hrId='"+n['HR_ID']+"' onclick='bindPerson(this);'>绑定</a>&nbsp;&nbsp;" +
+							"<a href='#'  month='"+month+"'  group_id_code='"+n['GROUP_ID_CODE']+"' hrId='"+n['HR_ID']+"' onclick='unBindPerson(this);'>解绑</a></td>";
 						}
 					} else {
 						content += "<td>&nbsp;&nbsp;&nbsp;</td>";
@@ -134,12 +134,14 @@ function bindPerson(obj) {
 	var unit_id = $(obj).attr("unit_id");
 	var id = $(obj).attr("id");
 	var group_id_code = $(obj).attr("group_id_code");
+	var hrId = $(obj).attr("hrId");
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/unit_manager_bind_person.jsp";
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('unit_id',unit_id);
 	art.dialog.data('id',id);
 	art.dialog.data('month',month);
 	art.dialog.data('group_id_code',group_id_code);
+	art.dialog.data('hrId',hrId);
 	art.dialog.open(url,{
 		id:'bindPersonDialog',
 		width:'530px',
@@ -153,7 +155,8 @@ function bindPerson(obj) {
 function unBindPerson(ele) {
 	var group_id_code = $(ele).attr("group_id_code");
 	var month = $(ele).attr("month");
-	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
+	var hrId = $(ele).attr("hrId");
+	art.dialog.confirm('该营服总将在唯一身份表中删除!',function(){
 		$.ajax({
 			type:"POST",
 			dataType:'json',
@@ -161,7 +164,8 @@ function unBindPerson(ele) {
 			url:$("#ctx").val()+"/channelManagement/unitManager_updateBindPerson.action",
 			data:{
 				"group_id_code":group_id_code,
-				"month":month
+				"month":month,
+				"hrId":hrId
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
@@ -176,7 +180,7 @@ function unBindPerson(ele) {
 		   	}
 		});
 	},function(){
-		art.dialog.tips('执行取消绑定操作');
+		//art.dialog.tips('执行取消绑定操作');
 	});
 }
 
