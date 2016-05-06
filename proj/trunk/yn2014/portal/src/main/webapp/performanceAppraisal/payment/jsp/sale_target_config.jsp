@@ -99,13 +99,15 @@ function isGrantedNew(role){
 								<th>积分值</th>
 								<th>单价</th>
 								<th>状态</th>
+								<th>申效时间</th>
+								<th>失效时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody id="dataBody">
 						</tbody>
 						<tr>
-							<td colspan="9">
+							<td colspan="11">
 								</div>
 									<div class="page_count">
 										<div class="page_count_left">
