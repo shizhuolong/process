@@ -99,7 +99,7 @@ function isGrantedNew(role){
 								<th>积分值</th>
 								<th>单价</th>
 								<th>状态</th>
-								<th>申效时间</th>
+								<th>生效时间</th>
 								<th>失效时间</th>
 								<th>操作</th>
 							</tr>
