@@ -41,7 +41,9 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['BIGBUSI_CODE'])+"</td>"
 				+"<td><a href='#' onclick='showDetail("+n['BIGBUSI_CODE']+");'>"+isNull(n['BIGBUSI_DESC'])+"</a></td>"
 				+"<td>"+isNull(n['CRE'])+"</td>"
-				+"<td>"+isNull(n['MONEY'])+"</td>";
+				+"<td>"+isNull(n['MONEY'])+"</td>"
+				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+				+"<td>"+isNull(n['INACTIVE_TIME'])+"</td>";
 				if(isGrantedNew(UPDATE_ROLE)) {
 					content+="<td><a href='#' style='text-align: center;' id='"+n['BIGBUSI_CODE']+"' onclick='editSljfTarget(this);'>修改</a></td>";
 				} else {
