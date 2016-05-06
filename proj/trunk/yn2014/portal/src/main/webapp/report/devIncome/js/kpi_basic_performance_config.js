@@ -177,7 +177,7 @@ function downloadExcel() {
 		sql += " AND  T1.GROUP_ID_1 ="+ regionCode;
 	} 
 	if(userName != "") {
-		sql += " AND  T1.NAME ='"+ userName+"'";
+		sql += " AND  T1.NAME LIKE'%"+ userName+"%'";
 	} 
 	sql+=" ORDER BY T1.GROUP_ID_1";
    var showtext="Sheet";
