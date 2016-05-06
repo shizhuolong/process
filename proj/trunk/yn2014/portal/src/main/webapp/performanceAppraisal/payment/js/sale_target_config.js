@@ -65,7 +65,9 @@ function search(pageNumber) {
 				}
 				content+="<td>"+isNull(n['CRE'])+"</td>"
 				+"<td>"+isNull(n['MONEY'])+"</td>"
-				+"<td>"+isNull(n['STATE'])+"</td>";
+				+"<td>"+isNull(n['STATE'])+"</td>"
+				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+				+"<td>"+isNull(n['INACTIVE_TIME'])+"</td>";
 				if(isGrantedNew(UPDATE_ROLE)) {
 					content+="<td><a href='#' style='text-align: center;' sourcecode='"+n['SOURCECODE']+"' onclick='editSaleTarget(this);'>修改</a></td>";
 				}else {
