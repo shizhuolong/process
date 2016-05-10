@@ -76,6 +76,32 @@
 	    	</if>
 			ORDER BY T.NAME
 		</if>
+		<if test="orgLevel==3">
+			SELECT * FROM PORTAL.TAB_PORTAL_MAG_PERSON T
+			WHERE T.UNIT_ID = #{code} AND USER_TYPE='2'
+			<if test="deal_date != null">
+	    		AND T.DEAL_DATE=#{deal_date}
+		    </if>
+			<if test="hq_chan_code != null">
+    			AND T.HQ_CHAN_CODE=#{hq_chan_code}
+	    	</if>
+	    	<if test="phone != null">
+	    		AND T.PHONE=#{phone}
+	    	</if>
+	    	<if test="name != null">
+	    		AND T.NAME LIKE #{name}
+	    	</if>
+	    	<if test="hq_chan_name != null">
+	    		AND T.HQ_CHAN_NAME LIKE #{hq_chan_name}
+	    	</if>
+	    	<if test="user_code != null">
+	    		AND T.USER_CODE=#{user_code}
+	    	</if>
+	    	<if test="f_hr_id != null">
+	    		AND T.F_HR_ID=#{f_hr_id}
+	    	</if>
+			ORDER BY T.NAME
+		</if>
 	</select>
 	
 	<delete id="del" parameterType="java.util.Map">
