@@ -58,7 +58,7 @@ function search(pageNumber) {
 	//业务描述
 	var busiDesc =$("#busiDesc").val();
 	//条件
-	var sql = getSql()+" WHERE T.DEAL_DATE ="+dealDate ;
+	var sql = getSql()+" WHERE 1=1" ;
 	
 	//选项框条件
 	if(regionCode!=''){
@@ -116,7 +116,8 @@ function search(pageNumber) {
 
 
 function getSql(){
-	var s="SELECT T.DEAL_DATE,                  "+
+		var dealDate=$("#dealDate").val();
+		var s="SELECT T.DEAL_DATE,                  "+
 			"       T.GROUP_ID_1_NAME,            "+
 			"       T.UNIT_NAME,                  "+
 			"       T.HR_ID,                      "+
@@ -129,7 +130,7 @@ function getSql(){
 			"       T.SOURCES,                    "+
 			"       T.OFFICE_ID,                  "+
 			"       T.OPERATOR_ID                 "+
-			"  FROM PMRT.TB_MRT_ACC_DETAIL_MON T  ";
+			"  FROM PMRT.TB_MRT_ACC_DETAIL_MON  partition(p"+dealDate+")T  ";
 	return s;
 }
 /////////////////////////下载开始/////////////////////////////////////////////
@@ -146,7 +147,7 @@ function downsAll(){
 	//业务描述
 	var busiDesc =$("#busiDesc").val();
 	//条件
-	var sql = getSql()+" WHERE T.DEAL_DATE ="+dealDate ;
+	var sql = getSql()+" WHERE 1=1" ;
 	
 	//选项框条件
 	if(regionCode!=''){
