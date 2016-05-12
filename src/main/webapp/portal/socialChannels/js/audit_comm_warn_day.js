@@ -98,14 +98,14 @@ $(function(){
 	//$("#lch_DataHead").find("TH").unbind();
 	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
 	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
+	$(".page_count").width($("#lch_DataHead").width());
 	
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
 		//$("#lch_DataHead").find("TH").unbind();
 		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
 		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
+		$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
