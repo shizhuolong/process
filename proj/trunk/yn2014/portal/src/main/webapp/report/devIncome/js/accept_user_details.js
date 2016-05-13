@@ -57,6 +57,8 @@ function search(pageNumber) {
 	var userName =$("#userName").val();
 	//业务描述
 	var busiDesc =$("#busiDesc").val();
+	//用户号码
+	var service_num=$.trim($("#service_num").val());
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
 	
@@ -72,6 +74,9 @@ function search(pageNumber) {
 	}
 	if(busiDesc!=''){
 		sql+=" AND T.BUSI_DESC LIKE '%"+busiDesc+"%'";
+	}
+	if(service_num!=''){
+		sql+=" AND T.SERVICE_NUM LIKE '%"+service_num+"%'";
 	}
 	var orgLevel=$("#orgLevel").val();
 	//权限
@@ -146,6 +151,8 @@ function downsAll(){
 	var userName =$("#userName").val();
 	//业务描述
 	var busiDesc =$("#busiDesc").val();
+	//用户号码
+	var service_num=$.trim($("#service_num").val());
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
 	
@@ -161,6 +168,9 @@ function downsAll(){
 	}
 	if(busiDesc!=''){
 		sql+=" AND T.BUSI_DESC LIKE '%"+busiDesc+"%'";
+	}
+	if(service_num!=''){
+		sql+=" AND T.SERVICE_NUM LIKE '%"+service_num+"%'";
 	}
 	var orgLevel=$("#orgLevel").val();
 	//权限
