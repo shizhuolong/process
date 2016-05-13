@@ -54,7 +54,7 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="3%" align="right">营服中心：</td>
+					<td width="4%" align="right">营服中心：</td>
 					<td width="10%">
 						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
@@ -70,13 +70,17 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="3%" align="right">人员姓名：</td>
+					<td width="4%" align="right">人员姓名：</td>
 					<td width="10%">
 						<input name="userName" id="userName" onchange="" class="default-text-input wper80">
 					</td>
-					<td width="3%" align="right">业务描述：</td>
+					<td width="4%" align="right">业务描述：</td>
 					<td width="10%">
 						<input name="busiDesc" id="busiDesc" onchange="" class="default-text-input wper80">
+					</td>
+					<td width="4%" align="right">用户号码：</td>
+					<td width="10%">
+						<input name="service_num" id="service_num" onchange="" class="default-text-input wper80">
 					</td>
 				</tr>
 			</table>
