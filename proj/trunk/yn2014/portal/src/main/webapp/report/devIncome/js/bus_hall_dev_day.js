@@ -318,9 +318,9 @@ function getSumSql1() {
 	"                            'FM99999999990.99')) || '%' LAST_ALL,                                    "+
 	"               ROUND(SUM(NVL(T1.ALL_NUM1, 0)), 3) ALL_NUM1,                                          "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                            "+
-	"                              WHEN SUM(NVL(T1.LAST_ALL1, 0)) <> 0 THEN                               "+
-	"                               (SUM(NVL(T1.ALL_NUM1, 0)) - SUM(NVL(T1.LAST_ALL1, 0))) * 100 /        "+
-	"                               SUM(NVL(T1.LAST_ALL1, 0))                                             "+
+	"                              WHEN SUM(NVL(T1.LAST_ALL_NUM1, 0)) <> 0 THEN                               "+
+	"                               (SUM(NVL(T1.ALL_NUM1, 0)) - SUM(NVL(T1.LAST_ALL_NUM1, 0))) * 100 /        "+
+	"                               SUM(NVL(T1.LAST_ALL_NUM1, 0))                                             "+
 	"                              ELSE                                                                   "+
 	"                               0                                                                     "+
 	"                            END,                                                                     "+
