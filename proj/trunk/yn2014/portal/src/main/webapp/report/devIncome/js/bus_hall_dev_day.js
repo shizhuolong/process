@@ -25,7 +25,7 @@ function search(){
 	}else{
 		title=[["组织架构","2G发展","","","","3G发展","","","","4G发展","","","","固网","","","","维系","","","","合计","","",""],
 		       ["","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
-		field=["THIS_2G_NUM","LAST_2G_NUM","THIS_2G_NUM1","LAST_2G_NUM1","THIS_3G_NUM","LAST_3G_NUM","THIS_3G_NUM1","LAST_3G_NUM1","THIS_4G_NUM","LAST_4G_NUM","THIS_4G_NUM1","LAST_4G_NUM1","THIS_NET_NUM","LAST_NET_NUM","THIS_NET_NUM1","LAST_NET_NUM1","THIS_WX_NUM1","LAST_WX_NUM1","THIS_WX_NUM1","LAST_WX_NUM1","ALL_NUM","LAST_ALL","ALL_NUM1","LAST_ALL_NUM1"];
+		field=["THIS_2G_NUM","LAST_2G_NUM","THIS_2G_NUM1","LAST_2G_NUM1","THIS_3G_NUM","LAST_3G_NUM","THIS_3G_NUM1","LAST_3G_NUM1","THIS_4G_NUM","LAST_4G_NUM","THIS_4G_NUM1","LAST_4G_NUM1","THIS_NET_NUM","LAST_NET_NUM","THIS_NET_NUM1","LAST_NET_NUM1","THIS_WX_NUM","LAST_WX_NUM","THIS_WX_NUM1","LAST_WX_NUM1","ALL_NUM","LAST_ALL","ALL_NUM1","LAST_ALL_NUM1"];
 		sumSql=getSumSql1();
 	}
 	var report=new LchReport({
