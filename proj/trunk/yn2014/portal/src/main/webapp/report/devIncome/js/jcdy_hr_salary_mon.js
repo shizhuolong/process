@@ -82,7 +82,7 @@ function search(pageNumber) {
 		//sql+=" and t.UNIT_ID='"+code+"'";
 	//}else{
 		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.TAB_PORTAL_QJ_PERSON T WHERE T.HR_ID='"+hrId+"'";
+		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.TAB_PORTAL_QJ_PERSON T WHERE t.deal_date=to_char(sysdate,'yyyymm') and T.HR_ID='"+hrId+"'";
 		var rd=query(rsql);
 		if(rd&&rd.length){
 			var hrsql="";
