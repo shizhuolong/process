@@ -5,6 +5,7 @@ $(function() {
 	hq_chan_code = art.dialog.data('hq_chan_code');
 	month = art.dialog.data('month');
 	loadData();
+	$("#saveBtn").show();
 	//关闭dailog
 	$("#cancleBtn").click(function(){
 		var win = artDialog.open.origin;//来源页面
@@ -12,6 +13,8 @@ $(function() {
 
 	});
 	$("#saveBtn").click(function(){
+		//防止连点，产生多条记录
+		$("#saveBtn").hide();
 		var url = $("#ctx").val()+'/assessment/chanlRatioConfig_updateChanlRatio.action';
 		$('#updateChanlRatioForm').form('submit',{
 			url:url,
