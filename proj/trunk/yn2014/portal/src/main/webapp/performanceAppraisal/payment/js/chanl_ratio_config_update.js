@@ -13,13 +13,17 @@ $(function() {
 
 	});
 	$("#saveBtn").click(function(){
-		//防止连点，产生多条记录
-		$("#saveBtn").hide();
 		var url = $("#ctx").val()+'/assessment/chanlRatioConfig_updateChanlRatio.action';
 		$('#updateChanlRatioForm').form('submit',{
 			url:url,
 			onSubmit:function(){
-				return $(this).form('validate');
+				var flag=$(this).form('validate');
+				if(flag==true){
+					//防止连点，产生多条记录
+					$("#saveBtn").hide();
+					return true;
+				}
+				return false;
 			},
 			success:function(r){
 				var d = $.parseJSON(r);
