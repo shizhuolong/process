@@ -829,7 +829,7 @@ function _jf_power(hrId,month){
 		"		 UNION                                                             "+
 		"	     SELECT DISTINCT '''' || T.HR_ID || '''' FROM PORTAL.TAB_PORTAL_QJ_PERSON T        "+
 		"	     WHERE T.CHARGE_HR='"+hrId+"'                                      "+
-		"          )"                                                     ";
+		"          )                                                    ";
 
 		var d=query(sql);
 		var r="''";
