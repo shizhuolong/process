@@ -41,24 +41,24 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<thead>
 					<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">账期：</td>
+					<td width="6%" style="padding-left: 10px;" align="right">账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="4%" align="right">地市：</td>
 					<td width="15%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">营服中心：</td>
+					<td width="8%" align="right">营服中心：</td>
 					<td width="15%">
 						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">人员姓名：</td>
+					<td width="8%" align="right">人员姓名：</td>
 					<td width="15%">
 						<input class="default-text-input wper80" name="name" type="text" id="name"/>
 					</td>
@@ -82,9 +82,6 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 				<div id="pagination"></div>
 			</div>
 		</div>
-
 </body>
-<script>
-
-</script>
 </html>
+
