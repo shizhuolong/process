@@ -806,7 +806,10 @@ function _jf_power(hrId,month){
 		"  from (select '''' || hr_id || '''' hr_id                                "+
 		"          from (SELECT distinct hr_id                                     "+
 		"                  FROM PORTAL.TAB_PORTAL_MAG_PERSON                       "+
-		"                 WHERE F_HR_ID = '"+hrId+"'                               "+
+		"                 WHERE F_HR_ID in (SELECT DISTINCT T.HR_ID                "+
+	    "                               FROM PORTAL.TAB_PORTAL_QJ_PERSON T         "+
+	    "                               WHERE T.CHARGE_HR='"+hrId+"'               "+ 
+	    "                               )                                          "+
 		"                   and deal_date = '"+month+"'                            "+
 		"                union                                                     "+
 		"                SELECT DISTINCT T.HR_ID                                   "+
@@ -816,14 +819,17 @@ function _jf_power(hrId,month){
 		"                                      FROM PORTAL.TAB_PORTAL_MOB_PERSON t1"+
 		"                                      WHERE t1.LEV = 1                    "+
 		"                                     and t1.hr_id = '"+hrId+"'            "+
-		"                                       and t1.deal_date = '"+month+"'     "+
+		"                                       and t1.deal_date =to_char(sysdate,'yyyymm')"+
 		"                                       )                                  "+
 		"                   AND T.DEAL_DATE='"+month+"'                            "+
 		"                   ) t2                                                   "+
 		"                                                                          "+
 		"        union                                                             "+
-		"        SELECT '''' || '"+hrId+"' || '''' HR_ID FROM DUAL                  "+
-		"          )                                                               ";
+		"        SELECT '''' || '"+hrId+"' || '''' HR_ID FROM DUAL                 "+
+		"		 UNION                                                             "+
+		"	     SELECT DISTINCT '''' || T.HR_ID || '''' FROM PORTAL.TAB_PORTAL_QJ_PERSON T        "+
+		"	     WHERE T.CHARGE_HR='"+hrId+"'                                      "+
+		"          )"                                                     ";
 
 		var d=query(sql);
 		var r="''";
