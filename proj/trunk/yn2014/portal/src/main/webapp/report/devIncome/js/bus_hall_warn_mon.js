@@ -9,7 +9,7 @@ $(function(){
 		title:title,
 		field:["ROW_NAME"].concat(field),
 		/*lock:1,*/
-		css:[{gt:4,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:2,css:LchReport.RIGHT_ALIGN}],
 		rowParams:["ROW_NAME","ROW_ID"],
 		content:"content",
 		orderCallBack:function(index,type){
