@@ -11,7 +11,7 @@
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
-	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -29,50 +29,50 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_ods_jcdy_dev_hr_mon.js"></script>
+<style type="text/css">
+  #lch_DataHead TR TH,#lch_DataBody TR TD{
+   min-width: 10px;
+}
+</style>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
+	<input type="hidden" id=region value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">账期：</td>
-					<td width="15%">
+					<td width="3%" style="padding-left: 10px;" align="right">账期：</td>
+					<td width="5%">
 						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=dealDate %>" id="dealDate">
 					</td>
-		 <td width="4%">地市:</td>
-         <td width="15%">
-           <select id="regionName" name="regionName" class="default-text-input wper80">
-            <option value"">全部</option>
-           </select>
-         </td>
-         <td width="6%">基层单元:</td>
-         <td>
-           <select width="15%" id="unitName" name="unitName" class="default-text-input wper80">
-             <option value="">全部</option>
-           </select>
-         </td>
-				</tr>
-				<tr height="35px">
-					<td width="8%" style="padding-left:10px;">姓名：</td>
-					<td width="15%">
-						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
+					<td width="3%" align="right">地市：</td>
+					<td width="10%">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+								<option value=''>请选择</option>
+						</select>
 					</td>
-					<td width="8%">电话号码：</td>
-					<td width="15%">
-						<input class="default-text-input wper80" name="userPhone" type="text" id="userPhone"/>
+					<td width="4%" align="right">营服中心：</td>
+					<td width="10%">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+								<option value=''>请选择</option>
+						</select>
 					</td>
-					<td width="5%">
+					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 30px;">查询</a>
 					</td>
-					<td width="5%">
+					<td width="3%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
+				</tr>
+				<tr>
+					<td width="3%" align="right">人员名称：</td>
+					<td width="8%"><input class="default-text-input wper80" name="useName" type="text" id="useName" /></td>
+					<td width="4%" align="right">用户号码：</td>
+					<td width="5%"><input class="default-text-input wper80" name=userPhone type="text" id="userPhone" /></td>
 				</tr>
 			</table>
 		</form>
