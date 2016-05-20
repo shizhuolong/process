@@ -1,4 +1,6 @@
-var field=["CURDAY_DEVE_DRQPQS","CURDAY_DEVE_NUM","CURDAY_DEVE_HB","CURDAY_DEVE_LASTAVG","CURDAY_DEVE_3MON","CURDAY_DEVE_HALFYEAR","LESS_96_DRQPQS","LESS_96_NUM","LESS_96_HB","LESS_96_LASTAVG","LESS_96_3MON","LESS_96_HALFYEAR","MORE_96_DRQPQS","MORE_96_NUM","MORE_96_HB","MORE_96_LASTAVG","MORE_96_3MON","MORE_96_HALFYEAR"];
+var field=["CURDAY_DEVE_DRQPQS","TOATAL_TODAY_LEV3","TOATAL_DEVE_HBLEV3","TOATAL_LASTMONAVGLVE3","TOATAL_3MONAVGLEV3","TOATAL_HALFYEARAVGLEV3","LESS_96_DRQPQS",
+           "LESS_96_TODAY_LEV3","LESS_96_HBLEV3","LESS_96_LASTMONAVGLVE3","LESS_96_3MONAVGLEV3","LESS_96_HALFYEARAVGLEV3","MORE_96_DRQPQS","MORE_96_TODAY_LEV3",
+           "MORE_96_HBLEV3","MORE_96_LASTMONAVGLVE3","MORE_96_3MONAVGLEV3","MORE_96_HALFYEARAVGLEV3"];
 var title=[["组织架构","当日发展情况","","","","","","当日96以下套餐发展情况","","","","","","当日96以上套餐发展情况","","","","",""],
            ["","当日全盘趋势","发展量","日环比","上月平均变化","近三月日平均变化","近半年日平均变化","当日全盘趋势","发展量","日环比","上月平均变化","近三月日平均变化","近半年日平均变化","当日全盘趋势","发展量","日环比","上月平均变化","近三月日平均变化","近半年日平均变化"]];
 var report=null;
@@ -35,47 +37,32 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){
-					preField=" T.UNIT_ID_2_NAME ROW_NAME,T.UNIT_ID_2 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_2,T.UNIT_ID_2_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
-					where+=" AND T.UNIT_ID_1='"+code+"'";
+					where+=" AND UNIT_ID_1='"+code+"'";
 				}else if(orgLevel==3){
-					preField=" T.UNIT_ID_3_NAME ROW_NAME,T.UNIT_ID_3 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_3,T.UNIT_ID_3_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
-					where+=" AND T.UNIT_ID_2='"+code+"'";
+					where+=" AND UNIT_ID_2='"+code+"'";
 				}else if(orgLevel==4){
-					preField=" T.UNIT_ID_4_NAME ROW_NAME,T.UNIT_ID_4 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_4,T.UNIT_ID_4_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
-					where+=" AND T.UNIT_ID_3='"+code+"'";
+					where+=" AND UNIT_ID_3='"+code+"'";
 				}else{
 					return {data:[],extra:{}};
 				}
-				orgLevel++;
 			}else{
 				//先根据用户信息得到前几个字段
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省   展示地市
-					preField=" T.UNIT_ID_1_NAME ROW_NAME,T.UNIT_ID_1 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_1,T.UNIT_ID_1_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
+					where+=" AND UNIT_ID_0='"+code+"'";
 				}else if(orgLevel==2){//市
-					preField=" T.UNIT_ID_1_NAME ROW_NAME,T.UNIT_ID_1 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_1,T.UNIT_ID_1_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
-					where+=" AND T.UNIT_ID_1='"+code+"'";
+					where+=" AND UNIT_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服中心
-					preField=" T.UNIT_ID_2_NAME ROW_NAME,T.UNIT_ID_2 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_2,T.UNIT_ID_2_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
-					where+=" AND T.UNIT_ID_2='"+code+"'";
+					where+=" AND UNIT_ID_2='"+code+"'";
 				}else if(orgLevel==4){//网点
-					preField=" T.UNIT_ID_3_NAME ROW_NAME,T.UNIT_ID_3 ROW_ID,";
-					groupBy=" GROUP BY T.UNIT_ID_3,T.UNIT_ID_3_NAME,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
-					where+=" AND T.UNIT_ID_3='"+code+"'";
+					where+=" AND UNIT_ID_3='"+code+"'";
 				}else{
 					return {data:[],extra:{}};
 				}
-				orgLevel++;
 			}	
-			
-			where+=" AND T.DEAL_DATE='"+qdate+"'";
+			orgLevel++;
+			where+=" AND DEAL_DATE='"+qdate+"'";
 			if(regionName!=''){
 				where+=" AND UNIT_ID_1_NAME = '"+regionName+"'";
 			}
@@ -83,9 +70,9 @@ $(function(){
 				where+=" AND UNIT_ID_2_NAME = '"+unitName+"'";
 			}
 			if(unit_id_3_name!=''){
-				where+=" AND T.UNIT_ID_3_NAME LIKE '%"+unit_id_3_name+"%'";
+				where+=" AND UNIT_ID_3_NAME LIKE '%"+unit_id_3_name+"%'";
 			}
-			var sql='SELECT '+preField+getSumField()+where+groupBy;
+			var sql="SELECT * FROM (" + getSql(orgLevel)+where+") WHERE RN=1";
 			if(orderBy!=''){
 				sql="select * from( "+sql+") t "+orderBy;
 			}
@@ -111,14 +98,11 @@ $(function(){
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var preField=' T.DEAL_DATE,UNIT_ID_1_NAME,UNIT_ID_2_NAME,T.UNIT_ID_3_NAME,T.UNIT_ID_4_NAME,T.CHNL_CODE,';
 	var where=' WHERE 1 = 1';
-	var orderBy=" ORDER BY T.UNIT_ID_1,T.UNIT_ID_2,T.UNIT_ID_3,T.UNIT_ID_4";
-	var groupBy=" GROUP BY T.DEAL_DATE,T.UNIT_ID_1,T.UNIT_ID_1_NAME,T.UNIT_ID_2,T.UNIT_ID_2_NAME,T.UNIT_ID_3,T.UNIT_ID_3_NAME,T.UNIT_ID_4,T.UNIT_ID_4_NAME,T.CHNL_CODE,T.CURDAY_DEVE_DRQPQS,T.LESS_96_DRQPQS,T.MORE_96_DRQPQS";
+	var orderBy=" ORDER BY UNIT_ID_1,UNIT_ID_2,UNIT_ID_3,UNIT_ID_4";
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var unit_id_3_name=$.trim($("#unit_id_3_name").val());
-	var fieldSql=getSumField();
 		
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
@@ -126,23 +110,23 @@ function downsAll() {
 	if (orgLevel == 1) {//省
 		
 	} else if (orgLevel == 2) {//市
-		where += " AND T.UNIT_ID_1='" + code + "' ";
+		where += " AND UNIT_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " AND T.UNIT_ID_2='" + code + "' ";
+		where += " AND UNIT_ID_2='" + code + "' ";
 	} else if (orgLevel == 4) {//网点
-		where += " AND T.UNIT_ID_3='" + code + "' ";
+		where += " AND UNIT_ID_3='" + code + "' ";
 	}
-	where+=" AND T.DEAL_DATE='"+qdate+"'";
+	where+=" AND DEAL_DATE='"+qdate+"'";
 	if(regionName!=''){
-		where+=" AND T.UNIT_ID_1_NAME = '"+regionName+"'";
+		where+=" AND UNIT_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		where+=" AND T.UNIT_ID_2_NAME = '"+unitName+"'";
+		where+=" AND UNIT_ID_2_NAME = '"+unitName+"'";
 	}
 	if(unit_id_3_name!=''){
-		where+=" AND T.UNIT_ID_3_NAME LIKE '%"+unit_id_3_name+"%'";
+		where+=" AND UNIT_ID_3_NAME LIKE '%"+unit_id_3_name+"%'";
 	}
-	var sql = 'SELECT ' + preField + fieldSql+where+groupBy+orderBy;
+	var sql = "SELECT * FROM (" + getDownSql()+where+orderBy+") WHERE RN=1";
 	showtext = '日预警报表' + qdate;
 	var title=[["日期","地市","营服","网点","发展人","渠道编码","当日发展情况","","","","","","当日96以下套餐发展情况","","","","","","当日96以上套餐发展情况","","","","",""],
 	           ["","","","","","","当日全盘趋势","发展量","日环比","上月平均变化","近三月日平均变化","近半年日平均变化","当日全盘趋势","发展量","日环比","上月平均变化","近三月日平均变化","近半年日平均变化","当日全盘趋势","发展量","日环比","上月平均变化","近三月日平均变化","近半年日平均变化"]];
@@ -230,31 +214,53 @@ function listUnits(regionName){
 		alert("获取基层单元信息失败");
 	}
 }
-function getSumField(){
-	var fs = " T.CURDAY_DEVE_DRQPQS CURDAY_DEVE_DRQPQS                                                                                                                                       "+
-	"       ,SUM(T.CURDAY_DEVE_NUM) CURDAY_DEVE_NUM                                                                                                                                          "+
-	"       ,CASE WHEN SUM(T.CURDAY_DEVE_HB2)=0                                                                                                                                              "+
-	"             THEN '--'                                                                                                                                                                  "+
-	"             ELSE ROUND((SUM(T.CURDAY_DEVE_NUM)-SUM(T.CURDAY_DEVE_HB2))*100/SUM(T.CURDAY_DEVE_HB2),2)||'%' END CURDAY_DEVE_HB                                                           "+
-	"       ,SUM(T.CURDAY_DEVE_NUM)-ROUND(SUM(T.CURDAY_DEVE_LASTAVG2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-1))),0) CURDAY_DEVE_LASTAVG  "+
-	"       ,SUM(T.CURDAY_DEVE_NUM)-ROUND(SUM(T.CURDAY_DEVE_3MON2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-3))),0) CURDAY_DEVE_3MON        "+
-	"       ,SUM(T.CURDAY_DEVE_NUM)-ROUND(SUM(T.CURDAY_DEVE_HALFYEAR2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-6))),0) CURDAY_DEVE_HALFYEAR"+
-	"       ,T.LESS_96_DRQPQS LESS_96_DRQPQS                                                                                                                                                 "+
-	"       ,SUM(T.LESS_96_NUM) LESS_96_NUM                                                                                                                                                  "+
-	"       ,CASE WHEN SUM(T.LESS_96_HB2)=0                                                                                                                                                  "+
-	"             THEN '--'                                                                                                                                                                  "+
-	"             ELSE ROUND((SUM(T.LESS_96_NUM)-SUM(T.LESS_96_HB2))*100/SUM(T.LESS_96_HB2),2)||'%' END LESS_96_HB                                                                           "+
-	"       ,SUM(T.LESS_96_NUM)-ROUND(SUM(T.LESS_96_LASTAVG2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-1))),0) LESS_96_LASTAVG        "+
-	"       ,SUM(T.LESS_96_NUM)-ROUND(SUM(T.LESS_96_3MON2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-3))),0) LESS_96_3MON              "+
-	"       ,SUM(T.LESS_96_NUM)-ROUND(SUM(T.LESS_96_HALFYEAR2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-6))),0) LESS_96_HALFYEAR      "+
-	"       ,T.MORE_96_DRQPQS MORE_96_DRQPQS                                                                                                                                                 "+
-	"       ,SUM(T.MORE_96_NUM) MORE_96_NUM                                                                                                                                                  "+
-	"       ,CASE WHEN SUM(T.MORE_96_HB2)=0                                                                                                                                                  "+
-	"             THEN '--'                                                                                                                                                                  "+
-	"             ELSE ROUND((SUM(T.MORE_96_NUM)-SUM(T.MORE_96_HB2))*100/SUM(T.MORE_96_HB2),2)||'%' END MORE_96_HB                                                                           "+
-	"       ,SUM(T.MORE_96_NUM)-ROUND(SUM(T.MORE_96_LASTAVG2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-1))),0) MORE_96_LASTAVG        "+
-	"       ,SUM(T.MORE_96_NUM)-ROUND(SUM(T.MORE_96_3MON2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-3))),0) MORE_96_3MON              "+
-	"       ,SUM(T.MORE_96_NUM)-ROUND(SUM(T.MORE_96_HALFYEAR2)/(LAST_DAY(TO_DATE('"+qdate+"','YYYYMMDD'))-LAST_DAY(ADD_MONTHS(TO_DATE('"+qdate+"','YYYYMMDD'),-6))),0) MORE_96_HALFYEAR      "+ 
-	"FROM YNPAY.TB_PAY_AUDIT_COMM_WARN_DAY T";  
+function getSql(orgLevel){
+	var fs = "SELECT UNIT_ID_"+(orgLevel-1)+"_NAME ROW_NAME,"+
+	"UNIT_ID_"+(orgLevel-1)+" ROW_ID,                       "+
+	"    CURDAY_DEVE_DRQPQS,                                "+
+	"    TOATAL_TODAY_LEV3,                                 "+
+	"    TOATAL_DEVE_HBLEV3,                                "+
+	"    TOATAL_LASTMONAVGLVE3,                             "+
+	"    TOATAL_3MONAVGLEV3,                                "+
+	"    TOATAL_HALFYEARAVGLEV3,                            "+
+	"    LESS_96_DRQPQS,                                    "+
+	"    LESS_96_TODAY_LEV3,                                "+
+	"    LESS_96_HBLEV3,                                    "+
+	"    LESS_96_LASTMONAVGLVE3,                            "+
+	"    LESS_96_3MONAVGLEV3,                               "+
+	"    LESS_96_HALFYEARAVGLEV3,                           "+
+	"    MORE_96_DRQPQS,                                    "+
+	"    MORE_96_TODAY_LEV3,                                "+
+	"    MORE_96_HBLEV3,                                    "+
+	"    MORE_96_LASTMONAVGLVE3,                            "+
+	"    MORE_96_3MONAVGLEV3,                               "+
+	"    MORE_96_HALFYEARAVGLEV3,                           "+
+	"    ROW_NUMBER() OVER (PARTITION BY UNIT_ID_"+(orgLevel-1)+" ORDER BY UNIT_ID_"+(orgLevel-1)+") RN"+
+	" FROM YNPAY.TB_PAY_AUDIT_COMM_WARN_DAY";
+	return fs;
+}
+
+function getDownSql(){
+	var fs = "SELECT DEAL_DATE,UNIT_ID_1_NAME,UNIT_ID_2_NAME,UNIT_ID_3_NAME,UNIT_ID_4_NAME,CHNL_CODE"+
+	"    CURDAY_DEVE_DRQPQS,                                "+
+	"    TOATAL_TODAY_LEV3,                                 "+
+	"    TOATAL_DEVE_HBLEV3,                                "+
+	"    TOATAL_LASTMONAVGLVE3,                             "+
+	"    TOATAL_3MONAVGLEV3,                                "+
+	"    TOATAL_HALFYEARAVGLEV3,                            "+
+	"    LESS_96_DRQPQS,                                    "+
+	"    LESS_96_TODAY_LEV3,                                "+
+	"    LESS_96_HBLEV3,                                    "+
+	"    LESS_96_LASTMONAVGLVE3,                            "+
+	"    LESS_96_3MONAVGLEV3,                               "+
+	"    LESS_96_HALFYEARAVGLEV3,                           "+
+	"    MORE_96_DRQPQS,                                    "+
+	"    MORE_96_TODAY_LEV3,                                "+
+	"    MORE_96_HBLEV3,                                    "+
+	"    MORE_96_LASTMONAVGLVE3,                            "+
+	"    MORE_96_3MONAVGLEV3,                               "+
+	"    MORE_96_HALFYEARAVGLEV3,                           "+
+	"    ROW_NUMBER() OVER (PARTITION BY UNIT_ID_4 ORDER BY UNIT_ID_4) RN"+
+	" FROM YNPAY.TB_PAY_AUDIT_COMM_WARN_DAY";
 	return fs;
 }
