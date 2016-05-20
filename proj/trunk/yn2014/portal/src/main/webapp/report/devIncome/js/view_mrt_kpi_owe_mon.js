@@ -1,19 +1,22 @@
 var nowData = [];
-var title=[["账期","地市","地市名称","基层单元编码","基层单元名称","HR编码","姓名","角色类型","用户编号","用户号码","类型","截止当前账期欠费","上年12月欠费","上级hr编码","归属上级姓名","责任人编码","责任人"]];
-var field=["账期","地市","地市名称","基层单元编码","基层单元名称","HR编码","姓名","角色类型","用户编号","用户号码","类型","截止当前账期欠费","上年12月欠费","上级hr编码","归属上级姓名","责任人编码","责任人"];
-var orderBy = '';
+
+var field="";
+var title="";
+var orderBy='';	
 var report = null;
 $(function() {
+	var year = dealDate.substring(0,4)-1;
+	field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","SUBSCRIPTION_ID","DEVICE_NUMBER","NET_TYPE","OWE_FEE","HQ_CHAN_CODE","OWEFEE1"];
+	title=[["账期","地市","营服中心","HR编码","人员姓名","人员角色","用户编号","用户号码","用户类型","欠费截止当前账期","渠道编码","欠费上年12月31"]];
 	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:10,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:3,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
-//			orderBy = " order by " + field[index] + " " + type + " ";
-//			search(0);
+			
 		},
 		getSubRowsCallBack : function($tr) {
 			return {
@@ -47,169 +50,211 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
+	var code =$("#code").val();
+	var region=$("#region").val();
+	//地市编码
+	var regionCode =$("#regionCode").val();
+	//营服中心编码
+	var unitCode=$("#unitCode").val();
+	//用户名称
+	var userName=$("#userName").val();
+	//用户号码
+	var　userPhone = $("#userPhone").val();
 	
-	var time=$.trim($("#time").val());
-	var regionName=$.trim($("#regionName").val());
-	var unitName=$.trim($("#unitName").val());
-	var userName=$.trim($("#userName").val());
-	var userCode=$.trim($("#userCode").val());
-	var userPhone=$.trim($("#userPhone").val());
-	var hrId=$.trim($("#hrId").val());
-	var regionCode=$.trim($("#regionCode").val());
-//条件
-	var sql = "SELECT T.账期,                                         "+
-				"       T.地市,                                         "+
-				"       T.地市名称,                                     "+
-				"       T.基层单元编码,                                 "+
-				"       T.基层单元名称,                                 "+
-				"       T.HR编码,                                       "+
-				"       T.姓名,                                         "+
-				"       T.角色类型,                                     "+
-				"       T.用户编号,                                     "+
-				"       T.用户号码,                                     "+
-				"       T.类型,                                         "+
-				"       T.截止当前账期欠费,                             "+
-				"       T.上年12月欠费,                                 "+
-				"       T.上级hr编码,                                   "+
-				"       T.归属上级姓名,                                 "+
-				"       T.责任人编码,                                   "+
-				"       T.责任人                                        "+
-				"  FROM PMRT.VIEW_MRT_KPI_OWE_MON PARTITION(P"+time+")T WHERE 1=1	";
-	if(regionName!=''){
-		sql+=" AND T.地市名称 like '%"+regionName+"%'";
+	//条件
+	var sql = getSql()+" WHERE 1=1" ;
+	
+	//权限
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" AND T.基层单元名称 like '%"+unitName+"%'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID = '"+ unitCode+"'";
 	}
-	if(userName!=''){
-		sql+=" AND (T.姓名 LIKE '%"+userName+"%' OR  T.归属上级姓名 LIKE '%"+userName+"%' OR T.责任人 LIKE '%"+userName+"%')";
+	if(userName!=""){
+		sql+=" AND T.NAME LIKE '%"+userName+"%'";
 	}
 	if(userPhone!=''){
-		sql+=" AND T.用户号码 like '%"+userPhone+"%'";
+		sql+=" AND T.DEVICE_NUMBER ='"+userPhone+"'";
 	}
-//权限
-	
 	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
 	if(orgLevel==1){
-		
+
 	}else if(orgLevel==2){
-		sql+=" and T.地市 ='"+code+"'";
+		sql+=" and T.GROUP_ID_1 ='"+ code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.基层单元编码 ='"+code+"'";
+		sql+=" and T.GROUP_ID_1 ='"+ region+"' T.UNIT_ID = '"+code+"'";
 	}else{
-		sql+=" AND T.用户编号 ='"+hrId+"'";
+		sql+=" and 1=2";
 	}
 	
 	var csql = sql;
-	var cdata = query("select count(*) total from (" + csql+")");
+	var cdata = query("select count(1) total from(" + csql+")");
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
 	}else{
 		return;
 	}
-	//排序
-	orderBy=" ORDER BY T.地市,T.基层单元编码,T.HR编码,T.用户编号";
-	sql += orderBy;
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
-	nowData = query(sql);
+	var d = query(sql);
 	if (pageNumber == 1) {
 		initPagination(total);
 	}
+	nowData = d;
 	report.showSubRow();
 	///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	$(".page_count").width($("#lch_DataHead").width());
-
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
+
+
+
+function getSql(){
+	var dealDate=$("#dealDate").val();
+	var s="SELECT T.DEAL_DATE,                                        "+
+			"       T.GROUP_ID_1_NAME,                                  "+
+			"       T.UNIT_NAME,                                        "+
+			"       T.HR_ID,                                            "+
+			"       T.NAME,                                             "+
+			"       T.USER_ROLE,                                        "+
+			"       T.SUBSCRIPTION_ID,                                  "+
+			"       T.DEVICE_NUMBER,                                    "+
+			"       DECODE(T.NET_TYPE,-1,'固网', 01, '2G', 02, '3G', 03, '3G上网卡', 4, '4G') AS NET_TYPE,                                         "+
+			"       T.OWE_FEE,                                          "+
+			"       T.HQ_CHAN_CODE,                                     "+
+			"       T.OWEFEE1                                           "+
+			"  FROM PODS.TB_ODS_JCDY_OWE_MON PARTITION(P"+dealDate+") T ";
+	return s;
+}
+/////////////////////////下载开始/////////////////////////////////////////////
+function downsAll(){
+	var code =$("#code").val();
+	var region=$("#region").val();
+	var dealDate = $("#dealDate").val();
+	//地市编码
+	var regionCode =$("#regionCode").val();
+	//营服中心编码
+	var unitCode=$("#unitCode").val();
+	//用户名称
+	var userName=$("#userName").val();
+	//用户号码
+	var　userPhone = $("#userPhone").val();
+	
 	//条件
-	var sql = "SELECT distinct T.地市名称  GROUP_ID_1_NAME,T.地市 from PMRT.VIEW_MRT_KPI_OWE_MON T WHERE 1=1 AND T.地市名称  IS NOT NULL";
+	var sql = getSql()+" WHERE 1=1" ;
+	
 	//权限
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
+	}
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID = '"+ unitCode+"'";
+	}
+	if(userName!=""){
+		sql+=" AND T.NAME LIKE '%"+userName+"%'";
+	}
+	if(userPhone!=''){
+		sql+=" AND T.DEVICE_NUMBER ='"+userPhone+"'";
+	}
+	var orgLevel=$("#orgLevel").val();
+	if(orgLevel==1){
+
+	}else if(orgLevel==2){
+		sql+=" and T.GROUP_ID_1 ='"+ code+"'";
+	}else if(orgLevel==3){
+		sql+=" and T.GROUP_ID_1 ='"+ region+"' T.UNIT_ID = '"+code+"'";
+	}else{
+		sql+=" and 1=2";
+	}
+	showtext = 'KPI欠费明细-'+dealDate;
+	downloadExcel(sql,title,showtext);
+}
+/////////////////////////下载结束/////////////////////////////////////////////
+
+
+
+/****************地市查询以及结果设置到页面选项框**********************/
+function listRegions(){
+	var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
+	var region =$("#region").val();
 	if(orgLevel==1){
-		
+		sql+="";
 	}else if(orgLevel==2){
-		sql+=" and T.地市 ='"+code+"'";
+		sql+=" and T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.基层单元编码 ='"+code+"'";
+		sql+=" and T.GROUP_ID_1 ='"+region+"'";
 	}else{
-		sql+=" and 1=2"
+		sql+=" and T.GROUP_ID_1='"+region+"'";
 	}
-	//排序
-	orderBy=" order by T.地市";
-	sql += orderBy;
+	sql+=" ORDER BY T.GROUP_ID_1"
 	var d=query(sql);
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
+			h += '<option value="' + d[0].GROUP_ID_1
 					+ '" selected >'
 					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
+			listUnits(d[0].GROUP_ID_1);
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
 			}
 		}
-		var $area = $("#regionName");
+		var $area = $("#regionCode");
 		var $h = $(h);
 		$area.empty().append($h);
 		$area.change(function() {
-			listUnits($(this).val());
+			listUnits($(this).attr('value'));
 		});
 	} else {
 		alert("获取地市信息失败");
 	}
 }
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.基层单元名称  UNIT_NAME from PMRT.VIEW_MRT_KPI_OWE_MON t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.地市名称 ='"+regionName+"' ";
+
+/************查询营服中心***************/
+function listUnits(region){
+	var $unit=$("#unitCode");
+	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
+	if(region!=''){
+		sql+=" AND T.GROUP_ID_1='"+region+"' ";
 		//权限
 		var orgLevel=$("#orgLevel").val();
 		var code=$("#code").val();
-		//var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.地市 ='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" and t.基层单元编码='"+code+"'";
+		if(orgLevel==3){
+			sql+=" and t.UNIT_ID='"+code+"'";
+		}else if(orgLevel==4){
+			sql+=" AND 1=2";
 		}else{
-			sql+=" and 1=2";
 		}
 	}else{
 		$unit.empty().append('<option value="" selected>请选择</option>');
 		return;
 	}
+	
+	sql+=" ORDER BY T.UNIT_ID"
 	var d=query(sql);
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
+			h += '<option value="' + d[0].UNIT_ID
 					+ '" selected >'
 					+ d[0].UNIT_NAME + '</option>';
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
+				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
 			}
 		}
 		
@@ -219,64 +264,3 @@ function listUnits(regionName){
 		alert("获取基层单元信息失败");
 	}
 }
-/////////////////////////下载开始/////////////////////////////////////////////
-function downsAll(){
-	var time=$.trim($("#time").val());
-	var regionName=$.trim($("#regionName").val());
-	var unitName=$.trim($("#unitName").val());
-	var userName=$.trim($("#userName").val());
-	var userCode=$.trim($("#userCode").val());
-	var userPhone=$.trim($("#userPhone").val());
-	var hrId=$.trim($("#hrId").val());
-	var regionCode=$.trim($("#regionCode").val());
-	var sql = "SELECT T.账期,                                         "+
-			"       T.地市,                                         "+
-			"       T.地市名称,                                     "+
-			"       T.基层单元编码,                                 "+
-			"       T.基层单元名称,                                 "+
-			"       T.HR编码,                                       "+
-			"       T.姓名,                                         "+
-			"       T.角色类型,                                     "+
-			"       T.用户编号,                                     "+
-			"       T.用户号码,                                     "+
-			"       T.类型,                                         "+
-			"       T.截止当前账期欠费,                             "+
-			"       T.上年12月欠费,                                 "+
-			"       T.上级hr编码,                                   "+
-			"       T.归属上级姓名,                                 "+
-			"       T.责任人编码,                                   "+
-			"       T.责任人                                        "+
-			"  FROM PMRT.VIEW_MRT_KPI_OWE_MON PARTITION(P"+time+")T WHERE 1=1	";
-	if(regionName!=''){
-		sql+=" AND T.地市名称 like '%"+regionName+"%'";
-	}
-	if(unitName!=''){
-		sql+=" AND T.基层单元名称 like '%"+unitName+"%'";
-	}
-	if(userName!=''){
-		sql+=" AND (T.姓名 LIKE '%"+userName+"%' OR  T.归属上级姓名 LIKE '%"+userName+"%' OR T.责任人 LIKE '%"+userName+"%')";
-	}
-	if(userPhone!=''){
-		sql+=" AND T.用户号码 like '%"+userPhone+"%'";
-	}
-	
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	var regionCode=$.trim($("#regionCode").val());
-	if(orgLevel==1){
-		
-    }else if(orgLevel==2){
-	   sql+=" and T.地市 ='"+code+"'";
-	}else if(orgLevel==3){
-	   sql+=" and T.基层单元编码 ='"+code+"'";
-	}else{
-	   sql+=" AND T.用户编号 ='"+hrId+"'";
-	}
-	
-	orderBy=" ORDER BY T.地市,T.基层单元编码,T.hr编码,T.用户编号";
-	sql+=orderBy;
-	showtext = 'KPI欠费明细-'+time;
-	downloadExcel(sql,title,showtext);
-}
-/////////////////////////下载结束/////////////////////////////////////////////
