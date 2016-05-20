@@ -126,7 +126,7 @@ function getSql(){
 			"       T.USER_ROLE,                                                             "+
 			"       T.SUBSCRIPTION_ID,                                                       "+
 			"       T.DEVICE_NUMBER,                                                         "+
-			"       T.NET_TYPE,                                                              "+
+			"       DECODE(T.NET_TYPE,-1,'固网', 01, '2G', 02, '3G', 03, '3G上网卡', 04, '4G') AS NET_TYPE,                                                              "+
 			"       T.TOTAL_FEE,                                                             "+
 			"       T.HQ_CHAN_CODE FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+dealDate+") T ";
 	return s;
