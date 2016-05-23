@@ -104,7 +104,7 @@ function queryPersonByCity(regionCode){
 			} else {
 				h += '<option value="" selected>请选择</option>';
 				for (var i = 0; i < d.length; i++) {
-					h += '<option value="' + d[i].NAME + '" hrId="' + d[0].HR_ID + '">' + d[i].NAME + '</option>';
+					h += '<option value="' + d[i].NAME + '" hrId="' + d[i].HR_ID + '">' + d[i].NAME + '</option>';
 				}
 			}
 			var $area = $("#userName");
