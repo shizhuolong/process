@@ -5,7 +5,6 @@ var title="";
 var orderBy='';	
 var report = null;
 $(function() {
-	var year = dealDate.substring(0,4)-1;
 	field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","SUBSCRIPTION_ID","DEVICE_NUMBER","NET_TYPE","OWE_FEE","HQ_CHAN_CODE","OWEFEE1"];
 	title=[["账期","地市","营服中心","HR编码","人员姓名","人员角色","用户编号","用户号码","用户类型","欠费截止当前账期","渠道编码","欠费上年12月31"]];
 	listRegions();
