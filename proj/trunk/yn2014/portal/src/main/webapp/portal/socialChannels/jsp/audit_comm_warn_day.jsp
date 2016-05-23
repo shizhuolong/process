@@ -67,7 +67,5 @@
 		</form>
 		<div id="content"></div>
 </body>
-<script>
 
-</script>
 </html>
