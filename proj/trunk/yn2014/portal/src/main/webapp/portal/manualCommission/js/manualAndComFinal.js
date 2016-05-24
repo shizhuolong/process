@@ -120,7 +120,7 @@ function downsAll(){
 	var title=[["账期","地市","基层单元","人员名","渠道编码","渠道名","金额","工单","备注"]];
 	var dealDate=$("#dealDate").val();
 	var regionCode=$("#regionName").val();
-	var unitCode=$("#unitName").val();
+	var unitId=$("#unitName").val();
 	var channelCode=$.trim($("#channelCode").val());
 	var sql = 	"SELECT T.DEAL_DATE,                     "+
 				"       T.GROUP_ID_1_NAME,               "+
@@ -146,11 +146,11 @@ function downsAll(){
 		sql+=" AND T.HR_ID='"+code+"'";
 	}
 	//条件查询
-	if(regionName!=''){
+	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
+	if(unitId!=''){
+		sql+=" AND T.UNIT_ID = '"+unitId+"'";
 	}
 	if(channelCode!=''){
 		sql+=" AND T.FD_CHNL_ID ='"+channelCode+"'";
