@@ -9,7 +9,6 @@
 <%
 User user = UserHolder.getCurrentLoginUser();
 Org org = user.getOrg();
-
 Calendar ca = Calendar.getInstance();
 ca.add(Calendar.MONTH, -1);
 String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
@@ -36,7 +35,8 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
-	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
+	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
+		<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<thead>
@@ -46,7 +46,7 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="4%" align="right">地市：</td>
+					<td width="5%" align="right">地市：</td>
 					<td width="15%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
