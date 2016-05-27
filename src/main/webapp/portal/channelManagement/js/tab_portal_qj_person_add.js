@@ -77,7 +77,7 @@ function listSelect(){
 	listjob_type();
 }
 function listunit_name(){
-	var sql = "SELECT UNIT_ID,UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T WHERE T.GROUP_ID_1='"+code+"' ORDER BY GROUP_ID_1,UNIT_ID";
+	var sql = "SELECT UNIT_ID,UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T WHERE T.GROUP_ID_1='"+code+"' AND T.IS_VALID=1 ORDER BY GROUP_ID_1,UNIT_ID";
 	var d=query(sql);
 	if (d) {
 		var h = '';
