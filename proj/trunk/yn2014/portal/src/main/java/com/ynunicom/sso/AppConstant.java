@@ -9,13 +9,13 @@ public class AppConstant {
 
 	// 查询待办待阅服务地址  测试
 	
-	public static final String namingServiceUrl = "http://10.0.3.154:8080/eip_naming/rest/namingservice/"
-			+ namingMethod + "/" + eipServiceId + "/" + caller + "/" + userId;
+	//public static final String namingServiceUrl = "http://10.0.3.154:8080/eip_naming/rest/namingservice/"
+	//		+ namingMethod + "/" + eipServiceId + "/" + caller + "/" + userId;
 	
-// 查询待办待阅服务地址  正式
+// 查询待办待阅服务地址  正式 
 	 		
-//	public static final String namingServiceUrl = "http://name.portal.unicom.local/eip_naming/rest/namingservice/"
-//			+ namingMethod + "/" + eipServiceId + "/" + caller + "/" + userId;
+	public static final String namingServiceUrl = "http://name.portal.unicom.local/eip_naming/rest/namingservice/"
+			+ namingMethod + "/" + eipServiceId + "/" + caller + "/" + userId;
 	public static final String URL = "http://130.86.10.199:10002/portal/sso-protect/workflow/work-flow!toProcess4ADetail.action";
 	//public static final String URL = "http://10.216.1.137:10003/portal/sso-protect/workflow/work-flow";
 	// 云门户分配给专业系统应用id
@@ -29,17 +29,17 @@ public class AppConstant {
 	public static String pendingNote = "yn001";
  
 	//测试SSO登录认证
-	public static final String checkLoginPath = "http://sit3.portal.unicom.local:8080/eip_sso/rest/authentication/check_login";
+	//public static final String checkLoginPath = "http://sit3.portal.unicom.local:8080/eip_sso/rest/authentication/check_login";
 	
 	//正式SSO登录认证
-	//public static final String checkLoginPath = "http://sso.portal.unicom.local/eip_sso/rest/authentication/check_login";
+	public static final String checkLoginPath = "http://sso.portal.unicom.local/eip_sso/rest/authentication/check_login";
 
 	//测试SSO登录状态检查
-	public static final String checkAuthenticationPath = "http://10.0.3.154:8080/eip_sso/rest/authentication/check_authentication";
+	//public static final String checkAuthenticationPath = "http://10.0.3.154:8080/eip_sso/rest/authentication/check_authentication";
 
 	
 	// 正式SSO登录状态检查
-	//public static final String checkAuthenticationPath = "http://sso.portal.unicom.local/eip_sso/rest/authentication/check_authentication";
+	public static final String checkAuthenticationPath = "http://sso.portal.unicom.local/eip_sso/rest/authentication/check_authentication";
 	
 
 	public static String getGTaskError(String errorCode) {  
