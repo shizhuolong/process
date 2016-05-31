@@ -80,14 +80,16 @@ public class WorkOrderService {
 		//添加代办同步云门户
 		try{
 			//发起的时候要注意组装参数
-			vo.setTaskId(vo.getBusinessKey());
 			vo.setStartManName(user.getRealName());
 			vo.setStartMan(user.getId()+"");
-			vo.setAssignee(vo.getNextDealer());
-			taskTo4AService.sendNewOrderTo4A(vo);
+			WorkOrderVo newVo=this.qryTaskByKey(vo.getBusinessKey());
+			if(null!=newVo){
+				vo.setTaskId(newVo.getTaskId());
+			}
+			taskTo4AService.sendAddOrderTo4A(vo);
 		}catch(Exception e){e.printStackTrace();}
 		//添加短信发送
-		//////////////////////
+		////////////////////// 
 		return processInstance;
 	}
 	
@@ -130,18 +132,58 @@ public class WorkOrderService {
 	public WorkOrderVo qryTaskByKey(String key){
 		User user = UserHolder.getCurrentLoginUser();
 		String userId = user.getId().toString();
-		String processKey = formatBlankValueToNull(key);
+		String businessKey = formatBlankValueToNull(key);
 		
-		TaskQuery taskQuery = taskService.createTaskQuery().taskAssignee(userId).processDefinitionKey(processKey)
+		TaskQuery taskQuery = taskService.createTaskQuery().taskAssignee(userId).processDefinitionKey(null)
 				.processInstanceId(null).active().includeTaskLocalVariables().includeProcessVariables();
+		
+		if(null != businessKey) {
+			taskQuery.processVariableValueEquals("businessKey",businessKey);
+		}
+		 
 		List<Task> taskList = taskQuery.listPage(0, 1);
 		if(null!=taskList&&taskList.size()>0){
 			Task task=taskList.get(0);
 			ProcessDefinition pdf = repositoryService.getProcessDefinition(task.getProcessDefinitionId());
-			return new WorkOrderVo(task,pdf,WorkflowConstant.WAIT);
-		}else{
-			return null;
+			WorkOrderVo vo=new WorkOrderVo(task,pdf,WorkflowConstant.WAIT);
+			return vo;
 		}
+
+		TaskQuery taskQuery1 = taskService.createTaskQuery().processDefinitionKey(null).processInstanceId(null).active()
+				.includeTaskLocalVariables().includeProcessVariables();
+
+		if (null != businessKey) {
+			taskQuery1.processVariableValueEquals("businessKey", businessKey);
+		}
+
+		List<Task> taskList1 = taskQuery1.listPage(0, 1);
+
+		if (null != taskList1 && taskList1.size() > 0) {
+			Task task = taskList1.get(0);
+			ProcessDefinition pdf = repositoryService.getProcessDefinition(task.getProcessDefinitionId());
+			WorkOrderVo vo = new WorkOrderVo(task, pdf, WorkflowConstant.DOING);
+			return vo;
+		}
+
+		
+		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery().finished().involvedUser(userId)
+				.processDefinitionKey(null).processInstanceId(null).includeProcessVariables();
+		
+		if(businessKey!=null){
+        	//query.variableValueEquals(WorkflowConstant.DISPLAY_PID, businessKey);
+			query.variableValueEquals(WorkflowConstant.DISPLAY_PID, businessKey);
+		}
+		
+		List<HistoricProcessInstance> hisList = query.listPage(0, 1);
+		
+		if(hisList!=null && hisList.size()>0){
+			for(HistoricProcessInstance t : hisList){
+				ProcessDefinition pdf = repositoryService.getProcessDefinition(t.getProcessDefinitionId());
+				return new WorkOrderVo(t,pdf,WorkflowConstant.DONE);				
+			}
+		}
+		
+		return null;
 	}
 	/**
 	 * 查询待办任务列表
@@ -525,11 +567,17 @@ public class WorkOrderService {
 		}else {
 			variables.put(WorkflowConstant.NEED_PAY,"yes"); // 
 		}
-
+		try{
+			taskTo4AService.sendDoneOrderTo4A(workOrderVo);
+		}catch(Exception e){e.printStackTrace();}
 		taskService.complete(workOrderVo.getTaskId(),variables);
 		//添加代办同步云门户
 		try{
-			taskTo4AService.sendDoingOrderTo4A(workOrderVo);
+			WorkOrderVo newVo=this.qryTaskByKey(workOrderVo.getBusinessKey());
+			if(null!=newVo){
+				workOrderVo.setTaskId(newVo.getTaskId());
+			}
+			taskTo4AService.sendAddOrderTo4A(workOrderVo);
 		}catch(Exception e){e.printStackTrace();}
 		//添加短信发送 
 	}
