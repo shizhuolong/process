@@ -426,7 +426,7 @@ public class WorkFlowAction extends BaseAction{
 	}
 
 	public String getApproveUrl() {
-		return approveUrl;
+		return approveUrl; 
 	}
 
 	public void setApproveUrl(String approveUrl) {
