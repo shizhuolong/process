@@ -373,6 +373,20 @@
          	ORDER BY T.CREATETIME DESC)
  		 WHERE ROWNUM &lt;= #{num}
 	</select>
+	<!-- 公告弹窗 -->
+	<select id="queryAlertBulls" parameterType="java.lang.String" resultType="java.util.Map" useCache="false">
+		SELECT T1.BULLNAME,
+		       T1.BULLETINID,
+		       T1.BULLNAME,
+		       TO_CHAR(T1.CREATETIME, 'yyyy-mm-dd') AS CREATETIME
+		  FROM PORTAL.TAB_PORTAL_BULLETIN T1
+		 WHERE T1.IS_ALTER = '1'
+		   AND T1.BULLETINID  NOT IN
+		       (SELECT T.MENU_ID
+		          FROM PORTAL.TAB_PORTAL_MENU_OPERATE T
+		         WHERE T.USER_ID = #{id})
+	</select>
+	
 	<select id="listXsph" parameterType="java.util.Map" resultType="java.util.Map" >
 		select rownum,t.* from
 		(SELECT *
@@ -480,4 +494,11 @@
          	ORDER BY T.ACCESS_TIMES DESC)
  		 WHERE ROWNUM &lt;= #{number}
 	</select>
+	<!-- 把用户已阅的弹出公告信息存入数据库（addAlertBull） -->
+	<insert id="addAlertBull" parameterType="java.util.Map" >
+		INSERT INTO PORTAL.TAB_PORTAL_MENU_OPERATE
+		  (USER_ID, USER_NAME, MENU_ID, MENU_NAME, FLAG)
+		VALUES
+		  (#{userId}, #{userName}, #{menuId}, #{menuName}, #{menuState})
+	</insert>
 </mapper>
