@@ -45,7 +45,8 @@ public class BullAction extends BaseAction {
 	
 	private Map<String, String> resultMap;
 	
-	private String isShow;
+	private String isShow;/////////////
+	private String isAlert;//是否是弹窗公告
 	private String isTop;
 	private String isManage;
 	private String bullName;
@@ -60,140 +61,16 @@ public class BullAction extends BaseAction {
 	
 	private File image;
 	private String localUrl;
-	public String getLocalUrl() {
-		return localUrl;
-	}
-
-	public void setLocalUrl(String localUrl) {
-		this.localUrl = localUrl;
-	}
-
-	public File getImage() {
-		return image;
-	}
-
-	public void setImage(File image) {
-		this.image = image;
-	}
-
-	public String getDownName() {
-		return downName;
-	}
-
-	public void setDownName(String downName) {
-		this.downName = downName;
-	}
-
-	public String getDownUrl() {
-		return downUrl;
-	}
-
-	public void setDownUrl(String downUrl) {
-		this.downUrl = downUrl;
-	}
-
-	public String[] getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String[] fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getOldUrls0() {
-		return oldUrls0;
-	}
-
-	public void setOldUrls0(String oldUrls0) {
-		this.oldUrls0 = oldUrls0;
-	}
-
-	public String getBullName() {
-		return bullName;
-	}
-
-	public void setBullName(String bullName) {
-		this.bullName = bullName;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public String getOldUrls() {
-		return oldUrls;
-	}
-
-	public void setOldUrls(String oldUrls) {
-		this.oldUrls = oldUrls;
-	}
-
-	public String getOldNames() {
-		return oldNames;
-	}
-
-	public void setOldNames(String oldNames) {
-		this.oldNames = oldNames;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	private File[] file;
 	
-	public File[] getFile() {
-		return file;
-	}
-
-	public void setFile(File[] file) {
-		this.file = file;
-	}
-
-	public String getIsShow() {
-		return isShow;
-	}
-
-	public void setIsShow(String isShow) {
-		this.isShow = isShow;
-	}
-
-	public String getIsTop() {
-		return isTop;
-	}
-
-	public void setIsTop(String isTop) {
-		this.isTop = isTop;
-	}
-
-	public String getIsManage() {
-		return isManage;
-	}
-
-	public void setIsManage(String isManage) {
-		this.isManage = isManage;
-	}
-
-	public Map<String, String> getResultMap() {
-		return resultMap;
-	}
-
-	public void setResultMap(Map<String, String> resultMap) {
-		this.resultMap = resultMap;
-	}
 	/**
 	 * 获取公告列表
 	 */
 	public void listBulls() {
-		if(isShow!=null&&!isShow.trim().equals("")){
-			resultMap.put("isShow", isShow);
+		if(bullName!=null&&!bullName.trim().equals("")){
+			resultMap.put("bullName", bullName);
+		}
+		if(isAlert!=null&&!isAlert.trim().equals("")){
+			resultMap.put("isAlert", isAlert);
 		}
 		if(isTop!=null&&!isTop.trim().equals("")){
 			resultMap.put("isTop", isTop);
@@ -363,6 +240,7 @@ public class BullAction extends BaseAction {
 		params.put("createTime",new Timestamp(new Date().getTime()) );
 		params.put("newUrls",newUrls );
 		params.put("newNames",newNames );
+		params.put("isAlert",isAlert );
 		int n=0;
 		//加入数据库
 		if(id==null||id.trim().equals("")){
@@ -437,4 +315,141 @@ public class BullAction extends BaseAction {
 			
 		}
 	}
+	
+	
+	public String getLocalUrl() {
+		return localUrl;
+	}
+
+	public void setLocalUrl(String localUrl) {
+		this.localUrl = localUrl;
+	}
+
+	public File getImage() {
+		return image;
+	}
+
+	public void setImage(File image) {
+		this.image = image;
+	}
+
+	public String getDownName() {
+		return downName;
+	}
+
+	public void setDownName(String downName) {
+		this.downName = downName;
+	}
+
+	public String getDownUrl() {
+		return downUrl;
+	}
+
+	public void setDownUrl(String downUrl) {
+		this.downUrl = downUrl;
+	}
+
+	public String[] getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String[] fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getOldUrls0() {
+		return oldUrls0;
+	}
+
+	public void setOldUrls0(String oldUrls0) {
+		this.oldUrls0 = oldUrls0;
+	}
+
+	public String getBullName() {
+		return bullName;
+	}
+
+	public void setBullName(String bullName) {
+		this.bullName = bullName;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getOldUrls() {
+		return oldUrls;
+	}
+
+	public void setOldUrls(String oldUrls) {
+		this.oldUrls = oldUrls;
+	}
+
+	public String getOldNames() {
+		return oldNames;
+	}
+
+	public void setOldNames(String oldNames) {
+		this.oldNames = oldNames;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	private File[] file;
+	
+	public File[] getFile() {
+		return file;
+	}
+
+	public void setFile(File[] file) {
+		this.file = file;
+	}
+
+	public String getIsShow() {
+		return isShow;
+	}
+
+	public void setIsShow(String isShow) {
+		this.isShow = isShow;
+	}
+
+	public String getIsTop() {
+		return isTop;
+	}
+
+	public void setIsTop(String isTop) {
+		this.isTop = isTop;
+	}
+
+	public String getIsManage() {
+		return isManage;
+	}
+
+	public void setIsManage(String isManage) {
+		this.isManage = isManage;
+	}
+
+	public Map<String, String> getResultMap() {
+		return resultMap;
+	}
+
+	public void setResultMap(Map<String, String> resultMap) {
+		this.resultMap = resultMap;
+	}
+	public String getIsAlert() {
+		return isAlert;
+	}
+	public void setIsAlert(String isAlert) {
+		this.isAlert = isAlert;
+	}
+	
 }

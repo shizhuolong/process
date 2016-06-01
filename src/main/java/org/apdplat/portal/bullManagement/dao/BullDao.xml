@@ -12,10 +12,12 @@
 		  	T.ATTACHMENTS
 		FROM portal.tab_portal_bulletin T
 		<where> 
-			<if test="isShow!=null">
-				AND T.ISSHOW=#{isShow}
+			<if test="isAlert!=null">
+				AND T.IS_ALTER=#{isAlert}
 			</if>
-			
+			<if test="@org.apache.commons.lang.StringUtils@isNotBlank(bullName)">
+                AND BULLNAME LIKE CONCAT(CONCAT('%',#{bullName}),'%')
+ 			</if>
 			<if test="isTop!=null">
 				AND T.ISFLAG = #{isTop}
 			</if>
@@ -27,9 +29,9 @@
 	</select>
 	<insert id="addBull" parameterType="java.util.Map">
 		insert into portal.tab_portal_bulletin
-		(BULLETINID, BULLNAME, ISFLAG, ISMANAGER,CREATOR, CREATETIME,ACCESSORYNAME,ISSHOW,ATTACHMENTS,BULLETINDESC)
+		(BULLETINID, BULLNAME, ISFLAG, ISMANAGER,CREATOR, CREATETIME,ACCESSORYNAME,ISSHOW,ATTACHMENTS,BULLETINDESC,IS_ALTER)
 		values
-		(#{id}, #{bullName}, #{isTop}, #{isManage}, #{creator},#{createTime},#{newNames},#{isShow},#{newUrls},#{content})
+		(#{id}, #{bullName}, #{isTop}, #{isManage}, #{creator},#{createTime},#{newNames},#{isShow},#{newUrls},#{content},#{isAlert})
 	</insert>
 	<update id="updateBull" parameterType="java.util.Map">
         update portal.tab_portal_bulletin set BULLNAME=#{bullName},
@@ -40,7 +42,8 @@
         ACCESSORYNAME=#{newNames},
         ISSHOW=#{isShow},
         ATTACHMENTS=#{newUrls},
-        BULLETINDESC=#{content}
+        BULLETINDESC=#{content},
+        IS_ALTER=#{isAlert}
         where BULLETINID=#{id}
     </update>
     <delete id="delBull" parameterType="java.lang.String">
