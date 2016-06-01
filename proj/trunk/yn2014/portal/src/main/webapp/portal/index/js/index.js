@@ -16,6 +16,8 @@ $(function(){
 	showNetIncomeChart();
 	//最新公告
 	listBulls();
+	//公告弹窗
+	alertBulls();
 	//文件下载列表
 	indexDocList();
 	//访问统计
@@ -57,7 +59,62 @@ $(function(){
 			}
 		}
 	});
+	
 });
+
+/**
+ * 公告弹窗
+ * @author xuxj
+ */
+function alertBulls(){
+	/**
+	 * 思路：1、用户登陆后从用户菜单操作权限表中查询到用户已阅弹窗公告id
+	 * 	   2、在公告表中查询除了这些弹窗公告用户还有的弹窗公告
+	 */
+	var id = $("#userId").val();
+	$.ajax({
+		url:$("#ctx").val()+"/index/index_queryAlertBulls.action",
+		type:'POST',
+		dataType:'json',
+		async:true,
+		data:{
+	           "id":id
+		   	},
+		success:function(data){
+			var str = "";
+			if(data != null && data.length > 0) {
+				//有数据让div显示
+				$("#index_float_layer").css('display','block');
+				//拼接字符串放到html容器中
+				str+="<table style='table-layout: fixed;'>";
+				for(var i=0; i<data.length; i++) {
+					/*str+="<li><a onclick='showBull2(\""+data[i].BULLETINID+"\")' align='left' style='padding-right:5px;' href='javascript:void(0);'>"
+					+data[i].BULLNAME+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data[i].CREATETIME+"</a></li>";*/
+					str+="<tr onclick='showBull2(\""+data[i].BULLETINID+"\")'>" +
+							"<td align='left' style='width:70%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;'>"+data[i].BULLNAME+"</td>" +
+							"<td>"+data[i].CREATETIME+"</td></tr>";
+				}
+				str+="</table>";
+			}else{
+				//$("#index_float_layer").css('display','none');
+				tips_pop();
+			}
+			$("#conAlert").empty().append(str);
+			if(str!=""){
+				//$("#bulls").parent().addClass("bulls");
+				$("#index_float_layer").css({"dispaly":"block"});
+			}
+		}
+	});
+}
+/**
+ * 关闭弹窗
+ * @author xuxj
+ */
+function tips_pop(){
+	$("#index_float_layer").slideUp();
+}
+
 //团队薪酬
 //获取数据
 function query(sql){
@@ -860,6 +917,85 @@ function showBull(id){
 		lock:true,
 		resize:false
 	});*/
+}
+
+/**
+ * 查看弹窗公告信息
+ * @param id
+ * @author xuxj
+ */
+function showBull2(id,name){
+	$.ajax({
+		url:$("#ctx").val()+"/index/index_getBullById.action",
+		type:'POST',
+		dataType:'json',
+		data:{
+	           "id":id
+		},
+		success:function(data){
+			if(data&&data.length>0){
+				var c="<div style='width:530px;height:120px;overflow:auto;padding:20px 25px;'>";
+					c+="<div>";
+				c+=data[0].BULLETINDESC;
+					c+="</div><br/>";
+					c+="<div style='line-height:26px;'>";
+					c+="	<h1>附件：</h1>";
+					if(data[0].ACCESSORYNAME){
+						var attachNames=data[0].ACCESSORYNAME.split("&&");
+						var attachUrl=data[0].ATTACHMENTS.split("&&");
+						for(var i=0;i<attachNames.length;i++){
+							c+="<a target='_blank' href='"+$("#ctx").val()+"/bullManagement/bullManager_downfile.action?downUrl="+attachUrl[i]+"&downName="+encodeURI(encodeURI(attachNames[i]))+"'>"+attachNames[i]+"</a><br/>";
+						}
+					}else{
+						c+="没有附件";
+					}
+					
+					c+="</div>";
+				c+="</div>";
+				var bullName = data[0].BULLNAME;
+				art.dialog({
+				    title: data[0].BULLNAME,
+				    content: c,
+				    width:530,
+				    height:150,
+				    padding: 0,
+				    lock:true,
+				    button:[{name: '已阅', callback: function () {addAlertBull(id,bullName);}}] 
+				});
+
+			}
+		}
+	});
+}
+
+/**
+ *  把已阅的弹窗消息插入到菜单权限控制表中
+ *  @author xuxj
+ */
+function addAlertBull(id,bullName){
+	var userId = $("#userId").val();
+	var userName = $("#userName").val();
+	var menuState = 1;
+	$.ajax({
+		url:$("#ctx").val()+"/index/index_addAlertBull.action",
+		type:'POST',
+		dataType:'json',
+		data:{
+	           "menuId":id,
+	           "menuName":bullName,
+	           "userId":userId,
+	           "userName":userName,
+	           "menuState":menuState
+		},
+		success:function(data){
+			if(data>0){
+				//alert("操作成功");
+				alertBulls();
+			}else{
+				alert("操作未成功，请稍后重试");
+			}
+		}
+	});
 }
 //日收入趋势图表
 function showNetIncomeChart() {

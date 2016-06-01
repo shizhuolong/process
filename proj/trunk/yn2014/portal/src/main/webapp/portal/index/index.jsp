@@ -33,6 +33,7 @@
 	
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
+	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -114,7 +115,104 @@ $(function(){
 </script>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/index.js"></script>
+<style type="text/css">
+#index_float_layer {
+	border: 1px solid #999999;
+	margin: 0;
+	padding: 1px;
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	background-color: red;
+	width: 270px;
+	background: #FFFFFF;
+	z-index:10000;
+	display:none;
+	max-height:200px;
+	overflow-y:hidden; 
+}
 
+#alertTitle {
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	background: #ff8900;
+	font-weight: bold;
+	text-align: center;
+	font-size: 12px;
+}
+
+#alertTitle span {
+	position: absolute;
+	right: 8px;
+	top: 2px;
+	color: #FFF;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#conAlert {
+	width: 100%;
+}
+
+#conAlert tr {
+	height: 30px;
+	line-height: 30px;
+	font-weight: bold;
+	font-size: 12px;
+	color:#FF0000;
+	text-align: center;
+	cursor: pointer;
+	list-style-type: none;
+	text-decoration:underline;
+}
+TABLE {
+	border-collapse: collapse;
+	border-top: solid #e7d4b3 1px;
+	border-right: solid #e7d4b3 1px;
+	width: 100%;
+}
+
+.lch_DataHead TR TH {
+	height: 30px;
+	background: none repeat scroll 0 0 #ffecc8;
+}
+
+.lch_DataBody TR:hover {
+	background-color: rgba(129, 208, 177, 0.3);
+}
+
+.lch_DataHead TR TH, .lch_DataBody TR TD {
+	border-left: 1px solid #e7d4b3;
+	color: #d28531;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	white-space: nowrap;
+	border-bottom: 1px solid #c0e2ef;
+	padding: 6px 12px;
+	box-sizing: border-box;
+}
+
+.lch_DataBody TR {
+	background-color: #fff;
+}
+
+.lch_DataBody TR TD {
+	text-align: left;
+	color: #717171;
+	font-family: "微软雅黑", Arial, "Simsun", sans-serif, SimSun, "宋体", Heiti,
+		"黑体";
+	font-weight: normal;
+}
+
+.myClass {
+	color: #fc9215;
+}
+
+</style>
 </head>
 <body>
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -126,6 +224,7 @@ $(function(){
 <input type="hidden" id="xctime" value="<%=xctime%>">
 <input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 <input type="hidden" id="userId" value="<%=user.getId()%>">
+<input type="hidden" id="userName" value="<%=user.getRealName()%>">
 <input type="hidden" id="xcday" value="<%=xcday%>">
 <input type="hidden" id="curMonthJfpm" value="<%=curMonthJfpm%>">
 <div>
@@ -137,46 +236,7 @@ $(function(){
                          <div id="left-menu">
                             <div id="my_menu" class="sdmenu">
                             	<div classType="left-module" moduleid="left-1" title="我的薪酬">
-                                	<style>
-                             TABLE{
-			border-collapse: collapse;
-			border-top:solid #e7d4b3 1px;
-			border-right:solid #e7d4b3  1px;
-			width:100%;
-		}
-        .lch_DataHead TR TH{
-			height:30px;
-			background: none repeat scroll 0 0 #ffecc8;
-		}
-		.lch_DataBody TR:hover {
-			background-color: rgba(129, 208, 177, 0.3);
-		}
-		.lch_DataHead TR TH,.lch_DataBody TR TD{
-			border-left: 1px solid #e7d4b3;
-			color: #d28531;
-			font-size: 12px;
-			font-weight: bold;
-			text-align: center;
-			white-space: nowrap;
-			border-bottom: 1px solid #c0e2ef;
-			padding: 6px 12px;
-			box-sizing: border-box;
-		}
-		.lch_DataBody TR{
-			background-color: #fff;
-		}
-		.lch_DataBody TR TD{
-			text-align: left;
-    		color: #717171;
-    		font-family: "微软雅黑",Arial,"Simsun",sans-serif,SimSun,"宋体",Heiti,"黑体";
-    		font-weight: normal;
-		}
-		.myClass{
-			color:#fc9215;
-		}
-                                	</style>
-                                
-                                    <span id="xcTitle"><i class="menu-toDo"></i>我的薪酬(<%=xctime %>)</span>
+									<span id="xcTitle"><i class="menu-toDo"></i>我的薪酬(<%=xctime%>)</span>
                                    	<a style="color:#191970;" href="javascript:void(0);" id="xc_hrNo">HR编码: </a>
                                     <a style="color:#191970;" href="javascript:void(0);" id="xc_gdxc">固定薪酬: 0</a>
                                     <a style="color:#191970;" href="javascript:void(0);" id="xc_kpi">KPI绩效: 0</a>
@@ -212,11 +272,22 @@ $(function(){
                                 <div classType="left-module" moduleid="left-7" title="访问统计">
                                     <span id="indexAccessList"><i class="menu-note"></i>访问统计</span>
                                 </div>
+                             
                             </div>
                         </div>
                      </div>
                  </div>
-                 <div data-options="region:'center'" style="overflow:hidden;">
+
+					<div class="" id="index_float_layer">
+						<div id="alertTitle">
+							<font color='#fff'>您有新的消息</font><span id="close" onclick="tips_pop()">X</span>
+						</div>
+						<div id="conAlert">
+							
+						</div>
+					</div>
+
+					<div data-options="region:'center'" style="overflow:hidden;">
                  	 <div id="main" style="min-height:300px;">
 							<div class="main-block center-module" moduleid="center-1" title="渠道、基站、薪酬。。。">
 								<div id="chose-place">
@@ -574,6 +645,7 @@ $(function(){
 							
 						});
                  }
+                 
              </script>
          </div>
     </div>
