@@ -125,5 +125,19 @@ public interface IndexDao {
 	 * @return
 	 */
 	public List<Map<String, Object>> listAccess(Map<String, Object> params);
+
+	/**
+	 * 公告弹窗
+	 * @param id
+	 * @return
+	 */
+	public List<Map<String, Object>> queryAlertBulls(String id);
+	
+	/**
+	 * 用户确认弹出公告后把公告信息插入到数据库
+	 * @param paramsMap
+	 * @throws Exception
+	 */
+	public int  addAlertBull(Map<String,String> paramsMap) throws Exception;
 	
 }

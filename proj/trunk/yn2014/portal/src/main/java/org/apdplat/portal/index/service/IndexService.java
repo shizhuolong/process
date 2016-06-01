@@ -99,6 +99,24 @@ public class IndexService {
 		return indexDao.listBulls(params);
 	}
 	/**
+	 * 公告弹窗
+	 * @param id
+	 * @return
+	 */
+	public List<Map<String, Object>> queryAlertBulls(String id) {
+		return indexDao.queryAlertBulls(id);
+	}
+	
+	/**
+	 * 用户确认弹出公告后把公告信息插入到数据库
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public int addAlertBull(Map<String,String> params) throws Exception{
+		return  indexDao.addAlertBull(params);
+	}
+	/**
 	 * 销售排行
 	 * @param params
 	 * @return
@@ -185,4 +203,5 @@ public class IndexService {
 		params.put("number", number);
 		return indexDao.listAccess(params);
 	}
+	
 }
