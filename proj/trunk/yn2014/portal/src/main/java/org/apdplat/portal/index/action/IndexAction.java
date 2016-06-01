@@ -32,12 +32,13 @@ import org.springframework.stereotype.Controller;
 @Scope("prototype")
 public class IndexAction extends BaseAction {
 
+	@SuppressWarnings("unused")
 	private final APDPlatLogger logger = new APDPlatLogger(getClass());//记录日志 
 	
 	@Autowired
 	private IndexService indexService;
 	@Autowired
-	private WorkOrderService workOrderService;//????
+	private WorkOrderService workOrderService;
 	
 	private String id;
 	
@@ -46,22 +47,7 @@ public class IndexAction extends BaseAction {
 	private String status="'10'";
 	
 	private String moduleIds;
-	public String getModuleIds() {
-		return moduleIds;
-	}
-
-	public void setModuleIds(String moduleIds) {
-		this.moduleIds = moduleIds;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+	
 	private double lat0;
 	private double lat1;
 	private double log0;
@@ -69,79 +55,13 @@ public class IndexAction extends BaseAction {
 	private int flag=0;
 	private String group;
 	
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public int getFlag() {
-		return flag;
-	}
-
-	public void setFlag(int flag) {
-		this.flag = flag;
-	}
-
-	public double getLat0() {
-		return lat0;
-	}
-
-	public void setLat0(double lat0) {
-		this.lat0 = lat0;
-	}
-
-	public double getLat1() {
-		return lat1;
-	}
-
-	public void setLat1(double lat1) {
-		this.lat1 = lat1;
-	}
-
-	public double getLog0() {
-		return log0;
-	}
-
-	public void setLog0(double log0) {
-		this.log0 = log0;
-	}
-
-	public double getLog1() {
-		return log1;
-	}
-
-	public void setLog1(double log1) {
-		this.log1 = log1;
-	}
-
-	public String getLog() {
-		return log;
-	}
-
-	public void setLog(String log) {
-		this.log = log;
-	}
-
-	public String getLat() {
-		return lat;
-	}
-
-	public void setLat(String lat) {
-		this.lat = lat;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
+	//把用户阅读完的弹窗公告插入到菜单操作表的属性
+	private String userId;
+	private String userName;
+	private String menuId;
+	private String menuName;
+	private String menuState;
 	
 	
 	/**
@@ -188,7 +108,7 @@ public class IndexAction extends BaseAction {
 		User user = UserHolder.getCurrentLoginUser();
 		Org org = user.getOrg();
 		String orgLevel = org.getOrgLevel();
-		String orgCode = org.getCode();
+		//String orgCode = org.getCode();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("orgLevel", orgLevel);
 		params.put("code", "86000"/*orgCode*/);
@@ -215,7 +135,7 @@ public class IndexAction extends BaseAction {
 		User user = UserHolder.getCurrentLoginUser();
 		Org org = user.getOrg();
 		String orgLevel = org.getOrgLevel();
-		String orgCode = org.getCode();
+		//String orgCode = org.getCode();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("orgLevel", orgLevel);
 		params.put("code", "86000"/*orgCode*/);
@@ -397,6 +317,7 @@ public class IndexAction extends BaseAction {
 	}
 	
 	/**
+	 * @author xuxj
 	 * 最新公告
 	 */
 	public void listBulls() {
@@ -404,6 +325,41 @@ public class IndexAction extends BaseAction {
 		params.put("num", 5);
 		List<Map<String, Object>> list = indexService.listBulls(params);
 		this.reponseJson(list);
+	}
+	/**
+	 * @author xuxj
+	 * 公告弹窗
+	 */
+	public void queryAlertBulls(){
+		List<Map<String,Object>> list = indexService.queryAlertBulls(id);
+		this.reponseJson(list);
+	}
+	/**
+	 * 把用户已阅的弹出公告信息存入数据库
+	 * @author xuxj
+	 */
+	public void addAlertBull(){
+		Map<String,String> paramsMap = new HashMap<String,String>();
+		paramsMap.put("menuId", menuId);
+		paramsMap.put("menuName", menuName);
+		paramsMap.put("menuState", menuState);
+		paramsMap.put("userId", userId);
+		paramsMap.put("userName", userName);
+		int result;
+		logger.info(paramsMap.toString());
+		try {
+			int rs = indexService.addAlertBull(paramsMap);
+			if(rs>0){
+				result=1;
+			}else{
+				result=0;
+			}
+		} catch (Exception e) {
+			logger.info("插入已阅的公告信息失败");
+			e.printStackTrace();
+			result=0;
+		}
+		this.reponseJson(result);		
 	}
 	/**
 	 * 销售排行
@@ -550,4 +506,142 @@ public class IndexAction extends BaseAction {
 		List<Map<String, Object>> list = indexService.listAccess(userId,5);
 		this.reponseJson(list);
 	}
+	
+	public String getModuleIds() {
+		return moduleIds;
+	}
+
+	public void setModuleIds(String moduleIds) {
+		this.moduleIds = moduleIds;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+
+	public double getLat0() {
+		return lat0;
+	}
+
+	public void setLat0(double lat0) {
+		this.lat0 = lat0;
+	}
+
+	public double getLat1() {
+		return lat1;
+	}
+
+	public void setLat1(double lat1) {
+		this.lat1 = lat1;
+	}
+
+	public double getLog0() {
+		return log0;
+	}
+
+	public void setLog0(double log0) {
+		this.log0 = log0;
+	}
+
+	public double getLog1() {
+		return log1;
+	}
+
+	public void setLog1(double log1) {
+		this.log1 = log1;
+	}
+
+	public String getLog() {
+		return log;
+	}
+
+	public void setLog(String log) {
+		this.log = log;
+	}
+
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public String getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
+	}
+
+
+	public String getMenuName() {
+		return menuName;
+	}
+
+
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
+	}
+
+
+	public String getMenuState() {
+		return menuState;
+	}
+
+
+	public void setMenuState(String menuState) {
+		this.menuState = menuState;
+	}
+	
 }
