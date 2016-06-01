@@ -37,25 +37,36 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0px;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">是否显示：</td>
-					<td width="15%">
+					<td width="6%" style="padding-left: 10px;">公告名称：</td>
+					<td width="15%" colspan="2">
+						<input class="default-text-input wper80" name="bullName" type="text" id="bullName"/>
+					</td>
+					<!-- <td width="15%">
 						<select id="isShow" class="default-text-input wper80" name="type">
 							<option value="">请选择</option>
 							<option value="1">显示</option>
 							<option value="0">不显示</option>
 					    </select>
-				    </td>
+				    </td> -->
 					<td width="6%">是否置顶：</td>
 					<td width="15%">
-						<select id="isTop" class="default-text-input wper80" name="type">
+						<select id="isTop" class="default-text-input wper80" name="isTop">
 							<option value="">请选择</option>
 							<option value="1">置顶</option>
 							<option value="0">不置顶</option>
 					    </select>
 					</td>
+					<td width="6%">是否弹窗：</td>
+					<td width="15%">
+						<select id="isAlert" class="default-text-input wper80" name="isAlert">
+							<option value="">请选择</option>
+							<option value="1">弹窗公告</option>
+							<option value="0">非弹窗公告</option>
+					    </select>
+					</td>
 					<td width="6%">公告类型：</td>
 					<td width="15%">
-						<select id="isManage" class="default-text-input wper80" name="type">
+						<select id="isManage" class="default-text-input wper80" name="isManage">
 							<option value="">请选择</option>
 							<option value="1">系统公告</option>
 							<option value="0">政策通知</option>

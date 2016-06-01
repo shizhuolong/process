@@ -21,58 +21,65 @@
 			<input type="hidden" name="id" />
 			<table width="830px" style="margin-left: 12px ;margin-top:10px;">
 				<tr height="35px">
-					<td width="10%" style="padding-left: 10px;">公告标题：</td>
-					<td colspan="5">
+					<td width="8%" style="padding-left:5px;text-align:right;">公告标题：</td>
+					<td colspan="6">
 						<input class="default-text-input wper80" id="bullName" name="bullName"  type="text" />
 				    </td>
 				</tr>
 				<tr height="35px">
-					<td width="10%" style="padding-left: 10px;">是否显示：</td>
+					<td width="8%" style="padding-left: 5px;text-align:right;">是否显示：</td>
 					<td width="15%">
-						<select id="isShow" class="default-text-input wper60" name="isShow">
+						<select id="isShow" class="default-text-input wper80" name="isShow">
 							<option value="1">显示</option>
 							<option value="0">不显示</option>
 					    </select>
 				    </td>
-					<td width="10%">是否置顶：</td>
+				    <td width="8%" style="padding-left: 5px;text-align:right;">是否弹窗：</td>
+					<td width="15%">
+						<select id="isAlert" class="default-text-input wper80" name="isAlert">
+							<option value="1">弹窗公告</option>
+							<option value="0">非弹窗公告</option>
+					    </select>
+				    </td>
+					<td width="8%" style="padding-left: 5px;text-align:right;">是否置顶：</td>
 					<td width="15%">
 						<select id="isTop" class="default-text-input wper60" name="isTop">
 							<option value="1">置顶</option>
 							<option value="0">不置顶</option>
 					    </select>
 					</td>
-					<td width="10%">类型：</td>
+					<td width="6%" style="padding-left: 5px;text-align:right;">类型：</td>
 					<td width="15%">
-						<select id="isManage" class="default-text-input wper60" name="isManage">
+						<select id="isManage" class="default-text-input wper80" name="isManage">
 							<option value="1">系统公告</option>
 							<option value="0">政策通知</option>
 					    </select>
 					</td>
 				</tr>
 				<tr height="200px">
-					<td width="10%">公告内容：</td>
-					<td width="15%" colspan="5">
+					<td width="8%" style="padding-left: 10px;text-align:right;">公告内容：</td>
+					<td width="15%" colspan="7">
 						<textarea name="content" style="width:95%;"></textarea>
 					</td>
 				</tr>
 				<tr>
-					<td width="10%">上传附件：</td>
-					<td width="15%" colspan="5" id="files">
+					<td width="8%" style="padding-left: 10px;text-align:right;">上传附件：</td>
+					<td width="15%" colspan="7" id="files">
 						<input type="hidden" name="oldUrls"/>
 						<input type="hidden" name="oldUrls0"/>
 						<input type="hidden" name="oldNames"/>
 						<p id="oldAttachs">
 						
 						</p>
-						<input class="default-text-input wper60" style="margin:5px;" id="file" name="file"  type="file" /><input type="hidden" name="fileName" /><a href="javascript:void(0);" onclick="addMore()">继续添加</a><br/>
+						<input class="default-text-input wper80" style="margin:5px;" id="file" name="file"  type="file" /><input type="hidden" name="fileName" /><a href="javascript:void(0);" onclick="addMore()">继续添加</a><br/>
 					</td>
 				</tr>
 				<tr height="50px">
-					<td colspan="3">
+					<td colspan="4">
 						<a class="default-btn" href="javascript:void(0);" style="float:right;margin:10px;"
 						id="addBtn">保存</a>
 					</td>
-					<td colspan="3">
+					<td colspan="4">
 						<a class="default-btn" href="javascript:void(0);" style="float:left;margin:10px;"
 						id="cancelBtn">取消</a>
 					</td>

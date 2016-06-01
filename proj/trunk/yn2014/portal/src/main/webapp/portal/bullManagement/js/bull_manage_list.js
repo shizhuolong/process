@@ -1,4 +1,4 @@
-var pageSize = 5;
+var pageSize = 10;
 $(function() {
 	search(0);
 	$("#searchBtn").click(function(){
@@ -12,9 +12,10 @@ $(function() {
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	
-	var isShow=$("#isShow").val();
 	var isTop=$("#isTop").val();
 	var isManage=$("#isManage").val();
+	var bullName = $.trim($("#bullName").val());
+	var isAlert = $("#isAlert").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -23,7 +24,8 @@ function search(pageNumber) {
 		data:{
            "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           "isShow":isShow,
+           "bullName":bullName,
+           "isAlert":isAlert,
            "isManage":isManage,
            "isTop":isTop
 	   	}, 
@@ -107,6 +109,7 @@ function showAddOrUpdateDialog(id){
 					art.dialog.data('content',isNull(bull['BULLETINDESC']));
 					art.dialog.data('attachmentsUrl',isNull(bull['ATTACHMENTS']));
 					art.dialog.data('attachmentsNames',isNull(bull['ACCESSORYNAME']));
+					art.dialog.data('isAlert',bull['IS_ALTER']);
 				}
 			}
 		});
@@ -119,6 +122,7 @@ function showAddOrUpdateDialog(id){
 		art.dialog.data('content','');
 		art.dialog.data('attachmentsUrl','');
 		art.dialog.data('attachmentsNames','');
+		art.dialog.data('isAlert','');
 	}
 	art.dialog.open(url,{
 		id:'bullEditDialog',
