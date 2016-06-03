@@ -934,7 +934,7 @@ function showBull2(id,name){
 		},
 		success:function(data){
 			if(data&&data.length>0){
-				var c="<div style='width:530px;height:120px;overflow:auto;padding:20px 25px;'>";
+				var c="<div style='min-width:450px;min-height:100px;overflow:auto;padding:20px 25px;'>";
 					c+="<div>";
 				c+=data[0].BULLETINDESC;
 					c+="</div><br/>";
@@ -956,8 +956,8 @@ function showBull2(id,name){
 				art.dialog({
 				    title: data[0].BULLNAME,
 				    content: c,
-				    width:530,
-				    height:150,
+				    width:'auto',
+				    height:'auto',
 				    padding: 0,
 				    lock:true,
 				    button:[{name: '已阅', callback: function () {addAlertBull(id,bullName);}}] 
