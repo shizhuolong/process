@@ -136,11 +136,11 @@ function search(pageNumber) {
 					content+="<tr>"
 					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 					+"<td>"+isNull(n['NAME'])+"</td>"
-					+"<td>"+isNull(n['JOB_TYPE'])+"</td>"
 					+"<td>"+isNull(n['JOB'])+"</td>"
 					+"<td>"+isNull(n['HR_ID'])+"</td>"
 					+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
 					+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+					+"<td>"+isNull(n['IS_LOGO'])+"</td>"
 				 +"<td></td>";
 					content+="</tr>";
 				 });
@@ -202,6 +202,10 @@ function initPagination(totalCount) {
 function isNull(obj){
 	if(obj == undefined || obj == null) {
 		return "";
+	}else if(obj=="0"){
+		return "否";
+	}else if(obj=="1"){
+		return "是";
 	}
 	return obj;
 }
@@ -217,12 +221,12 @@ function downloadExcel() {
 	
 	var sql = "";
 	 if(orgLevel == "1") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,IS_LOGO FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
 	 }
 	 if(orgLevel == "2") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,IS_LOGO FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
 	 }else if(orgLevel == "3") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,IS_LOGO FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
 	 }
 	if(name!=""){
 		sql+=" AND NAME LIKE '%"+name+"%'"; 
@@ -242,7 +246,7 @@ function downloadExcel() {
 	sql += " ORDER BY GROUP_ID_1,UNIT_ID,HR_ID";
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['营服','姓名','类别','岗位','HR编码','从业类型','生效时间'];
+   var _head=['营服','姓名','类别','岗位','HR编码','从业类型','生效时间','是否打标'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
