@@ -150,11 +150,11 @@ function search(pageNumber) {
 				content+="<tr>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['NAME'])+"</td>"
-				+"<td>"+isNull(n['JOB_TYPE'])+"</td>"
 				+"<td>"+isNull(n['JOB'])+"</td>"
 				+"<td>"+isNull(n['HR_ID'])+"</td>"
 				+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
 				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+				+"<td>"+isNull(n['IS_LOGO'])+"</td>"
 			 +"<td><a onclick='update($(this))' chooseMonth='"+chooseMonth+"' job='"+isNull(n['JOB'])+"' is_logo='"+isNull(n['IS_LOGO'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
 			 		"<a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
@@ -164,11 +164,11 @@ function search(pageNumber) {
 					content+="<tr>"
 					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 					+"<td>"+isNull(n['NAME'])+"</td>"
-					+"<td>"+isNull(n['JOB_TYPE'])+"</td>"
 					+"<td>"+isNull(n['JOB'])+"</td>"
 					+"<td>"+isNull(n['HR_ID'])+"</td>"
 					+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
 					+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
+					+"<td>"+isNull(n['IS_LOGO'])+"</td>"
 					+"<td></td>";
 					content+="</tr>";
 				 });
@@ -221,12 +221,12 @@ function downloadExcel() {
 	
 	var sql = "";
 	 if(orgLevel == "1") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,IS_LOGO FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,CASE IS_LOGO WHEN '1' THEN '是' ELSE '否' END FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
 	 }
 	 if(orgLevel == "2") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,IS_LOGO FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,CASE IS_LOGO WHEN '1' THEN '是' ELSE '否' END FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE GROUP_ID_1 = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
 	 }else if(orgLevel == "3") {
-		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,IS_LOGO FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
+		sql = "SELECT UNIT_NAME,NAME,JOB_TYPE,JOB,HR_ID,EMP_TYPE,ACTIVE_TIME,CASE IS_LOGO WHEN '1' THEN '是' ELSE '否' END FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE UNIT_ID = '"+code+"' AND DEAL_DATE='"+chooseMonth+"' AND IS_VALUE='1'";
 	 }
 	if(name!=""){
 		sql+=" AND NAME LIKE '%"+name+"%'"; 
