@@ -96,18 +96,18 @@
 							<tr>
 								<th class="first">营服中心</th>
 								<th>姓名</th>
-								<th>类别</th>
 								<th>岗位</th>
 								<th>HR编码</th>
 								<th>从业类型</th>
 								<th>生效时间</th>
+								<th>是否打标</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody id="dataBody">
 						</tbody>
 						<tr>
-							<td colspan="6">
+							<td colspan="8">
 								</div>
 									<div class="page_count">
 										<div class="page_count_left">
