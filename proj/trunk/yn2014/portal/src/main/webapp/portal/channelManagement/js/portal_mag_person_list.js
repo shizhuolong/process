@@ -88,7 +88,7 @@ function add() {
 	art.dialog.open(url,{
 		id:'add',
 		width:'520px',
-		height:'180px',
+		height:'200px',
 		padding:'0 0',
 		lock:true,
 		resize:false,
