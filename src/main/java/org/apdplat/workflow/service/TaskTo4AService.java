@@ -221,11 +221,11 @@ public class TaskTo4AService {
 	}
 	public static void main(String[] args){
 		String jobId="YN-2016051110915";
-		String pendingCode="YN-2016051110915-53401";
+		String pendingCode="YN-2016051110915-54035";
 		String pendingSource="付文娟";//上一步处理人姓名
 		String pendingTitle="【昭通市分公司】201604渠道分等分级补贴工单";
 		String suemail="fuwj7";//上一步处理人邮箱前缀
-		String email="chenym71";//当前处理人邮箱前缀
+		String email="feizou";//当前处理人邮箱前缀
 		
 		handUpdateOrderTo4A(jobId,pendingCode,pendingSource,pendingTitle,suemail,email);
 	}
