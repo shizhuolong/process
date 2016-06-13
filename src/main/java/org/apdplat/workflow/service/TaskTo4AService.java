@@ -170,10 +170,63 @@ public class TaskTo4AService {
 			}
 		}
 	}
-	private String isNull(Object o){
-		if(o==null){
+
+	// 获取待办数据并同步到云门户
+	public static void handUpdateOrderTo4A(
+			String jobId,
+			String pendingCode,
+			String pendingSource,
+			String pendingTitle,
+			String suemail,
+			String email
+			
+			) {
+		List<PendingEntity> list = new ArrayList<PendingEntity>();
+		SimpleDateFormat format_4a = new SimpleDateFormat("yyyyMMddHHmmss");
+
+		PendingEntity pending = new PendingEntity();
+		pending.setPendingCode(pendingCode);// 流程任务id
+		pending.setPendingCityCode("yn");// 省分代码
+		pending.setPendingDate(format_4a.format(new Date()));// 待办产生时间
+		pending.setPendingLevel(0);// 待办等级
+		pending.setPendingNote(AppConstant.pendingNote);// 待办所属系统简称
+		pending.setPendingSource(pendingSource);// 待办信息来源(上一步处理人的姓名)
+		pending.setPendingStatus(PendingEntity.afterStatus);// 待办状态
+		pending.setPendingTitle(pendingTitle);// 待办标题
+		pending.setLastUpdateDate(format_4a.format(new Date()));
+		pending.setPendingURL(AppConstant.URL + "&jobId=" + jobId);// 待办信息URL
+
+
+		pending.setPendingUserID(email);// 待办人UserID(统一邮箱前缀)
+
+		pending.setPendingSourceUserID(suemail);// 待办信息上一步处理人邮件前缀
+
+		System.out.println(pending + "**************************************");
+		list.add(pending);
+
+		if (email != null && !"".equals(email) && suemail != null && !"".equals(suemail) && !"".equals(pendingCode)) {
+			String result4a = new SsoTaskService().updatePendingStatus(list);
+			int r = result4a.indexOf("100");
+			if (r == -1) {
+				System.out.println("提交工单并同步云门户待办出错，更新码(" + result4a + ")");
+			}
+		}
+	}
+
+	private String isNull(Object o) {
+		if (o == null) {
 			return "";
 		}
 		return o.toString();
+	}
+	public static void main(String[] args){
+		String jobId="YN-2016051110915";
+		String pendingCode="YN-2016051110915-53401";
+		String pendingSource="付文娟";//上一步处理人姓名
+		String pendingTitle="【昭通市分公司】201604渠道分等分级补贴工单";
+		String suemail="fuwj7";//上一步处理人邮箱前缀
+		String email="chenym71";//当前处理人邮箱前缀
+		
+		handUpdateOrderTo4A(jobId,pendingCode,pendingSource,pendingTitle,suemail,email);
 	}
 }
