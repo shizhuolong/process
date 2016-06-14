@@ -1,6 +1,6 @@
 var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE"];
-var title=[["账期","地市","基层单元","人员名","渠道编码","渠道名","金额","工单","备注"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE","IS_SUCCESS","REMARKS","ITEM"];
+var title=[["账期","地市","基层单元","人员名","渠道编码","渠道名","金额","工单","备注","比对代码","比对结果","比对科目"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -49,6 +49,7 @@ function search(pageNumber) {
 	var regionCode=$("#regionName").val();
 	var unitId=$("#unitName").val();
 	var channelCode=$.trim($("#channelCode").val());
+	var workOrder = $.trim($("#workOrder").val());
 	var sql = 	"SELECT T.DEAL_DATE,                     "+
 				"       T.GROUP_ID_1_NAME,               "+
 				"       T.UNIT_NAME,                     "+
@@ -57,7 +58,10 @@ function search(pageNumber) {
 				"       T.DEV_CHNL_NAME,                 "+
 				"       T.FEE,                           "+
 				"       T.INIT_ID,                       "+
-				"       T.BD_TYPE                        "+
+				"       T.BD_TYPE,                        "+
+				"       DECODE(T.IS_SUCCESS,1,'成功',0,'未对比',2,'渠道工单相同,金额不同',3,'渠道金额相同,工单不同',4,'渠道相同,工单金额不同',5,'渠道不存在',6,'最终录入无工单') AS IS_SUCCESS,                     "+
+				"       T.REMARKS,                       "+
+				"       T.ITEM                           "+
 				"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE 1 = 1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -82,7 +86,9 @@ function search(pageNumber) {
 	if(channelCode!=''){
 		sql+=" AND T.FD_CHNL_ID ='"+channelCode+"'";
 	}
-	
+	if(workOrder!=''){
+		sql+=" AND T.INIT_ID LIKE '%"+workOrder+"%'";
+	}
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -117,21 +123,25 @@ function search(pageNumber) {
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	//var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE"];
-	var title=[["账期","地市","基层单元","人员名","渠道编码","渠道名","金额","工单","备注"]];
+	var title=[["账期","地市","基层单元","人员名","渠道编码","渠道名","金额","工单","备注","比对代码","比对结果","比对科目"]];
 	var dealDate=$("#dealDate").val();
 	var regionCode=$("#regionName").val();
 	var unitId=$("#unitName").val();
 	var channelCode=$.trim($("#channelCode").val());
+	var workOrder = $.trim($("#workOrder").val());
 	var sql = 	"SELECT T.DEAL_DATE,                     "+
-				"       T.GROUP_ID_1_NAME,               "+
-				"       T.UNIT_NAME,                     "+
-				"       T.HR_ID_NAME,                    "+
-				"       T.FD_CHNL_ID,                    "+
-				"       T.DEV_CHNL_NAME,                 "+
-				"       T.FEE,                           "+
-				"       T.INIT_ID,                       "+
-				"       T.BD_TYPE                        "+
-				"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE 1 = 1 ";
+	"       T.GROUP_ID_1_NAME,               "+
+	"       T.UNIT_NAME,                     "+
+	"       T.HR_ID_NAME,                    "+
+	"       T.FD_CHNL_ID,                    "+
+	"       T.DEV_CHNL_NAME,                 "+
+	"       T.FEE,                           "+
+	"       T.INIT_ID,                       "+
+	"       T.BD_TYPE,                        "+
+	"       DECODE(T.IS_SUCCESS,1,'成功',0,'未对比',2,'渠道工单相同,金额不同',3,'渠道金额相同,工单不同',4,'渠道相同,工单金额不同',5,'渠道不存在',6,'最终录入无工单') AS IS_SUCCESS,                     "+
+	"       T.REMARKS,                       "+
+	"       T.ITEM                           "+
+	"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE 1 = 1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -154,6 +164,9 @@ function downsAll(){
 	}
 	if(channelCode!=''){
 		sql+=" AND T.FD_CHNL_ID ='"+channelCode+"'";
+	}
+	if(workOrder!=''){
+		sql+=" AND T.INIT_ID LIKE '%"+workOrder+"%'";
 	}
 	
 	showtext = '手工佣金+渠道补贴(最终)-'+dealDate;

@@ -81,6 +81,10 @@
 					<td width="10%">
 						<input class="default-text-input wper80" name="channelCode" type="text" id="channelCode"/>
 					</td>
+					<td width="5%" style="text-align:right;">工单号：</td>
+					<td width="10%">
+						<input class="default-text-input wper80" name="workOrder" type="text" id="workOrder"/>
+					</td>
 				</tr>
 			</table>
 		</form>
