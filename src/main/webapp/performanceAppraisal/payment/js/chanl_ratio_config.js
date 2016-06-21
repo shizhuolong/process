@@ -2,6 +2,7 @@ var pageSize = 15;
 var orgId = "";
 var orgLevel = "";
 var code = "";
+var initDate="";
 var UPDATE_ROLE = "ROLE_MANAGER_PERFORMANCEAPPRAISAL_KHJL_QDXSPZ_UPDATEPART";
 $(function() {
 	//从用户登录信息中获取初始化根节点
@@ -9,6 +10,7 @@ $(function() {
 	code = $("#code").val();
 	orgId = $("#orgId").val();
 	var initOrgName = $("#orgName").val();
+	initDate=$("#month").val();
 	var setting = {
 		async : {
 			enable : true,
@@ -82,23 +84,52 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		$.each(pages.rows,function(i,n){
-				content+="<tr>"
-				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
-				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
-				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
-				+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>"
-				+"<td>"+isNull(n['CHNL_TYPE'])+"</td>"
-				+"<td>"+isNull(n['RATIO'])+"</td>"
-				+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
-				+"<td>"+isNull(n['STATUS'])+"</td>";
-				if(isGrantedNew(UPDATE_ROLE)) {
+	   		if($("#username").val()=='admin'){
+	   			$.each(pages.rows,function(i,n){
+					content+="<tr>"
+					+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+					+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+					+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>"
+					+"<td>"+isNull(n['CHNL_TYPE'])+"</td>"
+					+"<td>"+isNull(n['RATIO'])+"</td>"
+					+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
+					+"<td>"+isNull(n['STATUS'])+"</td>";
 					content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
-				} else {
-					content+="<td>&nbsp;</td>";
-				}
-				content+="</tr>";
-			});
+					content+="</tr>";
+				});
+	   		}else{
+	   			if(initDate==month){
+	   				$.each(pages.rows,function(i,n){
+						content+="<tr>"
+						+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+						+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+						+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+						+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>"
+						+"<td>"+isNull(n['CHNL_TYPE'])+"</td>"
+						+"<td>"+isNull(n['RATIO'])+"</td>"
+						+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
+						+"<td>"+isNull(n['STATUS'])+"</td>";
+						content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
+						content+="</tr>";
+					});
+	   			}else{
+	   				$.each(pages.rows,function(i,n){
+						content+="<tr>"
+						+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+						+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+						+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+						+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>"
+						+"<td>"+isNull(n['CHNL_TYPE'])+"</td>"
+						+"<td>"+isNull(n['RATIO'])+"</td>"
+						+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
+						+"<td>"+isNull(n['STATUS'])+"</td>";
+						content+="<td>&nbsp;&nbsp;</td>";
+						content+="</tr>";
+					});
+	   			}
+	   		}
+	   		
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {
