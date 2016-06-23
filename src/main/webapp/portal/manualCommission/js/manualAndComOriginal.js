@@ -54,7 +54,7 @@ function search(pageNumber) {
 				"       T.FEE,                           "+
 				"       T.INIT_ID,                       "+
 				"       T.BD_TYPE,                       "+
-				"       DECODE(T.IS_SUCCESS,1,'成功',0,'未对比',2,'渠道工单相同,金额不同',3,'渠道金额相同,工单不同') AS IS_SUCCESS,                     "+
+				"       IS_SUCCESS ,                     "+
 				"       T.REMARKS,                       "+
 				"       T.ITEM                           "+
 				"  FROM PMRT.TAB_MRT_COMM_YS_DATA_MON T  WHERE T.IS_OPEN = 1 AND T.DEAL_DATE ="+dealDate;
@@ -157,7 +157,7 @@ function downsAll(){
 	"       T.FEE,                           "+
 	"       T.INIT_ID,                       "+
 	"       T.BD_TYPE,                       "+
-	"       DECODE(T.IS_SUCCESS,1,'成功',0,'未对比',2,'渠道工单相同,金额不同',3,'渠道金额相同,工单不同') AS IS_SUCCESS,                     "+
+	"       IS_SUCCESS ,                     "+
 	"       T.REMARKS,                       "+
 	"       T.ITEM                           "+
 	"  FROM PMRT.TAB_MRT_COMM_YS_DATA_MON T  WHERE T.IS_OPEN = 1 AND T.DEAL_DATE ="+dealDate;
