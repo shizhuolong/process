@@ -152,7 +152,7 @@ function editChanlConfig(ele) {
 	art.dialog.open(url,{
 		id:'updateChanlConfig',
 		width:'630px',
-		height:'180px',
+		height:'150px',
 		padding:'0 0',
 		lock:true,
 		resize:false,
