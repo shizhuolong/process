@@ -1,22 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Calendar"%>
-<%@page import="org.apdplat.module.security.model.Org"%>
-<%@page import="org.apdplat.module.security.service.UserHolder"%>
-<%@page import="org.apdplat.module.security.model.User"%>
 <%
-	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.MONTH, -1);
-	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
-	User user = UserHolder.getCurrentLoginUser();
-	Org org = user.getOrg();
+	//科目id
+	String dbTypeId = request.getParameter("dbTypeId");
+	//地市编码
+	String groupId = request.getParameter("groupId");
+	//帐期
+	String dealDate = request.getParameter("dealDate");
+	
+	String successNum = request.getParameter("successNum");
+	
+	String failNum = request.getParameter("failNum");
+	
+	String detailType = request.getParameter("detailType"); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>对比报表详细信息</title>
+<title>对比报表详细信息(<%=detailType %>)</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -27,44 +29,24 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/manualCommission/js/compareReportDetail.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/manualCommission/js/compareReportClassfyDetail.js"></script>
 </head>
 <body class="" style="overflow-x: auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id=region value="<%=org.getRegionCode()%>">
+	<input type="hidden" id="dbTypeId" value="<%=dbTypeId%>">
+	<input type="hidden" id="groupId" value="<%=groupId%>">
+	<input type="hidden" id="dealDate" value="<%=dealDate%>">
+	<input type="hidden" id="successNum" value="<%=successNum%>">
+	<input type="hidden" id="failNum" value="<%=failNum%>">
+	<input type="hidden" id="detailType" value="<%=detailType%>">
 	<form id="searchForm" method="post">
 		<table width="100%" style="margin: 10px 0; border: none;">
 			<tr height="35px">
-				<td width="5%" style="padding-left: 10px;" align="right">账期：</td>
-				<td width="10%">
-					<input type="text" class="Wdate default-text-input wper80" 
-					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})"value="<%=dealDate%>" id="dealDate" curMonth="<%=dealDate%>">
-				</td>
-				<td width="5%" align="right">地市：</td>
-				<td width="10%">
-					<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
-						<option value=''>请选择</option>
-					</select>
-				</td>
-				<td width="5%" align="right">营服中心：</td>
-				<td width="10%">
-					<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
-						<option value=''>请选择</option>
-					</select>
-				</td>
-			
+				<td width="6%">渠道编码：</td>
+				<td width="15%"><input class="default-text-input wper80" name="channelCode" type="text" id="channelCode" /></td>
 				<td width="5%"><a class="default-btn" href="#" id="searchBtn" style="float: right; margin-right: 30px;">查询</a></td>
 				<td width="5%"><a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a></td>
 			</tr>
-			<tr>
-				<td width="6%" align="right">渠道编码：</td>
-				<td width="10%"><input class="default-text-input wper80" name="channelCode" type="text" id="channelCode" /></td>
-				<td width="6%" align="right">工单号：</td>
-				<td width="10%"><input class="default-text-input wper80" name="workOrder" type="text" id="workOrder" /></td>
-			</tr>
-			<!-- <ul id="showWorkOrder"></ul> -->
 		</table>
 	</form>
 	<div id="lchcontent"></div>
