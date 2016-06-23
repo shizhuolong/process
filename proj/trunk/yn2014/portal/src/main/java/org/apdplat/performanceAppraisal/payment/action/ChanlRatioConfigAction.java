@@ -106,6 +106,7 @@ public class ChanlRatioConfigAction extends BaseAction {
 			String ratio = request.getParameter("ratio");
 			String group_id_1 = request.getParameter("group_id_1");
 			String month = request.getParameter("month");
+			String username = request.getParameter("username");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("groupcode", groupcode);
 			params.put("groupname", groupname);
@@ -114,8 +115,9 @@ public class ChanlRatioConfigAction extends BaseAction {
 			params.put("server_ratio", server_ratio);
 			params.put("month", month);
 			params.put("is_all", is_all);
+			params.put("username", username);
 			chanlRatioConfigService.updateChanlRatio(params);
-			this.reponseJson("操作成功");
+			this.reponseJson("修改成功！");
 		} catch (Exception e) {
 			logger.error("修改渠道系数信息失败",e);
 			this.reponseJson("修改渠道系数信息失败");
