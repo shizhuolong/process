@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%
+	User user = UserHolder.getCurrentLoginUser();
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,6 +24,7 @@
 	<div class="default-dt" style="width: 620px;">
 		<div class="sticky-wrap" style="height: 100px;">
 			<form id="updateChanlRatioForm" method="POST">
+			    <input type="hidden" id="username" name="username" value="<%=user.getUsername()%>"/>
 				<input type="hidden" name="groupcode" id="groupcode">
 				<input type="hidden" name="groupname" id="groupname">
 				<input type="hidden" name="group_id_1" id="group_id_1">
