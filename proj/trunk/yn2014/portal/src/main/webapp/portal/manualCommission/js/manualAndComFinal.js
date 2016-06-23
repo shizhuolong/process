@@ -58,11 +58,11 @@ function search(pageNumber) {
 				"       T.DEV_CHNL_NAME,                 "+
 				"       T.FEE,                           "+
 				"       T.INIT_ID,                       "+
-				"       T.BD_TYPE,                        "+
-				"       DECODE(T.IS_SUCCESS,1,'成功',0,'未对比',2,'渠道工单相同,金额不同',3,'渠道金额相同,工单不同',4,'渠道相同,工单金额不同',5,'渠道不存在',6,'最终录入无工单') AS IS_SUCCESS,                     "+
+				"       T.BD_TYPE,                       "+
+				"       T.IS_SUCCESS,                    "+
 				"       T.REMARKS,                       "+
 				"       T.ITEM                           "+
-				"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE 1 = 1 ";
+				"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE T.DEAL_DATE= '"+dealDate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -137,11 +137,11 @@ function downsAll(){
 	"       T.DEV_CHNL_NAME,                 "+
 	"       T.FEE,                           "+
 	"       T.INIT_ID,                       "+
-	"       T.BD_TYPE,                        "+
-	"       DECODE(T.IS_SUCCESS,1,'成功',0,'未对比',2,'渠道工单相同,金额不同',3,'渠道金额相同,工单不同',4,'渠道相同,工单金额不同',5,'渠道不存在',6,'最终录入无工单') AS IS_SUCCESS,                     "+
+	"       T.BD_TYPE,                       "+
+	"       T.IS_SUCCESS,                    "+
 	"       T.REMARKS,                       "+
 	"       T.ITEM                           "+
-	"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE 1 = 1 ";
+	"  FROM PMRT.TAB_MRT_COMM_JZ_DATA_MON T  WHERE T.DEAL_DATE= '"+dealDate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();

@@ -45,13 +45,14 @@ function search(pageNumber) {
 				content+="<tr>" +
 							"<td>"+isNull(n['DEAL_DATE'])+"</td>" +
 							"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>" +
+							"<td>"+isNull(n['ITEM'])+"</td>" +
 							"<td>"+isNull(n['BD_TYPE_ID'])+"</td>" +
 							"<td>"+isNull(n['BD_TYPE'])+"</td>" +
 							"<td>"+isNull(n['INI_NUM'])+"</td>" +
 							"<td>"+isNull(n['INIT_FEE'])+"</td>" +
-							"<td>"+isNull(n['SUCESS_NUM'])+"</td>" +
+							"<td><a href='#' dealDate='"+isNull(n['DEAL_DATE'])+"' groupId='"+isNull(n['GROUP_ID_1'])+"'  dbTypeId='"+isNull(n['BD_TYPE_ID'])+"' successNum='1' failNum='' detailType='成功'  onclick='showDetails(this);'>"+isNull(n['SUCESS_NUM'])+"</a></td>" +
 							"<td>"+isNull(n['SUCCESS_FEE'])+"</td>" +
-							"<td><a href='#' dealDate='"+isNull(n['DEAL_DATE'])+"' groupId='"+isNull(n['GROUP_ID_1'])+"'  dbTypeId='"+isNull(n['BD_TYPE_ID'])+"' onclick='showDetails(this);'>"+isNull(n['FAIL_NUM'])+"</a></td>" +
+							"<td><a href='#' dealDate='"+isNull(n['DEAL_DATE'])+"' groupId='"+isNull(n['GROUP_ID_1'])+"'  dbTypeId='"+isNull(n['BD_TYPE_ID'])+"' successNum='' failNum='1'  detailType='失败' onclick='showDetails(this);'>"+isNull(n['FAIL_NUM'])+"</a></td>" +
 							"<td>"+isNull(n['FAIL_FEE_YL'])+"</td>" +
 							"<td>"+isNull(n['FAIL_FEE_SL'])+"</td>" +
 							"<td>"+isNull(n['FAIL_FEE_XY'])+"</td>" +
@@ -80,8 +81,17 @@ function showDetails(ele) {
 	var groupId = $(ele).attr("groupId");
 	//科目id
 	var dbTypeId = $(ele).attr("dbTypeId");
-	var url = $("#ctx").val()+"/portal/manualCommission/jsp/compareReportDetail.jsp?dealDate="+dealDate+"&groupId="+groupId+"&dbTypeId="+dbTypeId;
-	window.parent.openWindow("对比报表详细信息",'funMenu',url);
+	var successNum=$(ele).attr("successNum");
+	var failNum= $(ele).attr("failNum");
+	var detailType=$(ele).attr("detailType");
+	var url = $("#ctx").val()+"/portal/manualCommission/jsp/compareReportClassfyDetail.jsp?dealDate="+dealDate+"&groupId="+groupId+"&dbTypeId="+dbTypeId+"&detailType="+detailType;
+	if(successNum!=''){
+		url+="&successNum="+successNum;
+	}
+	if(failNum!=''){
+		url+="&failNum="+failNum;
+	}
+	window.parent.openWindow("对比报表详细信息("+detailType+")",'funMenu',url);
 }
 
 
@@ -114,6 +124,7 @@ function downloadExcel() {
 	var regionCode =$.trim($("#regionCode").val());
 	var sql = "SELECT DEAL_DATE,                          "+
 			"	GROUP_ID_1_NAME,                        "+
+			"	ITEM,                             		"+
 			"	BD_TYPE_ID,                             "+
 			"	BD_TYPE,                                "+
 			"	SUM(INIT_NUM) INI_NUM,                  "+
@@ -132,10 +143,10 @@ function downloadExcel() {
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 ='"+regionCode+"'";
 	}
-	sql+=" GROUP BY DEAL_DATE, GROUP_ID_1_NAME, BD_TYPE_ID, BD_TYPE";
+	sql+=" GROUP BY DEAL_DATE, GROUP_ID_1_NAME, BD_TYPE_ID, BD_TYPE,ITEM";
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['帐期','地市名称','科目id','科目备注','工单总数','工单总额','对比成功工单总数','对比成功过工单总额','失败工单数','失败应录金额','失败实录金额','失败差异金额'];
+   var _head=['帐期','地市名称','科目','比对项目','比对备注','工单总数','工单总额','对比成功工单总数','对比成功过工单总额','失败工单数','失败应录金额','失败实录金额','失败差异金额'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
