@@ -105,7 +105,7 @@ function isGrantedNew(role){
                      <td>账期：</td>
 					<td>
 						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month%>" readonly="readonly" id="month"/>
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',onpicked:function(){search(0)},isShowClear:false})" value="<%=month%>" readonly="readonly" id="month"/>
 					</td> 
                 </tr>
                 <tr height="35px">
