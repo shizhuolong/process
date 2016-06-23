@@ -9,6 +9,7 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
+	ca.add(Calendar.MONTH, -1);
 	String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -88,12 +89,13 @@
 							<tr>
 								<th class="first">帐期</th>
 								<th>地市名称</th>
-								<th>科目id</th>
-								<th>科目备注</th>
+								<th>科目</th>
+								<th>比对项目</th>
+								<th>比对备注</th>
 								<th>工单总数</th>
 								<th>工单总额</th>
-								<th>对比成功工单总数</th>
-								<th>对比成功过工单总额</th>
+								<th>成功工单总数</th>
+								<th>成功过工单总额</th>
 								<th>失败工单数</th>
 								<th>失败应录金额</th>
 								<th>失败实录金额</th>
@@ -103,8 +105,7 @@
 						<tbody id="dataBody">
 						</tbody>
 						<tr>
-						<td colspan="12">
-							</div>
+						<td colspan="13">
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据
