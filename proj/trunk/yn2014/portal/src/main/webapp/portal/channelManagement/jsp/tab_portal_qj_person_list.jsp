@@ -76,7 +76,7 @@
                     <td width="6%" style="padding-left: 10px;">账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time">
+						onclick="WdatePicker({skin:'whyGreen',onpicked:controll(),dateFmt:'yyyyMM'})" value="<%=time%>" id="time">
 					</td>
 				 </tr>	
                 <tr>
