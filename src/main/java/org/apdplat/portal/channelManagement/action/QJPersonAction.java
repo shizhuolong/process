@@ -31,6 +31,7 @@ public class QJPersonAction extends BaseAction {
 	private String unit_name;
 	private String time;
 	private String emp_type;
+	private String hr_ratio;
 	
 	
 	public void listTreeNode() {
@@ -79,7 +80,7 @@ public class QJPersonAction extends BaseAction {
 		Map<String,String> r=qjPersonService.isHrIdRepeat(hr_id);
 		Map<String,String> result=new HashMap<String,String>();
 		if(r!=null&&!r.isEmpty()){
-			result.put("message","主管编码重复");
+			result.put("message","主管编码重复!");
 		}
 		this.reponseJson(result);
 	}
@@ -94,7 +95,7 @@ public class QJPersonAction extends BaseAction {
 		m.put("code",code);
 		m.put("user_code",user_code);
 		qjPersonService.insertToResult(m);
-		this.reponseJson("新增成功");
+		this.reponseJson("新增成功!");
 	}
 	public void update(){
 		Map<String,String> m=new HashMap<String,String>();
@@ -103,11 +104,12 @@ public class QJPersonAction extends BaseAction {
 		m.put("is_logo",request.getParameter("is_logo"));
 		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		m.put("hr_id",hr_id);
+		m.put("hr_ratio",hr_ratio);
 		try {
 			qjPersonService.updateToResult(m);
-			this.reponseJson("修改成功");
+			this.reponseJson("修改成功!");
 		} catch (Exception e) {
-			this.reponseJson("修改失敗");
+			this.reponseJson("修改失敗!");
 		}
 		
 	}
@@ -216,6 +218,14 @@ public class QJPersonAction extends BaseAction {
 
 	public void setUser_code(String user_code) {
 		this.user_code = user_code;
+	}
+
+	public String getHr_ratio() {
+		return hr_ratio;
+	}
+
+	public void setHr_ratio(String hr_ratio) {
+		this.hr_ratio = hr_ratio;
 	}
 
 	
