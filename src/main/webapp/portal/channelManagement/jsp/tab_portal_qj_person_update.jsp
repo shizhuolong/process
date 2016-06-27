@@ -27,18 +27,22 @@
 				<table class="default-table sticky-enabled">
 				<tr>
 					<td>工作岗位：
-					<select name="job" id="job" class="easyui-validatebox">
-				    </select>
-				 </td>
+					  <select name="job" id="job" class="easyui-validatebox">
+				      </select>
+				    </td>
 				</tr>
 				<tr>
 					<td>是否打标：
-					<select name="is_logo" id="is_logo" class="easyui-validatebox">
+					  <select name="is_logo" id="is_logo" class="easyui-validatebox">
 				       <option value=''>请选择</option>
 				       <option value='1'>是</option>
 				       <option value='0'>否</option>
-				    </select>
-				 </td>
+				      </select>
+				    </td>
+				</tr>
+				<tr>
+				  <td>HR系数：<input type="text" class="easyui-validatebox" name="hr_ratio" id="hr_ratio"/>
+				  </td>
 				</tr>
 				<tr>
 	                <td colspan="2" style="padding-left: 120px;">

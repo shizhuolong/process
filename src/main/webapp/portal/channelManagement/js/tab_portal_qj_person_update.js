@@ -3,9 +3,11 @@ $(function() {
 	var hr_id=art.dialog.data('hr_id');
 	var job=art.dialog.data('job');
 	var is_logo=art.dialog.data('is_logo');
+	var hr_ratio=art.dialog.data('hr_ratio');
 	var chooseMonth=art.dialog.data('chooseMonth');
 	$("#is_logo").val(is_logo);
 	$("#job").val(job);
+	$("#hr_ratio").val(hr_ratio);
 	$("#hr_id").val(hr_id);
 	$("#chooseMonth").val(chooseMonth);
 	//关闭dailog
