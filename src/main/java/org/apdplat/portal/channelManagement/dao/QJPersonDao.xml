@@ -30,7 +30,7 @@
 	<select id="queryMagPerson" parameterType="java.util.Map"
 		resultType="java.util.Map">
 		<if test="orgLevel==1">
-			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T
+			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON T
 			WHERE T.IS_VALUE='1'
 			AND
 			T.DEAL_DATE=#{chooseMonth}
@@ -55,7 +55,7 @@
 			ORDER BY T.GROUP_ID_1,T.UNIT_ID,T.HR_ID
 		</if>
 		<if test="orgLevel==2">
-			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T
+			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON T
 			WHERE T.GROUP_ID_1 =
 			#{code} AND T.IS_VALUE='1'
 			AND T.DEAL_DATE=#{chooseMonth}
@@ -80,7 +80,7 @@
 			ORDER BY T.UNIT_ID,T.HR_ID
 		</if>
 		<if test="orgLevel==3">
-			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T
+			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON T
 			WHERE T.UNIT_ID = #{code}
 			AND T.IS_VALUE='1'
 			AND T.DEAL_DATE=#{chooseMonth}
@@ -105,22 +105,22 @@
 			ORDER BY T.HR_ID
 		</if>
 		<if test="orgLevel==4">
-			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T
+			SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON T
 			WHERE 1=2
 		</if>
 	</select>
 
 	<delete id="del" parameterType="java.util.Map">
-		DELETE PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T WHERE T.HR_ID=#{hr_id}
+		DELETE PORTAL.TAB_PORTAL_QJ_PERSON T WHERE T.HR_ID=#{hr_id}
 		AND T.DEAL_DATE=#{month}
 	</delete>
 	<select id="isHrIdRepeat" parameterType="java.lang.String"
 		resultType="java.util.Map">
-		SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 WHERE HR_ID=#{hr_id} AND
+		SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE HR_ID=#{hr_id} AND
 		IS_VALUE='1' AND DEAL_DATE=to_char(sysdate,'yyyymm')
 	</select>
 	<insert id="insertToResult" parameterType="java.util.Map">
-		INSERT INTO PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13(UNIT_NAME,
+		INSERT INTO PORTAL.TAB_PORTAL_QJ_PERSON(UNIT_NAME,
 		NAME,
 		JOB_TYPE,
 		JOB,
@@ -164,13 +164,13 @@
 		ON (T2.GROUP_ID_1 = T4.GROUP_ID_1)
 		WHERE T2.UNIT_NAME = #{unit_name}
 		AND T2.GROUP_ID_1 = #{code}
-		AND NOT EXISTS (SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T5 WHERE
+		AND NOT EXISTS (SELECT * FROM PORTAL.TAB_PORTAL_QJ_PERSON T5 WHERE
 		#{hr_id}=T5.HR_ID AND T5.IS_VALUE='1' AND
 		T5.DEAL_DATE=to_char(sysdate,'yyyymm'))
 	</insert>
 	
 	<update id="updateToResult" parameterType="java.util.Map">
-		UPDATE PORTAL.TAB_PORTAL_QJ_PERSON@ynsyn13 T SET T.JOB=#{job},
+		UPDATE PORTAL.TAB_PORTAL_QJ_PERSON T SET T.JOB=#{job},
 		T.USER_CODE=#{user_code},T.IS_LOGO=#{is_logo},
 		T.HR_RATIO=#{hr_ratio}
 		WHERE T.DEAL_DATE &gt;=#{chooseMonth} AND T.HR_ID=#{hr_id}
