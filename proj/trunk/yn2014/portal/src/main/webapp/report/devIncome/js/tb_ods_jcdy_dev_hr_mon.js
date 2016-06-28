@@ -1,6 +1,6 @@
 var nowData = [];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","SUBSCRIPTION_ID","DEVICE_NUMBER","NET_TYPE","HQ_CHAN_CODE"];
-var title=[["账期","地市名称","营服名称","HR编码","姓名","人员觉色","用户编号","用户号码","用户类型","渠道编码"]];
+var title=[["账期","地市名称","营服名称","HR编码","姓名","人员角色","用户编号","用户号码","用户类型","渠道编码"]];
 var orderBy='';	
 var report = null;
 $(function() {
