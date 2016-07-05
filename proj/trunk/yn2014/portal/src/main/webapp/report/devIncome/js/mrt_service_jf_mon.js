@@ -57,7 +57,7 @@ function search(pageNumber) {
 	var itemDesc =$.trim($("#itemDesc").val());
 
 	//条件
-	var sql = "SELECT DEAL_DATE,"+field.join(",")+" FROM PMRT.TB_MRT_SERVICE_JF_MON partition(p"+dealDate+") WHERE 1=1";
+	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_SERVICE_JF_MON partition(p"+dealDate+") WHERE 1=1";
 	
 	//选项框条件
 	if(regionCode!=''){
