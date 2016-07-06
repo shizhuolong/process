@@ -51,16 +51,28 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">网点：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="unit_id_3_name" type="text" id="unit_id_3_name"/>
-					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr height="35px">
+				    <td width="7%">网点：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="unit_id_3_name" type="text" id="unit_id_3_name"/>
+					</td>
+					<td width="7%">开始发展日期：</td>
+					<td width="13%">
+						<input type="text" class="Wdate default-text-input wper80"
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',maxDate:'#F{$dp.$D(\'mon\')}'})" id="startDevMonth">
+					</td>
+					<td width="7%">结束发展日期：</td>
+					<td width="13%">
+						<input type="text" class="Wdate default-text-input wper80" 
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',minDate:'#F{$dp.$D(\'startDevMonth\')}',maxDate:'#F{$dp.$D(\'mon\')}'})" id="endDevMonth">
 					</td>
 				</tr>
 			</table>
