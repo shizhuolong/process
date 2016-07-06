@@ -53,7 +53,7 @@
 		  AND A.TASK_ID=#{taskId}
 		  AND O.ID=U.ORG_ID) P
 		ON O.REGION_CODE=P.REGION_CODE
-		WHERE O.ORGLEVEL=2 AND O.CODE&lt;&gt;16017
+		WHERE O.ORGLEVEL=2 AND O.CODE&lt;&gt;16017 AND O.CODE&lt;&gt;16099
 		GROUP BY O.CODE,O.REGION_NAME
 	</select>
 	<select id="getDealersByTaskIdAndRegionCode" parameterType="java.util.Map"  resultType="java.util.Map">
