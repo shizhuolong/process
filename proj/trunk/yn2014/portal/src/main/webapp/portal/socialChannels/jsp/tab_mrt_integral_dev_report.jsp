@@ -20,31 +20,16 @@
 <title>当期兑换报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/socialChannels/js/tab_mrt_integral_dev_report.js"></script>
-<script type="text/javascript">
-	 var privileges='<%=user.getAuthoritiesStr()%>';
-	function isGrantedNew(role){
-	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
-	        return true;
-	    }
-	    if(privileges.toString().indexOf(role)==-1){
-	        return false;
-	    }
-	    return true;
-	}
-	var lastmonth="<%=time%>"; 
-</script>
 </head>
-<body class="" style="overflow-x:auto;">
+<body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
@@ -54,18 +39,18 @@
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;text-align:right;">账期：</td>
 					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
+						<input type="text"  class="Wdate default-text-input wper80" readonly
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time">
 					</td>
 					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="13%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionName" id="regionName" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="7%" style="text-align:right;">营服中心：</td>
 					<td width="13%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+						<select name="unitName" id="unitName" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
@@ -101,17 +86,5 @@
 			</table>
 		</form>
 		<div id="lchcontent"></div>
-		<div class="page_count">
-			<div class="page_count_left">
-				共有 <span id="totalCount"></span> 条数据
-			</div>
-			<div class="page_count_right">
-				<div id="pagination"></div>
-			</div>
-		</div>
-
 </body>
-<script>
-
-</script>
 </html>
