@@ -196,7 +196,7 @@ function regionSelect(){
 				"FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = 4 AND T.CODE = '"+group_id+"'";
 	}else {
 		sql = "SELECT T.GROUP_ID_1, T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE T " +
-		"WHERE T.GROUP_ID_1 NOT IN ('16099', '86000') ORDER BY T.GROUP_ID_1";
+		"WHERE T.GROUP_ID_1 NOT IN ('86000') ORDER BY T.GROUP_ID_1";
 	}
 	$.ajax({
 		type:"POST",
