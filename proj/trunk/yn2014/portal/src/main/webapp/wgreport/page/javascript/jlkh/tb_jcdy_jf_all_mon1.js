@@ -63,10 +63,10 @@ function search(pageNumber) {
 //条件
 	var sql = "SELECT "+getSelectSql();
 	if(regionName!=''){
-		sql+=" AND AREA_NAME = '"+regionName+"'";
+		sql+=" AND GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		sql+=" AND UNIT_NAME = '"+unitName+"'";
+		sql+=" AND UNIT_ID = '"+unitName+"'";
 	}
 	if(name!=''){
 		sql+=" AND USER_NAME like '%"+name+"%'";
@@ -94,7 +94,7 @@ function search(pageNumber) {
 		return;
 	}
 	//排序
-	var orderBy=" order by area_name,unit_name,user_name";
+	var orderBy=" ORDER BY GROUP_ID_1, UNIT_ID";
 	sql += orderBy;
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
@@ -192,19 +192,20 @@ function listRegions() {
 	}else{
 		sql+=" and 1=2";
 	}
+	sql+=" ORDER BY T.GROUP_ID_1";
 	//排序
 	var d=query(sql);
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
+			h += '<option value="' + d[0].GROUP_ID_1
 					+ '" selected >'
 					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
+			listUnits(d[0].GROUP_ID_1);
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
 			}
 		}
 		var $area = $("#regionName");
@@ -224,7 +225,7 @@ function listUnits(regionName){
 	/*var regionName=$("#regionName").val();*/
 	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1  ";
 	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_2_NAME='"+regionName+"' ";
+		sql+=" AND T.GROUP_ID_1='"+regionName+"' ";
 		//权限
 		var orgLevel=$("#orgLevel").val();
 		if(orgLevel==1){
@@ -240,17 +241,18 @@ function listUnits(regionName){
 		$unit.empty().append('<option value="" selected>请选择</option>');
 		return;
 	}
+	sql+=" ORDER BY T.UNIT_ID";
 	var d=query(sql);
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
+			h += '<option value="' + d[0].UNIT_ID
 					+ '" selected >'
 					+ d[0].UNIT_NAME + '</option>';
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
+				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
 			}
 		}
 		
@@ -278,11 +280,12 @@ function downsAll() {
 	 var sql = "SELECT DEAL_DATE,"+getSelectSql();
 	 
 
-	 if(regionName!=''){
-		sql+=" AND AREA_NAME = '"+regionName+"'";
+
+	if (regionName != '') {
+		sql += " AND GROUP_ID_1 = '" + regionName + "'";
 	}
-	if(unitName!=''){
-		sql+=" AND UNIT_NAME = '"+unitName+"'";
+	if (unitName != '') {
+		sql += " AND UNIT_ID = '" + unitName + "'";
 	}
 	if(name!=''){
 		sql+=" AND USER_NAME like '%"+name+"%'";
@@ -301,6 +304,8 @@ function downsAll() {
 		   sql+=" and 1=2 ";	 
 		 }
 	}
+	var orderBy=" ORDER BY GROUP_ID_1, UNIT_ID";
+	sql += orderBy;
 	showtext = '积分月汇总-'+time;
 	downloadExcel(sql,title,showtext);
 }
