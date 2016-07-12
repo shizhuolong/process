@@ -1,6 +1,6 @@
 var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","GROUP_ID_4_NAME","SUBSCRIPTION_ID","SERVICE_NUM","BRAND_TYPE_ID","INDEX_CODE","INDEX_VALUE","INNET_DATE","NET_TYPE","OFFICE_ID","OPERATOR_ID","PRODUCT_ID","SCHEME_ID","PRODUCT_FEE","SVC_TYPE","INTEGRAL_SUB","INTEGRAL_FEE"];
-var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标类代码","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值 ","积分内部代码","积分值"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","GROUP_ID_4_NAME","SUBSCRIPTION_ID","SERVICE_NUM","BRAND_TYPE_ID","INDEX_CODE","INDEX_VALUE","INNET_DATE","NET_TYPE","OFFICE_ID","OPERATOR_ID","PRODUCT_ID","SCHEME_ID","PRODUCT_FEE","SVC_TYPE","INTEGRAL_SUB","INTEGRAL_FEE","PR_USER","BLACK_USER"];
+var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标类代码","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值 ","积分内部代码","积分值","是否促销","是否黑户"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -89,8 +89,10 @@ function search(pageNumber) {
 	"       PRODUCT_FEE,                       "+
 	"       SVC_TYPE,                          "+
 	"       INTEGRAL_SUB,                      "+
-	"       INTEGRAL_FEE                       "+
-	"  from PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T  "+
+	"       INTEGRAL_FEE,                      "+
+	"CASE WHEN PR_USER = '1' THEN '是' ELSE '否' END PR_USER,"+
+    "CASE WHEN BLACK_USER = '1' THEN '是' ELSE '否' END BLACK_USER"+
+	"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T  "+
 	" WHERE 1 = 1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -118,9 +120,6 @@ function search(pageNumber) {
 	if(phone!=''){
 		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
 	}
-
-	
-	
 	
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
@@ -256,7 +255,7 @@ function roundN(number,fractionDigits){
 }   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标小类说明","指标类代码","指标类描述","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值 ","积分内部代码","积分值"]];
+	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标小类说明","指标类代码","指标类描述","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值 ","积分内部代码","积分值","是否促销","是否黑户"]];
 	var dealDate=$("#dealDate").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
@@ -295,8 +294,10 @@ function downsAll(){
 	"       PRODUCT_FEE,                       "+
 	"       SVC_TYPE,                          "+
 	"       INTEGRAL_SUB,                      "+
-	"       INTEGRAL_FEE                       "+
-	"  from PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T "+
+	"       INTEGRAL_FEE,                      "+
+	"CASE WHEN PR_USER = '1' THEN '是' ELSE '否' END PR_USER,"+
+    "CASE WHEN BLACK_USER = '1' THEN '是' ELSE '否' END BLACK_USER"+
+	"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T "+
 	" WHERE 1=1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
