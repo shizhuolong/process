@@ -38,24 +38,22 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:'false'})" readonly='readonly' value="<%=time %>" id="time">
 					</td>
-					<td width="7%">HR编码：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="hr_id" type="text" id="hr_id"/>
+					<td width="5%" style="text-align:right;">地市：</td>
+					<td width="10%">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+								<option value=''>请选择</option>
+						</select>
 					</td>
-					</td>
-					<td width="7%">人员类型：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="user_type" type="text" id="user_type"/>
-					</td>
-					</td>
-					<td width="7%">发展人编码：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="developer" type="text" id="developer"/>
+					<td width="5%" style="text-align:right;">营服中心：</td>
+					<td width="10%">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+								<option value=''>请选择</option>
+						</select>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
@@ -63,6 +61,20 @@
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
+					<td width="7%" style="text-align:right;">HR编码：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="hr_id" type="text" id="hr_id"/>
+					</td>
+					<td width="7%" style="text-align:right;">人员类型：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="user_type" type="text" id="user_type"/>
+					</td>
+					<td width="7%" style="text-align:right;">发展人编码：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="developer" type="text" id="developer"/>
 					</td>
 				</tr>
 			</table>
