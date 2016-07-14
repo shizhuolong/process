@@ -1,5 +1,5 @@
-var field=["本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","已兑积分"];
-var title=[["州市","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","已兑积分"]];
+var field=["ROW_NAME","ALL_JF_TOTAL","ALL_JF_QS","ALL_JF_YF","ALL_JF_YFSF","THIS_MONTH_TOTAL","IS_JF","IS_COMM","COMM","LJ_JF_TOTAL","LJ_JF_QS","LJ_JF_YF","LJ_JF_YFSF","LJ_JF_DH","LJ_COMM"];
+var title=[["州市","本月计算积分","本月清算积分","本月延付积分","本月延付释放积分","本月合计积分","本月录入积分","本月录入金额","本月合计金额","年累计计算积分","年累计清算积分","年累计延付积分","年累计延付释放积分","年累计合计积分","年累计合计金额"]];
 var report=null;
 $(function(){
 	listRegions();
@@ -144,8 +144,8 @@ function downsAll() {
 	var sql = 'select ' + preField + fieldSql
 			+ ' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
 	sql += where+groupBy+orderBy;
-	showtext = '当月汇总月报' + qdate; 
-	var title=[["地市","营服中心","人员","渠道","渠道编码","本月积分","本月清算积分","本月可兑积分","本月可兑金额","本半年累计积分","本半年累计清算积分","本半年累计可兑积分","本半年累计可兑金额","已兑积分"]];
+	showtext = '当期汇总月报' + qdate; 
+	var title=[["州市","本月计算积分","本月清算积分","本月延付积分","本月延付释放积分","本月合计积分","本月录入积分","本月录入金额","本月合计金额","年累计计算积分","年累计清算积分","年累计延付积分","年累计延付释放积分","年累计合计积分","年累计合计金额"]];
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
@@ -233,14 +233,20 @@ function listUnits(regionName){
 	}
 }
 function getSumField(){
-	var fs = ",SUM(ALL_JF_TOTAL) 本月积分                        "+
-	",SUM(ALL_JF_QS) 本月清算积分                             "+
-	",SUM(nvl(ALL_JF_TOTAL,0) + NVL(ALL_JF_QS,0)) 本月可兑积分"+
-	",SUM(NVL(COMM,0)) 本月可兑金额                           "+
-	",sum(NVL(LJ_JF_TOTAL,0)) 本半年累计积分                  "+
-	",sum(NVL(LJ_JF_QS,0)) 本半年累计清算积分                 "+
-	",sum(NVL(LJ_JF_DH,0)) 本半年累计可兑积分                 "+
-	",SUM(NVL(LJ_COMM,0) ) 本半年累计可兑金额                 "+
-	",sum(NVL(IS_DH,0)) 已兑积分                              ";    
+	var fs = ",SUM(NVL(ALL_JF_TOTAL, 0)) ALL_JF_TOTAL,                        "+
+			"SUM(NVL(ALL_JF_QS, 0)) ALL_JF_QS,                              "+
+			"SUM(NVL(ALL_JF_YF, 0)) ALL_JF_YF,                              "+
+			"SUM(NVL(ALL_JF_YFSF, 0)) ALL_JF_YFSF,                          "+
+			"SUM(nvl(ALL_JF_TOTAL, 0) + NVL(ALL_JF_QS, 0)                   "+
+			"    - NVL(ALL_JF_YF, 0) +NVL(ALL_JF_YFSF, 0)) THIS_MONTH_TOTAL,"+
+			"sum(NVL(IS_JF, 0)) IS_JF,                                      "+
+			"sum(NVL(IS_COMM, 0)) IS_COMM,                                  "+
+			"SUM(NVL(COMM, 0)) COMM,                                        "+
+			"sum(NVL(LJ_JF_TOTAL, 0)) LJ_JF_TOTAL,                          "+
+			"sum(NVL(LJ_JF_QS, 0)) LJ_JF_QS,                                "+
+			"sum(NVL(LJ_JF_YF, 0)) LJ_JF_YF,                                "+
+			"sum(NVL(LJ_JF_YFSF, 0)) LJ_JF_YFSF,                            "+
+			"sum(NVL(LJ_JF_DH, 0)) LJ_JF_DH,                                "+
+			"SUM(NVL(LJ_COMM, 0)) LJ_COMM                                   ";
 	return fs;
 }
