@@ -54,7 +54,7 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	
-	
+	var time=$("#time").val();
 	var regionName=$("#regionName").val();
 	var hrId=$("#hrId").val();
 	var orgName=$("#orgName").val();
