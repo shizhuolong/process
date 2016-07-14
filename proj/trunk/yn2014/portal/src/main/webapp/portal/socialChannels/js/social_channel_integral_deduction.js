@@ -1,6 +1,6 @@
 var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","GROUP_ID_4_NAME","SUBSCRIPTION_ID","SERVICE_NUM","BRAND_TYPE_ID","INDEX_CODE","INDEX_VALUE","INNET_DATE","NET_TYPE","OFFICE_ID","OPERATOR_ID","PRODUCT_ID","SCHEME_ID","PRODUCT_FEE","SVC_TYPE","INTEGRAL_SUB","INTEGRAL_FEE","IS_3_NULL","IS_LOW_JD","ALL_USER","JD_USER","JD_ZB","JD_UP_USER","JD_UP_USER_ZB","JD_USER_JF"];
-var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标类代码","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值","积分内部代码","积分值","是否三无","是否极低","渠道用户数","渠道极低用户数","渠道极低用户占比","超出15%用户数","超出15%用户数占比","极低用户总积分"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","GROUP_ID_4_NAME","SUBSCRIPTION_ID","SERVICE_NUM","BRAND_TYPE_ID","INDEX_CODE","INDEX_VALUE","INNET_DATE","NET_TYPE","OFFICE_ID","OPERATOR_ID","PRODUCT_ID","SCHEME_ID","PRODUCT_FEE","SVC_TYPE","INTEGRAL_SUB","INTEGRAL_FEE","IS_3_NULL","IS_LOW_JD","ALL_USER","JD_USER","JD_ZB","JD_UP_USER","JD_UP_USER_ZB","JD_USER_JF","QS_JF"];
+var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标类代码","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值","积分内部代码","积分值","是否三无","是否极低","渠道用户数","渠道极低用户数","渠道极低用户占比","超出15%用户数","超出15%用户数占比","极低用户总积分","用户清算积分"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -86,6 +86,7 @@ function search(pageNumber) {
 	",JD_UP_USER 		                                                                       "+
 	",JD_UP_USER_ZB 		                                                                   "+
 	",JD_USER_JF 		                                                                       "+
+	",QS_JF																						"+
 	" from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") T                                                   "+
 	" WHERE 1=1 ";
 	//权限
@@ -115,9 +116,6 @@ function search(pageNumber) {
 		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
 	}
 
-	
-	
-	
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -291,6 +289,7 @@ function downsAll(){
 	",JD_UP_USER 		                                                                       "+
 	",JD_UP_USER_ZB 		                                                                   "+
 	",JD_USER_JF 		                                                                       "+
+	",QS_JF																						"+
 	" from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") T                                                   "+
 	" WHERE 1=1 ";
 	var orgLevel=$("#orgLevel").val();
@@ -319,7 +318,7 @@ function downsAll(){
 		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
 	}
 	
-	showtext = '社会渠道分等分级积分计算-'+dealDate;
+	showtext = '扣减明细月报-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
