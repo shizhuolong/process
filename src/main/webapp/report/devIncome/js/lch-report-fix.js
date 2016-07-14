@@ -486,6 +486,25 @@
 					}
 				});
 			//}
+			var oldColor='#fff';
+			//右边获得焦点改变背景，固定列也要跟着改变
+			$("#lch_table_body #lch_DataBody TR:visible").unbind().hover(function(){
+				var index=$("#lch_table_body #lch_DataBody TR:lt("+$(this).index()+"):visible").length;
+				$("#lch_table_left .lch_DataBody").find("TR").css({
+					backgroundColor:oldColor
+				});
+				var $tr=$("#lch_table_left .lch_DataBody").find("TR:eq("+index+")");
+				var color=$(this).css("backgroundColor");
+				$tr.css({
+					backgroundColor:color
+				});
+			},function(){
+				var index=$("#lch_table_body #lch_DataBody TR:lt("+$(this).index()+"):visible").length;
+				var $tr=$("#lch_table_left .lch_DataBody").find("TR:eq("+index+")");
+				$tr.css({
+					backgroundColor:oldColor
+				});
+			});
 		},
 		renderLeft:function(){
 			//处理左边
