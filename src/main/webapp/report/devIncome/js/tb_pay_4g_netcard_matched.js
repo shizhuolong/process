@@ -124,6 +124,7 @@ function downsAll() {
 	//经营模式
 	var operateType = $("#operateType").val();
 	var code =$("#code").val();
+	var where=" ";
 	//条件
 	var sql = "SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,                                                                                                             "+
 			"	   T.UNIT_NAME                                                                                                                     "+
@@ -182,6 +183,7 @@ function downsDetail(){
 	//经营模式
 	var operateType = $("#operateType").val();
 	var code =$("#code").val();
+	var where=" ";
 	//条件
 	var sql = "SELECT T.DEAL_DATE,                     "+
 			"       T.GROUP_ID_1_NAME,               "+
@@ -234,7 +236,7 @@ function listRegions(){
     var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
     var orgLevel=$("#orgLevel").val();
     var code=$("#code").val();
-    var region =$("#region").val();
+    var region =$("#regionNum").val();
     if(orgLevel==1){
         sql+="";
     }else if(orgLevel==2){
