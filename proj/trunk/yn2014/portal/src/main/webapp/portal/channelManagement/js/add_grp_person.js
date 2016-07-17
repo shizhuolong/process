@@ -103,6 +103,7 @@ function listHrCode(pageNumber){
 	var unit_id = $("#developDatas").find("INPUT[name='ckUnit']:checked").val();
 	var grpType = $('#grpType input[name="ckHr"]:checked ').val(); 
 	var dealDate = $.trim($("#dealDate").val());
+	var regionCode = $("#regionCode").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -114,7 +115,8 @@ function listHrCode(pageNumber){
            "unit_id" : unit_id,
            "grpType" : grpType,
            "dealDate":dealDate,
-           "hr_id":hr_id
+           "hr_id":hr_id,
+           "regionCode":regionCode
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
