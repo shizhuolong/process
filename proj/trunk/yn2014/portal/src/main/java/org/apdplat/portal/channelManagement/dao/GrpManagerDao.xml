@@ -203,7 +203,32 @@
 	<!--查询HR编码 -->
 	<select id="searchHrNum" parameterType="java.util.Map"
 		resultType="java.util.Map">
-		SELECT T.HR_ID,T.USERNAME,T.REALNAME,T1.CODE FROM PORTAL.APDP_USER T
+		SELECT *
+				FROM (SELECT T.HR_ID, T.USERNAME, T.REALNAME, T1.CODE
+				          FROM PORTAL.APDP_USER T
+				          JOIN PORTAL.APDP_ORG T1
+				            ON T.ORG_ID = T1.ID
+				         WHERE T1.CODE = #{unit_id}
+				           AND T1.ORGLEVEL = 3
+				        UNION ALL
+				        SELECT T.HR_ID, T.USERNAME, T.REALNAME, T1.CODE
+				          FROM PORTAL.APDP_USER T
+				          JOIN PORTAL.APDP_ORG T1
+				            ON T.ORG_ID = T1.ID
+				         WHERE T1.CODE = #{regionCode}
+				         AND T1.ORGLEVEL = 2) T
+			<where>
+				<if test="grpType==0">
+					AND T.HR_ID IN(SELECT HR_ID FROM PORTAL.TAB_PORTAL_MAG_PERSON WHERE
+					DEAL_DATE =#{dealDate})
+				</if>
+				<if test="hr_id!=null">
+					AND T.HR_ID LIKE #{hr_id}
+				</if>
+			</where>		           
+		
+		
+		<!-- SELECT T.HR_ID,T.USERNAME,T.REALNAME,T1.CODE FROM PORTAL.APDP_USER T
 		JOIN PORTAL.APDP_ORG T1
 		ON T.ORG_ID=T1.ID
 		WHERE T1.CODE=#{unit_id}
@@ -214,7 +239,7 @@
 		</if>
 		<if test="hr_id!=null">
 			AND T.HR_ID LIKE #{hr_id}
-		</if>
+		</if> -->
 	</select>
 
 
