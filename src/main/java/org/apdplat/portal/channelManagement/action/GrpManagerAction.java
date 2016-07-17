@@ -149,6 +149,7 @@ public class GrpManagerAction extends BaseAction {
 	//查询hr编码
 	public void searchHrNum(){
 		try {
+			resultMap.put("regionCode", regionCode);
 			if(unit_id!=null&&!unit_id.trim().equals("")){
 				resultMap.put("unit_id", unit_id);
 			}
