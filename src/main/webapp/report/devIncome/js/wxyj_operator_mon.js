@@ -183,10 +183,8 @@ function listRegions(){
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_WXJF_OPERATOR_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
+	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_WXJF_OPERATOR_MON t where 1=1 and t.deal_date='"+time+"'";
+
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
