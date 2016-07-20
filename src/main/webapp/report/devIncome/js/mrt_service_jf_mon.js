@@ -206,7 +206,7 @@ function listRegions(){
 /************查询营服中心***************/
 function listUnits(region){
 	var $unit=$("#unitCode");
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TB_MRT_SERVICE_JF_MON T WHERE 1=1 ";
+	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE T.IS_VALID=1 ";
 	if(region!=''){
 		sql+=" AND T.GROUP_ID_1='"+region+"' ";
 		//权限
