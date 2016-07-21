@@ -1,0 +1,305 @@
+var field=["BSS_2G","ESS_2G","NET_2G","CASHBACK_2G","IMPORT_2G","TOTAL_2G","BSS_3G","ESS_3G","NET_3G","CASHBACK_3G","IMPORT_3G","TOTAL_3G","BSS_4G","ESS_4G","NET_4G","CASHBACK_4G","IMPORT_4G","TOTAL_4G","BSS_NETWORK","ESS_NETWORK","NET_NETWORK","IMPORT_NETWORK","TOTAL_NETWORK","BSS_FLOW","ESS_FLOW","NET_FLOW","IMPORT_FLOW","TOTAL_FLOW","CHANL_SUBSIDY","MANUAL_ADJUSTMENT","OTHER","TOTAL","TOTAL_FEE"];
+var title=[["组织架构","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
+           ["","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
+var report=null;
+var qdate="";
+var orderBy="";
+var code="";
+var orgLevel="";
+var chnlName="";
+var area_name="";
+$(function(){
+	 report=new LchReport({
+		title:title,
+		field:["ROW_NAME"].concat(field),
+		/*lock:1,*/
+		css:[{gt:4,css:LchReport.RIGHT_ALIGN}],
+		rowParams:["ROW_NAME","ROW_ID"],
+		content:"content",
+		orderCallBack:function(index,type){
+			if(index==0){
+				orderBy=" ORDER BY ROW_NAME "+type+" ";
+			}else if(index>0){
+				orderBy=" ORDER BY "+field[index-1]+" "+type+" ";
+			}
+			report.showSubRow();
+			 $("#lch_DataBody").find("TR").each(function(row){
+					$(this).find("TD").each(function(col){
+						if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+							
+						}else{
+							var tn=getColumnName(field[col-1]);
+							var text=$(this).text();
+							code=$(this).parent().attr("row_id");
+							orgLevel=$(this).parent().attr("orgLevel");
+							area_name=$(this).parent().attr("row_name");
+							$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablecode='+field[col-1]+' level='+(orgLevel-1)+' area_name='+area_name+' comm_name='+tn+' code='+code+' chnlName='+chnlName+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+						}
+					});
+			 });
+		},
+		getSubRowsCallBack:function($tr){
+			var preSql='';
+			var where=' WHERE 1 = 1';
+			var groupBy='';
+			qdate = $("#mon").val();
+			chnlName=$.trim($("#chnlName").val());
+			var hrId=$("#hrId").val();
+			var order='';
+			if($tr){
+				code=$tr.attr("row_id");
+				orgLevel=parseInt($tr.attr("orgLevel"));
+				//下钻
+				where+=" AND GROUP_ID_"+(orgLevel-1)+"='"+code+"'";
+				if(orgLevel>4){//点击渠道
+					return {data:[],extra:{}};
+				}
+			}else{
+				//先根据用户信息得到前几个字段
+				code=$("#code").val();
+				orgLevel=$("#orgLevel").val();
+				//权限
+				if(orgLevel>2){
+					//营服中心以下用新权限
+					var hrIds=_jf_power(hrId,qdate);
+					 if(hrIds&&hrIds!=""){
+						 where+=" AND HR_ID in("+hrIds+") ";
+					 }else{
+						 where+=" AND 1=2 ";	 
+					 }
+				}else{
+					where+=" AND GROUP_ID_"+(orgLevel-1)+"='"+code+"'";
+				}
+			}	
+			orgLevel++;
+						
+			if(chnlName!=''){
+				where+=" AND GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
+			}
+			preSql="SELECT GROUP_ID_"+(orgLevel-1)+" ROW_ID,GROUP_ID_"+(orgLevel-1)+"_NAME ROW_NAME,";
+			groupBy=" GROUP BY GROUP_ID_"+(orgLevel-1)+",GROUP_ID_"+(orgLevel-1)+"_NAME";
+			order=" ORDER BY GROUP_ID_"+(orgLevel-1);
+			var sql = preSql+getSumSql()+" PARTITION(P"+qdate+")"+where+groupBy+order;
+			if(orderBy!=''){
+				sql="select * from( "+sql+") t "+orderBy;
+			}
+			var d=query(sql);
+			return {data:d,extra:{orgLevel:orgLevel}};
+		},
+		afterShowSubRows:function(){
+			$("#lch_DataBody").find("TR").each(function(row){
+				$(this).find("TD").each(function(col){
+					if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+						
+					}else{
+						var tn=getColumnName(field[col-1]);
+						var text=$(this).text();
+						code=$(this).parent().attr("row_id");
+						orgLevel=$(this).parent().attr("orgLevel");
+						area_name=$(this).parent().attr("row_name");
+						$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablecode='+field[col-1]+' level='+(orgLevel-1)+' area_name='+area_name+' comm_name='+tn+' code='+code+' chnlName='+chnlName+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+					}
+				});
+		    });
+		}
+	});
+    report.showSubRow();
+    $("#lch_DataBody").find("TR").each(function(row){
+		$(this).find("TD").each(function(col){
+			if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+				
+			}else{
+				var tn=getColumnName(field[col-1]);
+				var text=$(this).text();
+				code=$(this).parent().attr("row_id");
+				orgLevel=$(this).parent().attr("orgLevel");
+				area_name=$(this).parent().attr("row_name");
+				$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablecode='+field[col-1]+' level='+(orgLevel-1)+' area_name='+area_name+' comm_name='+tn+' code='+code+' chnlName='+chnlName+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+			}
+		});
+    });
+    //$("#lch_DataHead").find("TH").unbind();
+	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
+	///////////////////////////////////////////
+	//$(".page_count").width($("#lch_DataHead").width());
+	
+	$("#searchBtn").click(function(){
+	    report.showSubRow();
+	    $("#lch_DataBody").find("TR").each(function(row){
+			$(this).find("TD").each(function(col){
+				if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+					
+				}else{
+					var tn=getColumnName(field[col-1]);
+					var text=$(this).text();
+					code=$(this).parent().attr("row_id");
+					orgLevel=$(this).parent().attr("orgLevel");
+					area_name=$(this).parent().attr("row_name");
+					$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablecode='+field[col-1]+' level='+(orgLevel-1)+' area_name='+area_name+' comm_name='+tn+' code='+code+' chnlName='+chnlName+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+				}
+			});
+	 });
+		//$("#lch_DataHead").find("TH").unbind();
+		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
+		///////////////////////////////////////////
+		//$(".page_count").width($("#lch_DataHead").width());
+	});
+});
+
+function openDetail(obj){
+	var tablecode=$(obj).attr("tablecode");
+	var comm_name=$(obj).attr("comm_name");
+	var level=$(obj).attr("level");
+	var code=$(obj).attr("code");
+	var chnlName=$(obj).attr("chnlName");
+	var qdate=$("#mon").val();
+	var area_name=$(obj).attr("area_name");
+	var url=$("#ctx").val()+"/report/devIncome/jsp/comm_manage_detail.jsp?tablecode="+tablecode+"&comm_name="+comm_name+"&level="+level+"&code="+code+"&chnlName="+chnlName+"&qdate="+qdate;
+	window.parent.openWindow(area_name,null,url);
+}
+
+function getColumnName(tbcode){
+	var tn = "";
+	if(tbcode == 'BSS_2G') {
+		tn = "2G—BSS系统";
+	}else if(tbcode == 'ESS_2G') {
+		tn = "2G—集中系统";
+	}else if(tbcode == 'NET_2G') {
+		tn = "2G—网格系统";
+	}else if(tbcode == 'CASHBACK_2G') {
+		tn = "2G-现返";
+	}else if(tbcode == 'IMPORT_2G') {
+		tn = "2G—未支撑";
+	}else if(tbcode == 'TOTAL_2G') {
+		tn = "2G-合计";
+	}else if(tbcode == 'BSS_3G'){
+		tn = "3G—BSS系统";
+	}else if(tbcode == 'ESS_3G') {
+		tn = "3G—集中系统";
+	}else if(tbcode == 'NET_3G') {
+		tn = "3G—网格系统";
+	}else if(tbcode == 'CASHBACK_3G') {
+		tn = "3G-现返";
+	}else if(tbcode == 'IMPORT_3G') {
+		tn="3G—未支撑";
+	}else if(tbcode == 'TOTAL_3G') {
+		tn = "3G-合计";
+	}else if(tbcode == 'BSS_4G'){
+		tn = "4G—BSS系统";
+	}else if(tbcode == 'ESS_4G') {
+		tn = "4G—集中系统";
+	}else if(tbcode == 'NET_4G') {
+		tn = "4G—网格系统";
+	}else if(tbcode == 'CASHBACK_4G') {
+		tn = "4G-现返";
+	}else if(tbcode == 'IMPORT_4G') {
+		tn="4G—未支撑";
+	}else if(tbcode == 'TOTAL_4G') {
+		tn = "4G-合计";
+	}else if(tbcode == 'BSS_NETWORK') {
+		tn = "固网—BSS系统";
+	}else if(tbcode == 'ESS_NETWORK') {
+		tn = "固网—ESS系统";
+	}else if(tbcode == 'NET_NETWORK') {
+		tn = "固网—网格系统";
+	}else if(tbcode == 'IMPORT_NETWORK') {
+		tn = "固网—未支撑";
+	}else if(tbcode == 'TOTAL_NETWORK') {
+		tn = "固网-合计";
+	}else if(tbcode == 'BSS_FLOW') {
+		tn = "融合—BSS系统";
+	}else if(tbcode == 'ESS_FLOW') {
+		tn = "融合—集中系统";
+	}else if(tbcode == 'NET_FLOW') {
+		tn = "融合—网格系统";
+	}else if(tbcode == 'IMPORT_FLOW') {
+		tn = "融合—未支撑";
+	}else if(tbcode == 'TOTAL_FLOW') {
+		tn = "融合-合计";
+	}else if(tbcode == 'CHANL_SUBSIDY') {
+		tn = "渠道补贴";
+	}else if(tbcode == 'OTHER'){
+		tn = "其他";
+	}else if(tbcode == 'TOTAL') {
+		tn = "总计";
+	}else if(tbcode == 'MANUAL_ADJUSTMENT'){
+		tn = "手工佣金";
+	}else{
+		tn="含税";
+	}
+	return tn;
+}
+
+/////////////////////////下载开始/////////////////////////////////////////////
+function downsAll() {
+	var where=' WHERE 1 = 1';
+	var orderBy=" ORDER BY GROUP_ID_1,GROUP_ID_2,GROUP_ID_3,GROUP_ID_4";
+	var chnlName=$.trim($("#chnlName").val());
+		
+	//先根据用户信息得到前几个字段
+	var code = $("#code").val();
+	var orgLevel = $("#orgLevel").val();
+	//权限
+	if(orgLevel<3){
+		where+=" AND GROUP_ID_"+(orgLevel-1)+"='"+code+"'";
+	}else{
+		var hrIds=_jf_power(hrId,qdate);
+		 if(hrIds&&hrIds!=""){
+			 where+=" AND HR_ID in("+hrIds+") ";
+		 }else{
+			 where+=" AND 1=2 ";	 
+		 }
+	}
+	if(chnlName!=''){
+		where+=" AND GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
+	}
+	var sql = "SELECT GROUP_ID_1_NAME,GROUP_ID_2_NAME,GROUP_ID_3_NAME,GROUP_ID_4_NAME,DEV_CHNL_ID,CHN_CDE_1_NAME,CHN_CDE_2_NAME,CHN_CDE_3_NAME,CHN_CDE_4_NAME,BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TB_MRT_COMM_AGENT_REPORT PARTITION(P"+qdate+")"+where+orderBy;
+	showtext = '佣金汇总月报' + qdate;
+	var title=[["地市","区县","网格","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
+	           ["","","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
+	downloadExcel(sql,title,showtext);
+}
+
+function getSumSql(orgLevel){
+  var s="";
+	for(var i=0;i<field.length;i++){
+		if(s.length>0){
+			s+=",";
+		}
+		s+="SUM(NVL("+field[i]+",0)) AS "+field[i];
+	}
+	return s+" FROM PMRT.TB_MRT_COMM_AGENT_REPORT";
+}
+/*//格式化数值，每三位加逗号
+function numberFormat(num){
+    var head="";
+	var end="";
+	var total = String(num);
+	total=total.replace(/(^\s*)|(\s*$)/g, "");
+	if(total.charAt(total.length-1)=='%'){
+		end="%";
+		total=total.substr(0,total.length-1);
+	}
+	if(total.charAt(0)=='-'){
+		head="-";
+		total=total.substr(1);
+	}
+	 
+	var arr_total = total.split('.');
+	var len   = arr_total.length;
+	 
+	var b = String(arr_total[0]);
+	var c = b.length;
+	var gap = c%3;
+	var step = parseInt(c/3);
+	var outStr = b.substring(0,gap);
+	for(var i=0; i<step; i++){
+	   var showSep = ( i==0 && gap==0 )? '' : ',' ;
+	   outStr += showSep+b.substring(gap,(gap+3));
+	   gap+=3;
+	}
+	if( len>1 ){
+	   outStr = outStr+'.'+arr_total[1]; 
+	}
+    return head+outStr+end;
+}*/
