@@ -90,6 +90,18 @@ $(function(){
 		///////////////////////////////////////////
 		//$(".page_count").width($("#lch_DataHead").width());
 	});
+	$("#remark").click(function(){
+		$("#remarkDiv").show();
+		$("#remarkDiv").dialog({
+			title : '备注',
+			width : 600,
+			height : 350,
+			closed : false,
+			cache : false,
+			modal : false,
+			maximizable : true
+		});
+	});
 });
 
 /////////////////////////下载开始/////////////////////////////////////////////
