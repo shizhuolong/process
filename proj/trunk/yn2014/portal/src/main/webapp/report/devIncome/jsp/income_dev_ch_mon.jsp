@@ -34,6 +34,8 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
+	<!-- 地市编码 -->
+	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" /> <input type="hidden"
 				name="resultMap.rows" />
