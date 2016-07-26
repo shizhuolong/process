@@ -64,7 +64,7 @@
 					</td>
 				</tr>
 				<tr>
-				<td width="3%" align="right">渠道编码：</td>
+				<td width="3%" align="right">主厅编码：</td>
 					<td width="5%"><input class="default-text-input wper80" name="channelCode" type="text" id="channelCode" /></td>
 					<td width="3%" align="right">经营模式：</td>
 					<td width="5%">
