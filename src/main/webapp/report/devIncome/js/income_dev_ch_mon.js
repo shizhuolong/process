@@ -167,10 +167,10 @@ var report=new LchReport({
 				where+=' and  t.DEAL_DATE='+qdate+' ';
 			}
 			if(where!=''&&regionName!=''){
-				where+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+				where+=" and t.GROUP_ID_1 = '"+regionName+"'";
 			}
 			if(where!=''&&unitName!=''){
-				where+=" and t.UNIT_NAME = '"+unitName+"'";
+				where+=" and t.UNIT_ID = '"+unitName+"'";
 			}
 			
 			if(where!=''){
@@ -230,8 +230,10 @@ function getSql(field) {
 function listRegions(){
 	var sql="";
 	var time=$("#time").val();
+	//地市编码
+	var regionCode = $("#regionCode").val();
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INCOME_DEV_CH_MON t where 1=1 ";
+	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1  ";
 	if(time!=''){
 		//sql+=" and t.DEAL_DATE="+time;
 	}
@@ -239,14 +241,12 @@ function listRegions(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	if(orgLevel==1){
+if(orgLevel==1){
 		
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
 	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
+		sql+=" and t.GROUP_ID_1='"+regionCode+"'";
 	}
 	//排序
 	if (orderBy != '') {
@@ -256,14 +256,14 @@ function listRegions(){
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
+			h += '<option value="' + d[0].GROUP_ID_1
 					+ '" selected >'
 					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
+			listUnits(d[0].GROUP_ID_1);
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
 			}
 		}
 		var $area = $("#regionName");
@@ -279,10 +279,8 @@ function listRegions(){
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INCOME_DEV_CH_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
+	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T " +
+			 "WHERE TO_CHAR(T.EXP_DATE,'YYYYMM')>=SUBSTR("+time+",1,6) ";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
@@ -296,7 +294,6 @@ function listUnits(regionName){
 		}else if(orgLevel==3){
 			sql+=" and t.UNIT_ID='"+code+"'";
 		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
 		}
 	}else{
 		$unit.empty().append('<option value="" selected>请选择</option>');
@@ -306,13 +303,13 @@ function listUnits(regionName){
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
+			h += '<option value="' + d[0].UNIT_ID
 					+ '" selected >'
 					+ d[0].UNIT_NAME + '</option>';
 		} else {
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
+				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
 			}
 		}
 		
@@ -347,14 +344,11 @@ function downsAll() {
 	if(where!=''&&qdate!=''){
 		where+=' and  t.DEAL_DATE='+qdate+' ';
 	}
-	if(where!=''&&qdate!=''){
-		where+=' and  t.DEAL_DATE='+qdate+' ';
-	}
 	if(where!=''&&regionName!=''){
-		where+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+		where+=" and t.GROUP_ID_1 = '"+regionName+"'";
 	}
 	if(where!=''&&unitName!=''){
-		where+=" and t.UNIT_NAME = '"+unitName+"'";
+		where+=" and t.UNIT_ID = '"+unitName+"'";
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql
