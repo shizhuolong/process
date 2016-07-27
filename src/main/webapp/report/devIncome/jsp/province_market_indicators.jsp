@@ -38,7 +38,7 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:'false'})" readonly='readonly' value="<%=dealDate %>" id="dealDate">
