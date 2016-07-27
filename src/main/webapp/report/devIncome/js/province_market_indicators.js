@@ -1,6 +1,6 @@
 var nowData = [];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","UNIT_TYPE","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","TASK_DEV","DEV_COUNT","DEV_COMPLETE","STOCK_RATE","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","OWEFEE_RATE","AVG_TOTAL_FEE","AVG_SL_CRE","AVG_ZZX_FEE","GW_SELF_RATE","AVG_MOVE_FEE"];
-var title=[["账期 ","地市名称 ","营服名称 ","营服类型 ","收入任务（年累计）","实际收入（年累计）","收入完成率 ","积分任务（年累计）","实际积分（年累计）","积分完成率 ","存量保有率 ","毛利预算 ","毛利收入 ","毛利完成率 ","欠费率 ","人均产值 ","人均服务积分 ","人均专租线收入 ","固网自由资源占用率","站均移网收入"]];
+var title=[["账期 ","地市名称 ","营服名称 ","营服类型 ","收入任务（年累计）","实际收入（年累计）","收入完成率 ","积分任务（年累计）","实际积分（年累计）","积分完成率 ","存量保有率 ","毛利预算 ","毛利收入 ","毛利完成率 ","欠费率 ","人均产值 ","人均服务积分 ","人均专租线收入 ","固网自由<br/>资源占用率","站均移网收入"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -9,7 +9,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:6,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:3,css:LchReport.RIGHT_ALIGN},{array:[6,9,10,13,14,18],css:{color:'red'}}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
