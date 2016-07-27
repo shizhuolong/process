@@ -77,12 +77,12 @@ $(function(){
 		title:title,
 		field:["GROUPNAME"].concat(field),
 		css:[
-		     {gt:0,css:LchReport.RIGHT_ALIGN},
-		     {eq:1,css:LchReport.SUM_PART_STYLE},
-		     {eq:9,css:LchReport.SUM_PART_STYLE},
-		     {eq:24,css:LchReport.SUM_PART_STYLE},
-		     {eq:30,css:LchReport.SUM_PART_STYLE},
-		     {eq:8,css:LchReport.SUM_STYLE}
+		     {gt:0,css:LchReport.RIGHT_ALIGN},{array:[1,8,9,24,30],css:LchReport.TOTAL_STYLE}
+		   /*  {eq:1,css:LchReport.TOTAL_STYLE},
+		     {eq:9,css:LchReport.TOTAL_STYLE},
+		     {eq:24,css:LchReport.TOTAL_STYLE},
+		     {eq:30,css:LchReport.TOTAL_STYLE},
+		     {eq:8,css:LchReport.TOTAL_STYLE}*/
 		    ],
 		rowParams:["GROUPID","GROUPNAME"],//第一个为rowId
 		content:"lchcontent",

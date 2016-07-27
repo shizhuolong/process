@@ -11,7 +11,10 @@ $(function() {
 		title : title,
 		field : field,
 		lock:5,
-		css:[{gt:4,css:LchReport.RIGHT_ALIGN},{array:[22,25,30,32,41,42,48,50,51,52],css:{color:'red'}}],
+		css:[
+		     {gt:4,css:LchReport.RIGHT_ALIGN},
+		     {array:[22,25,30,32,41,42,48,50,51,52],css:LchReport.NORMAL_STYLE}
+		    ],
 		tableCss:{leftWidth:555},
 		rowParams : [],// 第一个为rowId
 		content : "lchcontent",
