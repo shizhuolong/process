@@ -107,8 +107,8 @@ function search(pageNumber) {
 	}
 	report.showSubRow();
 	///////////////////////////////////////////
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	//$(".page_count").width($("#lch_DataHead").width());
 
