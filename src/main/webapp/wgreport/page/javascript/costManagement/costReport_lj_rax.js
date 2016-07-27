@@ -77,7 +77,7 @@ $(function(){
 		title:title,
 		field:["GROUPNAME"].concat(field),
 		css:[
-		     {gt:0,css:LchReport.RIGHT_ALIGN},{array:[1,8,9,24,30],css:LchReport.TOTAL_STYLE}
+		     {gt:0,css:LchReport.RIGHT_ALIGN},{array:[1,8,9,24,30],css:LchReport.NORMAL_STYLE}
 		   /*  {eq:1,css:LchReport.TOTAL_STYLE},
 		     {eq:9,css:LchReport.TOTAL_STYLE},
 		     {eq:24,css:LchReport.TOTAL_STYLE},
