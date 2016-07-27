@@ -9,7 +9,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:3,css:LchReport.RIGHT_ALIGN},{array:[6,9,10,13,14,18],css:{color:'red'}}],
+		css:[{gt:3,css:LchReport.RIGHT_ALIGN},{array:[6,9,10,13,14,18],css:LchReport.NORMAL_STYLE}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {

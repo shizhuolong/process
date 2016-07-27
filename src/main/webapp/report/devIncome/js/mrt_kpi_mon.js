@@ -41,7 +41,7 @@ $(function() {
 		title : title,
 		field : field,
 		lock:3,
-		css:[{gt:5,css:LchReport.RIGHT_ALIGN},{eq:1,css:{minWidth:'100px'}},{eq:3,css:{minWidth:'140px'}},{array:[9,14,19,24,29,32,34,35,36],css:{color:'red'}}],
+		css:[{gt:5,css:LchReport.RIGHT_ALIGN},{eq:1,css:{minWidth:'100px'}},{eq:3,css:{minWidth:'140px'}},{array:[9,14,19,24,29,32,34,35,36],css:LchReport.NORMAL_STYLE}],
 		tableCss:{leftWidth:350},
 		rowParams : ["DEAL_DATE","HR_ID","UNIT_ID","USER_ROLE"],//第一个为rowId
 		content : "lchcontent",
