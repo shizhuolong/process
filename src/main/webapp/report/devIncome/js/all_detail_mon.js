@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["账期","地市编码","地市名称","营服编码","营服名称","hr编码","姓名","角色","积分任务","积分完成","收入任务","收入完成","欠费","去年拍照用户12月收入","拍照用户今年累计收入","毛利预算","预算成本","累计收入","去年12月欠费"]];
+var title=[["账期","地市编码","地市名称","营服编码","营服名称","hr编码","姓名","角色","积分任务","积分完成","收入任务","收入完成","欠费","去年拍照用户<br/>12月收入","拍照用户今年<br/>累计收入","毛利预算","预算成本","累计收入","去年12月欠费"]];
 var field=["DEAL_DATE","GROUP_ID_1","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HR_ID","NAME","USER_ROLE","TASK_DEV","DEV_COUNT","TASK_INCOME","TOTAL_FEE","OWEFEE","AMOUNT_12","AMOUNT_MONTH","BUDGET_ML","BUDEGET_COST","AMOUNT_ALL","LAST_OWE_12"];
 var orderBy = '';
 var report = null;
