@@ -817,12 +817,11 @@ LchReport.RIGHT_ALIGN={textAlign:"right"};
 LchReport.SUM_STYLE={background:'lightyellow'};
 LchReport.SUM_PART_STYLE={background:'lightcyan'};
 /*****报表样式内容高亮显示******/
-//常规样式
-LchReport.NORMAL_STYLE={color:'#FF0000'};
-//百分比样式
-LchReport.PERCENTAGE_STYLE={color:'#FFA500'}
-//汇总（合计）样式
-LchReport.TOTAL_STYLE={background:'#ADD8E6'}
+//常规样式							 FF7F50						  #55FF33
+//LchReport.NORMAL_STYLE={'color':'#FF5511','background-color':'#FFFF77','font-size':'12px','font-weight':'600'};
+//LchReport.NORMAL_STYLE={'color':'#FF7744','background-color':'#DDFF77','font-size':'12px','font-weight':'600'};
+LchReport.NORMAL_STYLE={'color':'#d28531','background-color':'#ffecc8','font-size':'12px','font-weight':'600'};
+
 /****************************/
 
 function _jf_power(hrId,month){
