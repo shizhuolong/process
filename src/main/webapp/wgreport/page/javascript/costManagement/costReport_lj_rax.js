@@ -197,7 +197,7 @@ function getSumSql() {
 		if(s.length>0){
 			s+=",";
 		}
-		s+="SUM(NVL(T."+field[i]+", 0)) AS "+field[i]+" ";
+		s+="PODS.GET_RADIX_POINT(SUM(NVL(T."+field[i]+", 0)),2) AS "+field[i]+" ";
 	}
 	s+=" FROM PMRT.TB_MRT_COST_UNIT_PROFIT T    ";
 	return s;

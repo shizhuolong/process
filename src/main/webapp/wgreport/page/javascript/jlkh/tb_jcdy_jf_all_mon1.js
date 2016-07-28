@@ -107,8 +107,8 @@ function search(pageNumber) {
 	}
 	report.showSubRow();
 	///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	//$("#lch_DataHead").find("TH").unbind();
+	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	//$(".page_count").width($("#lch_DataHead").width());
 
@@ -132,49 +132,49 @@ function getSelectSql(){
 		"     G3SLL, 					"+    //-- 3G发展量
 		"     G4SLL, 					"+    //-- 4G发展量
 		"     KDSLL, 					"+    //-- 宽带发展量
-		"     G2JF, 					"+    //--  2G发展积分
-		"     SWJF, 					"+    //--  上网卡发展积分
-		"     G3JF, 					"+    //--  3G发展积分
-		"     G4JF, 					"+    //--  4G发展积分
-		"     GWJF, 					"+    //--  固网发展积分
-		"     KDXFJF, 					"+    //--  宽带续费积分
-		"     JTZZSRJF, 				"+    //-- 集团专租线积分
-		"     ZTJF, 					"+    //--  质态积分
-		"     LJJL_JF, 					"+    //--  裸机销售奖励积分
-		"     WYG_JF, 					"+    //--  沃易购众筹积分
-		"     ZTD_JF, 					"+    //--  营业厅自提积分
-		"     MINI_JF, 					"+    //--  MINI厅积分
-		"     HJXSJF, 					"+    //--  合计销售积分
-		"     HQ_ALLJF, 				"+    //-- 渠道调节销售积分
-		"     ZTUNITJF, 				"+    //-- 质态区域调节积分
-		"     UNIT_ALLJF, 				"+    //-- 区域调节销售积分
-		"     ALLSLL, 					"+    //--  总受理量
-		"     BASE_SLJF, 				"+    //--  基础服务积分
-		"     FW_JF, 					"+    //-- 服务积分
-		"     ZZYW_JF, 					"+    //-- 增值业务积分
-		"     SL_ALLJF, 				"+    //-- 总受理积分
-		"     SL_SVR_ALL_CRE, 			"+    //--  服务调节受理积分
-		"     UNIT_SL_ALLJF, 			"+    //-- 区域调节受理积分
-		"     LYHZX_JF, 				"+    //-- 老用户专享积分
-		"     CFYW_JF, 					"+    //-- 存费业务积分
-		"     ZBJXY_JF, 				"+    //-- 自备机续约积分
-		"     ZFK_JF, 					"+    //--  主副卡积分
-		"     LLBDZ_JF, 				"+    //-- 流量语音包定制积分
-		"     ZW_JF, 					"+    //-- 装维积分
-		"     ZHWJ_JF, 					"+    //-- 智慧沃家积分
-		"     WX_SVR_CRE, 				"+    //-- 维系服务积分
-		"     WX_UNIT_CRE, 				"+    //--  维系区域积分
-		"     WX_CRE, 					"+    //--  维系积分
-		"     ACCSL_JF, 				"+    //--  业务单受理积分
-		"     ACCTS_JF, 				"+    //--  投诉单受理积分
-		"     ACCJD_JF, 				"+    //--  建单积分
-		"     ACCHW_JF, 				"+    //--  话务积分
-		"     ACCLINE_JF, 				"+    //--  线上会话积分
-		"     SERVICE_JF, 				"+    //--  客服原始积分合计
-		"     SERVICE_HR_JF, 			"+    //--  客服人员系数积分合计
-		"     SERVICE_UNIT_JF, 			"+    //--  客服区域积分合计
-		"     ALL_JF, 					"+    //--  总积分
-		"     ALL_JF_MONEY 				"+    //--  总积分金额
+		"     PODS.GET_RADIX_POINT(G2JF,2)			  AS G2JF,              "+//--  2G发展积分
+		"     PODS.GET_RADIX_POINT(SWJF,2) 			  AS SWJF,              "+//--  上网卡发展积分
+		"     PODS.GET_RADIX_POINT(G3JF,2) 			  AS G3JF,              "+//--  3G发展积分
+		"     PODS.GET_RADIX_POINT(G4JF,2) 			  AS G4JF,              "+//--  4G发展积分
+		"     PODS.GET_RADIX_POINT(GWJF,2) 			  AS GWJF,              "+//--  固网发展积分
+		"     PODS.GET_RADIX_POINT(KDXFJF,2) 		  AS KDXFJF,            "+//--  宽带续费积分
+		"     PODS.GET_RADIX_POINT(JTZZSRJF,2) 		  AS JTZZSRJF,          "+//-- 集团专租线积分
+		"     PODS.GET_RADIX_POINT(ZTJF,2) 			  AS ZTJF,              "+//--  质态积分
+		"     PODS.GET_RADIX_POINT(LJJL_JF,2) 		  AS LJJL_JF,           "+//--  裸机销售奖励积分
+		"     PODS.GET_RADIX_POINT(WYG_JF,2) 		  AS WYG_JF,            "+//--  沃易购众筹积分
+		"     PODS.GET_RADIX_POINT(ZTD_JF,2) 		  AS ZTD_JF,            "+//--  营业厅自提积分
+		"     PODS.GET_RADIX_POINT(MINI_JF,2) 		  AS MINI_JF,           "+//--  MINI厅积分
+		"     PODS.GET_RADIX_POINT(HJXSJF,2) 		  AS HJXSJF,            "+//--  合计销售积分
+		"     PODS.GET_RADIX_POINT(HQ_ALLJF,2) 		  AS HQ_ALLJF,          "+//-- 渠道调节销售积分
+		"     PODS.GET_RADIX_POINT(ZTUNITJF,2) 		  AS ZTUNITJF,          "+//-- 质态区域调节积分
+		"     PODS.GET_RADIX_POINT(UNIT_ALLJF,2) 	  AS UNIT_ALLJF,        "+//-- 区域调节销售积分
+		"     PODS.GET_RADIX_POINT(ALLSLL,2) 		  AS ALLSLL,            "+//--  总受理量
+		"     PODS.GET_RADIX_POINT(BASE_SLJF,2) 	  AS BASE_SLJF,         "+//--  基础服务积分
+		"     PODS.GET_RADIX_POINT(FW_JF,2) 		  AS FW_JF,             "+//-- 服务积分
+		"     PODS.GET_RADIX_POINT(ZZYW_JF,2) 		  AS ZZYW_JF,           "+//-- 增值业务积分
+		"     PODS.GET_RADIX_POINT(SL_ALLJF,2) 		  AS SL_ALLJF,          "+//-- 总受理积分
+		"     PODS.GET_RADIX_POINT(SL_SVR_ALL_CRE,2)  AS SL_SVR_ALL_CRE,    "+//--  服务调节受理积分
+		"     PODS.GET_RADIX_POINT(UNIT_SL_ALLJF,2)   AS UNIT_SL_ALLJF,     "+//-- 区域调节受理积分
+		"     PODS.GET_RADIX_POINT(LYHZX_JF,2) 		  AS LYHZX_JF,          "+//-- 老用户专享积分
+		"     PODS.GET_RADIX_POINT(CFYW_JF,2) 		  AS CFYW_JF,           "+//-- 存费业务积分
+		"     PODS.GET_RADIX_POINT(ZBJXY_JF,2) 		  AS ZBJXY_JF,          "+//-- 自备机续约积分
+		"     PODS.GET_RADIX_POINT(ZFK_JF,2) 		  AS ZFK_JF,            "+//--  主副卡积分
+		"     PODS.GET_RADIX_POINT(LLBDZ_JF,2) 		  AS LLBDZ_JF,          "+//-- 流量语音包定制积分
+		"     PODS.GET_RADIX_POINT(ZW_JF,2) 		  AS ZW_JF,             "+//-- 装维积分
+		"     PODS.GET_RADIX_POINT(ZHWJ_JF,2) 		  AS ZHWJ_JF,           "+//-- 智慧沃家积分
+		"     PODS.GET_RADIX_POINT(WX_SVR_CRE,2) 	  AS WX_SVR_CRE,        "+//-- 维系服务积分
+		"     PODS.GET_RADIX_POINT(WX_UNIT_CRE,2) 	  AS WX_UNIT_CRE,       "+//--  维系区域积分
+		"     PODS.GET_RADIX_POINT(WX_CRE,2) 		  AS WX_CRE,            "+//--  维系积分
+		"     PODS.GET_RADIX_POINT(ACCSL_JF,2) 		  AS ACCSL_JF,          "+//--  业务单受理积分
+		"     PODS.GET_RADIX_POINT(ACCTS_JF,2) 		  AS ACCTS_JF,          "+//--  投诉单受理积分
+		"     PODS.GET_RADIX_POINT(ACCJD_JF,2) 		  AS ACCJD_JF,          "+//--  建单积分
+		"     PODS.GET_RADIX_POINT(ACCHW_JF,2) 		  AS ACCHW_JF,          "+//--  话务积分
+		"     PODS.GET_RADIX_POINT(ACCLINE_JF,2) 	  AS ACCLINE_JF,        "+//--  线上会话积分
+		"     PODS.GET_RADIX_POINT(SERVICE_JF,2) 	  AS SERVICE_JF,        "+//--  客服原始积分合计
+		"     PODS.GET_RADIX_POINT(SERVICE_HR_JF,2)   AS SERVICE_HR_JF,     "+//--  客服人员系数积分合计
+		"     PODS.GET_RADIX_POINT(SERVICE_UNIT_JF,2) AS SERVICE_UNIT_JF,   "+//--  客服区域积分合计
+		"     PODS.GET_RADIX_POINT(ALL_JF,2) 		  AS ALL_JF,            "+//--  总积分
+		"     PODS.GET_RADIX_POINT(ALL_JF_MONEY,2) 	  AS ALL_JF_MONEY       "+//--  总积分金额
 		"FROM PMRT.TB_JCDY_JF_ALL_MON   "+    
 		" WHERE DEAL_DATE = '"+time+"'";
 	return sql;
