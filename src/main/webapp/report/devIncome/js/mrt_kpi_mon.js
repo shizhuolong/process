@@ -343,8 +343,6 @@ function downsAll(){
 	            ""
 	            ]
 	];
-	var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID","NAME","USER_ROLE",
-	           "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","AMOUNT_MONTH","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_ALL","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
 	var sql="";
 	var time=$("#time").val();
 	var regionName=$("#regionName").val();
@@ -383,7 +381,6 @@ function downsAll(){
 		sql += orderBy;
 	}
 
-	sql = "select "+field.join(",") + sql;
 	
 	showtext = 'KPI汇总月报-'+time;
 	downloadExcel(sql,title,showtext);
