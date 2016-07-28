@@ -625,8 +625,13 @@ LchReport.RIGHT_ALIGN={textAlign:"right"};
 LchReport.SUM_STYLE={background:'lightyellow'};
 LchReport.SUM_PART_STYLE={background:'lightcyan'};
 /*****报表样式内容高亮显示******/
-//常规样式
-LchReport.NORMAL_STYLE={'color':'#d28531','background-color':'#ffecc8','font-size':'12px'};
+//常规样式(主要用来标亮数值，重新选择一个字体)
+LchReport.NORMAL_STYLE={
+		'color':'#d28531',
+		'background-color':'#ffecc8',
+		'font-size':'12px',
+		'font-family':'Verdana, Geneva, sans-serif'
+	 };
 /****************************/
 function _jf_power(hrId,month){
 	  if(month.length==8){

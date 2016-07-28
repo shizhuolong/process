@@ -817,10 +817,15 @@ LchReport.RIGHT_ALIGN={textAlign:"right"};
 LchReport.SUM_STYLE={background:'lightyellow'};
 LchReport.SUM_PART_STYLE={background:'lightcyan'};
 /*****报表样式内容高亮显示******/
-//常规样式							 FF7F50						  #55FF33
+//常规样式	(主要用来标亮数值，重新选择一个字体)
 //LchReport.NORMAL_STYLE={'color':'#FF5511','background-color':'#FFFF77','font-size':'12px','font-weight':'600'};
 //LchReport.NORMAL_STYLE={'color':'#FF7744','background-color':'#DDFF77','font-size':'12px','font-weight':'600'};
-LchReport.NORMAL_STYLE={'color':'#d28531','background-color':'#ffecc8','font-size':'12px'};
+LchReport.NORMAL_STYLE={
+						'color':'#d28531',
+						'background-color':'#ffecc8',
+						'font-size':'12px',
+						'font-family':'Verdana, Geneva, sans-serif'
+					 };
 
 /****************************/
 
