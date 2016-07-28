@@ -88,10 +88,7 @@ function search(pageNumber) {
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 //条件
-	var sql = " from PMRT.TB_MRT_KPI_REPORT_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
+	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
@@ -122,7 +119,7 @@ function search(pageNumber) {
 	
 	
 	var csql = sql;
-	var cdata = query("select count(*) total" + csql);
+	var cdata = query("select count(*) total from(" + csql+")");
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -135,7 +132,6 @@ function search(pageNumber) {
 		sql += orderBy;
 	}
 
-	sql = "select * " + sql;
 
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
@@ -156,6 +152,54 @@ function search(pageNumber) {
 		if(area)
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
+}
+
+
+function getSelsectSql(){
+	
+	var sql =" SELECT T.DEAL_DATE                                               ,"+
+			" T.GROUP_ID_1                                                     ,"+
+			" T.GROUP_ID_1_NAME                                                ,"+
+			" T.UNIT_ID                                                        ,"+
+			" T.UNIT_NAME                                                      ,"+
+			" T.HR_ID                                                          ,"+
+			" T.NAME                                                           ,"+
+			" T.USER_ROLE                                                      ,"+
+			" T.TASK_DEV                                                       ,"+
+			" PODS.GET_RADIX_POINT(T.DEV_COUNT        ,2) AS DEV_COUNT         ,"+
+			" PODS.GET_RADIX_POINT(T.DEV_COMPLETE     ,2) AS DEV_COMPLETE      ,"+
+			" PODS.GET_RADIX_POINT(T.DEV_KPI_VALUE    ,2) AS DEV_KPI_VALUE     ,"+
+			" PODS.GET_RADIX_POINT(T.DEV_KPI_WEIGHT   ,2) AS DEV_KPI_WEIGHT    ,"+
+			" PODS.GET_RADIX_POINT(T.TASK_INCOME      ,2) AS TASK_INCOME       ,"+
+			" PODS.GET_RADIX_POINT(T.TOTAL_FEE        ,2) AS TOTAL_FEE         ,"+
+			" PODS.GET_RADIX_POINT(T.INCOME_COMPLETE  ,2) AS INCOME_COMPLETE   ,"+
+			" PODS.GET_RADIX_POINT(T.IN_KPI_VALUE     ,2) AS IN_KPI_VALUE      ,"+
+			" PODS.GET_RADIX_POINT(T.IN_KPI_WEIGHT    ,2) AS IN_KPI_WEIGHT     ,"+
+			" PODS.GET_RADIX_POINT(T.OWEFEE           ,2) AS OWEFEE            ,"+
+			" PODS.GET_RADIX_POINT(T.OWEFEE_RATE      ,2) AS OWEFEE_RATE       ,"+
+			" PODS.GET_RADIX_POINT(T.OWE_KPI_VALUE    ,2) AS OWE_KPI_VALUE     ,"+
+			" PODS.GET_RADIX_POINT(T.OWE_KPI_WEIGHT   ,2) AS OWE_KPI_WEIGHT    ,"+
+			" PODS.GET_RADIX_POINT(T.AMOUNT_12        ,2) AS AMOUNT_12         ,"+
+			" PODS.GET_RADIX_POINT(T.AMOUNT_MONTH     ,2) AS AMOUNT_MONTH      ,"+
+			" PODS.GET_RADIX_POINT(T.STOCK_RATE       ,2) AS STOCK_RATE        ,"+
+			" PODS.GET_RADIX_POINT(T.STOCK_KPI_VALUE  ,2) AS STOCK_KPI_VALUE   ,"+
+			" PODS.GET_RADIX_POINT(T.STOCK_KPI_WEIGHT ,2) AS STOCK_KPI_WEIGHT  ,"+
+			" PODS.GET_RADIX_POINT(T.BUDEGET_TASK     ,2) AS BUDEGET_TASK      ,"+
+			" PODS.GET_RADIX_POINT(T.BUDGET_ML        ,2) AS BUDGET_ML         ,"+
+			" PODS.GET_RADIX_POINT(T.ML_COMPLETE      ,2) AS ML_COMPLETE       ,"+
+			" PODS.GET_RADIX_POINT(T.ML_KPI_VALUE     ,2) AS ML_KPI_VALUE      ,"+
+			" PODS.GET_RADIX_POINT(T.ML_KPI_WEIGHT    ,2) AS ML_KPI_WEIGHT     ,"+
+			" PODS.GET_RADIX_POINT(T.PROV_KPI_WEIGHT  ,2) AS PROV_KPI_WEIGHT   ,"+
+			" PODS.GET_RADIX_POINT(T.PROV_KPI_SCORE   ,2) AS PROV_KPI_SCORE    ,"+
+			" PODS.GET_RADIX_POINT(T.CUSTOM_KPI       ,2) AS CUSTOM_KPI        ,"+
+			" PODS.GET_RADIX_POINT(T.KPI_RESULT       ,2) AS KPI_RESULT        ,"+
+			" PODS.GET_RADIX_POINT(T.BASE_SALARY      ,2) AS BASE_SALARY       ,"+
+			" PODS.GET_RADIX_POINT(T.BASE_KPI_SALARY  ,2) AS BASE_KPI_SALARY   ,"+
+			" PODS.GET_RADIX_POINT(T.AMOUNT_ALL       ,2) AS AMOUNT_ALL        ,"+
+			" PODS.GET_RADIX_POINT(T.KHDF_WEIGHT      ,2) AS KHDF_WEIGHT       ,"+
+			" PODS.GET_RADIX_POINT(T.KHDF_VALUE       ,2) AS KHDF_VALUE         "+
+			" FROM PMRT.TB_MRT_KPI_REPORT_MON T ";
+	return sql;
 }
 function listRegions(){
 	var sql="";
@@ -307,10 +351,7 @@ function downsAll(){
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 	//条件
-	var sql = " from PMRT.TB_MRT_KPI_REPORT_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}
+	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
