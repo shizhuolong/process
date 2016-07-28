@@ -41,7 +41,7 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="15%">
 						<input type="text" class="Wdate default-text-input wper20" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="month">
