@@ -626,7 +626,7 @@ LchReport.SUM_STYLE={background:'lightyellow'};
 LchReport.SUM_PART_STYLE={background:'lightcyan'};
 /*****报表样式内容高亮显示******/
 //常规样式
-LchReport.NORMAL_STYLE={'color':'#d28531','background-color':'#ffecc8','font-size':'12px','font-weight':'600'};
+LchReport.NORMAL_STYLE={'color':'#d28531','background-color':'#ffecc8','font-size':'12px'};
 /****************************/
 function _jf_power(hrId,month){
 	  if(month.length==8){
