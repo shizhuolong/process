@@ -585,6 +585,9 @@
 			}
 		},
 		isNull:function(obj){
+			if((obj+'').startWith('.')){
+				obj='0'+obj;
+			}
 			if(obj==0||obj=='0'){
 				return 0;
 			}
