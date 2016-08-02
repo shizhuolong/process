@@ -1,10 +1,5 @@
 var nowData = [];
-
-var field = [ "GROUP_ID_1_NAME", "RATE_LAST_YEAR", "FEE_LAST_12", "FEE_01",
-		"FEE_02", "FEE_03", "FEE_04", "FEE_05", "FEE_06", "FEE_07", "FEE_08",
-		"FEE_09", "FEE_10", "FEE_11", "FEE_12", "RATE_01", "RATE_02",
-		"RATE_03", "RATE_04", "RATE_05", "RATE_06", "RATE_07", "RATE_08",
-		"RATE_09", "RATE_10", "RATE_11", "RATE_12" ];
+var field = [ "GROUP_ID_1_NAME", "RATE_LAST_YEAR", "FEE_LAST_12", "FEE_01","FEE_02", "FEE_03", "FEE_04", "FEE_05", "FEE_06", "FEE_07", "FEE_08","FEE_09", "FEE_10", "FEE_11", "FEE_12", "RATE_01", "RATE_02","RATE_03", "RATE_04", "RATE_05", "RATE_06", "RATE_07", "RATE_08","RATE_09", "RATE_10", "RATE_11", "RATE_12" ];
 var orderBy = '';
 var report = null;
 $(function() {
@@ -27,14 +22,12 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css : [ {
-			gt : 0,
-			css : LchReport.RIGHT_ALIGN
-		} ],
+		lock : 1,
+		css : [ {gt:0,css:LchReport.RIGHT_ALIGN},{array:[1,15,16,17,18,19,20,21,22,23,24,25,26],css:LchReport.NORMAL_STYLE}],
 		tableCss : {
 			leftWidth : 140
 		},
-		lock : 1,
+		
 		rowParams : [],// 第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
@@ -45,7 +38,6 @@ $(function() {
 		}
 	});
 	search(0);
-
 	$("#searchBtn").click(function() {
 		search(0);
 	});
@@ -162,33 +154,33 @@ function getSql() {
 	// return "SELECT "+fs+" FROM PMRT.TB_MRT_JCDY_ZZCL_YEAR WHERE 1=1";
 	var year = $("#time").val();
 	var groupId = $("#regionName").val();
-	sql = "SELECT T2.GROUP_ID_1_NAME,                                                                         "
-			+ "       T2.RATE_LAST_YEAR,                                                                          "
-			+ "       T2.FEE_LAST_12,                                                                             "
-			+ "       T2.FEE_01,                                                                                  "
-			+ "       T2.FEE_02,                                                                                  "
-			+ "       T2.FEE_03,                                                                                  "
-			+ "       T2.FEE_04,                                                                                  "
-			+ "       T2.FEE_05,                                                                                  "
-			+ "       T2.FEE_06,                                                                                  "
-			+ "       T2.FEE_07,                                                                                  "
-			+ "       T2.FEE_08,                                                                                  "
-			+ "       T2.FEE_09,                                                                                  "
-			+ "       T2.FEE_10,                                                                                  "
-			+ "       T2.FEE_11,                                                                                  "
-			+ "       T2.FEE_12,                                                                                  "
-			+ "       T2.RATE_01,                                                                                 "
-			+ "       T2.RATE_02,                                                                                 "
-			+ "       T2.RATE_03,                                                                                 "
-			+ "       T2.RATE_04,                                                                                 "
-			+ "       T2.RATE_05,                                                                                 "
-			+ "       T2.RATE_06,                                                                                 "
-			+ "       T2.RATE_07,                                                                                 "
-			+ "       T2.RATE_08,                                                                                 "
-			+ "       T2.RATE_09,                                                                                 "
-			+ "       T2.RATE_10,                                                                                 "
-			+ "       T2.RATE_11,                                                                                 "
-			+ "       T2.RATE_12                                                                                  "
+	sql = "SELECT T2.GROUP_ID_1_NAME,                                                                         "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_LAST_YEAR,2) AS RATE_LAST_YEAR,      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_LAST_12,2) AS FEE_LAST_12,            "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_01,2) AS FEE_01,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_02,2) AS FEE_02,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_03,2) AS FEE_03,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_04,2) AS FEE_04,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_05,2) AS FEE_05,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_06,2) AS FEE_06,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_07,2) AS FEE_07,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_08,2) AS FEE_08,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_09,2) AS FEE_09,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_10,2) AS FEE_10,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_11,2) AS FEE_11,                      "+
+			"       PODS.GET_RADIX_POINT(T2.FEE_12,2) AS FEE_12,                      "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_01,2) AS RATE_01,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_02,2) AS RATE_02,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_03,2) AS RATE_03,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_04,2) AS RATE_04,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_05,2) AS RATE_05,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_06,2) AS RATE_06,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_07,2) AS RATE_07,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_08,2) AS RATE_08,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_09,2) AS RATE_09,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_10,2) AS RATE_10,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_11,2) AS RATE_11,                    "+
+			"       PODS.GET_RADIX_POINT(T2.RATE_12,2) AS RATE_12                     "
 			+ "  FROM (SELECT T0.GROUP_ID_1,                                                                      "
 			+ "               T0.GROUP_ID_1_NAME,                                                                 "
 			+ "               NVL(T0.RATE_LAST_YEAR, 0) * 100 || '%' AS RATE_LAST_YEAR,                           "
