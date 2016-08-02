@@ -150,20 +150,82 @@ var avg1=[//分母
           "ACCT_3G_NUM",
           "ACCT_4G_NUM"
           ];
+var income=["SR_2_CHW_NUM",    
+            "SR_2_SHW_NUM",    
+            "SR_2_BDW_NUM",    
+            "SR_2_LLW_NUM",    
+            "SR_2_JSK_NUM",    
+            "SR_2_OT_NUM",     
+            "SR_2G_NUM",      
+            "SR_3_DK_NUM",     
+            "SR_3_GJSF_NUM",   
+            "SR_3_CFSJ_NUM",   
+            "SR_3_CFSF_NUM",   
+            "SR_3_ZBJ_NUM",    
+            "SR_3_SWK_NUM",
+            "SR_3_OT_NUM",
+            "SR_3G_NUM",      
+            "SR_4_BDDK_NUM",   
+            "SR_4_HYHJ_NUM",   
+            "SR_4_CFSF_NUM",   
+            "SR_4_GJSF_NUM",   
+            "SR_4_CFSJ_NUM",   
+            "SR_4_HYHJ1_NUM",
+            "SR_4_CFSF1_NUM",//全国套餐存费送费
+            "SR_4_OT_NUM",//其他
+            "SR_4G_NUM",       
+            "SR_ADSL_NUM",     
+            "SR_LAN_NUM",      
+            "SR_EOC_NUM",      
+            "SR_FTTH_NUM",      
+            "SR_10M_NUM", 
+            "SR_BB_NUM", 
+            "DEV_ZZX_NUM", 
+            "DEV_ICT_NUM",
+            "SR_ZZX_NUM",
+            "SR_ICT_NUM",
+            "DEV_NET_NUM",
+            "SR_NET_NUM",
+            "CALL_TIME_2G",    
+            "MOU_2G",          
+            "FLOW_2G",         
+            "AVG_FLOW_2G",     
+            "CALL_TIME_3G",    
+            "MOU_3G",          
+            "FLOW_3G",         
+            "AVG_FLOW_3G",    
+            "CALL_TIME_4G",    
+            "MOU_4G",          
+            "FLOW_4G",        
+            "AVG_FLOW_4G"];
 function getSumField(){
 	var fs="";
+	
 	if($("#mmBtn").attr("checked")){//环比处理
 		for(var i=0;i<field.length;i++){
 			if(fs.length>0){
 				fs+=",";
 			}
 			var index=avgf.indexOf(field[i]);
-			if(index>=0){
-				fs+="case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end "+avgf[index];
+			var incomeIndex = income.indexOf(field[i]);
+			if(index>0 ){
+				if(incomeIndex>=0){
+					fs+="PODS.GET_RADIX_POINT(case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end,2) "+avgf[index];
+				}else{
+					fs+="case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end "+avgf[index];
+				}
 			}else if(mmf.indexOf(field[i])>=0){
-				fs+="case sum(LAST_"+field[i]+") when 0 then '-%' else to_char((nvl(sum("+field[i]+"),0)-sum(LAST_"+field[i]+"))*100/sum(LAST_"+field[i]+"),'fm99999999999990.00')||'%' end "+field[i];
+				if(incomeIndex>=0){
+					fs+="PODS.GET_RADIX_POINT(case sum(LAST_"+field[i]+") when 0 then '-%' else to_char((nvl(sum("+field[i]+"),0)-sum(LAST_"+field[i]+"))*100/sum(LAST_"+field[i]+"),'fm99999999999990.00')||'%' end,2) "+field[i];
+				}else{
+					fs+="case sum(LAST_"+field[i]+") when 0 then '-%' else to_char((nvl(sum("+field[i]+"),0)-sum(LAST_"+field[i]+"))*100/sum(LAST_"+field[i]+"),'fm99999999999990.00')||'%' end "+field[i];
+				}
 			}else{
-				fs+="sum(t."+field[i]+") "+field[i];
+				if(incomeIndex>=0){
+					fs+="PODS.GET_RADIX_POINT(sum(t."+field[i]+"),2) "+field[i];
+				}else{
+					fs+="sum(t."+field[i]+") "+field[i];
+				}
 			}
 		}
 	}else{//非环比处理
@@ -172,10 +234,19 @@ function getSumField(){
 				fs+=",";
 			}
 			var index=avgf.indexOf(field[i]);
+			var incomeIndex = income.indexOf(field[i]);
 			if(index>=0){
-				fs+="case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end "+avgf[index];
+				if(incomeIndex>=0){
+					fs+="PODS.GET_RADIX_POINT(case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end ,2)"+avgf[index];
+				}else{
+					fs+="case sum(t."+avg1[index]+") when 0 then 0  else round(sum(t."+avg0[index]+") / sum(t."+avg1[index]+"), 2) end "+avgf[index];
+				}
 			}else{
-				fs+="sum(t."+field[i]+") "+field[i];
+				if(incomeIndex>=0){
+					fs+="PODS.GET_RADIX_POINT(sum(t."+field[i]+"),2) "+field[i];
+				}else{
+					fs+="sum(t."+field[i]+") "+field[i];
+				}
 			}
 		}
 	}
@@ -224,7 +295,7 @@ $(function(){
 
 		],
 		field:["ROW_NAME"].concat(field),
-		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:0,css:LchReport.RIGHT_ALIGN},{array:[7,15,24,30,39,47,56,62,69,77,86,92],css:LchReport.NORMAL_STYLE}],
 		rowParams:["ROW_ID","PER_TYPE"],//第一个为rowId
 		content:"content",
 		orderCallBack:function(index,type){
