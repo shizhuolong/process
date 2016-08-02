@@ -1,38 +1,8 @@
 var nowData = [];
-var title=[["基层单元","人员姓名","HR编码","地市","账期","角色类型",
-            "积分(发展)","","","","",
-            "收入","","","","",
-            "欠费","","","","",
-            "存量","","","","",
-            "毛利","","","","",
-            "本厅收入完成率","",
-            
-            "省级KPI权重",
-            "省级KPI得分",
-            "自设KPI得分",
-            "汇总KPI得分",
-            "基础绩效<br/>基数（元）",
-            "基础绩效<br/>薪酬（元）"
-            ],
-           ["","","","","","",
-            "积分(发展)任务","积分(发展)完成","积分(发展)任务完成率","积分(发展)KPI得分","积分(发展)KPI权重",
-            "收入任务","收入完成","收入任务<br/>完成率","收入KPI得分","收入KPI权重",
-            "欠费","本月累计<br/>达到收入","欠费率","欠费KPI得分","欠费KPI权重",
-            "上年12月收入 ","存量收入","存量收入<br/>保有率","存量KPI得分","存量KPI权重",
-            "毛利预算","毛利完成","毛利任务完成率","毛利KPI得分","毛利KPI权重",
-            "本厅收入<br/>完成率权重","本厅收入<br/>完成率得分",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-            ]
-];
-
-var field=["UNIT_NAME","NAME","HR_ID","GROUP_ID_1_NAME","DEAL_DATE","USER_ROLE",
-           "TASK_DEV","DEV_COUNT","DEV_COMPLETE","DEV_KPI_VALUE","DEV_KPI_WEIGHT","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","IN_KPI_VALUE","IN_KPI_WEIGHT","OWEFEE","AMOUNT_MONTH","OWEFEE_RATE","OWE_KPI_VALUE","OWE_KPI_WEIGHT","AMOUNT_12","AMOUNT_ALL","STOCK_RATE","STOCK_KPI_VALUE","STOCK_KPI_WEIGHT","BUDEGET_TASK","BUDGET_ML","ML_COMPLETE","ML_KPI_VALUE","ML_KPI_WEIGHT","KHDF_WEIGHT","KHDF_VALUE","PROV_KPI_WEIGHT","PROV_KPI_SCORE","CUSTOM_KPI","KPI_RESULT","BASE_SALARY","BASE_KPI_SALARY"];
+var title=[["地市"			,"基层单元"	,"账期"		,"HR编码"		,"人员姓名"	,"角色类型"		,"积分(发展)"		,""					,""								,""						,""					,"收入"			,""			,""					,""				,""				,"欠费"		,""					,""				,""				,""					,"存量"			,""				,""					,""					,""					,"毛利"			,""			,""					,""				,""				,"本厅收入<br/>完成率"		,""						,"省级KPI权重"			,"省级KPI得分"		,"自设KPI得分"		,"汇总KPI得分"		,"基础绩效<br/>基数（元）"	,"基础绩效<br/>薪酬（元）"],
+           [""				,""			,""			,""			,""			,""				,"积分(发展)任务"	,"积分(发展)完成"		,"积分(发展)任务<br/>完成率"			,"积分(发展)<br/>KPI得分"		,"积分(发展)<br/>KPI权重"	,"收入任务"		,"收入完成"	,"收入任务<br/>完成率"		,"收入KPI得分"		,"收入KPI权重"		,"欠费"		,"本月累计<br/>达到收入"		,"欠费率"			,"欠费KPI得分"		,"欠费KPI权重"			,"上年12月收入"		,"存量收入"		,"存量收入<br/>保有率"		,"存量KPI得分"			,"存量KPI权重"			,"毛利预算"		,"毛利完成"	,"毛利任务<br/>完成率"		,"毛利KPI得分"		,"毛利KPI权重"		,"本厅收入<br/>完成率权重"		,"本厅收入<br/>完成率得分"			,""					,""				,""				,""				,""				,""					]
+		];
+var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID"	,"NAME"		,"USER_ROLE"	,	"TASK_DEV"	,"DEV_COUNT"		,"DEV_COMPLETE"					,"DEV_KPI_VALUE"		,"DEV_KPI_WEIGHT"	,"TASK_INCOME"	,"TOTAL_FEE","INCOME_COMPLETE"	,"IN_KPI_VALUE"	,"IN_KPI_WEIGHT","OWEFEE"	,"AMOUNT_MONTH"		,"OWEFEE_RATE"	,"OWE_KPI_VALUE","OWE_KPI_WEIGHT"	,"AMOUNT_12"	,"AMOUNT_ALL"	,"STOCK_RATE"		,"STOCK_KPI_VALUE"	,"STOCK_KPI_WEIGHT"	,"BUDEGET_TASK"	,"BUDGET_ML","ML_COMPLETE"		,"ML_KPI_VALUE"	,"ML_KPI_WEIGHT","KHDF_WEIGHT"		,"KHDF_VALUE"			,"PROV_KPI_WEIGHT"	,"PROV_KPI_SCORE","CUSTOM_KPI"	,"KPI_RESULT"	,"BASE_SALARY"	,"BASE_KPI_SALARY"];
 var orderBy = '';
 var report = null;
 $(function() {
@@ -155,52 +125,7 @@ function search(pageNumber) {
 }
 
 
-function getSelsectSql(){
-	
-	var sql =" SELECT T.DEAL_DATE                                               ,"+
-			" T.GROUP_ID_1                                                     ,"+
-			" T.GROUP_ID_1_NAME                                                ,"+
-			" T.UNIT_ID                                                        ,"+
-			" T.UNIT_NAME                                                      ,"+
-			" T.HR_ID                                                          ,"+
-			" T.NAME                                                           ,"+
-			" T.USER_ROLE                                                      ,"+
-			" T.TASK_DEV                                                       ,"+
-			" PODS.GET_RADIX_POINT(T.DEV_COUNT        ,2) AS DEV_COUNT         ,"+
-			" PODS.GET_RADIX_POINT(T.DEV_COMPLETE     ,2) AS DEV_COMPLETE      ,"+
-			" PODS.GET_RADIX_POINT(T.DEV_KPI_VALUE    ,2) AS DEV_KPI_VALUE     ,"+
-			" PODS.GET_RADIX_POINT(T.DEV_KPI_WEIGHT   ,2) AS DEV_KPI_WEIGHT    ,"+
-			" PODS.GET_RADIX_POINT(T.TASK_INCOME      ,2) AS TASK_INCOME       ,"+
-			" PODS.GET_RADIX_POINT(T.TOTAL_FEE        ,2) AS TOTAL_FEE         ,"+
-			" PODS.GET_RADIX_POINT(T.INCOME_COMPLETE  ,2) AS INCOME_COMPLETE   ,"+
-			" PODS.GET_RADIX_POINT(T.IN_KPI_VALUE     ,2) AS IN_KPI_VALUE      ,"+
-			" PODS.GET_RADIX_POINT(T.IN_KPI_WEIGHT    ,2) AS IN_KPI_WEIGHT     ,"+
-			" PODS.GET_RADIX_POINT(T.OWEFEE           ,2) AS OWEFEE            ,"+
-			" PODS.GET_RADIX_POINT(T.OWEFEE_RATE      ,2) AS OWEFEE_RATE       ,"+
-			" PODS.GET_RADIX_POINT(T.OWE_KPI_VALUE    ,2) AS OWE_KPI_VALUE     ,"+
-			" PODS.GET_RADIX_POINT(T.OWE_KPI_WEIGHT   ,2) AS OWE_KPI_WEIGHT    ,"+
-			" PODS.GET_RADIX_POINT(T.AMOUNT_12        ,2) AS AMOUNT_12         ,"+
-			" PODS.GET_RADIX_POINT(T.AMOUNT_MONTH     ,2) AS AMOUNT_MONTH      ,"+
-			" PODS.GET_RADIX_POINT(T.STOCK_RATE       ,2) AS STOCK_RATE        ,"+
-			" PODS.GET_RADIX_POINT(T.STOCK_KPI_VALUE  ,2) AS STOCK_KPI_VALUE   ,"+
-			" PODS.GET_RADIX_POINT(T.STOCK_KPI_WEIGHT ,2) AS STOCK_KPI_WEIGHT  ,"+
-			" PODS.GET_RADIX_POINT(T.BUDEGET_TASK     ,2) AS BUDEGET_TASK      ,"+
-			" PODS.GET_RADIX_POINT(T.BUDGET_ML        ,2) AS BUDGET_ML         ,"+
-			" PODS.GET_RADIX_POINT(T.ML_COMPLETE      ,2) AS ML_COMPLETE       ,"+
-			" PODS.GET_RADIX_POINT(T.ML_KPI_VALUE     ,2) AS ML_KPI_VALUE      ,"+
-			" PODS.GET_RADIX_POINT(T.ML_KPI_WEIGHT    ,2) AS ML_KPI_WEIGHT     ,"+
-			" PODS.GET_RADIX_POINT(T.PROV_KPI_WEIGHT  ,2) AS PROV_KPI_WEIGHT   ,"+
-			" PODS.GET_RADIX_POINT(T.PROV_KPI_SCORE   ,2) AS PROV_KPI_SCORE    ,"+
-			" PODS.GET_RADIX_POINT(T.CUSTOM_KPI       ,2) AS CUSTOM_KPI        ,"+
-			" PODS.GET_RADIX_POINT(T.KPI_RESULT       ,2) AS KPI_RESULT        ,"+
-			" PODS.GET_RADIX_POINT(T.BASE_SALARY      ,2) AS BASE_SALARY       ,"+
-			" PODS.GET_RADIX_POINT(T.BASE_KPI_SALARY  ,2) AS BASE_KPI_SALARY   ,"+
-			" PODS.GET_RADIX_POINT(T.AMOUNT_ALL       ,2) AS AMOUNT_ALL        ,"+
-			" PODS.GET_RADIX_POINT(T.KHDF_WEIGHT      ,2) AS KHDF_WEIGHT       ,"+
-			" PODS.GET_RADIX_POINT(T.KHDF_VALUE       ,2) AS KHDF_VALUE         "+
-			" FROM PMRT.TB_MRT_KPI_REPORT_MON T ";
-	return sql;
-}
+
 function listRegions(){
 	var sql="";
 	var time=$("#time").val();
@@ -312,36 +237,8 @@ function roundN(number,fractionDigits){
 }   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var title=[["地市","基层单元","账期","HR编码","人员姓名","角色类型",
-	            "积分(发展)","","","","",
-	            "收入","","","","",
-	            "欠费","","","","",
-	            "存量","","","","",
-	            "毛利","","","","",
-	            "本厅收入完成率","",
-	            
-	            "省级KPI权重",
-	            "省级KPI得分",
-	            "自设KPI得分",
-	            "汇总KPI得分",
-	            "基础绩效基数（元）",
-	            "基础绩效薪酬（元）"
-	            ],
-	           ["","","","","","",
-	            "积分(发展)任务","积分(发展)完成","积分(发展)任务完成率","积分(发展)KPI得分","积分(发展)KPI权重",
-	            "收入任务","收入完成","收入任务完成率","收入KPI得分","收入KPI权重",
-	            "欠费","本月累计达到收入","欠费率","欠费KPI得分","欠费KPI权重",
-	            "上年12月收入 ","存量收入","存量收入保有率","存量KPI得分","存量KPI权重",
-	            "毛利预算","毛利完成","毛利任务完成率","毛利KPI得分","毛利KPI权重",
-	            "本厅收入完成率权重","本厅收入完成率得分",
-	            "",
-	            "",
-	            "",
-	            "",
-	            "",
-	            "",
-	            ""
-	            ]
+	var title=[["账期","地市","基层单元","HR编码","人员姓名","角色类型","积分(发展)","","","","","收入","","","","","欠费","","","","","存量","","","","","毛利","","","","","本厅收入完成率","","省级KPI权重","省级KPI得分","自设KPI得分","汇总KPI得分","基础绩效基数（元）","基础绩效薪酬（元）"],
+	           ["","","","","","","积分(发展)任务","积分(发展)完成","积分(发展)任完成率","积分(发展)KPI得分","积分(发展)KPI权重","收入任务","收入完成","收入任务完成率","收入KPI得分","收入KPI权重","欠费","本月累计达到收入","欠费率","欠费KPI得分","欠费KPI权重","上年12月收入","存量收入","存量收入保有率","存量KPI得分","存量KPI权重","毛利预算","毛利完成","毛利任务完成率","毛利KPI得分","毛利KPI权重","本厅收入完成率权重","本厅收入完成率得分","","","","","",""]
 	];
 	var sql="";
 	var time=$("#time").val();
@@ -381,8 +278,53 @@ function downsAll(){
 		sql += orderBy;
 	}
 
-	
+	//console.log(sql);
 	showtext = 'KPI汇总月报-'+time;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
+
+function getSelsectSql(){
+	
+	var sql ="SELECT T.DEAL_DATE                                            , "+
+			"T.GROUP_ID_1_NAME                                              , "+
+			"T.UNIT_NAME                                                    , "+
+			"T.HR_ID                                                        , "+
+			"T.NAME                                                         , "+
+			"T.USER_ROLE                                                    , "+
+			"T.TASK_DEV                                                     , "+
+			"PODS.GET_RADIX_POINT(DEV_COUNT         ,2) AS DEV_COUNT        , "+
+			"PODS.GET_RADIX_POINT(DEV_COMPLETE      ,2) AS DEV_COMPLETE     , "+
+			"PODS.GET_RADIX_POINT(DEV_KPI_VALUE     ,2) AS DEV_KPI_VALUE    , "+
+			"PODS.GET_RADIX_POINT(DEV_KPI_WEIGHT    ,2) AS DEV_KPI_WEIGHT   , "+
+			"PODS.GET_RADIX_POINT(TASK_INCOME       ,2) AS TASK_INCOME      , "+
+			"PODS.GET_RADIX_POINT(TOTAL_FEE         ,2) AS TOTAL_FEE        , "+
+			"PODS.GET_RADIX_POINT(INCOME_COMPLETE   ,2) AS INCOME_COMPLETE  , "+
+			"PODS.GET_RADIX_POINT(IN_KPI_VALUE      ,2) AS IN_KPI_VALUE     , "+
+			"PODS.GET_RADIX_POINT(IN_KPI_WEIGHT     ,2) AS IN_KPI_WEIGHT    , "+
+			"PODS.GET_RADIX_POINT(OWEFEE            ,2) AS OWEFEE           , "+
+			"PODS.GET_RADIX_POINT(AMOUNT_MONTH      ,2) AS AMOUNT_MONTH     , "+
+			"PODS.GET_RADIX_POINT(OWEFEE_RATE       ,2) AS OWEFEE_RATE      , "+
+			"PODS.GET_RADIX_POINT(OWE_KPI_VALUE     ,2) AS OWE_KPI_VALUE    , "+
+			"PODS.GET_RADIX_POINT(OWE_KPI_WEIGHT    ,2) AS OWE_KPI_WEIGHT   , "+
+			"PODS.GET_RADIX_POINT(AMOUNT_12         ,2) AS AMOUNT_12        , "+
+			"PODS.GET_RADIX_POINT(AMOUNT_ALL        ,2) AS AMOUNT_ALL       , "+
+			"PODS.GET_RADIX_POINT(STOCK_RATE        ,2) AS STOCK_RATE       , "+
+			"PODS.GET_RADIX_POINT(STOCK_KPI_VALUE   ,2) AS STOCK_KPI_VALUE  , "+
+			"PODS.GET_RADIX_POINT(STOCK_KPI_WEIGHT  ,2) AS STOCK_KPI_WEIGHT , "+
+			"PODS.GET_RADIX_POINT(BUDEGET_TASK      ,2) AS BUDEGET_TASK     , "+
+			"PODS.GET_RADIX_POINT(BUDGET_ML         ,2) AS BUDGET_ML        , "+
+			"PODS.GET_RADIX_POINT(ML_COMPLETE       ,2) AS ML_COMPLETE      , "+
+			"PODS.GET_RADIX_POINT(ML_KPI_VALUE      ,2) AS ML_KPI_VALUE     , "+
+			"PODS.GET_RADIX_POINT(ML_KPI_WEIGHT     ,2) AS ML_KPI_WEIGHT    , "+
+			"PODS.GET_RADIX_POINT(KHDF_WEIGHT       ,2) AS KHDF_WEIGHT      , "+
+			"PODS.GET_RADIX_POINT(KHDF_VALUE        ,2) AS KHDF_VALUE       , "+
+			"PODS.GET_RADIX_POINT(PROV_KPI_WEIGHT   ,2) AS PROV_KPI_WEIGHT  , "+
+			"PODS.GET_RADIX_POINT(PROV_KPI_SCORE    ,2) AS PROV_KPI_SCORE   , "+
+			"PODS.GET_RADIX_POINT(CUSTOM_KPI        ,2) AS CUSTOM_KPI       , "+
+			"PODS.GET_RADIX_POINT(KPI_RESULT        ,2) AS KPI_RESULT       , "+
+			"PODS.GET_RADIX_POINT(BASE_SALARY       ,2) AS BASE_SALARY      , "+
+			"PODS.GET_RADIX_POINT(BASE_KPI_SALARY   ,2) AS BASE_KPI_SALARY    "+
+			" FROM PMRT.TB_MRT_KPI_REPORT_MON T ";
+	return sql;
+}
