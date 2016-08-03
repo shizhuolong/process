@@ -61,17 +61,22 @@ function search(pageNumber) {
 	
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
+	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(1) FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+dealDate+") T WHERE 1=1 ";
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
+		csql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
 	}
 	if(unitCode!=''){
 		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
+		csql+=" AND T.UNIT_ID = '"+unitCode+"'";
 	}
 	if(useName!=''){
-		sql+=" AND T.NAME LIKE '%"+useName+"%'"
+		sql+=" AND T.NAME LIKE '%"+useName+"%'";
+		csql+=" AND T.NAME LIKE '%"+useName+"%'"
 	}
 	if(userPhone!=''){
 		sql+=" AND T.DEVICE_NUMBER='"+userPhone+"'";
+		csql+=" AND T.DEVICE_NUMBER='"+userPhone+"'";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -79,15 +84,16 @@ function search(pageNumber) {
 
 	}else if(orgLevel==2){
 		sql+=" and T.GROUP_ID_1 =" + code;
+		csql+=" and T.GROUP_ID_1 =" + code;
 	}else if(orgLevel==3){
 		sql+=" and T.UNIT_ID =" + code;
+		csql+=" and T.UNIT_ID =" + code;
 	}else{
 		sql+=" and 1=2";
+		csql+=" and 1=2";
 	}
 	
-	var csql = sql;
-	//sql+=" ORDER BY T.GROUP_ID_1,T.UNIT_ID,T.DEVICE_NUMBER,T.SUBSCRIPTION_ID"
-	var cdata = query("select count(*) total from(" + csql+")");
+	var cdata = query(csql);
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -118,7 +124,7 @@ function search(pageNumber) {
 
 function getSql(){
 	var dealDate =$("#dealDate").val();
-	var s="SELECT T.DEAL_DATE,                                                             "+
+	var s=" SELECT  /*+index(NUMBER_INCOME_HR)*/ T.DEAL_DATE,                                                             "+
 			"       T.GROUP_ID_1_NAME,                                                       "+
 			"       T.UNIT_NAME,                                                             "+
 			"       T.HR_ID,                                                                 "+
