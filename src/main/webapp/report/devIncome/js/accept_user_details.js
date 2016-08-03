@@ -61,22 +61,27 @@ function search(pageNumber) {
 	var service_num=$.trim($("#service_num").val());
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
-	
+	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(1) TOTAL FROM PMRT.TB_MRT_ACC_DETAIL_MON PARTITION(P"+dealDate+") T WHERE 1=1";
 	//选项框条件
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
+		csql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
 	}
 	if(unitCode!=''){
 		sql+=" AND T.UNIT_ID ='"+unitCode+"'";
+		csql+=" AND T.UNIT_ID ='"+unitCode+"'";
 	}
 	if(userName!=''){
-		sql+=" AND T.NAME LIKE '%"+userName+"%'";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+userName+"')>0";
+		csql+=" AND INSTR(T.SERVICE_NUM,'"+userName+"')>0";
 	}
 	if(busiDesc!=''){
-		sql+=" AND T.BUSI_DESC LIKE '%"+busiDesc+"%'";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
+		csql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
 	}
 	if(service_num!=''){
-		sql+=" AND T.SERVICE_NUM LIKE '%"+service_num+"%'";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+service_num+"')>0";
+		csql+=" AND INSTR(T.SERVICE_NUM,'"+service_num+"')>0";
 	}
 	var orgLevel=$("#orgLevel").val();
 	//权限
@@ -84,14 +89,16 @@ function search(pageNumber) {
 
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1 =" + code;
+		csql+=" AND T.GROUP_ID_1 =" + code;
 	}else if(orgLevel==3){
 		sql+=" AND T.GROUP_ID_1 =" + region+" AND T.UNIT_ID='"+code+"'";
+		csql+=" AND T.GROUP_ID_1 =" + region+" AND T.UNIT_ID='"+code+"'";
 	}else{
 		sql+=" AND T.HR_ID="+code;
+		csql+=" AND T.HR_ID="+code;
 	}
 	
-	var csql = sql;
-	var cdata = query("select count(*) total from(" + csql+")");
+	var cdata = query(csql);
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -122,7 +129,7 @@ function search(pageNumber) {
 
 function getSql(){
 		var dealDate=$("#dealDate").val();
-		var s="SELECT T.DEAL_DATE,                  "+
+		var s="SELECT /*+index(NUM_ACC_DETAIL)*/ T.DEAL_DATE,"+
 			"       T.GROUP_ID_1_NAME,            "+
 			"       T.UNIT_NAME,                  "+
 			"       T.HR_ID,                      "+
@@ -164,13 +171,13 @@ function downsAll(){
 		sql+=" AND T.UNIT_ID ='"+unitCode+"'";
 	}
 	if(userName!=''){
-		sql+=" AND T.NAME LIKE '%"+userName+"%'";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+userName+"')>0";
 	}
 	if(busiDesc!=''){
-		sql+=" AND T.BUSI_DESC LIKE '%"+busiDesc+"%'";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
 	}
 	if(service_num!=''){
-		sql+=" AND T.SERVICE_NUM LIKE '%"+service_num+"%'";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+service_num+"')>0";
 	}
 	var orgLevel=$("#orgLevel").val();
 	//权限
@@ -203,7 +210,7 @@ function listRegions(){
 	}else{
 		sql+=" and T.GROUP_ID_1='"+region+"'";
 	}
-	sql+=" ORDER BY T.GROUP_ID_1"
+	sql+=" ORDER BY T.GROUP_ID_1";
 	var d=query(sql);
 	if (d) {
 		var h = '';
@@ -250,7 +257,7 @@ function listUnits(region){
 		return;
 	}
 	
-	sql+=" ORDER BY T.UNIT_ID"
+	sql+=" ORDER BY T.UNIT_ID";
 	var d=query(sql);
 	if (d) {
 		var h = '';
