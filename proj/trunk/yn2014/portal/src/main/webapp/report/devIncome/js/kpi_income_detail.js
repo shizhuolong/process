@@ -61,7 +61,7 @@ function search(pageNumber) {
 	
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
-	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(1) FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+dealDate+") T WHERE 1=1 ";
+	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(1) TOTAL FROM PODS.TB_ODS_JCDY_INCOME_HR_MON PARTITION(P"+dealDate+") T WHERE 1=1 ";
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
 		csql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
@@ -71,12 +71,12 @@ function search(pageNumber) {
 		csql+=" AND T.UNIT_ID = '"+unitCode+"'";
 	}
 	if(useName!=''){
-		sql+=" AND T.NAME LIKE '%"+useName+"%'";
-		csql+=" AND T.NAME LIKE '%"+useName+"%'"
+		sql+=" AND INSTR(T.NAME,'"+useName+"')>0";
+		csql+=" AND INSTR(T.NAME,'"+useName+"')>0";
 	}
 	if(userPhone!=''){
-		sql+=" AND T.DEVICE_NUMBER='"+userPhone+"'";
-		csql+=" AND T.DEVICE_NUMBER='"+userPhone+"'";
+		sql+=" AND INSTR(T.DEVICE_NUMBER,'"+userPhone+"')>0";
+		csql+=" AND INSTR(T.DEVICE_NUMBER,'"+userPhone+"')>0";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -160,10 +160,10 @@ function downsAll(){
 		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
 	}
 	if(useName!=''){
-		sql+=" AND T.NAME LIKE '%"+useName+"%'"
+		sql+=" AND INSTR(T.NAME,'"+useName+"')>0";
 	}
 	if(userPhone!=''){
-		sql+=" AND T.DEVICE_NUMBER='"+userPhone+"'";
+		sql+=" AND INSTR(T.DEVICE_NUMBER,'"+userPhone+"')>0";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
