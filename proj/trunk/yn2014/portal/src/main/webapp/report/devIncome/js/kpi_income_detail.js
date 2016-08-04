@@ -81,7 +81,9 @@ function search(pageNumber) {
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel==1){
-
+      if(regionCode==''&&unitCode==''&&useName==''&&userPhone==''){
+    	  csql="SELECT TABLE_ROWS TOTAL FROM PODS.TB_ODS_TABLE_ROWS T WHERE OWNER='PODS' AND TABLE_NAME='TB_ODS_JCDY_INCOME_HR_MON' AND PART_NAME='P"+dealDate+"'";
+      }
 	}else if(orgLevel==2){
 		sql+=" and T.GROUP_ID_1 =" + code;
 		csql+=" and T.GROUP_ID_1 =" + code;
