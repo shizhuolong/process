@@ -75,8 +75,8 @@ function search(pageNumber) {
 		csql+=" AND INSTR(T.NAME,'"+useName+"')>0";
 	}
 	if(userPhone!=''){
-		sql+=" AND INSTR(T.DEVICE_NUMBER,'"+userPhone+"')>0";
-		csql+=" AND INSTR(T.DEVICE_NUMBER,'"+userPhone+"')>0";
+		sql+=" AND T.DEVICE_NUMBER = '"+userPhone+"'";
+		csql+=" AND T.DEVICE_NUMBER = '"+userPhone+"'";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -165,7 +165,7 @@ function downsAll(){
 		sql+=" AND INSTR(T.NAME,'"+useName+"')>0";
 	}
 	if(userPhone!=''){
-		sql+=" AND INSTR(T.DEVICE_NUMBER,'"+userPhone+"')>0";
+		sql+=" AND T.DEVICE_NUMBER = '"+userPhone+"'";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
