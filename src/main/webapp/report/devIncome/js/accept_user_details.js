@@ -86,7 +86,9 @@ function search(pageNumber) {
 	var orgLevel=$("#orgLevel").val();
 	//权限
 	if(orgLevel==1){
-
+		  if(regionCode==''&&unitCode==''&&userName==''&&busiDesc==''&service_num==''){
+	    	  csql="SELECT TABLE_ROWS TOTAL FROM PODS.TB_ODS_TABLE_ROWS T WHERE OWNER='PMRT' AND TABLE_NAME='TB_MRT_ACC_DETAIL_MON' AND PART_NAME='P"+dealDate+"'";
+	      }
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1 =" + code;
 		csql+=" AND T.GROUP_ID_1 =" + code;
