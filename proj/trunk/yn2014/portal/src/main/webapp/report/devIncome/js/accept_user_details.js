@@ -61,7 +61,7 @@ function search(pageNumber) {
 	var service_num=$.trim($("#service_num").val());
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
-	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(1) TOTAL FROM PMRT.TB_MRT_ACC_DETAIL_MON PARTITION(P"+dealDate+") T WHERE 1=1";
+	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(rowid) TOTAL FROM PMRT.TB_MRT_ACC_DETAIL_MON PARTITION(P"+dealDate+") T WHERE 1=1";
 	//选项框条件
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
