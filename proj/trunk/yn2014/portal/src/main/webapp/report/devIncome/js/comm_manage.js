@@ -45,19 +45,45 @@ $(function(){
 			qdate = $("#mon").val();
 			chnlName=$.trim($("#chnlName").val());
 			var hrId=$("#hrId").val();
+			where+=" AND DEAL_DATE='"+qdate+"'";
 			var order='';
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
-				//下钻
-				where+=" AND GROUP_ID_"+(orgLevel-1)+"='"+code+"'";
-				if(orgLevel>4){//点击渠道
+			    if(orgLevel==2){
+			    	preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
+					groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
+					where+=" AND GROUP_ID_1='"+code+"'";
+					order=" ORDER BY UNIT_ID";
+				}else if(orgLevel==3){
+					preSql="SELECT GROUP_ID_4 ROW_ID,GROUP_ID_4_NAME ROW_NAME,";
+					groupBy=" GROUP BY GROUP_ID_4,GROUP_ID_4_NAME";
+					where+=" AND UNIT_ID='"+code+"'";
+					order=" ORDER BY GROUP_ID_4";
+				}else{
 					return {data:[],extra:{}};
 				}
 			}else{
 				//先根据用户信息得到前几个字段
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
+				if(orgLevel==1){
+					preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,";
+					order=" ORDER BY GROUP_ID_1";
+					groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
+					where+=" AND GROUP_ID_0='"+code+"'";
+				}else if(orgLevel==2){
+					preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
+					groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
+					where+=" AND GROUP_ID_1='"+code+"'";
+					order=" ORDER BY UNIT_ID";
+				}else if(orgLevel==3){
+					preSql="SELECT GROUP_ID_4 ROW_ID,GROUP_ID_4_NAME ROW_NAME,";
+					groupBy=" GROUP BY GROUP_ID_4,GROUP_ID_4_NAME";
+					where+=" AND UNIT_ID='"+code+"'";
+				}else{
+					return {data:[],extra:{}};
+				}
 				//权限
 				if(orgLevel>2){
 					//营服中心以下用新权限
@@ -67,8 +93,6 @@ $(function(){
 					 }else{
 						 where+=" AND 1=2 ";	 
 					 }
-				}else{
-					where+=" AND GROUP_ID_"+(orgLevel-1)+"='"+code+"'";
 				}
 			}	
 			orgLevel++;
@@ -76,10 +100,8 @@ $(function(){
 			if(chnlName!=''){
 				where+=" AND GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
 			}
-			preSql="SELECT GROUP_ID_"+(orgLevel-1)+" ROW_ID,GROUP_ID_"+(orgLevel-1)+"_NAME ROW_NAME,";
-			groupBy=" GROUP BY GROUP_ID_"+(orgLevel-1)+",GROUP_ID_"+(orgLevel-1)+"_NAME";
-			order=" ORDER BY GROUP_ID_"+(orgLevel-1);
-			var sql = preSql+getSumSql()+" PARTITION(P"+qdate+")"+where+groupBy+order;
+			
+			var sql = preSql+getSumSql()+where+groupBy+order;
 			if(orderBy!=''){
 				sql="select * from( "+sql+") t "+orderBy;
 			}
@@ -233,15 +255,18 @@ function getColumnName(tbcode){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var where=' WHERE 1 = 1';
-	var orderBy=" ORDER BY GROUP_ID_1,GROUP_ID_2,GROUP_ID_3,GROUP_ID_4";
+	where+=" AND DEAL_DATE='"+qdate+"'";
+	var orderBy=" ORDER BY GROUP_ID_1,UNIT_ID,GROUP_ID_4";
 	var chnlName=$.trim($("#chnlName").val());
 		
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	//权限
-	if(orgLevel<3){
-		where+=" AND GROUP_ID_"+(orgLevel-1)+"='"+code+"'";
+	if(orgLevel==1){
+		where+=" AND GROUP_ID_0='"+code+"'";
+	}else if(orgLevel==2){
+		where+=" AND GROUP_ID_1='"+code+"'";
 	}else{
 		var hrIds=_jf_power(hrId,qdate);
 		 if(hrIds&&hrIds!=""){
@@ -253,10 +278,10 @@ function downsAll() {
 	if(chnlName!=''){
 		where+=" AND GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
 	}
-	var sql = "SELECT GROUP_ID_1_NAME,GROUP_ID_2_NAME,GROUP_ID_3_NAME,GROUP_ID_4_NAME,DEV_CHNL_ID,CHN_CDE_1_NAME,CHN_CDE_2_NAME,CHN_CDE_3_NAME,CHN_CDE_4_NAME,BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TB_MRT_COMM_AGENT_REPORT PARTITION(P"+qdate+")"+where+orderBy;
+	var sql = "SELECT GROUP_ID_1_NAME,UNIT_NAME,GROUP_ID_4_NAME,DEV_CHNL_ID,CHN_CDE_1_NAME,CHN_CDE_2_NAME,CHN_CDE_3_NAME,CHN_CDE_4_NAME,BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT"+where+orderBy;
 	showtext = '佣金汇总月报' + qdate;
-	var title=[["地市","区县","网格","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
-	           ["","","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
+	var title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
+	           ["","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -268,7 +293,7 @@ function getSumSql(orgLevel){
 		}
 		s+="SUM(NVL("+field[i]+",0)) AS "+field[i];
 	}
-	return s+" FROM PMRT.TB_MRT_COMM_AGENT_REPORT";
+	return s+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT";
 }
 /*//格式化数值，每三位加逗号
 function numberFormat(num){

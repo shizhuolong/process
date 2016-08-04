@@ -57,7 +57,7 @@ function search(pageNumber) {
 "       CHN_CDE_4_NAME                                ";
 
 	
-    var table="FROM PMRT.TB_MRT_COMM_AGENT_DETAIL PARTITION(P"+time+") WHERE 1=1";
+    var table="FROM PMRT.TAB_MRT_COMM_AGENT_DETAIL WHERE DEAL_DATE='"+time+"'";
 	
 	if(tablecode != null && tablecode != "") {
 		sql+="," + tablecode + " COMM,REMARK,TOTAL_FEE " + table +" AND "+tablecode + " != '0' ";
@@ -74,11 +74,19 @@ function search(pageNumber) {
 		sql+=" AND ITEMNAME LIKE '%"+itemname+"%'";
 	}
 	if(code!=null&&code!=""){
-		sql+=" AND group_id_"+level+" = '"+code+"'"; 
+		if(level==1){
+			sql+=" AND group_id_1='"+code+"'";
+		}else if(level==2){
+			sql+=" AND unit_id='"+code+"'";
+		}else{
+			sql+=" AND group_id_4='"+code+"'";
+		}
 	}
 	//权限
-	if(orgLevel<3){
-		sql+=" AND GROUP_ID_"+(orgLevel-1)+"='"+orgCode+"'";
+	if(orgLevel==1){
+		sql+=" AND GROUP_ID_0='"+orgCode+"'";
+	}else if(orgLevel==2){
+		sql+=" AND GROUP_ID_1='"+orgCode+"'";
 	}else{
 		var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
@@ -164,7 +172,7 @@ function downsAll(){
 "       CHN_CDE_4_NAME                                ";
 
 	
-    var table="FROM PMRT.TB_MRT_COMM_AGENT_DETAIL PARTITION(P"+time+") WHERE 1=1";
+	var table="FROM PMRT.TAB_MRT_COMM_AGENT_DETAIL WHERE DEAL_DATE='"+time+"'";
 	
 	if(tablecode != null && tablecode != "") {
 		sql+="," + tablecode + " COMM,REMARK,TOTAL_FEE " + table +" AND "+tablecode + " != '0' ";
@@ -181,11 +189,19 @@ function downsAll(){
 		sql+=" AND ITEMNAME LIKE '%"+itemname+"%'";
 	}
 	if(code!=null&&code!=""){
-		sql+=" AND GROUP_ID_"+level+" = '"+code+"'"; 
+		if(level==1){
+			sql+=" AND group_id_1='"+code+"'";
+		}else if(level==2){
+			sql+=" AND unit_id='"+code+"'";
+		}else{
+			sql+=" AND group_id_4='"+code+"'";
+		}
 	}
 	//权限
-	if(orgLevel<3){
-		sql+=" AND GROUP_ID_"+(orgLevel-1)+"='"+orgCode+"'";
+	if(orgLevel==1){
+		sql+=" AND GROUP_ID_0='"+orgCode+"'";
+	}else if(orgLevel==2){
+		sql+=" AND GROUP_ID_1='"+orgCode+"'";
 	}else{
 		var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
