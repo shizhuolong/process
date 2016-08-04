@@ -80,8 +80,8 @@ function search(pageNumber) {
 		csql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
 	}
 	if(service_num!=''){
-		sql+=" AND INSTR(T.SERVICE_NUM,'"+service_num+"')>0";
-		csql+=" AND INSTR(T.SERVICE_NUM,'"+service_num+"')>0";
+		sql+=" AND T.SERVICE_NUM = '"+service_num+"'";
+		csql+=" AND T.SERVICE_NUM = '"+service_num+"'";
 	}
 	var orgLevel=$("#orgLevel").val();
 	//权限
@@ -179,7 +179,7 @@ function downsAll(){
 		sql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
 	}
 	if(service_num!=''){
-		sql+=" AND INSTR(T.SERVICE_NUM,'"+service_num+"')>0";
+		sql+=" AND T.SERVICE_NUM = '"+service_num+"'";
 	}
 	var orgLevel=$("#orgLevel").val();
 	//权限
