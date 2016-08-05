@@ -168,6 +168,7 @@ function downsAll() {
 		where+=" AND T.OPERATE_TYPE = '"+ operateType+"'";
 	}
 	
+	sql+=where;
 	
 	sql+="GROUP BY T.DEAL_DATE,T.GROUP_ID_1_NAME,T.UNIT_NAME "+
 		"        ,T.YYT_NAME                                 "+
@@ -236,6 +237,9 @@ function downsDetail(){
 	if(operateType!=''){
 		where+=" AND T.OPERATE_TYPE = '"+ operateType+"'";
 	}
+	
+	sql+=where;
+	
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel==1){
 		sql+=" ORDER BY T.GROUP_ID_1_NAME";
