@@ -50,7 +50,7 @@
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 										</td>
-										<td width="3%">
+										<td>
 											<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 										</td>
 									</tr>
@@ -65,30 +65,43 @@
 													<th>营服中心</th>
 													<th>渠道编码</th>
 													<th>渠道名称</th>
-													<th>手工兑换积分</th>
-													
-													<th>手工兑换金额</th>
-													<th>累计已兑积分</th>
-													<th>累计剩余积分</th>
-													<th>累计已兑金额</th>
-													
-													
 													<th>渠道属性</th>
 													<th>渠道等级</th>
-													<th>本月积分</th>
+													
+													<!---------------录入积分 随公式变换-->
+													<th>本期手工录入积分合计</th>
+													<th>本期手工录入积分(促销)</th>
+													<th>本期手工录入积分(非促销)</th>
+													<th>本期录入折算金额(促销)</th>
+													<th>本期录入折算金额(非促销)</th>
+													<th>本期补结金额</th>
+													<th>本年未兑换总积分</th>
+													<th>本年未兑换总积分(促销)</th>
+													<th>本年未兑换总积分(非促销)</th>
+													<th>自201506累计已兑换总积分</th>
+													<th>自201506累计已兑换总金额</th>
+													<th>自201506累计剩余未兑积分</th>
+													<!-------------------显示积分 只做显示-->
+													<th>本月计算积分</th>
 													<th>本月清算积分</th>
-													<th>本月可兑积分</th>
-													<th>本月可兑金额</th>
-													<th>本半年累计积分</th>
-													<th>本半年累计清算积分</th>
-													<th>本半年累计可兑积分</th>
-													<th>本半年累计可兑金额</th>
+													<th>本月延付积分</th>
+													<th>本月延付释放积分</th>
+													<th>本月预支付积分</th>
+													<th>本月实算积分</th>
+													<th>本月实算积分(促销)</th>
+													<th>本月实算积分(非促销)</th>
+													<th>本月实算金额</th>
+													<th>本月实算金额(促销)</th>
+													<th>本月实算金额(非促销)</th>
 												</tr>
 											</thead>
 											<tbody id="dataBody">
 											</tbody>
-											<tr>
-												<td colspan="20">
+										</table>
+									</div>
+									<table id="sm-payment-order-apply" style="width: 100%;">
+										<tr>
+												<td colspan="29">
 													<div class="page_count">
 														<div class="page_count_left">
 															共有 <span id="totalCount"></span> 条数据
@@ -100,8 +113,7 @@
 													</div>
 												</td>
 											</tr>
-										</table>
-									</div>
+									</table>
 								</div>
 							</form>
 							<jsp:include page="/workflow/workorder/activityApproval/approveCommon.jsp"></jsp:include>
