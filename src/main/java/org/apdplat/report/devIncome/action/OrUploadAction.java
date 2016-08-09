@@ -45,6 +45,8 @@ public class OrUploadAction extends BaseAction{
 	DataSource dataSource;
 	public void confirmTax(){
 		boolean r=false;
+		Connection conn=null;
+		CallableStatement stmt=null;
 		try{
 			String time=request.getParameter("time");
 			String userId=request.getParameter("userId");
@@ -55,8 +57,8 @@ public class OrUploadAction extends BaseAction{
 			String sql="insert into PTEMP.TB_TMP_JCDY_OUT_HR_SALARY select * from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where creator='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
 			//调用存储过程
-			Connection conn = dataSource.getConnection();
-			CallableStatement stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
+			conn = dataSource.getConnection();
+			stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
 			stmt.setString(1,time+"08");
 			stmt.setString(2,regionCode);
 			stmt.registerOutParameter(3,java.sql.Types.DECIMAL);
@@ -71,6 +73,17 @@ public class OrUploadAction extends BaseAction{
 		}catch(Exception e){
 			e.printStackTrace();
 			r=false;
+		}finally{
+			if(null!=stmt){
+				try{
+					stmt.close();
+				}catch(Exception e){}
+			}
+			if(null!=conn){
+				try{
+					conn.close();
+				}catch(Exception e){}
+			}
 		}
 		Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
 	}
