@@ -101,11 +101,13 @@ public class ChannelSubsidyPayAction extends BaseAction{
 	
 	public void updateJf() {
 		try {
-			double isJf=Double.parseDouble(request.getParameter("isJf"));
+			double cx=Double.parseDouble(request.getParameter("cx"));
+			double fcx=Double.parseDouble(request.getParameter("fcx"));
 			String hqCode=request.getParameter("hqCode");
 			String businessKey = request.getParameter("businessKey");
 			Map<String,Object> m=new HashMap<String,Object>();
-			m.put("isJf",isJf);
+			m.put("cx",cx);
+			m.put("fcx",fcx);
 			m.put("hqCode",hqCode);
 			m.put("businessKey",businessKey);
 			channelSubsidyPayService.updateJf(m);

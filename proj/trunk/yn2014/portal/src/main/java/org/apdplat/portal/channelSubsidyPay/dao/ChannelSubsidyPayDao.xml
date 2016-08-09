@@ -3,38 +3,49 @@
 
 <mapper namespace="org.apdplat.portal.channelSubsidyPay.dao.ChannelSubsidyPayDao">
 	<select id="listByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT DEAL_DATE,
+		SELECT 
+		   DEAL_DATE,
 	       GROUP_ID_1_NAME,
 	       UNIT_NAME,
-	       HR_ID,
-	       HR_ID_NAME,
 	       FD_CHNL_ID,
-	       GROUP_ID_4_NAME,
+	       DEV_CHNL_NAME,
 	       DEPT_TYPE,
-	       HZ_MONTH,
 	       INTEGRAL_GRADE,
-	       nvl(ALL_JF_TOTAL, 0) ALL_JF_TOTAL,
+	       
+	       
+	       nvl(IS_JF, 0) IS_JF,
+	       nvl(IS_JF_CX, 0) IS_JF_CX,
+	       NVL(IS_JF_FCX, 0) IS_JF_FCX,
+	       NVL(IS_COMM_CX, 0) IS_COMM_CX,
+	       NVL(IS_COMM_FCX, 0) IS_COMM_FCX,
+	       NVL(BJ_COMM,0) BJ_COMM,
+	       NVL(IS_JF_SPLUS, 0) IS_JF_SPLUS,
+	       nvl(IS_JF_SPLUS_CX, 0) IS_JF_SPLUS_CX,
+	       nvl(IS_JF_SPLUS_FCX, 0) IS_JF_SPLUS_FCX,
+	       NVL(IS_JF_LJ_DH, 0) IS_JF_LJ_DH,
+	       NVL(IS_COMM_LJ_DH, 0) IS_COMM_LJ_DH,
+	       NVL(IS_JF_SPLUS_ALL, 0) IS_JF_SPLUS_ALL,
+	       
+	       NVL(ALL_JF_TOTAL, 0) ALL_JF_TOTAL,
 	       nvl(ALL_JF_QS, 0) ALL_JF_QS,
-	       NVL(ALL_JF_TOTAL, 0) + NVL(ALL_JF_QS, 0) MON_JF,
-	       DECODE(INTEGRAL_GRADE, 'D', NULL, NVL(COMM, 0)) MON_JE,
-	       NVL(LJ_JF_TOTAL, 0) LJ_JF_TOTAL,
-	       NVL(LJ_JF_QS, 0) LJ_JF_QS,
-	       NVL(LJ_JF_DH, 0) LJ_JF_DH,
-	       DECODE(INTEGRAL_GRADE, 'D', NULL, NVL(LJ_COMM, 0)) LJ_BN_JE,
-	       IS_JF,
-	       IS_COMM IS_JF_JE,
-	       IS_JF_LJ_ALL IS_JF_LJ_ALL,
-	       IS_COMM_LJ_ALL IS_COMM_LJ_ALL,
-	       IS_JF_SPLUS_ALL  IS_JF_SPLUS_ALL,
-	       STATUS,
-	       UP_JF
+	       nvl(ALL_JF_YF, 0) ALL_JF_YF,
+	       NVL(ALL_JF_YFSF, 0) ALL_JF_YFSF,
+	       NVL(IS_JF_YZF, 0) IS_JF_YZF,
+	       NVL(ALL_JF, 0) ALL_JF,
+	       NVL(ALL_JF_CX, 0) ALL_JF_CX,
+	       NVL(ALL_JF_FCX, 0) ALL_JF_FCX,
+	       nvl(COMM, 0) COMM,
+	       nvl(COMM_CX, 0) COMM_CX,
+	       NVL(COMM_FCX, 0) COMM_FCX,
+	       NVL(UP_JF_CX, 0) UP_JF_CX,
+	       NVL(UP_JF_FCX, 0) UP_JF_FCX
 	  FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
  	  WHERE T.INTEGRAL_SUB = 1
 	  AND T.INIT_ID = #{businessKey}
 	 <if test="channelCode != null">
 	 	AND T.FD_CHNL_ID= #{channelCode}
 	 </if>
-	 ORDER BY GROUP_ID_4_NAME,FD_CHNL_ID ASC
+	 ORDER BY DEV_CHNL_NAME,FD_CHNL_ID ASC
 	</select>
 	<select id="getDataListCount" parameterType="java.util.Map" resultType="int">
 		SELECT 
@@ -78,7 +89,7 @@
    		AND T.INTEGRAL_SUB = 1
 	</update>
 	<update id="updateJf" parameterType="java.util.Map">
-        UPDATE PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T SET T.is_jf=#{isJf} where T.fd_chnl_id=#{hqCode} and T.init_id=#{businessKey} AND T.INTEGRAL_SUB = 1
+        UPDATE PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T SET T.IS_JF_CX=#{cx},T.IS_JF_FCX=#{fcx} where T.fd_chnl_id=#{hqCode} and T.init_id=#{businessKey} AND T.INTEGRAL_SUB = 1
     </update>
     <select id="getDealDateByWorkNo" parameterType="java.util.Map"  resultType="java.lang.String">
 		SELECT 
@@ -88,68 +99,124 @@
 	</select>
     <update id="updateJfLj" parameterType="java.util.Map">
     	 MERGE INTO  PMRT.TAB_MRT_INTEGRAL_DEV_REPORT PARTITION(P${dealDate}) T1
-		  USING (SELECT T.FD_CHNL_ID,
-		       SUM(CASE WHEN T.DEAL_DATE = #{dealDate} THEN
-		            T.IS_JF
-		            ELSE
-		              0
-		            END) IS_JF, <!--当期兑换积分-->
-		       round(SUM(CASE WHEN T.DEAL_DATE = #{dealDate} THEN
-		        CASE
-		         WHEN T.HZ_MONTH &lt;= 3 THEN
-		          1.0 * nvl(IS_JF, 0) * 5 * 0.7
-		         WHEN T.HZ_MONTH &gt; 3 THEN
-		          CASE
-		            WHEN T.INTEGRAL_GRADE = 'S' THEN
-		             1.3 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		            WHEN T.INTEGRAL_GRADE = 'A' THEN
-		             1.2 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		            WHEN T.INTEGRAL_GRADE = 'B' THEN
-		             1.1 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		            WHEN T.INTEGRAL_GRADE = 'C' THEN
-		             1.0 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		          end
-		       
-		         ELSE
-		          0
-		       END
-		            ELSE
-		              0
-		            END),2) IS_comm, <!--当期兑换金额-->
-		       SUM(NVL(T.ALL_JF_TOTAL,0)+NVL(T.ALL_JF_QS,0)) all_jf_KD, <!--累计可兑积分-->
-		       SUM(NVL(IS_JF,0)) IS_JF_LJ_ALL, <!--累计已兑积分-->
-		       round(SUM(CASE
-		         WHEN T.HZ_MONTH &lt;= 3 THEN
-		          1.0 * nvl(IS_JF, 0) * 5 * 0.7
-		         WHEN T.HZ_MONTH &gt; 3 THEN
-		          CASE
-		            WHEN T.INTEGRAL_GRADE = 'S' THEN
-		             1.3 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		            WHEN T.INTEGRAL_GRADE = 'A' THEN
-		             1.2 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		            WHEN T.INTEGRAL_GRADE = 'B' THEN
-		             1.1 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		            WHEN T.INTEGRAL_GRADE = 'C' THEN
-		             1.0 * nvl(IS_JF, 0) * 5 * 1 + nvl(BJ_COMM, 0)
-		          end
-		       
-		         ELSE
-		          0
-		       END
-		       ),2) IS_COMM_LJ_ALL, <!--累计已兑金额-->
-		       SUM(NVL(T.ALL_JF_TOTAL,0)+NVL(T.ALL_JF_QS,0)-NVL(IS_JF,0) )  IS_JF_SPLUS_ALL <!--累计剩余积分-->
-		  FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
-		 WHERE T.DEAL_DATE BETWEEN 201506 AND #{dealDate}
-		 GROUP BY T.FD_CHNL_ID
-		) T2
-		  
-		ON (T1.FD_CHNL_ID = T2.FD_CHNL_ID)
-		WHEN MATCHED THEN
-		  UPDATE SET 
-		              t1.is_comm = t2.is_comm  
-		             ,T1.IS_JF_LJ_ALL = T2.IS_JF_LJ_ALL
-		             ,T1.IS_COMM_LJ_ALL = T2.IS_COMM_LJ_ALL
-		             ,T1.IS_JF_SPLUS_ALL = T2.IS_JF_SPLUS_ALL
+      USING (SELECT T.FD_CHNL_ID,
+           SUM(CASE WHEN T.DEAL_DATE = #{dealDate} THEN
+                NVL(T.IS_JF_CX,0) + NVL(T.IS_JF_FCX,0)
+                ELSE
+                  0
+                END) IS_JF, <!--当期兑换积分-->
+        round(SUM(
+        CASE WHEN T.DEAL_DATE =#{dealDate}
+          THEN
+          CASE
+            WHEN T.INTEGRAL_GRADE = 'S' THEN
+             1.3 * nvl(IS_JF_CX, 0) * 5
+            WHEN T.INTEGRAL_GRADE = 'A' THEN
+             1.2 * nvl(IS_JF_CX, 0) * 5
+            WHEN T.INTEGRAL_GRADE = 'B' THEN
+             1.1 * nvl(IS_JF_CX, 0) * 5 
+            WHEN T.INTEGRAL_GRADE = 'C' THEN
+             1.0 * nvl(IS_JF_CX, 0) * 5
+          end
+       ELSE
+         0
+         END
+       ),2) IS_COMM_CX,<!--当期兑换金额促销-->
+        round(SUM(
+        CASE WHEN T.DEAL_DATE =  #{dealDate}
+          THEN
+          CASE
+            WHEN T.INTEGRAL_GRADE = 'S' THEN
+             1.3 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
+            WHEN T.INTEGRAL_GRADE = 'A' THEN
+             1.2 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
+            WHEN T.INTEGRAL_GRADE = 'B' THEN
+             1.1 * nvl(IS_JF_FCX, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+            WHEN T.INTEGRAL_GRADE = 'C' THEN
+             1.0 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
+          end
+       ELSE
+         0
+         END
+       ),2) IS_COMM_FCX, <!--当期兑换金额非促销-->
+       
+       SUM(
+       CASE WHEN  T.DEAL_DATE BETWEEN SUBSTR(${dealDate},1,4)||'01' AND  #{dealDate}
+         then
+       NVL(T.ALL_JF_TOTAL,0)+NVL(T.ALL_JF_QS,0)-NVL(T.ALL_JF_YF,0)+NVL(T.ALL_JF_YFSF,0) - NVL(T.IS_JF_CX,0)- NVL(T.IS_JF_FCX,0)-NVL(T.IS_JF_YZF,0)
+       else
+         0
+          end                                                                               
+       ) IS_JF_SPLUS,<!--本年未兑换积分（总分）-->
+       
+       SUM(
+       CASE WHEN  T.DEAL_DATE BETWEEN SUBSTR(${dealDate},1,4)||'01' AND  #{dealDate}
+         then
+       NVL(T.ALL_JF_TOTAL_CX,0)+NVL(T.ALL_JF_QS_CX,0)-NVL(T.ALL_JF_YF_CX,0)+NVL(T.ALL_JF_YFSF_CX,0) - NVL(T.IS_JF_CX,0) 
+                 else
+         0     
+           end                                                                          
+       ) IS_JF_SPLUS_CX,<!--本年未兑换积分 （促销）-->
+       
+        SUM(
+       CASE WHEN  T.DEAL_DATE BETWEEN SUBSTR(${dealDate},1,4)||'01' AND  #{dealDate}
+         then
+      NVL(T.ALL_JF_TOTAL_FCX,0)+NVL(T.ALL_JF_QS_FCX,0)-NVL(T.ALL_JF_YF_FCX,0)+NVL(T.ALL_JF_YFSF_FCX,0) - NVL(T.IS_JF_FCX,0)-NVL(T.IS_JF_YZF,0)
+             else
+         0   
+       end                                                                               
+       ) IS_JF_SPLUS_FCX,<!--本年剩余未兑积分（非促销）-->
+        SUM(NVL(T.IS_JF_CX,0)+NVL(IS_JF_FCX,0)) IS_JF_LJ_DH ,<!---自201506累计已兑总积分-->
+        round(SUM(
+          CASE
+            WHEN T.INTEGRAL_GRADE = 'S' THEN
+             1.3 * nvl(IS_JF_CX, 0) * 5 
+            WHEN T.INTEGRAL_GRADE = 'A' THEN
+             1.2 * nvl(IS_JF_CX, 0) * 5 
+            WHEN T.INTEGRAL_GRADE = 'B' THEN
+             1.1 * nvl(IS_JF_CX, 0) * 5
+            WHEN T.INTEGRAL_GRADE = 'C' THEN
+             1.0 * nvl(IS_JF_CX, 0) * 5 
+              ELSE
+         0
+         END)
+       ,2) is_comm_lj_dh_cx,
+       
+        round(SUM(
+       CASE
+            WHEN T.INTEGRAL_GRADE = 'S' THEN
+             1.3 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
+            WHEN T.INTEGRAL_GRADE = 'A' THEN
+             1.2 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
+            WHEN T.INTEGRAL_GRADE = 'B' THEN
+             1.1 * nvl(IS_JF_FCX, 0) * 5 * 1 + nvl(BJ_COMM, 0)
+            WHEN T.INTEGRAL_GRADE = 'C' THEN
+             1.0 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
+              ELSE
+         0
+         END),2) IS_COMM_LJ_DH_fcx,<!--自2015年06月累计已兑金额 -->
+       SUM(NVL(T.ALL_JF_TOTAL,0)+NVL(T.ALL_JF_QS,0)-NVL(T.ALL_JF_YF,0)+NVL(T.ALL_JF_YFSF,0) -  NVL(T.IS_JF_CX,0)-NVL(T.IS_JF_FCX,0))-SUM(NVL(T.IS_JF_YZF,0)) 
+
+IS_JF_SPLUS_ALL <!--自201506累计剩余未兑积分 -->
+          
+      FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
+     WHERE T.DEAL_DATE BETWEEN 201506 AND #{dealDate}
+     GROUP BY T.FD_CHNL_ID
+    ) T2
+      
+    ON (T1.FD_CHNL_ID = T2.FD_CHNL_ID)
+    WHEN MATCHED THEN
+      UPDATE SET 
+                 T1.IS_JF = T2.IS_JF
+                 ,T1.IS_COMM = NVL(T2.IS_COMM_CX,0) +NVL(T2.IS_COMM_FCX,0)
+                 ,T1.IS_COMM_CX = T2.IS_COMM_CX
+                 ,T1.IS_COMM_FCX = T2.IS_COMM_FCX
+                 ,T1.IS_JF_SPLUS = T2.IS_JF_SPLUS
+                 ,T1.IS_JF_SPLUS_CX = T2.IS_JF_SPLUS_CX
+                 ,T1.IS_JF_SPLUS_FCX = T2.IS_JF_SPLUS_FCX
+                 ,T1.IS_JF_LJ_DH = T2.IS_JF_LJ_DH
+                 ,T1.IS_COMM_LJ_DH = T2.is_comm_lj_dh_cx +t2.is_comm_lj_dh_fcx
+                 ,T1.IS_JF_SPLUS_ALL = T2.IS_JF_SPLUS_ALL
      WHERE T1.INTEGRAL_SUB  = 1 and T1.fd_chnl_id=#{hqCode}
     </update>
     <update id="updateStatus" parameterType="String">
