@@ -26,12 +26,13 @@ public class ManualAndComOriginalAction extends BaseAction {
 	 */
 	public void callstored() {
 		String dealDate = request.getParameter("dealDate");
-		Connection conn;
+		Connection conn=null;
+		CallableStatement stmt=null;
 		try {
 			//1.建立数据库连接
 			conn = dataSource.getConnection();
 			//2.创建存储过程调用对象
-			CallableStatement stmt = conn.prepareCall("call PMRT.PRC_TAB_MRT_COMM_CY_DATA_MON(?,?)");
+			stmt = conn.prepareCall("call PMRT.PRC_TAB_MRT_COMM_CY_DATA_MON(?,?)");
 			//3.设置传入参数（传入in值）
 			stmt.setString(1, dealDate);
 			//4.设置返回参数（设置out值）
@@ -48,6 +49,17 @@ public class ManualAndComOriginalAction extends BaseAction {
 			logger.info("调用存储过程出现异常！！");
 			this.reponseJson(ERROR);
 			e.printStackTrace();
+		}finally{
+			if(null!=stmt){
+				try{
+					stmt.close();
+				}catch(Exception e){}
+			}
+			if(null!=conn){
+				try{
+					conn.close();
+				}catch(Exception e){}
+			}
 		}
 	}
 }
