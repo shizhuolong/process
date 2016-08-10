@@ -1,5 +1,5 @@
-var field=["ROW_NAME","ALL_JF_TOTAL","ALL_JF_QS","ALL_JF_YF","ALL_JF_YFSF","THIS_MONTH_TOTAL","IS_JF","IS_COMM","COMM","LJ_JF_TOTAL","LJ_JF_QS","LJ_JF_YF","LJ_JF_YFSF","LJ_JF_DH","LJ_COMM"];
-var title=[["州市","本月计算积分","本月清算积分","本月延付积分","本月延付释放积分","本月合计积分","本月录入积分","本月录入金额","本月合计金额","年累计计算积分","年累计清算积分","年累计延付积分","年累计延付释放积分","年累计合计积分","年累计合计金额"]];
+var field=["ALL_JF_TOTAL","ALL_JF_QS","ALL_JF_YF","ALL_JF_YFSF","THIS_MONTH_TOTAL","IS_JF","IS_COMM","COMM","LJ_JF_TOTAL","LJ_JF_QS","LJ_JF_YF","LJ_JF_YFSF","LJ_JF_DH","LJ_COMM"];
+var title=[["组织架构","本月计算积分","本月清算积分","本月延付积分","本月延付释放积分","本月合计积分","本月录入积分","本月录入金额","本月合计金额","年累计计算积分","年累计清算积分","年累计延付积分","年累计延付释放积分","年累计合计积分","年累计合计金额"]];
 var report=null;
 $(function(){
 	listRegions();
