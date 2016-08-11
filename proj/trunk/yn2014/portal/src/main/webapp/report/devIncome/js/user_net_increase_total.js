@@ -1,4 +1,4 @@
-var field=["YYT_NAME","HQ_CHAN_CODE","OPERATE_TYPE","INNET_NUM_2G","INNET_JZ_2G","INNET_NUM_2G_CHAIN","INNET_NUM_3G","INNET_JZ_3G","ASINNET_NUM_3G_CHAIN","INNET_NUM_4G","INNET_JZ_4G","INNET_NUM_4G_CHAIN","INNET_NUM_NETWORK","INNET_JZ_NETWORK","INNET_NUML_NETWORK_CHAI","INNET_NUM_NETW","INNET_JZ_NETW","INNET_NUM_NETW_CHAIN","INNET_NUM_RH","INNET_JZ_RH","INNET_NUM_RH_CHAIN","INNET_NUM_TORTAL","INNET_JZ_TORTAL","INNET_NUM_TORTAL_CHAIN"];
+var field=["YYT_NAME","HQ_CHAN_CODE","OPERATE_TYPE","INNET_NUM_2G","INNET_JZ_2G","INNET_NUM_2G_CHAIN","INNET_NUM_3G","INNET_JZ_3G","INNET_NUM_3G_CHAIN","INNET_NUM_4G","INNET_JZ_4G","INNET_NUM_4G_CHAIN","INNET_NUM_NETWORK","INNET_JZ_NETWORK","INNET_NUML_NETWORK_CHAI","INNET_NUM_NETW","INNET_JZ_NETW","INNET_NUM_NETW_CHAIN","INNET_NUM_RH","INNET_JZ_RH","INNET_NUM_RH_CHAIN","INNET_NUM_TORTAL","INNET_JZ_TORTAL","INNET_NUM_TORTAL_CHAIN"];
 var title=[
 			["州市","营业厅","渠道编码","经营模式","2G业务","","","3G业务","","","4G业务","","","固网","","","其中：宽带","","","其中：融合","","","合计","",""],
 			["","","","","在网用户数","较上月净增","环比","在网用户数","较上月净增","环比","在网用户数","较上月净增","环比","在网用户数","较上月净增","环比","在网用户数","较上月净增","环比","在网用户数","较上月净增","环比","在网用户数","较上月净增","环比"]
@@ -149,7 +149,7 @@ function getSql() {
 			"       SUM(NVL(INNET_NUM_3G, 0)) AS INNET_NUM_3G,            	"+
 			"       SUM(NVL(INNET_JZ_3G, 0)) AS INNET_JZ_3G,              	"+
 			"       PMRT.LINK_RATIO(SUM(NVL(INNET_NUM_3G, 0)),          	"+
-			"       SUM(NVL(INNET_NUML_3G, 0)), 2) ASINNET_NUM_3G_CHAIN,  	"+
+			"       SUM(NVL(INNET_NUML_3G, 0)), 2) INNET_NUM_3G_CHAIN,  	"+
 			"       SUM(NVL(INNET_NUM_4G, 0)) AS INNET_NUM_4G,            	"+
 			"       SUM(NVL(INNET_JZ_4G, 0)) AS INNET_JZ_4G,              	"+
 			"       PMRT.LINK_RATIO(SUM(NVL(INNET_NUM_4G, 0)),          	"+
@@ -187,7 +187,7 @@ function getDownSql(){
 				"       HB_INNET_2G       AS INNET_NUM_2G_CHAIN,      "+
 				"       INNET_NUM_3G      AS INNET_NUM_3G,            "+
 				"       INNET_JZ_3G       AS INNET_JZ_3G,             "+
-				"       HB_INNET_3G       AS ASINNET_NUM_3G_CHAIN,    "+
+				"       HB_INNET_3G       AS INNET_NUM_3G_CHAIN,      "+
 				"       INNET_NUM_4G      AS INNET_NUM_4G,            "+
 				"       INNET_JZ_4G       AS INNET_JZ_4G,             "+
 				"       HB_INNET_4G       AS INNET_NUM_4G_CHAIN,      "+

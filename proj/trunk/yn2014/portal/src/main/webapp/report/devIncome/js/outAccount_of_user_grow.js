@@ -1,4 +1,4 @@
-var field=["YYT_NAME","HQ_CHAN_CODE","OPERATE_TYPE","ACC_NUM_2G","ACC_JZ_2G","ACC_NUM_2G_CHAIN","ACC_NUM_3G","ACC_JZ_3G","ASACC_NUM_3G_CHAIN","ACC_NUM_4G","ACC_JZ_4G","ACC_NUM_4G_CHAIN","ACC_NUM_NETWORK","ACC_JZ_NETWORK","ACC_NUML_NETWORK_CHAI","ACC_NUM_NETW","ACC_JZ_NETW","ACC_NUM_NETW_CHAIN","ACC_NUM_RH","ACC_JZ_RH","ACC_NUM_RH_CHAIN","ACC_NUM_TORTAL","ACC_JZ_TORTAL","ACC_NUM_TORTAL_CHAIN"];
+var field=["YYT_NAME","HQ_CHAN_CODE","OPERATE_TYPE","ACC_NUM_2G","ACC_JZ_2G","ACC_NUM_2G_CHAIN","ACC_NUM_3G","ACC_JZ_3G","ACC_NUM_3G_CHAIN","ACC_NUM_4G","ACC_JZ_4G","ACC_NUM_4G_CHAIN","ACC_NUM_NETWORK","ACC_JZ_NETWORK","ACC_NUML_NETWORK_CHAI","ACC_NUM_NETW","ACC_JZ_NETW","ACC_NUM_NETW_CHAIN","ACC_NUM_RH","ACC_JZ_RH","ACC_NUM_RH_CHAIN","ACC_NUM_TORTAL","ACC_JZ_TORTAL","ACC_NUM_TORTAL_CHAIN"];
 var title=[
 			["组织架构","营业厅","渠道编码","经营模式","2G业务","","","3G业务","","","4G业务","","","固网","","","其中：宽带","","","其中：融合","","","合计","",""],
 			["","","","","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比"]
@@ -149,7 +149,7 @@ function getSql() {
 			"       SUM(NVL(ACC_NUM_3G, 0)) AS ACC_NUM_3G,            "+
 			"       SUM(NVL(ACC_JZ_3G, 0)) AS ACC_JZ_3G,              "+
 			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_3G, 0)),          "+
-			"       SUM(NVL(ACC_NUML_3G, 0)), 2) ASACC_NUM_3G_CHAIN,  "+
+			"       SUM(NVL(ACC_NUML_3G, 0)), 2) ACC_NUM_3G_CHAIN,  "+
 			"       SUM(NVL(ACC_NUM_4G, 0)) AS ACC_NUM_4G,            "+
 			"       SUM(NVL(ACC_JZ_4G, 0)) AS ACC_JZ_4G,              "+
 			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_4G, 0)),          "+
@@ -187,7 +187,7 @@ function getDownSql(){
 			"       HB_ACC_2G       AS ACC_NUM_2G_CHAIN,      "+
 			"       ACC_NUM_3G      AS ACC_NUM_3G,            "+
 			"       ACC_JZ_3G       AS ACC_JZ_3G,             "+
-			"       HB_ACC_3G       AS ASACC_NUM_3G_CHAIN,    "+
+			"       HB_ACC_3G       AS ACC_NUM_3G_CHAIN,      "+
 			"       ACC_NUM_4G      AS ACC_NUM_4G,            "+
 			"       ACC_JZ_4G       AS ACC_JZ_4G,             "+
 			"       HB_ACC_4G       AS ACC_NUM_4G_CHAIN,      "+
