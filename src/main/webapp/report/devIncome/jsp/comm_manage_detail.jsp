@@ -13,6 +13,7 @@
 	ca.add(Calendar.MONTH, -1);
 	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	String comm_name=request.getParameter("comm_name");
+	String hrIds=request.getParameter("hrIds");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,6 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/comm_manage_detail.js"></script>
 <script type="text/javascript">
    var comm_name="<%=comm_name%>";
+   var hrIds="<%=hrIds%>";
 </script>
 </head>
 <body class="" style="overflow-x:auto;">
