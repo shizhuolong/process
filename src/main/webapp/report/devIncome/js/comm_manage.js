@@ -8,6 +8,7 @@ var code="";
 var orgLevel="";
 var chnlName="";
 var area_name="";
+var hrIds="";
 $(function(){
 	 report=new LchReport({
 		title:title,
@@ -45,21 +46,22 @@ $(function(){
 			qdate = $("#mon").val();
 			chnlName=$.trim($("#chnlName").val());
 			var hrId=$("#hrId").val();
-			where+=" AND DEAL_DATE='"+qdate+"'";
+			where+=" AND T.DEAL_DATE='"+qdate+"'";
 			var order='';
+			var join='';
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 			    if(orgLevel==2){
-			    	preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
-					groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
-					where+=" AND GROUP_ID_1='"+code+"'";
-					order=" ORDER BY UNIT_ID";
+			    	preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
+					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME";
+					where+=" AND T.GROUP_ID_1='"+code+"'";
+					order=" ORDER BY T.UNIT_ID";
 				}else if(orgLevel==3){
-					preSql="SELECT GROUP_ID_4 ROW_ID,GROUP_ID_4_NAME ROW_NAME,";
-					groupBy=" GROUP BY GROUP_ID_4,GROUP_ID_4_NAME";
-					where+=" AND UNIT_ID='"+code+"'";
-					order=" ORDER BY GROUP_ID_4";
+					preSql="SELECT T.GROUP_ID_4 ROW_ID,T.GROUP_ID_4_NAME ROW_NAME,";
+					groupBy=" GROUP BY T.GROUP_ID_4,T.GROUP_ID_4_NAME";
+					where+=" AND T.UNIT_ID='"+code+"'";
+					order=" ORDER BY T.GROUP_ID_4";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -68,42 +70,48 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){
-					preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,";
-					order=" ORDER BY GROUP_ID_1";
-					groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
+					preSql="SELECT T.GROUP_ID_1 ROW_ID,T.GROUP_ID_1_NAME ROW_NAME,";
+					order=" ORDER BY T.GROUP_ID_1";
+					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
 					where+=" AND GROUP_ID_0='"+code+"'";
 				}else if(orgLevel==2){
-					preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
-					groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
-					where+=" AND GROUP_ID_1='"+code+"'";
-					order=" ORDER BY UNIT_ID";
+					preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
+					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME";
+					where+=" AND T.GROUP_ID_1='"+code+"'";
+					order=" ORDER BY T.UNIT_ID";
 				}else if(orgLevel==3){
-					preSql="SELECT GROUP_ID_4 ROW_ID,GROUP_ID_4_NAME ROW_NAME,";
-					groupBy=" GROUP BY GROUP_ID_4,GROUP_ID_4_NAME";
-					where+=" AND UNIT_ID='"+code+"'";
+					preSql="SELECT T.GROUP_ID_4 ROW_ID,T.GROUP_ID_4_NAME ROW_NAME,";
+					join=getJoinSql();
+					groupBy=" GROUP BY T.GROUP_ID_4,T.GROUP_ID_4_NAME,T2.HR_ID,T3.HR_ID";
 				}else{
 					return {data:[],extra:{}};
 				}
+				
 				//权限
+				var qx="";
 				if(orgLevel>2){
 					//营服中心以下用新权限
-					var hrIds=_jf_power(hrId,qdate);
+				     hrIds=_jf_power(hrId,qdate);
 					 if(hrIds&&hrIds!=""){
-						 where+=" AND HR_ID in("+hrIds+") ";
+						 qx+=" WHERE HR_ID in("+hrIds+") ";
 					 }else{
-						 where+=" AND 1=2 ";	 
+						 qx+=" WHERE 1=2 ";	 
 					 }
 				}
 			}	
 			orgLevel++;
 						
 			if(chnlName!=''){
-				where+=" AND GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
+				where+=" AND T.GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
+			}
+			if(join==""){
+				var sql = preSql+getSumSql()+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT T"+where+groupBy+order;
+			}else{
+				var sql = "SELECT * FROM("+preSql+getSumSql()+join+where+groupBy+order+")"+qx;
 			}
 			
-			var sql = preSql+getSumSql()+where+groupBy+order;
 			if(orderBy!=''){
-				sql="select * from( "+sql+") t "+orderBy;
+				sql="select * from( "+sql+") a "+orderBy;
 			}
 			var d=query(sql);
 			return {data:d,extra:{orgLevel:orgLevel}};
@@ -129,7 +137,6 @@ $(function(){
     $("#lch_DataBody").find("TR").each(function(row){
 		$(this).find("TD").each(function(col){
 			if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
-				
 			}else{
 				var tn=getColumnName(field[col-1]);
 				var text=$(this).text();
@@ -176,7 +183,7 @@ function openDetail(obj){
 	var chnlName=$(obj).attr("chnlName");
 	var qdate=$("#mon").val();
 	var area_name=$(obj).attr("area_name");
-	var url=$("#ctx").val()+"/report/devIncome/jsp/comm_manage_detail.jsp?tablecode="+tablecode+"&comm_name="+comm_name+"&level="+level+"&code="+code+"&chnlName="+chnlName+"&qdate="+qdate;
+	var url=$("#ctx").val()+"/report/devIncome/jsp/comm_manage_detail.jsp?tablecode="+tablecode+"&comm_name="+comm_name+"&level="+level+"&code="+code+"&chnlName="+chnlName+"&qdate="+qdate+"&hrIds="+hrIds;
 	window.parent.openWindow(area_name,null,url);
 }
 
@@ -255,33 +262,43 @@ function getColumnName(tbcode){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var where=' WHERE 1 = 1';
-	where+=" AND DEAL_DATE='"+qdate+"'";
-	var orderBy=" ORDER BY GROUP_ID_1,UNIT_ID,GROUP_ID_4";
+	where+=" AND T.DEAL_DATE='"+qdate+"'";
+	var orderBy=" ORDER BY T.GROUP_ID_1,T.UNIT_ID,T.GROUP_ID_4";
 	var chnlName=$.trim($("#chnlName").val());
-		
+	var join="";	
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	//权限
+	var qx="";
 	if(orgLevel==1){
-		where+=" AND GROUP_ID_0='"+code+"'";
+		where+=" AND T.GROUP_ID_0='"+code+"'";
 	}else if(orgLevel==2){
-		where+=" AND GROUP_ID_1='"+code+"'";
+		where+=" AND T.GROUP_ID_1='"+code+"'";
 	}else{
-		var hrIds=_jf_power(hrId,qdate);
+		 join=getJoinSql();
+	//	 var hrIds=_jf_power(hrId,qdate);
 		 if(hrIds&&hrIds!=""){
-			 where+=" AND HR_ID in("+hrIds+") ";
+			 qx+=" WHERE HR_ID in("+hrIds+") ";
 		 }else{
-			 where+=" AND 1=2 ";	 
+			 qx+=" WHERE 1=2 ";	 
 		 }
 	}
 	if(chnlName!=''){
-		where+=" AND GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
+		where+=" AND T.GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
 	}
-	var sql = "SELECT GROUP_ID_1_NAME,UNIT_NAME,GROUP_ID_4_NAME,DEV_CHNL_ID,CHN_CDE_1_NAME,CHN_CDE_2_NAME,CHN_CDE_3_NAME,CHN_CDE_4_NAME,BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT"+where+orderBy;
+	var title;
+	if(join==""){
+		title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
+		           ["","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
+		var sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.DEV_CHNL_ID,T.CHN_CDE_1_NAME,T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT T"+where+orderBy;
+	}else{
+		title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税",""],
+		           ["","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","","",""]];
+		var sql = "SELECT * FROM(SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.DEV_CHNL_ID,T.CHN_CDE_1_NAME,T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.BILLINGCYCLID,"+field.join(",")+join+where+orderBy+")"+qx;
+	}
+	
 	showtext = '佣金汇总月报' + qdate;
-	var title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
-	           ["","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -291,9 +308,24 @@ function getSumSql(orgLevel){
 		if(s.length>0){
 			s+=",";
 		}
-		s+="SUM(NVL("+field[i]+",0)) AS "+field[i];
+		s+="SUM(NVL(T."+field[i]+",0)) AS "+field[i];
 	}
-	return s+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT";
+	return s;
+}
+function getJoinSql() {
+	var join = ",NVL(T2.HR_ID,T3.HR_ID) HR_ID FROM PMRT.TAB_MRT_COMM_AGENT_REPORT T"
+			+ " LEFT JOIN (SELECT *                            "
+			+ "             FROM  PORTAL.TAB_PORTAL_MOB_PERSON T1       "
+			+ "             WHERE T1.DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')"
+			+ "             )T2                                         "
+			+ "  ON    (T.DEV_CHNL_ID=T2.HQ_CHAN_CODE)                  "
+			+ "  LEFT JOIN (SELECT *                                    "
+			+ "             FROM  PORTAL.TAB_PORTAL_MOB_PERSON T1       "
+			+ "             WHERE T1.DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')"
+			+ "             AND   T1.LEV=1                              "
+			+ "             )T3                                         "
+			+ "  ON    (T.UNIT_ID=T3.UNIT_ID)                           ";
+	return join;
 }
 /*//格式化数值，每三位加逗号
 function numberFormat(num){

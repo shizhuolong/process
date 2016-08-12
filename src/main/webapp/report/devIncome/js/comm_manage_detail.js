@@ -88,7 +88,6 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" AND GROUP_ID_1='"+orgCode+"'";
 	}else{
-		var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
 		   sql+=" AND HR_ID in("+hrIds+") ";
 		 }else{
@@ -203,7 +202,6 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" AND GROUP_ID_1='"+orgCode+"'";
 	}else{
-		var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
 		   sql+=" AND HR_ID in("+hrIds+") ";
 		 }else{
