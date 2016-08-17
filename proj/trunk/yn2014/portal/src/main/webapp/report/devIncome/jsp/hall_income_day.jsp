@@ -36,23 +36,23 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="8%" style="padding-left: 10px;">开始账期：</td>
-					<td width="24%">
-						<input type="text"  class="Wdate default-text-input wper40" readonly="true"
+					<td width="8%" align="right">开始账期：</td>
+					<td width="12%">
+						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="startDate">
 					</td>
-					<td width="8%" style="padding-left: 10px;">结束账期：</td>
-					<td width="24%">
-						<input type="text"  class="Wdate default-text-input wper40" readonly="true"
+					<td width="8%" align="right">结束账期：</td>
+					<td width="12%">
+						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="endDate">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="4%" align="right">地市：</td>
 					<td width="15%">
 						<select name="regionName" id="regionName" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">经营模式：</td>
+					<td width="8%" align="right">经营模式：</td>
 					<td width="15%">
 						<select name="operateType" id="operateType" class="default-text-input wper80">
 								<option value=''>请选择</option>
