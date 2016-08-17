@@ -319,10 +319,23 @@ function listRegions(){
 	}
 }
 function downsAll() {
+	
 	var preField=' T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE,';
 	var where='';
 	var orderBy=" ORDER BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.BUS_HALL_NAME";
 	var groupBy=" GROUP BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE";
+	/*var title='';
+	var sumSql='';
+	if(startDate!=endDate){
+		title=[["组织架构","2G收入（万元）","","3G收入（万元）","","4G收入（万元）","","固网（万元）","","合计（万元）",""],
+		       ["","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
+	    sumSql=getSumSql();
+	}else{
+		title=[["组织架构","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
+		       ["","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
+		sumSql=getSumSql1();
+	}*/
+	
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -338,8 +351,11 @@ function downsAll() {
 		where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
 	}
 	var sql = 'SELECT' + preField + sumSql+where+groupBy+orderBy;
+	console.info("downsql====="+sql);
+	console.info("title====="+title);
+	console.info("startDate====="+startDate);
+	console.info("endDate===="+endDate);
 	var showtext = '营业厅收入报表' + startDate+"-"+endDate;
-	title=[["账期","组织架构","渠道","经营模式","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
-	       ["","","","","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
+	
 	downloadExcel(sql,title,showtext);
 }
