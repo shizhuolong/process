@@ -115,7 +115,7 @@ function getsql(){
 			"       SUM(NVL(T.DEV_ALL_NUM1, 0)) AS DEV_ALL_NUM1, 								  "+
 			"       SUM(NVL(T.DEV_AVG_46NUM, 0)) AS DEV_AVG_46NUM, 								  "+
 			"       SUM(NVL(T.DEV_AVG_810NUM, 0)) AS DEV_AVG_810NUM, 							  "+
-			"       PMRT.LINK_RATIO(SUM(T.DEV_ALL_NUM), SUM(T.LAST_ALL_NUM), 2) AS LAST_ALL_NUM   "+
+			"       PMRT.LINK_RATIO(sum(T.DEV_AVG_810NUM), sum(T.DEV_AVG_46NUM), 2) AS LAST_ALL_NUM"+
 			"  FROM PMRT.TAB_MRT_BUS_21COMPETITION_DAY T                                          "+
 			" WHERE T.DEAL_DATE = '"+dealDate+"'                                                  ";
 	if(orgLevel==1){
@@ -152,7 +152,7 @@ function downsDetail(){
 			"       T.DEV_NET_NUM1,                                                     "+
 			"       T.DEV_AVG_46NUM,                                                    "+
 			"       T.DEV_AVG_810NUM,                                                   "+
-			"       PMRT.LINK_RATIO(T.DEV_ALL_NUM, T.LAST_ALL_NUM, 2) AS LAST_ALL_NUM   "+
+			"       PMRT.LINK_RATIO(T.DEV_AVG_810NUM, T.DEV_AVG_46NUM, 2) AS LAST_ALL_NUM"+
 			"  FROM PMRT.TAB_MRT_BUS_21COMPETITION_DAY T                                "+
 			" WHERE T.DEAL_DATE = '"+dealDate+"'                                        ";
 		if(orgLevel==1){
