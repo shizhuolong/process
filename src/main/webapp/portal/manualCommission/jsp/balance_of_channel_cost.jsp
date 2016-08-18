@@ -39,8 +39,8 @@
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" style="text-align:right;">账期：</td>
-					<td width="7%">
-						<input type="text"  class="Wdate default-text-input wper70" 
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="5%" style="text-align:right;">地市：</td>
@@ -65,13 +65,13 @@
 					
 					
 					<td width="5%" style="text-align:right;">支付账期：</td>
-					<td width="7%">
-						<input type="text"  class="Wdate default-text-input wper70" 
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="" id="payDate">
 					</td>
 					<td width="5%" style="text-align:right;">佣金账期：</td>
-					<td width="7%">
-						<input type="text"  class="Wdate default-text-input wper70" 
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="" id="comDate">
 					</td>
 				</tr>
