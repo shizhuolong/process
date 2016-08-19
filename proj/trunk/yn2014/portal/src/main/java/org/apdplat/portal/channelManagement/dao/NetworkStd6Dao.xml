@@ -77,7 +77,7 @@
 	</select>
 	
 	<update id="updateStd6" parameterType="java.util.Map">
-		UPDATE PCDE.TAB_CDE_6_STD T SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name} WHERE T.STD_6_ID = #{std_6_id}
+		UPDATE PCDE.TAB_CDE_6_STD T SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name} ,T.UPDATE_DATE = SYSDATE,T.LOGIN_NAME=#{login_name} WHERE T.STD_6_ID = #{std_6_id}
 	</update>
 	
 	<delete id="deleteStd6BindPerson" parameterType="java.util.Map">
