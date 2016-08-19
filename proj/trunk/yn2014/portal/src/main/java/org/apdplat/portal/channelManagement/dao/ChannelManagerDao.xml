@@ -155,14 +155,14 @@
 	
 	<update id="saveBindPerson" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_MOB_PERSON T
-   			SET T.USERID = #{userid}, T.NAME = #{name}, T.ACCOUNT = #{username}, T.PHONE = #{phone}, T.HR_ID = #{hr_id}, T.UPDATE_TIME=sysdate
+   			SET T.USERID = #{userid}, T.NAME = #{name}, T.ACCOUNT = #{username}, T.PHONE = #{phone}, T.HR_ID = #{hr_id}, T.UPDATE_TIME=sysdate,T.LOGIN_NAME=#{login_name}
  		WHERE T.GROUP_ID_CODE = #{group_id_code} 
  		AND T.DEAL_DATE=#{deal_date}
 	</update>
 	
 	<update id="updateBindPerson" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_MOB_PERSON T
-   			SET T.USERID = '', T.NAME = '', T.ACCOUNT = '', T.PHONE = '', T.HR_ID = ''
+   			SET T.USERID = '', T.NAME = '', T.ACCOUNT = '', T.PHONE = '', T.HR_ID = '',T.LOGIN_NAME=#{login_name}, T.UPDATE_TIME=sysdate
  		WHERE T.GROUP_ID_CODE = #{group_id_code} 
  		AND T.DEAL_DATE=#{deal_date}
 	</update>

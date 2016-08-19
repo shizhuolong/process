@@ -77,7 +77,7 @@
 	
 	<update id="updateChanlUnit" parameterType="java.util.Map">
 		UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE T
-   			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}, T.UPDATE_TIME=sysdate
+   			SET T.UNIT_ID = #{unit_id}, T.UNIT_NAME = #{unit_name}, T.UPDATE_TIME=sysdate,T.LOGIN_NAME=#{login_name}
  		WHERE T.GROUP_ID_4 = #{group_id_4}
 	</update>
 	
