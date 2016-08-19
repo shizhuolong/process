@@ -88,11 +88,13 @@ public class ChannelResourceAction extends BaseAction {
 			String unit_name = request.getParameter("unit_name");
 			String group_id_4 = request.getParameter("group_id_4");
 			String orgId = request.getParameter("orgId");
+			String login_name = request.getParameter("login_name");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("unit_id", unit_id);
 			params.put("unit_name", unit_name);
 			params.put("group_id_4", group_id_4);
 			params.put("orgId", orgId);
+			params.put("login_name", login_name);
 			channelResourceService.saveDivideChannel(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
