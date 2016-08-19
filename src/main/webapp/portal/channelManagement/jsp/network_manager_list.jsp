@@ -8,6 +8,7 @@
 <%
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
+	
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH,0);
 	String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
@@ -54,6 +55,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
+	<input type="hidden" id="login_name" value="<%=user.getUsername()%>">
 	<div data-options="region:'west',split:false,title:'小区负责人绑定'"
 		style="width: 220px; padding: 10px;">
 		<div id="ztree" class="ztree"></div>
