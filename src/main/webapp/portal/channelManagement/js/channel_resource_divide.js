@@ -1,9 +1,11 @@
 var group_id_1 = "";
 var group_id_4 = "";
+var login_name = "";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
 	group_id_4 = art.dialog.data('group_id_4');
+	login_name = art.dialog.data('login_name');
 	listUnit(0);
 	$("#searchBtn").click(function(){
 		listUnit(0);
@@ -32,7 +34,8 @@ $(function() {
 					"unit_id":unit_id,
 					"unit_name":unit_name,
 					"group_id_4":group_id_4,
-					"orgId":orgId
+					"orgId":orgId,
+					"login_name":login_name
 			   	}, 
 			   	success:function(data){
 			   		art.dialog({
