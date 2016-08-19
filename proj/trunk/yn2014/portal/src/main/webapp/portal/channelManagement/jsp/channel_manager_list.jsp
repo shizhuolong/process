@@ -53,6 +53,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
+	<input type="hidden" id="login_name" value="<%=user.getUsername()%>">
 	<input type="hidden" id="month" value="<%=month%>">
 	<div data-options="region:'west',split:false,title:'渠道经理及营服中心负责人'"
 		style="width: 220px; padding: 10px;">
@@ -66,32 +67,29 @@
 				<table width="100%" style="margin: 10px 0;">
 					<tr height="35px">
 						<td style="width: 50px;">帐期：</td>
-						<td style="width: 80px;"><input readonly="readonly"
-							type="text" style="width: 80px" class="Wdate" id="deal_date"
-							name="deal_date" value="<%=month%>"
-							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" />
+						<%-- <td style="width: 20%;"><input readonly="readonly" type="text" style="width: 80px" class="Wdate" id="deal_date"
+							name="deal_date" value="<%=month%>" onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" />
+						</td> --%>
+						<td width="10%">
+							<input type="text"  class="Wdate default-text-input wper80" 
+							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="deal_date">
 						</td>
 						<td width="5%" style="padding-left:10px;">姓名：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="name" name="name" type="text" /></td>
+						<td width="20%"><input class="default-text-input wper80" id="name" name="name" type="text" /></td>
 						<!-- <td width="8%" rowspan="3"><a class="default-btn" href="#"
 							id="searchBtn">查询</a></td> -->
 					</tr>
 					<tr height="35px">
 						<td width="5%">渠道编码：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="hq_chan_code" name="hq_chan_code" type="text" /></td>
+						<td width="20%"><input class="default-text-input wper80" id="hq_chan_code" name="hq_chan_code" type="text" /></td>
 						<td width="5%" style="padding-left:10px;">渠道名称：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="hq_chan_name" name="hq_chan_name" type="text" /></td>
+						<td width="20%"><input class="default-text-input wper80" id="hq_chan_name" name="hq_chan_name" type="text" /></td>
 					</tr>
 					<tr height="35px">
 						<td width="5%">HR编码：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="hr_id" name="hr_id" type="text" /></td>
+						<td width="20%"><input class="default-text-input wper80" id="hr_id" name="hr_id" type="text" /></td>
 						<td width="5%" style="padding-left:10px;">营服中心：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="unit_name" name="unit_name" type="text" /></td>
+						<td width="20%"><input class="default-text-input wper80" id="unit_name" name="unit_name" type="text" /></td>
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -121,7 +119,6 @@
 						</tbody>
 						<tr>
 						<td colspan="9">
-							</div>
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据
@@ -131,7 +128,6 @@
 										<div id="pagination"></div>
 									</div>
 								</div>
-							</div>
 						</td>
 					</tr>
 					</table>
