@@ -125,6 +125,7 @@ public class ChannelManagerAction extends BaseAction {
 			String group_id_code = request.getParameter("group_id_code");
 			String hr_id = request.getParameter("hr_id");
 			String deal_date = request.getParameter("deal_date");
+			String login_name = request.getParameter("login_name");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("userid", userid);
 			params.put("name", name);
@@ -133,6 +134,7 @@ public class ChannelManagerAction extends BaseAction {
 			params.put("group_id_code", group_id_code);
 			params.put("hr_id", hr_id);
 			params.put("deal_date", deal_date);
+			params.put("login_name", login_name);
 			channelMangerService.saveBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"绑定成功\"}");
 		} catch (Exception e) {
@@ -148,9 +150,11 @@ public class ChannelManagerAction extends BaseAction {
 		try {
 			String group_id_code = request.getParameter("group_id_code");
 			String deal_date = request.getParameter("deal_date");
+			String login_name = request.getParameter("login_name");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("group_id_code", group_id_code);
 			params.put("deal_date", deal_date);
+			params.put("login_name", login_name);
 			channelMangerService.updateBindPerson(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
