@@ -10,7 +10,7 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.MONTH, -1);
+	ca.add(Calendar.MONTH, -2);
 	String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -35,20 +35,20 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="3%" style="padding-left: 10px;" align="right">账期：</td>
-					<td width="5%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
+					<td width="4%" style="padding-left: 10px;" align="right">账期：</td>
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper90" readonly="true"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month%>" id="month">
 					</td>
 					<td width="5%" align="right">地市：</td>
 	                <td width="10%">
-	                    <select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+	                    <select name="regionCode" id="regionCode" onchange="" class="default-text-input wper90">
 	                        <option value=''>请选择</option>
 	                    </select>
 	                </td>
 	                <td width="5%" align="right">营服中心：</td>
 	                <td width="10%">
-	                    <select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+	                    <select name="unitCode" id="unitCode" onchange="" class="default-text-input wper90">
 	                        <option value=''>请选择</option>
 	                    </select>
 	                </td>
@@ -64,11 +64,11 @@
 					</td>
 				</tr>
 				<tr>
-				<td width="3%" align="right">主厅编码：</td>
-					<td width="5%"><input class="default-text-input wper80" name="channelCode" type="text" id="channelCode" /></td>
+				<td width="4%" align="right">主厅编码：</td>
+					<td width="5%"><input class="default-text-input wper90" name="channelCode" type="text" id="channelCode" /></td>
 					<td width="3%" align="right">经营模式：</td>
 					<td width="5%">
-						<select name="operateType" id="operateType" class="default-text-input wper80">
+						<select name="operateType" id="operateType" class="default-text-input wper90">
 							<option value=''>全部</option>
 							<option value='柜台外包'>柜台外包</option>
 							<option value='他营'>他营</option>
