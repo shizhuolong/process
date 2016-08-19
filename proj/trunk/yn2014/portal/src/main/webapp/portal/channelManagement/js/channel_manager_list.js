@@ -141,25 +141,28 @@ function bindPerson(obj) {
 	var id = $(obj).attr("id");
 	var group_id_code = $(obj).attr("group_id_code");
 	var deal_date = $(obj).attr("deal_date");
+	var login_name = $("#login_name").val();
 	var url = $("#ctx").val()
 			+ "/portal/channelManagement/jsp/channel_manager_bind_person.jsp?deal_date="+deal_date;
-	art.dialog.data('group_id_1',group_id_1);
-	art.dialog.data('unit_id',unit_id);
-	art.dialog.data('id',id);
-	art.dialog.data('group_id_code',group_id_code);
-	art.dialog.open(url,{
-		id:'bindPersonDialog',
-		width:'530px',
-		height:'320px',
-		lock:true,
-		resize:false
-	});
+		art.dialog.data('group_id_1',group_id_1);
+		art.dialog.data('unit_id',unit_id);
+		art.dialog.data('id',id);
+		art.dialog.data('group_id_code',group_id_code);
+		art.dialog.data('login_name',login_name);
+		art.dialog.open(url,{
+			id:'bindPersonDialog',
+			width:'530px',
+			height:'320px',
+			lock:true,
+			resize:false
+		});
 }
 
 //解绑
 function unBindPerson(ele) {
 	var group_id_code = $(ele).attr("group_id_code");
 	var deal_date =$(ele).attr("deal_date");
+	var login_name = $("#login_name").val();
 	art.dialog.confirm('您确定要进行解绑操作吗？',function(){
 		$.ajax({
 			type:"POST",
@@ -168,7 +171,8 @@ function unBindPerson(ele) {
 			url:$("#ctx").val()+"/channelManagement/channelManager_updateBindPerson.action",
 			data:{
 				"group_id_code":group_id_code,
-				"deal_date":deal_date
+				"deal_date":deal_date,
+				"login_name":login_name
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({

@@ -2,12 +2,14 @@ var group_id_1 = "";
 var unit_id = "";
 var id = "";
 var group_id_code = "";
+var login_name = "";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
 	unit_id = art.dialog.data('unit_id');
 	id = art.dialog.data('id');
 	group_id_code = art.dialog.data('group_id_code');
+	login_name  = art.dialog.data('login_name');
 	listPerson(0);
 	$("#searchBtn").click(function(){
 		listPerson(0);
@@ -41,7 +43,8 @@ $(function() {
 	           "phone":phone,
 	           "group_id_code":group_id_code,
 	           "hr_id":hr_id,
-	           "deal_date":deal_date
+	           "deal_date":deal_date,
+	           "login_name":login_name
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
