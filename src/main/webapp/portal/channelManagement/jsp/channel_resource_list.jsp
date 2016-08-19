@@ -47,6 +47,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
+	<input type="hidden" id="login_name" value="<%=user.getUsername()%>">
 	<div data-options="region:'west',split:false,title:'渠道资源管理'"
 		style="width: 220px; padding: 10px;">
 		<div id="ztree" class="ztree"></div>
