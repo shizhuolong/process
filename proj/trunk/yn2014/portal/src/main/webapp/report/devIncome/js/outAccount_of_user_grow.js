@@ -1,4 +1,4 @@
-var field=["YYT_NAME","HQ_CHAN_CODE","OPERATE_TYPE","ACC_NUM_2G","ACC_JZ_2G","ACC_NUM_2G_CHAIN","ACC_NUM_3G","ACC_JZ_3G","ACC_NUM_3G_CHAIN","ACC_NUM_4G","ACC_JZ_4G","ACC_NUM_4G_CHAIN","ACC_NUM_NETWORK","ACC_JZ_NETWORK","ACC_NUML_NETWORK_CHAI","ACC_NUM_NETW","ACC_JZ_NETW","ACC_NUM_NETW_CHAIN","ACC_NUM_RH","ACC_JZ_RH","ACC_NUM_RH_CHAIN","ACC_NUM_TORTAL","ACC_JZ_TORTAL","ACC_NUM_TORTAL_CHAIN"];
+var field=["YYT_NAME","HQ_CHAN_CODE","OPERATE_TYPE","ACC_NUM_2G","ACC_JZ_2G","ACC_NUM_2G_CHAIN","ACC_NUM_3G","ACC_JZ_3G","ACC_NUM_3G_CHAIN","ACC_NUM_4G","ACC_JZ_4G","ACC_NUM_4G_CHAIN","ACC_NUM_NETWORK","ACC_JZ_NETWORK","ACC_NUML_NETWORK_CHAIN","ACC_NUM_NETW","ACC_JZ_NETW","ACC_NUM_NETW_CHAIN","ACC_NUM_RH","ACC_JZ_RH","ACC_NUM_RH_CHAIN","ACC_NUM_TORTAL","ACC_JZ_TORTAL","ACC_NUM_TORTAL_CHAIN"];
 var title=[
 			["组织架构","营业厅","渠道编码","经营模式","2G业务","","","3G业务","","","4G业务","","","固网","","","其中：宽带","","","其中：融合","","","合计","",""],
 			["","","","","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比","出帐用户数","较上月净增","环比"]
@@ -139,74 +139,63 @@ function downsAll() {
 
 function getSql() {
 	var s=	
-			"       '--' AS YYT_NAME ,                                "+
-			"       '--' AS HQ_CHAN_CODE ,                            "+
-			"       '--' AS OPERATE_TYPE ,                            "+
-			"       SUM(NVL(ACC_NUM_2G, 0)) AS ACC_NUM_2G,            "+
-			"       SUM(NVL(ACC_JZ_2G, 0)) AS ACC_JZ_2G,              "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_2G, 0)),          "+
-			"       SUM(NVL(ACC_NUML_2G, 0)), 2) AS ACC_NUM_2G_CHAIN, "+
-			"       SUM(NVL(ACC_NUM_3G, 0)) AS ACC_NUM_3G,            "+
-			"       SUM(NVL(ACC_JZ_3G, 0)) AS ACC_JZ_3G,              "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_3G, 0)),          "+
-			"       SUM(NVL(ACC_NUML_3G, 0)), 2) ACC_NUM_3G_CHAIN,  "+
-			"       SUM(NVL(ACC_NUM_4G, 0)) AS ACC_NUM_4G,            "+
-			"       SUM(NVL(ACC_JZ_4G, 0)) AS ACC_JZ_4G,              "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_4G, 0)),          "+
-			"       SUM(NVL(ACC_NUML_4G, 0)), 2) AS ACC_NUM_4G_CHAIN, "+
-			"       SUM(NVL(ACC_NUM_NETWORK, 0)) AS ACC_NUM_NETWORK,  "+
-			"       SUM(NVL(ACC_JZ_NETWORK, 0)) AS ACC_JZ_NETWORK,    "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_NETWORK, 0)),     "+
-			"                       SUM(NVL(ACC_NUML_NETWORK, 0)),    "+
-			"                       2) AS ACC_NUML_NETWORK_CHAIN,     "+
-			"       SUM(NVL(ACC_NUM_NETW, 0)) AS ACC_NUM_NETW,        "+
-			"       SUM(NVL(ACC_JZ_NETW, 0)) AS ACC_JZ_NETW,          "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_NETW, 0)),        "+
-			"                       SUM(NVL(ACC_NUML_NETW, 0)),       "+
-			"                       2) AS ACC_NUM_NETW_CHAIN,         "+
-			"       SUM(NVL(ACC_NUM_RH, 0)) AS ACC_NUM_RH,            "+
-			"       SUM(NVL(ACC_JZ_RH, 0)) AS ACC_JZ_RH,              "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_RH, 0)),          "+
-			"       SUM(NVL(ACC_NUML_RH, 0)), 2) AS ACC_NUM_RH_CHAIN, "+
-			"       SUM(NVL(ACC_NUM_TORTAL, 0)) AS ACC_NUM_TORTAL,    "+
-			"       SUM(NVL(ACC_JZ_TORTAL, 0)) AS ACC_JZ_TORTAL,      "+
-			"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_TORTAL, 0)),      "+
-			"                       SUM(NVL(ACC_NUML_TORTAL, 0)),     "+
-			"                       2) AS ACC_NUM_TORTAL_CHAIN        "+
-			"  FROM PMRT.TB_MRT_BUS_USER_INCREASE_MON                 ";
+		"       '--' AS YYT_NAME ,                                		                                                  "+
+		"       '--' AS HQ_CHAN_CODE ,                            		                                                  "+
+		"       '--' AS OPERATE_TYPE ,                            		                                                  "+
+		"       SUM(NVL(ACC_NUM_2G, 0)) 														AS ACC_NUM_2G,            "+
+		"       SUM(NVL(ACC_JZ_2G, 0)) 															AS ACC_JZ_2G,             "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_2G, 0)),SUM(NVL(ACC_NUML_2G, 0)), 2) 			AS ACC_NUM_2G_CHAIN,      "+
+		"       SUM(NVL(ACC_NUM_3G, 0)) 														AS ACC_NUM_3G,            "+
+		"       SUM(NVL(ACC_JZ_3G, 0)) 															AS ACC_JZ_3G,             "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_3G, 0)),SUM(NVL(ACC_NUML_3G, 0)), 2) 			AS ACC_NUM_3G_CHAIN,      "+
+		"       SUM(NVL(ACC_NUM_4G, 0)) 														AS ACC_NUM_4G,            "+
+		"       SUM(NVL(ACC_JZ_4G, 0)) 															AS ACC_JZ_4G,             "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_4G, 0)),SUM(NVL(ACC_NUML_4G, 0)), 2) 			AS ACC_NUM_4G_CHAIN,      "+
+		"       SUM(NVL(ACC_NUM_NETWORK, 0)) 													AS ACC_NUM_NETWORK,       "+
+		"       SUM(NVL(ACC_JZ_NETWORK, 0)) 													AS ACC_JZ_NETWORK,        "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_NETWORK, 0)),SUM(NVL(ACC_NUML_NETWORK, 0)),2) 	AS ACC_NUML_NETWORK_CHAIN,"+  	
+		"       SUM(NVL(ACC_NUM_NETW, 0)) 														AS ACC_NUM_NETW,          "+
+		"       SUM(NVL(ACC_JZ_NETW, 0)) 														AS ACC_JZ_NETW,           "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_NETW, 0)),SUM(NVL(ACC_NUML_NETW, 0)), 2)		AS ACC_NUM_NETW_CHAIN,    "+  	
+		"       SUM(NVL(ACC_NUM_RH, 0)) 														AS ACC_NUM_RH,            "+
+		"       SUM(NVL(ACC_JZ_RH, 0)) 															AS ACC_JZ_RH,             "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_RH, 0)),SUM(NVL(ACC_NUML_RH, 0)), 2) 			AS ACC_NUM_RH_CHAIN,      "+
+		"       SUM(NVL(ACC_NUM_TORTAL, 0)) 													AS ACC_NUM_TORTAL,        "+
+		"       SUM(NVL(ACC_JZ_TORTAL, 0)) 														AS ACC_JZ_TORTAL,         "+
+		"       PMRT.LINK_RATIO(SUM(NVL(ACC_NUM_TORTAL, 0)), SUM(NVL(ACC_NUML_TORTAL, 0)),2)	AS ACC_NUM_TORTAL_CHAIN   "+ 	
+		"  FROM PMRT.TB_MRT_BUS_USER_INCREASE_MON                 		                                                  ";
 	return s;
 }
 
 
 function getDownSql(){
-	var sql="       YYT_NAME        AS YYT_NAME,              "+
-			"       HQ_CHAN_CODE    AS HQ_CHAN_CODE,          "+
-			"       OPERATE_TYPE    AS OPERATE_TYPE,          "+
-			"       ACC_NUM_2G      AS ACC_NUM_2G,            "+
-			"       ACC_JZ_2G       AS ACC_JZ_2G,             "+
-			"       HB_ACC_2G       AS ACC_NUM_2G_CHAIN,      "+
-			"       ACC_NUM_3G      AS ACC_NUM_3G,            "+
-			"       ACC_JZ_3G       AS ACC_JZ_3G,             "+
-			"       HB_ACC_3G       AS ACC_NUM_3G_CHAIN,      "+
-			"       ACC_NUM_4G      AS ACC_NUM_4G,            "+
-			"       ACC_JZ_4G       AS ACC_JZ_4G,             "+
-			"       HB_ACC_4G       AS ACC_NUM_4G_CHAIN,      "+
-			"       ACC_NUM_NETWORK AS ACC_NUM_NETWORK,       "+
-			"       ACC_JZ_NETWORK  AS ACC_JZ_NETWORK,        "+
-			"       HB_ACC_NETWORK  AS ACC_NUML_NETWORK_CHAI, "+
-			"       ACC_NUM_NETW    AS ACC_NUM_NETW,          "+
-			"       ACC_JZ_NETW     AS ACC_JZ_NETW,           "+
-			"       HB_ACC_NETW     AS ACC_NUM_NETW_CHAIN,    "+
-			"       ACC_NUM_RH      AS ACC_NUM_RH,            "+
-			"       ACC_JZ_RH       AS ACC_JZ_RH,             "+
-			"       HB_ACC_RH       AS ACC_NUM_RH_CHAIN,      "+
-			"       ACC_NUM_TORTAL  AS ACC_NUM_TORTAL,        "+
-			"       ACC_JZ_TORTAL   AS ACC_JZ_TORTAL,         "+
-			"       HB_ACC_TORTAL   AS ACC_NUM_TORTAL_CHAIN   "+
-			"  FROM PMRT.TB_MRT_BUS_USER_INCREASE_MON   T     ";
+	var sql="       YYT_NAME        	AS YYT_NAME,                "+
+				"       HQ_CHAN_CODE    AS HQ_CHAN_CODE,            "+
+				"       OPERATE_TYPE    AS OPERATE_TYPE,            "+
+				"       ACC_NUM_2G      AS ACC_NUM_2G,            	"+
+				"       ACC_JZ_2G       AS ACC_JZ_2G,             	"+
+				"       HB_ACC_2G       AS ACC_NUM_2G_CHAIN,      	"+
+				"       ACC_NUM_3G      AS ACC_NUM_3G,            	"+
+				"       ACC_JZ_3G       AS ACC_JZ_3G,             	"+
+				"       HB_ACC_3G       AS ACC_NUM_3G_CHAIN,      	"+
+				"       ACC_NUM_4G      AS ACC_NUM_4G,            	"+
+				"       ACC_JZ_4G       AS ACC_JZ_4G,             	"+
+				"       HB_ACC_4G       AS ACC_NUM_4G_CHAIN,      	"+
+				"       ACC_NUM_NETWORK AS ACC_NUM_NETWORK,       	"+
+				"       ACC_JZ_NETWORK  AS ACC_JZ_NETWORK,        	"+
+				"       HB_ACC_NETWORK  AS ACC_NUML_NETWORK_CHAIN,	"+
+				"       ACC_NUM_NETW    AS ACC_NUM_NETW,          	"+
+				"       ACC_JZ_NETW     AS ACC_JZ_NETW,           	"+
+				"       HB_ACC_NETW     AS ACC_NUM_NETW_CHAIN,    	"+
+				"       ACC_NUM_RH      AS ACC_NUM_RH,            	"+
+				"       ACC_JZ_RH       AS ACC_JZ_RH,             	"+
+				"       HB_ACC_RH       AS ACC_NUM_RH_CHAIN,      	"+
+				"       ACC_NUM_TORTAL  AS ACC_NUM_TORTAL,        	"+
+				"       ACC_JZ_TORTAL   AS ACC_JZ_TORTAL,         	"+
+				"       HB_ACC_TORTAL   AS ACC_NUM_TORTAL_CHAIN   	"+
+				"  FROM PMRT.TB_MRT_BUS_USER_INCREASE_MON   T       ";
 	return sql;
 }
-
 
 function listRegions(){
     var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
