@@ -79,10 +79,12 @@ public class NetworkStd6Action extends BaseAction {
 			String unit_id = request.getParameter("unit_id");
 			String unit_name = request.getParameter("unit_name");
 			String std_6_id = request.getParameter("std_6_id");
+			String login_name = request.getParameter("login_name");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("unit_id", unit_id);
 			params.put("unit_name", unit_name);
 			params.put("std_6_id", std_6_id);
+			params.put("login_name", login_name);
 			networkStd6Service.saveDivideStd6(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
