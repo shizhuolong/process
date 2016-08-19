@@ -145,6 +145,7 @@ function bindPerson(obj) {
 	var group_id_1_name = $(obj).attr("group_id_1_name");
 	var unit_name = $(obj).attr("unit_name");
 	var deal_date = $.trim($("#deal_date").val());
+	var login_name  =$("#login_name").val();
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/network_manager_bind_person.jsp";
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('unit_id',unit_id);
@@ -153,6 +154,7 @@ function bindPerson(obj) {
 	art.dialog.data('group_id_1_name',group_id_1_name);
 	art.dialog.data('unit_name',unit_name);
 	art.dialog.data('deal_date',deal_date);
+	art.dialog.data('login_name',login_name);
 	art.dialog.open(url,{
 		id:'networkBindPersonDialog',
 		width:'530px',

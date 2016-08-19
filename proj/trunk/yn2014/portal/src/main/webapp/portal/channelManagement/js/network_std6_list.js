@@ -137,8 +137,10 @@ function edit(ele) {
 function networkDivide(ele) {
 	var std_6_id = $(ele).attr("std_6_id");
 	var group_id_1 = $(ele).attr("group_id_1");
+	var login_name =$("#login_name").val();
 	art.dialog.data('std_6_id',std_6_id);
 	art.dialog.data('group_id_1',group_id_1);
+	art.dialog.data('login_name',login_name);
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/network_std6_divide.jsp";
 	art.dialog.open(url,{
 		id:'networkDivideDialog',
