@@ -5,6 +5,7 @@ var group_id_1_name = "";
 var unit_name = "";
 var orgId = "";
 var deal_date="";
+var login_name="";
 var pageSize = 5;
 $(function() {
 	group_id_1 = art.dialog.data('group_id_1');
@@ -14,6 +15,7 @@ $(function() {
 	group_id_1_name = art.dialog.data('group_id_1_name');
 	unit_name = art.dialog.data('unit_name');
 	deal_date = art.dialog.data('deal_date');
+	login_name = art.dialog.data('login_name');
 	listPerson(0);
 	$("#searchBtn").click(function(){
 		listPerson(0);
@@ -49,7 +51,8 @@ $(function() {
 	           "unit_name":unit_name,
 	           "unit_id":unit_id,
 	           "group_id_1":group_id_1,
-	           "deal_date":deal_date
+	           "deal_date":deal_date,
+	           "login_name":login_name
 		   	}, 
 		   	success:function(data){
 		   		art.dialog({
