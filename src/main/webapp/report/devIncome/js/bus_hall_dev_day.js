@@ -98,15 +98,7 @@ function search(){
 	
 }
 function getSumSql() {
-	var s=" ROUND(SUM(NVL(T1.THIS_2G_NUM, 0)), 3) THIS_2G_NUM,                                               "+
-	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
-	"                              WHEN SUM(NVL(T1.LAST_2G_NUM, 0)) <> 0 THEN                          "+
-	"                               (SUM(NVL(T1.THIS_2G_NUM, 0)) - SUM(NVL(T1.LAST_2G_NUM, 0))) * 100 /"+
-	"                               SUM(NVL(T1.LAST_2G_NUM, 0))                                        "+
-	"                              ELSE                                                                "+
-	"                               0                                                                  "+
-	"                            END,                                                                  "+
-	"                            'FM99999999990.99')) || '%' LAST_2G_NUM,                              "+
+	var s=
 	"               ROUND(SUM(NVL(T1.THIS_2G_NUM, 0)), 3) THIS_2G_NUM1,                                "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
 	"                              WHEN SUM(NVL(T1.LAST_2G_NUM, 0)) <> 0 THEN                          "+
@@ -116,15 +108,7 @@ function getSumSql() {
 	"                               0                                                                  "+
 	"                            END,                                                                  "+
 	"                            'FM99999999990.99')) || '%' LAST_2G_NUM1,                             "+
-	"               ROUND(SUM(NVL(T1.THIS_3G_NUM, 0)), 3) THIS_3G_NUM,                                 "+
-	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
-	"                              WHEN SUM(NVL(T1.LAST_3G_NUM, 0)) <> 0 THEN                          "+
-	"                               (SUM(NVL(T1.THIS_3G_NUM, 0)) - SUM(NVL(T1.LAST_3G_NUM, 0))) * 100 /"+
-	"                               SUM(NVL(T1.LAST_3G_NUM, 0))                                        "+
-	"                              ELSE                                                                "+
-	"                               0                                                                  "+
-	"                            END,                                                                  "+
-	"                            'FM99999999990.99')) || '%' LAST_3G_NUM,                              "+
+	
 	"               ROUND(SUM(NVL(T1.THIS_3G_NUM, 0)), 3) THIS_3G_NUM1,                                "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
 	"                              WHEN SUM(NVL(T1.LAST_3G_NUM, 0)) <> 0 THEN                          "+
@@ -134,15 +118,7 @@ function getSumSql() {
 	"                               0                                                                  "+
 	"                            END,                                                                  "+
 	"                            'FM99999999990.99')) || '%' LAST_3G_NUM1,                             "+
-	"               ROUND(SUM(NVL(T1.THIS_4G_NUM, 0)), 3) THIS_4G_NUM,                                 "+
-	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
-	"                              WHEN SUM(NVL(T1.LAST_4G_NUM, 0)) <> 0 THEN                          "+
-	"                               (SUM(NVL(T1.THIS_4G_NUM, 0)) - SUM(NVL(T1.LAST_4G_NUM, 0))) * 100 /"+
-	"                               SUM(NVL(T1.LAST_4G_NUM, 0))                                        "+
-	"                              ELSE                                                                "+
-	"                               0                                                                  "+
-	"                            END,                                                                  "+
-	"                            'FM99999999990.99')) || '%' LAST_4G_NUM,                              "+
+	
 	"               ROUND(SUM(NVL(T1.THIS_4G_NUM, 0)), 3) THIS_4G_NUM1,                                "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
 	"                              WHEN SUM(NVL(T1.LAST_4G_NUM, 0)) <> 0 THEN                          "+
@@ -152,16 +128,7 @@ function getSumSql() {
 	"                               0                                                                  "+
 	"                            END,                                                                  "+
 	"                            'FM99999999990.99')) || '%' LAST_4G_NUM1,                             "+
-	"               ROUND(SUM(NVL(T1.THIS_NET_NUM, 0)), 3) THIS_NET_NUM,                               "+
-	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
-	"                              WHEN SUM(NVL(T1.LAST_NET_NUM, 0)) <> 0 THEN                         "+
-	"                               (SUM(NVL(T1.THIS_NET_NUM, 0)) -                                    "+
-	"                               SUM(NVL(T1.LAST_NET_NUM, 0))) * 100 /                              "+
-	"                               SUM(NVL(T1.LAST_NET_NUM, 0))                                       "+
-	"                              ELSE                                                                "+
-	"                               0                                                                  "+
-	"                            END,                                                                  "+
-	"                            'FM99999999990.99')) || '%' LAST_NET_NUM,                             "+
+	
 	"               ROUND(SUM(NVL(T1.THIS_NET_NUM, 0)), 3) THIS_NET_NUM1,                              "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
 	"                              WHEN SUM(NVL(T1.LAST_NET_NUM, 0)) <> 0 THEN                         "+
@@ -172,15 +139,7 @@ function getSumSql() {
 	"                               0                                                                  "+
 	"                            END,                                                                  "+
 	"                            'FM99999999990.99')) || '%' LAST_NET_NUM1,                            "+
-	"               ROUND(SUM(NVL(T1.THIS_WX_NUM, 0)), 3) THIS_WX_NUM,                                 "+
-	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
-	"                              WHEN SUM(NVL(T1.LAST_WX_NUM, 0)) <> 0 THEN                          "+
-	"                               (SUM(NVL(T1.THIS_WX_NUM, 0)) - SUM(NVL(T1.LAST_WX_NUM, 0))) * 100 /"+
-	"                               SUM(NVL(T1.LAST_WX_NUM, 0))                                        "+
-	"                              ELSE                                                                "+
-	"                               0                                                                  "+
-	"                            END,                                                                  "+
-	"                            'FM99999999990.99')) || '%' LAST_WX_NUM,                              "+
+	
 	"               ROUND(SUM(NVL(T1.THIS_WX_NUM, 0)), 3) THIS_WX_NUM1,                                "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
 	"                              WHEN SUM(NVL(T1.LAST_WX_NUM, 0)) <> 0 THEN                          "+
@@ -190,15 +149,7 @@ function getSumSql() {
 	"                               0                                                                  "+
 	"                            END,                                                                  "+
 	"                            'FM99999999990.99')) || '%' LAST_WX_NUM1,                             "+
-	"               ROUND(SUM(NVL(T1.ALL_NUM, 0)), 3) ALL_NUM,                                         "+
-	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
-	"                              WHEN SUM(NVL(T1.LAST_ALL, 0)) <> 0 THEN                             "+
-	"                               (SUM(NVL(T1.ALL_NUM, 0)) - SUM(NVL(T1.LAST_ALL, 0))) * 100 /       "+
-	"                               SUM(NVL(T1.LAST_ALL, 0))                                           "+
-	"                              ELSE                                                                "+
-	"                               0                                                                  "+
-	"                            END,                                                                  "+
-	"                            'FM99999999990.99')) || '%' LAST_ALL,                                 "+
+	
 	"               ROUND(SUM(NVL(T1.ALL_NUM, 0)), 3) ALL_NUM1,                                        "+
 	"               TRIM('.' FROM TO_CHAR(CASE                                                         "+
 	"                              WHEN SUM(NVL(T1.LAST_ALL, 0)) <> 0 THEN                             "+
