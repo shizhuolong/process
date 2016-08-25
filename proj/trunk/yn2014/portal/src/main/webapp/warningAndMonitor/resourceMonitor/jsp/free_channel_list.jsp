@@ -56,8 +56,9 @@
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
-	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=org.getCode()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>"/>
+	<input type="hidden" id="code" value="<%=org.getCode()%>"/>
+	<input type="hidden" id="login_name" value="<%=user.getUsername()%>"/>
 	<input type="hidden" name="resultMap.page" />
     <input type="hidden" name="resultMap.rows" />
 	<div id="smartForm">
@@ -69,7 +70,7 @@
 					</div>
 					<div id="chose-place">
 						<table width="100%" style="margin:10px 0;">
-			                <tr height="35px">
+			                <tr style="height:35px;">
 			                	<td width="6%" style="padding-left:10px;" align="right">地市：</td>
 			                    <td width="15%">
 			                    	<select id='orgName' name='orgName' style='width:150px;height:20px;font-size: 12px; '></select>
