@@ -122,8 +122,10 @@ function init_org() {
 function channelDivide(ele) {
 	var group_id_1 = $(ele).attr("group_id_1");
 	var group_id_4 = $(ele).attr("group_id_4");
+	var login_name = $("#login_name").val();
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('group_id_4',group_id_4);
+	art.dialog.data('login_name',login_name);
 	var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
 	art.dialog.open(url,{
 		id:'channelDivideDialog',
