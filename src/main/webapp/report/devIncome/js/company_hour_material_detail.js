@@ -7,7 +7,6 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{eq:5,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
@@ -126,6 +125,7 @@ function getSql(){
  
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var dealDate=$("#dealDate").val();
 	//var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE"];
 	var title=[["账期","分公司","营服","用户编码","宽带账号","用户名","联系地址","联系电话","套餐","入网时间","机房局向名称","接入方式","宽带速率","代理商","工时材料费"]];
 
@@ -153,14 +153,12 @@ function roundN(number,fractionDigits){
 }  
 
 function listRegions(){
-    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
+    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE GROUP_ID_1  NOT IN('16099','16017') ";
     var orgLevel=$("#orgLevel").val();
     var code=$("#code").val();
     var region =$("#region").val();
     if(orgLevel==1){
         sql+="";
-    }else if(orgLevel==2){
-        sql+=" and T.GROUP_ID_1='"+code+"'";
     }else{
         sql+=" and T.GROUP_ID_1='"+region+"'";
     }
