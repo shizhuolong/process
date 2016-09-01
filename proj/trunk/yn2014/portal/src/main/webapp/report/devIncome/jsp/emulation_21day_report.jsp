@@ -45,7 +45,7 @@
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="1%">
-						<a class="default-btn" href="#" id="searchBtn"
+						<a class="default-btn default-gree-btn" href="#" id="searchBtn"
 						>查询</a>
 					</td>
 					<td width="1%">
