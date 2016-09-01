@@ -33,6 +33,7 @@
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 		<form id="searchForm" method="post">

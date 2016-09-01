@@ -35,19 +35,19 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="13%">
+					<td width="3%" style="text-align:right;">账期：</td>
+					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month %>" id="month">
 					</td>
-					<td width="4%">地市：</td>
-					<td width="13%">
+					<td width="3%" style="text-align:right;">地市：</td>
+					<td width="10%">
 						<select name="regionName" id="regionName" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">经营模式：</td>
-					<td width="13%">
+					<td width="4%" style="text-align:right;">经营模式：</td>
+					<td width="10%">
 				     	<select name="operate_type" id="operate_type" class="default-text-input wper80">
 							<option value=''>全部</option>
 							<option value='柜台外包'>柜台外包</option>
@@ -56,12 +56,12 @@
 						</select>
 					</td>
 					
-					<td width="7%">营业厅编码：</td>
-					<td width="13%">
+					<td width="5%">营业厅编码：</td>
+					<td width="10%">
 						<input class="default-text-input wper80" name="hq_chan_code" type="text" id="hq_chan_code"/>
 					</td>
-					<td width="3%">
-						<a class="default-btn" href="#" id="searchBtn"
+					<td width="1%">
+						<a class="default-btn default-gree-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
