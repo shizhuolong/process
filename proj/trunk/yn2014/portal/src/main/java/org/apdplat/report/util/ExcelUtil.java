@@ -338,13 +338,13 @@ public class ExcelUtil {
 				cell.setCellValue(bodyData.get(y)[x]);
 			}
 		}
-		for (int y = tcy; y <= tcy; y++) {
+		/*for (int y = tcy; y <= tcy; y++) {
 			HSSFRow row = sheet.createRow(y + startRow);
 			for (int x = 0; x < tcx; x++) {
 				HSSFCell cell = row.createCell(x);
 				cell.setCellStyle(bottomStyle);
 			}
-		}
+		}*/
 
 	}
 }
