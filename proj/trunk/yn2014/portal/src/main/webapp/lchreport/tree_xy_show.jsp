@@ -69,6 +69,7 @@
 %>
 			</form>
 		</div>
+		</div>
 		<div id="content">
 		</div>
 </body>
