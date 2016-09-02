@@ -47,11 +47,9 @@
 					<td width="13%">
 						<input class="default-text-input wper80" name="hr_id" type="text" id="hr_id"/>
 					</td>
-					</td>
 					<td width="7%">人员类型：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="user_type" type="text" id="user_type"/>
-					</td>
 					</td>
 					<td width="7%">发展人编码：</td>
 					<td width="13%">

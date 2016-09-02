@@ -78,7 +78,7 @@
 						action="<%=request.getContextPath()%>/devIncome/orUpload_importTax.action"
 						method="post" enctype="multipart/form-data">
 
-						<table cellspacing="0" width="100%">
+						<table style="cellspacing:'0'; width:100%">
 							<tr>
 								<th  width="100px">第一步</th>
 								<td colspan='2'><span style="display:inline-block;">点击<b>模板下载</b>，导出对应的EXCEL数据模板。 </span><a class="default-btn" style="display:inline-block;"
@@ -109,6 +109,7 @@
 								<td>
 								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">
 								    <font color='red'>（说明：文件目前只支持XLS格式。）</font>
+								    </span>
 								</td>
 							</tr>
 						</table>
@@ -125,7 +126,7 @@
 		    for(String s:err){
 		    	ii++;
 		    %>
-		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size="2" color="red"><%=(ii+"."+s) %></font>	</br>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size="2" color="red"><%=(ii+"."+s) %></font>	<br/>
 	  		<%}%>
 	  	</fieldset>
   	</div>

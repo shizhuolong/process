@@ -61,7 +61,6 @@
 					</select> <a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a></td>
 					<td><a class="default-btn" href="#" id="exportBtn">导出</a></td>
-					</td>
 				</tr>
 			</table>
 		</form>

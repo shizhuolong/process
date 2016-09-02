@@ -41,7 +41,7 @@
 				<tr height="35px">
 					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="10%">
-						<input type="text"  class="Wdate default-text-input wper80" 
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="5%" style="text-align:right;">地市：</td>
