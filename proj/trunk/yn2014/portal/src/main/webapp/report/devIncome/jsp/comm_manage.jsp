@@ -37,7 +37,7 @@
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;">账期：</td>
 					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=mon%>" id="mon">
 					</td>
 					<td width="7%">渠道名称：</td>
