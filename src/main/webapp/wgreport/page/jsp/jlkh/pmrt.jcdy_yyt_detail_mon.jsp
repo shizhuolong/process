@@ -47,7 +47,7 @@
 					<td width="4%">地市:</td>
                     <td width="15%">
                      <select id="regionName" name="regionName" class="default-text-input wper80">
-                       <option value"">全部</option>
+                       <option value="">全部</option>
                      </select>
 					<td width="8%">营业厅名称：</td>
 					<td width="15%">
