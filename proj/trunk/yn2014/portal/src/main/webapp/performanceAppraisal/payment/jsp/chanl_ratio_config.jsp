@@ -40,6 +40,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/performanceAppraisal/payment/js/chanl_ratio_config.js"></script>
 <script type="text/javascript">
 var privileges='<%=user.getAuthoritiesStr()%>';
+alert(privileges);
 function isGrantedNew(role){
     if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
         return true;
