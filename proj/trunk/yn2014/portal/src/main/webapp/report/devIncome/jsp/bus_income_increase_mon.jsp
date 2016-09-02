@@ -41,7 +41,7 @@
 					</td>
 					<td width="8%" style="padding-left: 10px;">结束账期：</td>
 					<td width="24%">
-						<input type="text"  class="Wdate default-text-input wper40" readonly="true"
+						<input type="text"  class="Wdate default-text-input wper40" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',minDate:'#F{$dp.$D(\'startDate\')}',isShowClear:false})" value="<%=month%>" id="endDate">
 					</td>
 					<td width="8%">经营模式：</td>
