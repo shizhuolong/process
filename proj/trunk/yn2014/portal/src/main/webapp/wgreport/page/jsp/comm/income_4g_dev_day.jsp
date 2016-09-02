@@ -85,7 +85,7 @@ String orgCode = org.getCode();
 			</div>
 	   </div>
 	<div id="excelExportDialog" title="Dialog" style="padding:5px;">
-	
+	</div>
 	
   </body>
 </html>
