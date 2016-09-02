@@ -56,8 +56,8 @@
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
-	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=org.getCode()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>"/>
+	<input type="hidden" id="code" value="<%=org.getCode()%>"/>
 	<input type="hidden" name="resultMap.page" />
     <input type="hidden" name="resultMap.rows" />
 	<div id="smartForm">
@@ -69,7 +69,7 @@
 					</div>
 					<div id="chose-place">
 						<table width="100%" style="margin:10px 0;">
-			                <tr height="35px">
+			                <tr style="height:35px">
 			                	<td width="6%" style="padding-left:10px;" align="right">地市：</td>
 			                    <td width="15%">
 			                    	<select id='orgName' name='orgName' style='width:150px;height:20px;font-size: 12px; '></select>
@@ -79,7 +79,7 @@
 			                    <td width="5%" align="right">小区名称：</td>
 			                    <td width="15%"><input class="default-text-input wper80" id="std_6_name" name="std_6_name" type="text"/></td>
 			                </tr>
-			                <tr height="35px">
+			                <tr style="height:35px">
 			                	<td colspan="6">
 			                		<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 400px;">查询</a>
                 					<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
