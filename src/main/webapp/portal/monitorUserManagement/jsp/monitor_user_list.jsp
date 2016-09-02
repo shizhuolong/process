@@ -161,7 +161,6 @@
 					</tbody>
 					<tr>
 						<td colspan="6">
-							</div>
 							<div class="page_count" style="width:1180px;">
 								<div class="page_count_left">
 									共有 <span id="totalCount"></span> 条数据
@@ -170,7 +169,6 @@
 								<div class="page_count_right">
 									<div id="pagination"></div>
 								</div>
-							</div>
 							</div>
 						</td>
 					</tr>
