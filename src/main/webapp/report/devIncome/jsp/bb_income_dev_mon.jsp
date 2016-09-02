@@ -75,9 +75,9 @@
 			</table>
 	</form>
 	<div id="mark" style="display:none;color:red;font-size:15px;">
-		   备注：</br>
-		 1.发展收入直接对到渠道经理不存在优先发展人(昆明、省集客除外)</br>
-         2.收入：剔除挂账、赠费和帐后调账</br>                                                  
+		   备注：<br/>
+		 1.发展收入直接对到渠道经理不存在优先发展人(昆明、省集客除外)<br/>
+         2.收入：剔除挂账、赠费和帐后调账<br/>                                                  
 	</div>
 	<div id="content">
 	</div>
