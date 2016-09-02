@@ -80,7 +80,7 @@
 			                    <td width="5%" align="right">渠道名称：</td>
 			                    <td width="15%"><input class="default-text-input wper80" id="group_id_4_name" name="group_id_4_name" type="text"/></td>
 			                </tr>
-			                <tr height="35px">
+			                <tr style="height:35px">
 			                	<td colspan="6">
 			                		<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 400px;">查询</a>
                 					<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
