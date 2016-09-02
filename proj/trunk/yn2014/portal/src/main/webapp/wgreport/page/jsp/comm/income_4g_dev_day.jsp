@@ -79,7 +79,7 @@ String orgCode = org.getCode();
 			<div class="item p3" style="margin-left: 0px;">	
 				<!-- 数据展示 -->
 				<div class="scrollDiv" id="showtablediv" class="scrollDiv" >
-				<table id="tableData" style='margin-left:5px; border-bottom:1px solid #999;'   width='90%' border='0'  cellspacing='0' cellpadding='0' class='table-normal'> <!--   -->
+				<table id="tableData" style='margin-left:5px; border-bottom:1px solid #999;width：90%; border:0px;cellspacing:0; cellpadding=0'  class='table-normal'> <!--   -->
 				</table>
 				</div>
 			</div>
