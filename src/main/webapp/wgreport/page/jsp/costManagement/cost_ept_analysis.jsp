@@ -75,7 +75,7 @@ Org org = user.getOrg();
 					<!-- 数据展示 -->
 					<div id="showtablediv" class="">
 						<table id="tableData"
-							style='margin-left: 5px; border-bottom: 1px solid #cebb9e;'
+							style="margin-left: 5px; border-bottom: 1px solid #cebb9e;"
 							width='90%' border='0' cellspacing='0' cellpadding='0'
 							class='table-normal'>
 							<thead></thead>
