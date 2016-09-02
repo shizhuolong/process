@@ -26,14 +26,20 @@
 			<form id="update" method="POST">
 				<table class="default-table sticky-enabled">
 				<tr>
+				    <td width="8%">營服中心：
+					<select name="unit_name" id="unit_name">
+				    </select>
+				 </td>
+				</tr>
+				<tr>
 					<td>工作岗位：
-					  <select name="job" id="job" class="easyui-validatebox">
+					  <select name="job" id="job">
 				      </select>
 				    </td>
 				</tr>
 				<tr>
 					<td>是否打标：
-					  <select name="is_logo" id="is_logo" class="easyui-validatebox">
+					  <select name="is_logo" id="is_logo">
 				       <option value=''>请选择</option>
 				       <option value='1'>是</option>
 				       <option value='0'>否</option>
@@ -41,7 +47,7 @@
 				    </td>
 				</tr>
 				<tr>
-				  <td>HR系数：<input type="text" class="easyui-validatebox" name="hr_ratio" id="hr_ratio"/>
+				  <td>HR系数：<input type="text" required="true" class="easyui-validatebox" missingMessage="HR系数不能为空" name="hr_ratio" id="hr_ratio"/>
 				  </td>
 				</tr>
 				<tr>
@@ -54,6 +60,7 @@
 			<input type="hidden" id="chooseMonth" name="chooseMonth"/>
 			<input type="hidden" id="hr_id" name="hr_id"/>
 			<input type="hidden" id="user_code" name="user_code"/>
+			<input type="hidden" id="unit_id" name="unit_id"/>
 		</form>
 		</div>
 	</div>
