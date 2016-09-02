@@ -96,7 +96,7 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
 					+"<td>"+isNull(n['STATUS'])+"</td>";
 					if(isGrantedNew(UPDATE_ROLE)) {
-					content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
+						content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
 					} else {
 						content+="<td>&nbsp;</td>";
 					}
@@ -115,7 +115,7 @@ function search(pageNumber) {
 						+"<td>"+isNull(n['SERVER_RATIO'])+"</td>"
 						+"<td>"+isNull(n['STATUS'])+"</td>";
 						if(isGrantedNew(UPDATE_ROLE)) {
-						content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
+							content+="<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' month='"+month+"' onclick='editChanlConfig(this);'>修改</a></td>";
 						} else {
 							content+="<td>&nbsp;</td>";
 						}
