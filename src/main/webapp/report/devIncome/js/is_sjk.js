@@ -6,18 +6,19 @@ function downloadFile() {
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==2){
-	  //window.location.href=paths+"/devIncome/kpiUpload_downfile.action";
-		var sql="SELECT UNIT_ID 营服ID,UNIT_NAME 营服中心,        "+
-		"       '' as 姓名,                                    "+
-		"       '' as HR编码,                                  "+
-		"       '' as 指标名称,                                 "+
-		"       '' as 得分,                                    "+
-		"       '' as 权重                                                                                                              "+
-		"        FROM PCDE.TAB_CDE_GROUP_CODE                "+
-		"WHERE GROUP_ID_1='"+code+"'                         "+
-		"AND IS_DEFAULT=0 AND IS_FIVE_CLASS<>5               ";
+	  window.location.href=paths+"/devIncome/kpiUpload_downfile.action";
+	    var sql = "SELECT UNIT_ID 营服ID,UNIT_NAME 营服中心,                "
+				+ "       '' as 姓名,                                    "
+				+ "       '' as HR编码,                                  "
+				+ "       '' as 指标名称,                                 "
+				+ "       '' as 得分,                                    "
+				+ "       '' as 权重                                                                                                               "
+				+ "        FROM PCDE.TAB_CDE_GROUP_CODE                 "
+				+ "WHERE GROUP_ID_1='" + code + "'                      "
+				+ "AND IS_DEFAULT=0 AND IS_FIVE_CLASS=5                ";
+	    
 		var title=[["营服ID","营服中心","姓名","HR编码","指标名称","得分","权重(%)"]];
-		var showtext ='自设KPI考核评分导入模板';
+		var showtext ='客服KPI考核评分导入模板';
 		downloadExcel(sql,title,showtext);
 	}
 }
@@ -26,12 +27,12 @@ function complete(){
 	$("#upload").hide();
 	var flag=checkOptions();
 	var orgLevel=$("#orgLevel").val();
-	if(orgLevel==2){
+	//if(orgLevel==2){
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
 		document.mainForm.submit(); 
 	 }
-  }
+  //}
 }
 /**校验**/
 function checkOptions(){
@@ -49,9 +50,8 @@ function checkOptions(){
 	}
 	return true;
 }
-//执行方法
 function getRegionName(){
-	var sql="SELECT distinct t.region_name regionName,t.region_code regionCode FROM portal.apdp_org  t where 1=1";
+	var sql="SELECT distinct t.region_name regionName,t.region_code regionCode FROM portal.apdp_org t where 1=1";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
