@@ -96,7 +96,7 @@ function update(obj) {
 	art.dialog.open(url,{
 		id:'update',
 		width:'420px',
-		height:'140px',
+		height:'200px',
 		padding:'0 0',
 		lock:true,
 		resize:false,
@@ -141,22 +141,7 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		if(orgLevel==1){
-	   			$("#addBtn").remove();
-		   		 $.each(pages.rows,function(i,n){
-					content+="<tr>"
-					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
-					+"<td>"+isNull(n['NAME'])+"</td>"
-					+"<td>"+isNull(n['JOB'])+"</td>"
-					+"<td>"+isNull(n['HR_ID'])+"</td>"
-					+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
-					+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
-					+"<td>"+isNull(n['IS_LOGO'])+"</td>"
-				 +"<td></td>";
-					content+="</tr>";
-				 });
-	   		}else{
-	   		  if(chooseMonth==initMonth){
+	   		if(chooseMonth==initMonth){
 	   		    $.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
@@ -184,7 +169,6 @@ function search(pageNumber) {
 					content+="</tr>";
 				 });
 	   		}
-	   	   }
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {

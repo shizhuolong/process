@@ -53,10 +53,10 @@ $(function() {
 				return true;
 			},
 			success:function(r){
-				//var d = $.parseJSON(r);
+				var d = $.parseJSON(r);
 				art.dialog({
 		   			title: '提示',
-		   		    content: r,
+		   		    content: d,
 		   		    icon: 'succeed',
 		   		    lock: true,
 		   		    ok: function () {
@@ -87,7 +87,7 @@ function listunit_name(){
 			}
 		$("#unit_name").empty().append($(h));
 	} else {
-		alert("获取营服中心失败");
+		alert("获取营服中心失败!");
 	}
 }
 function listemp_type(){
@@ -101,7 +101,7 @@ function listemp_type(){
 			}
 		$("#emp_type").empty().append($(h));
 	} else {
-		alert("获取从业类型失败");
+		alert("获取从业类型失败!");
 	}
 }
 var user_code="";
@@ -116,7 +116,7 @@ function listjob(){
 			}
 		$("#job").empty().append($(h));
 	} else {
-		alert("获取岗位失败");
+		alert("获取岗位失败!");
 	}
 }
 function listjob_type(){
@@ -130,7 +130,7 @@ function listjob_type(){
 			}
 		$("#job_type").empty().append($(h));
 	} else {
-		alert("获取岗位类型失败");
+		alert("获取岗位类型失败!");
 	}
 }
 function initName(){
