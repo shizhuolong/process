@@ -78,7 +78,7 @@
 				<tr style="height: 35px">
 					<td colspan="4">
 						<a class="default-btn fLeft mr10" href="#" style="margin-left: 210px;" id="saveBtn">提交</a>
-						<a class="default-btn fLeft mr10" href="#"" id="cancleBtn">取消</a>
+						<a class="default-btn fLeft mr10" href="#" id="cancleBtn">取消</a>
 					</td>
 				</tr>
 			</table>
