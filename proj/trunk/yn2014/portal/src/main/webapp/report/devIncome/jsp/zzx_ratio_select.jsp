@@ -49,7 +49,7 @@
 					<tr>
 					    <td width="12%" style="padding-left: 10px;">生效时间：</td>
 					    <td width="20%">
-						  <input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						  <input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						  onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time">
 					    </td>
 					    <td width="12%">服务号码：</td>
