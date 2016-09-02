@@ -108,7 +108,7 @@
 								</td>
 								<td>
 								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">
-								    <font color='red'>（说明：文件目前只支持XLS格式，且内容为文本格式。）</font></span>
+								    <font color='red'>（注意：文件目前只支持XLS格式，且内容为文本格式。模板下载下来为非文本格式，上传前请手动转化为文本格式，否则导入数据可能不完整。）</font>
 								</td>
 							</tr>
 						</table>
