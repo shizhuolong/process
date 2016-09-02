@@ -131,7 +131,7 @@
 		ON (#{hq_chan_code}=T6.HQ_CHAN_CODE)
 		WHERE NOT EXISTS (SELECT 1 FROM PORTAL.TAB_PORTAL_MAG_PERSON T7
 		WHERE #{hr_id}=T7.HR_ID
-		AND T7.USER_TYPE=1
+		AND T7.USER_TYPE=1 
 		AND T7.DEAL_DATE=#{chooseMonth})
 		AND T3.HR_ID=#{hr_id}
 	</insert>

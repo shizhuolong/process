@@ -172,7 +172,8 @@
 	<update id="updateToResult" parameterType="java.util.Map">
 		UPDATE PORTAL.TAB_PORTAL_QJ_PERSON T SET T.JOB=#{job},
 		T.USER_CODE=#{user_code},T.IS_LOGO=#{is_logo},
-		T.HR_RATIO=#{hr_ratio}
+		T.HR_RATIO=#{hr_ratio},T.UNIT_ID=#{unit_id},
+		T.UNIT_NAME=#{unit_name}
 		WHERE T.DEAL_DATE &gt;=#{chooseMonth} AND T.HR_ID=#{hr_id}
 	</update>
 </mapper>
