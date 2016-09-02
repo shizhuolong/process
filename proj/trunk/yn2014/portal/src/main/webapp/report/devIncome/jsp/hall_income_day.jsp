@@ -38,12 +38,12 @@
 				<tr height="35px">
 					<td width="8%" align="right">开始账期：</td>
 					<td width="12%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="startDate">
 					</td>
 					<td width="8%" align="right">结束账期：</td>
 					<td width="12%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="endDate">
 					</td>
 					<td width="4%" align="right">地市：</td>

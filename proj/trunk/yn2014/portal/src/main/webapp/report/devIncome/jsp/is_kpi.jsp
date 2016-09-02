@@ -108,7 +108,7 @@
 								</td>
 								<td>
 								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">
-								    <font color='red'>（说明：文件目前只支持XLS格式，且内容为文本格式。）</font>
+								    <font color='red'>（说明：文件目前只支持XLS格式，且内容为文本格式。）</font></span>
 								</td>
 							</tr>
 						</table>
@@ -125,7 +125,7 @@
 		    for(String s:err){
 		    	ii++;
 		    %>
-		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size="2" color="red"><%=(ii+"."+s) %></font>	</br>
+		    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size="2" color="red"><%=(ii+"."+s) %></font>	<br/>
 	  		<%}%>
 	  	</fieldset>
   	</div>
