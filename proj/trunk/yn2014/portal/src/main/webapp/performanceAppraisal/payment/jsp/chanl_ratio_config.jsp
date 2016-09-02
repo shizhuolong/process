@@ -68,11 +68,11 @@ function isGrantedNew(role){
             <input type="hidden" name="resultMap.rows" />
           	<table style="margin-top: 10px;">
           		<tr>
-                	<td align="">渠道编码：</td>
+                	<td>渠道编码：</td>
                     <td><input class="default-text-input wper140" name="hq_chan_code" id="hq_chan_code" type="text"/></td>
-                    <td align="">渠道名称：</td>
+                    <td>渠道名称：</td>
                     <td><input class="default-text-input" style="width: 150px;" name="group_id_4_name" id="group_id_4_name" type="text"/></td>
-                    <td align="">渠道状态：</td>
+                    <td>渠道状态：</td>
                     <td>
 	                    <select class="default-text-input" style="width: 80px;" name="status" id="status">
 							<option value="">全部</option>
@@ -86,7 +86,7 @@ function isGrantedNew(role){
 					</td>
                 </tr>
                 <tr>
-                	<td align="">是否配置渠道系数：</td>
+                	<td>是否配置渠道系数：</td>
                 	<td>
                 		<select class="default-text-input" style="width: 80px;" name="ratio" id="ratio">
 							<option value="">全部</option>
@@ -94,7 +94,7 @@ function isGrantedNew(role){
 							<option value="0">否</option>
 						</select>
                 	</td>
-                	<td align="">是否配置服务系数：</td>
+                	<td>是否配置服务系数：</td>
                 	<td colspan="" style="padding: 15px 0px;">
                 		<select class="default-text-input" style="width: 80px;" name="server_ratio" id="server_ratio">
 							<option value="">全部</option>
@@ -137,7 +137,6 @@ function isGrantedNew(role){
 						</tbody>
 						<tr>
 							<td colspan="9">
-								</div>
 									<div class="page_count">
 										<div class="page_count_left">
 											共有 <span id="totalCount"></span> 条数据
@@ -147,7 +146,6 @@ function isGrantedNew(role){
 											<div id="pagination"></div>
 										</div>
 									</div>
-								</div>
 							</td>
 						</tr>
 					</table>
