@@ -68,35 +68,27 @@
 				<table width="100%" style="margin: 10px 0;">
 					<tr height="35px">
 						<td width="5%" style="padding-left:10px;">帐期：</td>
-						<td style="width: 80px;"><input readonly="readonly"
-							type="text" style="width: 80px" class="Wdate" id="deal_date"
-							name="deal_date" value="<%=month%>"
-							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" />
+						<td style="width: 80px;"><input readonly="readonly" type="text" style="width: 80px" class="Wdate" id="deal_date"
+							name="deal_date" value="<%=month%>" onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" />
 						</td>
 						<td width="5%" style="padding-left:10px;">营服中心：</td>
-						<td width="15%"><input class="default-text-input wper80"
-							id="unit_name" name="unit_name" type="text" /></td>
+						<td width="15%"><input class="default-text-input wper80" id="unit_name" name="unit_name" type="text" /></td>
 					</tr>
 					<tr height="35px">
 						<td width="5%">小区编码：</td>
-						<td width="15%"><input class="default-text-input wper80"
-							id="std_6_id" name="std_6_id" type="text" /></td>
+						<td width="15%"><input class="default-text-input wper80" id="std_6_id" name="std_6_id" type="text" /></td>
 						<td width="5%" style="padding-left:10px;">小区名称：</td>
-						<td width="15%"><input class="default-text-input wper80"
-							id="std_6_name" name="std_6_name" type="text" /></td>
+						<td width="15%"><input class="default-text-input wper80" id="std_6_name" name="std_6_name" type="text" /></td>
 					</tr>
 					<tr height="35px">
 						<td width="5%">姓名：</td>
-						<td width="15%"><input class="default-text-input wper80"
-							id="name" name="name" type="text" /></td>
+						<td width="15%"><input class="default-text-input wper80" id="name" name="name" type="text" /></td>
 						<td width="5%" style="padding-left:10px;">帐号：</td>
-						<td width="15%"><input class="default-text-input wper80"
-							id="account" name="account" type="text" /></td>
+						<td width="15%"><input class="default-text-input wper80" id="account" name="account" type="text" /></td>
 					</tr>
 					<tr height="35px">
-							<td width="5%">HR编码：</td>
-						<td width="15%"><input class="default-text-input wper80"
-							id="hr_id" name="hr_id" type="text" /></td>
+						<td width="5%">HR编码：</td>
+						<td width="15%"><input class="default-text-input wper80" id="hr_id" name="hr_id" type="text" /></td>
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -106,7 +98,9 @@
                         </td>
 					</tr>
 				</table>
-			</form> 
+			</form>
+		</div>
+	</div> 
 			<div class="default-dt dt-autoH">
 				<div class="sticky-wrap">
 					<table class="default-table sticky-enabled">
@@ -128,7 +122,6 @@
 					</tbody>
 					<tr>
 						<td colspan="10">
-							</div>
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据
@@ -138,7 +131,6 @@
 										<div id="pagination"></div>
 									</div>
 								</div>
-							</div>
 						</td>
 					</tr>
 				</table>
