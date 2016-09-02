@@ -32,7 +32,7 @@ public class QJPersonAction extends BaseAction {
 	private String time;
 	private String emp_type;
 	private String hr_ratio;
-	
+	private String unit_id;
 	
 	public void listTreeNode() {
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -105,6 +105,8 @@ public class QJPersonAction extends BaseAction {
 		m.put("chooseMonth",request.getParameter("chooseMonth"));
 		m.put("hr_id",hr_id);
 		m.put("hr_ratio",hr_ratio);
+		m.put("unit_id", unit_id);
+		m.put("unit_name", unit_name);
 		try {
 			qjPersonService.updateToResult(m);
 			this.reponseJson("修改成功!");
@@ -226,6 +228,14 @@ public class QJPersonAction extends BaseAction {
 
 	public void setHr_ratio(String hr_ratio) {
 		this.hr_ratio = hr_ratio;
+	}
+
+	public String getUnit_id() {
+		return unit_id;
+	}
+
+	public void setUnit_id(String unit_id) {
+		this.unit_id = unit_id;
 	}
 
 	
