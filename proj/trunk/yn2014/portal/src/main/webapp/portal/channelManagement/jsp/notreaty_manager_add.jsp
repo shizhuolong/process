@@ -72,7 +72,7 @@
 				<tr>
 					<th width="200">渠道名称:</th>
 					<td><input type="text" width="12" name="model.CHANLNAME"
-						value="" id="CHANLNAME" class="default-text-input w160 require" /> <span><i class="required">*</i></td>
+						value="" id="CHANLNAME" class="default-text-input w160 require" /> <span><i class="required">*</i></span></td>
 					<th width="200">上级渠道编码（总部编码）:</th>
 					<td><input type="text" width=10% name="model.UP_CHANL_HQ_CODE"
 						value="" onChange="selectChannel()" onClick="selectChannel()"

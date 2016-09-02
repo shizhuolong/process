@@ -101,15 +101,13 @@
 						</tbody>
 						<tr>
 							<td colspan="10">
-								</div>
-									<div class="page_count">
-										<div class="page_count_left">
-											共有 <span id="totalCount"></span> 条数据
-										</div>
-		
-										<div class="page_count_right">
-											<div id="pagination"></div>
-										</div>
+								<div class="page_count">
+									<div class="page_count_left">
+										共有 <span id="totalCount"></span> 条数据
+									</div>
+
+									<div class="page_count_right">
+										<div id="pagination"></div>
 									</div>
 								</div>
 							</td>

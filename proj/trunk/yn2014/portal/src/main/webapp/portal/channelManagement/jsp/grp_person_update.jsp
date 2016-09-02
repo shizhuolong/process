@@ -53,7 +53,7 @@
 						<input class="default-text-input wper90" name="chanNum" type="text" id="chanNum" onblur="checkChannelCode()"/>
 					</td>
 					<td width="4%">渠道名称</td>
-					<td width="45%" id="chanName" nowrap='nowrap'　></td>
+					<td width="45%" id="chanName" nowrap='nowrap'></td>
 				</tr>
 				<tr>
 					<td width="8%">HR编码</td>

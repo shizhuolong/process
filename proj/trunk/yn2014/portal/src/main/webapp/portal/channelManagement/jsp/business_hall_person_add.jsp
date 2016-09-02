@@ -39,9 +39,9 @@
 				</tr>
 				<tr>
 				    <td>营业厅编码:</td>
-					<td><input type="text" readonly="true" required="true" class="easyui-validatebox" missingMessage="营业厅编码不能为空" name="hq_chan_code" id="hq_chan_code"></td>
+					<td><input type="text" readonly="readonly" required="true" class="easyui-validatebox" missingMessage="营业厅编码不能为空" name="hq_chan_code" id="hq_chan_code"></td>
 				    <td>营业厅名称:</td>
-					<td><input type="text" required="true" readonly="true" class="easyui-validatebox" missingMessage="营业厅名称不能为空" name="hq_chan_name" id="hq_chan_name"></td>
+					<td><input type="text" required="true" readonly="readonly" class="easyui-validatebox" missingMessage="营业厅名称不能为空" name="hq_chan_name" id="hq_chan_name"></td>
 				</tr>
 				<tr>
 				    <td>HR编码:</td>
