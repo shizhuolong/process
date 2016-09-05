@@ -65,7 +65,7 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
     <link rel="shortcut icon" href="images/<%= shortcut %>.ico" />
     
     <!-- <link href="css/login-style.css" rel="stylesheet" type="text/css" /> -->
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/platform/theme/style/easyui.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/platform/theme/style/easyui.css"/>
 	<link href="<%=request.getContextPath() %>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="extjs/css/ext-all.css"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
