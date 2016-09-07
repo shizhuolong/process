@@ -1,12 +1,14 @@
 var nowData = [];
 var field=["GROUP_ID_1_NAME","SUBSCRIPTION_ID","SERVICE_NUM","USERNAME","USERADD","USER_ADDR","USERTEL","PRODUCT_NAME","INNET_DATE","LW_TYPE","EXCH_NAME","INPUT_TYPE","KD_SL","GROUP_ID_4_NAME"];
-var title=[["渠道分等分级**年**月宽带新增用户明细","","","","","","","","","","","","",""],
+var title=[["渠道分等分级宽带新增、拆机用户明细","","","","","","","","","","","","",""],
            ["分公司","用户标识","宽带账号","用户名","客户地址","装机地址","联系电话","套餐","入网时间","状态","局站","接入方式","宽带速率","代理商"]];
 var downSql="";
 var dealDate="";
 var report = null;
 $(function() {
 	listRegions();
+	//获得状态下拉菜单
+	getLwTyoe();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -54,6 +56,8 @@ function search(pageNumber) {
 	var regionCode=$("#regionName").val();
 	var unitId=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
+	//状态
+	var lwType = $("#lwType").val();
 	sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_INTEGRAL_GW_DETAIL T WHERE DEAL_DATE='"+dealDate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -81,6 +85,10 @@ function search(pageNumber) {
 	if(userName!=''){
 		sql+=" AND T.USERNAME LIKE '%"+userName+"%'";
 	}
+	if(lwType!=''){
+		sql+=" AND T.LW_TYPE= '"+lwType+"'";
+	}
+	
 	sql+=" ORDER BY T.GROUP_ID_1,T.UNIT_ID,T.HR_ID";
 	downSql=sql;
 	var cdata = query("select count(*) total from (" + sql+")");
@@ -112,7 +120,6 @@ function search(pageNumber) {
 	});
 }
 function listRegions(){
-	var sql="";
 	var dealDate=$("#dealDate").val();
 	//条件
 	var sql = "select distinct t.GROUP_ID_1,t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_GW_DETAIL t WHERE 1=1";
@@ -198,6 +205,44 @@ function listUnits(regionCode){
 	}
 }
 
+//获得状态下拉菜单
+function getLwTyoe(){
+	var dealDate = $("#dealDate").val();
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	var hrId=$("#hrId").val();
+	var sql = "SELECT DISTINCT(T.LW_TYPE) FROM PMRT.TAB_MRT_INTEGRAL_GW_DETAIL T WHERE 1=1 " ;
+	//层级权限
+	if(orgLevel==1){
+		
+	}else if(orgLevel==2){
+		sql+=" AND T.GROUP_ID_1='"+code+"'";
+	}else if(orgLevel==3){
+		sql+=" AND T.UNIT_ID='"+code+"'";
+	}else{
+		sql+=" AND T.HR_ID='"+hrId+"'";
+	}
+	//获取数据，并赋值
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].LW_TYPE
+					+ '" selected >'
+					+ d[0].LW_TYPE + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].LW_TYPE + '">' + d[i].LW_TYPE + '</option>';
+			}
+		}
+		
+		var $h = $(h);
+		$("#lwType").empty().append($h);
+	} else {
+		alert("获取状态失败");
+	}
+}
 function downsAll(){
 	showtext = '宽带渠道分等分级新增-'+dealDate;
 	downloadExcel(downSql,title,showtext);

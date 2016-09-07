@@ -41,26 +41,32 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="2%" style="padding-left: 10px;">账期：</td>
+					<td width="3%" style="text-align:right;">账期：</td>
 					<td width="7%">
-						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" readonly="true" value="<%=dealDate%>" id="dealDate">
+						<input type="text"  class="Wdate default-text-input wper90" 
+							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" readonly="readonly" value="<%=dealDate%>" id="dealDate">
 					</td>
-					<td width="2%">地市：</td>
-					<td width="10%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+					<td width="3%" style="text-align:right;">地市：</td>
+					<td width="8%">
+						<select name="regionName" id="regionName" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="5%">营服中心：</td>
+					<td width="4%" style="text-align:right;">营服中心：</td>
 					<td width="10%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+						<select name="unitName" id="unitName" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="5%">用户名：</td>
-					<td width="10%">
-						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
+					<td width="3%" style="text-align:right;">状态：</td>
+					<td width="6%">
+						<select name="lwType" id="lwType" onchange="" class="default-text-input wper90">
+								<option value=''>请选择</option>
+						</select>
+					</td>
+					<td width="4%" style="text-align:right;">用户名：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="userName" type="text" id="userName"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
