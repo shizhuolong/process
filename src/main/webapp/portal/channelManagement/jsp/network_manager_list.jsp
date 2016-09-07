@@ -63,8 +63,8 @@
 	<div data-options="region:'center',title:'小区负责人绑定'">
 		<div id="container">
 			<form id="searchForm" method="post">
-				<input type="hidden" name="resultMap.page" /> <input type="hidden"
-					name="resultMap.rows" />
+				<input type="hidden" name="resultMap.page" /> 
+				<input type="hidden" name="resultMap.rows" />
 				<table width="100%" style="margin: 10px 0;">
 					<tr height="35px">
 						<td width="5%" style="padding-left:10px;">帐期：</td>
@@ -99,41 +99,41 @@
 					</tr>
 				</table>
 			</form>
-		</div>
-	</div> 
 			<div class="default-dt dt-autoH">
-				<div class="sticky-wrap">
-					<table class="default-table sticky-enabled">
-					<thead>
-						<tr>
-							<th class="first">帐期</th>
-							<th >地市名称</th>
-							<th>营服中心</th>
-							<th>小区编码</th>
-							<th>小区名称</th>
-							<th>姓名</th>
-							<th>帐号</th>
-							<th>联系电话</th>
-							<th>HR编码</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody id="dataBody">
-					</tbody>
+		<div class="sticky-wrap">
+			<table class="default-table sticky-enabled">
+				<thead>
 					<tr>
-						<td colspan="10">
-								<div class="page_count">
-									<div class="page_count_left">
-										共有 <span id="totalCount"></span> 条数据
-									</div>
-	
-									<div class="page_count_right">
-										<div id="pagination"></div>
-									</div>
-								</div>
-						</td>
+						<th class="first">帐期</th>
+						<th>地市名称</th>
+						<th>营服中心</th>
+						<th>小区编码</th>
+						<th>小区名称</th>
+						<th>姓名</th>
+						<th>帐号</th>
+						<th>联系电话</th>
+						<th>HR编码</th>
+						<th>操作</th>
 					</tr>
-				</table>
+				</thead>
+				<tbody id="dataBody">
+				</tbody>
+				<tr>
+					<td colspan="10">
+						<div class="page_count">
+							<div class="page_count_left">
+								共有 <span id="totalCount"></span> 条数据
+							</div>
+
+							<div class="page_count_right">
+								<div id="pagination"></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 		</div>
 	</div>
 </body>
