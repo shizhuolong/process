@@ -77,44 +77,44 @@
 					</tr>
 				</table>
 			</form>
-		</div>
-	</div>
-	<div class="default-dt dt-autoH">
-		<div class="sticky-wrap">
-			<table class="default-table sticky-enabled">
-				<thead>
-					<tr>
-						<th class="first">地市名称</th>
-						<th>营服中心</th>
-						<th>名单制小区编码</th>
-						<th>名单制小区名称</th>
-						<th>住户数</th>
-						<th>覆盖住户数</th>
-						<th>经度</th>
-						<th>纬度</th>
-						<th>装维联系人</th>
-						<th>装维联系人电话</th>
-						<th>业务办理联系人</th>
-						<th>业务办理联系人号码</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody id="dataBody">
-				</tbody>
-				<tr>
-					<td colspan="13">
-						<div class="page_count">
-							<div class="page_count_left">
-								共有 <span id="totalCount"></span> 条数据
-							</div>
+			<div class="default-dt dt-autoH">
+				<div class="sticky-wrap">
+					<table class="default-table sticky-enabled">
+						<thead>
+							<tr>
+								<th class="first">地市名称</th>
+								<th>营服中心</th>
+								<th>名单制小区编码</th>
+								<th>名单制小区名称</th>
+								<th>住户数</th>
+								<th>覆盖住户数</th>
+								<th>经度</th>
+								<th>纬度</th>
+								<th>装维联系人</th>
+								<th>装维联系人电话</th>
+								<th>业务办理联系人</th>
+								<th>业务办理联系人号码</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="dataBody">
+						</tbody>
+						<tr>
+							<td colspan="13">
+								<div class="page_count">
+									<div class="page_count_left">
+										共有 <span id="totalCount"></span> 条数据
+									</div>
 
-							<div class="page_count_right">
-								<div id="pagination"></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
+									<div class="page_count_right">
+										<div id="pagination"></div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
