@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
+<%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%
+User user = UserHolder.getCurrentLoginUser();
 Calendar ca=Calendar.getInstance();
 ca.add(Calendar.MONTH,0);
 String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
