@@ -1,6 +1,7 @@
 var pageSize = 15;
 var groupId='-1';
 var level=null;
+var UPDATE_ROLE="ROLE_MANAGER_RESOURCEMANAGER_RLZY_GRP_MANAGER_UPDATEPART";
 $(function() {
 	var setting = {
 		async : {
@@ -83,19 +84,35 @@ function search(pageNumber) {
 	   		var content="";
 	   		
 	   			$("#addBtn").show();
-	   			$.each(pages.rows,function(i,n){
-	   				content+="<tr>"+
-						"<td>"+isNull(n['user_type'])+"</td>"+
-						"<td>"+isNull(n['NAME'])+"</td>"+
-						"<td>"+isNull(n['PHONE'])+"</td>"+
-						"<td>"+isNull(n['DEVELOPER'])+"</td>"+
-						"<td>"+isNull(n['UNIT_NAME'])+"</td>"+
-						"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"+
-						"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"+
-						"<td class='operater'><a href='#'  dealDate='"+dealDate+"'id='developer' devNum='"+n['DEVELOPER']+"' onclick='updateGrpPerson(this);'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						"<a href='#'  dealDate='"+dealDate+"'id='developer' dev_num='"+n['DEVELOPER']+"' onclick='del(this);'>删除</a></td>" +
-						"</tr>";
-				});
+	   			if(isGrantedNew(UPDATE_ROLE)){
+	   				$.each(pages.rows,function(i,n){
+		   				content+="<tr>"+
+							"<td>"+isNull(n['user_type'])+"</td>"+
+							"<td>"+isNull(n['NAME'])+"</td>"+
+							"<td>"+isNull(n['PHONE'])+"</td>"+
+							"<td>"+isNull(n['DEVELOPER'])+"</td>"+
+							"<td>"+isNull(n['UNIT_NAME'])+"</td>"+
+							"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"+
+							"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"+
+							"<td class='operater'><a href='#'  dealDate='"+dealDate+"'id='developer' devNum='"+n['DEVELOPER']+"' onclick='updateGrpPerson(this);'>修改</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+							"<a href='#'  dealDate='"+dealDate+"'id='developer' dev_num='"+n['DEVELOPER']+"' onclick='del(this);'>删除</a></td>" +
+							"</tr>";
+					});
+	   			}else{
+	   				$.each(pages.rows,function(i,n){
+		   				content+="<tr>"+
+							"<td>"+isNull(n['user_type'])+"</td>"+
+							"<td>"+isNull(n['NAME'])+"</td>"+
+							"<td>"+isNull(n['PHONE'])+"</td>"+
+							"<td>"+isNull(n['DEVELOPER'])+"</td>"+
+							"<td>"+isNull(n['UNIT_NAME'])+"</td>"+
+							"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"+
+							"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"+
+							"<td></td>" +
+							"</tr>";
+					});
+	   			}
+	   			
 	   		
 			if(content != "") {
 				$("#dataBody").html(content);

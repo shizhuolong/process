@@ -4,6 +4,8 @@ var orgLevel = "";
 var code = "";
 var deal_date="";
 var initMonth="";
+var UPDATE_ROLE="ROLE_MANAGER_RESOURCEMANAGER_RLZY_BUSINESS_MANAGER_UPDATEPART";
+
 $(function() {
 	//从用户登录信息中获取初始化根节点
 	orgLevel = $("#orgLevel").val();
@@ -103,8 +105,8 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		if(deal_date==initMonth){
-	   		$.each(pages.rows,function(i,n){
+            if(isGrantedNew(UPDATE_ROLE) && deal_date==initMonth){
+	   		  $.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>"+isNull(n['NAME'])+"</td>"
 				+"<td>"+isNull(n['PHONE'])+"</td>"
@@ -116,19 +118,19 @@ function search(pageNumber) {
 			 		"<a onclick='del($(this))' user_code='"+isNull(n['USER_CODE'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
 			});
-	   		}else{
-	   			$.each(pages.rows,function(i,n){
-					content+="<tr>"
-					+"<td>"+isNull(n['NAME'])+"</td>"
-					+"<td>"+isNull(n['PHONE'])+"</td>"
-					+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
-					+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
-					+"<td>"+isNull(n['USER_CODE'])+"</td>"
-					+"<td>"+isNull(n['F_HR_ID'])+"</td>"
-					+"<td></td>";
-					content+="</tr>";
-	   		 });
-	   	    }
+			} else {
+					$.each(pages.rows, function(i, n) {
+					content += "<tr>" + "<td>" + isNull(n['NAME'])
+									+ "</td>" + "<td>" + isNull(n['PHONE'])
+									+ "</td>" + "<td>"
+									+ isNull(n['HQ_CHAN_CODE']) + "</td>"
+									+ "<td>" + isNull(n['HQ_CHAN_NAME'])
+									+ "</td>" + "<td>" + isNull(n['USER_CODE'])
+									+ "</td>" + "<td>" + isNull(n['F_HR_ID'])
+									+ "</td>" + "<td></td>";
+					content += "</tr>";
+						});
+			}
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {

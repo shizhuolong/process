@@ -4,6 +4,7 @@ var orgLevel = "";
 var code = "";
 var initMonth="";
 var chooseMonth="";
+var UPDATE_ROLE="ROLE_MANAGER_RESOURCEMANAGER_RLZY_MAG_MANAGER_UPDATEPART";
 $(function() {
 	//从用户登录信息中获取初始化根节点
 	orgLevel = $("#orgLevel").val();
@@ -146,7 +147,7 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		if(chooseMonth==initMonth){
+	   		if(chooseMonth==initMonth&&isGrantedNew(UPDATE_ROLE)){
 	   		    $.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
