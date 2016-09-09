@@ -24,6 +24,9 @@ $(function() {
 		$("#user_code").val(user_code);
 		$("#unit_id").val($(this).find("option:selected").attr("unit_id"));
 		var url = $("#ctx").val()+'/channelManagement/qjPerson_update.action';
+		if($("#hr_ratio").val()==""){
+			$("#hr_ratio").val("1");
+	    }
 		$('#update').form('submit',{
 			url:url,
 			onSubmit:function(){
