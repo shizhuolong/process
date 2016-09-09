@@ -32,7 +32,18 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/grp_manage_list.js"></script>
-
+    <script type="text/javascript">
+	 var privileges='<%=user.getAuthoritiesStr()%>';
+	 function isGrantedNew(role){
+	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
+	        return true;
+	    }
+	    if(privileges.toString().indexOf(role)==-1){
+	        return false;
+	    }
+	    return true;
+	 }
+    </script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>

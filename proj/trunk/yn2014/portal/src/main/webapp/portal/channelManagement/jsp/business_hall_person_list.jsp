@@ -38,6 +38,18 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_person_list.js"></script>
+<script type="text/javascript">
+	var privileges='<%=user.getAuthoritiesStr()%>';
+	function isGrantedNew(role){
+	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
+	        return true;
+	    }
+	    if(privileges.toString().indexOf(role)==-1){
+	        return false;
+	    }
+	    return true;
+	}
+</script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
