@@ -1,6 +1,13 @@
 package org.apdplat.module.security.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apdplat.module.security.model.Role;
+import org.apdplat.module.security.model.User;
 import org.apdplat.platform.criteria.Criteria;
 import org.apdplat.platform.criteria.Operator;
 import org.apdplat.platform.criteria.PropertyCriteria;
@@ -8,12 +15,6 @@ import org.apdplat.platform.criteria.PropertyEditor;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.result.Page;
 import org.apdplat.platform.service.ServiceFacade;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -127,13 +128,55 @@ public class RoleService {
 	        }
 	        StringBuilder json=new StringBuilder();
 	        json.append("[");
-	   
+	        
+	        User user=UserHolder.getCurrentLoginUser();
+	      //获取roleIds中的除了备注为“与菜单同步”的角色外的所有角色对应的与功能角色的ids集合
+        	String sql="";
+        	sql+=" select r.id||'' as \"ID\" from apdp_role r                  ";
+        	sql+=" where r.rolename in(                                        ";
+        	sql+="   select                                                    ";
+        	sql+="       distinct m.chinese||'('||c.chinese||')'               ";
+        	sql+="   from                                                      ";
+        	sql+="       apdp_role r,                                          ";
+        	sql+="       apdp_role_command rc,                                 ";
+        	sql+="       apdp_command c,                                       ";
+        	sql+="       apdp_module m                                         ";
+        	sql+="   where r.id=rc.roleid                                      ";
+        	sql+="   and rc.commandid=c.id                                     ";
+        	sql+="   and c.module_id=m.id                                      ";
+        	sql+="   and r.id in(                                              ";
+        	sql+="       select                                                ";
+        	sql+="         r.id                                                ";
+        	sql+="       from                                                  ";
+        	sql+="         apdp_user u,                                        ";
+        	sql+="         apdp_user_role ur,                                  ";
+        	sql+="         apdp_role r                                         ";
+        	sql+="       where u.id=ur.userid                                  ";
+        	sql+="       and ur.roleid=r.id                                    ";
+        	sql+="       and( r.des<>'与菜单同步' or r.des is null)              ";
+        	sql+="       and u.id='"+user.getId()+"'                     ";
+        	sql+="   )                                                         ";
+        	sql+=" )                                                           ";
+        	List<Map> idLs=serviceFacade.queryForMap(sql);
+        	List<String> funcIds=new ArrayList<String>();
+        	for(Map m:idLs){
+        		if(m!=null&&m.containsKey("ID")){
+        			String tid=(String)m.get("ID");
+        			funcIds.add(tid);
+        		}
+        	}
+        	/////////////////////////////////////////////////////////////////////
 	        for(Role item : child){
 	        	String disabled="true";
 	        	Long roleLongId=item.getId();
 	        	if(roleIds.contains(roleLongId+"")){
 	        		disabled="false";
 	        	}
+	        	//在此处添加
+	        	if(funcIds.contains(roleLongId+"")){
+	        		disabled="false";
+	        	}
+	        	//////////////////
 	            json.append("{'disabled':"+disabled+",'text':'")
 	                .append(item.getRoleName())
 	                .append("','id':'role-")
