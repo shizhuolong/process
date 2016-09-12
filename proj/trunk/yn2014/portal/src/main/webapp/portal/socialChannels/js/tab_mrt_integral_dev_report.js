@@ -35,6 +35,7 @@ $(function(){
 			var hr_id=$.trim($("#hr_id").val());
 			var fd_chnl_id=$.trim($("#fd_chnl_id").val());
 			var integral_grade=$.trim($("#integral_grade").val());
+			var state=$("#state").val();
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -101,6 +102,9 @@ $(function(){
 			if(integral_grade!=''){
 				where+=" AND INTEGRAL_GRADE='"+integral_grade+"'";
 			}
+			if(state!=''){
+				where+=" AND STATE='"+state+"'";
+			}
 			var sql =preSql+getSumSql()+where+groupBy+order;
 			if(orderBy!=''){
 				sql="select * from( "+sql+") "+orderBy;
@@ -134,7 +138,8 @@ function downsAll() {
 	var hr_id=$.trim($("#hr_id").val());
 	var fd_chnl_id=$.trim($("#fd_chnl_id").val());
 	var integral_grade=$.trim($("#integral_grade").val());
-
+	var state=$("#state").val();
+	
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	if(regionName!=''){
@@ -154,6 +159,9 @@ function downsAll() {
 	}
 	if(integral_grade!=''){
 		where+=" AND INTEGRAL_GRADE='"+integral_grade+"'";
+	}
+	if(state!=''){
+		where+=" AND STATE='"+state+"'";
 	}
 	//权限
 	if(orgLevel==1){
