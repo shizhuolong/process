@@ -38,7 +38,8 @@
 	       nvl(COMM_CX, 0) COMM_CX,
 	       NVL(COMM_FCX, 0) COMM_FCX,
 	       NVL(UP_JF_CX, 0) UP_JF_CX,
-	       NVL(UP_JF_FCX, 0) UP_JF_FCX
+	       NVL(UP_JF_FCX, 0) UP_JF_FCX,
+	       STATE STATE
 	  FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
  	  WHERE T.INTEGRAL_SUB = 1
 	  AND T.INIT_ID = #{businessKey}
