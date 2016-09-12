@@ -35,7 +35,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 		<form id="searchForm" method="post">
-			<table width="100%" style="margin: 10px 0; border:none;">
+			<table width="60%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" style="padding-left: 10px;text-align:right;">账期：</td>
 					<td width="13%">
@@ -58,6 +58,9 @@
 					<td width="13%" colspan="2">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
+					<td width="3%">
+						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
 				</tr>
 				<tr height="35px">
 					<td width="7%" style="text-align:right;">HR编码：</td>
@@ -68,19 +71,25 @@
 					<td width="13%">
 						<input class="default-text-input wper80" name="fd_chnl_id" type="text" id="fd_chnl_id"/>
 					</td>
-					<td width="7%" style="text-align:right;">等级：</td>
+					<td width="5%" style="text-align:right;">等级：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="integral_grade" type="text" id="integral_grade"/>
+					</td>
+					<td width="3%" style="text-align:right;">状态：</td>
+					<td width="8%">
+					    <select id="state" name="state">
+					      <option value=''>全部</option>
+					      <option value='10'>正常</option>
+					      <option value='11'>清算</option>
+					    </select>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
+					
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
-					</td>
-					<td width="3%">
-						<a class="default-gree-btn" href="#" style="float: right; margin-left: 30px;" id="exportLevel" onclick="showLevelExp();">等级说明</a>
+						<a class="default-gree-btn" href="#" style="float: right;" id="exportLevel" onclick="showLevelExp();">等级说明</a>
 					</td>
 				</tr>
 			</table>
