@@ -106,7 +106,7 @@ function listemp_type(){
 }
 var user_code="";
 function listjob(){
-	var sql = "SELECT DISTINCT T.USER_TYPE,T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T union all select '渠道经理(固网)' as user_type, 2 as user_code from dual union all select '后台支撑' as user_type,0 as user_code from dual";
+	var sql = "SELECT DISTINCT T.USER_TYPE,T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T union all select '渠道经理(固网)' as user_type, 2 as user_code from dual union all select '后台支撑' as user_type,0 as user_code from dual union all select '渠道经理助理' as user_type,9 as user_code from dual";
 	var d=query(sql);
 	if (d) {
 		var h = '';
