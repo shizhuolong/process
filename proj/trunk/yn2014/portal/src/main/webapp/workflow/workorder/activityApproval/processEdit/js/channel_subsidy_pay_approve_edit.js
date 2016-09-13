@@ -41,6 +41,7 @@ function search(pageNumber) {
 	   			}else{
 	   				content+="<tr>"
 	   			}
+	   			content+=""
 				+"<td>"+isNull(n['DEAL_DATE'])+"</td>"
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
