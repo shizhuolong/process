@@ -63,12 +63,12 @@
 					<td width="8%">
 						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
 					</td>
-					<td width="5%">
+					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 18px;">查询</a>
 					</td>
-					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					<td width="3%">
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
