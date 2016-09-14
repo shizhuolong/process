@@ -1,7 +1,7 @@
 var nowData = [];
 
-var title=[["账期","分公司","营服名","渠道经理","宽带预拆用户清单清单（统计口径：连续3个月不出账用户）","","","","","","","","","","","",""],
- 		  ["","","","","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","离网时间","状态","局站","接入方式","宽带速率","欠费金额","发展渠道"]
+var title=[["账期","分公司","营服名","渠道经理","宽带预拆用户清单清单（统计口径：连续3个月不出账用户）","","","","","","","","","","",""],
+ 		  ["","","","","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","离网时间","状态","局站","宽带速率","欠费金额","发展渠道"]
 		];		
 var field=["DEAL_DATE","GROUP_ID_NAME","UNIT_NAME","HQ_NAME","CUSTOMER_NO","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_NAME","INNET_DATE","INACTIVE_DATE","STATUS_NAME","EXCH_NAME","SPEED_M","OWE_FEE","HQ_CHAN_NAME"];
 var orderBy = ' order by GROUP_ID_1,UNIT_ID';
@@ -132,7 +132,7 @@ function getsql(){
 		sql+="  AND  T.UNIT_ID='"+unitCode+"'";
 	}
 	if(hqName!=''){
-		sql+=" AND  T.HQ_NAME='"+hqName+"'";
+		sql+=" AND  T.HQ_NAME LIKE '%"+hqName+"%'";
 	}
 	if(deviceNum!=''){
 		//sql+=" AND  T.DEVICE_NUMBER='"+deviceNum+"'";
@@ -238,9 +238,9 @@ function downsAll(){
 	var dealDate=$("#dealDate").val();
 
 	sql = getsql();
-	var title=[["账期","分公司","营服名","渠道经理","宽带预拆用户清单清单（统计口径：连续3个月不出账用户）","","","","","","","","","","","",""],
-	  		  ["","","","","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","离网时间","状态","局站","接入方式","宽带速率","欠费金额","发展渠道"]
-	 		];	
+	var title=[["账期","分公司","营服名","渠道经理","宽带预拆用户清单清单（统计口径：连续3个月不出账用户）","","","","","","","","","","",""],
+	  		  ["","","","","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","离网时间","状态","局站","宽带速率","欠费金额","发展渠道"]
+	 		];
 	showtext = '宽带预拆用户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }

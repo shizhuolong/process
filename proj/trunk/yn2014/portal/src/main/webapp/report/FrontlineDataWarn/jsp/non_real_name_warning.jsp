@@ -17,7 +17,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>黑匣子预警清单</title>
+<title>实名制不合规用户清单</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/black_box_warn_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/non_real_name_warning.js"></script>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -55,30 +55,20 @@
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<!--<td width="4%" style="text-align:right;">渠道属性：</td>
-					 <td width="10%">
-						<ul>
-							<li style="margin-top: 7px; font-size: 12px;">
-		   						<input onfocus="combotree(this)" class="treeRegion" orgCode="" orgLevel="" treeType="1" openLevel="" id="org" title="渠道属性" value="请选渠道属性"/>
-		  					</li>
-		  				</ul>
-					</td> -->
+					<td width="4%" style="text-align:right;">渠道经理：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
+					</td>
+					<td width="4%" style="text-align:right;margin-left:5px">用户ID：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
+					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 18px;">查询</a>
 					</td>
 					<td width="3%">
 						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
-					</td>
-				</tr>
-				<tr>
-					<td width="4%" style="text-align:right;">渠道经理：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
-					</td>
-					<td width="4%" style="text-align:right;margin-left:5px">用户编号：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
 					</td>
 				</tr>
 			</table>
@@ -94,4 +84,7 @@
 		</div>
 
 </body>
+<script>
+
+</script>
 </html>

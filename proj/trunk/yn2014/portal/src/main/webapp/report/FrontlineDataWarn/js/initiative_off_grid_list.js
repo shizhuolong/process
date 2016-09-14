@@ -132,7 +132,7 @@ function getsql(){
 		sql+="  AND  T.UNIT_ID='"+unitCode+"'";
 	}
 	if(hqName!=''){
-		sql+=" AND  T.HQ_NAME='"+hqName+"'";
+		sql+=" AND  T.HQ_NAME LIKE '%"+hqName+"%'";
 	}
 	if(deviceNum!=''){
 		//sql+=" AND  T.DEVICE_NUMBER='"+deviceNum+"'";

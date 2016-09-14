@@ -10,14 +10,14 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.MONTH, -1);
-	String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	ca.add(Calendar.DATE, -1);
+	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>黑匣子预警清单</title>
+<title>宽带欠费停机用户清单</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/black_box_warn_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/broadband_downtime_list.js"></script>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -41,7 +41,7 @@
 					<td width="3%" style="text-align:right;">账期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="3%" style="text-align:right;">地市：</td>
 					<td width="10%">
@@ -55,30 +55,20 @@
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<!--<td width="4%" style="text-align:right;">渠道属性：</td>
-					 <td width="10%">
-						<ul>
-							<li style="margin-top: 7px; font-size: 12px;">
-		   						<input onfocus="combotree(this)" class="treeRegion" orgCode="" orgLevel="" treeType="1" openLevel="" id="org" title="渠道属性" value="请选渠道属性"/>
-		  					</li>
-		  				</ul>
-					</td> -->
+					<td width="4%" style="text-align:right;">渠道经理：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
+					</td>
+					<td width="4%" style="text-align:right;margin-left:5px">宽带账号：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
+					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 18px;">查询</a>
 					</td>
 					<td width="3%">
 						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
-					</td>
-				</tr>
-				<tr>
-					<td width="4%" style="text-align:right;">渠道经理：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
-					</td>
-					<td width="4%" style="text-align:right;margin-left:5px">用户编号：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
 					</td>
 				</tr>
 			</table>
@@ -94,4 +84,7 @@
 		</div>
 
 </body>
+<script>
+
+</script>
 </html>
