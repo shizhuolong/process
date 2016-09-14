@@ -72,13 +72,13 @@ function listunit_name(){
 	}
 }
 function listjob(){
-	var sql = "SELECT DISTINCT T.USER_TYPE,T.USER_CODE FROM PORTAL.VIEW_U_PORTAL_PERSON T union all select '渠道经理(固网)' as user_type, 2 as user_code from dual union all select '后台支撑' as user_type,0 as user_code from dual union all select '渠道经理助理' as user_type,9 as user_code from dual";
+	var sql = "SELECT JOB,USER_CODE FROM PORTAL.TAB_PORTAL_QJ";
 	var d=query(sql);
 	if (d) {
 		var h = '';
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].USER_TYPE +'" user_code="'+d[i].USER_CODE+'">' + d[i].USER_TYPE + '</option>';
+				h += '<option value="' + d[i].JOB + '" user_code="' + d[i].USER_CODE + '">' + d[i].JOB + '</option>';
 			}
 		$("#job").empty().append($(h));
 	} else {
