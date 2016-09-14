@@ -26,6 +26,73 @@
 			alert(msg);
 		},
 		initTable:function(){
+			//如果需要渠道属性下拉选择
+			//加载zree相关的样式和js
+			if($("#channelBox").length>0){
+				$('<link type="text/css" rel="stylesheet" href="'+$("#ctx").val()+'/js/zTree/css/zTreeStyle/zTreeStyle.css">').appendTo($("HEAD"));
+				$('<script src="'+$("#ctx").val()+'/js/zTree/js/jquery.ztree.core-3.1.min.js" type="text/javascript">').appendTo($("HEAD"));
+				$('<script src="'+$("#ctx").val()+'/js/zTree/js/jquery.ztree.excheck-3.1.min.js" type="text/javascript">').appendTo($("HEAD"));
+				$("#channelBox").attr("readOnly","readOnly");
+				 $("#channelBox").val("请选渠道属性");
+				$("#channelBox").after("<div class='channelBox' style='display:none;'><div class='ztree' id='ztree'></div>"+
+						"<a class='default-btn ok' href='#' style='float:left;margin:15px;' >确定</a><a class='default-btn cancel' href='#' style='float:left;margin:15px;' >清空</a></div>");
+				var sql='select kind_id "id",up_kind_id "pId",kind_value "name",kind_level "chlLevel" from pcde.TB_CDE_CHL_HQ_KIND_CODE';
+				var zNodes=query(sql);
+				var setting = {
+						callback:{
+							onClick:function(event,treeId,treeNode) {
+								
+							}
+						},
+						check:{
+							enable:true,
+							chkboxType:{ "Y" : "", "N" : "" },
+						},
+						data:{
+							simpleData:{
+								enable:true,
+								idKey:"id",
+								pIdKey:"pId",
+								rootPId:null
+							}
+						}
+					};
+				$.fn.zTree.init($(".channelBox .ztree"), setting, zNodes);
+				$(".channelBox").css({position:'absolute',backgroundColor:'white',zIndex:9999,border:'1px solid #e7d4b3'});
+				$("#channelBox").click(function(){
+					$(".channelBox").show();
+				});
+				$(".channelBox .ok").click(function(){
+					var treeObj=$.fn.zTree.getZTreeObj("ztree");
+					var nodes=treeObj.getCheckedNodes(true);
+		            var v="";
+					var kindIds="";
+					var level=null;
+		            for(var i=0;i<nodes.length;i++){
+		            	if(v!="") v+=",";
+		            	if(kindIds!="") kindIds+=",";
+		            	v+=nodes[i].name;
+		            	kindIds+="'"+nodes[i].id+"'";
+		            	if(level!=null&&level!=nodes[i].chlLevel){
+		            		alert("选中的不是同一层级");
+		            		return;
+		            	}
+		            	level=nodes[i].chlLevel;
+		            }
+		            $("#channelBox").val(v);
+		            $("#channelBox").attr("level",level);
+		            $("#channelBox").attr("kindIds",kindIds);
+		            $(".channelBox").hide();
+				});
+				$(".channelBox .cancel").click(function(){
+					var treeObj = $.fn.zTree.getZTreeObj("ztree");
+					treeObj.checkAllNodes(false);
+		            $("#channelBox").val("请选渠道属性");
+		            $("#channelBox").attr("level","");
+		            $("#channelBox").attr("kindIds","");
+				});
+			}
+			/////////////////////
 			if(!this.title||!this.title instanceof Array){
 				this.info("表头必须是字符串数组");
 				return;
