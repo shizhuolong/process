@@ -1,9 +1,9 @@
 var nowData = [];
 
-var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
-            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
+var title=[["账期","分公司","营服名称","渠道经理","宽带欠费停机用户清单","","","","","","","","","","","","",""],
+           ["","","","","归属地","宽带账号","客户姓名","装机地址","联系电话","套餐名称","入网时间","离网时间","状态","局站名","接入方式","宽带速率","欠费金额","发展渠道"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","DEV_CHNL_NAME","FD_CHNL_ID","USER_NAME","SUBSCRIPTION_ID","SERVICE_NUM","PRODUCT_NAME","INNET_DATE","SERVICE_STATUS","STATUS_CHANGE_DATE","CUSTOMER_NAME"];
+var field=["DEAL_DATE","GROUP_ID_NAME","UNIT_NAME","HQ_NAME","GROUP_ID_2_NAME","SUBSCRIPTION_ID","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_NAME","INNET_DATE","INACTIVE_DATE","STATUS_NAME","EXCH_NAME","INPUT_TYPE","SPEED_M","OWE_FEE","HQ_CHAN_NAME"];
 var orderBy = ' order by GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -105,23 +105,26 @@ function getsql(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var sql=" SELECT DEAL_DATE,                                                                               "+
-			"        GROUP_ID_1_NAME,                                                                         "+
-			"        UNIT_NAME,                                                                               "+
-			"        HR_ID_NAME,                                                                              "+
-			"        DEV_CHNL_NAME,                                                                           "+
-			"        FD_CHNL_ID,                                                                              "+
-			"        USER_NAME,                                                                               "+
-			"        SUBSCRIPTION_ID,                                                                         "+
-			"        SERVICE_NUM,                                                                             "+
-			"        PRODUCT_NAME,                                                                            "+
-			"        TO_CHAR(INNET_DATE,'YYYY-DD-MM') AS INNET_DATE,                                          "+
-			"        DECODE(SERVICE_STATUS, 1, '开机', 2, '停机', 3, '半停', 4, '销户') AS SERVICE_STATUS,      "+
-			"        TO_CHAR(STATUS_CHANGE_DATE,'YYYY-DD-MM') AS STATUS_CHANGE_DATE,                          "+
-			"        DECODE(CUSTOMER_NAME, NULL, '暂无', CUSTOMER_NAME) AS CUSTOMER_NAME                       "+
-			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T                                                        "+
-			"  WHERE T.IS_BLACK_USER = 1                                                                      "+
-			" AND    T.DEAL_DATE = "+dealDate;
+	var sql=" SELECT T.DEAL_DATE,                  "+
+			"        T.GROUP_ID_NAME,              "+
+			"        T.UNIT_NAME,                  "+
+			"        T.HQ_NAME,                    "+
+			"        T.GROUP_ID_2_NAME,            "+
+			"        T.SUBSCRIPTION_ID,            "+
+			"        T.CUSTOMER_NAME,              "+
+			"        T.STD_6_NAME,                 "+
+			"        T.CONTACT_PHONE,              "+
+			"        T.PRODUCT_NAME,               "+
+			"        T.INNET_DATE,                 "+
+			"        T.INACTIVE_DATE,              "+
+			"        T.STATUS_NAME,                "+
+			"        T.EXCH_NAME,                  "+
+			"        T.INPUT_TYPE,                 "+
+			"        T.SPEED_M,                    "+
+			"        T.OWE_FEE,                    "+
+			"        T.HQ_CHAN_NAME                "+
+			"   FROM PMRT.TB_MRT_GK_OWESTOP_DAY T  "+
+			" WHERE T.DEAL_DATE = "+dealDate;
 
 	if(regionCode!=''){
 		sql+=" AND  T.GROUP_ID_1='"+regionCode+"'";
@@ -130,7 +133,7 @@ function getsql(){
 		sql+="  AND  T.UNIT_ID='"+unitCode+"'";
 	}
 	if(hqName!=''){
-		sql+=" AND  T.HR_ID_NAME LIKE '%"+hqName+"%'";
+		sql+=" AND  T.HQ_NAME LIKE '%"+hqName+"%'";
 	}
 	if(deviceNum!=''){
 		sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
@@ -148,7 +151,6 @@ function getsql(){
 	
 	return sql;
 }
-
 
 ///////////////////////////地市查询///////////////////////////////////////
 function listRegions(){
@@ -237,10 +239,10 @@ function downsAll(){
 	var dealDate=$("#dealDate").val();
 
 	sql = getsql();
-	var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
-	            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
+	var title=[["账期","分公司","营服名称","渠道经理","宽带欠费停机用户清单","","","","","","","","","","","","",""],
+	           ["","","","","归属地","宽带账号","客户姓名","装机地址","联系电话","套餐名称","入网时间","离网时间","状态","局站名","接入方式","宽带速率","欠费金额","发展渠道"]
 			];
-	showtext = '黑匣子预警清单-'+dealDate;
+	showtext = '宽带欠费停机用户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////

@@ -1,9 +1,9 @@
 var nowData = [];
 
-var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
-            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
+var title=[["账期","分公司","营服名称","渠道经理","实名制不合规用户清单","","","","","","","","","",""],
+           ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名","不合规原因"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","DEV_CHNL_NAME","FD_CHNL_ID","USER_NAME","SUBSCRIPTION_ID","SERVICE_NUM","PRODUCT_NAME","INNET_DATE","SERVICE_STATUS","STATUS_CHANGE_DATE","CUSTOMER_NAME"];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","DEV_CHNL_NAME","FD_CHNL_ID","USER_NAME","SUBSCRIPTION_ID","SERVICE_NUM","PRODUCT_NAME","INNET_DATE","SERVICE_STATUS","STATUS_CHANGE_DATE","CUSTOMER_NAME","CUSTOMER_REMARK"];
 var orderBy = ' order by GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -105,23 +105,24 @@ function getsql(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var sql=" SELECT DEAL_DATE,                                                                               "+
-			"        GROUP_ID_1_NAME,                                                                         "+
-			"        UNIT_NAME,                                                                               "+
-			"        HR_ID_NAME,                                                                              "+
-			"        DEV_CHNL_NAME,                                                                           "+
-			"        FD_CHNL_ID,                                                                              "+
-			"        USER_NAME,                                                                               "+
-			"        SUBSCRIPTION_ID,                                                                         "+
-			"        SERVICE_NUM,                                                                             "+
-			"        PRODUCT_NAME,                                                                            "+
-			"        TO_CHAR(INNET_DATE,'YYYY-DD-MM') AS INNET_DATE,                                          "+
-			"        DECODE(SERVICE_STATUS, 1, '开机', 2, '停机', 3, '半停', 4, '销户') AS SERVICE_STATUS,      "+
-			"        TO_CHAR(STATUS_CHANGE_DATE,'YYYY-DD-MM') AS STATUS_CHANGE_DATE,                          "+
-			"        DECODE(CUSTOMER_NAME, NULL, '暂无', CUSTOMER_NAME) AS CUSTOMER_NAME                       "+
-			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T                                                        "+
-			"  WHERE T.IS_BLACK_USER = 1                                                                      "+
-			" AND    T.DEAL_DATE = "+dealDate;
+	var sql=" SELECT T.DEAL_DATE,                                                                               "+
+			"        T.GROUP_ID_1_NAME,                                                                         "+
+			"        T.UNIT_NAME,                                                                               "+
+			"        T.HR_ID_NAME,                                                                              "+
+			"        T.DEV_CHNL_NAME,                                                                           "+
+			"        T.FD_CHNL_ID,                                                                              "+
+			"        T.USER_NAME,                                                                               "+
+			"        T.SUBSCRIPTION_ID,                                                                         "+
+			"        T.SERVICE_NUM,                                                                             "+
+			"        T.PRODUCT_NAME,                                                                            "+
+			"        TO_CHAR(T.INNET_DATE, 'YYYY-MM-DD') AS INNET_DATE,                                         "+
+			"        DECODE(T.SERVICE_STATUS, 1, '开机', 2, '停机', 3, '半停', 4, '销户') AS SERVICE_STATUS,      "+
+			"        TO_CHAR(T.STATUS_CHANGE_DATE, 'YYYY-MM-DD') AS STATUS_CHANGE_DATE,                         "+
+			"        DECODE(T.CUSTOMER_NAME, NULL, '暂无', CUSTOMER_NAME) AS CUSTOMER_NAME,                      "+
+			"        T.CUSTOMER_REMARK                                                                          "+
+			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T                                                          "+
+			"  WHERE T.IS_REAL_USER = 0                                                                         "+
+			" AND T.DEAL_DATE = "+dealDate;
 
 	if(regionCode!=''){
 		sql+=" AND  T.GROUP_ID_1='"+regionCode+"'";
@@ -148,7 +149,6 @@ function getsql(){
 	
 	return sql;
 }
-
 
 ///////////////////////////地市查询///////////////////////////////////////
 function listRegions(){
@@ -237,10 +237,10 @@ function downsAll(){
 	var dealDate=$("#dealDate").val();
 
 	sql = getsql();
-	var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
-	            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
-			];
-	showtext = '黑匣子预警清单-'+dealDate;
+	var title=[["账期","分公司","营服名称","渠道经理","实名制不合规用户清单","","","","","","","","","",""],
+	           ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名","不合规原因"]
+			];	
+	showtext = '实名制不合规用户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
