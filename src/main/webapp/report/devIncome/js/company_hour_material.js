@@ -1,89 +1,89 @@
-var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","DAY_1","DAY_2","DAY_3","DAY_4","DAY_5","DAY_6","DAY_7","DAY_8","DAY_9","DAY_10","DAY_11","DAY_12","DAY_13","DAY_14","DAY_15","DAY_16","DAY_17","DAY_18","DAY_19","DAY_20","DAY_21","DAY_22","DAY_23","DAY_24","DAY_25","DAY_26","DAY_27","DAY_28","DAY_29","DAY_30","DAY_31","DAY_ALL"];
-var title=[["账期","分公司","营服中心","1日","2日","3日","4日","5日","6日","7日","8日","9日","10日","11日","12日","13日","14日","15日","16日","17日","18日","19日","20日","21日","22日","23日","24日","25日","26日","27日","28日","29日","30日","31日","合计"]];
-var report = null;
-$(function() {
+var field=["DAY_1","DAY_2","DAY_3","DAY_4","DAY_5","DAY_6","DAY_7","DAY_8","DAY_9","DAY_10","DAY_11","DAY_12","DAY_13","DAY_14","DAY_15","DAY_16","DAY_17","DAY_18","DAY_19","DAY_20","DAY_21","DAY_22","DAY_23","DAY_24","DAY_25","DAY_26","DAY_27","DAY_28","DAY_29","DAY_30","DAY_31","DAY_ALL"];
+var title=[["组织架构","1日","2日","3日","4日","5日","6日","7日","8日","9日","10日","11日","12日","13日","14日","15日","16日","17日","18日","19日","20日","21日","22日","23日","24日","25日","26日","27日","28日","29日","30日","31日","合计"]];
+var orderBy='';	
+$(function(){
 	listRegions();
-	report = new LchReport({
-		title : title,
-		field : field,
-		css:[{gt:2,css:LchReport.RIGHT_ALIGN}],
-		rowParams : [],//第一个为rowId
-		content : "lchcontent",
-		getSubRowsCallBack : function($tr) {
-			return {
-				data : nowData,
-				extra : {}
-			};
+	var report=new LchReport({
+		title:title,
+		field:["ROW_NAME"].concat(field),
+		rowParams:["ROW_ID"],//第一个为rowId
+		content:"content",
+		getSubRowsCallBack:function($tr){
+			var sql='';
+			var where='';
+			var groupBy='';
+			var code='';
+			var orgLevel='';
+			var dealDate = $.trim($("#dealDate").val());
+			var regionCode=$("#regionCode").val();
+			var unitCode=$.trim($("#unitCode").val());
+			var orderBy =" ORDER BY ROW_ID ";
+			var provinceSql="";
+			if($tr){
+				code=$tr.attr("row_id");
+				orgLevel=parseInt($tr.attr("orgLevel"));
+				var parentId=$tr.attr("parentId");
+				
+				if(orgLevel==2){//点击市
+					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
+					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE ';
+					where=' WHERE GROUP_ID_1=\''+code+"\' ";
+				}else{
+					return {data:[],extra:{}};
+				}
+				orgLevel++;
+			}else{
+				//先根据用户信息得到前几个字段
+				code=$("#code").val();
+				orgLevel=$("#orgLevel").val();
+				if(orgLevel==1){//省
+					sql=	"SELECT GROUP_ID_1_NAME  AS ROW_NAME,GROUP_ID_1 AS ROW_ID, " +getSql();
+					where = ' where 1=1 ';
+					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,DEAL_DATE';
+					orgLevel=2;
+				}else if(orgLevel==2){//市
+					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
+					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE';
+					where=' WHERE GROUP_ID_1=\''+code+"\' ";
+				}else if(orgLevel==3){//营服中心
+					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
+					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE ';
+					where=' WHERE UNIT_ID=\''+code+"\' ";
+				}else if(orgLevel>=4){
+					return {data:[],extra:{}};
+				}
+			}	
+			sql+=where ;
+			// 条件查询
+			if(regionCode!=''){
+				sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
+			}
+			if(unitCode!=''){
+				sql+=" AND UNIT_ID ='"+unitCode+"'";
+			}
+			if(groupBy!=''){
+				sql+=groupBy;
+			}
+			
+			
+			if(orderBy!=''){
+				sql="select * from( "+sql+") t "+orderBy;
+			}
+			var d=query(sql);
+			
+			return {data:d,extra:{orgLevel:orgLevel}};
 		}
 	});
-	search(0);
+	report.showSubRow();
+
 	$("#searchBtn").click(function(){
-		search(0);
+		report.showSubRow();
 	});
 });
 
-var pageSize = 15;
-//分页
-function initPagination(totalCount) {
-	$("#totalCount").html(totalCount);
-	$("#pagination").pagination(totalCount, {
-		callback : search,
-		items_per_page : pageSize,
-		link_to : "###",
-		prev_text : '上页', //上一页按钮里text  
-		next_text : '下页', //下一页按钮里text  
-		num_display_entries : 5,
-		num_edge_entries : 2
-	});
-}
-
-//列表信息
-function search(pageNumber) {
-	pageNumber = pageNumber + 1;
-	var start = pageSize * (pageNumber - 1);
-	var end = pageSize * pageNumber;
-	var sql =getSql();
-
-	var csql = sql;
-	var cdata = query("select count(*) total from (" + csql+")");
-	var total = 0;
-	if(cdata && cdata.length) {
-		total = cdata[0].TOTAL;
-	}else{
-		return;
-	}
-
-	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
-	var d = query(sql);
-	if (pageNumber == 1) {
-		initPagination(total);
-	}
-	nowData = d;
-
-	report.showSubRow();
-	/*///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
-*/	$(".page_count").width($("#lch_DataHead").width());
-	$("#lch_DataBody").find("TR").each(function(){
-		var area=$(this).find("TD:eq(0)").find("A").text();
-		if(area)
-			$(this).find("TD:eq(0)").empty().text(area);
-	});
-}
-
 function getSql(){
-	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
-	var regionCode=$("#regionCode").val();
-	var unitCode=$.trim($("#unitCode").val());
-	var code =$("#code").val();
-	var sql = 	"SELECT DEAL_DATE,                                                     "+
-				"       GROUP_ID_1_NAME,                                               "+
-				"       UNIT_NAME,                                                     "+
+	var sql = 
 				"       SUM(DAY_1 ) AS DAY_1 ,                                         "+
 				"       SUM(DAY_2 ) AS DAY_2 ,                                         "+
 				"       SUM(DAY_3 ) AS DAY_3 ,                                         "+
@@ -116,63 +116,49 @@ function getSql(){
 				"       SUM(DAY_30) AS DAY_30,                                         "+
 				"       SUM(DAY_31) AS DAY_31,                                         "+
 				"       SUM(DAY_ALL) AS  DAY_ALL                                       "+
-				"  FROM PMRT.TAB_MRT_BMS_FAV_INCOME_REPORT PARTITION(P"+dealDate+")    "+
-				" WHERE 1=1 ";
-	
+				"  FROM PMRT.TAB_MRT_BMS_FAV_INCOME_REPORT PARTITION(P"+dealDate+")    ";
+				//" FROM PMRT.TAB_MRT_BMS_FAV_INCOME_REPORT ";
+				
+	return sql;
+}
 
 
+/////////////////////////下载开始/////////////////////////////////////////////
+function downsAll() {
+	var orgLevel=$("#orgLevel").val();
+	var dealDate=$("#dealDate").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$.trim($("#unitCode").val());
+	var code =$("#code").val();
 	// 权限
 	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
+	var sql= "SELECT DEAL_DATE,  GROUP_ID_1_NAME,   UNIT_NAME, "+getSql()+ " WHERE 1=1 ";
 	if(orgLevel==1){
 	
 	}else if(orgLevel==2){
-	sql+=" AND GROUP_ID_1='"+code+"'";
+		sql+=" AND GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-	sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID='"+code+"'";
 	}else{
-	sql+=" AND 1=2";
+		sql+=" AND 1=2";
 	}
 	// 条件查询
 	if(regionCode!=''){
-	sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
+		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode!=''){
-	sql+=" AND UNIT_ID ='"+unitCode+"'";
+		sql+=" AND UNIT_ID ='"+unitCode+"'";
 	}
 	sql+=" GROUP BY DEAL_DATE, GROUP_ID_1, GROUP_ID_1_NAME, UNIT_ID, UNIT_NAME  "+
-	" ORDER BY GROUP_ID_1,UNIT_ID  ";
-	return sql;
-}
- 
-/////////////////////////下载开始/////////////////////////////////////////////
-function downsAll(){
-	var dealDate=$("#dealDate").val();
-	//var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE"];
+		 " ORDER BY GROUP_ID_1,UNIT_ID  ";
+	
 	var title=[["账期","分公司","营服中心","1日","2日","3日","4日","5日","6日","7日","8日","9日","10日","11日","12日","13日","14日","15日","16日","17日","18日","19日","20日","21日","22日","23日","24日","25日","26日","27日","28日","29日","30日","31日","合计"]];
 
-	var sql=getSql();
-	showtext = '宽带工时材料费日报表-'+dealDate;
+	var showtext = '宽带工时材料费日报表-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
-/////////////////////////下载结束/////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
-
-
-function isNull(obj){
-	if(obj==0||obj=='0'){
-		return 0;
-	}
-	if(obj == undefined || obj == null || obj == '') {
-		return "";
-	}
-	return obj;
-}
-function roundN(number,fractionDigits){   
-    with(Math){   
-        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
-    }   
-}  
 
 function listRegions(){
     var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
@@ -254,4 +240,3 @@ function listUnits(region){
         alert("获取基层单元信息失败");
     }
 }
-
