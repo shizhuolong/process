@@ -3,7 +3,7 @@ var nowData = [];
 var title=[["账期","分公司","营服名","渠道经理","宽带预拆用户清单清单（统计口径：连续3个月不出账用户）","","","","","","","","","","",""],
  		  ["","","","","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","离网时间","状态","局站","宽带速率","欠费金额","发展渠道"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_NAME","UNIT_NAME","HQ_NAME","CUSTOMER_NO","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_NAME","INNET_DATE","INACTIVE_DATE","STATUS_NAME","EXCH_NAME","SPEED_M","OWE_FEE","HQ_CHAN_NAME"];
+var field=["DEAL_DATE","GROUP_ID_NAME","UNIT_NAME","HQ_NAME","SUBSCRIPTION_ID","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_NAME","INNET_DATE","INACTIVE_DATE","STATUS_NAME","EXCH_NAME","SPEED_M","OWE_FEE","HQ_CHAN_NAME"];
 var orderBy = ' order by GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -110,7 +110,7 @@ function getsql(){
 			"        T.UNIT_NAME,                 "+
 			"        T.HQ_NAME,                   "+
 		/*	"        T.HQ_CHAN_CODE,              "+*/
-			"        T.CUSTOMER_NO,               "+
+			"        T.SUBSCRIPTION_ID,           "+
 			"        T.CUSTOMER_NAME,             "+
 			"        T.STD_6_NAME,                "+
 			"        T.CONTACT_PHONE,             "+
@@ -136,7 +136,7 @@ function getsql(){
 	}
 	if(deviceNum!=''){
 		//sql+=" AND  T.DEVICE_NUMBER='"+deviceNum+"'";
-		sql+=" AND INSTR(T.CUSTOMER_NO,'"+deviceNum+"')>0 ";
+		sql+=" AND INSTR(T.SUBSCRIPTION_ID,'"+deviceNum+"')>0 ";
 	}
 	if(orgLevel==1){
 		
@@ -237,7 +237,7 @@ function listUnits(region){
 function downsAll(){
 	var dealDate=$("#dealDate").val();
 
-	sql = getsql();
+	var sql = getsql();
 	var title=[["账期","分公司","营服名","渠道经理","宽带预拆用户清单清单（统计口径：连续3个月不出账用户）","","","","","","","","","","",""],
 	  		  ["","","","","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","离网时间","状态","局站","宽带速率","欠费金额","发展渠道"]
 	 		];

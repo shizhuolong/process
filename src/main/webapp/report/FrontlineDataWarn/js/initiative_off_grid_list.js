@@ -1,9 +1,9 @@
 var nowData = [];
 
 var title=[["账期","地市名称","营服名称","渠道经理","宽带主动离网用户清单（统计口径：用户主动提取预约拆机用户需求）","","","","","","","","","","","",""],
-           ["","","","","归属地","用户号码","客户姓名","安装地址","联系电话","套餐名称","入网时间","离网时间","状态","局站名","接入方式","速率","发展渠道名称"]
+           ["","","","","归属地","宽带账号","客户姓名","安装地址","联系电话","套餐名称","入网时间","离网时间","状态","局站名","接入方式","宽带速率","发展渠道名称"]
 		];
-var field=["DEAL_DATE","GROUP_ID_NAME","UNIT_NAME","HQ_NAME","GROUP_ID_2_NAME","DEVICE_NUMBER","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_NAME","INNET_DATE","INACTIVE_DATE","STATUS_NAME","EXCH_NAME","INPUT_TYPE","SPEED_M","HQ_CHAN_NAME"];
+var field=["DEAL_DATE","GROUP_ID_NAME","UNIT_NAME","HQ_NAME","GROUP_ID_2_NAME","SUBSCRIPTION_ID","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_NAME","INNET_DATE","INACTIVE_DATE","STATUS_NAME","EXCH_NAME","INPUT_TYPE","SPEED_M","HQ_CHAN_NAME"];
 var orderBy = ' order by GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -105,23 +105,24 @@ function getsql(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var sql=" SELECT T.DEAL_DATE,             "+
-			"        T.GROUP_ID_NAME,         "+
-			"        T.UNIT_NAME,             "+
-			"        T.HQ_NAME,               "+
-			"        T.GROUP_ID_2_NAME,       "+
-			"        T.DEVICE_NUMBER,         "+
-			"        T.CUSTOMER_NAME,         "+
-			"        T.STD_6_NAME,            "+
-			"        T.CONTACT_PHONE,         "+
-			"        T.PRODUCT_NAME,          "+
-			"        T.INNET_DATE,            "+
-			"        T.INACTIVE_DATE,         "+
-			"        T.STATUS_NAME,           "+
-			"        T.EXCH_NAME,             "+
-			"        T.INPUT_TYPE,            "+
-			"        T.SPEED_M,               "+
-			"        T.HQ_CHAN_NAME           "+
+	var sql=" SELECT             	"+
+			"	T.DEAL_DATE		    ,"+		//	账期
+			"	T.GROUP_ID_NAME	    ,"+		//	地市名称
+			"	T.UNIT_NAME		    ,"+		//	营服名称
+			"	T.HQ_NAME			,"+		//	渠道经理
+			"	T.GROUP_ID_2_NAME	,"+		//	归属地
+			"	T.SUBSCRIPTION_ID	,"+		//	用户编号//宽带账号
+			"	T.CUSTOMER_NAME	    ,"+		//	客户姓名
+			"	T.STD_6_NAME		,"+		//	安装地址
+			"	T.CONTACT_PHONE	    ,"+		//	联系电话
+			"	T.PRODUCT_NAME		,"+		//  套餐名称
+			"	T.INNET_DATE		,"+		//	入网时间
+			"	T.INACTIVE_DATE	    ,"+		//	失效时间（离网时间）
+			"	T.STATUS_NAME		,"+		//	状态
+			"	T.EXCH_NAME		    ,"+		//	局站名
+			"	T.INPUT_TYPE		,"+		//	接入方式
+			"	T.SPEED_M			,"+		//	速率
+			"	T.HQ_CHAN_NAME		"+      //  发展渠道名称
 			"   FROM PMRT.TB_MRT_GK_OFF_DAY T "+
 			" WHERE T.DEAL_DATE = "+dealDate;
 
@@ -135,8 +136,8 @@ function getsql(){
 		sql+=" AND  T.HQ_NAME LIKE '%"+hqName+"%'";
 	}
 	if(deviceNum!=''){
-		//sql+=" AND  T.DEVICE_NUMBER='"+deviceNum+"'";
-		sql+=" AND INSTR(T.DEVICE_NUMBER,'"+deviceNum+"')>0 ";
+		//sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
+		sql+=" AND INSTR(T.SUBSCRIPTION_ID,'"+deviceNum+"')>0 ";
 	}
 	if(orgLevel==1){
 		
@@ -237,10 +238,10 @@ function listUnits(region){
 function downsAll(){
 	var dealDate=$("#dealDate").val();
 
-	sql = getsql();
-	var title=[["账期","地市名称","营服名称","渠道经理","宽带离网用户清单","","","","","","","","","","","","","","","",""],
-	           ["","","","","归属地","用户编号","宽带账号","发展人","客户编号","用户姓名","安装地址","联系电话","套餐名称","入网时间","失效时间（离网时间）","状态","局站名","接入方式","速率","发展渠道名称","发展人编码"]
-	];
+	var sql = getsql();
+	var title=[["账期","地市名称","营服名称","渠道经理","宽带主动离网用户清单（统计口径：用户主动提取预约拆机用户需求）","","","","","","","","","","","",""],
+	           ["","","","","归属地","宽带账号","客户姓名","安装地址","联系电话","套餐名称","入网时间","离网时间","状态","局站名","接入方式","宽带速率","发展渠道名称"]
+			];
 	showtext = '主动离网用户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }

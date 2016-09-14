@@ -115,9 +115,9 @@ function getsql(){
 			"        SUBSCRIPTION_ID,                                                                         "+
 			"        SERVICE_NUM,                                                                             "+
 			"        PRODUCT_NAME,                                                                            "+
-			"        TO_CHAR(INNET_DATE,'YYYY-DD-MM') AS INNET_DATE,                                          "+
+			"        TO_CHAR(INNET_DATE,'YYYY-MM-DD') AS INNET_DATE,                                          "+
 			"        DECODE(SERVICE_STATUS, 1, '开机', 2, '停机', 3, '半停', 4, '销户') AS SERVICE_STATUS,      "+
-			"        TO_CHAR(STATUS_CHANGE_DATE,'YYYY-DD-MM') AS STATUS_CHANGE_DATE,                          "+
+			"        TO_CHAR(STATUS_CHANGE_DATE,'YYYY-MM-DD') AS STATUS_CHANGE_DATE,                          "+
 			"        DECODE(CUSTOMER_NAME, NULL, '暂无', CUSTOMER_NAME) AS CUSTOMER_NAME                       "+
 			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T                                                        "+
 			"  WHERE T.IS_BLACK_USER = 1                                                                      "+
@@ -133,8 +133,8 @@ function getsql(){
 		sql+=" AND  T.HR_ID_NAME LIKE '%"+hqName+"%'";
 	}
 	if(deviceNum!=''){
-		sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
-		//sql+=" AND INSTR(T.CUSTOMER_NO,'"+deviceNum+"')>0 ";
+		//sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
+		sql+=" AND INSTR(T.SUBSCRIPTION_ID,'"+deviceNum+"')>0 ";
 	}
 	if(orgLevel==1){
 		
@@ -236,7 +236,7 @@ function listUnits(region){
 function downsAll(){
 	var dealDate=$("#dealDate").val();
 
-	sql = getsql();
+	var sql = getsql();
 	var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
 	            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
 			];
