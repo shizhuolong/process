@@ -236,7 +236,7 @@ function listUnits(region){
 function downsAll(){
 	var dealDate=$("#dealDate").val();
 
-	sql = getsql();
+	var sql = getsql();
 	var title=[["账期","分公司","营服名称","渠道经理","实名制不合规用户清单","","","","","","","","","",""],
 	           ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名","不合规原因"]
 			];	
