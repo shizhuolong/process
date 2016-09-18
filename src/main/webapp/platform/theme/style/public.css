@@ -1210,6 +1210,9 @@ a:hover.root {
 	background: url("images/arrow_up.png") no-repeat;
 	cursor:pointer;
 }
+.aui_content{
+	font-size:16px;
+}
 
 
 
