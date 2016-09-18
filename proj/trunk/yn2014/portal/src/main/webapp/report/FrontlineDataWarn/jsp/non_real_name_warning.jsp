@@ -55,13 +55,9 @@
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="4%" style="text-align:right;">渠道经理：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
-					</td>
-					<td width="4%" style="text-align:right;margin-left:5px">用户ID：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
+					<td width="4%" style="text-align:right;">渠道属性：</td>
+					 <td width="10%">
+						<input type="text" id="channelBox"  class="default-text-input wper80"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
@@ -69,6 +65,16 @@
 					</td>
 					<td width="3%">
 						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
+					<td width="4%" style="text-align:right;">渠道经理：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
+					</td>
+					<td width="4%" style="text-align:right;margin-left:5px">用户ID：</td>
+					<td width="8%">
+						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
 					</td>
 				</tr>
 			</table>

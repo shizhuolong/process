@@ -1,9 +1,9 @@
 var nowData = [];
 
-var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
-            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
+var title=[["账期","分公司","营服名","渠道经理","新入网一周三无/极低用户数及清单（按周提供，下周一提供本月截至上周的用户情况，按月循环）","","","","","","","",""],
+           ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","三无/极低","客户姓名"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","DEV_CHNL_NAME","FD_CHNL_ID","USER_NAME","SUBSCRIPTION_ID","SERVICE_NUM","PRODUCT_NAME","INNET_DATE","SERVICE_STATUS","STATUS_CHANGE_DATE","CUSTOMER_NAME"];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID_NAME","DEV_CHNL_NAME","FD_CHNL_ID","USER_NAME","SUBSCRIPTION_ID","SERVICE_NUM","PRODUCT_NAME","INNET_DATE","IS_LOWWEEK_USER","CUSTOMER_NAME"];
 var orderBy = ' order by GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -107,24 +107,22 @@ function getsql(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-
-	var sql=" SELECT DEAL_DATE,                                                                               "+
-			"        GROUP_ID_1_NAME,                                                                         "+
-			"        UNIT_NAME,                                                                               "+
-			"        HR_ID_NAME,                                                                              "+
-			"        DEV_CHNL_NAME,                                                                           "+
-			"        FD_CHNL_ID,                                                                              "+
-			"        USER_NAME,                                                                               "+
-			"        SUBSCRIPTION_ID,                                                                         "+
-			"        SERVICE_NUM,                                                                             "+
-			"        PRODUCT_NAME,                                                                            "+
-			"        TO_CHAR(INNET_DATE,'YYYY-MM-DD') AS INNET_DATE,                                          "+
-			"        DECODE(SERVICE_STATUS, 1, '开机', 2, '停机', 3, '半停', 4, '销户') AS SERVICE_STATUS,      "+
-			"        TO_CHAR(STATUS_CHANGE_DATE,'YYYY-MM-DD') AS STATUS_CHANGE_DATE,                          "+
-			"        DECODE(CUSTOMER_NAME, NULL, '暂无', CUSTOMER_NAME) AS CUSTOMER_NAME                       "+
-			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T                                                        "+
-			"  WHERE T.IS_BLACK_USER = 1                                                                      "+
-			" AND    T.DEAL_DATE = "+dealDate;
+	//console.info("channelAttrs===="+channelAttrs+"----channelLevel=="+channelLevel);
+	var sql=" SELECT T.DEAL_DATE, 			"+											//账期
+			"        T.GROUP_ID_1_NAME, 	"+											//地市名称
+			"        T.UNIT_NAME,			"+											//营服名称
+			"        T.HR_ID_NAME, 			"+											//渠道经理
+			"        T.DEV_CHNL_NAME, 		"+											//渠道名称
+			"        T.FD_CHNL_ID, 			"+											//总部渠道编码//渠道编码
+			"        T.USER_NAME, 			"+											//用户名
+			"        T.SUBSCRIPTION_ID, 	"+											//用户编号//用户Id
+			"        T.SERVICE_NUM, 		"+											//电话号码//用户号码
+			"        T.PRODUCT_NAME, 		"+											//套餐名
+			"        TO_CHAR(T.INNET_DATE,'YYYY-MM-DD') AS INNET_DATE,			"+		//入网时间
+			"        DECODE(T.IS_LOWWEEK_USER, 1, '是', 0, '否') AS IS_LOWWEEK_USER, "+  //是否新发展一周内三无极低
+			"        T.CUSTOMER_NAME 		"+											//客户名
+			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T "+
+			"  WHERE  T.DEAL_DATE = "+dealDate;
 
 	if(regionCode!=''){
 		sql+=" AND  T.GROUP_ID_1='"+regionCode+"'";
@@ -139,10 +137,12 @@ function getsql(){
 		//sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
 		sql+=" AND INSTR(T.SUBSCRIPTION_ID,'"+deviceNum+"')>0 ";
 	}
-	
 	if(channelAttrs!=''&& channelLevel!=''&&typeof(channelAttrs)!="undefined" && typeof(channelLevel)!="undefined"){
 		sql+=" AND CHN_CDE_"+channelLevel+" IN("+channelAttrs+")";
 	}
+	/*if(channelAttrs!=''&&channelAttrs!='undefined' && channelLevel!=''&& channelLevel!='undefined'){
+		sql+=" AND CHN_CDE_"+channelLevel+" IN("+channelAttrs+")";
+	}*/
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
@@ -244,10 +244,10 @@ function downsAll(){
 	var dealDate=$("#dealDate").val();
 
 	var sql = getsql();
-	var title=[["账期","分公司","营服名","渠道经理","移动网黑匣子用户清单：基于现有基层系统黑匣子模型","","","","","","","","",""],
-	            ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","客户姓名"]
-			];
-	showtext = '黑匣子预警清单-'+dealDate;
+	var title=[["账期","分公司","营服名","渠道经理","新入网一周三无/极低用户数及清单（按周提供，下周一提供本月截至上周的用户情况，按月循环）","","","","","","","",""],
+	           ["","","","","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","三无/极低","客户姓名"]
+			];	
+	showtext = '一周内三无及极低用户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
