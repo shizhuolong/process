@@ -101,10 +101,13 @@ function getsql(){
 	var unitCode=$("#unitCode").val();
 	var hqName = $("#hqName").val();
 	var deviceNum=$("#deviceNum").val();
+	var channelAttrs = $("#channelBox").attr("kindids");
+	var channelLevel = $("#channelBox").attr("level");
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
+
 	var sql=" SELECT T.DEAL_DATE,                                                                               "+
 			"        T.GROUP_ID_1_NAME,                                                                         "+
 			"        T.UNIT_NAME,                                                                               "+
@@ -136,6 +139,10 @@ function getsql(){
 	if(deviceNum!=''){
 		sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
 		//sql+=" AND INSTR(T.CUSTOMER_NO,'"+deviceNum+"')>0 ";
+	}
+	
+	if(channelAttrs!=''&& channelLevel!=''&&typeof(channelAttrs)!="undefined" && typeof(channelLevel)!="undefined"){
+		sql+=" AND CHN_CDE_"+channelLevel+" IN("+channelAttrs+")";
 	}
 	if(orgLevel==1){
 		
