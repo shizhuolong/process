@@ -9,7 +9,7 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.DAY_OF_MONTH, -1);
+	ca.add(Calendar.DATE, -1);
 	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -41,10 +41,10 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="5%" style="text-align:right;">日期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=dealDate %>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="5%" style="text-align:right;">地市：</td>
 					<td width="10%">
@@ -63,14 +63,11 @@
 						style="float: right; margin-right: 48px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
 	</form>
-	<div id="content">
+	<div id="lchcontent">
 	</div>
-<script>
-
-</script>
 </html>
