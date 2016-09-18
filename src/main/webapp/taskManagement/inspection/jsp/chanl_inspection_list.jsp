@@ -36,7 +36,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/taskManagement/inspection/js/chanl_inspection_list.js"></script>
-<script ype="text/javascript">
+<script type="text/javascript">
 	var state = "<%=state%>";
 	var unit_id ="<%=unit_id%>";
 </script>
@@ -110,7 +110,6 @@
 											</tbody>
 											<tr>
 												<td colspan="7">
-													</div>
 													<div class="page_count">
 														<div class="page_count_left">
 															共有 <span id="totalCount"></span> 条数据
@@ -119,7 +118,6 @@
 														<div class="page_count_right">
 															<div id="pagination"></div>
 														</div>
-													</div>
 													</div>
 												</td>
 											</tr>
