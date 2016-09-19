@@ -11,7 +11,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[/*{gt:3,css:LchReport.RIGHT_ALIGN},{eq:8,css:LchReport.SUM_PART_STYLE}*/],
+		css:[{gt:3,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [/*"HR_NO","USER_NAME"*/],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
@@ -80,8 +80,8 @@ function search(pageNumber) {
 
 	report.showSubRow();
 	///////////////////////////////////////////
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	$(".page_count").width($("#lch_DataHead").width());
 
@@ -100,7 +100,7 @@ function getsql(){
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	var hqName = $("#hqName").val();
-	var deviceNum=$("#deviceNum").val();
+	var userPhone=$("#userPhone").val();
 	var channelAttrs = $("#channelBox").attr("kindids");
 	var channelLevel = $("#channelBox").attr("level");
 	//权限
@@ -135,9 +135,9 @@ function getsql(){
 	if(hqName!=''){
 		sql+=" AND  T.HR_ID_NAME LIKE '%"+hqName+"%'";
 	}
-	if(deviceNum!=''){
+	if(userPhone!=''){
 		//sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
-		sql+=" AND INSTR(T.SUBSCRIPTION_ID,'"+deviceNum+"')>0 ";
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+userPhone+"')>0 ";
 	}
 	
 	if(channelAttrs!=''&& channelLevel!=''&&typeof(channelAttrs)!="undefined" && typeof(channelLevel)!="undefined"){
