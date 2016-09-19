@@ -16,6 +16,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>固网宽带发展收入月报</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
@@ -39,24 +41,24 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="15%">
-						<input type="text"  class="Wdate default-text-input wper40" 
+					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="time">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="10%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">营服中心：</td>
+					<td width="5%" style="text-align:right;">营服中心：</td>
 					<td width="10%">
 						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">小区名称：</td>
+					<td width="5%" style="text-align:right;">小区名称：</td>
 					<td width="10%">
 						<input class="default-text-input wper80" name="stdName" type="text" id="stdName"/>
 					</td>
