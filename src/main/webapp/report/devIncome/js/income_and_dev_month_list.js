@@ -132,18 +132,19 @@ var nowData = [];
 		var end = pageSize * pageNumber;
 		var unitId = $("#unitId").val();
 		var agentId = $("#agentId").val();
-		var month = $("#month").val();
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
 		var agentType = $("#agentType").val();
 
 		var sql = "";
 		if (agentId != 'undefined') {
-			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date='"
-					+ month + "' and t.unit_id='" + unitId
+			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date between '"
+					+ startDate + "' and '"+endDate+"' and t.unit_id='" + unitId
 					+ "' and t.per_type='" + agentType
 					+ "' and  t.AGENT_M_USERID='" + agentId + "' ";
 		} else {
-			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date='"
-					+ month + "' and t.unit_id='" + unitId
+			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date between '"
+				    + startDate + "' and '"+endDate+ "' and t.unit_id='" + unitId
 					+ "' and t.per_type='" + agentType
 					+ "' and t.AGENT_M_USERID is null ";
 		}
@@ -190,21 +191,21 @@ var nowData = [];
 	}
 	/////////////////////////下载开始/////////////////////////////////////////////
 	function downsAll() {
-		var qdate = $.trim($("#month").val());
 		var unitId = $("#unitId").val();
 		var agentId = $("#agentId").val();
-		var month = $("#month").val();
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
 		var agentType = $("#agentType").val();
 
 		var sql = "";
 		if (agentId != 'undefined') {
-			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date='"
-					+ month + "' and t.unit_id='" + unitId
+			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date between'"
+				   + startDate + "' and '"+endDate+ "' and t.unit_id='" + unitId
 					+ "' and t.per_type='" + agentType
 					+ "' and t.AGENT_M_USERID='" + agentId + "' ";
 		} else {
-			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date='"
-					+ month + "' and t.unit_id='" + unitId
+			sql += "  from PMRT.TAB_MRT_TARGET_CH_MON t where t.deal_date between'"
+				   + startDate + "' and '"+endDate+ "' and t.unit_id='" + unitId
 					+ "' and t.per_type='" + agentType
 					+ "' and t.AGENT_M_USERID is null ";
 		}
@@ -225,7 +226,7 @@ var nowData = [];
 			sql += orderBy;
 		}
 
-		showtext = '用户发展收入月报-' + qdate;
+		showtext = '用户发展收入月报-' + startDate+"-"+endDate;
 		var title=[["营销架构","","","","","","","","帐期","2G出账用户","","","","","","","3G出账用户","","","","","","","","4G出帐用户","","","","","","","","","固网宽带出账用户","","","","","","2G用户发展","","","","","","","3G用户发展","","","","","","","","4G用户发展","","","","","","","","","固网宽带用户发展","","","","","","2G出账收入","","","","","","","3G出账收入","","","","","","","","4G出账收入","","","","","","","","","固网宽带出账收入","","","","","","专租线发展","","专租线收入","","固话发展量","固话收入","2G用户语音流量","","","","3G用户语音流量","","","","4G用户语音流量","","",""],
 		           ["地市","营服中心","人员","类型","HR编码","渠道（小区）名称","渠道（小区）状态","渠道（小区）编码","","长话王","市话王","包打王","流量王","极速卡","其他","合计","单卡","购机送费","存费送机","存费送费","本省自备机","上网卡","其他","合计","本地单卡","本地套餐合约惠机","本地套餐存费送费","全国套餐购机送费","全国套餐存费送机","全国套餐合约惠机","全国套餐存费送费","其他","合计","ADSL","LAN","EOC","FTTH","其中10M及以上","合计","长话王","市话王","包打王","流量王","极速卡","其他","合计","单卡","购机送费","存费送机","存费送费","本省自备机","上网卡","其他","合计","本地单卡","本地套餐合约惠机","本地套餐存费送费","全国套餐购机送费","全国套餐存费送机","全国套餐合约惠机","全国套餐存费送费","其他","合计","ADSL","LAN","EOC","FTTH","其中10M及以上","合计","长话王","市话王","包打王","流量王","极速卡","其他","合计","单卡","购机送费","存费送机","存费送费","本省自备机","上网卡","其他","合计","本地单卡","本地套餐合约惠机","本地套餐存费送费","全国套餐购机送费","全国套餐存费送机","全国套餐合约惠机","全国套餐存费送费","其他","合计","ADSL","LAN","EOC","FTTH","其中10M及以上","合计","专租线发展(不含ICT)","ICT","专租线收入(不含ICT)","ICT","","","通话分钟数","MOU","流量","户均流量","通话分钟数","MOU","流量","户均流量","通话分钟数","MOU","流量","户均流量"]];
 
