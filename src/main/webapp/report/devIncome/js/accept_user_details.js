@@ -61,7 +61,7 @@ function search(pageNumber) {
 	var service_num=$.trim($("#service_num").val());
 	//条件
 	var sql = getSql()+" WHERE 1=1" ;
-	var csql="select /*+index(NUMBER_INCOME_HR)*/ count(rowid) TOTAL FROM PMRT.TB_MRT_ACC_DETAIL_MON PARTITION(P"+dealDate+") T WHERE 1=1";
+	var csql="select  count(rowid) TOTAL FROM PMRT.TB_MRT_ACC_DETAIL_MON PARTITION(P"+dealDate+") T WHERE 1=1";
 	//选项框条件
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+ regionCode+"'";
@@ -131,7 +131,7 @@ function search(pageNumber) {
 
 function getSql(){
 		var dealDate=$("#dealDate").val();
-		var s="SELECT /*+index(NUM_ACC_DETAIL)*/ T.DEAL_DATE,"+
+		var s="SELECT  T.DEAL_DATE,"+
 			"       T.GROUP_ID_1_NAME,            "+
 			"       T.UNIT_NAME,                  "+
 			"       T.HR_ID,                      "+
@@ -240,43 +240,43 @@ function listRegions(){
 
 /************查询营服中心***************/
 function listUnits(region){
-	var $unit=$("#unitCode");
-	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
-	if(region!=''){
-		sql+=" AND T.GROUP_ID_1='"+region+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		/**查询营服中心编码条件是有地市编码，***/
-		if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else if(orgLevel==4){
-			sql+=" AND 1=2";
-		}else{
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	
-	sql+=" ORDER BY T.UNIT_ID";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
+    var $unit=$("#unitCode");
+    var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
+    if(region!=''){
+        sql+=" AND T.GROUP_ID_1='"+region+"' ";
+        //权限
+        var orgLevel=$("#orgLevel").val();
+        var code=$("#code").val();
+        /**查询营服中心编码条件是有地市编码，***/
+        if(orgLevel==3){
+            sql+=" and t.UNIT_ID='"+code+"'";
+        }else if(orgLevel==4){
+            sql+=" AND 1=2";
+        }else{
+        }
+    }else{
+        $unit.empty().append('<option value="" selected>请选择</option>');
+        return;
+    }
+
+    sql+=" ORDER BY T.UNIT_ID"
+    var d=query(sql);
+    if (d) {
+        var h = '';
+        if (d.length == 1) {
+            h += '<option value="' + d[0].UNIT_ID
+                    + '" selected >'
+                    + d[0].UNIT_NAME + '</option>';
+        } else {
+            h += '<option value="" selected>请选择</option>';
+            for (var i = 0; i < d.length; i++) {
+                h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
+            }
+        }
+
+        var $h = $(h);
+        $unit.empty().append($h);
+    } else {
+        alert("获取基层单元信息失败");
+    }
 }
