@@ -18,6 +18,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>营服全省对标指标</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
@@ -38,9 +40,9 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="text-align:right;">账期：</td>
-					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" 
+					<td width="2%" style="text-align:right;">账期：</td>
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper90" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:'false'})" readonly='readonly' value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="5%" style="text-align:right;">地市：</td>
