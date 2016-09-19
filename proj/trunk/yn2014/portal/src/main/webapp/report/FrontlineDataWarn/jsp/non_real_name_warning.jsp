@@ -74,9 +74,9 @@
 					<td width="8%">
 						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
 					</td>
-					<td width="4%" style="text-align:right;margin-left:5px">用户ID：</td>
+					<td width="4%" style="text-align:right;margin-left:5px">用户号码：</td>
 					<td width="8%">
-						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
+						<input class="default-text-input wper90" name="userPhone" type="text" id="userPhone"/>
 					</td>
 				</tr>
 			</table>
