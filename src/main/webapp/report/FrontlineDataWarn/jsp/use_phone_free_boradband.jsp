@@ -10,8 +10,8 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.DATE, -1);
-	String month=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	ca.add(Calendar.MONTH, -1);
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="edge" />
-<title>主动离网用户清单</title>
+<title>用手机业务送宽带融合业务，零元开宽带未捆绑群组数</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/initiative_off_grid_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/use_phone_free_boradband.js"></script>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -43,7 +43,7 @@
 					<td width="3%" style="text-align:right;">账期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=month %>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="3%" style="text-align:right;">地市：</td>
 					<td width="10%">
@@ -60,10 +60,6 @@
 					<td width="4%" style="text-align:right;">渠道经理：</td>
 					<td width="8%">
 						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
-					</td>
-					<td width="4%" style="text-align:right;">用户号码：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="userPhone" type="text" id="userPhone"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"

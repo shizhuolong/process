@@ -63,7 +63,7 @@
 					</td>
 					<td width="4%" style="text-align:right;margin-left:5px">用户号码：</td>
 					<td width="8%">
-						<input class="default-text-input wper90" name="deviceNum" type="text" id="deviceNum"/>
+						<input class="default-text-input wper90" name="userPhone" type="text" id="userPhone"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
