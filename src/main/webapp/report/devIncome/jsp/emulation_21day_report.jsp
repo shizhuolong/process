@@ -17,7 +17,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>21天竞赛任务通报</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
@@ -45,11 +47,11 @@
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="1%">
-						<a class="default-btn default-gree-btn" href="#" id="searchBtn"
+						<a class="default-btn " href="#" id="searchBtn"
 						>查询</a>
 					</td>
 					<td width="1%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-btn default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 					<td width="1%">
 						<a class="default-btn" href="#" id="detailExportBtn" onclick="downsDetail()">导出明细</a>
