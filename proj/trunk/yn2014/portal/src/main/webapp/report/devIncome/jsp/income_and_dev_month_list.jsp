@@ -9,8 +9,8 @@
 	String unitId=(String)request.getParameter("unitId");
 	String agentId=(String)request.getParameter("agentId");
 	String agentType=(String)request.getParameter("agentType");
-	String month=(String)request.getParameter("month");
-	
+	String startDate=(String)request.getParameter("startDate");
+	String endDate=(String)request.getParameter("endDate");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -35,7 +35,8 @@
 	<input type="hidden" id="unitId" value="<%=unitId%>">
 	<input type="hidden" id="agentId" value="<%=agentId%>">
 	<input type="hidden" id="agentType" value="<%=agentType%>">
-	<input type="hidden" id="month" value="<%=month%>">
+	<input type="hidden" id="startDate" value="<%=startDate%>">
+	<input type="hidden" id="endDate" value="<%=endDate%>">
 	
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0;border:none;">
