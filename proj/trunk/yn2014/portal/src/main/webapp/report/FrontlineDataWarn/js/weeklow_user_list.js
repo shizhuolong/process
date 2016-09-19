@@ -80,8 +80,8 @@ function search(pageNumber) {
 
 	report.showSubRow();
 	///////////////////////////////////////////
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	$(".page_count").width($("#lch_DataHead").width());
 
@@ -100,7 +100,7 @@ function getsql(){
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	var hqName = $("#hqName").val();
-	var deviceNum=$("#deviceNum").val();
+	var userPhone=$("#userPhone").val();
 	var channelAttrs = $("#channelBox").attr("kindids");
 	var channelLevel = $("#channelBox").attr("level");
 	//权限
@@ -133,16 +133,12 @@ function getsql(){
 	if(hqName!=''){
 		sql+=" AND  T.HR_ID_NAME LIKE '%"+hqName+"%'";
 	}
-	if(deviceNum!=''){
-		//sql+=" AND  T.SUBSCRIPTION_ID='"+deviceNum+"'";
-		sql+=" AND INSTR(T.SUBSCRIPTION_ID,'"+deviceNum+"')>0 ";
+	if(userPhone!=''){
+		sql+=" AND INSTR(T.SERVICE_NUM,'"+userPhone+"')>0 ";
 	}
 	if(channelAttrs!=''&& channelLevel!=''&&typeof(channelAttrs)!="undefined" && typeof(channelLevel)!="undefined"){
 		sql+=" AND CHN_CDE_"+channelLevel+" IN("+channelAttrs+")";
 	}
-	/*if(channelAttrs!=''&&channelAttrs!='undefined' && channelLevel!=''&& channelLevel!='undefined'){
-		sql+=" AND CHN_CDE_"+channelLevel+" IN("+channelAttrs+")";
-	}*/
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
