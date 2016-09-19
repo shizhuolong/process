@@ -18,7 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="edge" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>用手机业务送宽带融合业务，零元开宽带未捆绑群组数</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
