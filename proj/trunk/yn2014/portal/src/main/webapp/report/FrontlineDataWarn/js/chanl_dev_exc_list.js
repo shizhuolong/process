@@ -1,13 +1,10 @@
 var nowData;
-var title = [["分公司","区县","营服名","渠道经理","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","近三月平均出账收入","近三月平均流量","客户姓名"]];
-var field = ["GROUP_ID_1_NAME", "GROUP_ID_2_NAME", "UNIT_NAME", "MOB_NAME",
-		"GROUP_ID_4_NAME", "HQ_CHAN_CODE", "USER_NAME", "SUBSCRIPTION_ID",
-		"DEVICE_NUMBER", "PRODUCT_NAME", "INNET_DATE", "STATUS", "CHANGE_TIME",
-		"AVG_SR", "AVG_GPRS", "CUSTOMER_NAME"];
+var title = [["分公司","营服名","HR编码","渠道经理","状态","渠道名称","渠道编码","当期发展量","较上月日均变化"]];
+var field = ["GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","TYPE_ID","HQ_CHAN_NAME","HQ_CHAN_CODE","DEV_NUM","LAST_AVG_CHANGE"];
 var report = null;
-var sql = "";
 var dealDate = "";
-var type = "";
+var downSql="";
+var orderBy="";
 
 $(function() {
 	listRegions();
@@ -15,7 +12,7 @@ $(function() {
 		title : title,
 		field : field,
 		css : [ {
-			gt : 13,
+			gt : 6,
 			css : LchReport.RIGHT_ALIGN
 		} ],
 		rowParams : [],
@@ -58,7 +55,8 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	sql = getsql();
+	var sql = getsql();
+	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total FROM(" + csql + ")");
 	var total = 0;
@@ -67,7 +65,10 @@ function search(pageNumber) {
 	} else {
 		return;
 	}
-
+	//排序
+	if (orderBy != '') {
+		sql = "select * from ("+sql+")"+orderBy;
+	}
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
@@ -94,49 +95,48 @@ function getsql() {
 	dealDate = $("#dealDate").val();
 	var regionCode = $("#regionCode").val();
 	var unitCode = $("#unitCode").val();
-	type = $("#type").val();
+	var type_id=$("#type_id").val();
+	var hqChanCode=$.trim($("#hqChanCode").val());
+	var name=$.trim($("#name").val());
 	// 权限
 	var orgLevel = $("#orgLevel").val();
 	var code = $("#code").val();
-	var hrId = $("#hrId").val();
 	var orderBy = "";
 
-	var sql = "SELECT DEAL_DATE                    "
-			+ "      ,GROUP_ID_1_NAME              "
-			+ "      ,GROUP_ID_2_NAME              "
-			+ "      ,UNIT_NAME                    "
-			+ "      ,MOB_NAME                     "
-			+ "      ,GROUP_ID_4_NAME              "
-			+ "      ,HQ_CHAN_CODE                 "
-			+ "      ,USER_NAME                    "
-			+ "      ,SUBSCRIPTION_ID              "
-			+ "      ,DEVICE_NUMBER                "
-			+ "      ,PRODUCT_NAME                 "
-			+ "      ,INNET_DATE                   "
-			+ "      ,STATUS                       "
-			+ "      ,CHANGE_TIME                  "
-			+ "      ,AVG_SR                       "
-			+ "      ,AVG_GPRS                     "
-			+ "      ,CUSTOMER_NAME                "
-			+ "FROM PMRT.TB_WARN_DEVICE_NET_MATCHED"
+	var sql =  "SELECT DEAL_DATE,GROUP_ID_1_NAME                     "
+		+"      ,UNIT_NAME                                           "
+		+"      ,HR_ID                                               "
+		+"      ,NAME                                                "
+		+"      ,DECODE(TYPE_ID,1,'突增',2,'突减',3,'零销量') TYPE_ID     "
+		+"      ,HQ_CHAN_CODE                                        "
+		+"      ,HQ_CHAN_NAME                                        "
+		+"      ,DEV_NUM                                             "
+		+"      ,LAST_AVG_CHANGE                                     "
+		+"FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC                        "
 	+" WHERE DEAL_DATE = '" + dealDate + "'";
 
-	if (type == 0) {
-		sql += " AND IS_CARD_MATCHED=1 AND IS_4G_NET=0";
-	} else {
-		sql += " AND IS_NET_MATCHED=1 AND IS_4G_USER=0";
-	}
+	
 	if (regionCode != '') {
 		sql += " AND GROUP_ID_1='" + regionCode + "'";
 	}
 	if (unitCode != '') {
 		sql += " AND UNIT_ID='" + unitCode + "'";
 	}
+	if (type_id != '') {
+		sql += " AND TYPE_ID='" + type_id + "'";
+	}
+	if (hqChanCode != '') {
+		sql += " AND HQ_CHAN_CODE='" + hqChanCode + "'";
+	}
+	if (name != '') {
+		sql += " AND NAME='" + name + "'";
+	}
+	
 	if (orgLevel == 1) {
-		orderBy = " ORDER BY GROUP_ID_1,GROUP_ID_2,UNIT_ID,HQ_CHAN_CODE";
+		orderBy = " ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
 	} else if (orgLevel == 2) {
 		sql += " AND GROUP_ID_1='" + code + "'";
-		orderBy = " ORDER BY GROUP_ID_2,UNIT_ID,HQ_CHAN_CODE";
+		orderBy = " ORDER BY UNIT_ID,HQ_CHAN_CODE";
 	} else if (orgLevel == 3) {
 		sql += " AND UNIT_ID='" + code + "'";
 		orderBy = " ORDER BY HQ_CHAN_CODE";
@@ -149,7 +149,7 @@ function getsql() {
 
 // /////////////////////////地市查询///////////////////////////////////////
 function listRegions() {
-	var sql = " SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TB_WARN_DEVICE_NET_MATCHED T WHERE 1=1 AND T.GROUP_ID_1 IS NOT NULL";
+	var sql = " SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC T WHERE 1=1 AND T.GROUP_ID_1 IS NOT NULL";
 	var orgLevel = $("#orgLevel").val();
 	var code = $("#code").val();
 	if (orgLevel == 1) {
@@ -188,7 +188,7 @@ function listUnits(regionCode) {
 	var $unit = $("#unitCode");
 	var orgLevel = $("#orgLevel").val();
 	var code = $("#code").val();
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TB_WARN_DEVICE_NET_MATCHED T WHERE 1=1 ";
+	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC T WHERE 1=1 ";
 	if (regionCode != '') {
 		sql += " AND T.GROUP_ID_1='" + regionCode + "' ";
 		if (orgLevel == 1) {
@@ -227,13 +227,8 @@ function listUnits(regionCode) {
 
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	sql=getsql();
-	var title = [["账期","分公司","区县","营服名","渠道经理","渠道名称","渠道编码","用户名称","用户ID","用户号码","套餐","入网时间","状态","状态变化时间","近三月平均出账收入","近三月平均流量","客户姓名"]];
-	if (type == 0) {
-		showtext = '移动网预警清单机卡比对-' + dealDate;
-	} else {
-		showtext = '移动网预警清单机网比对-' + dealDate;
-	}
-	downloadExcel(sql, title, showtext);
+	var title = [["账期","分公司","营服名","HR编码","渠道经理","状态","渠道名称","渠道编码","当期发展量","较上月日均变化"]];
+	showtext = '移网渠道异动清单-' + dealDate;
+	downloadExcel(downSql, title, showtext);
 }
 // ///////////////////////下载结束/////////////////////////////////////////////
