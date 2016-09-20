@@ -17,6 +17,8 @@ String dealDate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ca.getTime())
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 	<title>常见问题</title>
 	<link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 	<link href="<%=request.getContextPath()%>/portal/bullManagement/js/kindeditor/themes/default/default.css" rel="stylesheet" type="text/css" />
