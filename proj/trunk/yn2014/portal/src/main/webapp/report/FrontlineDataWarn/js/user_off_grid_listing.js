@@ -120,7 +120,7 @@ function getsql(){
 			"        T.INPUT_TYPE,                "+
 			"        T.SPEED_M,                   "+
 			"        T.HQ_CHAN_NAME               "+
-			"   FROM PMRT.TB_MRT_GK_PREDEM_MON T  "+
+			"   FROM PMRT.TB_MRT_GK_LEAVE_MON T   "+
 			" WHERE T.DEAL_DATE = "+dealDate;
 	if(regionCode!=''){
 		sql+=" AND  T.GROUP_ID_1='"+regionCode+"'";
