@@ -47,25 +47,25 @@
 			<input type="hidden" name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">账期：</td>
-					<td width="15%">
+					<td width="6%" style="padding-left: 10px;" align="right">账期：</td>
+					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="4%">地市：</td>
-					<td width="15%">
+					<td width="4%" align="right">地市：</td>
+					<td width="13%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">基层单元：</td>
-					<td width="15%">
+					<td width="8%" align="right">基层单元：</td>
+					<td width="13%">
 						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">人员姓名：</td>
-					<td width="15%">
+					<td width="8%" align="right">人员姓名：</td>
+					<td width="13%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
 					<td width="5%">
