@@ -17,32 +17,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>未归集到人员维系积分</title>
-<link
-	href="<%=request.getContextPath()%>/platform/theme/style/public.css"
-	rel="stylesheet" type="text/css" />
-<link
-	href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css"
-	rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/jpagination.css" />
-<link
-	href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css"
-	rel="stylesheet" type="text/css" />
-<link type="text/css" rel="stylesheet"
-	href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css">
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/wgreport/page/javascript/jlkh/view_wx_error_mon.js"></script>
+<link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
+<link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/page/javascript/jlkh/view_wx_error_mon.js"></script>
 </head>
 <body class="" style="overflow-x: auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -55,22 +43,17 @@
 	<form id="searchForm" method="post">
 		<table width="100%" style="margin: 10px 0; border: none;">
 			<tr height="35px">
-				<td width="6%" style="padding-left: 10px;">账期：</td>
-				<td width="15%"><input type="text"
-					class="Wdate default-text-input wper80"
-					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})"
-					value="<%=time%>" id="time"></td>
-				<td width="4%">地市：</td>
-				<td width="13%"><select name="regionName" id="regionName"
-					onchange="" class="default-text-input wper80">
+				<td width="4%" style="text-align:right;">账期：</td>
+				<td width="13%"><input type="text" class="Wdate default-text-input wper80" onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time"></td>
+				<td width="4%" style="text-align:right;">地市：</td>
+				<td width="14%"><select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
-				<td width="6%">营服中心：</td>
-				<td width="13%"><select name="unitName" id="unitName"
-					onchange="" class="default-text-input wper80">
+				<td width="6%" style="text-align:right;">营服中心：</td>
+				<td width="14%"><select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
-				<td width="6%">用户号码：</td>
+				<td width="6%" style="text-align:right;">用户号码：</td>
 				<td width="15%"><input class="default-text-input wper80"
 					name=device_number type="text" id="device_number" /></td>
 				<td width="5%"><a class="default-btn" href="#" id="searchBtn"
