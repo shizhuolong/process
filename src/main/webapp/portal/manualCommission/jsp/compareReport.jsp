@@ -117,7 +117,6 @@
 										<div id="pagination"></div>
 									</div>
 								</div>
-							</div>
 						</td>
 					</tr>
 					</table>
