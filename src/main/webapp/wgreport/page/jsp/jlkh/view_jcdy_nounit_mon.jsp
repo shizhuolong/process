@@ -17,6 +17,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>未归集到基层人员的积分</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
@@ -39,19 +41,19 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">账期：</td>
+					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-		           <td width="4%">地市:</td>
-                   <td width="15%">
+		           <td width="4%" style="text-align:right;">地市:</td>
+                   <td width="17%">
                     <select id="regionName" name="regionName" class="default-text-input wper80">
-                      <option value"">全部</option>
+                      <option value="">全部</option>
                     </select>
                    </td>
-					<td width="8%">用户号码：</td>
-					<td width="15%">
+					<td width="8%" style="text-align:right;">用户号码：</td>
+					<td width="17%">
 						<input class="default-text-input wper80" name="userCode" type="text" id="userCode"/>
 					</td>
 					<td width="5%">
