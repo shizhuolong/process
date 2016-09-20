@@ -112,8 +112,8 @@ function getsql() {
 		+"      ,HQ_CHAN_NAME                                        "
 		+"      ,DEV_NUM                                             "
 		+"      ,LAST_AVG_CHANGE                                     "
-		+"FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC                        "
-	+" WHERE DEAL_DATE = '" + dealDate + "'";
+		+"FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC PARTITION(P"+dealDate+")"
+	+" WHERE 1=1";
 
 	
 	if (regionCode != '') {

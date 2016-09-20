@@ -58,6 +58,7 @@
 					<td width="4%" style="text-align:right;">状态：</td>
 					<td width="10%">
 						<select name="type_id" id="type_id" class="default-text-input wper90">
+							<option value=''>全部</option>
 							<option value='1'>突增</option>
 							<option value='2'>突减</option>
 							<option value='3'>零销量</option>
