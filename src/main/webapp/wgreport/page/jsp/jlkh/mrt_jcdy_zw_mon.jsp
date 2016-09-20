@@ -17,6 +17,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>装维积分明细</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
@@ -38,28 +40,28 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="13%">
+					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="12%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="month">
 					</td>
-					<td width="4%">地市：</td>
-					<td width="13%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+					<td width="4%" style="text-align:right;">地市：</td>
+					<td width="12%">
+						<select name="regionName" id="regionName" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">人员姓名：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
+					<td width="7%" style="text-align:right;">人员姓名：</td>
+					<td width="12%">
+						<input class="default-text-input wper90" name="userName" type="text" id="userName"/>
 					</td>
-					<td width="7%">电话：</td>
-					<td width="13%">
+					<td width="4%" style="text-align:right;">电话：</td>
+					<td width="12%">
 						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
 					</td>
 					<td width="7%">指标编码：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="item" type="text" id="item"/>
+					<td width="12%">
+						<input class="default-text-input wper90" name="item" type="text" id="item"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
