@@ -45,44 +45,46 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="20%">
-						<input type="text" style="width:90px;float:left;" class="Wdate default-text-input wper80"	onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time%>" id="starttime"/><span style="float:left;">至</span>
+					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="20%" >
+						<input type="text" style="width:90px;float:left;" class="Wdate default-text-input wper80"	onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time%>" id="starttime"/>
+						<span style="float:left; line-height:35px;">&nbsp;&nbsp;至&nbsp;&nbsp;</span>
 						<input type="text" style="float:left;width:90px;" class="Wdate default-text-input wper80"	onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time%>" id="endtime"/>
 					</td>
-					<td width="4%">地市：</td>
-					<td width="13%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+					<td width="4%" style="text-align:right;">地市：</td>
+					<td width="11%">
+						<select name="regionName" id="regionName" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">营服中心：</td>
-					<td width="13%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+					<td width="5%" style="text-align:right;">营服中心：</td>
+					<td width="11%">
+						<select name="unitName" id="unitName" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">人员姓名：</td>
-					<td width="13%">
+					<td width="5%" style="text-align:right;">人员姓名：</td>
+					<td width="11%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
-				</tr>
-				<tr height="35px">
-				    <td width="7%" style="padding-left: 10px;">电话号码：</td>
-					<td width="13%">
-						<input style="width:200px;" class="default-text-input wper80" name="phoneNumber" type="text" id="phoneNumber"/>
-					</td>
-					<td width="7%">指标描述：</td>
-					<td width="13%">
-						<input class="default-text-input wper80" name="itemDesc" type="text" id="itemDesc"/>
-					</td>
-				   <td width="3%">
+					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 				   </td>
 				   <td width="3%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 				   </td>
+				</tr>
+				<tr height="35px">
+				    <td width="5%" style="text-align:right;">电话号码：</td>
+					<td width="20%">
+						<input style="width:200px;" class="default-text-input wper90" name="phoneNumber" type="text" id="phoneNumber"/>
+					</td>
+					<td width="5%" style="text-align:right;">指标描述：</td>
+					<td width="15%">
+						<input class="default-text-input wper80" name="itemDesc" type="text" id="itemDesc"/>
+					</td>
+				   
 				 </tr>
 			</table>
 		</form>
