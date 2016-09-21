@@ -26,9 +26,10 @@
 	<link href="<%=path%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/report/devIncome/js/is_kpi.js"></script>
+	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
+	<script type="text/javascript" src="<%=path%>/report/devIncome/js/is_kpi.js"></script>
 	<script type="text/javascript">
 	  var paths="<%=path%>";
 	</script>
@@ -112,6 +113,7 @@
 								<td>
 								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">
 								    <font color='red'>（注意：文件目前只支持XLS格式，且内容为文本格式。模板下载下来为非文本格式，上传前请手动转化为文本格式，否则导入数据可能不完整。）</font>
+								    </span>
 								</td>
 							</tr>
 						</table>
