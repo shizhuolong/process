@@ -156,12 +156,8 @@ function search(pageNumber) {
 
 function listRegions(){
 	var sql="";
-	var time=$("#time").val();
 	//条件
 	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where 1=1 and group_id_1_name is not null ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -206,10 +202,10 @@ function listRegions(){
 }
 function listUnits(regionName){
 	var $unit=$("#unitName");
-	var time=$("#time").val();
+	var deal_date=$("#deal_date").val();
 	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_JCDY_KPI_QJ_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
+	if(deal_date!=''){
+		sql+=" and t.DEAL_DATE="+deal_date;
 	}
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
