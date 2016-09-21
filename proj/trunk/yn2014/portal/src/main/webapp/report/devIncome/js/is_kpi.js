@@ -15,7 +15,7 @@ function downloadFile() {
 		"       '' as 权重                                                                                                              "+
 		"        FROM PCDE.TAB_CDE_GROUP_CODE                "+
 		"WHERE GROUP_ID_1='"+code+"'                         "+
-		"AND IS_DEFAULT=0 AND IS_FIVE_CLASS<>5               ";
+		"AND IS_DEFAULT=0 AND IS_FIVE_CLASS<>5 AND IS_VALID=1";
 		var title=[["营服ID","营服中心","姓名","HR编码","指标名称","得分","权重(%)"]];
 		var showtext ='自设KPI考核评分导入模板';
 		downloadExcel(sql,title,showtext);
