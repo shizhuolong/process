@@ -52,7 +52,7 @@
 						},
 						check:{
 							enable:true,
-							chkboxType:{ "Y" : "", "N" : "" },
+							chkboxType:{ "Y" : "", "N" : "" }
 						},
 						data:{
 							simpleData:{
