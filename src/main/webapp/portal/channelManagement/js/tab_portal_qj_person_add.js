@@ -20,6 +20,8 @@ $(function() {
 	});
 	$("#saveBtn").click(function(){
 		var url = $("#ctx").val()+'/channelManagement/qjPerson_save.action';
+		var unit_id=$("unit_name").find("option:selected").attr("unit_id");
+		$("#unit_id").val(unit_id);
 		$('#add').form('submit',{
 			url:url,
 			dataType:"json",
@@ -83,7 +85,7 @@ function listunit_name(){
 		var h = '';
 			h += '<option value="" selected>请选择</option>';
 			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
+				h += '<option unit_id="'+d[i].UNIT_ID+'" value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
 			}
 		$("#unit_name").empty().append($(h));
 	} else {
