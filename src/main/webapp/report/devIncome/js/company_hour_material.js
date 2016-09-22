@@ -25,6 +25,10 @@ $(function(){
 				var parentId=$tr.attr("parentId");
 				
 				if(orgLevel==2){//点击市
+					sql=	"SELECT GROUP_ID_1_NAME  AS ROW_NAME,GROUP_ID_1 AS ROW_ID, " +getSql();
+					where = ' where 1=1 ';
+					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,DEAL_DATE';
+				}else if(orgLevel==3){
 					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
 					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE ';
 					where=' WHERE GROUP_ID_1=\''+code+"\' ";
@@ -37,14 +41,14 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					sql=	"SELECT GROUP_ID_1_NAME  AS ROW_NAME,GROUP_ID_1 AS ROW_ID, " +getSql();
+					sql=	"SELECT '全省'  AS ROW_NAME,'86000' AS ROW_ID, " +getSql();
 					where = ' where 1=1 ';
-					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,DEAL_DATE';
 					orgLevel=2;
 				}else if(orgLevel==2){//市
-					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
-					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE';
+					sql="SELECT GROUP_ID_1_NAME  AS ROW_NAME,GROUP_ID_1 AS ROW_ID,"+getSql();
+					groupBy=' GROUP BY GROUP_ID_1_NAME,GROUP_ID_1,DEAL_DATE';
 					where=' WHERE GROUP_ID_1=\''+code+"\' ";
+					orgLevel=3;
 				}else if(orgLevel==3){//营服中心
 					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
 					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE ';
@@ -52,8 +56,10 @@ $(function(){
 				}else if(orgLevel>=4){
 					return {data:[],extra:{}};
 				}
-			}	
-			sql+=where ;
+			}
+			//***************************************
+			sql+=where +" AND DEAL_DATE="+dealDate;
+			//***************************************
 			// 条件查询
 			if(regionCode!=''){
 				sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
