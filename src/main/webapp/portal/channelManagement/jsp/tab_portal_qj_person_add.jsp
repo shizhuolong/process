@@ -39,6 +39,7 @@
 			<form id="add" method="POST">
 			<input type="hidden" id="code" name="code" value="<%=org.getCode()%>"/>
 			<input type="hidden" id="user_code" name="user_code"/>
+			<input type="hidden" id="unit_id" name="unit_id"/>
 				<table class="default-table sticky-enabled">
 				<tr>
 				 <td width="8%">營服中心：
