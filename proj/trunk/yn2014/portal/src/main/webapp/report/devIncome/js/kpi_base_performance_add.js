@@ -81,7 +81,7 @@ function addHrCode(hrCode){
 function queryPersonByCity(regionCode){
 	var time = $.trim($("#time").val());
 	var month = $.trim($("#month").val());
-	var thisMonth = month+1;
+	var thisMonth = parseInt(month)+1+"";
 	if(time==month||time==thisMonth){
 		var sql = "SELECT  HR_ID, NAME                    "+
 					"  FROM PORTAL.TAB_PORTAL_QJ_PERSON T              "+
