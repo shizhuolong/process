@@ -213,7 +213,7 @@ function listRegions(){
 	}else if(orgLevel==3){
 		sql+=" and t.UNIT_ID='"+code+"'";
 	}else{
-		sql+=" and t.HR_NO='"+hrId+"'";
+		sql+=" and 1=2";
 	}
 	
 	var d=query(sql);
