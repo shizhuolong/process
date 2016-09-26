@@ -17,14 +17,14 @@ function search(){
 	startDate=$("#startDate").val();
 	endDate=$("#endDate").val();
 	if(startDate!=endDate){
-		title=[["组织架构","2G收入（万元）","","3G收入（万元）","","4G收入（万元）","","固网（万元）","","合计（万元）",""],
-		       ["","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
-		field=["THIS_2G_SR1","LAST_2G_SR1","THIS_3G_SR1","LAST_3G_SR1","THIS_4G_SR1","LAST_4G_SR1","THIS_NET_SR1","LAST_NET_SR1","ALL_SR1","LAST_ALL1"];
+		title=[["组织架构","2G收入（万元）","","3G收入（万元）","","4G收入（万元）","","固网（万元）","","智慧沃家（万元）","","合计（万元）",""],
+		       ["","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
+		field=["THIS_2G_SR1","LAST_2G_SR1","THIS_3G_SR1","LAST_3G_SR1","THIS_4G_SR1","LAST_4G_SR1","THIS_NET_SR1","LAST_NET_SR1","THIS_ZHWJ_SR1","LAST_ZHWJ_SR1","ALL_SR1","LAST_ALL1"];
 	    sumSql=getSumSql();
 	}else{
-		title=[["组织架构","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
-		       ["","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
-		field=["THIS_2G_SR","LAST_2G_SR","THIS_2G_SR1","LAST_2G_SR1","THIS_3G_SR","LAST_3G_SR","THIS_3G_SR1","LAST_3G_SR1","THIS_4G_SR","LAST_4G_SR","THIS_4G_SR1","LAST_4G_SR1","THIS_NET_SR","LAST_NET_SR","THIS_NET_SR1","LAST_NET_SR1","ALL_SR","LAST_ALL","ALL_SR1","LAST_ALL1"];
+		title=[["组织架构","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","智慧沃家（万元）","","","","合计（万元）","","",""],
+		       ["","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
+		field=["THIS_2G_SR","LAST_2G_SR","THIS_2G_SR1","LAST_2G_SR1","THIS_3G_SR","LAST_3G_SR","THIS_3G_SR1","LAST_3G_SR1","THIS_4G_SR","LAST_4G_SR","THIS_4G_SR1","LAST_4G_SR1","THIS_NET_SR","LAST_NET_SR","THIS_NET_SR1","LAST_NET_SR1","THIS_ZHWJ_SR","LAST_ZHWJ_SR","THIS_ZHWJ_SR1","LAST_ZHWJ_SR1","ALL_SR","LAST_ALL","ALL_SR1","LAST_ALL1"];
 		sumSql=getSumSql1();
 	}
 	var report=new LchReport({
@@ -135,7 +135,19 @@ function getSumSql() {
     "                               0                                                                  "+
     "                            END,                                                                  "+
     "                            'FM99999999990.99')) || '%' LAST_NET_SR1,                             "+
-   
+    
+   ///******************************************新增字段（智慧沃家）***************************************//
+    "               ROUND(SUM(NVL(T1.THIS_ZHWJ_SR, 0)), 3) THIS_ZHWJ_SR1,                              "+
+    "               TRIM('.' FROM TO_CHAR(CASE                                                         "+
+    "                              WHEN SUM(NVL(T1.LAST_ZHWJ_SR, 0)) <> 0 THEN                         "+
+    "                             (SUM(NVL(T1.THIS_ZHWJ_SR, 0)) - SUM(NVL(T1.LAST_ZHWJ_SR, 0))) * 100 /"+
+    "                               SUM(NVL(T1.LAST_ZHWJ_SR, 0))                                       "+
+    "                              ELSE                                                                "+
+    "                               0                                                                  "+
+    "                            END,                                                                  "+
+    "                            'FM99999999990.99')) || '%' LAST_ZHWJ_SR1,                            "+
+  ///******************************************************************************************************//
+    
     "               ROUND(SUM(NVL(T1.ALL_SR, 0)), 3) ALL_SR1,                                          "+
     "               TRIM('.' FROM TO_CHAR(CASE                                                         "+
     "                              WHEN SUM(NVL(T1.LAST_ALL, 0)) <> 0 THEN                             "+
@@ -224,6 +236,27 @@ function getSumSql1() {
     "                               0                                                                     "+
     "                            END,                                                                     "+
     "                            'FM99999999990.99')) || '%' LAST_NET_SR1,                                "+
+   
+    ///***********************************新增字段（智慧沃家）*************************************************//
+	"               ROUND(SUM(NVL(T1.THIS_ZHWJ_SR, 0)), 3) THIS_ZHWJ_SR,                                    "+
+    "               TRIM('.' FROM TO_CHAR(CASE                                                            	"+
+    "                              WHEN SUM(NVL(T1.LAST_ZHWJ_SR, 0)) <> 0 THEN                             	"+
+    "                               (SUM(NVL(T1.THIS_ZHWJ_SR, 0)) - SUM(NVL(T1.LAST_ZHWJ_SR, 0))) * 100 /   "+
+    "                               SUM(NVL(T1.LAST_ZHWJ_SR, 0))                                           	"+
+    "                              ELSE                                                                   	"+
+    "                               0                                                                     	"+
+    "                            END,                                                                     	"+
+    "                            'FM99999999990.99')) || '%' LAST_ZHWJ_SR,                                 	"+
+    "               ROUND(SUM(NVL(T1.THIS_ZHWJ_SR1, 0)), 3) THIS_ZHWJ_SR1,                                  "+
+    "               TRIM('.' FROM TO_CHAR(CASE                                                            	"+
+    "                              WHEN SUM(NVL(T1.LAST_ZHWJ_SR1, 0)) <> 0 THEN                            	"+
+    "                               (SUM(NVL(T1.THIS_ZHWJ_SR1, 0)) - SUM(NVL(T1.LAST_ZHWJ_SR1, 0))) * 100 / "+
+    "                               SUM(NVL(T1.LAST_ZHWJ_SR1, 0))                                          	"+
+    "                              ELSE                                                                   	"+
+    "                               0                                                                     	"+
+    "                            END,                                                                     	"+
+    "                            'FM99999999990.99')) || '%' LAST_ZHWJ_SR1,                                	"+
+    ///******************************************************************************************************//
     "               ROUND(SUM(NVL(T1.ALL_SR, 0)), 3) ALL_SR,                                              "+
     "               TRIM('.' FROM TO_CHAR(CASE                                                            "+
     "                              WHEN SUM(NVL(T1.LAST_ALL, 0)) <> 0 THEN                                "+
@@ -284,12 +317,19 @@ function downsAll() {
 	var where='';
 	var orderBy=" ORDER BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.BUS_HALL_NAME";
 	var groupBy=" GROUP BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.OPERATE_TYPE";
-	if(startDate!=endDate){
+	/*if(startDate!=endDate){
 		title=[["开始账期","地市","营业厅","经营模式","2G收入（万元）","","3G收入（万元）","","4G收入（万元）","","固网（万元）","","合计（万元）",""],
 		       ["","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
 	}else{
 		title=[["开始账期","地市","营业厅","经营模式","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","合计（万元）","","",""],
 		       ["","","","","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
+	}*/
+	if(startDate!=endDate){
+		title=[["开始账期","地市","营业厅","经营模式","2G收入（万元）","","3G收入（万元）","","4G收入（万元）","","固网（万元）","","智慧沃家（万元）","","合计（万元）",""],
+		       ["","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
+	}else{
+		title=[["开始账期","地市","营业厅","经营模式","2G收入（万元）","","","","3G收入（万元）","","","","4G收入（万元）","","","","固网（万元）","","","","智慧沃家（万元）","","","","合计（万元）","","",""],
+		       ["","","","","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];
 	}
 	
 	//先根据用户信息得到前几个字段
