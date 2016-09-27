@@ -37,7 +37,7 @@
 					<td width="5%" style="padding-left: 10px;">账期：</td>
 					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=day%>" id="day">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false,onpicked:function() {javascript:loadRegion();}})" value="<%=day%>" id="day">
 					</td>
 					<td width="4%">地市：</td>
 					<td width="13%">

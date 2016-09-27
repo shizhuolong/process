@@ -6,7 +6,11 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
+	 qdate=$("#day").val();
 	 listRegions();
+	 $("#regionCode").change(function() {
+		listUnits($(this).val());
+	 });
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -25,7 +29,6 @@ $(function(){
 		getSubRowsCallBack:function($tr){
 			var preField='';
 			var where=' WHERE 1 = 1';
-			qdate=$("#day").val();
 			var code='';
 			var orgLevel='';
 			var regionCode=$("#regionCode").val();
@@ -43,7 +46,6 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}else{
-				//先根据用户信息得到前几个字段
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省   展示地市
@@ -129,11 +131,14 @@ function downsAll() {
 	           ["地市","营服","渠道","本期","环比","完成率","排名","本期","环比","本期","环比","本期","环比","本期","环比","本期","环比","本期","环比","完成率","排名"]];
 	downloadExcel(sql,title,showtext);
 }
-////////////////////////////////////////////////////////////////////////
+
+function loadRegion(){
+	qdate=$("#day").val();
+	listRegions();
+}
+
 function listRegions(){
-	var sql="";
-	//条件
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_DEV_INCOME_MANAGE_DAY T WHERE 1=1 ";
+	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_DEV_INCOME_MANAGE_DAY PARTITION(P"+qdate+") T WHERE 1=1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -162,16 +167,16 @@ function listRegions(){
 		}
 		var $area = $("#regionCode");
 		$area.empty().append($(h));
-		$area.change(function() {
+		/*$area.change(function() {
 			listUnits($(this).val());
-		});
+		});*/
 	} else {
 		alert("获取地市信息失败");
 	}
 }
 function listUnits(regionCode){
 	var $unit=$("#unitId");
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TAB_MRT_DEV_INCOME_MANAGE_DAY T WHERE 1=1 AND UNIT_NAME IS NOT NULL";
+	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TAB_MRT_DEV_INCOME_MANAGE_DAY PARTITION(P"+qdate+") T WHERE 1=1 AND UNIT_ID IS NOT NULL";
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1='"+regionCode+"' ";
 		//权限
