@@ -54,9 +54,9 @@ function search(pageNumber) {
 	//营服中心编码
 	var unitCode =$("#unitCode").val();
 	//人员姓名
-	var userName =$("#userName").val();
+	var userName =$.trim($("#userName").val());
 	//业务描述
-	var busiDesc =$("#busiDesc").val();
+	var busiDesc =$.trim($("#busiDesc").val());
 	//用户号码
 	var service_num=$.trim($("#service_num").val());
 	//条件
@@ -72,12 +72,12 @@ function search(pageNumber) {
 		csql+=" AND T.UNIT_ID ='"+unitCode+"'";
 	}
 	if(userName!=''){
-		sql+=" AND INSTR(T.SERVICE_NUM,'"+userName+"')>0";
-		csql+=" AND INSTR(T.SERVICE_NUM,'"+userName+"')>0";
+		sql+=" AND INSTR(T.NAME,'"+userName+"')>0";
+		csql+=" AND INSTR(T.NAME,'"+userName+"')>0";
 	}
 	if(busiDesc!=''){
-		sql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
-		csql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
+		sql+=" AND INSTR(T.BUSI_DESC,'"+busiDesc+"')>0";
+		csql+=" AND INSTR(T.BUSI_DESC,'"+busiDesc+"')>0";
 	}
 	if(service_num!=''){
 		sql+=" AND T.SERVICE_NUM = '"+service_num+"'";
@@ -157,9 +157,9 @@ function downsAll(){
 	//营服中心编码
 	var unitCode =$("#unitCode").val();
 	//人员姓名
-	var userName =$("#userName").val();
+	var userName =$.trim($("#userName").val());
 	//业务描述
-	var busiDesc =$("#busiDesc").val();
+	var busiDesc =$.trim($("#busiDesc").val());
 	//用户号码
 	var service_num=$.trim($("#service_num").val());
 	//条件
@@ -173,10 +173,10 @@ function downsAll(){
 		sql+=" AND T.UNIT_ID ='"+unitCode+"'";
 	}
 	if(userName!=''){
-		sql+=" AND INSTR(T.SERVICE_NUM,'"+userName+"')>0";
+		sql+=" AND INSTR(T.NAME,'"+userName+"')>0";
 	}
 	if(busiDesc!=''){
-		sql+=" AND INSTR(T.SERVICE_NUM,'"+busiDesc+"')>0";
+		sql+=" AND INSTR(T.BUSI_DESC,'"+busiDesc+"')>0";
 	}
 	if(service_num!=''){
 		sql+=" AND T.SERVICE_NUM = '"+service_num+"'";
