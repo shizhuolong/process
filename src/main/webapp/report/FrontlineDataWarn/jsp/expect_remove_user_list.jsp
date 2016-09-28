@@ -40,30 +40,22 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="3%" style="text-align:right;">账期：</td>
+					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="dealDate">
 					</td>
-					<td width="3%" style="text-align:right;">地市：</td>
+					<td width="5%" style="text-align:right;">地市：</td>
 					<td width="10%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper90">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="4%" style="text-align:right;">营服中心：</td>
+					<td width="5%" style="text-align:right;">营服中心：</td>
 					<td width="10%">
-						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper90">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
 							<option value=''>请选择</option>
 						</select>
-					</td>
-					<td width="4%" style="text-align:right;">渠道经理：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
-					</td>
-					<td width="4%" style="text-align:right;margin-left:5px">用户号码：</td>
-					<td width="8%">
-						<input class="default-text-input wper90" name="userPhone" type="text" id="userPhone"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
@@ -71,6 +63,16 @@
 					</td>
 					<td width="3%">
 						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%" style="text-align:right;">渠道经理：</td>
+					<td width="10%">
+						<input class="default-text-input wper80" name="hqName" type="text" id="hqName"/>
+					</td>
+					<td width="5%" style="text-align:right;margin-left:5px">用户号码：</td>
+					<td width="10%">
+						<input class="default-text-input wper80" name="userPhone" type="text" id="userPhone"/>
 					</td>
 				</tr>
 			</table>
