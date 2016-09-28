@@ -45,13 +45,13 @@
 					</td>
 					<td width="5%" style="text-align:right;">地市：</td>
 					<td width="10%">
-						<select name="regionCode" id="regionCode" class="default-text-input wper90">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 							<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="5%" style="text-align:right;">营服中心：</td>
 					<td width="10%">
-						<select name="unitCode" id="unitCode" class="default-text-input wper90">
+						<select name="unitCode" id="unitCode" class="default-text-input wper80">
 							<option value=''>请选择</option>
 						</select>
 					</td>
@@ -66,15 +66,15 @@
 				<tr height="35px">
 				   <td width="5%" style="text-align:right;">渠道编码：</td>
 				   <td width="10%">
-						<input class="default-text-input wper90" name="hqChanCode" type="text" id="hqChanCode"/>
+						<input class="default-text-input wper80" name="hqChanCode" type="text" id="hqChanCode"/>
 				   </td>
 				   <td width="5%" style="text-align:right;">渠道经理：</td>
 				   <td width="10%">
-						<input class="default-text-input wper90" name="name" type="text" id="name"/>
+						<input class="default-text-input wper80" name="name" type="text" id="name"/>
 				   </td>
 				   <td width="5%" style="text-align:right;">状态：</td>
 					<td width="10%">
-						<select name="type_id" id="type_id" class="default-text-input wper90">
+						<select name="type_id" id="type_id" class="default-text-input wper80">
 							<option value=''>全部</option>
 							<option value='1'>突增</option>
 							<option value='2'>突减</option>
