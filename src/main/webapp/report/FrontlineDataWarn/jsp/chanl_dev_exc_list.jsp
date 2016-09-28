@@ -38,42 +38,42 @@
 		<form id="searchForm" method="post">
 			<table width="60%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="3%" style="padding-left:10px;">账期：</td>
-					<td width="5%">
+					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:'false'})" value="<%=day%>" id="dealDate">
 					</td>
-					<td width="3%" style="padding-left:10px;">地市：</td>
-					<td width="5%">
+					<td width="5%" style="text-align:right;">地市：</td>
+					<td width="10%">
 						<select name="regionCode" id="regionCode" class="default-text-input wper90">
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="4%" style="padding-left:10px;">营服中心：</td>
-					<td width="5%">
+					<td width="5%" style="text-align:right;">营服中心：</td>
+					<td width="10%">
 						<select name="unitCode" id="unitCode" class="default-text-input wper90">
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="1%">
+					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 18px;">查询</a>
 					</td>
-					<td width="1%">
+					<td width="3%">
 						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 				<tr height="35px">
-				   <td width="4%" style="padding-left:10px;">渠道编码：</td>
-				   <td width="5%">
+				   <td width="5%" style="text-align:right;">渠道编码：</td>
+				   <td width="10%">
 						<input class="default-text-input wper90" name="hqChanCode" type="text" id="hqChanCode"/>
 				   </td>
-				   <td width="4%" style="padding-left:10px;">渠道经理：</td>
-				   <td width="5%">
+				   <td width="5%" style="text-align:right;">渠道经理：</td>
+				   <td width="10%">
 						<input class="default-text-input wper90" name="name" type="text" id="name"/>
 				   </td>
-				   <td width="4%" style="padding-left:10px;">状态：</td>
-					<td width="5%">
+				   <td width="5%" style="text-align:right;">状态：</td>
+					<td width="10%">
 						<select name="type_id" id="type_id" class="default-text-input wper90">
 							<option value=''>全部</option>
 							<option value='1'>突增</option>
