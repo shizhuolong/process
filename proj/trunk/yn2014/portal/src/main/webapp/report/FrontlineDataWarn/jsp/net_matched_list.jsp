@@ -44,19 +44,19 @@
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:'false'})" value="<%=month%>" id="dealDate">
 					</td>
 					<td width="3%" style="text-align:right;">地市：</td>
-					<td width="10%">
+					<td width="8%">
 						<select name="regionCode" id="regionCode" class="default-text-input wper90">
 							<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="4%" style="text-align:right;">营服中心：</td>
-					<td width="10%">
+					<td width="8%">
 						<select name="unitCode" id="unitCode" class="default-text-input wper90">
 							<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="4%" style="text-align:right;">类型：</td>
-					<td width="10%">
+					<td width="8%">
 						<select name="type" id="type" class="default-text-input wper90">
 							<option value='0'>机卡比对</option>
 							<option value='1'>机网比对</option>
