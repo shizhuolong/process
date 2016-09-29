@@ -21,9 +21,11 @@
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/income_manage_day.js"></script>
 </head>
 <body class="" style="overflow-x: auto;">
@@ -53,14 +55,14 @@
 					style="float: right; margin-right: 30px;">查询</a></td>
 				<td width="3%"><a class="default-btn" href="#" id="exportBtn"
 					onclick="downsAll()">导出</a></td>
+				<td width="3%"><a class="default-btn" href="#" id="remark">说明</a></td>	
 			</tr>
 		</table>
 	</form>
 	<div id="content"></div>
-	<div style="color: red; font-size: 15px;">
+	<div style="color: red; font-size: 15px;display:none;" id="remarkDiv">
 		口径说明:<br /> 1.发展是本月的一个累计值<br /> 2.流失用户数:上月有计费收入本月无计费收入<br />
-		3.所有的排名是当前层级的排名"
-
+		3.所有的排名是当前层级的排名
 	</div>
 </body>
 
