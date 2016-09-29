@@ -138,7 +138,7 @@ function listjob_type(){
 function initName(){
 	var unit_name=$("#unit_name").val();
 	var hr_id=$("#hr_id").val();
-	var sql="SELECT DISTINCT T.REALNAME NAME FROM PORTAL.APDP_USER WHERE T.HR_ID='"+hr_id+"'";
+	var sql="SELECT DISTINCT T.REALNAME NAME FROM PORTAL.APDP_USER T WHERE T.HR_ID='"+hr_id+"'";
 			//"PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.UNIT_NAME='"+unit_name+"' AND T.HR_ID='"+hr_id+"' AND T.DEAL_DATE=to_char(sysdate,'yyyymm')";
 	var d=query(sql);
 	if(d&&d.length>=1){
