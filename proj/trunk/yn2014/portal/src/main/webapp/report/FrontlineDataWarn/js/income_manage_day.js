@@ -11,6 +11,18 @@ $(function(){
 	 $("#regionCode").change(function() {
 		listUnits($(this).val());
 	 });
+	 $("#remark").click(function() {
+		$("#remarkDiv").show();
+		$("#remarkDiv").dialog({
+			title : '口径',
+			width : 600,
+			height : 350,
+			closed : false,
+			cache : false,
+			modal : false,
+			maximizable : true
+		});
+	});
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
