@@ -26,42 +26,42 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/income_manage_day.js"></script>
 </head>
-<body class="" style="overflow-x:auto;">
-    <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+<body class="" style="overflow-x: auto;">
+	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-		<form id="searchForm" method="post">
-			<table width="100%" style="margin: 10px 0; border:none;">
-				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
-					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false,onpicked:function() {javascript:loadRegion();}})" value="<%=day%>" id="day">
-					</td>
-					<td width="4%">地市：</td>
-					<td width="13%">
-						<select name="regionCode" id="regionCode" class="default-text-input wper80">
-								<option value=''>请选择</option>
-						</select>
-					</td>
-					<td width="7%">营服中心：</td>
-					<td width="13%">
-						<select name="unitId" id="unitId" class="default-text-input wper80">
-								<option value=''>请选择</option>
-						</select>
-					</td>
-					<td width="3%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 30px;">查询</a>
-					</td>
-					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
-					</td>
-				</tr>
-			</table>
-		</form>
-		<div id="content"></div>
+	<form id="searchForm" method="post">
+		<table width="100%" style="margin: 10px 0; border: none;">
+			<tr height="35px">
+				<td width="5%" style="padding-left: 10px;">账期：</td>
+				<td width="13%"><input type="text"
+					class="Wdate default-text-input wper80" readonly="true"
+					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false,onpicked:function() {javascript:loadRegion();}})"
+					value="<%=day%>" id="day"></td>
+				<td width="4%">地市：</td>
+				<td width="13%"><select name="regionCode" id="regionCode"
+					class="default-text-input wper80">
+						<option value=''>请选择</option>
+				</select></td>
+				<td width="7%">营服中心：</td>
+				<td width="13%"><select name="unitId" id="unitId"
+					class="default-text-input wper80">
+						<option value=''>请选择</option>
+				</select></td>
+				<td width="3%"><a class="default-btn" href="#" id="searchBtn"
+					style="float: right; margin-right: 30px;">查询</a></td>
+				<td width="3%"><a class="default-btn" href="#" id="exportBtn"
+					onclick="downsAll()">导出</a></td>
+			</tr>
+		</table>
+	</form>
+	<div id="content"></div>
+	<div style="color: red; font-size: 15px;">
+		口径说明:<br /> 1.发展是本月的一个累计值<br /> 2.流失用户数:上月有计费收入本月无计费收入<br />
+		3.所有的排名是当前层级的排名"
+
+	</div>
 </body>
 
 </html>
