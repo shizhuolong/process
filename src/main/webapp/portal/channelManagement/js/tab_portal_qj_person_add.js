@@ -81,7 +81,12 @@ function listSelect(){
 	listjob_type();
 }
 function listunit_name(){
-	var sql = "SELECT UNIT_ID,UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T WHERE T.GROUP_ID_"+(orgLevel-1)+"='"+code+"' AND T.IS_VALID=1 ORDER BY GROUP_ID_1,UNIT_ID";
+	var sql="";
+	if(orgLevel==1){
+		sql = "SELECT UNIT_ID,UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T WHERE T.IS_VALID=1 ORDER BY GROUP_ID_1,UNIT_ID";
+	}else{
+		sql = "SELECT UNIT_ID,UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T WHERE T.GROUP_ID_1='"+code+"' AND T.IS_VALID=1 ORDER BY GROUP_ID_1,UNIT_ID";
+	}
 	var d=query(sql);
 	if (d) {
 		var h = '';
