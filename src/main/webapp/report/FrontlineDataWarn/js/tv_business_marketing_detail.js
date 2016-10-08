@@ -139,7 +139,7 @@ function getsql(){
 	}else if(orgLevel==3){
 		sql+=" and t.UNIT_ID='"+code+"'";
 	}else{
-		sql+=" and 1=2";
+		sql+="  and 1=2";
 	}
 	
 	return sql;
@@ -228,14 +228,12 @@ function listUnits(region){
 }
 
 /////////////////////////下载开始/////////////////////////////////////////////
-function downsAll(){
-	
+function downsAll(){	
 	var sql=getsql();
 	var groupName =$("#groupName").val();
 	var title=[["账期","分公司","营服名","渠道经理","归属地","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","捆绑手机号码","状态","局站","接入方式","宽带速率","发展渠道","预存款余额"]];		
 		
-	showtext ='"'+groupName+'"智慧沃家营销清单-'+dealDate;
+	showtext ='"'+groupName+'"TV业务营销清单明细-'+dealDate;
 	downloadExcel(sql,title,showtext);
-
 }
 /////////////////////////下载结束/////////////////////////////////////////////
