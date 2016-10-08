@@ -19,14 +19,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>TV业务营销清单</title>
+<title>月流失预警报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report-fix.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/tv_business_marketing.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/warn_loss_of_month.js"></script>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -70,5 +70,4 @@
 		</form>
 		<div id="content"></div>
 </body>
-
 </html>
