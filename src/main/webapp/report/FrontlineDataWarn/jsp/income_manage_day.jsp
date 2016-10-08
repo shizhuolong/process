@@ -27,6 +27,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/income_manage_day.js"></script>
+<style type="text/css">
+    #lch_DataHead TR TH{
+       min-width: 100px;
+    }
+</style>
 </head>
 <body class="" style="overflow-x: auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
