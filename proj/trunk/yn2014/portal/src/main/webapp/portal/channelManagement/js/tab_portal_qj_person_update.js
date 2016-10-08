@@ -1,5 +1,6 @@
 $(function() {
 	listjob();
+	var unit_name=art.dialog.data('unit_name');
 	var hr_id=art.dialog.data('hr_id');
 	var job=art.dialog.data('job');
 	var is_logo=art.dialog.data('is_logo');
@@ -11,6 +12,7 @@ $(function() {
 	$("#hr_id").val(hr_id);
 	$("#chooseMonth").val(chooseMonth);
 	listunit_name();
+	$("#unit_name").val(unit_name);
 	//关闭dailog
 	$("#cancleBtn").click(function(){
 		var win = artDialog.open.origin;//来源页面
