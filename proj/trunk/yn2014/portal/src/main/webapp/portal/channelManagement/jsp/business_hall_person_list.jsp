@@ -68,27 +68,27 @@
           	<table width="100%" style="margin:10px 0;">
                 <tr height="35px">
                     <td width="6%" style="padding-left:10px;">姓名：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="name" name="name" type="text"/></td>
+                    <td width="15%"><input class="default-text-input wper100" id="name" name="name" type="text"/></td>
                     <td width="5%">联系电话：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="phone" name="phone" type="text"/></td>
+                    <td width="15%"><input class="default-text-input wper100" id="phone" name="phone" type="text"/></td>
                 	<!-- <td width="5%" rowspan="3"><a class="default-btn" href="#" id="searchBtn">查询</a></td> -->
                 </tr>
                 <tr height="35px">
                 	<td width="5%" style="padding-left:10px;">营业厅编码：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="hq_chan_code" name="hq_chan_code" type="text"/></td>
+                    <td width="15%"><input class="default-text-input wper100" id="hq_chan_code" name="hq_chan_code" type="text"/></td>
                     <td width="5%">营业厅名称：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="hq_chan_name" name="hq_chan_name" type="text"/></td>
+                    <td width="15%"><input class="default-text-input wper100" id="hq_chan_name" name="hq_chan_name" type="text"/></td>
                 </tr>
                 <tr height="35px">
                 	<td width="6%" style="padding-left:10px;">工位：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="user_code" name="user_code" type="text"/></td>
+                    <td width="15%"><input class="default-text-input wper100" id="user_code" name="user_code" type="text"/></td>
                     <td width="5%">营业厅主任：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="f_hr_id" name="f_hr_id" type="text"/></td>
+                    <td width="15%"><input class="default-text-input wper100" id="f_hr_id" name="f_hr_id" type="text"/></td>
                 </tr>
                 <tr height="35px">
                     <td width="6%" style="padding-left: 10px;">账期：</td>
 					<td width="15%">
-						<input type="text"  class="Wdate default-text-input wper80" 
+						<input type="text"  class="Wdate default-text-input wper100" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" readonly="readonly" id="time"/>
 					</td>
 				 </tr>	

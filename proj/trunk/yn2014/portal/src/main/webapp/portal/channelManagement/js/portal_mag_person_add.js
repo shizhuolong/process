@@ -73,7 +73,7 @@ function initName(){
 		"SELECT REALNAME FROM PORTAL.APDP_USER T                                     "+
 		"WHERE T.ORG_ID  IN(                                                         "+
 		"SELECT ID FROM PORTAL.APDP_ORG T                                            "+
-		"WHERE T.ORGLEVEL=1                                                          "+
+		"WHERE T.ORGLEVEL=2                                                          "+
 		"START WITH T.CODE IN (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T  "+
 		"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
 		"CONNECT BY PRIOR T.PARENT_ID=T.ID)                                          "+
