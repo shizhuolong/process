@@ -56,21 +56,21 @@
 							<option value=''>请选择</option>
 						</select>
 					</td> --%>
-					<td width="4%" style="text-align:right;">营服中心：</td>
-					<td width="10%">
+					<td width="10%" style="text-align:right;">营服中心：</td>
+					<td width="30%">
 						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper90">
 							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="4%" style="text-align:right;">渠道经理：</td>
-					<td width="8%">
+					<td width="10%" style="text-align:right;">渠道经理：</td>
+					<td width="30%">
 						<input class="default-text-input wper90" name="hqName" type="text" id="hqName"/>
 					</td>
-					<td width="3%">
+					<td width="10%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 18px;">查询</a>
 					</td>
-					<td width="3%">
+					<td width="10%">
 						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
