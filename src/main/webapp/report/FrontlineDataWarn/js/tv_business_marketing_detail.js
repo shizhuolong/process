@@ -8,6 +8,9 @@ $(function() {
 	if(orgLevel==2){
 		var code =$("#code").val();
 		listUnits(code);
+	}else{
+		$("#unitCode").parent().css({"display":"none"});
+		$("#unitCode").parent().prev().css({"display":"none"});
 	}
 	report = new LchReport({
 		title : title,
@@ -121,7 +124,7 @@ function getsql(){
 			"	       T.HQ_CHAN_CODE,      "+		//--发展渠道
 			"	       T.ADVANCE_FEE        "+		//--预存款余额
 			"	FROM PMRT.TAB_MRT_GK_JZYX_MON PARTITION(P"+dealDate+") T "+
-			"	WHERE FALG=01 				"+
+			"	WHERE FALG=02 				"+
 			"   AND IS_ACCT=1				";
 
 
@@ -138,6 +141,8 @@ function getsql(){
 		sql+=" and t.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
 		sql+=" and t.UNIT_ID='"+code+"'";
+	}else if(orgLevel==3){
+		sql+=" and HR_ID='"+code+"'";
 	}else{
 		sql+="  and 1=2";
 	}

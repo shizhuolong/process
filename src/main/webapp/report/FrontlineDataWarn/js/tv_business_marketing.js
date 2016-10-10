@@ -180,7 +180,7 @@ function downsAll() {
 			"	       T.HQ_CHAN_CODE,      "+		//--发展渠道
 			"	       T.ADVANCE_FEE        "+		//--预存款余额
 			"	FROM PMRT.TAB_MRT_GK_JZYX_MON PARTITION(P"+dealDate+") T "+
-			"	WHERE FALG=01 				"+
+			"	WHERE FALG=02 				"+
 			"   AND IS_ACCT=1				";
 
 
