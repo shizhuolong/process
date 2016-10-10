@@ -34,7 +34,7 @@
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 <input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 <div id="container" style="min-height: 150px;">
-	<div class="default-dt" style="width: 420px;">
+	<div class="default-dt" style="width: 520px;">
 		<div class="sticky-wrap" style="height: 150px;">
 			<form id="add" method="POST">
 			<input type="hidden" id="code" name="code" value="<%=org.getCode()%>"/>
@@ -42,42 +42,51 @@
 			<input type="hidden" id="unit_id" name="unit_id"/>
 				<table class="default-table sticky-enabled">
 				<tr>
-				 <td width="8%">營服中心：
-					<select name="unit_name" id="unit_name" onchange="" class="">
+					 <td width="8%">營服中心：</td>
+					 <td colspan="3">
+					 	<select name="unit_name" id="unit_name" >
+							<option value=''>请选择</option>
+					    </select>
+					 </td>
+				</tr>
+				<tr>
+				<td width="8%">从业类型：</td>
+				<td width="42%">
+					<select name="emp_type" id="emp_type" style="width:100%;">
 						<option value=''>请选择</option>
 				    </select>
-				 </td>
-				 <td width="8%">从业类型：
-					<select name="emp_type" id="emp_type" onchange="" class="">
+				</td>
+				 <td width="8%">岗位类型：</td>
+				 <td width="42%">
+				 	<select name="job_type" id="job_type" style="width:100%;">
 						<option value=''>请选择</option>
 				    </select>
 				 </td>
 				</tr>
 				<tr>
-				 <td width="8%">岗位类型：
-					<select name="job_type" id="job_type" onchange="" class="">
+				 <td width="8%">HR	编码：</td>
+				 <td width="42%">
+				 	<input type="text" style="width:100%;" required="true" class="easyui-validatebox" missingMessage="HR编码不能为空" name="hr_id" id="hr_id"/>
+				 </td>
+				 <td width="8%">工作岗位：</td>
+				 <td width="42%">
+				 	<select name="job" id="job" style="width:100%;">
 						<option value=''>请选择</option>
 				    </select>
 				 </td>
-				 <td width="8%">HR编码：<input type="text" style="width:100px;" required="true" class="easyui-validatebox" missingMessage="HR编码不能为空" name="hr_id" id="hr_id"/>
-				 </td>
 				</tr>
 				<tr>
-				 <td width="8%">工作岗位：
-					<select name="job" id="job" onchange="" class="">
-						<option value=''>请选择</option>
-				    </select>
+				 <td width="8%">人员姓名：</td>
+				 <td width="42%">
+				 	<input type="text"  required="true" class="easyui-validatebox" missingMessage="HR编码错误" style="width:100%;" readonly="true" name="name" id="name"/>
 				 </td>
-				 <td width="8%">人员姓名：<input type="text"  required="true" class="easyui-validatebox" missingMessage="HR编码错误" style="width:100px;" readonly="true" name="name" id="name"/>
-				 </td>
-				</tr>
-				<tr>
-				 <td colspan='2' width="8%" style="padding-left: 10px;">生效时间：
-						<input type="text" readonly="true" value="<%=time%>" name="time" id="time"/>
+				 <td width="8%">生效时间：</td>
+				 <td width="42%">
+				 	<input type="text" readonly="true" value="<%=time%>" name="time" id="time" style="width:100%;"/>
 				 </td>
 				</tr>			
 				<tr>
-	                <td colspan="2" style="padding-left: 120px;">
+	                <td colspan="4" style="padding-left: 32%;">
 		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
 		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn">取消</a>
 	                </td>
