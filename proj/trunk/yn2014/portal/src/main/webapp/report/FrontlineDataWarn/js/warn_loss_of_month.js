@@ -140,52 +140,52 @@ $(function(){
 });
 //大理州分公司,16002,2
 function getSql(){
-	var sql="      ,SUM(NVL(LOSE_NUM,0))     AS LOSE_NUM                                                                                                                        "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(LOSE_NUML,0)) <> 0                                                                                            "+
-			"                                                    THEN (SUM(NVL(LOSE_NUM,0)) - SUM(NVL(LOSE_NUML,0)))*100 /SUM(NVL(LOSE_NUML,0))                                 "+
-			"                                                    ELSE 0 END,'FM99999999990.9999')),2) || '%'             HB_LOSE_NUM                                            "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(ACCT_NUML,0)) <> 0                                                                                            "+
-			"                                                    THEN SUM(NVL(LOSE_NUM,0))*100/SUM(NVL(ACCT_NUML,0))                                                            "+
-			"                                                    ELSE 0 END,'FM99999999990.9999')),2) || '%'             RATE_LOSE_NUM                                          "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(ACCT_NUML,0))=0 AND SUM(NVL(ACCT_NUML2,0))= 0                                                                 "+
-			"                                          THEN 0                                                                                                                   "+
-			"                                          WHEN SUM(NVL(ACCT_NUML,0))<>0 AND SUM(NVL(ACCT_NUML2,0))=0                                                               "+
-			"                                          THEN SUM(NVL(LOSE_NUM,0))*100/SUM(NVL(ACCT_NUML,0))                                                                      "+
-			"                                          WHEN SUM(NVL(ACCT_NUML,0))=0 AND SUM(NVL(ACCT_NUML2,0))<>0                                                               "+
-			"                                          THEN -SUM(NVL(LOSE_NUML,0))*100/SUM(NVL(ACCT_NUML2,0))                                                                   "+
-			"                                                    ELSE SUM(NVL(LOSE_NUM,0))*100/SUM(NVL(ACCT_NUML,0))-SUM(NVL(LOSE_NUML,0))*100/SUM(NVL(ACCT_NUML2,0))           "+
-			"                                                    END,'FM99999999990.9999')),2)   || '%'                   HB1_LOSE_NUM                                          "+
-			"      ,SUM(NVL(LOSE_SR,0))    AS LOSE_SR                                                                                                                           "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(LOSE_SRL,0)) <> 0                                                                                             "+
-			"                                                    THEN (SUM(NVL(LOSE_SR,0)) - SUM(NVL(LOSE_SRL,0)))*100 /SUM(NVL(LOSE_SRL,0))                                    "+
-			"                                                    ELSE 0 END,'FM99999999990.9999')),2) || '%'             HB_LOSE_SR                                             "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(ACCT_SRL,0)) <> 0                                                                                             "+
-			"                                                    THEN SUM(NVL(LOSE_SR,0))*100/SUM(NVL(ACCT_SRL,0))                                                              "+
-			"                                                    ELSE 0 END,'FM99999999990.9999')),2) || '%'             RATE_LOSE_SR                                           "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(ACCT_SRL,0))=0 AND SUM(NVL(ACCT_SRL2,0))= 0                                                                   "+
-			"                                          THEN 0                                                                                                                   "+
-			"                                          WHEN SUM(NVL(ACCT_SRL,0))<>0 AND SUM(NVL(ACCT_SRL2,0))=0                                                                 "+
-			"                                          THEN SUM(NVL(LOSE_SR,0))*100/SUM(NVL(ACCT_SRL,0))                                                                        "+
-			"                                          WHEN SUM(NVL(ACCT_SRL,0))=0 AND SUM(NVL(ACCT_SRL2,0))<>0                                                                 "+
-			"                                          THEN -SUM(NVL(LOSE_SRL,0))*100/SUM(NVL(ACCT_SRL2,0))                                                                     "+
-			"                                                    ELSE SUM(NVL(LOSE_SR,0))*100/SUM(NVL(ACCT_SRL,0))-SUM(NVL(LOSE_SRL,0))*100/SUM(NVL(ACCT_SRL2,0))               "+
-			"                                                    END,'FM99999999990.9999')),2)   || '%'                   HB1_LOSE_SR                                           "+
-			"      ,SUM(NVL(QF,0))   AS QF                                                                                                                                      "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(QFL,0)) <> 0                                                                                                  "+
-			"                                                    THEN (SUM(NVL(QF,0)) - SUM(NVL(QFL,0)))*100 /SUM(NVL(QFL,0))                                                   "+
-			"                                                    ELSE 0 END,'FM99999999990.9999')),2) || '%'               HB_QF                                                "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(INNET_NUM,0)) <> 0                                                                                            "+
-			"                                                    THEN SUM(NVL(ACCT_NUM,0))*100/SUM(NVL(INNET_NUM,0))                                                            "+
-			"                                                    ELSE 0 END,'FM99999999990.9999')),2) || '%'               RATE_ACCT                                            "+
-			"      ,ROUND(TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(INNET_NUM,0))=0 AND SUM(NVL(INNET_NUML,0))= 0                                                                 "+
-			"                                          THEN 0                                                                                                                   "+
-			"                                          WHEN SUM(NVL(INNET_NUM,0))<>0 AND SUM(NVL(INNET_NUML,0))=0                                                               "+
-			"                                          THEN SUM(NVL(ACCT_NUM,0))*100/SUM(NVL(INNET_NUM,0))                                                                      "+
-			"                                          WHEN SUM(NVL(INNET_NUM,0))=0 AND SUM(NVL(INNET_NUML,0))<>0                                                               "+
-			"                                          THEN -SUM(NVL(ACCT_NUML,0))*100/SUM(NVL(INNET_NUML,0))                                                                   "+
-			"                                                    ELSE SUM(NVL(ACCT_NUM,0))*100/SUM(NVL(INNET_NUM,0))-SUM(NVL(ACCT_NUML,0))*100/SUM(NVL(INNET_NUML,0))           "+
-			"                                                    END,'FM99999999990.9999')),2)   || '%'                   HB1_ACCT_NUM                                          "+                                                                                                                                 
-			"	FROM PMRT.TB_MRT_WARN_USER_LOSE_MON                                                                                                                             ";
+	var sql="  ,SUM(NVL(LOSE_NUM,0))   AS   LOSE_NUM                                                                                                                    "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(LOSE_NUML,0)) <> 0                                                                                               "+
+			"                                                THEN (SUM(NVL(LOSE_NUM,0)) - SUM(NVL(LOSE_NUML,0)))*100 /SUM(NVL(LOSE_NUML,0))                             "+
+			"                                                ELSE 0 END || '%',2)             HB_LOSE_NUM                                                               "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ACCT_NUML,0)) <> 0                                                                                               "+
+			"                                                THEN SUM(NVL(LOSE_NUM,0))*100/SUM(NVL(ACCT_NUML,0))                                                        "+
+			"                                                ELSE 0 END || '%' ,2)              RATE_LOSE_NUM                                                           "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ACCT_NUML,0))=0 AND SUM(NVL(ACCT_NUML2,0))= 0                                                                    "+
+			"                                      THEN 0                                                                                                               "+
+			"                                      WHEN SUM(NVL(ACCT_NUML,0))<>0 AND SUM(NVL(ACCT_NUML2,0))=0                                                           "+
+			"                                      THEN SUM(NVL(LOSE_NUM,0))*100/SUM(NVL(ACCT_NUML,0))                                                                  "+
+			"                                      WHEN SUM(NVL(ACCT_NUML,0))=0 AND SUM(NVL(ACCT_NUML2,0))<>0                                                           "+
+			"                                      THEN -SUM(NVL(LOSE_NUML,0))*100/SUM(NVL(ACCT_NUML2,0))                                                               "+
+			"                                                ELSE SUM(NVL(LOSE_NUM,0))*100/SUM(NVL(ACCT_NUML,0))-SUM(NVL(LOSE_NUML,0))*100/SUM(NVL(ACCT_NUML2,0))       "+
+			"                                                END || '%' ,2)                   HB1_LOSE_NUM                                                              "+
+			"  ,SUM(NVL(LOSE_SR,0))    AS   LOSE_SR                                                                                                                     "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(LOSE_SRL,0)) <> 0                                                                                                "+
+			"                                                THEN (SUM(NVL(LOSE_SR,0)) - SUM(NVL(LOSE_SRL,0)))*100 /SUM(NVL(LOSE_SRL,0))                                "+
+			"                                                ELSE 0 END  || '%' ,2)              HB_LOSE_SR                                                             "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ACCT_SRL,0)) <> 0                                                                                                "+
+			"                                                THEN SUM(NVL(LOSE_SR,0))*100/SUM(NVL(ACCT_SRL,0))                                                          "+
+			"                                                ELSE 0 END || '%' ,2)             RATE_LOSE_SR                                                             "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ACCT_SRL,0))=0 AND SUM(NVL(ACCT_SRL2,0))= 0                                                                      "+
+			"                                      THEN 0                                                                                                               "+
+			"                                      WHEN SUM(NVL(ACCT_SRL,0))<>0 AND SUM(NVL(ACCT_SRL2,0))=0                                                             "+
+			"                                      THEN SUM(NVL(LOSE_SR,0))*100/SUM(NVL(ACCT_SRL,0))                                                                    "+
+			"                                      WHEN SUM(NVL(ACCT_SRL,0))=0 AND SUM(NVL(ACCT_SRL2,0))<>0                                                             "+
+			"                                      THEN -SUM(NVL(LOSE_SRL,0))*100/SUM(NVL(ACCT_SRL2,0))                                                                 "+
+			"                                                ELSE SUM(NVL(LOSE_SR,0))*100/SUM(NVL(ACCT_SRL,0))-SUM(NVL(LOSE_SRL,0))*100/SUM(NVL(ACCT_SRL2,0))           "+
+			"                                                END|| '%' ,2)                    HB1_LOSE_SR                                                               "+
+			"  ,SUM(NVL(QF,0))  AS    QF                                                                                                                                "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(QFL,0)) <> 0                                                                                                     "+
+			"                                                THEN (SUM(NVL(QF,0)) - SUM(NVL(QFL,0)))*100 /SUM(NVL(QFL,0))                                               "+
+			"                                                ELSE 0 END || '%' ,2)               HB_QF                                                                  "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(INNET_NUM,0)) <> 0                                                                                               "+
+			"                                                THEN SUM(NVL(ACCT_NUM,0))*100/SUM(NVL(INNET_NUM,0))                                                        "+
+			"                                                ELSE 0 END || '%' ,2)                RATE_ACCT                                                             "+
+			"  ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(INNET_NUM,0))=0 AND SUM(NVL(INNET_NUML,0))= 0                                                                    "+
+			"                                      THEN 0                                                                                                               "+
+			"                                      WHEN SUM(NVL(INNET_NUM,0))<>0 AND SUM(NVL(INNET_NUML,0))=0                                                           "+
+			"                                      THEN SUM(NVL(ACCT_NUM,0))*100/SUM(NVL(INNET_NUM,0))                                                                  "+
+			"                                      WHEN SUM(NVL(INNET_NUM,0))=0 AND SUM(NVL(INNET_NUML,0))<>0                                                           "+
+			"                                      THEN -SUM(NVL(ACCT_NUML,0))*100/SUM(NVL(INNET_NUML,0))                                                               "+
+			"                                                ELSE SUM(NVL(ACCT_NUM,0))*100/SUM(NVL(INNET_NUM,0))-SUM(NVL(ACCT_NUML,0))*100/SUM(NVL(INNET_NUML,0))       "+
+			"                                                END || '%' ,2)                      HB1_ACCT_NUM                                                           "+                                                                                                                             
+			"	FROM PMRT.TB_MRT_WARN_USER_LOSE_MON                                                                                                                     ";
 	return sql;
 }
 

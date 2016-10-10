@@ -8,6 +8,9 @@ $(function() {
 	if(orgLevel==2){
 		var code =$("#code").val();
 		listUnits(code);
+	}else{
+		$("#unitCode").parent().css({"display":"none"});
+		$("#unitCode").parent().prev().css({"display":"none"});
 	}
 	report = new LchReport({
 		title : title,
@@ -138,6 +141,8 @@ function getsql(){
 		sql+=" and t.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
 		sql+=" and t.UNIT_ID='"+code+"'";
+	}else if(orgLevel==4){
+		sql+=" and HR_ID='"+code+"'";
 	}else{
 		sql+=" and 1=2";
 	}

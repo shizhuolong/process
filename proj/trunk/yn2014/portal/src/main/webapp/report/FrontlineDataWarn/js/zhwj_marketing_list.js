@@ -148,7 +148,7 @@ function showDetail(groupName,groupId,orgLevel){
 	var dealDate = $("#dealDate").val();
 	//console.info("group_name===="+groupName+",groupId====="+groupId+",orgLevel====="+orgLevel);
 	var url=$("#ctx").val()+"/report/FrontlineDataWarn/jsp/zhwj_marketing_list_detail.jsp?groupId="+groupId+"&orgLevel="+orgLevel+"&groupName="+groupName+"&dealDate="+dealDate;
-	window.parent.openWindow('"'+groupName+'"TV业务营销清单明细',null,url);
+	window.parent.openWindow('"'+groupName+'"智慧沃家营销明细',null,url);
 }
 
 /////////////////////////下载开始/////////////////////////////////////////////
@@ -205,7 +205,7 @@ function downsAll() {
 	}
 	var title=[["账期","分公司","营服名","渠道经理","归属地","宽带账号","用户名","装机地址","联系电话","套餐","入网时间","捆绑手机号码","状态","局站","接入方式","宽带速率","发展渠道","预存款余额"]];		
 		
-	showtext = 'TV业务营销清单-'+dealDate;
+	showtext = '智慧沃家营销-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 
