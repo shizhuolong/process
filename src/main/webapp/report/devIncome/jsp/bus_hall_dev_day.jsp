@@ -11,6 +11,7 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.DATE, -1);
 	String month=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	String regionCode = org.getRegionCode();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -33,29 +34,33 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
+	<input type="hidden" id="regionCode" value="<%=regionCode%>">
 	<form id="searchForm" method="post">
-			<input type="hidden" name="resultMap.page" /> <input type="hidden"
-				name="resultMap.rows" />
+			<input type="hidden" name="resultMap.page" /> <input type="hidden" name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="8%" align="right">开始账期：</td>
-					<td width="12%">
+					<td width="5%" align="right">开始账期：</td>
+					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="startDate">
 					</td>
-					<td width="8%" align="right">结束账期：</td>
-					<td width="12%">
+					<td width="5%" align="right">结束账期：</td>
+					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="endDate">
 					</td>
 					<td width="4%" align="right">地市：</td>
-					<td width="15%">
+					<td width="13%">
 						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%" align="right">经营模式：</td>
-					<td width="15%">
+					<td width="5%" align="right">渠道编码：</td>
+					<td width="13%">
+						<input class="default-text-input wper80" name="chnlCode" type="text" id="chnlCode"/>
+					</td>
+					<td width="5%" align="right">经营模式：</td>
+					<td width="13%">
 						<select name="operateType" id="operateType" class="default-text-input wper80">
 								<option value=''>请选择</option>
 								<option value='自营'>自营</option>
@@ -65,7 +70,7 @@
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 28px;">查询</a>
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
