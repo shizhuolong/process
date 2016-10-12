@@ -55,12 +55,13 @@ public class GrpManagerAction extends BaseAction {
 		params.put("chanCode", chanCode);
 		params.put("chanName", chanName);
 		params.put("dealDate", dealDate);
-		int result =service.updateGrpPerson(params);
-		if(result==1){
+		try {
+			service.updateGrpPerson(params);
 			resultMap = new HashMap<String,String>();
 			resultMap.put("SUCCESS", "修改集客经理成功");
 			this.reponseJson(resultMap);
-		}else{
+		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("修改集客经理失败");
 			outJsonPlainString(response,"{\"msg\":\"修改集客经理失败\"}");
 		}

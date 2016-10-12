@@ -26,17 +26,12 @@ public class GrpMangerService {
 	 * 修改集客经理
 	 * @param params
 	 * @return
+	 * @throws Exception 
 	 */
 	@Transactional
-	public int updateGrpPerson(Map<String, String> params) {
-		try {
+	public void updateGrpPerson(Map<String, String> params) throws Exception {
 			dao.updateGrp(params);
 			dao.meregIntoGrp(params);
-			return 1;
-		} catch (Exception e) {
-			logger.error("修改集客经理失败",e);
-			return 0;
-		}
 	}
 	
 	
