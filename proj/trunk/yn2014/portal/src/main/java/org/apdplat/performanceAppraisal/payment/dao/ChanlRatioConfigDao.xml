@@ -37,7 +37,9 @@
     		ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE AND T2.DEAL_DATE=#{month})
     	LEFT JOIN PTEMP.TB_TEMP_JCDY_CHANL_TYPE T3
     		ON (T2.CHNL_TYPE = T3.CHANL_TYPE_CODE)
- 		WHERE T.IS_SIGN = 1 
+ 		<!--更改之前sql条件    -->
+ 		<!-- WHERE T.IS_SIGN = 1 -->
+ 		WHERE 1 = 1 
  		<if test="orgLevel==2">
  			AND T.GROUP_ID_1 = #{code}
  		</if>
