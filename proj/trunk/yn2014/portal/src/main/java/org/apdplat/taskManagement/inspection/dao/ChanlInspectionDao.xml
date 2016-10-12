@@ -241,7 +241,7 @@
 	
 	<!--查询登录用户是否是营服中心管理员  -->
 	<select id="ismanager" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT COUNT(*) NUM,UNIT_ID FROM PORTAL.VIEW_U_PORTAL_PERSON WHERE T.DEAL_DATE=#{month} AND USERID = #{userid} 
+		SELECT COUNT(*) NUM,UNIT_ID FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.DEAL_DATE=#{month} AND USERID = #{userid} 
 		GROUP BY UNIT_ID
 	</select>
 	
