@@ -85,11 +85,11 @@ function search(pageNumber) {
     	  csql="SELECT TABLE_ROWS TOTAL FROM PODS.TB_ODS_TABLE_ROWS T WHERE OWNER='PODS' AND TABLE_NAME='TB_ODS_JCDY_INCOME_HR_MON' AND PART_NAME='P"+dealDate+"'";
       }
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 =" + code;
-		csql+=" and T.GROUP_ID_1 =" + code;
+		sql+=" and T.GROUP_ID_1 ='" + code+"'";
+		csql+=" and T.GROUP_ID_1 ='" + code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.UNIT_ID =" + code;
-		csql+=" and T.UNIT_ID =" + code;
+		sql+=" and T.UNIT_ID ='" + code+"'";
+		csql+=" and T.UNIT_ID ='" + code+"'";
 	}else{
 		sql+=" and 1=2";
 		csql+=" and 1=2";
@@ -172,9 +172,9 @@ function downsAll(){
 	if(orgLevel==1){
 
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 =" + code;
+		sql+=" and T.GROUP_ID_1 ='" + code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.UNIT_ID =" + code;
+		sql+=" and T.UNIT_ID ='" + code+"'";
 	}else{
 		sql+=" and 1=2";
 	}

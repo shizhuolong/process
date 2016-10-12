@@ -78,9 +78,9 @@ function search(pageNumber) {
 	if(orgLevel==1){
 
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 =" + code;
+		sql+=" and T.GROUP_ID_1 ='" + code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.UNIT_ID =" + code;
+		sql+=" and T.UNIT_ID ='" + code+"'";
 	}else{
 		sql+=" and 1=2";
 	}
@@ -173,9 +173,9 @@ function downsAll(){
 	if(orgLevel==1){
 
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 =" + code;
+		sql+=" and T.GROUP_ID_1 =" + code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.UNIT_ID =" + code;
+		sql+=" and T.UNIT_ID ='" + code+"'";
 	}else{
 		sql+=" and 1=2";
 	}
