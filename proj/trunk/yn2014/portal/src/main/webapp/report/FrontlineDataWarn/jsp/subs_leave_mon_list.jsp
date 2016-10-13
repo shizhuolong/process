@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/subs_leave_mon_list.js"></script>
 <style>
-  #detail{position:absolute;height:auto;width:100px;background:yellow;}
+  #detail{position:absolute;height:auto;width:200px;background:yellow;}
 </style>
 </head>
 <body style="overflow-x:auto;">
