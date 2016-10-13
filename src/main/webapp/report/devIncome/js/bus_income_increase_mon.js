@@ -147,7 +147,7 @@ function downsAll() {
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
 	var sql = 'SELECT' + preField + getSql()+where+groupBy+orderBy;
-	var showtext = '出帐收入净增用户统计月报表' + startDate+"-"+endDate;
+	var showtext = '出帐收入净增统计月报表' + startDate+"-"+endDate;
 	var title=[["账期","地市","营业厅名称","渠道编码","经营模式","2G业务（万元）","","","3G业务（万元）","","","4G业务（万元）","","","固网（万元）","","","其中：宽带（万元）","","","其中：融合（万元）","","","合计（万元）","",""],
 	           ["","","","","","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比"]];
 	downloadExcel(sql,title,showtext);
