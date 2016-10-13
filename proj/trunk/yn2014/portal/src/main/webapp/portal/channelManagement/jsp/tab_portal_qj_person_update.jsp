@@ -47,7 +47,7 @@
 				    </td>
 				</tr>
 				<tr>
-				  <td>HR系数：<input type="text" equired="true" class="easyui-numberbox" name="hr_ratio" id="hr_ratio"/>
+				  <td>HR系数：<input type="text" equired="true" class="easyui-numberbox" precision="2" name="hr_ratio" id="hr_ratio"/>
 				  </td>
 				</tr>
 				<tr>
