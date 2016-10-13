@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/subs_leave_mon_list.js"></script>
 <style>
-  #detail{position:absolute; width:100px; height:auto; border:1px solid #00CC66;}
+  #detail{position:absolute;height:auto;width:100px;background:yellow;}
 </style>
 </head>
 <body style="overflow-x:auto;">
@@ -62,7 +62,7 @@
 					<td width="8%">
 						<input type="text" id="device_number" class="default-text-input wper80"/>
 					</td>
-					<td width="8%" style="text-align:right;">渠道经理：</td>
+					<td width="6%" style="text-align:right;">渠道经理：</td>
 					<td width="8%">
 						<input type="text" id="name" class="default-text-input wper80"/>
 					</td>
@@ -85,9 +85,9 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-    <div style="color: red; font-size: 15px;" id="remarkDiv">
+    <div style="color: red; font-size: 10px;" id="remarkDiv">
 		口径说明:<br /> 1.流失用户：上月有出账收入，本月无出账收入。<br /> 2.生命周期消费额：近一年的出账收入。<br />
 	</div>
-	<div id="detail" style="color:red;"></div>
+	<div id="detail" style="color:red;display:none;"></div>
 </body>
 </html>
