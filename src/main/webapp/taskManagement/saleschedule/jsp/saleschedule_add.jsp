@@ -157,7 +157,7 @@
 	
 	<div id="indexDialog" style="min-height: 200px;display:none;">
 		<div class="default-dt" style="width: 600px;">
-			<div class="sticky-wrap" style="height: 120px;">
+			<div>
 				<table class="default-table sticky-enabled">
 					<thead>
 						<tr>

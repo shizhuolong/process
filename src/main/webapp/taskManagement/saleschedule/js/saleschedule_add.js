@@ -17,8 +17,6 @@ $(document).ready(function(){
 			id:"indexInfoDialog",
 			title:"选择指标",
 			lock:true,
-			width:600,
-			height:200,
 			content:document.getElementById("indexDialog")
 		}).show();
 	});
