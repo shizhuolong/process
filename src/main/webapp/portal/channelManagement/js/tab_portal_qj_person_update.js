@@ -8,7 +8,8 @@ $(function() {
 	var chooseMonth=art.dialog.data('chooseMonth');
 	$("#is_logo").val(is_logo);
 	$("#job").val(job);
-	$("#hr_ratio").val(hr_ratio);
+	//$("#hr_ratio").val(hr_ratio);
+	$('#hr_ratio').numberbox('setValue', hr_ratio);
 	$("#hr_id").val(hr_id);
 	$("#chooseMonth").val(chooseMonth);
 	listunit_name();
