@@ -57,10 +57,10 @@ function showByMouse(){
 		
 		if ($(this).attr("name") == "product_id") {
 			sql = "SELECT DISTINCT PRODUCT_NAME NAME FROM PTEMP.VIEW_ALL_PRODUCT_INFO WHERE PRODUCT_ID IN("
-					+ text + ")";
+					+ text + ") AND RN=1";
 		} else {
 			sql = "SELECT DISTINCT SCHEME_NAME NAME FROM PTEMP.VIEW_ALL_scheme_INFO WHERE SCHEME_ID IN("
-					+ text + ")";
+					+ text + ") AND RN=1";
 
 		}
 		data = query(sql);
