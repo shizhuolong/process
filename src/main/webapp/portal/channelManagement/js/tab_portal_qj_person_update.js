@@ -25,9 +25,9 @@ $(function() {
 		$("#unit_id").val($("#unit_name").find("option:selected").attr("unit_id"));
 		var url = $("#ctx").val()+'/channelManagement/qjPerson_update.action';
 		
-		if($("#hr_ratio").val()==""){
+		/*if($("#hr_ratio").val()==""){
 			$("#hr_ratio").val("1");
-	    }
+	    }*/
 		$('#update').form('submit',{
 			url:url,
 			onSubmit:function(){
@@ -58,7 +58,7 @@ $(function() {
 function listunit_name(){
 	var chooseMonth=$("#chooseMonth").val();
 	var hr_id=$("#hr_id").val();
-	var sql = "SELECT DISTINCT UNIT_ID,UNIT_NAME FROM PORTAL.VIEW_U_PORTAL_PERSON@YNSYN13 WHERE DEAL_DATE='"+chooseMonth+"' AND HR_ID='"+hr_id+"'";
+	var sql ="SELECT DISTINCT UNIT_ID,UNIT_NAME FROM PORTAL.TAb_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND HR_ID='"+hr_id+"'"+" UNION "+"SELECT DISTINCT UNIT_ID,UNIT_NAME FROM PORTAL.VIEW_U_PORTAL_PERSON WHERE DEAL_DATE='"+chooseMonth+"' AND HR_ID='"+hr_id+"'";
 	var d=query(sql);
 	if (d) {
 		var h = '';
