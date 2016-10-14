@@ -107,7 +107,6 @@ function getsql(){
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	//console.info("channelAttrs===="+channelAttrs+"----channelLevel=="+channelLevel);
 	var sql=" SELECT T.DEAL_DATE, 			"+											//账期
 			"        T.GROUP_ID_1_NAME, 	"+											//地市名称
 			"        T.UNIT_NAME,			"+											//营服名称
@@ -122,7 +121,7 @@ function getsql(){
 			"        DECODE(T.IS_LOWWEEK_USER, 1, '是', 0, '否') AS IS_LOWWEEK_USER, "+  //是否新发展一周内三无极低
 			"        T.CUSTOMER_NAME 		"+											//客户名
 			"   FROM PMRT.TAB_MRT_234G_JK_MON_DETAIL T "+
-			"  WHERE  T.DEAL_DATE = "+dealDate;
+			"  WHERE  T.DEAL_DATE = "+dealDate+" AND T.IS_LOWWEEK_USER = 1 "
 
 	if(regionCode!=''){
 		sql+=" AND  T.GROUP_ID_1='"+regionCode+"'";
