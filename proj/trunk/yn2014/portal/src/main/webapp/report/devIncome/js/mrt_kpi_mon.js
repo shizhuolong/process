@@ -7,7 +7,6 @@ var orderBy = '';
 var report = null;
 $(function() {
 	listRegions();
-	listUserRole();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -58,7 +57,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
-	var user_role=$("#user_role").val();
+	var user_role=$.trim($("#user_role").val());
 //条件
 	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
 	if(regionName!=''){
@@ -71,7 +70,7 @@ function search(pageNumber) {
 		sql+=" and t.NAME like '%"+userName+"%'";
 	}
 	if(user_role!=''){
-		sql+=" AND USER_ROLE = '"+user_role+"'";
+		sql+=" AND t.USER_ROLE LIKE '%"+user_role+"%'";
 	}
 	
 //权限
@@ -266,7 +265,7 @@ function downsAll(){
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
-	var user_role=$("#user_role").val();
+	var user_role=$.trim($("#user_role").val());
 	//条件
 	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
 	if(regionName!=''){
@@ -279,7 +278,7 @@ function downsAll(){
 		sql+=" and t.NAME like '%"+userName+"%'";
 	}
 	if(user_role!=''){
-		sql+=" AND USER_ROLE = '"+user_role+"'";
+		sql+=" AND t.USER_ROLE LIKE '%"+user_role+"%'";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
