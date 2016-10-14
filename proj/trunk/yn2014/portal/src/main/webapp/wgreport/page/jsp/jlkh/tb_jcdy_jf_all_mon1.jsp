@@ -62,7 +62,7 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 					</td>
 					<td width="8%" align="right">人员类型：</td>
 					<td width="15%">
-						<select name="user_role" id="user_role" class="default-text-input wper80"></select>
+						<input name="user_role" id="user_role" class="default-text-input wper80"/>
 					</td>
 					<td width="8%" align="right">人员姓名：</td>
 					<td width="15%">
