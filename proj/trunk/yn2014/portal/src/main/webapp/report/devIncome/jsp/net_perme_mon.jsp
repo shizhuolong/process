@@ -63,7 +63,7 @@
 						<input class="default-text-input wper80" name="hq_chan_code" type="text" id="hq_chan_code"/>
 					</td>
 					<td width="1%">
-						<a class="default-btn default-gree-btn" href="#" id="searchBtn"
+						<a class="default-gree-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
