@@ -40,7 +40,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/performanceAppraisal/payment/js/chanl_ratio_config.js"></script>
 <script type="text/javascript">
 var privileges='<%=user.getAuthoritiesStr()%>';
-alert(privileges);
 function isGrantedNew(role){
     if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
         return true;
@@ -59,23 +58,27 @@ function isGrantedNew(role){
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
 	<input type="hidden" id="username" value="<%=user.getUsername()%>">
-	<div data-options="region:'west',split:false,title:'渠道系数配置'" style="width:220px;padding:10px;">
+	<div data-options="region:'west',split:false,title:'渠道系数配置'" style="width:180px;padding:10px;">
 		<div id="ztree" class="ztree"></div>
 	</div>
 	<div data-options="region:'center',title:'渠道系数配置'">
 		<div id="container">
-		<form id="searchForm" method="post">
+         <form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" />
             <input type="hidden" name="resultMap.rows" />
           	<table style="margin-top: 10px;">
           		<tr>
-                	<td>渠道编码：</td>
-                    <td><input class="default-text-input wper140" name="hq_chan_code" id="hq_chan_code" type="text"/></td>
-                    <td>渠道名称：</td>
-                    <td><input class="default-text-input" style="width: 150px;" name="group_id_4_name" id="group_id_4_name" type="text"/></td>
-                    <td>渠道状态：</td>
-                    <td>
-	                    <select class="default-text-input" style="width: 80px;" name="status" id="status">
+                	<td style="text-align:right;width:13%;">渠道编码：</td>
+                    <td style="width:16%;">
+                    	<input class="default-text-input wper80" name="hq_chan_code" id="hq_chan_code" type="text"/>
+                    </td>
+                    <td style="text-align:right;width:13%">渠道名称：</td>
+                    <td style="width:16%;">
+                    	<input class="default-text-input wper80" name="group_id_4_name" id="group_id_4_name" type="text"/>
+                    </td>
+                    <td style="text-align:right;width:8%;">渠道状态：</td>
+                    <td style="width:13%;">
+	                    <select class="default-text-input wper90 "  name="status" id="status">
 							<option value="">全部</option>
 							<option value="00">草稿</option>
 							<option value="01">待审核</option>
@@ -85,36 +88,40 @@ function isGrantedNew(role){
 							<option value="100">其他</option>
 						</select>
 					</td>
+					<td style="width:4%;">
+                		<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+                	</td>
+                	<td style="width:4%;">
+                		<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
+                		
+                	</td>
+                	<td style="width:4%;">
+                		<a class="default-gree-btn" href="#" id="downloadExcel">导出</a>
+                	</td>
+                	
                 </tr>
                 <tr>
-                	<td>是否配置渠道系数：</td>
-                	<td>
-                		<select class="default-text-input" style="width: 80px;" name="ratio" id="ratio">
+                	<td style="text-align:right;width:13%;">是否配置渠道系数：</td>
+                	<td style="width:16%;">
+                		<select class="default-text-input wper90"  name="ratio" id="ratio">
 							<option value="">全部</option>
 							<option value="1">是</option>
 							<option value="0">否</option>
 						</select>
                 	</td>
-                	<td>是否配置服务系数：</td>
-                	<td colspan="" style="padding: 15px 0px;">
-                		<select class="default-text-input" style="width: 80px;" name="server_ratio" id="server_ratio">
+                	<td style="text-align:right;width:13%;">是否配置服务系数：</td>
+                	<td style="width:16%;">
+                		<select class="default-text-input wper90"  name="server_ratio" id="server_ratio">
 							<option value="">全部</option>
 							<option value="1">是</option>
 							<option value="0">否</option>
 						</select>
                 	</td>
-                     <td>账期：</td>
-					<td>
+                     <td style="text-align:right;width:8%;">账期：</td>
+					<td style="width:13%;">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',onpicked:function(){search(0)},isShowClear:false})" value="<%=month%>" readonly="readonly" id="month"/>
-					</td> 
-                </tr>
-                <tr height="35px">
-                	<td colspan="4" align="center">
-                		<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
-                		<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
-                		<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
-                	</td>
+					</td>
                 </tr>
             </table>
          </form>
