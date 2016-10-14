@@ -275,8 +275,8 @@ function listUserRole(){
 	var sql="SELECT DISTINCT USER_ROLE FROM PMRT.TB_JCDY_JF_ALL_MON WHERE USER_ROLE IS NOT NULL";
 	var html="";
 	var data=query(sql);
-	if(d){
-		html="<option>全部</option>";
+	if(data){
+		html="<option value=''>全部</option>";
 		for(var i=0;i<data.length;i++){
 			html+="<option value='"+data[i].USER_ROLE+"'>"+data[i].USER_ROLE+"</option>";
 		}
