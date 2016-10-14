@@ -42,26 +42,26 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id=region value="<%=org.getRegionCode()%>">
-		<form id="searchForm" method="post">
+		<form id="searchForm" method="post" style="width:60%">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="1%" style="padding-left: 10px;" align="right">账期：</td>
-					<td width="5%">
+					<td width="10%" style="padding-left: 10px;" align="right">账期：</td>
+					<td width="30%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=dealDate %>" id="dealDate">
 					</td>
-					<td width="3%" align="right">地市：</td>
-					<td width="10%">
+					<td width="10%" align="right">地市：</td>
+					<td width="30%">
 						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="3%">
+					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 30px;">查询</a>
+						style="float: right; margin-right: 15px;">查询</a>
 					</td>
-					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					<td width="5%">
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>

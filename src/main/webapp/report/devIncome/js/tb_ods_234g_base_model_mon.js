@@ -55,7 +55,7 @@ function search(pageNumber) {
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
 //条件
-	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON T1  where 1 = 1 AND t1.deal_date ='"+time+"'";
+	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON T1  where  t1.deal_date ='"+time+"'";
 	if(time!=''){
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
@@ -203,7 +203,7 @@ function listUnits(regionCode){
 	}
 }
 function getSql(){
-	var s="T1.deal_date,T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.subscription_id,T1.device_number,T1.innet_date,T1.developer1,T1.developer,case when T1.is_on='1' then '是' else '否' end is_on,case when T1.is_new='1' then '是' else '否' end is_new,T1.product_id,T1.product_name,T1.product_fee,case when T1.net_type='-1' then '固网' when T1.net_type='01' then '2G' when T1.net_type in('02','03') then '3G' when T1.net_type='50' then '4G' end net_type,T1.yuyin_max,T1.gprs_max,T1.sms_max,T1.yuyin,round(T1.gprs,2) gprs,T1.sms,case when T1.is_sw='1' then '是' else '否' end is_sw,case when T1.is_jd ='1' then '是' else '否' end is_jd ,case when T1.is_low_dbh ='1' then '是' else '否' end is_low_dbh ,case when T1.is_low_dzt ='1' then '是' else '否' end is_low_dzt ,case when T1.is_zlwb ='1' then '是' else '否' end is_zlwb ,T1.cz_amount,case when T1.is_cz ='1' then '是' else '否' end is_cz";
+	var s="T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.SUBSCRIPTION_ID,T1.DEVICE_NUMBER,T1.INNET_DATE,T1.DEVELOPER1,T1.DEVELOPER,CASE WHEN T1.IS_ON='1' THEN '是' ELSE '否' END IS_ON,CASE WHEN T1.IS_NEW='1' THEN '是' ELSE '否' END IS_NEW,T1.PRODUCT_ID,T1.PRODUCT_NAME,T1.PRODUCT_FEE,CASE WHEN T1.NET_TYPE='-1' THEN '固网' WHEN T1.NET_TYPE='01' THEN '2G' WHEN T1.NET_TYPE IN('02','03') THEN '3G' WHEN T1.NET_TYPE='50' THEN '4G' END NET_TYPE,T1.YUYIN_MAX,T1.GPRS_MAX,T1.SMS_MAX,T1.YUYIN,ROUND(T1.GPRS,2) GPRS,T1.SMS,CASE WHEN T1.IS_SW='1' THEN '是' ELSE '否' END IS_SW,CASE WHEN T1.IS_JD ='1' THEN '是' ELSE '否' END IS_JD ,CASE WHEN T1.IS_LOW_DBH ='1' THEN '是' ELSE '否' END IS_LOW_DBH ,CASE WHEN T1.IS_LOW_DZT ='1' THEN '是' ELSE '否' END IS_LOW_DZT ,CASE WHEN T1.IS_ZLWB ='1' THEN '是' ELSE '否' END IS_ZLWB ,T1.CZ_AMOUNT,CASE WHEN T1.IS_CZ ='1' THEN '是' ELSE '否' END IS_CZ";
 	return s;
 }
 /////////////////////////下载开始/////////////////////////////////////////////
