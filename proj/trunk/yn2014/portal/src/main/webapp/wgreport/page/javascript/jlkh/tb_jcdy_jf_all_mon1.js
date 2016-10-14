@@ -7,6 +7,7 @@ var title=[["地市"	 ,"基层单元" ,"人员姓名" ,"hr编码","角色类型"
 var report = null;
 $(function() {
 	listRegions();
+	listUserRole();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -63,6 +64,7 @@ function search(pageNumber) {
 	var orgName=$("#orgName").val();
 	var unitName=$("#unitName").val();
 	var name=$.trim($("#name").val());
+	var user_role=$("#user_role").val();
 //条件
 	var sql = "SELECT "+getSelectSql();
 	if(regionName!=''){
@@ -73,6 +75,9 @@ function search(pageNumber) {
 	}
 	if(name!=''){
 		sql+=" AND USER_NAME like '%"+name+"%'";
+	}
+	if(user_role!=''){
+		sql+=" AND USER_ROLE = '"+user_role+"'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
@@ -266,6 +271,21 @@ function listUnits(regionName){
 	}
 }
 
+function listUserRole(){
+	var sql="SELECT DISTINCT USER_ROLE FROM PMRT.TB_JCDY_JF_ALL_MON WHERE USER_ROLE IS NOT NULL";
+	var html="";
+	var data=query(sql);
+	if(d){
+		html="<option>全部</option>";
+		for(var i=0;i<data.length;i++){
+			html+="<option value='"+data[i].USER_ROLE+"'>"+data[i].USER_ROLE+"</option>";
+		}
+	}else{
+		alert("获取人员角色信息失败");
+	}
+	$("#user_role").append($(html));
+}
+
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var time=$("#time").val();
@@ -274,6 +294,7 @@ function downsAll() {
 	var orgName=$("#orgName").val();
 	var unitName=$("#unitName").val();
 	var name=$.trim($("#name").val());
+	var user_role=$("#user_role").val();
 	//var title=[["账期","地市","基层单元","人员姓名","hr编码","角色类型","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","总受理量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","调节后质态积分","合计销售积分","渠道调节销售积分","区域调节销售积分","基础服务积分","服务积分","增值业务积分","总受理积分","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","维系积分","维系服务积分","维系区域积分","总积分","总积分金额"]];
 	//var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","ALLSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","ZTUNITJF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
 	var title=[["账期","地市"	 ,"基层单元" ,"人员姓名" ,"hr编码","角色类型" ,"发展量"  ,""            ,""        ,""        ,""          ,"销售积分"    ,""              ,""          ,""          ,""            ,""            ,""              ,""        ,""                ,""              ,""              ,""          ,""                ,""                ,""                ,""                ,"受理积分"    ,""            ,""        ,""              ,""                ,""                ,""                ,"维系积分"      ,""            ,""              ,""          ,""                  ,""        	,""            ,""            ,""            ,""                ,"客服积分"      ,""              ,""          ,""             ,""               ,""                ,""                    ,""                ,"总积分"      ,"总积分金额"],
@@ -292,6 +313,9 @@ function downsAll() {
 	}
 	if(name!=''){
 		sql+=" AND USER_NAME like '%"+name+"%'";
+	}
+	if(user_role!=''){
+		sql+=" AND USER_ROLE = '"+user_role+"'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
