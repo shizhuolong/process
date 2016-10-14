@@ -35,7 +35,7 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-		<form id="searchForm" method="post">
+			<form id="searchForm" method="post" style="width:50%">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="6%" style="padding-left: 10px;">账期：</td>
@@ -48,7 +48,7 @@
 						style="float: right; margin-right: 48px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>

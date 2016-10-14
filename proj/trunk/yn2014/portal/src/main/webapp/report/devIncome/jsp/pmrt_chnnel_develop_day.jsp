@@ -43,20 +43,20 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
-	<form id="searchForm" method="post">
-			<input type="hidden" name="resultMap.page" /> <input type="hidden"
-				name="resultMap.rows" />
+	<form id="searchForm" method="post" style="width:60%">
+			<input type="hidden" name="resultMap.page" />
+			<input type="hidden" name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">日期：</td>
-					<td width="20%">
-						<input type="text"  class="Wdate default-text-input wper30" 
+					<td width="15%" style="text-align:right">日期：</td>
+					<td width="30%">
+						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=time %>" id="time">
 					</td>
 					 
-					<td width="5%" style="padding-left: 10px;">网别：</td>
-					<td width="20%">
-						<select  id="netType" onchange="" class="default-text-input wper140">
+					<td width="15%" style="text-align:right">网别：</td>
+					<td width="30%">
+						<select  id="netType" onchange="" class="wper80">
 							<option value="234" selected="selected">全网</option>
 					   		<option value="2">2G</option>
 					   		<option value="3">3G</option>
@@ -67,10 +67,10 @@
 					
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 28px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
