@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/income_manage_day.js"></script>
 <style type="text/css">
     #lch_DataHead TR TH{
-       min-width: 60px;
+       /* min-width: 60px; */
     }
 </style>
 </head>
