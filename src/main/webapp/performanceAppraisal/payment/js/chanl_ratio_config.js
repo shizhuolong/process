@@ -204,7 +204,9 @@ function downloadExcel() {
 			"ON (T.FD_CHNL_CODE = T1.FD_CHNL_CODE) LEFT JOIN PTEMP.ALL_CHL_RATIO_LIST T2 " +
 			"ON (T.FD_CHNL_CODE = T2.HQ_CHANL_CODE AND T2.DEAL_DATE='"+month+
 			"') LEFT JOIN PTEMP.TB_TEMP_JCDY_CHANL_TYPE T3 " +
-			"ON (T2.CHNL_TYPE = T3.CHANL_TYPE_CODE) WHERE T.IS_SIGN = 1";
+			"ON (T2.CHNL_TYPE = T3.CHANL_TYPE_CODE) " +
+			//"WHERE T.IS_SIGN = 1" +
+			" WHERE T.IS_SIGN = 1";
 			if(orgLevel == 2) {
 				sql += "AND T.GROUP_ID_1 = '"+code+"' ";
 			}
