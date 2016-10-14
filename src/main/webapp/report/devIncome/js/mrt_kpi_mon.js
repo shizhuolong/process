@@ -7,6 +7,7 @@ var orderBy = '';
 var report = null;
 $(function() {
 	listRegions();
+	listUserRole();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -57,6 +58,7 @@ function search(pageNumber) {
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
+	var user_role=$("#user_role").val();
 //条件
 	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
 	if(regionName!=''){
@@ -67,6 +69,9 @@ function search(pageNumber) {
 	}
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
+	}
+	if(user_role!=''){
+		sql+=" AND USER_ROLE = '"+user_role+"'";
 	}
 	
 //权限
@@ -221,6 +226,22 @@ function listUnits(regionName){
 		alert("获取基层单元信息失败");
 	}
 }
+
+function listUserRole(){
+	var sql="SELECT DISTINCT USER_ROLE FROM PMRT.TB_JCDY_JF_ALL_MON WHERE USER_ROLE IS NOT NULL";
+	var html="";
+	var data=query(sql);
+	if(data){
+		html="<option value=''>全部</option>";
+		for(var i=0;i<data.length;i++){
+			html+="<option value='"+data[i].USER_ROLE+"'>"+data[i].USER_ROLE+"</option>";
+		}
+	}else{
+		alert("获取人员角色信息失败");
+	}
+	$("#user_role").append($(html));
+}
+
 function isNull(obj){
 	if(obj==0||obj=='0'){
 		return 0;
@@ -245,6 +266,7 @@ function downsAll(){
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
+	var user_role=$("#user_role").val();
 	//条件
 	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
 	if(regionName!=''){
@@ -256,7 +278,9 @@ function downsAll(){
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
 	}
-	
+	if(user_role!=''){
+		sql+=" AND USER_ROLE = '"+user_role+"'";
+	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
