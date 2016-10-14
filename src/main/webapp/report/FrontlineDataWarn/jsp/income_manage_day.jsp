@@ -4,8 +4,7 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
@@ -17,6 +16,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>经营日报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report-fix.css" rel="stylesheet" type="text/css" />
@@ -33,7 +34,7 @@
     }
 </style>
 </head>
-<body class="" style="overflow-x: auto;">
+<body  style="overflow-x: auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
@@ -41,25 +42,24 @@
 	<form id="searchForm" method="post">
 		<table width="100%" style="margin: 10px 0; border: none;">
 			<tr height="35px">
-				<td width="5%" style="padding-left: 10px;">账期：</td>
-				<td width="13%"><input type="text"
-					class="Wdate default-text-input wper80" readonly="true"
+				<td width="5%" style="text-align:right;">账期：</td>
+				<td width="13%"><input type="text" class="Wdate default-text-input wper80" readonly="readonly"
 					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false,onpicked:function() {javascript:loadRegion();}})"
-					value="<%=day%>" id="day"></td>
-				<td width="4%">地市：</td>
+					value="<%=day%>" id="day">
+				</td>
+				<td width="4%" style="text-align:right;">地市：</td>
 				<td width="13%"><select name="regionCode" id="regionCode"
 					class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
-				<td width="7%">营服中心：</td>
-				<td width="13%"><select name="unitId" id="unitId"
-					class="default-text-input wper80">
+				<td width="7%" style="text-align:right;">营服中心：</td>
+				<td width="13%">
+					<select name="unitId" id="unitId" class="default-text-input wper80">
 						<option value=''>请选择</option>
-				</select></td>
-				<td width="3%"><a class="default-btn" href="#" id="searchBtn"
-					style="float: right; margin-right: 30px;">查询</a></td>
-				<td width="3%"><a class="default-btn" href="#" id="exportBtn"
-					onclick="downsAll()">导出</a></td>
+					</select>
+				</td>
+				<td width="3%"><a class="default-btn" href="#" id="searchBtn" style="float: right; margin-right: 10px;">查询</a></td>
+				<td width="3%"><a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()" style=" margin-right: 10px;">导出</a></td>
 				<td width="3%"><a class="default-btn" href="#" id="remark">说明</a></td>	
 			</tr>
 		</table>
