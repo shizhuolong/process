@@ -28,7 +28,7 @@ public interface ChanlInspectionDao {
 	 * @param params
 	 * @return
 	 */
-	public Map<String, Object> ismanager(Map<String, String> params);
+	public Integer ismanager(Map<String, String> params);
 	
 	/**
 	 * 查询渠道巡检列表数据
