@@ -130,10 +130,10 @@ function getSql() {
 }
 
 function downsAll() {
-	var preField=' DEAL_DATE,GROUP_ID_1_NAME,BUS_NAME,HQ_CHAN_CODE,OPERATE_TYPE,';
+	var preField=' GROUP_ID_1_NAME,BUS_NAME,HQ_CHAN_CODE,OPERATE_TYPE,';
 	var where='';
-	var orderBy=" ORDER BY DEAL_DATE,GROUP_ID_1,UNIT_ID";
-	var groupBy=" GROUP BY DEAL_DATE,GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,BUS_NAME,HQ_CHAN_CODE,OPERATE_TYPE";
+	var orderBy=" ORDER BY GROUP_ID_1,UNIT_ID";
+	var groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,BUS_NAME,HQ_CHAN_CODE,OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -148,7 +148,7 @@ function downsAll() {
 	}
 	var sql = 'SELECT' + preField + getSql()+where+groupBy+orderBy;
 	var showtext = '出帐收入净增统计月报表' + startDate+"-"+endDate;
-	var title=[["账期","地市","营业厅名称","渠道编码","经营模式","2G业务（万元）","","","3G业务（万元）","","","4G业务（万元）","","","固网（万元）","","","其中：宽带（万元）","","","其中：融合（万元）","","","合计（万元）","",""],
-	           ["","","","","","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比"]];
+	var title=[["地市","营业厅名称","渠道编码","经营模式","2G业务（万元）","","","3G业务（万元）","","","4G业务（万元）","","","固网（万元）","","","其中：宽带（万元）","","","其中：融合（万元）","","","合计（万元）","",""],
+	           ["","","","","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比"]];
 	downloadExcel(sql,title,showtext);
 }

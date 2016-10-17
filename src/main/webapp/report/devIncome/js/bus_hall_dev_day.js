@@ -212,7 +212,7 @@ function getSumSql1() {
 }
 function listRegions(){
 	//条件
-	var sql = "select distinct t.GROUP_ID_1,t.GROUP_ID_1_NAME from PMRT.TB_MRT_BUS_HALL_DEV_DAY t where 1=1";
+	var sql = "select distinct t.GROUP_ID_1,t.GROUP_ID_1_NAME from PMRT.TB_MRT_BUS_HALL_INCOME_DAY t where 1=1 AND t.GROUP_ID_1_NAME IS NOT NULL";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -242,11 +242,12 @@ function listRegions(){
 		alert("获取地市信息失败");
 	}
 }
+
 function downsAll() {
-	var preField=' T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE,';
+	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE,';
 	var where='';
-	var orderBy=" ORDER BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.HQ_CHAN_CODE";
-	var groupBy=" GROUP BY T1.DEAL_DATE,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE";
+	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.HQ_CHAN_CODE";
+	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -269,11 +270,11 @@ function downsAll() {
 	var sql = 'SELECT' + preField + sumSql+where+groupBy+orderBy;
 	var showtext = '营业厅发展报表' + startDate+"-"+endDate;
 	if(startDate==endDate){
-		title=[["开始账期","地市","营业厅","渠道编码","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
-		       ["","","","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
+		title=[["地市","营业厅","渠道编码","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
+		       ["","","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
 	}else{
-		title=[["开始账期","地市","营业厅","渠道编码","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
-		       ["","","","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
+		title=[["地市","营业厅","渠道编码","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
+		       ["","","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
 	}
 	/*title=[["账期","组织架构","渠道","经营模式","2G发展","","","","3G发展","","","","4G发展","","","","固网发展","","","","维系","","","","合计(含维系)","","",""],
 		       ["","","","","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];*/
