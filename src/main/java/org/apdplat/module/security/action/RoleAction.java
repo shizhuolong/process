@@ -39,7 +39,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         	User user = UserHolder.getCurrentLoginUser();
         	if(user.isSuperManager()) {
 	            long rootId = roleService.getRootRole().getId();
-	            String json=roleService.toJson(rootId,recursion,null);
+	            String json=roleService.toJson(rootId,recursion,null,roleService.hasRoleIds());
 	            Struts2Utils.renderJson(json);
         	}else {
         		Long param[] = {user.getId(),user.getId()};
@@ -56,7 +56,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
 	            			roleIds.add(((BigDecimal)m.get("ID")).longValue()+"");
 	            	}
 	            	long rootId = roleService.getRootRole().getId();
-	 	            String json=roleService.toJson(rootId,recursion,roleIds);
+	 	            String json=roleService.toJson(rootId,recursion,roleIds,roleService.hasRoleIds());
 	 	            Struts2Utils.renderJson(json);
             	}
             	/*
@@ -98,7 +98,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             String[] attr=node.trim().split("-");
             if(attr.length==2){
                 int roleId=Integer.parseInt(attr[1]);
-                String json=roleService.toJson(roleId,recursion,null);
+                String json=roleService.toJson(roleId,recursion,null,roleService.hasRoleIds());
                 Struts2Utils.renderJson(json);                    
             }   
         }
