@@ -63,11 +63,11 @@
 						<input class="default-text-input wper80" name="hq_chan_code" type="text" id="hq_chan_code"/>
 					</td>
 					<td width="1%">
-						<a class="default-gree-btn" href="#" id="searchBtn"
+						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
