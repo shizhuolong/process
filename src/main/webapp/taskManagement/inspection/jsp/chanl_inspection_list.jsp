@@ -6,12 +6,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	Calendar c = Calendar.getInstance();     
-	String currentMon = new SimpleDateFormat("yyyyMM").format(c.getTime());
-	User user  = UserHolder.getCurrentLoginUser();
-	String user_id = user.getId().toString();
-	String state = (String)request.getAttribute("state");
+	String startTime = new SimpleDateFormat("yyyy-MM-01").format(c.getTime());
+	String endTime = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
 	
-	String unit_id = (String)request.getAttribute("unit_id");	
+	User user  = UserHolder.getCurrentLoginUser();
+	String userId = user.getId().toString();
+	
+	Boolean isManager = (Boolean)request.getAttribute("isManager");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,8 +38,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/taskManagement/inspection/js/chanl_inspection_list.js"></script>
 <script type="text/javascript">
-	var state = "<%=state%>";
-	var unit_id ="<%=unit_id%>";
 </script>
 </head>
 <body>
@@ -61,13 +60,15 @@
 					          		<tr>
 					                	<td align="right">巡检任务名称：</td>
 					                    <td><input class="default-text-input wper140" name="qinspec_name" id="qinspec_name" type="text"/></td>
+					                    <td align="right">创建人：</td>
+					                    <td><input class="default-text-input wper80" name="qcreator" id="qcreator" type="text"/></td>
 					                    <td align="right">开始时间：</td>
 					                    <td>
-					                    	<input type="text" class="Wdate" id="qstartTime" name="qstartTime" readonly="readonly" onclick="new WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" value="" />
+					                    	<input type="text" class="Wdate" id="qstartTime" name="qstartTime" readonly="readonly" onclick="new WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" value="<%=startTime %>" />
 					                    </td>
 					                     <td align="right">结束时间：</td>
 					                    <td>
-					                    	<input type="text" class="Wdate" id="qendtTime" name="qendtTime" readonly="readonly" onclick="new WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" value="" />
+					                    	<input type="text" class="Wdate" id="qendtTime" name="qendtTime" readonly="readonly" onclick="new WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" value="<%=endTime %>" />
 					                    </td>
 					                </tr>
 					                <tr>
@@ -84,7 +85,7 @@
 					                	<td colspan="6" align="center">
 					                		<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 					                		<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
-					                		<% if(state.equals("1")){ %>
+					                		<% if(isManager){ %>
 					                		<a class="default-140-btn fLeft mr10" href="#" id="addRCInspection">添加日常巡检</a>
 					                		<% }%>
 					                		<a class="default-140-btn fLeft mr10" href="#" id="addHDInspection">添加活动巡检</a>
