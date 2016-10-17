@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelSubsidyPay.dao.ChannelSubsidyDao">
+	<!--新增 -->
+	<insert id="addSubsidy" parameterType="java.util.Map">
+		insert into
+		PAPP.TAB_JF_COMM_INPUT(
+		       DEAL_DATE,
+		       HQ_CHAN_CODE,
+		       HQ_CHAN_NAME,
+		       WORK_NO,
+		       MONEY,
+		       DEAL_DATE_NUM,
+		       CREATE_TIME,
+		       CREATOR
+		)values(
+		       #{dealDate},
+		       #{hqChanCode},
+		       #{hqChanName},
+		       #{workNo},
+		       #{money},
+		       #{dealDateNum},
+		       sysdate,
+		       #{userName}
+		)
+	</insert>
+	<!--删除 -->
+	<delete id="deleteSubsidy" parameterType="java.util.Map">
+		delete from PAPP.TAB_JF_COMM_INPUT t
+		where t.deal_date=#{dealDate}
+		and t.hq_chan_code=#{hqChanCode}
+	</delete>
+	<select id="listSubsidy" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		<if test="level>1">
+			select t.* from 
+				PAPP.TAB_JF_COMM_INPUT t,
+				PCDE.TB_CDE_CHANL_HQ_CODE hq,
+				PORTAL.APDP_USER u,
+		      	PORTAL.APDP_ORG o
+			where t.HQ_CHAN_CODE=hq.HQ_CHAN_CODE
+			and hq.GROUP_ID_1=o.REGION_CODE
+		    and o.ID=u.ORG_ID
+		    and u.USERNAME=#{userName}
+		    <if test="@org.apache.commons.lang.StringUtils@isNotBlank(hqChanCode)">
+		 		and t.HQ_CHAN_CODE= #{hqChanCode}
+		 	</if>
+		 	and t.DEAL_DATE=#{dealDate}
+		 </if>
+		 <if test="level==1">
+		 	select t.* from 
+				PAPP.TAB_JF_COMM_INPUT t,
+				PCDE.TB_CDE_CHANL_HQ_CODE hq
+			where t.HQ_CHAN_CODE=hq.HQ_CHAN_CODE
+		    <if test="@org.apache.commons.lang.StringUtils@isNotBlank(hqChanCode)">
+		 		and t.HQ_CHAN_CODE= #{hqChanCode}
+		 	</if>
+		 	and t.DEAL_DATE=#{dealDate}
+		 </if>
+	</select>
+	<!-- 更新(修改)  -->
+	<update id="updateSubsidy" parameterType="java.util.Map">
+		update PAPP.TAB_JF_COMM_INPUT t
+		set 
+		       t.work_no=#{workNo},
+		       t.money=#{money},
+		       t.deal_date_num=#{dealDateNum},
+		       t.update_time=sysdate,
+		       t.update_man=#{userName}
+		where t.deal_date=#{dealDate}
+		and t.hq_chan_code=#{hqChanCode}
+	</update>
+	<!-- 验证渠道编码，本地市下是否存在，同时带出渠道名称 -->
+	<select id="checkCode" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="level>1">
+			select hq.group_id_4_name from 
+				PCDE.TB_CDE_CHANL_HQ_CODE hq,
+				PORTAL.APDP_USER u,
+		      	PORTAL.APDP_ORG o
+			where hq.group_id_1=o.region_code
+		    and o.id=u.org_id
+		    and u.username=#{userName}
+		    and hq.hq_chan_code=#{hqChanCode}
+		</if>
+		<if test="level==1">
+			select hq.group_id_4_name from 
+				PCDE.TB_CDE_CHANL_HQ_CODE hq
+			where hq.hq_chan_code=#{hqChanCode}
+		</if>
+	</select>
+	<select id="existCode" parameterType="java.util.Map" resultType="java.util.Map">
+		select t.HQ_CHAN_CODE from PAPP.TAB_JF_COMM_INPUT t 
+		where t.deal_date=#{dealDate}
+		and t.hq_chan_code=#{hqChanCode}
+	</select>
+</mapper>
