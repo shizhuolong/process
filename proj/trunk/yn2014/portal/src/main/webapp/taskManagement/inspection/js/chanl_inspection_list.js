@@ -10,7 +10,7 @@ $(function(){
 	
 	//添加日常巡检
 	$("#addRCInspection").click(function(){
-		addRCInspectionMsg(unit_id);
+		addRCInspectionMsg();
 	});
 	//添加活动巡检
 	$("#addHDInspection").click(function(){
@@ -19,6 +19,7 @@ $(function(){
 	$("#resetBtn").click(function(){
 		$("#qinspec_name").val("");
 		$("#qstartTime").val("");
+		$("#qcreator").val("");
 		$("#qendtTime").val("");
 		$("#qinspec_type").val("");
 	});
@@ -27,6 +28,7 @@ $(function(){
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var qinspec_name = $.trim($("#qinspec_name").val());
+	var qcreator = $.trim($("#qcreator").val());
 	var qstartTime = $.trim($("#qstartTime").val());
 	var qendtTime = $.trim($("#qendtTime").val());
 	var qinspec_type = $.trim($("#qinspec_type").val());
@@ -39,6 +41,7 @@ function search(pageNumber) {
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
            "inspec_name":qinspec_name,
+           "creator":qcreator,
            "startTime":qstartTime,
            "endtTime":qendtTime,
            "inspec_type":qinspec_type
@@ -88,13 +91,13 @@ function search(pageNumber) {
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
-      callback: search,
-      items_per_page:pageSize,
-      link_to:"###",
-      prev_text: '上页',       //上一页按钮里text  
-  	next_text: '下页',       //下一页按钮里text  
-  	num_display_entries: 5, 
-  	num_edge_entries: 2
+	      callback: search,
+	      items_per_page:pageSize,
+	      link_to:"###",
+	      prev_text: '上页',       // 上一页按钮里text
+		  next_text: '下页',       // 下一页按钮里text
+		  num_display_entries: 5, 
+		  num_edge_entries: 2
 	 });
 }
 
@@ -112,7 +115,7 @@ function isNotBlank(obj){
 //添加日常巡检
 function addRCInspectionMsg() {
 	var url = $("#ctx").val()+"/taskManagement/chanlInspection_addRCInspection.action";
-	window.parent.openWindow("添加日常巡检",'funMenu',url+"?unitid="+unit_id);
+	window.parent.openWindow("添加日常巡检",'funMenu',url);
 }
 //添加活动巡检
 function addHDInspectionMsg() {
@@ -157,7 +160,7 @@ function editHd(ele) {
 	var inspec_id = $(ele).attr("id");
 	var inspectype = $(ele).attr("inspectype");
 	if(inspectype==1){
-		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateRcInspection.action?inspec_id="+inspec_id+"&unit_id="+unit_id;
+		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateRcInspection.action?inspec_id="+inspec_id;
 		window.parent.openWindow("修改日常巡检信息",'funMenu',url);
 	}else{
 		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateHdInspection.action?id="+inspec_id;
