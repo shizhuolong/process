@@ -26,7 +26,6 @@ $(function() {
 	
 	$("#searchBtn").click(function(){
 		search(0);
-		listRegions();
 	});
 });
 
