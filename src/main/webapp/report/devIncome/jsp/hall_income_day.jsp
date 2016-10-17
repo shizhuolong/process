@@ -54,6 +54,15 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
+					<td width="5%">
+						<a class="default-btn" href="#" id="searchBtn"
+						style="float: right; margin-right: 28px;">查询</a>
+					</td>
+					<td width="5%">
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
 					<td width="5%" align="right">渠道编码：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="chnlCode" type="text" id="chnlCode"/>
@@ -66,13 +75,6 @@
 								<option value='他营'>他营</option>
 								<option value='柜台外包'>柜台外包</option>
 						</select>
-					</td>
-					<td width="5%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 28px;">查询</a>
-					</td>
-					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
