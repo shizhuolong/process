@@ -4,20 +4,33 @@
 <mapper namespace="org.apdplat.taskManagement.inspection.dao.ChanlInspectionDao">
 
 	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
-		<if test="orgLevel == 1">
 			SELECT 
 				T.INSPEC_ID,T.INSPEC_NAME,T.C_USER_ID,T.START_TIME,T.END_TIME,T.C_USER_NAME,
-	       		T.INSPEC_TYPE,T.IN_TYPE,T.IS_DEL,T.INSPECTYPE
-	  		FROM (SELECT T.INSPEC_ID,T.INSPEC_NAME,T.C_USER_ID,
-	  			T.START_TIME,
-	            T.END_TIME,T.C_USER_NAME,T.INSPEC_TYPE AS INSPECTYPE,
-	            CASE WHEN T.INSPEC_TYPE = '1' THEN '日常巡检' WHEN T.INSPEC_TYPE = '2' THEN '活动巡检' 
-	            ELSE '' END AS INSPEC_TYPE,T.INSPEC_TYPE AS IN_TYPE,CASE 
-	            WHEN TO_CHAR(SYSDATE, 'yyyy-MM-dd') > T.END_TIME THEN '1' 
-	            ELSE '0' END AS IS_DEL
+	       		T.INSPEC_TYPE,T.IS_DEL,T.INSPEC_TYPE_NAME
+	  		FROM (
+	  			SELECT 
+	  				T.INSPEC_ID,
+	  				T.INSPEC_NAME,
+	  				T.C_USER_ID,
+	  				T.START_TIME,
+	            	T.END_TIME,
+	            	T.C_USER_NAME,
+	            	T.INSPEC_TYPE,
+	            	
+	            	CASE WHEN T.INSPEC_TYPE = '1' THEN '日常巡检' WHEN T.INSPEC_TYPE = '2' THEN '活动巡检' 
+	            	ELSE '' END AS INSPEC_TYPE_NAME,
+	            	
+	            	CASE WHEN TO_CHAR(SYSDATE, 'yyyy-MM-dd') > T.END_TIME THEN '1' 
+	            	ELSE '0' END AS IS_DEL
 	           FROM PORTAL.TAB_PORTAL_INSPEC_TASK T WHERE T.IS_VALID = '1'
+	           <if test="orgLevel>1">
+	           		AND T.C_USER_REGION=#{code}
+	           </if>
 	           <if test="inspec_name != null">
 	           		AND T.INSPEC_NAME LIKE #{inspec_name}
+	           </if>
+	           <if test="creator != null">
+	           		AND T.C_USER_NAME LIKE #{creator}
 	           </if>
 	           <if test="startTime != null">
 	           		AND T.START_TIME &gt;= #{startTime}
@@ -29,220 +42,26 @@
 	           		AND T.INSPEC_TYPE = #{inspec_type}
 	           </if>
 	           ) T
-	 		GROUP BY T.INSPEC_ID,
-	          T.INSPEC_NAME,
-	          T.C_USER_ID,
-	          T.START_TIME,
-	          T.START_TIME,
-	          T.END_TIME,
-	          T.C_USER_NAME,
-	          T.INSPEC_TYPE,
-	          T.IN_TYPE,
-	          T.IS_DEL,
-	          T.INSPECTYPE 
+	 		  GROUP BY 
+		 		  T.INSPEC_ID,
+		          T.INSPEC_NAME,
+		          T.C_USER_ID,
+		          T.START_TIME,
+		          T.END_TIME,
+		          T.C_USER_NAME,
+		          T.INSPEC_TYPE,
+		          T.IS_DEL,
+		          T.INSPEC_TYPE_NAME 
 	          ORDER BY T.START_TIME DESC
-		</if>
-		<if test="orgLevel == 2">
-			SELECT T.INSPEC_ID,
-			       T.INSPEC_NAME,
-			       T.C_USER_ID,
-			       T.START_TIME,
-			       T.END_TIME,
-			       T.C_USER_NAME,
-			       T.INSPEC_TYPE,
-			       T.IN_TYPE,
-			       T.IS_DEL,
-			       T.INSPECTYPE
-			  FROM (SELECT T.INSPEC_ID,
-			               T.INSPEC_NAME,
-			               T.C_USER_ID,
-			               T.START_TIME,
-			               T.END_TIME,
-			               T.C_USER_NAME,
-			               T.INSPEC_TYPE AS INSPECTYPE,
-			               CASE
-			                 WHEN T.INSPEC_TYPE = '1' THEN
-			                  '日常巡检'
-			                 WHEN T.INSPEC_TYPE = '2' THEN
-			                  '活动巡检'
-			                 ELSE
-			                  ''
-			               END AS INSPEC_TYPE,
-			               T.INSPEC_TYPE AS IN_TYPE,
-			               CASE
-			                 WHEN TO_CHAR(SYSDATE, 'yyyy-MM-dd') >
-			                      T.END_TIME THEN
-			                  '1'
-			                 ELSE
-			                  '0'
-			               END AS IS_DEL
-			          FROM PORTAL.TAB_PORTAL_INSPEC_TASK T
-			         INNER JOIN PCDE.TB_CDE_REGION_CODE T2
-			            ON (T.C_USER_REGION = T2.GROUP_ID_1)
-			         WHERE T.IS_VALID = '1'
-			         	<if test="inspec_name != null">
-			           		AND T.INSPEC_NAME LIKE #{inspec_name}
-			           </if>
-			           <if test="startTime != null">
-			           		AND T.START_TIME &gt;= #{startTime}
-			           </if>
-			           <if test="endTime != null">
-			           		AND T.END_TIME &gt;= #{endTime}
-			           </if>
-			           <if test="inspec_type != null">
-			           		AND T.INSPEC_TYPE = #{inspec_type}
-			           </if>
-			         ) T
-			 GROUP BY T.INSPEC_ID,
-			          T.INSPEC_NAME,
-			          T.C_USER_ID,
-			          T.START_TIME,
-			          T.START_TIME,
-			          T.END_TIME,
-			          T.C_USER_NAME,
-			          T.INSPEC_TYPE,
-			          T.IN_TYPE,
-			          T.IS_DEL,
-			          T.INSPECTYPE 
-			          ORDER BY T.START_TIME DESC
-		</if>
-		<if test="orgLevel == 3">
-			SELECT T.INSPEC_ID,
-			       T.INSPEC_NAME,
-			       T.C_USER_ID,
-			       T.START_TIME,
-			       T.END_TIME,
-			       T.C_USER_NAME,
-			       T.INSPEC_TYPE,
-			       T.IN_TYPE,
-			       T.IS_DEL,
-			       T.INSPECTYPE
-			  FROM (SELECT T.INSPEC_ID,
-			               T.INSPEC_NAME,
-			               T.C_USER_ID,
-			               T.START_TIME,
-			               T.END_TIME,
-			               T.C_USER_NAME,
-			               T.INSPEC_TYPE AS INSPECTYPE,
-			               CASE
-			                 WHEN T.INSPEC_TYPE = '1' THEN
-			                  '日常巡检'
-			                 WHEN T.INSPEC_TYPE = '2' THEN
-			                  '活动巡检'
-			                 ELSE
-			                  ''
-			               END AS INSPEC_TYPE,
-			               T.INSPEC_TYPE AS IN_TYPE,
-			               CASE
-			                 WHEN TO_CHAR(SYSDATE, 'yyyy-MM-dd') >
-			                      TO_CHAR(T.END_TIME, 'yyyy-MM-dd') THEN
-			                  '1'
-			                 ELSE
-			                  '0'
-			               END AS IS_DEL
-			          FROM PORTAL.TAB_PORTAL_INSPEC_TASK T
-			         INNER JOIN PCDE.TAB_CDE_GROUP_CODE T2
-			            ON (T.C_USER_REGION = T2.UNIT_ID)
-			         WHERE T.IS_VALID = '1'
-			           AND T2.IS_VALID = '1'
-			           <if test="inspec_name != null">
-			           		AND T.INSPEC_NAME LIKE #{inspec_name}
-			           </if>
-			          	<if test="startTime != null">
-			           		AND T.START_TIME &gt;= #{startTime}
-			           </if>
-			           <if test="endTime != null">
-			           		AND T.END_TIME &gt;= #{endTime}
-			           </if>
-			           <if test="inspec_type != null">
-			           		AND T.INSPEC_TYPE = #{inspec_type}
-			           </if>
-			           ) T
-			 GROUP BY T.INSPEC_ID,
-			          T.INSPEC_NAME,
-			          T.C_USER_ID,
-			          T.START_TIME,
-			          T.START_TIME,
-			          T.END_TIME,
-			          T.C_USER_NAME,
-			          T.INSPEC_TYPE,
-			          T.IN_TYPE,
-			          T.IS_DEL,
-			          T.INSPECTYPE 
-			          ORDER BY T.START_TIME DESC
-		</if>
-		<if test="orgLevel == 4">
-			SELECT T.INSPEC_ID,
-			       T.INSPEC_NAME,
-			       T.C_USER_ID,
-			       T.START_TIME,
-			       T.END_TIME,
-			       T.C_USER_NAME,
-			       T.INSPEC_TYPE,
-			       T.IN_TYPE,
-			       T.IS_DEL,
-			       T.INSPECTYPE
-			  FROM (SELECT T.INSPEC_ID,
-			               T.INSPEC_NAME,
-			               T.C_USER_ID,
-			               T.START_TIME,
-			               T.END_TIME,
-			               T.C_USER_NAME,
-			               T.INSPEC_TYPE AS INSPECTYPE,
-			               CASE
-			                 WHEN T.INSPEC_TYPE = '1' THEN
-			                  '日常巡检'
-			                 WHEN T.INSPEC_TYPE = '2' THEN
-			                  '活动巡检'
-			                 ELSE
-			                  ''
-			               END AS INSPEC_TYPE,
-			               T.INSPEC_TYPE AS IN_TYPE,
-			               CASE
-			                 WHEN TO_CHAR(SYSDATE, 'yyyy-MM-dd') >
-			                      T.END_TIME THEN
-			                  '1'
-			                 ELSE
-			                  '0'
-			               END AS IS_DEL
-			          FROM PORTAL.TAB_PORTAL_INSPEC_TASK T
-			         INNER JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T2
-			            ON (T.C_USER_REGION = T2.GROUP_ID_4)
-			         WHERE T.IS_VALID = '1'
-			         	<if test="inspec_name != null">
-			           		AND T.INSPEC_NAME LIKE #{inspec_name}
-			           </if>
-			           <if test="startTime != null">
-			           		AND T.START_TIME &gt;= #{startTime}
-			           </if>
-			           <if test="endTime != null">
-			           		AND T.END_TIME &gt;= #{endTime}
-			           </if>
-			           <if test="inspec_type != null">
-			           		AND T.INSPEC_TYPE = #{inspec_type}
-			           </if>
-			         ) T
-			 GROUP BY T.INSPEC_ID,
-			          T.INSPEC_NAME,
-			          T.C_USER_ID,
-			          T.START_TIME,
-			          T.START_TIME,
-			          T.END_TIME,
-			          T.C_USER_NAME,
-			          T.INSPEC_TYPE,
-			          T.IN_TYPE,
-			          T.IS_DEL,
-			          T.INSPECTYPE 
-			          ORDER BY T.START_TIME DESC
-		</if>
-		
 	</select>
 	
 	
 	<!--查询登录用户是否是营服中心管理员  -->
 	<select id="ismanager" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT COUNT(*) NUM,UNIT_ID FROM PORTAL.VIEW_U_PORTAL_PERSON T WHERE T.DEAL_DATE=#{month} AND USERID = #{userid} 
-		GROUP BY UNIT_ID
+		SELECT COUNT(*) NUM,UNIT_ID FROM PORTAL.VIEW_U_PORTAL_PERSON T
+		WHERE T.DEAL_DATE=#{month} AND T.USERID = #{userid} 
+		AND T.USER_CODE='1'
+		GROUP BY T.UNIT_ID
 	</select>
 	
 	<!-- 查询日常巡检人员 -->
