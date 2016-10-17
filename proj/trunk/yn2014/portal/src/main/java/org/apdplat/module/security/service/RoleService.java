@@ -58,6 +58,8 @@ public class RoleService {
             LOG.error("获取根角色失败！");
             return "";
         }
+        
+      	
         StringBuilder json=new StringBuilder();
         json.append("[");
 
@@ -72,7 +74,7 @@ public class RoleService {
                 
                 if (recursion) {
                     for(Role item : rootRole.getChild()){
-                        json.append(",children:").append(toJson(item.getId(), recursion,null));
+                        json.append(",children:").append(toJson(item.getId(), recursion,null,hasRoleIds()));
                     }
                 }
             }
@@ -81,7 +83,39 @@ public class RoleService {
         
         return json.toString();
     }
-    public String toJson(long roleId, boolean recursion,List<String> roleIds){
+    public List<Map> hasRoleIds(){
+    	User user=UserHolder.getCurrentLoginUser();
+	      //获取roleIds中的除了备注为“与菜单同步”的角色外的所有角色对应的与功能角色的ids集合
+    	String sql="";
+    	sql+=" select r.id||'' as \"ID\" from apdp_role r                  ";
+    	sql+=" where r.rolename in(                                        ";
+    	sql+="   select                                                    ";
+    	sql+="       distinct m.chinese||'('||c.chinese||')'               ";
+    	sql+="   from                                                      ";
+    	sql+="       apdp_role r,                                          ";
+    	sql+="       apdp_role_command rc,                                 ";
+    	sql+="       apdp_command c,                                       ";
+    	sql+="       apdp_module m                                         ";
+    	sql+="   where r.id=rc.roleid                                      ";
+    	sql+="   and rc.commandid=c.id                                     ";
+    	sql+="   and c.module_id=m.id                                      ";
+    	sql+="   and r.id in(                                              ";
+    	sql+="       select                                                ";
+    	sql+="         r.id                                                ";
+    	sql+="       from                                                  ";
+    	sql+="         apdp_user u,                                        ";
+    	sql+="         apdp_user_role ur,                                  ";
+    	sql+="         apdp_role r                                         ";
+    	sql+="       where u.id=ur.userid                                  ";
+    	sql+="       and ur.roleid=r.id                                    ";
+    	sql+="       and( r.des<>'与菜单同步' or r.des is null)              ";
+    	sql+="       and u.id='"+user.getId()+"'                           ";
+    	sql+="   )                                                         ";
+    	sql+=" )                                                           ";
+    	
+    	return serviceFacade.queryForMap(sql);
+    }
+    public String toJson(long roleId, boolean recursion,List<String> roleIds,List<Map> hasRoleIds){
     	if(roleIds==null){
 	        Role role=serviceFacade.retrieve(Role.class, roleId);
 	        if(role==null){
@@ -106,7 +140,7 @@ public class RoleService {
 	                }else{
 	                    json.append("','leaf':false,'cls':'folder'");
 	                    if (recursion) {
-	                        json.append(",children:").append(toJson(item.getId(), recursion,roleIds));
+	                        json.append(",children:").append(toJson(item.getId(), recursion,roleIds,hasRoleIds));
 	                    }
 	                }
 	           json .append("},");
@@ -129,37 +163,9 @@ public class RoleService {
 	        StringBuilder json=new StringBuilder();
 	        json.append("[");
 	        
-	        User user=UserHolder.getCurrentLoginUser();
-	      //获取roleIds中的除了备注为“与菜单同步”的角色外的所有角色对应的与功能角色的ids集合
-        	String sql="";
-        	sql+=" select r.id||'' as \"ID\" from apdp_role r                  ";
-        	sql+=" where r.rolename in(                                        ";
-        	sql+="   select                                                    ";
-        	sql+="       distinct m.chinese||'('||c.chinese||')'               ";
-        	sql+="   from                                                      ";
-        	sql+="       apdp_role r,                                          ";
-        	sql+="       apdp_role_command rc,                                 ";
-        	sql+="       apdp_command c,                                       ";
-        	sql+="       apdp_module m                                         ";
-        	sql+="   where r.id=rc.roleid                                      ";
-        	sql+="   and rc.commandid=c.id                                     ";
-        	sql+="   and c.module_id=m.id                                      ";
-        	sql+="   and r.id in(                                              ";
-        	sql+="       select                                                ";
-        	sql+="         r.id                                                ";
-        	sql+="       from                                                  ";
-        	sql+="         apdp_user u,                                        ";
-        	sql+="         apdp_user_role ur,                                  ";
-        	sql+="         apdp_role r                                         ";
-        	sql+="       where u.id=ur.userid                                  ";
-        	sql+="       and ur.roleid=r.id                                    ";
-        	sql+="       and( r.des<>'与菜单同步' or r.des is null)              ";
-        	sql+="       and u.id='"+user.getId()+"'                     ";
-        	sql+="   )                                                         ";
-        	sql+=" )                                                           ";
-        	List<Map> idLs=serviceFacade.queryForMap(sql);
+	        
         	List<String> funcIds=new ArrayList<String>();
-        	for(Map m:idLs){
+        	for(Map m:hasRoleIds){
         		if(m!=null&&m.containsKey("ID")){
         			String tid=(String)m.get("ID");
         			funcIds.add(tid);
@@ -186,7 +192,7 @@ public class RoleService {
 	                }else{
 	                    json.append("','leaf':false,'cls':'folder'");
 	                    if (recursion) {
-	                        json.append(",children:").append(toJson(item.getId(), recursion,roleIds));
+	                        json.append(",children:").append(toJson(item.getId(), recursion,roleIds,hasRoleIds));
 	                    }
 	                }
 	           json .append("},");
