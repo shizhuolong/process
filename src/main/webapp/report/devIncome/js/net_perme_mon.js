@@ -99,8 +99,7 @@ $(function(){
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var preField=' T.DEAL_DATE,T.GROUP_ID_1_NAME,T.HQ_CHAN_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE,';
-	var where=' WHERE 1 = 1';
+	var where=' ';
 	var orderBy=" ORDER BY T.GROUP_ID_1,T.HQ_CHAN_CODE";
 	var groupBy=" GROUP BY T.DEAL_DATE,T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,T.OPERATE_TYPE";
 	var regionName=$("#regionName").val();
@@ -120,7 +119,6 @@ function downsAll() {
 	}else{
 		where +=" AND 1=2";
 	}
-	where+=" AND T.DEAL_DATE='"+qdate+"'";
 	if(regionName!=''){
 		where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
 	}
@@ -130,10 +128,17 @@ function downsAll() {
 	if(operate_type!=''){
 		where+=" AND T.OPERATE_TYPE = '"+operate_type+"'";
 	}
-	var sql = 'SELECT ' + preField + fieldSql+where+groupBy+orderBy;
+	var sql = 	" SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.HQ_CHAN_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE, "+
+				"      SUM(NVL(T.USER_4G_ACCT,0))USER_4G_ACCT                                        "+
+				"      ,SUM(NVL(T.USER_ALL_ACCT,0))USER_ALL_ACCT                                     "+
+				"      ,ROUND(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                         "+
+				"                  ELSE SUM(NVL(T.USER_4G_ACCT,0))/SUM(NVL(T.USER_ALL_ACCT,0)) END   "+
+				"                    ,2) PERMEN_4G                                                   "+
+				"FROM PMRT.TAB_MRT_4G_NET_PERME_MON T                                                "+
+				" WHERE T.DEAL_DATE='"+qdate+"'"+where+groupBy+orderBy;
 	showtext = '自有厅4G渗透率支撑' + qdate;
-	var title=[["账期","地市","营业厅名称","渠道编码","经营模式","自营厅4G网络渗透率","","","全渠道4G网络渗透率","",""],
-	                     ["","","","","","","使用4G网络出帐用户数","移网出帐用户数","4G网络渗透率","使用4G网络出帐用户数","移网出帐用户数","4G网络渗透率"]];
+	var title=[["账期","地市","营业厅名称","渠道编码","经营模式","自营厅4G网络渗透率","",""],
+	             ["","","","","","使用4G网络出帐用户数","移网出帐用户数","4G网络渗透率"]];
 	downloadExcel(sql,title,showtext);
 }
 function listRegions(){
