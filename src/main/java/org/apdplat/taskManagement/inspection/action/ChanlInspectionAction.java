@@ -46,37 +46,17 @@ public class ChanlInspectionAction extends BaseAction {
 	 * @return
 	 */
 	public String index() {
-		User user = UserHolder.getCurrentLoginUser();
-		String state ="";
-		int num =0;
-		String unit_id ="";
-		String userid  =user.getId().toString();
 		Map<String,String> usermap = new HashMap<String,String>();
+		
+		User user = UserHolder.getCurrentLoginUser();
+		String userid  =user.getId().toString();
 		usermap.put("userid", userid);
+		
 		Calendar ca=Calendar.getInstance();
 		String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 		usermap.put("month", month);
-		Map<String, Object> result = new HashMap<String,Object>();
-		result = chanlInspectionService.ismanager(usermap);
-		if(result!=null){
-			BigDecimal bnum = (BigDecimal)result.get("NUM");
-			num=bnum.intValue();
-			unit_id = (String)result.get("UNIT_ID");
-			
-			if(num<1){
-				state ="0";
-				request.setAttribute("unit_id","0");
-				request.setAttribute("state", state);
-			}else{
-				state ="1";
-				request.setAttribute("unit_id", unit_id);
-				request.setAttribute("state", state);
-			}
-		}else{
-			state ="0";
-			request.setAttribute("unit_id", "0");
-			request.setAttribute("state", state);
-		}
+		
+		request.setAttribute("isManager", chanlInspectionService.ismanager(usermap));
 		
 		return SUCCESS;
 	}
@@ -89,17 +69,19 @@ public class ChanlInspectionAction extends BaseAction {
 		try {
 			User user = UserHolder.getCurrentLoginUser();
 			Org org = user.getOrg();
-			String realname = request.getParameter("realname");
-			String username = request.getParameter("username");
+			
+			String realName = request.getParameter("realName");
+			String userName = request.getParameter("userName");
 			String phone = request.getParameter("phone");
-			String unit_id = request.getParameter("unit_id");
+			//日常巡检只能营服中心负责人下发，所以用户的code就是营服ID
+			String unitId = org.getCode();
 			String month = request.getParameter("month");
 			
-			if(realname!=null && !"".equals(realname.trim())){
-				resultMap.put("realname", "%"+realname+"%");
+			if(realName!=null && !"".equals(realName.trim())){
+				resultMap.put("realName", "%"+realName+"%");
 			}
-			if(username!=null && !"".equals(username.trim())){
-				resultMap.put("username", username);
+			if(userName!=null && !"".equals(userName.trim())){
+				resultMap.put("userName", userName);
 			}
 			if(phone!=null && !"".equals(phone.trim())){
 				resultMap.put("phone", phone);
@@ -107,9 +89,7 @@ public class ChanlInspectionAction extends BaseAction {
 			if(month!=null && !"".equals(month.trim())){
 				resultMap.put("month", month);
 			}
-			resultMap.put("unit_id", unit_id);
-			resultMap.put("code", org.getCode());
-			resultMap.put("orgLevel", org.getOrgLevel());
+			resultMap.put("unitId", unitId);
 			Object result = chanlInspectionService.queryRcPerson(resultMap);
 			this.reponseJson(result);
 		} catch (Exception e) {
@@ -123,18 +103,24 @@ public class ChanlInspectionAction extends BaseAction {
 	 */
 	public void queryRcChanl(){
 		try{
-	        String group_id_4_name = request.getParameter("group_id_4_name");
-			String hq_chanl_code = request.getParameter("hq_chanl_code");
+			User user = UserHolder.getCurrentLoginUser();
+			Org org = user.getOrg();
+			String unitId = org.getCode();
+			resultMap.put("unitId", unitId);
+			
+	        String hqChanlName = request.getParameter("hqChanlName");
+			String hqChanlCode = request.getParameter("hqChanlCode");
 			String month = request.getParameter("month");
-			if(group_id_4_name != null && !"".equals(group_id_4_name.trim())) {
-				resultMap.put("group_id_4_name", "%"+group_id_4_name+"%");
+			if(hqChanlName != null && !"".equals(hqChanlName.trim())) {
+				resultMap.put("hqChanlName", "%"+hqChanlName+"%");
 			}
-			if(hq_chanl_code != null && !"".equals(hq_chanl_code.trim())) {
-				resultMap.put("hq_chanl_code", hq_chanl_code);
+			if(hqChanlCode != null && !"".equals(hqChanlCode.trim())) {
+				resultMap.put("hqChanlCode", hqChanlCode);
 			}
 			if(month != null && !"".equals(month.trim())) {
 				resultMap.put("month", month);
 			}
+			
 			Object result = chanlInspectionService.queryRcChanl(resultMap);
 			this.reponseJson(result);
 		} catch (Exception e) {
@@ -150,7 +136,9 @@ public class ChanlInspectionAction extends BaseAction {
 		try{
 			User user = UserHolder.getCurrentLoginUser();
 			Org org = user.getOrg();
+			
 			String inspec_name = request.getParameter("inspec_name");
+			String creator = request.getParameter("creator");
 			String startTime = request.getParameter("startTime");
 			String endtTime = request.getParameter("endtTime");
 			String inspec_type = request.getParameter("inspec_type");
@@ -158,6 +146,9 @@ public class ChanlInspectionAction extends BaseAction {
 			resultMap.put("orgLevel", org.getOrgLevel());
 			if(inspec_name != null && !"".equals(inspec_name.trim())) {
 				resultMap.put("inspec_name", "%"+inspec_name+"%");
+			}
+			if(creator != null && !"".equals(creator.trim())) {
+				resultMap.put("creator", "%"+creator+"%");
 			}
 			if(startTime != null && !"".equals(startTime.trim())) {
 				resultMap.put("startTime", startTime);
@@ -200,14 +191,15 @@ public class ChanlInspectionAction extends BaseAction {
 		try{
 			User user = UserHolder.getCurrentLoginUser();
 			Org org = user.getOrg();
-			String realname = request.getParameter("realname");
-			String username = request.getParameter("username");
+			
+			String realName = request.getParameter("realName");
+			String userName = request.getParameter("userName");
 			String phone = request.getParameter("phone");
-			if(realname != null && !"".equals(realname.trim())) {
-				resultMap.put("realname", "%"+realname+"%");
+			if(realName != null && !"".equals(realName.trim())) {
+				resultMap.put("realName", "%"+realName+"%");
 			}
-			if(username != null && !"".equals(username.trim())) {
-				resultMap.put("username", username);
+			if(userName != null && !"".equals(userName.trim())) {
+				resultMap.put("userName", userName);
 			}
 			if(phone != null && !"".equals(phone.trim())) {
 				resultMap.put("phone", phone);
@@ -227,13 +219,13 @@ public class ChanlInspectionAction extends BaseAction {
 	 */
 	public void queryHdChanl() {
 		try{
-	        String group_id_4_name = request.getParameter("group_id_4_name");
-			String hq_chanl_code = request.getParameter("hq_chanl_code");
-			if(group_id_4_name != null && !"".equals(group_id_4_name.trim())) {
-				resultMap.put("group_id_4_name", "%"+group_id_4_name+"%");
+	        String hqChanlName = request.getParameter("hqChanlName");
+			String hqChanlCode = request.getParameter("hqChanlCode");
+			if(hqChanlName != null && !"".equals(hqChanlName.trim())) {
+				resultMap.put("hqChanlName", "%"+hqChanlName+"%");
 			}
-			if(hq_chanl_code != null && !"".equals(hq_chanl_code.trim())) {
-				resultMap.put("hq_chanl_code", hq_chanl_code);
+			if(hqChanlCode != null && !"".equals(hqChanlCode.trim())) {
+				resultMap.put("hqChanlCode", hqChanlCode);
 			}
 			Object result = chanlInspectionService.queryHdChanl(resultMap);
 			this.reponseJson(result);

@@ -53,8 +53,9 @@ public class ChanlInspectionService {
 	 * @param params
 	 * @return
 	 */
-	public Map<String, Object> ismanager(Map<String, String> params) {
-		return chanlInspectionDao.ismanager(params);
+	public boolean ismanager(Map<String, String> params) {
+		Integer count = chanlInspectionDao.ismanager(params);
+		return count>0?true:false;
 	}
 	
 	
