@@ -106,7 +106,7 @@ public  class DaoFacade extends DaoSupport{
         }*/
 	}
 	public void createMemuRole(Module model){
-		String sql="";
+		/*String sql="";
 		sql+=" insert into portal.apdp_role                                    ";
 		sql+=" select * from(                                                  ";
 		sql+="   select                                                        ";
@@ -167,7 +167,7 @@ public  class DaoFacade extends DaoSupport{
 		 
 		 Query cquery = getEntityManager()
 					.createNativeQuery(sql);
-		 cquery.executeUpdate();
+		 cquery.executeUpdate();*/
 	}
 	public <T extends Model>  T retrieve(Class<T> modelClass,Long modelId) {
                 T model=getEntityManager().find(modelClass, modelId);
