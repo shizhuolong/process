@@ -38,7 +38,7 @@ function initInspectionChanl() {
 				"<td>"+n['CHANL_NAME']+"</td><td>"+n['HQ_CHANL_ID']+"</td>" +
 				"<td>"+n['R_USER_NAME']+"</td><td>"+n['R_PHONE']+"</td>" +
 				"<td id='__"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>"+n['INSPEC_SUM']+"</td>" +
-				"<td userid='"+n['R_USER_ID']+"' p_code='"+n['R_USER_REGION']+"' p_levl='"+n['R_USER_REGION_LEVEL']+"' chanl_type='"+n['CHANL_TYPE']+"'><a href='#' del_hd_id='"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>&nbsp;</a></td></td>"+
+				"<td userId='"+n['R_USER_ID']+"' pCode='"+n['R_USER_REGION']+"' p_levl='"+n['R_USER_REGION_LEVEL']+"' chanl_type='"+n['CHANL_TYPE']+"'><a href='#' del_hd_id='"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>&nbsp;</a></td></td>"+
 				"</tr>";
 				$("#selected_inspection_chanl").append(sc);
 			});

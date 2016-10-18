@@ -9,7 +9,7 @@ $(function(){
 
 	$("#resetBtn").click(function(event) {
 		event.preventDefault();
-		$("#realname").val("");
+		$("#realName").val("");
 		$("#username").val("");
 		$("#phone").val("");
 	});
@@ -21,21 +21,21 @@ $(function(){
 
 	$("#resetChlBtn").click(function(event) {
 		event.preventDefault();
-		$("#qgroup_id_4_name").val("");
-		$("#qhq_chanl_code").val("");
+		$("#hqChanlName").val("");
+		$("#hqChanlCode").val("");
 	});
 });
 var	serid ="";
 var	name ="";
 var	username ="";
 var	phone = "";
-var	p_levl ="";
-var	p_code ="";
+var	pLevel ="";
+var	pCode ="";
 
 //查询日常巡检人员
 function search(pageNumber){
 	var pageNumber = pageNumber + 1;
-	var realname = $.trim($("#realname").val());
+	var realName = $.trim($("#realName").val());
 	var username = $.trim($("#username").val());
 	var phone = $.trim($("#phone").val());
 	$.ajax({
@@ -46,7 +46,7 @@ function search(pageNumber){
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           "realname":realname,
+           "realName":realName,
            "username":username,
            "phone":phone,
            "unit_id":unit_id
@@ -64,18 +64,18 @@ function search(pageNumber){
 	   		$.each(pages.rows,function(i,n){
 	   			content+="<tr>";
 	   			if(i==0) {
-	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"' p_levl='"+orgLevel+"' p_code='"+orgCode+"' checked='true'></td>";
-	   				userid = n['USERID'];
+	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"' pLevel='"+orgLevel+"' pCode='"+orgCode+"' checked='true'></td>";
+	   				userId = n['USERID'];
 	   				name = n['NAME'];
 	   				username = n['USERNAME'];
 	   				phone = n['PHONE'];
-	   				/*p_levl = n['ORGLEVEL'];
-	   				p_code = n['CODE'];*/
-	   				p_levl = orgLevel;
-	   				p_code = orgCode;
+	   				/*pLevel = n['ORGLEVEL'];
+	   				pCode = n['CODE'];*/
+	   				pLevel = orgLevel;
+	   				pCode = orgCode;
 	   				searchRcChanl(0);
 	   			} else {
-	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"'p_levl='"+orgLevel+"' p_code='"+orgCode+"'></td>"
+	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"'pLevel='"+orgLevel+"' pCode='"+orgCode+"'></td>"
 	   			}
 	   			content+="<td>"+isNull(n['NAME'])+"</td>"
 				+"<td>"+isNull(n['USERNAME'])+"</td>"
@@ -117,19 +117,19 @@ function isNull(obj){
 
 //定义函数，用于处理传递参数
 function getRcChanlMsg(ele){
-	userid = $(ele).attr("id");
+	userId = $(ele).attr("id");
 	name = $(ele).attr("uname")
 	username = $(ele).attr("username");
 	phone = $(ele).attr("phone");
-	p_levl = $(ele).attr("p_levl");
-	p_code = $(ele).attr("p_code");
+	pLevel = $(ele).attr("pLevel");
+	pCode = $(ele).attr("pCode");
 	searchRcChanl(0);
 }
 
 //查询日常巡检渠道
 function searchRcChanl(pageNumber){
-	var qgroup_id_4_name = $.trim($("#qgroup_id_4_name").val());
-	var qhq_chanl_code = $.trim($("#qhq_chanl_code").val());
+	var hqChanlName = $.trim($("#hqChanlName").val());
+	var hqChanlCode = $.trim($("#hqChanlCode").val());
 	var pageNumber = pageNumber +1;
 	$.ajax({
 		type:"POST",
@@ -139,9 +139,9 @@ function searchRcChanl(pageNumber){
 		data:{
 			"resultMap.page":pageNumber,
 			"resultMap.rows":pageSize,
-			"resultMap.userId":userid,
-	        "group_id_4_name":qgroup_id_4_name,
-	        "hq_chanl_code":qhq_chanl_code
+			"resultMap.userId":userId,
+	        "hqChanlName":hqChanlName,
+	        "hqChanlCode":hqChanlCode
 		},
 		success:function(data){
    		if(data.msg) {
@@ -154,7 +154,7 @@ function searchRcChanl(pageNumber){
 		}
    		var content="";
    		$.each(pages.rows,function(i,n){
-   			var value = $("#selected_inspection_chanl tr td#__"+n['HQ_CHAN_CODE']+"_"+userid).html();
+   			var value = $("#selected_inspection_chanl tr td#__"+n['HQ_CHAN_CODE']+"_"+userId).html();
    			if(!value) {
    				value = "";
    			}
@@ -163,9 +163,9 @@ function searchRcChanl(pageNumber){
 			+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
 			+"<td>"+isNull(n['NAME'])+"</td>"
 			+"<td>"+isNull(n['PHONE'])+"</td>"
-			+"<td style='display:none;'>"+userid+"</td>"
-   			+"<td><input type='text' size='15' onkeyup='valid(this)' id='"+n['CODE']+"_"+userid+"' value='"+value+"'></td>"
-   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['HQ_CHAN_NAME']+"' chl_code='"+n['HQ_CHAN_CODE']+"' p_levl='"+orgLevel+"' p_code='"+p_code+"' name='"+name+"' userid='"+userid+"' username='"+username+"' phone='"+phone+"'  chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
+			+"<td style='display:none;'>"+userId+"</td>"
+   			+"<td><input type='text' size='15' onkeyup='valid(this)' id='"+n['CODE']+"_"+userId+"' value='"+value+"'></td>"
+   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['HQ_CHAN_NAME']+"' chl_code='"+n['HQ_CHAN_CODE']+"' pLevel='"+orgLevel+"' pCode='"+pCode+"' name='"+name+"' userId='"+userId+"' username='"+username+"' phone='"+phone+"'  chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
 			content+="</tr>";
 		});
 		if(content != "") {
@@ -221,15 +221,15 @@ function create(ele,event) {
 	}else{
 		window.event.returnValue = false;//注意加window
 	}
-	var suserid = $(ele).attr("userid");
+	var suserId = $(ele).attr("userId");
 	var susername = $(ele).attr("username");
 	var schl_name = $(ele).attr("chl_name");
-	var srealname = $(ele).attr("name");
+	var srealName = $(ele).attr("name");
 	var sphone = $(ele).attr("phone");
-	var sp_code =  $(ele).attr("p_code");
+	var spCode =  $(ele).attr("pCode");
 	var schl_code =  $(ele).attr("chl_code");
 	var schanl_type = $(ele).attr("chanl_type");
-	var sp_levl = $(ele).attr("p_levl");
+	var spLevel = $(ele).attr("pLevel");
 	var spenum = $(ele).parent("td").prev("td").find("input").val();
 	if(spenum == null || spenum == "" || spenum == "null") {
 		art.dialog.alert("对不起，你还没有填写巡检次数！");
@@ -239,15 +239,15 @@ function create(ele,event) {
 			art.dialog.alert("添加的巡检次数不能为0！");
 			return;
 		} else {
-			var sdchl = $("#selected_inspection_chanl tr td#__"+schl_code+"_"+suserid).html();
+			var sdchl = $("#selected_inspection_chanl tr td#__"+schl_code+"_"+suserId).html();
 			if(sdchl) {
-				$("#selected_inspection_chanl tr td#__"+schl_code+"_"+suserid).html(spenum);
+				$("#selected_inspection_chanl tr td#__"+schl_code+"_"+suserId).html(spenum);
 			} else {
 				var sc = "<tr>" +
 				"<td>"+schl_name+"</td><td>"+schl_code+"</td>" +
-				"<td>"+srealname+"</td><td>"+sphone+"</td>" +
-				"<td id='__"+schl_code+"_"+userid+"'>"+spenum+"</td>" +
-				"<td userid='"+suserid+"' p_code='"+sp_code+"' p_levl='"+sp_levl+"' chanl_type='"+schanl_type+"'><a href='#' del_hd_id='"+schl_code+"_"+userid+"'  onclick='del(this,event)'>移除</a></td></td>"+
+				"<td>"+srealName+"</td><td>"+sphone+"</td>" +
+				"<td id='__"+schl_code+"_"+userId+"'>"+spenum+"</td>" +
+				"<td userId='"+suserId+"' pCode='"+spCode+"' pLevel='"+spLevel+"' chanl_type='"+schanl_type+"'><a href='#' del_hd_id='"+schl_code+"_"+userId+"'  onclick='del(this,event)'>移除</a></td></td>"+
 				"</tr>";
 				$("#selected_inspection_chanl").append(sc);
 			}
@@ -314,10 +314,10 @@ function updateRcInpec() {
 			taskInfo += '"r_phone":"'+$(this).find("td:eq(3)").html()+'",';
 			taskInfo += '"inspec_sum":"'+$(this).find("td:eq(4)").html()+'",';
 			var td4 = $(this).find("td:eq(5)");
-			taskInfo += '"r_user_id":"'+$(td4).attr("userid")+'",';
-			taskInfo += '"r_user_region":"'	+$(td4).attr("p_code")+'",';
+			taskInfo += '"r_user_id":"'+$(td4).attr("userId")+'",';
+			taskInfo += '"r_user_region":"'	+$(td4).attr("pCode")+'",';
 			taskInfo += '"chanl_type":"'+$(td4).attr("chanl_type")+'",';
-			taskInfo += '"r_user_region_level":"'+$(td4).attr("p_levl")+'"},';
+			taskInfo += '"r_user_region_level":"'+$(td4).attr("pLevel")+'"},';
 		});
 		taskInfo = taskInfo.substring(0,taskInfo.lastIndexOf(","));
 		taskInfo += "]}";
@@ -387,7 +387,7 @@ function initRcInspectionChanl() {
 				"<td>"+n['CHANL_NAME']+"</td><td>"+n['HQ_CHANL_ID']+"</td>" +
 				"<td>"+n['R_USER_NAME']+"</td><td>"+n['R_PHONE']+"</td>" +
 				"<td id='__"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>"+n['INSPEC_SUM']+"</td>" +
-				"<td userid='"+n['R_USER_ID']+"' p_code='"+n['R_USER_REGION']+"' p_levl='"+n['R_USER_REGION_LEVEL']+"' chanl_type='"+n['CHANL_TYPE']+"'><a href='#' del_hd_id='"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>&nbsp;</a></td></td>"+
+				"<td userId='"+n['R_USER_ID']+"' pCode='"+n['R_USER_REGION']+"' pLevel='"+n['R_USER_REGION_LEVEL']+"' chanl_type='"+n['CHANL_TYPE']+"'><a href='#' del_hd_id='"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>&nbsp;</a></td></td>"+
 				"</tr>";
 				$("#selected_inspection_chanl").append(sc);
 			});

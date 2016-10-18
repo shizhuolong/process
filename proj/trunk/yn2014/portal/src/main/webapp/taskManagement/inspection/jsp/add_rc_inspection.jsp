@@ -85,9 +85,9 @@
 	                       		<table>
 	                       		<tr>
 				                	<td align="right">巡检人姓名：</td>
-				                    <td><input class="default-text-input wper140" name="realname" id="realname" type="text"/></td>
+				                    <td><input class="default-text-input wper140" name="realName" id="realName" type="text"/></td>
 				                    <td align="right">巡检人帐号：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="username" id="username" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="userName" id="userName" type="text"/></td>
 				                     <td align="right">巡检人电话：</td>
 				                    <td><input class="default-text-input" style="width: 250px;" name="phone" id="phone" type="text"/></td>
 				                </tr>
@@ -137,9 +137,9 @@
 	                       		<table>
 	                       		<tr>
 				                	<td align="right">渠道名称：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="qgroup_id_4_name" id="qgroup_id_4_name" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanName" id="hqChanName" type="text"/></td>
 				                    <td align="right">渠道编码：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="qhq_chanl_code" id="qhq_chanl_code" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlCode" id="hqChanlCode" type="text"/></td>
 				                </tr>
 				                <tr height="35px">
 				                	<td colspan="4" align="center">
