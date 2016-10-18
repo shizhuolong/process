@@ -67,32 +67,28 @@
             <input type="hidden" name="resultMap.rows" />
           	<table width="100%" style="margin:10px 0;">
                 <tr height="35px">
-                    <td width="6%" style="padding-left:10px;">姓名：</td>
+                    <td width="5%" style="padding-left:10px;">姓名：</td>
                     <td width="15%"><input class="default-text-input wper80" id="name" name="name" type="text"/></td>
-                    <td width="5%" style="padding-left:10px;">营服中心：</td>
+                    <td width="8%" style="padding-left:10px;">营服中心：</td>
                     <td width="15%"><input class="default-text-input wper80" id="unit_name" name="unit_name" type="text"/></td>
-                </tr>
-                <tr height="35px">
-                    <td width="6%" style="padding-left:10px;">工作类别：</td>
+                    <td width="8%" style="padding-left:10px;">工作类别：</td>
                     <td width="15%"><input class="default-text-input wper80" id="job_type" name="job_type" type="text"/></td>
-                    <td width="5%" style="padding-left:10px;">岗位：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="job" name="job" type="text"/></td>
-                </tr>
-                <tr height="35px">
-                	<td width="6%" style="padding-left:10px;">HR编码：</td>
+                    <td width="8%" style="padding-left:10px;">HR编码：</td>
                     <td width="15%"><input class="default-text-input wper80" id="hr_id" name="hr_id" type="text"/></td>
-                    <td width="5%" style="padding-left:10px;">生效时间：</td>
-                    <td width="15%"><input class="default-text-input wper80" id="active_time" name="active_time" type="text"/></td>
                 </tr>
                 <tr height="35px">
-                    <td width="6%" style="padding-left: 10px;">账期：</td>
+                	 <td width="5%" style="padding-left:10px;">岗位：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="job" name="job" type="text"/></td>
+                    <td width="8%" style="padding-left:10px;">生效时间：</td>
+                    <td width="15%"><input class="default-text-input wper80" id="active_time" name="active_time" type="text"/></td>
+                    <td width="8%" style="padding-left: 10px;">账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',onpicked:controll(),dateFmt:'yyyyMM'})" value="<%=time%>" id="time">
 					</td>
 				 </tr>	
                 <tr>
-					<td colspan="4">
+					<td colspan="8">
                         	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 250px;">查询</a>
                         	<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
                         	<a class="default-btn fLeft mr10" href="#" id="addBtn" style="">新增</a>
