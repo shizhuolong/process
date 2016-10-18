@@ -68,7 +68,7 @@
 					                    </td>
 					                     <td align="right">结束时间：</td>
 					                    <td>
-					                    	<input type="text" class="Wdate" id="qendtTime" name="qendtTime" readonly="readonly" onclick="new WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" value="<%=endTime %>" />
+					                    	<input type="text" class="Wdate" id="qendTime" name="qendTime" readonly="readonly" onclick="new WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" value="<%=endTime %>" />
 					                    </td>
 					                </tr>
 					                <tr>
