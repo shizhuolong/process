@@ -167,7 +167,7 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['HR_ID'])+"</td>"
 					+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
 					+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
-					+"<td>"+isNull(n['IS_LOGO'])+"</td>"
+					+"<td>"+isNull1(n['IS_LOGO'])+"</td>"
 					+"<td></td>";
 					content+="</tr>";
 				 });
