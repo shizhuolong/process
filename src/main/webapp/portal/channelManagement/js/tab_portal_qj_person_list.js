@@ -90,12 +90,16 @@ function update(obj) {
 	var hr_ratio=obj.attr("hr_ratio");
 	var chooseMonth=obj.attr("chooseMonth");
 	var unit_name=obj.attr("unit_name");
+	var userCode = obj.attr("userCode");
+	var unit_id = obj.attr("unit_id");
 	art.dialog.data('hr_id',hr_id);
 	art.dialog.data('job',job);
 	art.dialog.data('is_logo',is_logo);
 	art.dialog.data('hr_ratio',hr_ratio);
 	art.dialog.data('chooseMonth',chooseMonth);
 	art.dialog.data('unit_name',unit_name);
+	art.dialog.data('userCode',userCode);
+	art.dialog.data('unit_id',unit_id);
 	art.dialog.open(url,{
 		id:'update',
 		width:'420px',
@@ -154,7 +158,7 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['EMP_TYPE'])+"</td>"
 				+"<td>"+isNull(n['ACTIVE_TIME'])+"</td>"
 				+"<td>"+isNull1(n['IS_LOGO'])+"</td>"
-			 +"<td><a onclick='update($(this))' chooseMonth='"+chooseMonth+"' job='"+isNull(n['JOB'])+"' is_logo='"+isNull(n['IS_LOGO'])+"' hr_id='"+isNull(n['HR_ID'])+"' hr_ratio='"+isNull(n['HR_RATIO'])+"' unit_name='"+isNull(n['UNIT_NAME'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
+			 +"<td><a onclick='update($(this))' userCode='"+isNull(n['USER_CODE'])+"' chooseMonth='"+chooseMonth+"' job='"+isNull(n['JOB'])+"' is_logo='"+isNull(n['IS_LOGO'])+"' hr_id='"+isNull(n['HR_ID'])+"' hr_ratio='"+isNull(n['HR_RATIO'])+"' unit_name='"+isNull(n['UNIT_NAME'])+"' unit_id='"+isNull(n['UNIT_ID'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
 			 		"<a onclick='del($(this))' regioncode='"+isNull(n['GROUP_ID_1'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
 			 });
