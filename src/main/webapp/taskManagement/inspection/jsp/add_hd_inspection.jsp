@@ -48,7 +48,7 @@
 	                       		<tr>
 	           						<th style="width: 15%;">巡检任务名称：</th>
 	           						<td style="width: 20%;">
-	            						<input type="text" id="inspec_name" name="inspec_name" size="50">
+	            						<input type="text" id="inspecName" name="inspecName" size="50">
 	           						</td>
 	           						<th style="width: 10%;">开始日期：</th>
 	                            	<td style="width: 10%;">
@@ -62,7 +62,7 @@
 	                           	<tr>
 	           						<th style="width: 15%;">巡检任务描述：</th>
 	           						<td style="width: 20%;" colspan="5">
-	           							<textarea rows="4" cols="81"  id="inspec_desc"></textarea>
+	           							<textarea rows="4" cols="81"  id="inspecDesc"></textarea>
 	           						</td>
 	                           	</tr>
 	                       	</table>
@@ -72,9 +72,9 @@
 	                       		<table>
 	                       		<tr>
 				                	<td align="right">巡检人姓名：</td>
-				                    <td><input class="default-text-input wper140" name="realname" id="realname" type="text"/></td>
+				                    <td><input class="default-text-input wper140" name="realName" id="realName" type="text"/></td>
 				                    <td align="right">巡检人帐号：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="username" id="username" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="userName" id="userName" type="text"/></td>
 				                     <td align="right">巡检人电话：</td>
 				                    <td><input class="default-text-input" style="width: 250px;" name="phone" id="phone" type="text"/></td>
 				                </tr>
@@ -124,9 +124,9 @@
 	                       		<table>
 	                       		<tr>
 				                	<td align="right">渠道名称：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="qgroup_id_4_name" id="qgroup_id_4_name" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlName" id="hqChanlName" type="text"/></td>
 				                    <td align="right">渠道编码：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="qhq_chanl_code" id="qhq_chanl_code" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlCode" id="hqChanlCode" type="text"/></td>
 				                </tr>
 				                <tr height="35px">
 				                	<td colspan="4" align="center">
