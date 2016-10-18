@@ -140,7 +140,7 @@ public class ChanlInspectionAction extends BaseAction {
 			String inspec_name = request.getParameter("inspec_name");
 			String creator = request.getParameter("creator");
 			String startTime = request.getParameter("startTime");
-			String endtTime = request.getParameter("endtTime");
+			String endTime = request.getParameter("endTime");
 			String inspec_type = request.getParameter("inspec_type");
 			resultMap.put("code", org.getCode());
 			resultMap.put("orgLevel", org.getOrgLevel());
@@ -153,8 +153,8 @@ public class ChanlInspectionAction extends BaseAction {
 			if(startTime != null && !"".equals(startTime.trim())) {
 				resultMap.put("startTime", startTime);
 			}
-			if(endtTime != null && !"".equals(endtTime.trim())) {
-				resultMap.put("endtTime", endtTime);
+			if(endTime != null && !"".equals(endTime.trim())) {
+				resultMap.put("endTime", endTime);
 			}
 			if(inspec_type != null && !"".equals(inspec_type.trim())) {
 				resultMap.put("inspec_type", inspec_type);
