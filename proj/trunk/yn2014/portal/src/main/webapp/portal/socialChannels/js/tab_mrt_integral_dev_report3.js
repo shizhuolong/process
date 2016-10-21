@@ -62,7 +62,7 @@ $(function(){
 				}else if(orgLevel==3){//营服中心
 					preField=' unit_id ROW_ID,unit_name ROW_NAME';
 					groupBy=' group by unit_id,unit_name ';
-					where+=' and unit_id=\''+code+"\' ";
+					where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 					orgLevel++;
 				}else if(orgLevel==4){
 					var hrId = $("#hrId").val();
@@ -136,7 +136,7 @@ function downsAll() {
 		where+=" and GROUP_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		where+=" and UNIT_NAME = '"+unitName+"'";
+		where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 	}
 	if(hr_id_name!=''){
 		where+=" and HR_ID_NAME = '"+hr_id_name+"'";
@@ -150,9 +150,9 @@ function downsAll() {
 }
 ////////////////////////////////////////////////////////////////////////
 function listRegions(){
-	var sql="";
+	var qdate = $.trim($("#month").val());
 	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT t where 1=1 ";
+	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT  T WHERE T.DEAL_DATE = '"+qdate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -162,7 +162,7 @@ function listRegions(){
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN (SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 	}else{
 		sql+=" and t.HR_ID='"+hrId+"'";
 	}
@@ -191,8 +191,9 @@ function listRegions(){
 	}
 }
 function listUnits(regionName){
+	var qdate = $.trim($("#month").val());
 	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT t where 1=1 ";
+	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE T.DEAL_DATE = '"+qdate+"'";
 	if(regionName!=''){
 		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
@@ -204,7 +205,7 @@ function listUnits(regionName){
 		}else if(orgLevel==2){
 			sql+=" and t.GROUP_ID_1="+code;
 		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
+			sql+=" AND T.UNIT_ID IN (SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 		}else{
 			sql+=" and t.HR_ID='"+hrId+"'";
 		}

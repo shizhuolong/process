@@ -73,7 +73,7 @@ $(function(){
 				}else if(orgLevel==3){
 					preSql="SELECT HR_ID ROW_ID,HR_ID_NAME ROW_NAME,";
 					groupBy=" GROUP BY HR_ID,HR_ID_NAME";
-					where+=" AND UNIT_ID='"+code+"'";
+					where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 					order=" ORDER BY HR_ID";
 				}else if(orgLevel==4){
 					preSql="SELECT GROUP_ID_4 ROW_ID,GROUP_ID_4_NAME ROW_NAME,";
@@ -171,7 +171,7 @@ function downsAll() {
 		where+=" AND GROUP_ID_1='"+code+"'";
 		order=" ORDER BY UNIT_ID,HR_ID,GROUP_ID_4";
 	}else if(orgLevel==3){
-		where+=" AND UNIT_ID='"+code+"'";
+		where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 		order=" ORDER BY HR_ID,GROUP_ID_4";
 	}else{
 		sql+=" AND GROUP_ID_4='"+code+"'";
@@ -185,7 +185,8 @@ function downsAll() {
 }
 ////////////////////////////////////////////////////////////////////////
 function listRegions(){
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE 1=1 ";
+	var time=$("#time").val();
+	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T  WHERE T.DEAL_DATE = '"+time+"'";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	if(orgLevel==1){
@@ -193,7 +194,7 @@ function listRegions(){
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 	}else{
 		sql+=" AND 1=2";
 	}
@@ -225,7 +226,7 @@ function listRegions(){
 function listUnits(regionName){
 	var $unit=$("#unitName");
 	var time=$("#time").val();
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM  PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE 1=1 ";
+	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM  PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE T.DEAL_DATE = '"+time+"'";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
@@ -236,7 +237,7 @@ function listUnits(regionName){
 		}else if(orgLevel==2){
 			sql+=" AND T.GROUP_ID_1="+code+"'";
 		}else if(orgLevel==3){
-			sql+=" AND T.UNIT_ID='"+code+"'";
+			sql+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 		}else{
 			sql+=" AND 1=2";
 		}

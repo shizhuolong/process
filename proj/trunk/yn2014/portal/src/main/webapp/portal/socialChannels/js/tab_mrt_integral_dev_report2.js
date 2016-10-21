@@ -74,7 +74,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+sumSql+' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@ynsyn13 ';
+			var sql='select '+preField+sumSql+' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
 						
 			where+=' and DEAL_DATE='+qdate+' ';
 			if(regionName!=''){
@@ -142,7 +142,7 @@ function downsAll() {
 		where+=" AND HR_ID_NAME = '"+hr_id_name+"'";
 	}
 	var sql = 'SELECT ' + preField + fieldSql
-			+ ' FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@YNSYN13 ';
+			+ ' FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
 	sql += where+groupBy+orderBy;
 	showtext = '累计汇总报表' + qdate;
 	var title=[["地市","营服中心","人员","渠道","渠道编码","S","","","","","A","","","","","B","","","","","C","","","","","其他","","","","","D"],["","","","","","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分"]];
@@ -151,7 +151,7 @@ function downsAll() {
 ////////////////////////////////////////////////////////////////////////
 function listRegions(){
 	var qdate = $.trim($("#month").val());
-	var sql = "SELECT DISTINCT T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@YNSYN13  T WHERE T.DEAL_DATE = '"+qdate+"'";
+	var sql = "SELECT DISTINCT T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT  T WHERE T.DEAL_DATE = '"+qdate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -192,7 +192,7 @@ function listRegions(){
 function listUnits(regionName){
 	var qdate = $.trim($("#month").val());
 	var $unit=$("#unitName");
-	var sql = "SELECT DISTINCT T.UNIT_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@YNSYN13 T WHERE T.DEAL_DATE = '"+qdate+"'";
+	var sql = "SELECT DISTINCT T.UNIT_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE T.DEAL_DATE = '"+qdate+"'";
 	if(regionName!=''){
 		sql+=" AND T.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
