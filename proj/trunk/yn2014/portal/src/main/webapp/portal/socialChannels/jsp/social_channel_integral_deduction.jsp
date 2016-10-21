@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>社会渠道分等分级积分扣减</title>
+<title>扣减明细月报</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -39,40 +39,47 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="2%" style="padding-left: 10px;">账期：</td>
-					<td width="7%">
+					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="20%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=dealDate %>" id="dealDate">
 					</td>
-					<td width="2%">地市：</td>
-					<td width="10%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
-								<option value=''>请选择</option>
+					<td width="5%" style="text-align:right;">地市：</td>
+					<td width="20%">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="5%">营服中心：</td>
-					<td width="10%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
-								<option value=''>请选择</option>
+					<td width="5%" style="text-align:right;">营服中心：</td>
+					<td width="20%">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+							<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="5%">人员姓名：</td>
-					<td width="10%">
+					<td width="5%">
+						<a class="default-btn" href="#" id="searchBtn"
+						style="float: right; margin-right: 20px;">查询</a>
+					</td>
+					<td width="5%">
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%" style="text-align:right;">人员姓名：</td>
+					<td width="20%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
-					<td width="5%">电话：</td>
-					<td width="10%">
+					<td width="5%" style="text-align:right;">电话：</td>
+					<td width="20%">
 						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
 					</td>
-					<td width="3%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 30px;">查询</a>
-					</td>
-					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					<td width="5%" style="text-align:right;">渠道编码：</td>
+					<td width="20%">
+						<input class="default-text-input wper80" name="channelCode" type="text" id="channelCode"/>
 					</td>
 				</tr>
 			</table>
@@ -86,9 +93,5 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-
 </body>
-<script>
-
-</script>
 </html>

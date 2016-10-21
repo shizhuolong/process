@@ -62,7 +62,7 @@ $(function(){
 				}else if(orgLevel==3){//营服中心
 					preField=' unit_id ROW_ID,unit_name ROW_NAME';
 					groupBy=' group by unit_id,unit_name ';
-					where+=' and unit_id=\''+code+"\' ";
+					where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 					orgLevel++;
 				}else if(orgLevel==4){//人员
 					var hrId = $("#hrId").val();
@@ -74,7 +74,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+sumSql+' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
+			var sql='select '+preField+sumSql+' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@ynsyn13 ';
 						
 			where+=' and DEAL_DATE='+qdate+' ';
 			if(regionName!=''){
@@ -125,24 +125,24 @@ function downsAll() {
 	if (orgLevel == 1) {//省
 		
 	} else if (orgLevel == 2) {//市
-		where += " and GROUP_ID_1='" + code + "' ";
+		where += " AND GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " and unit_id='" + code + "' ";
+		where += " AND unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 	} else if (orgLevel == 4) {//
-		where += " and hr_id='" + hrId + "' ";
+		where += " AND hr_id='" + hrId + "' ";
 	}
 	where+=' and DEAL_DATE='+qdate+' ';
 	if(regionName!=''){
-		where+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+		where+=" AND GROUP_ID_1_NAME = '"+regionName+"'";
 	}
 	if(unitName!=''){
-		where+=" and UNIT_NAME = '"+unitName+"'";
+		where+=" AND UNIT_NAME = '"+unitName+"'";
 	}
 	if(hr_id_name!=''){
-		where+=" and HR_ID_NAME = '"+hr_id_name+"'";
+		where+=" AND HR_ID_NAME = '"+hr_id_name+"'";
 	}
-	var sql = 'select ' + preField + fieldSql
-			+ ' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
+	var sql = 'SELECT ' + preField + fieldSql
+			+ ' FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@YNSYN13 ';
 	sql += where+groupBy+orderBy;
 	showtext = '累计汇总报表' + qdate;
 	var title=[["地市","营服中心","人员","渠道","渠道编码","S","","","","","A","","","","","B","","","","","C","","","","","其他","","","","","D"],["","","","","","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分 ","累计清算积分","累计可兑换积分","累计已兑换积分","累计剩余积分","累计总积分"]];
@@ -150,9 +150,8 @@ function downsAll() {
 }
 ////////////////////////////////////////////////////////////////////////
 function listRegions(){
-	var sql="";
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT t where 1=1 ";
+	var qdate = $.trim($("#month").val());
+	var sql = "SELECT DISTINCT T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@YNSYN13  T WHERE T.DEAL_DATE = '"+qdate+"'";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -160,11 +159,11 @@ function listRegions(){
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" AND T.GROUP_ID_1="+code;
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN (SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
+		sql+=" AND T.HR_ID='"+hrId+"'";
 	}
 	var d=query(sql);
 	if (d) {
@@ -191,10 +190,11 @@ function listRegions(){
 	}
 }
 function listUnits(regionName){
+	var qdate = $.trim($("#month").val());
 	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT t where 1=1 ";
+	var sql = "SELECT DISTINCT T.UNIT_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT@YNSYN13 T WHERE T.DEAL_DATE = '"+qdate+"'";
 	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
+		sql+=" AND T.GROUP_ID_1_NAME='"+regionName+"' ";
 		//权限
 		var orgLevel=$("#orgLevel").val();
 		var code=$("#code").val();
@@ -202,11 +202,11 @@ function listUnits(regionName){
 		if(orgLevel==1){
 			
 		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
+			sql+=" AND T.GROUP_ID_1="+code;
 		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
+			sql+=" AND T.UNIT_ID IN (SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
+			sql+=" AND T.HR_ID='"+hrId+"'";
 		}
 	}else{
 		$unit.empty().append('<option value="" selected>请选择</option>');

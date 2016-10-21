@@ -55,44 +55,49 @@ function search(pageNumber) {
 	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
-	var sql = "SELECT DEAL_DATE,                         "+
-	"       GROUP_ID_1_NAME,                   "+
-	"       UNIT_NAME,                         "+
-	"       HR_ID,                             "+
-	"       HR_ID_NAME,                        "+
-	"       FD_CHNL_ID,                        "+
-	"       GROUP_ID_4_NAME,                   "+
-	"       SUBSCRIPTION_ID,                   "+
-	"       SERVICE_NUM,                       "+
-	"       BRAND_TYPE_ID,                     "+
-	"       INDEX_CODE,                        "+
-	"       INDEX_VALUE,                       "+
-	"       INNET_DATE,                        "+
-	"       decode(NET_TYPE,                   "+
-	"              '-1',                       "+
-	"              '固网',                     "+
-	"              '01',                       "+
-	"              '2G',                       "+
-	"              '02',                       "+
-	"              '3G',                       "+
-	"              '03',                       "+
-	"              '3G',                       "+
-	"              '50',                       "+
-	"              '4G',                       "+
-	"              '51',                       "+
-	"              '4G') NET_TYPE,             "+
-	"       OFFICE_ID,                         "+
-	"       OPERATOR_ID,                       "+
-	"       PRODUCT_ID,                        "+
-	"       SCHEME_ID,                         "+
-	"       PRODUCT_FEE,                       "+
-	"       SVC_TYPE,                          "+
-	"       INTEGRAL_SUB,                      "+
-	"       INTEGRAL_FEE,                      "+
-	"CASE WHEN PR_USER = '1' THEN '是' ELSE '否' END PR_USER,"+
-    "CASE WHEN BLACK_USER = '1' THEN '是' ELSE '否' END BLACK_USER"+
-	"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T  "+
-	" WHERE 1 = 1 ";
+	//指标类代码
+	var indicators = $.trim($("#indicators").val());
+	//渠道编码
+	var chanCode = $.trim($("#chanCode").val());
+	
+	var sql =   "SELECT DEAL_DATE,                         "+
+				"       GROUP_ID_1_NAME,                   "+
+				"       UNIT_NAME,                         "+
+				"       HR_ID,                             "+
+				"       HR_ID_NAME,                        "+
+				"       FD_CHNL_ID,                        "+
+				"       GROUP_ID_4_NAME,                   "+
+				"       SUBSCRIPTION_ID,                   "+
+				"       SERVICE_NUM,                       "+
+				"       BRAND_TYPE_ID,                     "+
+				"       INDEX_CODE,                        "+
+				"       INDEX_VALUE,                       "+
+				"       INNET_DATE,                        "+
+				"       decode(NET_TYPE,                   "+
+				"              '-1',                       "+
+				"              '固网',                     "+
+				"              '01',                       "+
+				"              '2G',                       "+
+				"              '02',                       "+
+				"              '3G',                       "+
+				"              '03',                       "+
+				"              '3G',                       "+
+				"              '50',                       "+
+				"              '4G',                       "+
+				"              '51',                       "+
+				"              '4G') NET_TYPE,             "+
+				"       OFFICE_ID,                         "+
+				"       OPERATOR_ID,                       "+
+				"       PRODUCT_ID,                        "+
+				"       SCHEME_ID,                         "+
+				"       PRODUCT_FEE,                       "+
+				"       SVC_TYPE,                          "+
+				"       INTEGRAL_SUB,                      "+
+				"       INTEGRAL_FEE,                      "+
+				"CASE WHEN PR_USER = '1' THEN '是' ELSE '否' END PR_USER,"+
+			    "CASE WHEN BLACK_USER = '1' THEN '是' ELSE '否' END BLACK_USER"+
+				"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T  "+
+				" WHERE 1 = 1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -120,6 +125,12 @@ function search(pageNumber) {
 		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
 	}
 	
+	if(indicators!=''){
+		sql+=" AND T.INDEX_CODE = '"+indicators+"'";
+	}
+	if(chanCode!=''){
+		sql+=" AND T.FD_CHNL_ID = '"+chanCode+"'";
+	}
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -260,44 +271,48 @@ function downsAll(){
 	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
-	var sql = "SELECT DEAL_DATE,                         "+
-	"       GROUP_ID_1_NAME,                   "+
-	"       UNIT_NAME,                         "+
-	"       HR_ID,                             "+
-	"       HR_ID_NAME,                        "+
-	"       FD_CHNL_ID,                        "+
-	"       GROUP_ID_4_NAME,                   "+
-	"       SUBSCRIPTION_ID,                   "+
-	"       SERVICE_NUM,                       "+
-	"       BRAND_TYPE_ID,BRAND_TYPE,                    "+
-	"       INDEX_CODE,INDEX_DESC,                      "+
-	"       INDEX_VALUE,                       "+
-	"       INNET_DATE,                        "+
-	"       decode(NET_TYPE,                   "+
-	"              '-1',                       "+
-	"              '固网',                     "+
-	"              '01',                       "+
-	"              '2G',                       "+
-	"              '02',                       "+
-	"              '3G',                       "+
-	"              '03',                       "+
-	"              '3G',                       "+
-	"              '50',                       "+
-	"              '4G',                       "+
-	"              '51',                       "+
-	"              '4G') NET_TYPE,             "+
-	"       OFFICE_ID,                         "+
-	"       OPERATOR_ID,                       "+
-	"       PRODUCT_ID,                        "+
-	"       SCHEME_ID,                         "+
-	"       PRODUCT_FEE,                       "+
-	"       SVC_TYPE,                          "+
-	"       INTEGRAL_SUB,                      "+
-	"       INTEGRAL_FEE,                      "+
-	"CASE WHEN PR_USER = '1' THEN '是' ELSE '否' END PR_USER,"+
-    "CASE WHEN BLACK_USER = '1' THEN '是' ELSE '否' END BLACK_USER"+
-	"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T "+
-	" WHERE 1=1 ";
+	//指标类代码
+	var indicators = $.trim($("#indicators").val());
+	//渠道编码
+	var chanCode = $.trim($("#chanCode").val());
+	var sql =   "SELECT DEAL_DATE,                         "+
+				"       GROUP_ID_1_NAME,                   "+
+				"       UNIT_NAME,                         "+
+				"       HR_ID,                             "+
+				"       HR_ID_NAME,                        "+
+				"       FD_CHNL_ID,                        "+
+				"       GROUP_ID_4_NAME,                   "+
+				"       SUBSCRIPTION_ID,                   "+
+				"       SERVICE_NUM,                       "+
+				"       BRAND_TYPE_ID,BRAND_TYPE,                    "+
+				"       INDEX_CODE,INDEX_DESC,                      "+
+				"       INDEX_VALUE,                       "+
+				"       INNET_DATE,                        "+
+				"       decode(NET_TYPE,                   "+
+				"              '-1',                       "+
+				"              '固网',                     "+
+				"              '01',                       "+
+				"              '2G',                       "+
+				"              '02',                       "+
+				"              '3G',                       "+
+				"              '03',                       "+
+				"              '3G',                       "+
+				"              '50',                       "+
+				"              '4G',                       "+
+				"              '51',                       "+
+				"              '4G') NET_TYPE,             "+
+				"       OFFICE_ID,                         "+
+				"       OPERATOR_ID,                       "+
+				"       PRODUCT_ID,                        "+
+				"       SCHEME_ID,                         "+
+				"       PRODUCT_FEE,                       "+
+				"       SVC_TYPE,                          "+
+				"       INTEGRAL_SUB,                      "+
+				"       INTEGRAL_FEE,                      "+
+				"CASE WHEN PR_USER = '1' THEN '是' ELSE '否' END PR_USER,"+
+			    "CASE WHEN BLACK_USER = '1' THEN '是' ELSE '否' END BLACK_USER"+
+				"  FROM PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") T "+
+				" WHERE 1=1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -323,6 +338,12 @@ function downsAll(){
 	}
 	if(phone!=''){
 		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
+	}
+	if(indicators!=''){
+		sql+=" AND T.INDEX_CODE = '"+indicators+"'";
+	}
+	if(chanCode!=''){
+		sql+=" AND T.FD_CHNL_ID = '"+chanCode+"'";
 	}
 	
 	showtext = '社会渠道分等分级积分计算-'+dealDate;

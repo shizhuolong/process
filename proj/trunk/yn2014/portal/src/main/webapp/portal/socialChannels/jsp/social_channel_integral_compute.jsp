@@ -59,6 +59,10 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
+					<td width="5%" style="text-align:right;">渠道编码：</td>
+					<td width="10%">
+						<input class="default-text-input wper80" name="chanCode" type="text" id="chanCode"/>
+					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
@@ -68,13 +72,19 @@
 					</td>
 				</tr>
 				<tr>
+				
+					<td width="5%" style="text-align:right;">电话：</td>
+					<td width="10%">
+						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
+					</td>
 					<td width="5%" style="text-align:right;">人员姓名：</td>
 					<td width="10%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
-					<td width="5%" style="text-align:right;">电话：</td>
+					
+					<td width="5%" style="text-align:right;">指标类代码：</td>
 					<td width="10%">
-						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
+						<input class="default-text-input wper80" name="indicators" type="text" id="indicators"/>
 					</td>
 				</tr>
 			</table>
