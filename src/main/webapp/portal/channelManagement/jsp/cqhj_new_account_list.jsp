@@ -37,6 +37,7 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
