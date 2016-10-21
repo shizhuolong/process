@@ -253,6 +253,7 @@ function listUnits(regionName){
 	if (d) {
 		var h = '';
 		if (d.length == 1) {
+			h += '<option value="">请选择</option>';
 			h += '<option value="' + d[0].UNIT_ID
 					+ '" selected >'
 					+ d[0].UNIT_NAME + '</option>';
