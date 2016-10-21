@@ -1,9 +1,9 @@
 var nowData = [];
-
+//SCHEME_NAME
 var title=[
-           ["账期","地市","营服中心","HR编码","渠道经理","渠道名称","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","状态","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
+           ["账期","地市","营服中心","HR编码","渠道经理","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","合约类型","状态","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","GROUP_ID_4_NAME","DEV_CHNL_ID","DEV_CHNL_NAME","SUBSCRIPTION_ID","SERVICE_NUM","NET_TYPE","OPEN_DATE","JOIN_DATE","SCHEME_ID","SCHEME_NAME","SERVICE_STATUS","PRODUCT_ID","PRODUCT_NAME","CARD_FEE","DISCOUNT","SS_FEE","CZ_FEE","IS_NULL_USER","IS_LOW_USER"];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","DEV_CHNL_ID","DEV_CHNL_NAME","SUBSCRIPTION_ID","SERVICE_NUM","NET_TYPE","OPEN_DATE","JOIN_DATE","SCHEME_ID","SCHEME_NAME","SCHEME_TYPE_NAME","SERVICE_STATUS","PRODUCT_ID","PRODUCT_NAME","CARD_FEE","DISCOUNT","SS_FEE","CZ_FEE","IS_NULL_USER","IS_LOW_USER"];
 var orderBy = ' ORDER BY GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -114,16 +114,19 @@ function getsql(){
 			"        T.UNIT_NAME,                                               "+		//--营服中心
 			"        T.HR_ID,                                                   "+		//--HR编码
 			"        T.HR_ID_NAME,                                              "+		//--渠道经理
-			"        T.GROUP_ID_4_NAME,                                         "+		//--渠道名称
 			"        T.DEV_CHNL_ID,                                             "+		//--渠道编码
 			"        T.DEV_CHNL_NAME,                                           "+		//--渠道名
 			"        T.SUBSCRIPTION_ID,                                         "+		//--用户编码
 			"        T.SERVICE_NUM,                                             "+		//--电话号码
-			"        T.NET_TYPE,                                                "+		//--品牌
+			"        CASE WHEN T.NET_TYPE = '01' THEN '2G' 						"+
+			"			WHEN T.NET_TYPE = '02' THEN '3G' 						"+
+			"			WHEN    T.NET_TYPE = '03' THEN '3GWIFI' 				"+
+			"			WHEN      T.NET_TYPE = '50' THEN '4G' END NET_TYPE,     "+		//--品牌
 			"        T.OPEN_DATE,                                               "+		//--开户时间
-			"        TO_CHAR(T.JOIN_DATE,'YYYY-MM-DD')AS JOIN_DATE,             "+		//--入网时间
+			"        T.JOIN_DATE,								                "+		//--入网时间
 			"        T.SCHEME_ID,                                               "+		//--活动ID
 			"        T.SCHEME_NAME,                                             "+		//--活动名
+			"        T.SCHEME_TYPE_NAME,                                        "+		//--合约类型
 			"        T.SERVICE_STATUS,                                          "+		//--状态
 			"        T.PRODUCT_ID,                                              "+		//--套餐ID
 			"        T.PRODUCT_NAME,                                            "+		//--套餐名
@@ -252,9 +255,9 @@ function listUnits(region){
 function downsAll(){
 	var dealDate=$("#dealDate").val();
 
-	var sql = getsql();
+	var sql = getsql()+" ORDER BY T.GROUP_ID_1,T.UNIT_ID";
 	var title=[
-	           ["账期","地市","营服中心","HR编码","渠道经理","渠道名称","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","状态","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
+	           ["账期","地市","营服中心","HR编码","渠道经理","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","合约类型","状态","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
 			];	
 	showtext = '重庆华记新开户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
