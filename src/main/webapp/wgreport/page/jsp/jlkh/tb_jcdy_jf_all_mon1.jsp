@@ -66,7 +66,7 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 					</td>
 					<td width="8%" align="right">人员姓名：</td>
 					<td width="15%">
-						<input class="default-text-input wper80" name="name" type="text" id="name"/>
+						<input class="" name="name" type="text" id="name"/>
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
