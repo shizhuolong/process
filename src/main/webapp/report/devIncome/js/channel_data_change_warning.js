@@ -1,9 +1,9 @@
 var nowData = [];
 
 var title=[
-           ["账期","地市","营服","当前账期","渠道编码","当前开户行","当前银行卡号","当前开户名","历史账期","渠道名称","历史开户行","历史卡号","历史开户名","备注"]
+           ["账期","地市","营服","渠道编码","渠道名称","当前账期","当前开户行","当前银行卡号","当前开户名","历史账期","历史开户行","历史卡号","历史开户名","备注"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE_NEW","CHNL_CODE_NEW","BANK_CODE_NEW","BANK_NO_NEW","BANK_ACCT_NAME_NEW","DEAL_DATE_OLD","CHNL_NAME","BANK_CODE_OLD","BANK_NO_OLD","BANK_ACCT_NAME_OLD","REMARK"];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","CHNL_CODE_NEW","CHNL_NAME","DEAL_DATE_NEW","BANK_CODE_NEW","BANK_NO_NEW","BANK_ACCT_NAME_NEW","DEAL_DATE_OLD","BANK_CODE_OLD","BANK_NO_OLD","BANK_ACCT_NAME_OLD","REMARK"];
 var orderBy = ' ORDER BY GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -109,13 +109,13 @@ function getsql(){
 	var sql=" SELECT T.DEAL_DATE,                   "+    //账期
 			"        T.GROUP_ID_1_NAME,             "+    //地市
 			"        T.UNIT_NAME,                   "+    //营服
-			"        T.DEAL_DATE_NEW,               "+    //当前账期
 			"        T.CHNL_CODE_NEW,               "+    //渠道编码
+			"        T.CHNL_NAME,                   "+    //渠道名称
+			"        T.DEAL_DATE_NEW,               "+    //当前账期
 			"        T.BANK_CODE_NEW,               "+    //当前开户行
 			"        T.BANK_NO_NEW,                 "+    //当前银行卡号
 			"        T.BANK_ACCT_NAME_NEW,          "+    //当前开户名
 			"        T.DEAL_DATE_OLD,               "+    //历史账期
-			"        T.CHNL_NAME,                   "+    //渠道名称
 			"        T.BANK_CODE_OLD,               "+    //历史开户行
 			"        T.BANK_NO_OLD,                 "+    //历史卡号
 			"        T.BANK_ACCT_NAME_OLD,          "+    //历史开户名
@@ -235,9 +235,9 @@ function listUnits(region){
 function downsAll(){
 	var dealDate=$("#dealDate").val();
 
-	var sql = getsql();
+	var sql = getsql()+" ORDER BY GROUP_ID_1,UNIT_ID";
 	var title=[
-	           ["账期","地市","营服","当前账期","渠道编码","当前开户行","当前银行卡号","当前开户名","历史账期","渠道名称","历史开户行","历史卡号","历史开户名","备注"]
+	           ["账期","地市","营服","渠道编码","渠道名称","当前账期","当前开户行","当前银行卡号","当前开户名","历史账期","历史开户行","历史卡号","历史开户名","备注"]
 			];	
 	showtext = '渠道资料变动预警-'+dealDate;
 	downloadExcel(sql,title,showtext);
