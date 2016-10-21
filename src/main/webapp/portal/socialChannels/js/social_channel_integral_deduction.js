@@ -22,11 +22,11 @@ $(function() {
 			};
 		}
 	});
-	search(0);
+	//search(0);
+	reportShow(0);
 	
 	$("#searchBtn").click(function(){
 		search(0);
-		listRegions();
 	});
 });
 
@@ -44,51 +44,143 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
+//列表信息
+function reportShow(pageNumber) {
+	pageNumber = pageNumber + 1;
+	var start = pageSize * (pageNumber - 1);
+	var end = pageSize * pageNumber;
+	var dealDate=$("#dealDate").val();
+	var sql =   getSql();
+	var csql = sql;
+	var cdata = query("select count(*) total from (" + csql+")");
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}else{
+		return
+		//
+	}
+	if(total==0){
+		var month = dealDate.substr(4);
+		var year = dealDate .substr(0,4);
+		month = month-1;
+		if(month<10){
+			dealDate = year+"0"+month;
+			$("#dealDate").val(dealDate);
+		}else{
+			dealDate=year+month;
+			$("#dealDate").val(dealDate);
+		}
+		reportShow(0);
+	}else{
+		sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
+		+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+		var d = query(sql);
+		if (pageNumber == 1) {
+			initPagination(total);
+		}
+		nowData = d;
+		report.showSubRow();
+	}
+	/*///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
+*/	$(".page_count").width($("#lch_DataHead").width());
+	$("#lch_DataBody").find("TR").each(function(){
+		var area=$(this).find("TD:eq(0)").find("A").text();
+		if(area)
+			$(this).find("TD:eq(0)").empty().text(area);
+	});
+}
 
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	
-	var dealDate=$("#dealDate").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
-	var sql = "SELECT  DEAL_DATE 	                                                                       "+
-	",GROUP_ID_1_NAME  	                                                                       "+
-	",UNIT_NAME  		                                                                       "+
-	",HR_ID  			                                                                       "+
-	",HR_ID_NAME  		                                                                       "+
-	",FD_CHNL_ID  		                                                                       "+
-	",GROUP_ID_4_NAME  	                                                                       "+
-	",SUBSCRIPTION_ID  	                                                                       "+
-	",SERVICE_NUM  		                                                                       "+
-	",BRAND_TYPE_ID  	                                                                       "+
-	",INDEX_CODE    		                                                                   "+
-	",INDEX_VALUE  		                                                                       "+
-	",INNET_DATE  		                                                                       "+
-	",decode(NET_TYPE,'-1','固网','01','2G','02','3G','03','3G','50','4G','51','4G') NET_TYPE  "+
-	",OFFICE_ID  		                                                                       "+
-	",OPERATOR_ID 		                                                                       "+
-	",PRODUCT_ID  		                                                                       "+
-	",SCHEME_ID  		                                                                       "+
-	",PRODUCT_FEE 		                                                                       "+
-	",SVC_TYPE  			                                                                   "+
-	",INTEGRAL_SUB  		                                                                   "+
-	",INTEGRAL_FEE  		                                                                   "+
-	",decode(IS_3_NULL,'0','否','1','是') IS_3_NULL                                            "+
-	",decode(IS_LOW_JD,'0','否','1','是') IS_LOW_JD                                            "+
-	",ALL_USER  			                                                                   "+
-	",JD_USER  			                                                                       "+
-	",JD_ZB  			                                                                       "+
-	",JD_UP_USER 		                                                                       "+
-	",JD_UP_USER_ZB 		                                                                   "+
-	",JD_USER_JF 		                                                                       "+
-	",QS_JF																						"+
-	" from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") T                                                   "+
-	" WHERE 1=1 ";
+	var channelCode=$.trim($("#channelCode").val());
+	var sql =   getSql();
+	if(userName!=''){
+		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
+	}
+	if(phone!=''){
+		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
+	}
+	if(channelCode!=''){
+		sql+=" AND T.FD_CHNL_ID ='"+channelCode+"'";
+	}
+
+	var csql = sql;
+	var cdata = query("select count(*) total from (" + csql+")");
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}else{
+		return;
+	}
+	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
+	+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+	var d = query(sql);
+	if (pageNumber == 1) {
+		initPagination(total);
+	}
+	nowData = d;
+	report.showSubRow();
+
+	/*///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
+*/	$(".page_count").width($("#lch_DataHead").width());
+	$("#lch_DataBody").find("TR").each(function(){
+		var area=$(this).find("TD:eq(0)").find("A").text();
+		if(area)
+			$(this).find("TD:eq(0)").empty().text(area);
+	});
+}
+
+function getSql(){
+	var dealDate=$("#dealDate").val();
+	var orgLevel=$("#orgLevel").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
+	var sql =   "SELECT  DEAL_DATE 	                                                                       "+
+				",GROUP_ID_1_NAME  	                                                                       "+
+				",UNIT_NAME  		                                                                       "+
+				",HR_ID  			                                                                       "+
+				",HR_ID_NAME  		                                                                       "+
+				",FD_CHNL_ID  		                                                                       "+
+				",GROUP_ID_4_NAME  	                                                                       "+
+				",SUBSCRIPTION_ID  	                                                                       "+
+				",SERVICE_NUM  		                                                                       "+
+				",BRAND_TYPE_ID  	                                                                       "+
+				",INDEX_CODE    		                                                                   "+
+				",INDEX_VALUE  		                                                                       "+
+				",INNET_DATE  		                                                                       "+
+				",decode(NET_TYPE,'-1','固网','01','2G','02','3G','03','3G','50','4G','51','4G') NET_TYPE  "+
+				",OFFICE_ID  		                                                                       "+
+				",OPERATOR_ID 		                                                                       "+
+				",PRODUCT_ID  		                                                                       "+
+				",SCHEME_ID  		                                                                       "+
+				",PRODUCT_FEE 		                                                                       "+
+				",SVC_TYPE  			                                                                   "+
+				",INTEGRAL_SUB  		                                                                   "+
+				",INTEGRAL_FEE  		                                                                   "+
+				",decode(IS_3_NULL,'0','否','1','是') IS_3_NULL                                            "+
+				",decode(IS_LOW_JD,'0','否','1','是') IS_LOW_JD                                            "+
+				",ALL_USER  			                                                                   "+
+				",JD_USER  			                                                                       "+
+				",JD_ZB  			                                                                       "+
+				",JD_UP_USER 		                                                                       "+
+				",JD_UP_USER_ZB 		                                                                   "+
+				",JD_USER_JF 		                                                                       "+
+				",QS_JF																						"+
+				" from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") T              				"+
+				//" from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL  T    where T.DEAL_DATE=          				"+dealDate;
+				" WHERE 1=1 ";
 	//权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
@@ -103,140 +195,96 @@ function search(pageNumber) {
 		sql+=" AND T.HR_ID='"+code+"'";
 	}
 	//条件查询
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
 	}
-	if(userName!=''){
-		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
-	}
-	if(phone!=''){
-		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
-	}
-
-	var csql = sql;
-	var cdata = query("select count(*) total from (" + csql+")");
-	var total = 0;
-	if(cdata && cdata.length) {
-		total = cdata[0].TOTAL;
-	}else{
-		return;
-	}
-
-	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
-	var d = query(sql);
-	if (pageNumber == 1) {
-		initPagination(total);
-	}
-	nowData = d;
-
-	report.showSubRow();
-	/*///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
-*/	$(".page_count").width($("#lch_DataHead").width());
-	$("#lch_DataBody").find("TR").each(function(){
-		var area=$(this).find("TD:eq(0)").find("A").text();
-		if(area)
-			$(this).find("TD:eq(0)").empty().text(area);
-	});
+	return sql;
 }
+
+
+///////////////////////////地市查询///////////////////////////////////////
 function listRegions(){
-	var sql="";
-	var dealDate=$("#dealDate").val();
-	//var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") t where 1=1 and group_id_1_name is not null ";
-	/*if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
-	}*/
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
+    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE GROUP_ID_1 NOT IN('86000','16099') ";
+    var orgLevel=$("#orgLevel").val();
+    var code=$("#code").val();
+    var region =$("#region").val();
+    if(orgLevel==1){
+        sql+="";
+    }else if(orgLevel==2){
+        sql+=" and T.GROUP_ID_1='"+code+"'";
+    }else{
+        sql+=" and T.GROUP_ID_1='"+region+"'";
+    }
+    sql+=" ORDER BY T.GROUP_ID_1"
+    var d=query(sql);
+    if (d) {
+        var h = '';
+        if (d.length == 1) {
+            h += '<option value="' + d[0].GROUP_ID_1
+                    + '" selected >'
+                    + d[0].GROUP_ID_1_NAME + '</option>';
+            listUnits(d[0].GROUP_ID_1);
+        } else {
+            h += '<option value="" selected>请选择</option>';
+            for (var i = 0; i < d.length; i++) {
+                h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
+            }
+        }
+        var $area = $("#regionCode");
+        var $h = $(h);
+        $area.empty().append($h);
+        $area.change(function() {
+            listUnits($(this).attr('value'));
+        });
+    } else {
+        alert("获取地市信息失败");
+    }
 }
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var dealDate=$("#dealDate").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
+
+/************查询营服中心***************/
+function listUnits(region){
+    var $unit=$("#unitCode");
+    var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
+    if(region!=''){
+        sql+=" AND T.GROUP_ID_1='"+region+"' ";
+        //权限
+        var orgLevel=$("#orgLevel").val();
+        var code=$("#code").val();
+        /**查询营服中心编码条件是有地市编码，***/
+        if(orgLevel==3){
+            sql+=" and t.UNIT_ID='"+code+"'";
+        }else if(orgLevel==4){
+            sql+=" AND 1=2";
+        }else{
+        }
+    }else{
+        $unit.empty().append('<option value="" selected>请选择</option>');
+        return;
+    }
+
+    sql+=" ORDER BY T.UNIT_ID"
+    var d=query(sql);
+    if (d) {
+        var h = '';
+        if (d.length == 1) {
+            h += '<option value="' + d[0].UNIT_ID
+                    + '" selected >'
+                    + d[0].UNIT_NAME + '</option>';
+        } else {
+            h += '<option value="" selected>请选择</option>';
+            for (var i = 0; i < d.length; i++) {
+                h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
+            }
+        }
+
+        var $h = $(h);
+        $unit.empty().append($h);
+    } else {
+        alert("获取基层单元信息失败");
+    }
 }
 function isNull(obj){
 	if(obj==0||obj=='0'){
@@ -255,69 +303,19 @@ function roundN(number,fractionDigits){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var dealDate=$("#dealDate").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
-	var sql = "SELECT  DEAL_DATE 	                                                                       "+
-	",GROUP_ID_1_NAME  	                                                                       "+
-	",UNIT_NAME  		                                                                       "+
-	",HR_ID  			                                                                       "+
-	",HR_ID_NAME  		                                                                       "+
-	",FD_CHNL_ID  		                                                                       "+
-	",GROUP_ID_4_NAME  	                                                                       "+
-	",SUBSCRIPTION_ID  	                                                                       "+
-	",SERVICE_NUM  		                                                                       "+
-	",BRAND_TYPE_ID  	                                                                       "+
-	",INDEX_CODE    		                                                                   "+
-	",INDEX_VALUE  		                                                                       "+
-	",INNET_DATE  		                                                                       "+
-	",decode(NET_TYPE,'-1','固网','01','2G','02','3G','03','3G','50','4G','51','4G') NET_TYPE  "+
-	",OFFICE_ID  		                                                                       "+
-	",OPERATOR_ID 		                                                                       "+
-	",PRODUCT_ID  		                                                                       "+
-	",SCHEME_ID  		                                                                       "+
-	",PRODUCT_FEE 		                                                                       "+
-	",SVC_TYPE  			                                                                   "+
-	",INTEGRAL_SUB  		                                                                   "+
-	",INTEGRAL_FEE  		                                                                   "+
-	",decode(IS_3_NULL,'0','否','1','是') IS_3_NULL                                            "+
-	",decode(IS_LOW_JD,'0','否','1','是') IS_LOW_JD                                            "+
-	",ALL_USER  			                                                                   "+
-	",JD_USER  			                                                                       "+
-	",JD_ZB  			                                                                       "+
-	",JD_UP_USER 		                                                                       "+
-	",JD_UP_USER_ZB 		                                                                   "+
-	",JD_USER_JF 		                                                                       "+
-	",QS_JF																						"+
-	" from PMRT.TAB_MRT_INTEGRAL_QS_DETAIL partition(P"+dealDate+") T                                                   "+
-	" WHERE 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" AND T.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
-	}else if(orgLevel==4){
-		sql+=" AND T.HR_ID='"+code+"'";
-	}
-	//条件查询
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
-	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME = '"+unitName+"'";
-	}
+	var channelCode=$.trim($("#channelCode").val());
+	var sql = getSql();
 	if(userName!=''){
 		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
 	}
 	if(phone!=''){
 		sql+=" AND T.SERVICE_NUM LIKE '%"+phone+"%'";
 	}
-	
+	if(channelCode!=''){
+		sql+=" AND T.FD_CHNL_ID ='"+channelCode+"'";
+	}
 	showtext = '扣减明细月报-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
