@@ -22,12 +22,13 @@ $(function(){
 		},
 		getSubRowsCallBack:function($tr){
 			var preField='';
-			var where=' WHERE 1 = 1';
+			
 			var groupBy='';
 			var order='';
 			var code='';
 			var orgLevel='';
 			qdate = $("#month").val();
+			var where=" WHERE T.DEAL_DATE='"+qdate+"'";
 			var regionName=$("#regionName").val();
 			var operate_type=$("#operate_type").val();
 			var hq_chan_code=$.trim($("#hq_chan_code").val());
@@ -35,8 +36,17 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 			    if(orgLevel==2||orgLevel==3||orgLevel==4){
-					preField=" T.HQ_CHAN_NAME ROW_NAME,T.HQ_CHAN_CODE ROW_ID,T.HQ_CHAN_CODE,T.OPERATE_TYPE,";
-					groupBy=" GROUP BY T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,T.OPERATE_TYPE";
+			    	preField=" SELECT T.HQ_CHAN_NAME ROW_NAME,T.HQ_CHAN_CODE ROW_ID,T.HQ_CHAN_CODE,T.OPERATE_TYPE,			  "+
+							 "      SUM(NVL(T.USER_4G_ACCT,0))USER_4G_ACCT                                           		  "+
+							 "      ,SUM(NVL(T.USER_ALL_ACCT,0))USER_ALL_ACCT                                                 "+
+							 "      ,ROUND(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                                     "+
+							 "                  ELSE SUM(NVL(T.USER_4G_ACCT,0))/SUM(NVL(T.USER_ALL_ACCT,0)) END               "+
+							 "                    ,2) PERMEN_4G                                                               "+
+							 "     ,'—' AS ALL_4G_NET                                              						  "+
+							 "     ,'—' AS MOB_ACCT_NUM                                           							  "+
+							 "     ,'—' AS PERME_ALL_4G                                                                      "+
+							 "FROM PMRT.TAB_MRT_4G_NET_PERME_MON T                                                            ";
+					groupBy+=" GROUP BY T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,T.OPERATE_TYPE";
 					where+=" AND T.GROUP_ID_1='"+code+"'";
 					order=" ORDER BY T.HQ_CHAN_CODE";
 				}else{
@@ -47,14 +57,14 @@ $(function(){
 				code=$("#regionCode").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省   展示市
-					preField=" T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,";
+					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
 					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
 				}else if(orgLevel==2){//市
-					preField=" T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,";
+					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
 					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
 					where+=" AND T.GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服中心 看地市
-					preField=" T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,";
+					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
 					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
 					where+=" AND T.GROUP_ID_1='"+code+"'";
 				}else{
@@ -63,7 +73,6 @@ $(function(){
 				orgLevel++;
 			}	
 			
-			where+=" AND T.DEAL_DATE='"+qdate+"'";
 			if(regionName!=''){
 				where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
 			}
@@ -73,7 +82,7 @@ $(function(){
 			if(operate_type!=''){
 				where+=" AND T.OPERATE_TYPE = '"+operate_type+"'";
 			}
-			var sql='SELECT '+preField+getSumField()+where+groupBy+order;
+			var sql=preField+where+groupBy+order;
 			if(orderBy!=''){
 				sql="select * from( "+sql+") t "+orderBy;
 			}
@@ -87,7 +96,6 @@ $(function(){
 	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
 	///////////////////////////////////////////
 	//$(".page_count").width($("#lch_DataHead").width());
-	
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
 		//$("#lch_DataHead").find("TH").unbind();
