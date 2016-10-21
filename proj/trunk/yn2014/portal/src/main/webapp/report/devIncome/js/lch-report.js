@@ -707,7 +707,7 @@ function _jf_power(hrId,month){
 	  if(month.length==8){
 			month=month.substring(0,6);
 	  }	
-	  var sql="select to_char(wm_concat(hr_id)) hrids                                                         "+
+	  var sql="select to_char(wm_concat(hr_id)) hrids                                                 "+
 	  "      from (select '''' || hr_id || '''' hr_id                                                 "+
 	  "              from (SELECT distinct hr_id                                                      "+
 	  "                    FROM PORTAL.TAB_PORTAL_MAG_PERSON                                          "+
