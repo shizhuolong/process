@@ -39,12 +39,12 @@ $(function(){
 			    	preField=" SELECT T.HQ_CHAN_NAME ROW_NAME,T.HQ_CHAN_CODE ROW_ID,T.HQ_CHAN_CODE,T.OPERATE_TYPE,			  "+
 							 "      SUM(NVL(T.USER_4G_ACCT,0))USER_4G_ACCT                                           		  "+
 							 "      ,SUM(NVL(T.USER_ALL_ACCT,0))USER_ALL_ACCT                                                 "+
-							 "      ,ROUND(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                                     "+
-							 "                  ELSE SUM(NVL(T.USER_4G_ACCT,0))/SUM(NVL(T.USER_ALL_ACCT,0)) END               "+
-							 "                    ,2) PERMEN_4G                                                               "+
-							 "     ,'—' AS ALL_4G_NET                                              						  "+
+							 "      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                     "+
+							 "                  ELSE SUM(NVL(T.USER_4G_ACCT,0))*100/SUM(NVL(T.USER_ALL_ACCT,0)) END           "+
+							 "                   ,'FM9999990.99')) ||'%' PERMEN_4G                                            "+
+							 "     ,'—' AS ALL_4G_NET                                              						      "+
 							 "     ,'—' AS MOB_ACCT_NUM                                           							  "+
-							 "     ,'—' AS PERME_ALL_4G                                                                      "+
+							 "     ,'—' AS PERME_ALL_4G                                                                       "+
 							 "FROM PMRT.TAB_MRT_4G_NET_PERME_MON T                                                            ";
 					groupBy+=" GROUP BY T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,T.OPERATE_TYPE";
 					where+=" AND T.GROUP_ID_1='"+code+"'";
@@ -139,9 +139,9 @@ function downsAll() {
 	var sql = 	" SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.HQ_CHAN_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE, "+
 				"      SUM(NVL(T.USER_4G_ACCT,0))USER_4G_ACCT                                        "+
 				"      ,SUM(NVL(T.USER_ALL_ACCT,0))USER_ALL_ACCT                                     "+
-				"      ,ROUND(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                         "+
-				"                  ELSE SUM(NVL(T.USER_4G_ACCT,0))/SUM(NVL(T.USER_ALL_ACCT,0)) END   "+
-				"                    ,2) PERMEN_4G                                                   "+
+				"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0         "+
+				"                  ELSE SUM(NVL(T.USER_4G_ACCT,0))*100/SUM(NVL(T.USER_ALL_ACCT,0)) END "+
+				"                   ,'FM9999990.99')) ||'%' PERMEN_4G   		                     "+
 				"FROM PMRT.TAB_MRT_4G_NET_PERME_MON T                                                "+
 				" WHERE T.DEAL_DATE='"+qdate+"'"+where+groupBy+orderBy;
 	showtext = '自有厅4G渗透率支撑' + qdate;
@@ -186,14 +186,14 @@ function listRegions(){
 function getSumField(){
 	var fs = "      SUM(NVL(T.USER_4G_ACCT,0))USER_4G_ACCT                                           "+
 	"      ,SUM(NVL(T.USER_ALL_ACCT,0))USER_ALL_ACCT                                                 "+
-	"      ,ROUND(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                                     "+
-	"                  ELSE SUM(NVL(T.USER_4G_ACCT,0))/SUM(NVL(T.USER_ALL_ACCT,0)) END               "+
-	"                    ,2) PERMEN_4G                                                               "+
+	"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.USER_ALL_ACCT,0))=0 THEN 0                     "+
+	"                  ELSE SUM(NVL(T.USER_4G_ACCT,0))*100/SUM(NVL(T.USER_ALL_ACCT,0)) END           "+
+	"                    ,'FM99990.99')) ||'%' PERMEN_4G                                             "+
 	"     ,SUM(DISTINCT  NVL(T.ALL_4G_NET,0))ALL_4G_NET                                              "+
 	"     ,SUM(DISTINCT NVL(T.MOB_ACCT_NUM,0))MOB_ACCT_NUM                                           "+
-	"     ,ROUND(CASE WHEN SUM(DISTINCT NVL(T.MOB_ACCT_NUM,0))=0 THEN 0                              "+
-	"                  ELSE SUM(DISTINCT NVL(T.ALL_4G_NET,0))/SUM(DISTINCT NVL(T.MOB_ACCT_NUM,0)) END"+
-	"                    ,2) PERME_ALL_4G                                                            "+
+	"     ,TRIM('.'FROM TO_CHAR(CASE WHEN SUM(DISTINCT NVL(T.MOB_ACCT_NUM,0))=0 THEN 0               "+
+	"                  ELSE SUM(DISTINCT NVL(T.ALL_4G_NET,0))*100/SUM(DISTINCT NVL(T.MOB_ACCT_NUM,0)) END"+
+	"                    ,'FM99990.99'))||'%' PERME_ALL_4G                                             "+
 	"FROM PMRT.TAB_MRT_4G_NET_PERME_MON T                                                            ";                                                                              
 	return fs;
 }
