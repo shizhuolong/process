@@ -3,7 +3,6 @@ var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","SUBSCRIPTION_ID","DEVICE_N
 var title=[["账期","分公司","营服","用户编码","宽带账号","用户名","联系地址","联系电话","套餐","入网时间","机房局向名称","接入方式","宽带速率","代理商","工时材料费"]];
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -106,20 +105,20 @@ function getSql(){
 	if(orgLevel==1){
 	
 	}else if(orgLevel==2){
-		sql+=" AND GROUP_ID_1='"+code+"'";
+		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" AND 1=2";
 	}
 	// 条件查询
 	if(regionCode!=''){
-		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode!=''){
-		sql+=" AND UNIT_ID ='"+unitCode+"'";
+		sql+=" AND T.UNIT_ID ='"+unitCode+"'";
 	}
-	sql+=" ORDER BY GROUP_ID_1,UNIT_ID  ";
+	sql+=" ORDER BY T.GROUP_ID_1,T.UNIT_ID  ";
 	return sql;
 }
  

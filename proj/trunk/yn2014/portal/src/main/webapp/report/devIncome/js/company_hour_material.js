@@ -2,7 +2,6 @@ var field=["DAY_1","DAY_2","DAY_3","DAY_4","DAY_5","DAY_6","DAY_7","DAY_8","DAY_
 var title=[["组织架构","1日","2日","3日","4日","5日","6日","7日","8日","9日","10日","11日","12日","13日","14日","15日","16日","17日","18日","19日","20日","21日","22日","23日","24日","25日","26日","27日","28日","29日","30日","31日","合计"]];
 var orderBy='';	
 $(function(){
-	listRegions();
 	var report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -16,7 +15,7 @@ $(function(){
 			var orgLevel='';
 			var dealDate = $.trim($("#dealDate").val());
 			var regionCode=$("#regionCode").val();
-			var unitCode=$.trim($("#unitCode").val());
+			var unitCode=$("#unitCode").val();
 			var orderBy =" ORDER BY ROW_ID ";
 			var provinceSql="";
 			if($tr){
@@ -52,7 +51,7 @@ $(function(){
 				}else if(orgLevel==3){//营服中心
 					sql=' SELECT UNIT_ID AS  ROW_ID,UNIT_NAME AS  ROW_NAME, '+getSql();
 					groupBy=' GROUP BY UNIT_ID,UNIT_NAME,DEAL_DATE ';
-					where=' WHERE UNIT_ID=\''+code+"\' ";
+					where+=" WHERE UNIT_ID IN("+_unit_relation(code)+") ";
 				}else if(orgLevel>=4){
 					return {data:[],extra:{}};
 				}
@@ -89,8 +88,7 @@ $(function(){
 
 function getSql(){
 	var dealDate=$("#dealDate").val();
-	var sql = 
-				"       SUM(DAY_1 ) AS DAY_1 ,                                         "+
+	var sql = 	"       SUM(DAY_1 ) AS DAY_1 ,                                         "+
 				"       SUM(DAY_2 ) AS DAY_2 ,                                         "+
 				"       SUM(DAY_3 ) AS DAY_3 ,                                         "+
 				"       SUM(DAY_4 ) AS DAY_4 ,                                         "+
@@ -123,7 +121,6 @@ function getSql(){
 				"       SUM(DAY_31) AS DAY_31,                                         "+
 				"       SUM(DAY_ALL) AS  DAY_ALL                                       "+
 				"  FROM PMRT.TAB_MRT_BMS_FAV_INCOME_REPORT PARTITION(P"+dealDate+")    ";
-				//" FROM PMRT.TAB_MRT_BMS_FAV_INCOME_REPORT ";
 				
 	return sql;
 }
@@ -144,7 +141,7 @@ function downsAll() {
 	}else if(orgLevel==2){
 		sql+=" AND GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" AND 1=2";
 	}
@@ -164,85 +161,3 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
-
-
-function listRegions(){
-    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
-    var orgLevel=$("#orgLevel").val();
-    var code=$("#code").val();
-    var region =$("#region").val();
-    if(orgLevel==1){
-        sql+="";
-    }else if(orgLevel==2){
-        sql+=" and T.GROUP_ID_1='"+code+"'";
-    }else{
-        sql+=" and T.GROUP_ID_1='"+region+"'";
-    }
-    sql+=" ORDER BY T.GROUP_ID_1"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].GROUP_ID_1
-                    + '" selected >'
-                    + d[0].GROUP_ID_1_NAME + '</option>';
-            listUnits(d[0].GROUP_ID_1);
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-            }
-        }
-        var $area = $("#regionCode");
-        var $h = $(h);
-        $area.empty().append($h);
-        $area.change(function() {
-            listUnits($(this).attr('value'));
-        });
-    } else {
-        alert("获取地市信息失败");
-    }
-}
-
-/************查询营服中心***************/
-function listUnits(region){
-    var $unit=$("#unitCode");
-    var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
-    if(region!=''){
-        sql+=" AND T.GROUP_ID_1='"+region+"' ";
-        //权限
-        var orgLevel=$("#orgLevel").val();
-        var code=$("#code").val();
-       /**查询营服中心编码条件是有地市编码，***/
-        if(orgLevel==3){
-            sql+=" and t.UNIT_ID='"+code+"'";
-        }else if(orgLevel==4){
-            sql+=" AND 1=2";
-        }else{
-        }
-    }else{
-        $unit.empty().append('<option value="" selected>请选择</option>');
-        return;
-    }
-
-    sql+=" ORDER BY T.UNIT_ID"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].UNIT_ID
-                    + '" selected >'
-                    + d[0].UNIT_NAME + '</option>';
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-            }
-        }
-
-        var $h = $(h);
-        $unit.empty().append($h);
-    } else {
-        alert("获取基层单元信息失败");
-    }
-}
