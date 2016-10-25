@@ -703,6 +703,90 @@ LchReport.NORMAL_STYLE={
 		'font-family':'Verdana, Geneva, sans-serif'
 	 };
 /****************************/
+/********地市营服选择************/
+function _list_regions(){
+	var $area = $("#regionCode");
+	if(!$area||$area.length<1)
+		return;
+	var sql = " SELECT distinct t.group_id_1 REGION_CODE,t.GROUP_ID_1_name REGION_NAME FROM pcde.VIEW_UNIT_CHARGE t where 1=1 ";
+	//权限
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	
+	if(orgLevel==1){
+		
+	}else if(orgLevel==2){
+		sql+=" and t.GROUP_ID_1="+code;
+	}else if(orgLevel==3){
+		sql+=" and t.UNIT_ID='"+code+"'";
+	}else{
+		sql+=" and 1=2 ";
+	}
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].REGION_CODE
+					+ '" selected >'
+					+ d[0].REGION_NAME + '</option>';
+			_list_units(d[0].REGION_CODE);
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].REGION_CODE + '">' + d[i].REGION_NAME + '</option>';
+			}
+		}
+		var $h = $(h);
+		$area.empty().append($h);
+		$area.change(function() {
+			_list_units($(this).val());
+		});
+	} else {
+		alert("获取地市信息失败");
+	}
+}
+function _list_units(regionCode){
+	var $unit=$("#unitCode");
+	if(!$unit||$unit.length<1)
+		return;
+	var sql = "SELECT distinct t.unit_id UNIT_ID,t.unit_name UNIT_NAME FROM pcde.VIEW_UNIT_CHARGE t where t.group_id_1="+regionCode+" ";
+	//权限
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	if(orgLevel==1){
+			
+	}else if(orgLevel==2){
+		sql+=" and t.GROUP_ID_1="+code;
+	}else if(orgLevel==3){
+		sql+=" and t.UNIT_ID='"+code+"'";
+	}else{
+		sql+=" and 1=2 ";
+	}
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="">请选择</option>';
+			h += '<option value="' + d[0].UNIT_ID
+					+ '" selected >'
+					+ d[0].UNIT_NAME + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
+			}
+		}
+		
+		var $h = $(h);
+		$unit.empty().append($h);
+	} else {
+		alert("获取营服信息失败");
+	}
+}
+$(function(){
+	_list_regions();
+});
+/****************************/
 function _unit_relation(unit){
 	return " select distinct u.OLD_UNIT_ID from pcde.VIEW_UNIT_CHARGE u where u.UNIT_ID='"+unit+"' ";
 }

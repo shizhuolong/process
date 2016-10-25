@@ -1,12 +1,11 @@
 var nowData = [];
-var title=[["地市"			,"基层单元"	,"账期"		,"HR编码"		,"人员姓名"	,"角色类型"		,"积分(发展)"		,""					,""								,""						,""					,"收入"			,""			,""					,""				,""				,"欠费"		,""					,""				,""				,""					,"存量"			,""				,""					,""					,""					,"毛利"			,""			,""					,""				,""				,"本厅收入<br/>完成率"		,""						,"省级KPI权重"			,"省级KPI得分"		,"自设KPI得分"		,"汇总KPI得分"		,"基础绩效<br/>基数（元）"	,"基础绩效<br/>薪酬（元）"],
+var title=[["地市"			,"营服中心"	,"账期"		,"HR编码"		,"人员姓名"	,"角色类型"		,"积分(发展)"		,""					,""								,""						,""					,"收入"			,""			,""					,""				,""				,"欠费"		,""					,""				,""				,""					,"存量"			,""				,""					,""					,""					,"毛利"			,""			,""					,""				,""				,"本厅收入<br/>完成率"		,""						,"省级KPI权重"			,"省级KPI得分"		,"自设KPI得分"		,"汇总KPI得分"		,"基础绩效<br/>基数（元）"	,"基础绩效<br/>薪酬（元）"],
            [""				,""			,""			,""			,""			,""				,"积分(发展)任务"	,"积分(发展)完成"		,"积分(发展)任务<br/>完成率"			,"积分(发展)<br/>KPI得分"		,"积分(发展)<br/>KPI权重"	,"收入任务"		,"收入完成"	,"收入任务<br/>完成率"		,"收入KPI得分"		,"收入KPI权重"		,"欠费"		,"本月累计<br/>达到收入"		,"欠费率"			,"欠费KPI得分"		,"欠费KPI权重"			,"上年12月收入"		,"存量收入"		,"存量收入<br/>保有率"		,"存量KPI得分"			,"存量KPI权重"			,"毛利预算"		,"毛利完成"	,"毛利任务<br/>完成率"		,"毛利KPI得分"		,"毛利KPI权重"		,"本厅收入<br/>完成率权重"		,"本厅收入<br/>完成率得分"			,""					,""				,""				,""				,""				,""					]
 		];
 var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID"	,"NAME"		,"USER_ROLE"	,	"TASK_DEV"	,"DEV_COUNT"		,"DEV_COMPLETE"					,"DEV_KPI_VALUE"		,"DEV_KPI_WEIGHT"	,"TASK_INCOME"	,"TOTAL_FEE","INCOME_COMPLETE"	,"IN_KPI_VALUE"	,"IN_KPI_WEIGHT","OWEFEE"	,"AMOUNT_MONTH"		,"OWEFEE_RATE"	,"OWE_KPI_VALUE","OWE_KPI_WEIGHT"	,"AMOUNT_12"	,"AMOUNT_ALL"	,"STOCK_RATE"		,"STOCK_KPI_VALUE"	,"STOCK_KPI_WEIGHT"	,"BUDEGET_TASK"	,"BUDGET_ML","ML_COMPLETE"		,"ML_KPI_VALUE"	,"ML_KPI_WEIGHT","KHDF_WEIGHT"		,"KHDF_VALUE"			,"PROV_KPI_WEIGHT"	,"PROV_KPI_SCORE","CUSTOM_KPI"	,"KPI_RESULT"	,"BASE_SALARY"	,"BASE_KPI_SALARY"];
 var orderBy = '';
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -53,18 +52,19 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
+	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
 	var userName=$("#userName").val();
 	var user_role=$.trim($("#user_role").val());
-//条件
+	//条件
 	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" and t.UNIT_ID in("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
@@ -130,102 +130,7 @@ function search(pageNumber) {
 
 
 
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TB_MRT_KPI_REPORT_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_KPI_REPORT_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="">请选择</option>';
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
+
 
 function listUserRole(){
 	var sql="SELECT DISTINCT USER_ROLE FROM PMRT.TB_JCDY_JF_ALL_MON WHERE USER_ROLE IS NOT NULL";
@@ -258,22 +163,22 @@ function roundN(number,fractionDigits){
 }   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var title=[["账期","地市","基层单元","HR编码","人员姓名","角色类型","积分(发展)","","","","","收入","","","","","欠费","","","","","存量","","","","","毛利","","","","","本厅收入完成率","","省级KPI权重","省级KPI得分","自设KPI得分","汇总KPI得分","基础绩效基数（元）","基础绩效薪酬（元）"],
+	var title=[["账期","地市","营服中心","HR编码","人员姓名","角色类型","积分(发展)","","","","","收入","","","","","欠费","","","","","存量","","","","","毛利","","","","","本厅收入完成率","","省级KPI权重","省级KPI得分","自设KPI得分","汇总KPI得分","基础绩效基数（元）","基础绩效薪酬（元）"],
 	           ["","","","","","","积分(发展)任务","积分(发展)完成","积分(发展)任完成率","积分(发展)KPI得分","积分(发展)KPI权重","收入任务","收入完成","收入任务完成率","收入KPI得分","收入KPI权重","欠费","本月累计达到收入","欠费率","欠费KPI得分","欠费KPI权重","上年12月收入","存量收入","存量收入保有率","存量KPI得分","存量KPI权重","毛利预算","毛利完成","毛利任务完成率","毛利KPI得分","毛利KPI权重","本厅收入完成率权重","本厅收入完成率得分","","","","","",""]
 	];
 	var sql="";
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$("#userName").val();
 	var user_role=$.trim($("#user_role").val());
 	//条件
 	var sql = getSelsectSql()+" WHERE T.DEAL_DATE='"+time+"'";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" and t.UNIT_ID in("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";

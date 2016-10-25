@@ -5,7 +5,6 @@ var report=null;
 var time="";
 var orderBy="";
 $(function(){
-	 listRegions();
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -29,8 +28,8 @@ $(function(){
 			var order='';
 			var preSql='';
 			time=$("#time").val();
-			var regionName=$("#regionName").val();
-			var unitName=$("#unitName").val();
+			var regionCode=$("#regionCode").val();
+			var unitCode=$("#unitCode").val();
 			var userName=$.trim($("#userName").val());
 			var hr_id=$.trim($("#hr_id").val());
 			var fd_chnl_id=$.trim($("#fd_chnl_id").val());
@@ -73,7 +72,7 @@ $(function(){
 				}else if(orgLevel==3){
 					preSql="SELECT HR_ID ROW_ID,HR_ID_NAME ROW_NAME,";
 					groupBy=" GROUP BY HR_ID,HR_ID_NAME";
-					where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
+					where+=" and unit_id IN("+_unit_relation(code)+") ";
 					order=" ORDER BY HR_ID";
 				}else if(orgLevel==4){
 					preSql="SELECT GROUP_ID_4 ROW_ID,GROUP_ID_4_NAME ROW_NAME,";
@@ -84,11 +83,11 @@ $(function(){
 				}
 			}	
 			orgLevel++;
-			if(regionName!=''){
-				where+=" AND GROUP_ID_1_NAME = '"+regionName+"'";
+			if(regionCode!=''){
+				where+=" AND GROUP_ID_1 = '"+regionCode+"'";
 			}
-			if(unitName!=''){
-				where+=" AND UNIT_NAME = '"+unitName+"'";
+			if(unitCode!=''){
+				where+=" AND UNIT_ID in("+_unit_relation(unitCode)+") ";
 			}
 			if(userName!=''){
 				where+=" AND HR_ID_NAME LIKE '%"+userName+"%'";
@@ -132,8 +131,8 @@ $(function(){
 function downsAll() {
 	var where=' WHERE 1 = 1';
 	var order='';
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$.trim($("#userName").val());
 	var hr_id=$.trim($("#hr_id").val());
 	var fd_chnl_id=$.trim($("#fd_chnl_id").val());
@@ -142,11 +141,11 @@ function downsAll() {
 	
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
-	if(regionName!=''){
-		where+=" AND GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		where+=" AND UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		where+=" AND UNIT_ID in("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		where+=" AND HR_ID_NAME LIKE '%"+userName+"%'";
@@ -171,7 +170,7 @@ function downsAll() {
 		where+=" AND GROUP_ID_1='"+code+"'";
 		order=" ORDER BY UNIT_ID,HR_ID,GROUP_ID_4";
 	}else if(orgLevel==3){
-		where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
+		where+=" and unit_id IN("+_unit_relation(code)+") ";
 		order=" ORDER BY HR_ID,GROUP_ID_4";
 	}else{
 		sql+=" AND GROUP_ID_4='"+code+"'";
@@ -183,89 +182,8 @@ function downsAll() {
 	           ["","","","","","","","","","","","","","","本月合计积分","本月合计金额","本月实算积分(促销)","本月实算金额（促销)","本月实算积分(非促销)","本月实算金额（非促销）","本年计算积分","本年清算积分","本年实算积分","本年实算金额","本年实算积分(促销)","本年实算金额(促销)","本年实算积分(非促销)","本年实算金额(非促销)","本年未兑换总积分","本年未兑换总积分（促销）","本年未兑换总积分（非促销）","本期手工录入积分（合计）","本期手工录入积分（促销）","本期录入折算金额（促销）","本期手工录入积分（非促销）","本期录入折算金额（非促销）","本期补结金额","本期预付积分（非促销）","自201506累计实算总积分","自201506累计已兑总积分","自2015年06月累计已兑金额","自201506累计剩余未兑积分","累计最大可录总积分（促销）","累计最大可录总积分（非促销）"]];
 	downloadExcel(sql,title,showtext);
 }
-////////////////////////////////////////////////////////////////////////
-function listRegions(){
-	var time=$("#time").val();
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T  WHERE T.DEAL_DATE = '"+time+"'";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" AND T.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
-	}else{
-		sql+=" AND 1=2";
-	}
-	sql += " ORDER BY T.GROUP_ID_1";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM  PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE T.DEAL_DATE = '"+time+"'";
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" AND T.GROUP_ID_1="+code+"'";
-		}else if(orgLevel==3){
-			sql+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
-		}else{
-			sql+=" AND 1=2";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	sql += " ORDER BY T.UNIT_ID";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取营服中心信息失败！");
-	}
-}
+
+
 function getSumSql(){
 	var s="";
 	for(var i=0;i<field.length;i++){
