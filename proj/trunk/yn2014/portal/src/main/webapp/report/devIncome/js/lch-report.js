@@ -703,6 +703,9 @@ LchReport.NORMAL_STYLE={
 		'font-family':'Verdana, Geneva, sans-serif'
 	 };
 /****************************/
+function _unit_relation(unit){
+	return " select distinct u.OLD_UNIT_ID from pcde.VIEW_UNIT_CHARGE u where u.UNIT_ID='"+unit+"' ";
+}
 function _jf_power(hrId,month){
 	  if(month.length==8){
 			month=month.substring(0,6);
