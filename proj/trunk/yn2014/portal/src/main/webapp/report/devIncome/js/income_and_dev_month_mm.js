@@ -208,7 +208,7 @@ $(function(){
 				}else if(orgLevel==3){//营服中心
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
-					where=' where t.unit_id=\''+code+"\' ";
+					where+=" where t.unit_id IN("+_unit_relation(code)+") ";
 				}else if(orgLevel>=4){//
 					preField=' t.group_id_4 ROW_ID,t.group_id_4_name ROW_NAME';
 					groupBy=' group by t.group_id_4,t.group_id_4_name ';
@@ -320,7 +320,7 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where = " where t.GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where = " where t.unit_id='" + code + "' ";
+		where+=" where t.unit_id IN("+_unit_relation(code)+") ";
 	} else if (orgLevel >= 4) {//
 		where = " where t.GROUP_ID_4='" + code + "' ";
 	}
