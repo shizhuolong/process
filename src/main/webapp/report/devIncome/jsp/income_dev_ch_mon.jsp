@@ -37,7 +37,6 @@
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
 	<!-- 地市编码 -->
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" /> <input type="hidden"
 				name="resultMap.rows" />
@@ -50,13 +49,13 @@
 					</td>
 					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="10%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="8%" style="text-align:right;">营服中心：</td>
 					<td width="10%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+						<select name="unitCode" id="unitCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>

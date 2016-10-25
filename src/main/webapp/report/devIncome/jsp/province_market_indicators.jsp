@@ -12,7 +12,6 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
 	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
-	String regionCode = org.getRegionCode();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,7 +35,7 @@
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="regionCode" value="<%=regionCode%>">
+	<input type="hidden" id="code" value="<%=org.getCode%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
