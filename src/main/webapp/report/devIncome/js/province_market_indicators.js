@@ -4,7 +4,6 @@ var title=[["账期 ","地市名称 ","营服名称 ","营服类型 ","收入任
 var orderBy='';	
 var report = null;
 $(function() {
-	listRegions();
 	listUnitType();
 	report = new LchReport({
 		title : title,
@@ -48,14 +47,13 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var dealDate=$("#dealDate").val();
-	var regionName=$.trim($("#regionName").val());
 	var unitType=$.trim($("#unitType").val());
 	var regionCode =$("#regionCode").val();
 	var orderBy="";
 	var sql=getSql();
 //条件
-	if(regionName!=''){
-		sql+=" AND GROUP_ID_1 = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitType!=''){
 		sql+=" AND UNIT_TYPE = '"+unitType+"'";
@@ -63,11 +61,16 @@ function search(pageNumber) {
 	
 //权限
 	var orgLevel=$("#orgLevel").val();
+	var code =$("#code").val();
 	if(orgLevel==1){
 		orderBy=" ORDER BY GROUP_ID_1,UNIT_ID";
+	}else if(orgLevel==2){
+		sql+=" AND GROUP_ID_1="+code;
+		orderBy=" ORDER BY UNIT_ID";
+	}else if(orgLevel==3){
+		sql+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
-		sql+=" AND GROUP_ID_1="+regionCode;
-		orderBy=" ORDER BY GROUP_ID_1,UNIT_ID";
+		sql+=" AND 1=2";
 	}
 	var cdata = query("select count(*) total from(" + sql+")");
 	var total = 0;
@@ -126,15 +129,14 @@ function getSql(){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var dealDate=$("#dealDate").val();
-	var regionName=$.trim($("#regionName").val());
 	var unitType=$.trim($("#unitType").val());
 	var regionCode =$("#regionCode").val();
 	var orderBy="";
 	var sql=getSql();
 //条件
 	sql+=" AND DEAL_DATE="+dealDate;
-	if(regionName!=''){
-		sql+=" AND GROUP_ID_1 = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitType!=''){
 		sql+=" AND UNIT_TYPE = '"+unitType+"'";
@@ -142,63 +144,26 @@ function downsAll(){
 	
 //权限
 	var orgLevel=$("#orgLevel").val();
+	var code =$("#code").val();
 	if(orgLevel==1){
 		orderBy=" ORDER BY GROUP_ID_1,UNIT_ID";
+	}else if(orgLevel==2){
+		sql+=" AND GROUP_ID_1="+code;
+		orderBy=" ORDER BY UNIT_ID";
+	}else if(orgLevel==3){
+		sql+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
-		sql+=" AND GROUP_ID_1="+regionCode;
-		orderBy=" ORDER BY GROUP_ID_1,UNIT_ID";
+		sql+=" AND 1=2";
 	}
 	sql+=orderBy;
 	showtext = '营服全省对标指标-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
-
-
-
-/****************地市查询以及结果设置到页面选项框**********************/
-function listRegions(){
-	//条件
-	var sql = "SELECT DISTINCT(GROUP_ID_1),GROUP_ID_1_NAME FROM PMRT.TAB_MRT_UNIT_BENCHMARKING_MON WHERE 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var regionCode=$("#regionCode").val();
-	if(orgLevel==1){
-		
-	}else{
-		sql+=" AND GROUP_ID_1='"+regionCode+"'";
-	}
-	sql+=" ORDER BY GROUP_ID_1";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			/*listUnits(d[0].GROUP_ID_1);*/
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			//listUnits($(this).val());
-			listUnitType();
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-
 /**********************查询营服类型************************/
 function listUnitType(){
 	var dealDate=$("#dealDate").val();
-	var code = $("#regionName").val();
+	var code = $("#code").val();
 	var regionCode=$("#regionCode").val();
 	var orgLevel=$("#orgLevel").val();
 	var sql = "SELECT DISTINCT(UNIT_TYPE) FROM PMRT.TAB_MRT_UNIT_BENCHMARKING_MON WHERE 1=1 AND UNIT_TYPE IS NOT NULL ";

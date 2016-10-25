@@ -19,8 +19,6 @@ var field=[
            ];
 var orderBy='';	
 $(function(){
-	listRegions();
-	
 	var report=new LchReport({
 		title:[
 ["营销架构",
@@ -68,9 +66,9 @@ $(function(){
 			var groupBy='';
 			var code='';
 			var orgLevel='';
-			var qdate = $.trim($("#time").val());
-			var regionName=$("#regionName").val();
-			var unitName=$("#unitName").val();
+			var qdate = $("#time").val();
+			var regionCode=$("#regionCode").val();
+			var unitCode=$("#unitCode").val();
 			
 			if($tr){
 				code=$tr.attr("row_id");
@@ -113,7 +111,7 @@ $(function(){
 				}else if(orgLevel==3){//营服中心
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
-					where=' where t.unit_id=\''+code+"\' ";
+					where=" where t.UNIT_ID IN("+_unit_relation(code)+") ";
 				}else if(orgLevel>=4){//
 					preField=' t.group_id_4 ROW_ID,t.group_id_4_name ROW_NAME';
 					groupBy=' group by t.group_id_4,t.group_id_4_name ';
@@ -124,11 +122,11 @@ $(function(){
 			}	
 			var sql='select '+preField+','+getSumSql(field)+' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY  PARTITION(P'+qdate+') T';
 			
-			if(where!=''&&regionName!=''){
-				where+=" and t.GROUP_ID_1 = '"+regionName+"'";
+			if(where!=''&&regionCode!=''){
+				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
-			if(where!=''&&unitName!=''){
-				where+=" and t.UNIT_ID = '"+unitName+"'";
+			if(where!=''&&unitCode!=''){
+				where+=" and t.UNIT_ID = '"+unitCode+"'";
 			}
 			
 			if(where!=''){
@@ -185,103 +183,11 @@ function getSql(field) {
 	}
 	return s;
 }
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//地市编码
-	var regionNum = $("#regionNum").val();
-	//条件
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1  ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else{
-		sql+=" and t.GROUP_ID_1='"+regionNum+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T " +
-			"WHERE TO_CHAR(T.EXP_DATE,'YYYYMM')>=SUBSTR("+time+",1,6) ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var qdate = $.trim($("#time").val());
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	
 	var preField=' t.group_id_1_name,t.unit_name,t.AGENT_M_NAME,t.group_id_4_name,t.HQ_CHAN_CODE,t.DEAL_DATE ';
 	var where='';
@@ -295,22 +201,20 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where = " where t.GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where = " where t.unit_id='" + code + "' ";
+		where=" where t.UNIT_ID IN("+_unit_relation(code)+") ";
 	} else if (orgLevel >= 4) {//
 		where = " where t.GROUP_ID_4='" + code + "' ";
 	}
-	/*if(where!=''&&qdate!=''){
-		where+=' and  t.DEAL_DATE='+qdate+' ';
-	}*/
-	if(where!=''&&regionName!=''){
-		where+=" and t.GROUP_ID_1 = '"+regionName+"'";
+	
+	if(where!=''&&regionCode!=''){
+		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(where!=''&&unitName!=''){
-		where+=" and t.UNIT_ID = '"+unitName+"'";
+	if(where!=''&&unitCode!=''){
+		where+=" and t.UNIT_ID = '"+unitCode+"'";
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY  PARTITION(P'+qdate+') T';
+			+ ' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY PARTITION(P'+qdate+') T';
 	if (where != '') {
 		sql += where;
 	}
@@ -320,16 +224,13 @@ function downsAll() {
 	
 	showtext = '移网发展收入日报-' + qdate;
 	var title=[["营销架构","","","","","帐期",
-	            
 	            "总览","",
 	            "发展","","","",
 	            "收入","","","",
 	            "全量用户数","","",""
 	            ],
 	           ["地市","营服中心","人员","渠道名称","渠道编码","",
-	            
 	            "移网总发展","移网总收入",
-	            
 	            "2G发展",
 	            "3G发展",
 	            "上网卡发展",

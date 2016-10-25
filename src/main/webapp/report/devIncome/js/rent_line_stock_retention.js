@@ -18,7 +18,6 @@ $(function() {
 			time + "年8月拍照专租线<br/>保有出账收入保有率", time + "年9月拍照专租线<br/>保有出账收入保有率",
 			time + "年10月拍照专租线<br/>保有出账收入保有率", time + "年11月拍照专租线<br/>保有出账收入保有率",
 			time + "年12月拍照专租线<br/>保有出账收入保有率" ] ];
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -113,47 +112,9 @@ function search(pageNumber) {
 	});
 }
 
-function listRegions() {
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TB_MRT_JCDY_ZZCL_YEAR T WHERE 1 = 1 ";
-	// 权限
-	var orgLevel = $("#orgLevel").val();
-	var regionCode = $("#regionCode").val();
-	if (orgLevel == 1) {
-
-	} else {
-		sql += " and T.GROUP_ID_1 = " + regionCode;
-	}
-	sql += " ORDER BY T.GROUP_ID_1";
-	// 排序
-	var d = query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1 + '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">'
-						+ d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-
 function getSql() {
-	/*
-	 * var fs = ""; for (var i = 0; i < field.length; i++) { if (fs.length > 0) {
-	 * fs += ","; } fs += field[i]; }
-	 */
-	// return "SELECT "+fs+" FROM PMRT.TB_MRT_JCDY_ZZCL_YEAR WHERE 1=1";
 	var year = $("#time").val();
-	var groupId = $("#regionName").val();
+	var regionCode = $("#regionCode").val();
 	sql = "SELECT T2.GROUP_ID_1_NAME,                                                                         "+
 			"       PODS.GET_RADIX_POINT(T2.RATE_LAST_YEAR,2) AS RATE_LAST_YEAR,      "+
 			"       PODS.GET_RADIX_POINT(T2.FEE_LAST_12,2) AS FEE_LAST_12,            "+
@@ -212,18 +173,17 @@ function getSql() {
 			+ "          FROM PMRT.TB_MRT_JCDY_ZZCL_YEAR T0                                                       "
 			+ "         WHERE 1 = 1                                                                               "
 			+ "           AND YEAR =  " + year;
-	if (groupId != '') {
-		sql += " AND GROUP_ID_1 = '" + groupId + "'";
+	if (regionCode != '') {
+		sql += " AND GROUP_ID_1 = '" + regionCode + "'";
 	}
 	// 权限
 	var orgLevel = $("#orgLevel").val();
+	var code = $("#code").val();
+	var region=$("#region").val();
 	if (orgLevel == 1) {
 		orderBy = " ORDER BY GROUP_ID_1";
-	} else {
-		var regionCode = $("#regionCode").val();
-		if (regionCode != '') {
-			sql += " AND GROUP_ID_1 = " + regionCode;
-		}
+	} else{
+		sql += " AND GROUP_ID_1 = " + region;
 	}
 	sql +=  "UNION ALL                                                                                   "+
 			"SELECT '99999' AS GROUP_ID_1,                                                               "+
@@ -257,19 +217,13 @@ function getSql() {
 			"  FROM PMRT.TB_MRT_JCDY_ZZCL_YEAR T                                                         "+
 			" WHERE 1 = 1                                                                                "+
 			"   AND YEAR =" + year; 
-	if (groupId != '') {
-		sql += " AND GROUP_ID_1 = '" + groupId + "'";
+	if (regionCode != '') {
+		sql += " AND GROUP_ID_1 = '" + regionCode + "'";
 	}
-	// 权限
-	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {
 		orderBy = " ORDER BY GROUP_ID_1";
-	} else {
-		var regionCode = $("#regionCode").val();
-		if (regionCode != '') {
-			sql += " AND GROUP_ID_1 = " + regionCode;
-		}
-		sql += " ORDER BY GROUP_ID_1";
+	} else{
+		sql += " AND GROUP_ID_1 = " + region;
 	}
 	sql += ") T2                                                                     "
 		+ " ORDER BY T2.GROUP_ID_1                                                                            ";
@@ -278,8 +232,6 @@ function getSql() {
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var year = $("#time").val();
-	var groupId = $("#regionName").val();
-	var orderBy = "";
 	var title = [ [ "地市名称", (year - 1) + "年专租线存量收入保有率",
 			(year - 1) + "年12月拍照专租线出账收入", year + "年1月拍照专租线保有出账收入",
 			year + "年2月拍照专租线保有出账收入", year + "年3月拍照专租线保有出账收入",
@@ -295,20 +247,7 @@ function downsAll() {
 			year + "年10月拍照专租线保有出账收入保有率", year + "年11月拍照专租线保有出账收入保有率",
 			year + "年12月拍照专租线保有出账收入保有率" ] ];
 	var sql = getSql();
-	/*// 条件
-	sql += " AND YEAR=" + year;
-	if (groupId != '') {
-		sql += " AND GROUP_ID_1 = '" + groupId + "'";
-	}
-
-	// 权限
-	var orgLevel = $("#orgLevel").val();
-	if (orgLevel == 1) {
-		orderBy = " ORDER BY GROUP_ID_1";
-	} else {
-		var regionCode = $("#regionCode").val();
-		sql += " AND GROUP_ID_1 = " + regionCode + " ORDER BY GROUP_ID_1";
-	}*/
+	
 	var cdata = query("select count(*) total from(" + sql + ")");
 	var total = 0;
 	if (cdata && cdata.length) {
@@ -316,7 +255,6 @@ function downsAll() {
 	} else {
 		return;
 	}
-	sql += orderBy;
 	showtext = '专租线存量收入保有率-' + year;
 	downloadExcel(sql, title, showtext);
 }
