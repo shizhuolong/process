@@ -64,7 +64,7 @@ $(function(){
 				sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(unitCode!=''){
-				sql+=" AND UNIT_ID ='"+unitCode+"'";
+				sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 			}
 			if(groupBy!=''){
 				sql+=groupBy;
@@ -150,7 +150,7 @@ function downsAll() {
 		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode!=''){
-		sql+=" AND UNIT_ID ='"+unitCode+"'";
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	sql+=" GROUP BY DEAL_DATE, GROUP_ID_1, GROUP_ID_1_NAME, UNIT_ID, UNIT_NAME  "+
 		 " ORDER BY GROUP_ID_1,UNIT_ID  ";

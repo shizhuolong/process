@@ -121,7 +121,7 @@ $(function(){
 				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(where!=''&&unitCode!=''){
-				where+=" and t.UNIT_ID = '"+unitCode+"'";
+				where+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 			}
 			if(where!=''&&stdName!=''){
 				where+=" and t.STD_6_NAME like '%"+stdName+"%'";
@@ -212,7 +212,7 @@ function downsAll() {
 		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(where!=''&&unitCode!=''){
-		where+=" and t.UNIT_ID = '"+unitCode+"'";
+		where+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(where!=''&&stdName!=''){
 		where+=" and t.STD_6_NAME like '%"+stdName+"%'";

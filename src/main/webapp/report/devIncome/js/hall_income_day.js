@@ -2,11 +2,10 @@ var title="";
 var field="";
 var startDate="";
 var endDate="";
-var regionName="";
+var regionCode="";
 var operateType="";
 var sumSql="";
 $(function(){
-	listRegions();
 	search();
 	$("#searchBtn").click(function(){
 		$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
@@ -45,9 +44,9 @@ function search(){
 			var groupBy='';
 			var code='';
 			var orgLevel='';
-			var regionCode =$("#regionCode").val();
+			var region =$("#region").val();
 			var chnlCode = $("#chnlCode").val();
-			regionName=$("#regionName").val();
+			regionCode=$("#regionCode").val();
 			operateType=$("#operateType").val();
 			if($tr){
 				code=$tr.attr("row_id");
@@ -65,7 +64,7 @@ function search(){
 				orgLevel++;
 			}else{
 				//先根据用户信息得到前几个字段
-				code=$("#code").val();
+				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
 					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'--\' AS OPERATE_TYPE,';
@@ -79,15 +78,15 @@ function search(){
 				}else if(orgLevel==3){
 					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
 					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
-					where=' AND T1.GROUP_ID_1=\''+regionCode+'\'';
+					where=' AND T1.GROUP_ID_1=\''+code+'\'';
 					orgLevel=3;
 				}else{
 
 					return {data:[],extra:{}};
 				}
 			}
-			if(regionName!=""){
-				where+=" AND T1.GROUP_ID_1_NAME='"+regionName+"'";
+			if(regionCode!=""){
+				where+=" AND T1.GROUP_ID_1='"+regionCode+"'";
 			}
 			if(operateType!=""){
 				where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
@@ -171,38 +170,6 @@ function getSumSql1() {
     	" WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
 	return s;
 }
-function listRegions(){
-	//条件
-	var sql = "select distinct t.GROUP_ID_1,t.GROUP_ID_1_NAME from PMRT.TB_MRT_BUS_HALL_INCOME_DAY t where 1=1 AND t.GROUP_ID_1_NAME IS NOT NULL";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
-	}
-	sql+=" order by t.group_id_1";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
-}
 function downsAll() {
 	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE,';
 	var where='';
@@ -212,14 +179,16 @@ function downsAll() {
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	var regionCode =$("#regionCode").val();
+	var region =$("#region").val();
 	var chnlCode = $("#chnlCode").val();
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
-		where = " AND T1.GROUP_ID_1='" + regionCode + "' ";
+		where = " AND T1.GROUP_ID_1='" + region + "' ";
 	} 
-	if(regionName!=""){
-		where+=" AND T1.GROUP_ID_1_NAME='"+regionName+"'";
+	
+	if(regionCode!=""){
+		where+=" AND T1.GROUP_ID_1='"+regionCode+"'";
 	}
 	if(operateType!=""){
 		where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
@@ -237,7 +206,5 @@ function downsAll() {
 		title=[["地市","营业厅","渠道编码","经营模式","全业务（移动网+固网）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
 		       ["","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
 	}
-	/*title=[["账期","组织架构","渠道","经营模式","2G发展","","","","3G发展","","","","4G发展","","","","固网发展","","","","维系","","","","合计(含维系)","","",""],
-		       ["","","","","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比","当日","当日环比","累计","累计环比"]];*/
 	downloadExcel(sql,title,showtext);
 }

@@ -6,8 +6,6 @@ var title=[
            ];
 var report = null;
 $(function() {
-	//获取地址编码
-	listRegions();
 	//获取经营模式
 	getOperType();
 	//获取缴费方式
@@ -71,11 +69,7 @@ function search(pageNumber) {
 	nowData = d;
 
 	report.showSubRow();
-	/*///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
-*/	$(".page_count").width($("#lch_DataHead").width());
+	$(".page_count").width($("#lch_DataHead").width());
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)
@@ -95,7 +89,6 @@ function getSql(){
 	//营业员工位
 	var userCode=$.trim($("#userCode").val());
 	
-	var code =$("#code").val();
 	var sql = 	"SELECT T.DEAL_DATE                                        ,  "+
 				"       T.GROUP_ID_1_NAME                                  ,  "+
 				"       T.BUS_NAME                                         ,  "+
@@ -126,7 +119,7 @@ function getSql(){
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" AND 1=2";
 	}
@@ -153,7 +146,6 @@ function getSql(){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var dealDate=$("#dealDate").val();
-	//var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE"];
 	var title=[
 	           	["账期","地市","营业厅名称","渠道编码","经营模式","缴费方式","营业员工位","0-50元","","50-100元","","100-200元","","200元以上","","小计",""],	
 	           	["","","","","","","","笔次","金额","笔次","金额","笔次","金额","笔次","金额","笔次","金额"]
@@ -165,7 +157,6 @@ function downsAll(){
 
 //导出明细
 function downsDetailAll(){
-	//var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","FD_CHNL_ID","DEV_CHNL_NAME","FEE","INIT_ID","BD_TYPE"];
 	var title=[["账期","州市","营业厅名称","渠道编码","经营模式","缴费方式","营业员工位","用户编码","用户号码","缴费金额"]];
 
 	var orgLevel=$("#orgLevel").val();
@@ -201,7 +192,7 @@ function downsDetailAll(){
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" AND 1=2";
 	}
@@ -244,85 +235,6 @@ function roundN(number,fractionDigits){
         return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
     }   
 }  
-
-function listRegions(){
-    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE GROUP_ID_1  NOT IN('16099','16017','86000') ";
-    var orgLevel=$("#orgLevel").val();
-    var code=$("#code").val();
-    var region =$("#region").val();
-    if(orgLevel==1){
-        sql+="";
-    }else{
-        sql+=" and T.GROUP_ID_1='"+region+"'";
-    }
-    sql+=" ORDER BY T.GROUP_ID_1"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].GROUP_ID_1
-                    + '" selected >'
-                    + d[0].GROUP_ID_1_NAME + '</option>';
-            //listUnits(d[0].GROUP_ID_1);
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-            }
-        }
-        var $area = $("#regionCode");
-        var $h = $(h);
-        $area.empty().append($h);
-       /* $area.change(function() {
-            listUnits($(this).attr('value'));
-        });*/
-    } else {
-        alert("获取地市信息失败");
-    }
-}
-
-/************查询营服中心***************/
-function listUnits(region){
-    var $unit=$("#unitCode");
-    var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
-    if(region!=''){
-        sql+=" AND T.GROUP_ID_1='"+region+"' ";
-        //权限
-        var orgLevel=$("#orgLevel").val();
-        var code=$("#code").val();
-       /**查询营服中心编码条件是有地市编码，***/
-        if(orgLevel==3){
-            sql+=" and t.UNIT_ID='"+code+"'";
-        }else if(orgLevel==4){
-            sql+=" AND 1=2";
-        }else{
-        }
-    }else{
-        $unit.empty().append('<option value="" selected>请选择</option>');
-        return;
-    }
-
-    sql+=" ORDER BY T.UNIT_ID"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].UNIT_ID
-                    + '" selected >'
-                    + d[0].UNIT_NAME + '</option>';
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-            }
-        }
-
-        var $h = $(h);
-        $unit.empty().append($h);
-    } else {
-        alert("获取基层单元信息失败");
-    }
-}
 
 /**
  * 获取经营模式

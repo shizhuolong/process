@@ -163,13 +163,13 @@ var report=new LchReport({
 			
 			
 			if(where!=''&&qdate!=''){
-				where+=' and  t.DEAL_DATE='+qdate+' ';
+				where+=' and t.DEAL_DATE='+qdate+' ';
 			}
 			if(where!=''&&regionCode!=''){
 				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(where!=''&&unitCode!=''){
-				where+=" and t.UNIT_ID = '"+unitCode+"'";
+				where+=" and t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 			}
 			
 			if(where!=''){
@@ -256,7 +256,7 @@ function downsAll() {
 		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(where!=''&&unitCode!=''){
-		where+=" and t.UNIT_ID = '"+unitCode+"'";
+		where+=" and t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql

@@ -5,7 +5,6 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
-	 listRegions();
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -22,14 +21,13 @@ $(function(){
 		},
 		getSubRowsCallBack:function($tr){
 			var preField='';
-			
 			var groupBy='';
 			var order='';
 			var code='';
 			var orgLevel='';
 			qdate = $("#month").val();
 			var where=" WHERE T.DEAL_DATE='"+qdate+"'";
-			var regionName=$("#regionName").val();
+			var regionCode=$("#regionCode").val();
 			var operate_type=$("#operate_type").val();
 			var hq_chan_code=$.trim($("#hq_chan_code").val());
 			if($tr){
@@ -54,7 +52,7 @@ $(function(){
 				}
 				orgLevel++;
 			}else{
-				code=$("#regionCode").val();
+				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省   展示市
 					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
@@ -73,8 +71,8 @@ $(function(){
 				orgLevel++;
 			}	
 			
-			if(regionName!=''){
-				where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+			if(regionCode!=''){
+				where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(hq_chan_code!=''){
 				where+=" AND T.HQ_CHAN_CODE = '"+hq_chan_code+"'";
@@ -92,16 +90,8 @@ $(function(){
 		}
 	});
     report.showSubRow();
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
@@ -110,25 +100,25 @@ function downsAll() {
 	var where=' ';
 	var orderBy=" ORDER BY T.GROUP_ID_1,T.HQ_CHAN_CODE";
 	var groupBy=" GROUP BY T.DEAL_DATE,T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE,T.HQ_CHAN_NAME,T.OPERATE_TYPE";
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var operate_type=$("#operate_type").val();
 	var hq_chan_code=$.trim($("#hq_chan_code").val());
 	var fieldSql=getSumField();
 		
 	//先根据用户信息得到前几个字段
-	var code = $("#regionCode").val();
+	var region = $("#region").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
 		
 	} else if (orgLevel == 2) {//市
-		where += " AND T.GROUP_ID_1='" + code + "' ";
+		where += " AND T.GROUP_ID_1='" + region + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " AND T.GROUP_ID_1='" + code + "' ";
+		where += " AND T.GROUP_ID_1='" + region + "' ";
 	}else{
 		where +=" AND 1=2";
 	}
-	if(regionName!=''){
-		where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(hq_chan_code!=''){
 		where+=" AND T.HQ_CHAN_CODE = '"+hq_chan_code+"'";
@@ -148,39 +138,6 @@ function downsAll() {
 	var title=[["账期","地市","营业厅名称","渠道编码","经营模式","自营厅4G网络渗透率","",""],
 	             ["","","","","","使用4G网络出帐用户数","移网出帐用户数","4G网络渗透率"]];
 	downloadExcel(sql,title,showtext);
-}
-function listRegions(){
-	//条件
-	var sql = "SELECT DISTINCT t.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_4G_NET_PERME_MON t where 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var regionCode=$("#regionCode").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2||orgLevel==3){
-		sql+=" AND t.GROUP_ID_1="+regionCode;
-	}else{
-		sql+=" AND 1=2 ";
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
 }
 
 function getSumField(){

@@ -4,7 +4,6 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
-	 listRegions();
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -28,7 +27,7 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			qdate = $("#month").val();
-			var regionName=$("#regionName").val();
+			var regionCode=$("#regionCode").val();
 			//经营模式
 			var operateType = $("#operateType").val();
 			//主厅编码
@@ -58,7 +57,7 @@ $(function(){
 				}
 				orgLevel++;
 			}else{
-				code=$("#regionCode").val();
+				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省   展示省
 					preField=" '云南省' ROW_NAME,'86000' ROW_ID,'--' HALL_ID,'--' BUS_NAME,'--' OPERATE_TYPE,'--' BIND_NUMBER,'--' SYSTEM_NAME,";
@@ -78,8 +77,8 @@ $(function(){
 			}	
 			
 			where+=" AND T.DEAL_DATE='"+qdate+"'";
-			if(regionName!=''){
-				where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+			if(regionCode!=''){
+				where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(operateType!=''){
 				where+=" AND T.OPERATE_TYPE = '"+ operateType+"'";
@@ -103,24 +102,17 @@ $(function(){
 		}
 	});
     report.showSubRow();
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
-	
+		
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var code =$("#regionCode").val();
-	var regionName = $("#regionName").val();
+	var regionCode = $("#regionCode").val();
+	var region = $("#region").val();
 	//经营模式
 	var operateType = $("#operateType").val();
 	//主厅编码
@@ -131,8 +123,8 @@ function downsAll() {
 	var systemName = $("#systemName").val();
 	//条件
 	var sql = getSql()+" WHERE T.DEAL_DATE ='"+qdate+"'";
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(operateType!=''){
 		sql+=" AND T.OPERATE_TYPE = '"+ operateType+"'";
@@ -150,45 +142,11 @@ function downsAll() {
 	if(orgLevel==1){
 
 	}else{
-		sql+=" and T.GROUP_ID_1 =" + code;
+		sql+=" and T.GROUP_ID_1 =" + region;
 	}
 	title=[["账期","地市名称","主厅编码","下挂厅编码","营业厅名称","经营模式","用户标识","虚拟号码","捆绑号码","用户名称","客户地址","联系方式","套餐","入网时间","离网时间","局站","接入方式","宽带速率","办理产品ID","办理产品名称","产品说明","办理时间","系统标识(BS/CB)"]];
 	showtext = '营业厅智慧沃家营销清单-'+qdate;
 	downloadExcel(sql,title,showtext);
-}
-function listRegions(){
-	var sql="";
-	//条件
-	var sql = "SELECT DISTINCT t.GROUP_ID_1_NAME FROM PMRT.TB_MRT_BUS_HALL_ZHWJ_SALE_MON t where 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var regionCode=$("#regionCode").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2||orgLevel==3){
-		sql+=" AND t.GROUP_ID_1="+regionCode;
-	}else{
-		sql+=" AND 1=2 ";
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
 }
 function getSql(){
 	var s="SELECT T.DEAL_DATE,                         "+
