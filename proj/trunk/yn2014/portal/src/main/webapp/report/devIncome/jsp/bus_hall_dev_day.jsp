@@ -11,7 +11,7 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.DATE, -1);
 	String month=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
-	String regionCode = org.getRegionCode();
+	String region = org.getRegionCode();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -34,7 +34,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
-	<input type="hidden" id="regionCode" value="<%=regionCode%>">
+	<input type="hidden" id="region" value="<%=region%>">
 	<form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" /> <input type="hidden" name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
@@ -51,7 +51,7 @@
 					</td>
 					<td width="4%" align="right">地市：</td>
 					<td width="13%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>

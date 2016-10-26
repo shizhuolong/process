@@ -32,7 +32,7 @@
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
@@ -44,7 +44,7 @@
 					</td>
 					<td width="3%" style="text-align:right;">地市：</td>
 					<td width="10%">
-						<select name="regionName" id="regionName" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>

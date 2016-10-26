@@ -33,9 +33,9 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/province_market_indicators.js"></script>
 </head>
 <body class="" style="overflow-x:auto;">
-	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=org.getCode%>">
+	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>"/>
+	<input type="hidden" id="code" value="<%=org.getCode()%>"/>
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
@@ -46,7 +46,7 @@
 					</td>
 					<td width="5%" style="text-align:right;">地市：</td>
 					<td width="10%">
-						<select name="regionName" id="regionName" onchange="listUnitType()" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" onchange="listUnitType()" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
