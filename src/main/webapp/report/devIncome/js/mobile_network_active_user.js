@@ -1,7 +1,6 @@
 var title="";
 var field="";
 $(function(){
-	listRegions();
 	search();
 	$("#searchBtn").click(function(){
 		$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
@@ -38,7 +37,7 @@ function search(){
 			var orgLevel='';
 			var regionCode =$("#regionCode").val();
 			var chanlCode = $("#chanlCode").val();
-			var regionName=$("#regionName").val();
+			var region=$("#region").val();
 			var operateType=$("#operateType").val();
 			var where=' WHERE DEAL_DATE='+dealDate;
 			if($tr){
@@ -62,14 +61,14 @@ function search(){
 				}else if(orgLevel==2||orgLevel==3){//市
 					preField=' GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME'+getSumSql();
 					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,THIS_2G_ALLNUM,THIS_3G_ALLNUM,THIS_4G_ALLNUM,THIS_2G_ALLNUML,THIS_3G_ALLNUML,THIS_4G_ALLNUML  ';
-					where=' AND GROUP_ID_1=\''+regionCode+'\'';
+					where+=' AND GROUP_ID_1=\''+region+'\'';
 					orgLevel=2;
 				}else{
 					return {data:[],extra:{}};
 				}
 			}
-			if(regionName!=""){
-				where+=" AND GROUP_ID_1='"+regionName+"'";
+			if(regionCode!=""){
+				where+=" AND GROUP_ID_1='"+regionCode+"'";
 			}
 			if(operateType!=""){
 				where+=" AND OPERATE_TYPE='"+operateType+"'";
@@ -190,38 +189,6 @@ function getSumSqlNext() {
     	  "	FROM PMRT.TB_MRT_BUS_YWACTIVE_USER_MON                                                      ";
 	return s;
 }
-function listRegions(){
-	//条件
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TB_MRT_BUS_YWACTIVE_USER_MON T WHERE T.GROUP_ID_1_NAME IS NOT NULL";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" AND T.GROUP_ID_1='"+code+"'";
-	}
-	sql+=" ORDER BY T.GROUP_ID_1";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
-}
 function downsAll() {
 	var preField=' SELECT GROUP_ID_1_NAME,HQ_CHAN_CODE ROW_ID,BUS_HALL_NAME ROW_NAME,'+getSumSqlNext();
 	var groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME, HQ_CHAN_CODE, BUS_HALL_NAME, OPERATE_TYPE ';
@@ -229,18 +196,18 @@ function downsAll() {
 	//先根据用户信息得到前几个字段
 	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
-	var regionCode =$("#regionCode").val();
+	var region =$("#region").val();
 	var chanlCode = $("#chanlCode").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
 	var where=' WHERE DEAL_DATE='+dealDate;
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
-		where = " AND T1.GROUP_ID_1='" + regionCode + "' ";
+		where += " AND T1.GROUP_ID_1='" + region + "' ";
 	} 
-	if(regionName!=""){
-		where+=" AND GROUP_ID_1='"+regionName+"'";
+	if(regionCode!=""){
+		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(operateType!=""){
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
