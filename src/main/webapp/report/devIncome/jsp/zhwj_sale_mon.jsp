@@ -28,11 +28,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/zhwj_sale_mon.js"></script>
 </head>
-<body class="" style="overflow-x:auto;">
+<body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
@@ -44,7 +44,7 @@
 					</td>
 					<td width="3%" align="right">地市：</td>
 					<td width="5%">
-						<select name="regionName" id="regionName" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>

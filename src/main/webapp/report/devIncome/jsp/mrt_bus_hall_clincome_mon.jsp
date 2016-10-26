@@ -45,7 +45,7 @@
 					</td>
 					<td width="5%" align="right">地市：</td>
 	                <td width="15%">
-	                    <select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+	                    <select name="regionCode" id="regionCode" class="default-text-input wper80">
 	                        <option value=''>请选择</option>
 	                    </select>
 	                </td>
