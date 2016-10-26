@@ -126,7 +126,7 @@ $(function(){
 				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(where!=''&&unitCode!=''){
-				where+=" and t.UNIT_ID = '"+unitCode+"'";
+				where+=" AND t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 			}
 			
 			if(where!=''){
@@ -210,7 +210,7 @@ function downsAll() {
 		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(where!=''&&unitCode!=''){
-		where+=" and t.UNIT_ID = '"+unitCode+"'";
+		where+=" AND t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql

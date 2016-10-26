@@ -10,7 +10,6 @@ $(function(){
 	var operateType='';
 	var region= $("#region").val();
 	var regionCode = '';
-	listRegions();
 	report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -195,43 +194,4 @@ function getDownSql(){
 				"       HB_INNET_TORTAL   AS INNET_NUM_TORTAL_CHAIN   "+
 				"  FROM PMRT.TB_MRT_BUS_USER_INCREASE_MON   T         ";
 	return sql;
-}
-
-
-function listRegions(){
-    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
-    var orgLevel=$("#orgLevel").val();
-    var code=$("#code").val();
-    var region =$("#regionNum").val();
-    if(orgLevel==1){
-        sql+="";
-    }else if(orgLevel==2){
-        sql+=" and T.GROUP_ID_1='"+code+"'";
-    }else{
-        sql+=" and T.GROUP_ID_1='"+region+"'";
-    }
-    sql+=" ORDER BY T.GROUP_ID_1"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].GROUP_ID_1
-                    + '" selected >'
-                    + d[0].GROUP_ID_1_NAME + '</option>';
-            //listUnits(d[0].GROUP_ID_1);
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-            }
-        }
-        var $area = $("#regionCode");
-        var $h = $(h);
-        $area.empty().append($h);
-       /* $area.change(function() {
-            listUnits($(this).attr('value'));
-        });*/
-    } else {
-        alert("获取地市信息失败");
-    }
 }

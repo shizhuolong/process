@@ -4,7 +4,6 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
-	 listRegions();
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -28,7 +27,7 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			qdate = $("#month").val();
-			var regionName=$("#regionName").val();
+			var regionCode=$("#regionCode").val();
 			var operate_type=$("#operate_type").val();
 			var hq_chan_code=$.trim($("#hq_chan_code").val());
 			if($tr){
@@ -53,7 +52,7 @@ $(function(){
 				}
 				orgLevel++;
 			}else{
-				code=$("#regionCode").val();
+				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省   展示省
 					preField=" '云南省' ROW_NAME,'86000' ROW_ID,'--' HQ_CHAN_CODE,'--' OPERATE_TYPE,";
@@ -72,8 +71,8 @@ $(function(){
 			}	
 			
 			where+=" AND T.DEAL_DATE='"+qdate+"'";
-			if(regionName!=''){
-				where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+			if(regionCode!=''){
+				where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 			}
 			if(hq_chan_code!=''){
 				where+=" AND T.HQ_CHAN_CODE = '"+hq_chan_code+"'";
@@ -91,17 +90,9 @@ $(function(){
 		}
 	});
     report.showSubRow();
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
-	
+		
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
@@ -111,7 +102,9 @@ function downsAll() {
 	var where=' WHERE 1 = 1';
 	var orderBy=" ORDER BY T.GROUP_ID_1,T.HQ_CHAN_CODE";
 	var groupBy=" GROUP BY T.DEAL_DATE,T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE,T.BUS_NAME,T.OPERATE_TYPE";
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
+	var region=$("#region").val();
+	var code=$("#code").val();
 	var operate_type=$("#operate_type").val();
 	var hq_chan_code=$.trim($("#hq_chan_code").val());
 	var fieldSql=getSumField();
@@ -124,13 +117,13 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where += " AND T.GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " AND T.GROUP_ID_1='" + code + "' ";
+		where += " AND T.GROUP_ID_1='" + region + "' ";
 	}else{
 		where +=" AND 1=2";
 	}
 	where+=" AND T.DEAL_DATE='"+qdate+"'";
-	if(regionName!=''){
-		where+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(hq_chan_code!=''){
 		where+=" AND T.HQ_CHAN_CODE = '"+hq_chan_code+"'";
@@ -146,9 +139,10 @@ function downsAll() {
 ////////////////////////////////////////////////////////////////////////
 function downsDetail() {
 	var sql="SELECT DEAL_DATE,GROUP_ID_1_NAME,HQ_CHAN_CODE,BUS_NAME,SUBSCRIPTION_ID,DEVICE_NUMBER,NET_TYPE,USER_NAME,INNET_DATE,PRODUCT_NAME,INCOME_NUM,USER_TYPE,SCHEME_NAME,FLOW_NAME FROM PMRT.TB_MRT_BUS_HALL_LAST_PERSON T";
-	var code = $("#regionCode").val();
+	var code = $("#code").val();
+	var region = $("#region").val();
 	var orgLevel = $("#orgLevel").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var hq_chan_code=$.trim($("#hq_chan_code").val());
 	var where=" WHERE 1=1";
 	if (orgLevel == 1) {//省
@@ -156,13 +150,13 @@ function downsDetail() {
 	} else if (orgLevel == 2) {//市
 		where += " AND T.GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " AND T.GROUP_ID_1='" + code + "' ";
+		where += " AND T.GROUP_ID_1='" + region + "' ";
 	}else{
 		where +=" AND 1=2";
 	}
 	where+=" AND T.DEAL_DATE='"+qdate+"'";
-	if(regionName!=''){
-		where+=" AND T.GROUP_ID_1_NAME LIKE '%"+regionName+"%'";
+	if(regionCode!=''){
+		where+=" AND T.GROUP_ID_1 ="+regionCode;
 	}
 	if(hq_chan_code!=''){
 		where+=" AND T.HQ_CHAN_CODE = '"+hq_chan_code+"'";
@@ -171,40 +165,6 @@ function downsDetail() {
 	showtext = '营业厅离网预警用户统计明细' + qdate;
 	var title=[["账期","地市名称","营业厅编码","营业厅名称","用户编码","用户名称","网别","用户姓名","入网时间","套餐名称","收入","用户类型","合约名称","订购流量包"]];
 	downloadExcel(sql,title,showtext);
-}
-function listRegions(){
-	var sql="";
-	//条件
-	var sql = "SELECT DISTINCT t.GROUP_ID_1_NAME FROM PMRT.TB_MRT_BUS_HALL_WARN_MON t where 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var regionCode=$("#regionCode").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2||orgLevel==3){
-		sql+=" AND t.GROUP_ID_1="+regionCode;
-	}else{
-		sql+=" AND 1=2 ";
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
 }
 
 function getSumField(){

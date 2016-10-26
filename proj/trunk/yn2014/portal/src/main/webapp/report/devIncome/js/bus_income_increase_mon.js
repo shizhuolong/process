@@ -51,7 +51,7 @@ $(function(){
 				orgLevel++;
 			}else{
 				//先根据用户信息得到前几个字段
-				code=$("#code").val();
+				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
 					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'\' HQ_CHAN_CODE,\'\' OPERATE_TYPE,';
@@ -81,10 +81,6 @@ $(function(){
 	///////////////////////////////////////////
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
@@ -136,11 +132,12 @@ function downsAll() {
 	var groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,BUS_NAME,HQ_CHAN_CODE,OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
+	var region=$("#region").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
 		where = " AND GROUP_ID_0='" + code + "' ";
 	} else {//市
-		where = " AND GROUP_ID_1='" + code + "' ";
+		where = " AND GROUP_ID_1='" + region + "' ";
 	} 
 
 	if(operateType!=""){

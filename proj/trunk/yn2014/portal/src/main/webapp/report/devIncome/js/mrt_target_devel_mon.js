@@ -60,7 +60,7 @@ function search(pageNumber) {
 		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode!=null&&unitCode!=''){
-		sql+=" AND UNIT_ID = '"+unitCode+"'";
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(hr_id!=''){
 		sql+=" and hr_id = '"+hr_id+"'";
@@ -141,7 +141,7 @@ function downsAll(){
 		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode!=null&&unitCode!=''){
-		sql+=" AND UNIT_ID = '"+unitCode+"'";
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(hr_id!=''){
 		sql+=" and hr_id = '"+hr_id+"'";
