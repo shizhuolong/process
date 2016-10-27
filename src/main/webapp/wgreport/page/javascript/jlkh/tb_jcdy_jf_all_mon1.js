@@ -6,7 +6,7 @@ var title=[["地市"	 ,"基层单元" ,"人员姓名" ,"hr编码","角色类型"
  var orderBy = '';
 var report = null;
 $(function() {
-	listRegions();
+	listUserRole();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -58,19 +58,19 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var hrId=$("#hrId").val();
-	var orgName=$("#orgName").val();
-	var unitName=$("#unitName").val();
+	var code=$("#code").val();
+	var unitCode=$("#unitCode").val();
 	var name=$.trim($("#name").val());
 	var user_role=$.trim($("#user_role").val());
 //条件
 	var sql = "SELECT "+getSelectSql();
-	if(regionName!=''){
-		sql+=" AND GROUP_ID_1 = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" AND UNIT_ID = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+")";
 	}
 	if(name!=''){
 		sql+=" AND USER_NAME like '%"+name+"%'";
@@ -83,7 +83,7 @@ function search(pageNumber) {
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and AREA_NAME ='"+orgName+"'";
+		sql+=" AND GROUP_ID_1 ='"+code+"'";
 	}else{
 		var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
@@ -184,92 +184,6 @@ function getSelectSql(){
 	return sql;
 }
 
-function listRegions() {                                        
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var regionCode=$("#regionCode").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and t.GROUP_ID_1='"+regionCode+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	sql+=" ORDER BY T.GROUP_ID_1";
-	//排序
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var code=$("#code").val();
-	/*var regionName=$("#regionName").val();*/
-	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1  ";
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			//sql+=" and t.AREA_NAME='"+orgName+"'";
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and 1=2";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	sql+=" ORDER BY T.UNIT_ID";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="">请选择</option>';
-			h += '<option value="' + d[0].UNIT_ID
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 
 function listUserRole(){
 	var sql="SELECT DISTINCT USER_ROLE FROM PMRT.TB_JCDY_JF_ALL_MON WHERE USER_ROLE IS NOT NULL";
@@ -283,33 +197,30 @@ function listUserRole(){
 	}else{
 		alert("获取人员角色信息失败");
 	}
-	$("#user_role").append($(html));
+	$("#user_role").empty().append(html);
 }
 
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var hrId=$("#hrId").val();
-	var orgName=$("#orgName").val();
-	var unitName=$("#unitName").val();
+	var code=$("#code").val();
+	var unitCode=$("#unitCode").val();
 	var name=$.trim($("#name").val());
 	var user_role=$.trim($("#user_role").val());
-	//var title=[["账期","地市","基层单元","人员姓名","hr编码","角色类型","2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","总受理量","2g发展积分","上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","智慧沃家积分","宽带续费积分","集团专租线积分","质态积分","调节后质态积分","合计销售积分","渠道调节销售积分","区域调节销售积分","基础服务积分","服务积分","增值业务积分","总受理积分","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","维系积分","维系服务积分","维系区域积分","总积分","总积分金额"]];
-	//var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","USER_ROLE","G2SLL","SWSLL","G3SLL","G4SLL","KDSLL","ALLSLL","G2JF","SWJF","G3JF","G4JF","GWJF","ZHWJ_JF","KDXFJF","JTZZSRJF","ZTJF","ZTUNITJF","HJXSJF","HQ_ALLJF","UNIT_ALLJF","BASE_SLJF","FW_JF","ZZYW_JF","SL_ALLJF","SL_SVR_ALL_CRE","UNIT_SL_ALLJF","LYHZX_JF","CFYW_JF","ZBJXY_JF","ZFK_JF","LLBDZ_JF","WX_CRE","WX_SVR_CRE","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY"];
 	var title=[["账期","地市"	 ,"基层单元" ,"人员姓名" ,"hr编码","角色类型" ,"发展量"  ,""            ,""        ,""        ,""          ,"销售积分"    ,""              ,""          ,""          ,""            ,""            ,""              ,""        ,""                ,""              ,""              ,""          ,""                ,""                ,""                ,""                ,"受理积分"    ,""            ,""        ,""              ,""                ,""                ,""                ,"维系积分"      ,""            ,""              ,""          ,""                  ,""        	,""            ,""            ,""            ,""                ,"客服积分"      ,""              ,""          ,""             ,""               ,""                ,""                    ,""                ,"总积分"      ,"总积分金额"],
 			   ["",""    	 ,""         ,""         ,""      ,""         ,"2g发展量","上网卡发展量","3g发展量","4g发展量","宽带发展量","2g发展积分"  ,"上网卡发展积分","3g发展积分","4g发展积分","固网发展积分","宽带续费积分","集团专租线积分","质态积分","裸机销售奖励积分","沃易购众筹积分","营业厅自提积分","MINI厅积分","销售原始积分合计","渠道调节销售积分","质态区域调节积分","区域调节销售积分","总受理量"    ,"基础服务积分","服务积分","增值业务积分"  ,"受理原始积分合计","服务调节受理积分","区域调节受理积分","老用户专享积分","存费业务积分","自备机续约积分","主副卡积分","流量语音包定制积分","装维积分"	,"智慧沃家积分","维系服务积分","维系区域积分","维系原始积分合计","业务单受理积分","投诉单受理积分","建单积分"  ,"话务积分"     ,"线上会话积分"   ,"客服原始积分合计","客服人员系数积分合计","客服区域积分合计",""            ,""          ]];
-	 var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO" ,"USER_ROLE","G2SLL"   ,"SWSLL"       ,"G3SLL"   ,"G4SLL"   ,"KDSLL"     ,"G2JF"        ,"SWJF"		   ,"G3JF"      ,"G4JF"      ,"GWJF"        ,"KDXFJF"      ,"JTZZSRJF"      ,"ZTJF"    ,"LJJL_JF"         ,"WYG_JF"        ,"ZTD_JF"        ,"MINI_JF"   ,"HJXSJF"          ,"HQ_ALLJF"        ,"ZTUNITJF"        ,"UNIT_ALLJF"      ,"ALLSLL"      ,"BASE_SLJF"   ,"FW_JF"   ,"ZZYW_JF"       ,"SL_ALLJF"        ,"SL_SVR_ALL_CRE"  ,"UNIT_SL_ALLJF"   ,"LYHZX_JF"      ,"CFYW_JF"     ,"ZBJXY_JF"      ,"ZFK_JF"    ,"LLBDZ_JF"          ,"ZW_JF"     ,"ZHWJ_JF"     ,"WX_SVR_CRE"  ,"WX_UNIT_CRE" ,"WX_CRE"          ,"ACCSL_JF"      ,"ACCTS_JF"      ,"ACCJD_JF"  ,"ACCHW_JF"     ,"ACCLINE_JF"     ,"SERVICE_JF"      ,"SERVICE_HR_JF"       ,"SERVICE_UNIT_JF" ,"ALL_JF"      ,"ALL_JF_MONEY"];
 	 
 	 var sql = "SELECT DEAL_DATE,"+getSelectSql();
 	 
 
 
-	if (regionName != '') {
-		sql += " AND GROUP_ID_1 = '" + regionName + "'";
+	if (regionCode != '') {
+		sql += " AND GROUP_ID_1 = '" + regionCode + "'";
 	}
-	if (unitName != '') {
-		sql += " AND UNIT_ID = '" + unitName + "'";
+	if (unitCode != '') {
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+")";
 	}
 	if(name!=''){
 		sql+=" AND USER_NAME like '%"+name+"%'";
@@ -322,7 +233,7 @@ function downsAll() {
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and AREA_NAME ='"+orgName+"'";
+		sql+=" and GROUP_ID_1 ='"+code+"'";
 	}else{
 		var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){

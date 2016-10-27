@@ -1,295 +1,191 @@
-jQuery(function(){
-	var cols = ["deal_date","area_name","unit_name","user_name","hr_no","source_cre","hq_cre","unit_cre","unit_money" ];
-	//excel导出
-	$("#exceldown").click(downsAll);
-	regionSelect();
-	/**
-	 * 此方法和main.js中的方法重叠【2013-06-25】
-	 */
-	$("#boxselect li input").click(function(){
-	//$("#boxselect li input").on("click",function(){
-		if($(this).is( ":checked" )){
-			$(this).parent().parent().parent().find(".ct").find(".tmp").remove();
-			$(this).parent().parent().parent().find(".ct").find("."+$(this).attr("class")).remove();
-			$(this).parent().parent().parent().find(".ct").append("<span class='"+$(this).attr("class")+"' >"+$(this).val()+",</span>");
-		}else{
-	 		$(this).parent().parent().parent().find(".ct").find("."+$(this).attr("class")).remove();
+ var nowData = [];
+ var title=[["账期","地市","基层单元","人员姓名","HR编码","原始积分","渠道调节积分","区域调节积分","积分金额"]];
+ var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","SOURCE_CRE","HQ_CRE","UNIT_CRE","UNIT_MONEY"];
+ var orderBy = '';
+var report = null;
+$(function() {
+	report = new LchReport({
+		title : title,
+		field : field,
+		lock:5,
+		/*css:[
+		     {gt:4,css:LchReport.RIGHT_ALIGN},
+		     {array:[22,25,30,32,41,42,48,50,51,52],css:LchReport.NORMAL_STYLE}
+		    ],*/
+		tableCss:{leftWidth:555},
+		rowParams : [],// 第一个为rowId
+		content : "lchcontent",
+		orderCallBack : function(index, type) {
+			orderBy = " order by " + field[index] + " " + type + " ";
+			search(0);
+		},
+		getSubRowsCallBack : function($tr) {
+			return {
+				data : nowData,
+				extra : {}
+			};
 		}
-		if($("#boxselect input:checked ").length == 0){
-			$(this).parent().parent().parent().find(".ct").append("<span class='tmp' >全部</span>");
-		} 
 	});
-	var _limit=20;
-	var sql = "SELECT t.DEAL_DATE,t.AREA_NAME,t.UNIT_NAME,t.USER_NAME,t.HR_NO,t.SOURCE_CRE,t.HQ_CRE,t.UNIT_CRE,t.UNIT_MONEY FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_MON t " +
-			" WHERE t.DEAL_DATE ='"+deal_date+"' ";
-    if(group_level==1){
-		
-	}else if(group_level==2){
-		sql += "AND t.GROUP_ID_1 = '"+group_id+"' ";
-	}else{
-		 var hrIds=_jf_power(hrId,deal_date);
-		 if(hrIds!=""){
-		   sql+=" and t.HR_NO in("+hrIds+") ";
-		 }else{
-		   sql+=" and 1=2 "; 
-		 }
-	}
-	init(sql);
-	function init(sql){ 
-		var head="";
-		head +="<tr class='attend_th'>" +
-			"<th class='attend_th'>账期</th><th class='attend_th'>地市</th><th class='attend_th'>基层单元</th>" +
-			"<th class='attend_th'>人员姓名</th><th class='attend_th'>HR编码</th><th class='attend_th'>原始积分</th>" +
-			"<th class='attend_th'>渠道调节积分</th><th class='attend_th'>区域调节积分</th><th class='attend_th'>积分金额</th>" +
-		"</tr>";
-		$("#tableData thead").empty(); 
-		$("#tableData tbody").empty(); 
-		$("#tableData thead").append(head);
-		addTab(sql);
-	}
-	$("#search").click(function(){   
-		$("#page-layer").remove();
-		var deal_date = $.trim($("#deal_date").val());
-		var city_name = $.trim($("#city_name").val());
-		var user_name = $.trim($("#user_name").val());
-		var unit_name = $.trim($("#unit_name").val());
-		var fsql = getSelect();
-		var sql = "SELECT t.DEAL_DATE,t.AREA_NAME,t.UNIT_NAME,t.USER_NAME,t.HR_NO,t.SOURCE_CRE,t.HQ_CRE,t.UNIT_CRE,t.UNIT_MONEY FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_MON t" +
-				  " WHERE t.DEAL_DATE = '" + deal_date +"' "+ fsql ;
-		if(group_level == 1) {
-		}else if(group_level==2) {
-			sql += " AND t.GROUP_ID_1 = '"+group_id+"' ";
-		}else{
-			var hrIds=_jf_power(hrId,deal_date);
-			 if(hrIds!=""){
-			   sql+=" and t.HR_NO in("+hrIds+") ";
-			 }else{
-			   sql+=" and 1=2 "; 
-			 }
-		}	
-		
-		if(unit_name != "") {
-			sql += " AND t.UNIT_NAME LIKE '%"+unit_name+"%' ";
-		}
-		if(user_name != "") {
-			sql += " AND t.USER_NAME LIKE '%"+user_name+"%' ";
-		}
-		init(sql);
+	search(0);
+
+	$("#searchBtn").click(function() {
+		search(0);
 	});
-	
-	// 加载表格和分页组件
-	function addTab(sql) {
-		pageData($("#data"), "", sql, -1, function(res) {
-			var len = res.length;
-			_layer = _createLayer($("#data"), "", sql);
-			if (len < _limit) {// 分页两种形式
-					resetCount(_layer, len);
-				} else {
-					pageCount(_layer, sql);
-				}
-			});
-	}
-	// 创建分页组件
-	function _createLayer(dom, head, sql) {
-		var attachDom = $('#ana-img-buttons');
-		var _pageLayer = new $.PageLayer(attachDom, {
-			oncreate : function() {
-				$(this.layer).css( {
-					left :8
-				});
-			},
-			go : function(opt) { 
-				pageData($(dom), head, sql, opt.first, opt.callback);
-			}
-		});
-
-		return _pageLayer;
-	}
-	// 每页条数
-	function pageData(dom, head, sql, first, callback) {
-		doFetch(3002, {
-			type :1,
-			data : {
-				query :sql,
-				first :first,
-				limit :_limit
-			}
-		}, function(res) {
-			_renderTable(head, res);
-			if ($.isFunction(callback))
-				callback.call(this, res);
-		}, "正在加载,请稍后...", $(".work-div"));
-	}
-
-	// 总页数
-	function pageCount(layer, sql) {
-		var array_values = [];
-		doFetch(3002, {
-			type :2,
-			data : {
-				query :sql
-			}
-		}, function(res) {
-			if (res == undefined || res == null || res == '') {
-				click_flag = 0;
-				alert("对不起，暂且没有匹配的数据!");
-				return;
-			} else {
-				resetCount(layer, res);
-			}
-		}, "正在加载,请稍后...", $("#ana-img-buttons"));
-	}
-	// 渲染数据表
-	function _renderTable(head, data) {
-		if (data == undefined || data == null || data == '') {
-			alert("对不起，暂且没有匹配的数据!");
-			$("#tableData tbody").empty().append("<tr><td colspan='37' style='text-align: center;'>没有查询到您想要的数据</td></tr>");
-			return;
-		} else {
-			renderTable(head, data);
-		}
-	}
-	// 重置
-	function resetCount(layer, count) {
-		layer.reset( {
-			count :count,
-			limit :_limit
-		});
-		layer.show();
-	}
-	function renderTable(head, data) {
-		$("#tableData tbody").empty();
-		var res = "";
-		var colNum = data[0].length;
-		$.each(data, function(i, strn) {
-			res += "<tr>";
-			for ( var j = 0; j < colNum - 1; j++) {
-				if(j > 4 && (strn[j]==null || strn[j]=="0" || strn[j]=="")){
-					res += "<td style='text-align: left'>0</td>";   
-				}else{
-					if(strn[j] == null || strn[j] == "") {
-						res += "<td style='text-align: left;'>&nbsp;</td>";
-					}else {
-						res += "<td style='text-align: left;'>" + strn[j] + "</td>";
-					}
-				}
-			}  
-			res += "</tr>";
-		});
-		$("#tableData tbody").append(res);
-		$("#tableData tr:visible:even").addClass("spec");
-	}
 });
 
-function _loadExcel(parameter,callback,excelName){
-	$.Project.downExcelByTemplate2(parameter,callback,excelName,$(".work-div"));
-}
-
-function _execute(type, parameter, callback, msg, dom) {   
-	$.Project.execute(type, parameter, callback, msg, dom);
-}
-// 执行查询
-function doFetch(type, parameter, callback, msg, dom) {
-	$.Project.execute(type, parameter, callback, msg, dom);
-}
-function regionSelect(){
-	var sql = "";
-	if(group_level == 2) {
-		sql = "SELECT T.GROUP_ID_1, T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE T " +
-				"WHERE T.GROUP_ID_1 = '"+group_id+"'";
-	}else if(group_level == 3) {
-		sql = "SELECT T.REGION_CODE AS GROUP_ID_1, T.REGION_NAME AS GROUP_ID_1_NAME " +
-				"FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = 3 AND T.CODE = '"+group_id+"'";
-	}else if(group_level == 4) {
-		sql = "SELECT T.REGION_CODE AS GROUP_ID_1, T.REGION_NAME AS GROUP_ID_1_NAME " +
-				"FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = 4 AND T.CODE = '"+group_id+"'";
-	}else {
-		sql = "SELECT T.GROUP_ID_1, T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE T " +
-		"WHERE T.GROUP_ID_1 NOT IN ('16099', '86000') ORDER BY T.GROUP_ID_1";
-	}
-	$.ajax({
-		type:"POST",
-		dataType:'json',
-		cache:false,
-		async:false,
-		url:$("#ctx").val()+"/public!queryList.action",
-		data:{sql:sql},
-		success:function(data){
-			for(var i=0; i<data.length; i++){
-				$("#boxselect").append("<li><input type='checkbox' class='"+data[i]["group_id_1_name"]+"' " +
-						"value='"+data[i]["group_id_1_name"]+"' textvalue='"+data[i]["group_id_1"]+"' />"+data[i]["group_id_1_name"]+"</li>");
-			}
-		}
+var pageSize = 19;
+// 分页
+function initPagination(totalCount) {
+	$("#totalCount").html(totalCount);
+	$("#pagination").pagination(totalCount, {
+		callback : search,
+		items_per_page : pageSize,
+		link_to : "###",
+		prev_text : '上页', // 上一页按钮里text
+		next_text : '下页', // 下一页按钮里text
+		num_display_entries : 5,
+		num_edge_entries : 2
 	});
 }
-function getSelect() {
-	var filter = "";
-	var selectStr = "";
-	var sp = $("#boxselect input:checked ");
-	var strLength = sp.length;
-	if(strLength !=0 ){
-		$.each(sp,function(i){
-			if(i != strLength-1) {
-				selectStr += "'" + $(this).attr("textvalue") +"' ,";
-			}else {
-				selectStr += "'" + $(this).attr("textvalue") +"'";
-			}
-		});
-	}
-	if(selectStr.length != 0){
-		filter = " and t.group_id_1 in ("+selectStr+") ";
-	} 
-	return filter;
-}
 
-//导出excel
-function downsAll(){
+// 列表信息
+function search(pageNumber) {
+	pageNumber = pageNumber + 1;
+	var start = pageSize * (pageNumber - 1);
+	var end = pageSize * pageNumber;
 	
-	var deal_date = $.trim($("#deal_date").val());
-	var city_name = $.trim($("#city_name").val());
-	var user_name = $.trim($("#user_name").val());
-	var unit_name = $.trim($("#unit_name").val());
-	var fsql = getSelect();
-	var sql =  "SELECT t.DEAL_DATE,t.AREA_NAME,t.UNIT_NAME,t.USER_NAME,t.HR_NO,t.SOURCE_CRE,t.HQ_CRE,UNIT_CRE,t.UNIT_MONEY FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_MON t" +
-				" WHERE t.DEAL_DATE = '" + deal_date+"' " + fsql;
-	if(group_level == 1) {
-	}else if(group_level==2) {
-		sql += " AND t.GROUP_ID_1 = '"+group_id+"' ";
+	var dealDate=$("#dealDate").val();
+	var regionCode=$("#regionCode").val();
+	var hrId=$("#hrId").val();
+	var code=$("#code").val();
+	var unitCode=$("#unitCode").val();
+	var userName=$.trim($("#userName").val());
+	var orgLevel=$("#orgLevel").val();
+//条件
+	var sql = getSelectSql();
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
+	}
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+")";
+	}
+	if(name!=''){
+		sql+=" AND T.USER_NAME like '%"+userName+"%'";
+	}
+//权限
+	
+	if(orgLevel==1){
+		
+	}else if(orgLevel==2){
+		sql+=" AND T.GROUP_ID_1 ='"+code+"'";
 	}else{
-		 var hrIds=_jf_power(hrId,deal_date);
-		 if(hrIds!=""){
-		   sql+=" and t.HR_NO in("+hrIds+") ";
+		var hrIds=_jf_power(hrId,dealDate);
+		 if(hrIds&&hrIds!=""){
+		   sql+=" AND T.HR_NO IN("+hrIds+") ";
 		 }else{
-		   sql+=" and 1=2 "; 
+		   sql+=" AND 1=2 ";	 
 		 }
 	}
-	if(unit_name != "") {
-		sql += " AND t.UNIT_NAME LIKE '%"+unit_name+"%' ";
+	var csql = sql;
+	var cdata = query("select count(*) total from (" + csql+")");
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}else{
+		return;
 	}
-	if(user_name != "") {
-		sql += " AND t.USER_NAME LIKE '%"+user_name+"%' ";
+	//排序
+	var orderBy=" ORDER BY T.GROUP_ID_1, T.UNIT_ID";
+	sql += orderBy;
+	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
+			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+	nowData = query(sql);
+	if (pageNumber == 1) {
+		initPagination(total);
 	}
-	
-	var showtext="Sheet";
-	   var showtext1="result";
-	   var _head=['账期','地市','基层单元','人员姓名','HR编码','原始积分','渠道调节积分','区域调节积分','积分金额'];
-	   _execute(3001,{type:12,
-			     data:{
-			    	  sql:sql,
-			    	  contname:_head,
-			    	  startRow:1,
-			    	  startCol:0,
-			    	  cols:-1,
-			    	  sheetname:showtext,
-			    	  excelModal:'reportModel.xls'
-			     }     
-		},function(res){
-			 click_flag=0;
-			 var url=[$.Project.downURL,'?path=',encodeURI('system:'+res),$.isNullStr(showtext)?'':'&alias='+encodeURI(encodeURI(showtext1+'.xls'))].join('');
-			 window.location.href=url;
-		});
+	report.showSubRow();
+	///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
+	//$(".page_count").width($("#lch_DataHead").width());
+
+	$("#lch_DataBody").find("TR").each(function(){
+		var area=$(this).find("TD:eq(0)").find("A").text();
+		if(area)
+			$(this).find("TD:eq(0)").empty().text(area);
+	});
 }
 
-function _loadExcel(parameter,callback,excelName){
-	$.Project.downExcelByTemplate2(parameter,callback,excelName,$('#contions'));
+function getSelectSql(){
+	var dealDate=$("#dealDate").val();
+	var sql=
+		" SELECT T.DEAL_DATE,                        "+
+		"        T.AREA_NAME,                        "+
+		"        T.UNIT_NAME,                        "+
+		"        T.USER_NAME,                        "+
+		"        T.HR_NO,                            "+
+		"        T.SOURCE_CRE,                       "+
+		"        T.HQ_CRE,                           "+
+		"        T.UNIT_CRE,                         "+
+		"        T.UNIT_MONEY                        "+
+		"   FROM PMRT.TB_MRT_JCDY_JKXSJF_TOTAL_MON T "+
+		"  WHERE T.DEAL_DATE ='"+dealDate+"'         ";
+	return sql;
 }
+
+// ///////////////////////下载开始/////////////////////////////////////////////
+function downsAll() {
+	var dealDate=$("#dealDate").val();
+	var regionCode=$("#regionCode").val();
+	var hrId=$("#hrId").val();
+	var code=$("#code").val();
+	var unitCode=$("#unitCode").val();
+	var userName=$.trim($("#userName").val());
+	var orgLevel=$("#orgLevel").val();
+//条件
+	var sql = getSelectSql();
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
+	}
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+")";
+	}
+	if(name!=''){
+		sql+=" AND T.USER_NAME like '%"+userName+"%'";
+	}
+//权限
+	
+	if(orgLevel==1){
+		
+	}else if(orgLevel==2){
+		sql+=" AND T.GROUP_ID_1 ='"+code+"'";
+	}else{
+		var hrIds=_jf_power(hrId,dealDate);
+		 if(hrIds&&hrIds!=""){
+		   sql+=" AND T.HR_NO IN("+hrIds+") ";
+		 }else{
+		   sql+=" AND 1=2 ";	 
+		 }
+	}
+	var orderBy=" ORDER BY T.GROUP_ID_1, T.UNIT_ID";
+	sql += orderBy;
+	showtext = '直销人发展积分汇总-'+dealDate;
+	downloadExcel(sql,title,showtext);
+}
+// ///////////////////////下载结束/////////////////////////////////////////////
+
+function isNull(obj){
+	if(obj==0||obj=='0'){
+		return 0;
+	}
+	if(obj == undefined || obj == null || obj == '') {
+		return "";
+	}
+	return obj;
+}
+function roundN(number,fractionDigits){   
+    with(Math){   
+        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
+    }   
+}  
