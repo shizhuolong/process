@@ -7,7 +7,6 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
-	 listRegions();
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -30,8 +29,8 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			qdate = $("#day").val();
-			var regionName=$("#regionName").val();
-			var unitName=$("#unitName").val();
+			var regionCode=$("#regionCode").val();
+			var unitCode=$("#unitCode").val();
 			var unit_id_3_name=$.trim($("#unit_id_3_name").val());
 			if($tr){
 				code=$tr.attr("row_id");
@@ -54,7 +53,7 @@ $(function(){
 				}else if(orgLevel==2){//市
 					where+=" AND UNIT_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服中心
-					where+=" AND UNIT_ID_2='"+code+"'";
+					where+=" AND UNIT_ID_2 IN("+_unit_relation(code)+") ";
 				}else if(orgLevel==4){//网点
 					where+=" AND UNIT_ID_3='"+code+"'";
 				}else{
@@ -63,11 +62,11 @@ $(function(){
 			}	
 			orgLevel++;
 			where+=" AND DEAL_DATE='"+qdate+"'";
-			if(regionName!=''){
-				where+=" AND UNIT_ID_1_NAME = '"+regionName+"'";
+			if(regionCode!=''){
+				where+=" AND UNIT_ID_1 = '"+regionCode+"'";
 			}
-			if(unitName!=''){
-				where+=" AND UNIT_ID_2_NAME = '"+unitName+"'";
+			if(unitCode!=''){
+				where+=" AND UNIT_ID_2 IN("+_unit_relation(unitCode)+") ";
 			}
 			if(unit_id_3_name!=''){
 				where+=" AND UNIT_ID_3_NAME LIKE '%"+unit_id_3_name+"%'";
@@ -86,17 +85,9 @@ $(function(){
 		}
 	});
     report.showSubRow();
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
-	
+		
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
@@ -104,8 +95,8 @@ $(function(){
 function downsAll() {
 	var where=' WHERE 1 = 1';
 	var orderBy=" ORDER BY UNIT_ID_1,UNIT_ID_2,UNIT_ID_3,UNIT_ID_4";
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var unit_id_3_name=$.trim($("#unit_id_3_name").val());
 		
 	//先根据用户信息得到前几个字段
@@ -116,16 +107,16 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where += " AND UNIT_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " AND UNIT_ID_2='" + code + "' ";
+		where+=" AND UNIT_ID_2 IN("+_unit_relation(code)+") ";
 	} else if (orgLevel == 4) {//网点
 		where += " AND UNIT_ID_3='" + code + "' ";
 	}
 	where+=" AND DEAL_DATE='"+qdate+"'";
-	if(regionName!=''){
-		where+=" AND UNIT_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		where+=" AND UNIT_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		where+=" AND UNIT_ID_2_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		where+=" AND UNIT_ID_2 IN("+_unit_relation(unitCode)+") ";
 	}
 	if(unit_id_3_name!=''){
 		where+=" AND UNIT_ID_3_NAME LIKE '%"+unit_id_3_name+"%'";
@@ -137,87 +128,6 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
-function listRegions(){
-	var sql="";
-	//条件
-	var sql = "SELECT DISTINCT T.UNIT_ID_1_NAME FROM YNPAY.TB_PAY_AUDIT_COMM_WARN_DAY t where 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.UNIT_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID_2='"+code+"'";
-	}else{
-		sql+=" and 1=2 ";
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID_1_NAME
-					+ '" selected >'
-					+ d[0].UNIT_ID_1_NAME + '</option>';
-			listUnits(d[0].UNIT_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID_1_NAME + '">' + d[i].UNIT_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var sql = "SELECT DISTINCT T.UNIT_ID_2_NAME FROM YNPAY.TB_PAY_AUDIT_COMM_WARN_DAY t where 1=1 ";
-	if(regionName!=''){
-		sql+=" AND t.UNIT_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" AND t.UNIT_ID_1='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" AND t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" AND 1=2";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID_2_NAME
-					+ '" selected >'
-					+ d[0].UNIT_ID_2_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID_2_NAME + '">' + d[i].UNIT_ID_2_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 function getSql(orgLevel){
   var fs="";
   if(orgLevel<=4){
