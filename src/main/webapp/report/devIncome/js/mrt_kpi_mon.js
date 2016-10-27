@@ -6,6 +6,7 @@ var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_ID"	,"NAME"		,"USER_ROL
 var orderBy = '';
 var report = null;
 $(function() {
+	listUserRole();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -144,7 +145,7 @@ function listUserRole(){
 	}else{
 		alert("获取人员角色信息失败");
 	}
-	$("#user_role").append($(html));
+	$("#user_role").empty().append($(html));
 }
 
 function isNull(obj){
