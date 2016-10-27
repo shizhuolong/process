@@ -6,7 +6,6 @@ var downSql="";
 var dealDate="";
 var report = null;
 $(function() {
-	listRegions();
 	//获得状态下拉菜单
 	getLwTyoe();
 	report = new LchReport({
@@ -53,8 +52,8 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	dealDate=$("#dealDate").val();
-	var regionCode=$("#regionName").val();
-	var unitId=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$.trim($("#userName").val());
 	//状态
 	var lwType = $("#lwType").val();
@@ -79,8 +78,8 @@ function search(pageNumber) {
 	if(regionCode!=''){
 		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitId!=''){
-		sql+=" AND T.UNIT_ID = '"+unitId+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" AND T.USERNAME LIKE '%"+userName+"%'";
@@ -119,91 +118,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var dealDate=$("#dealDate").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1,t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_GW_DETAIL t WHERE 1=1";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	sql += " ORDER BY GROUP_ID_1";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionCode){
-	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_ID,t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_GW_DETAIL t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1='"+regionCode+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 
 //获得状态下拉菜单
 function getLwTyoe(){
@@ -218,7 +132,7 @@ function getLwTyoe(){
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" AND T.HR_ID='"+hrId+"'";
 	}
