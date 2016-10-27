@@ -40,24 +40,24 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="5%" style="text-align:right;">账期：</td>
 					<td width="13%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="5%" style="text-align:right;">地市：</td>
 					<td width="13%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">营服中心：</td>
+					<td width="7%" style="text-align:right;">营服中心：</td>
 					<td width="13%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+						<select name="unitCode" id="unitCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">人员姓名：</td>
+					<td width="7%" style="text-align:right;">人员姓名：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
@@ -66,7 +66,7 @@
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
@@ -80,9 +80,5 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-
 </body>
-<script>
-
-</script>
 </html>
