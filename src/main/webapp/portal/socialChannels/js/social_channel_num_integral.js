@@ -87,7 +87,7 @@ $(function(){
 				 level++;
 			 }else if(level==3){
 				 sql="SELECT T.DEAL_DATE,T.HR_ID AS CODE,T.HR_ID_NAME AS ROWNAME,"+resultSql+" SELECT T1.HR_ID ,T1.HR_ID_NAME,T1.DEAL_DATE, "+getSumSql(field);
-				 where+=" AND T1.UNIT_ID='"+code+"'";
+				 where+=" AND T1.UNIT_ID IN("+_unit_relation(code)+") ";
 				 groupBy+=" GROUP BY T1.HR_ID,T1.HR_ID_NAME,T1.DEAL_DATE";
 				 sql+=where+groupBy+orderBy+")T GROUP BY DEAL_DATE,HR_ID,HR_ID_NAME ORDER BY HR_ID";
 				 level++;
@@ -105,17 +105,10 @@ $(function(){
 	});
 	report.showSubRow();
 	report.showAllCols(0);
-///////////////////////////////////////////
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
+
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		report.showAllCols(0);
-///////////////////////////////////////////
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-		///////////////////////////////////////////
 	});
 });
 function getSumSql(field){
@@ -303,7 +296,7 @@ function downsAll() {
 	}else if(level==2){
 		where+=" AND T1.GROUP_ID_1='"+code+"'";
 	}else if(level==3){
-		where+=" AND T1.UNIT_ID='"+code+"'";
+		where+=" AND T1.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else if(level==4){
 		where+=" AND T1.HR_ID='"+code+"'";
 	}else{
