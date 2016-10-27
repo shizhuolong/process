@@ -36,44 +36,46 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-		<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<thead>
 					<tr height="35px">
 					<td width="6%" style="padding-left: 10px;" align="right">账期：</td>
 					<td width="15%">
-						<input type="text"  class="Wdate default-text-input wper80" 
+						<input type="text"  class="Wdate default-text-input wper90" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="5%" align="right">地市：</td>
+					<td width="6%" align="right">地市：</td>
 					<td width="15%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%" align="right">营服中心：</td>
-					<td width="15%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+					<td width="6%" align="right">营服中心：</td>
+					<td width="17%">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%" align="right">人员类型：</td>
-					<td width="15%">
-						<input name="user_role" id="user_role" class="default-text-input wper80"/>
-					</td>
-					<td width="8%" align="right">人员姓名：</td>
-					<td width="15%">
-						<input class="" name="name" type="text" id="name"/>
-					</td>
-					<td width="5%">
+					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 18px;margin-left: 18px;">查询</a>
 					</td>
-					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					<td width="3%">
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
+					<td width="6%" align="right">人员类型：</td>
+					<td width="15%">
+						<select name="user_role" id="user_role"  class="default-text-input wper90">
+								<option value=''>请选择</option>
+						</select>
+					</td>
+					<td width="6%" align="right">人员姓名：</td>
+					<td width="15%">
+						<input class="default-text-input wper90" name="name" type="text" id="name"/>
 					</td>
 				</tr>
 				</thead>
