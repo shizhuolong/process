@@ -6,15 +6,13 @@ var report = null;
 $(function() {
 		field=[ "DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","DEV_CHNL_ID","DEV_CHNL_NAME","ITEM","BD_TYPE_ID","BD_TYPE","INIT_NUM","INIT_FEE","SUCCESS_NUM","SUCCESS_FEE","FAIL_NUM","FAIL_FEE_YL","FAIL_FEE_SL","FAIL_FEE_XY","INIT_ID_JZ","FEE_JZ","INIT_ID_YS","FEE_YS","IS_SUCCESS","REMARKS" ];
 		title= [ [ "账期","地市","营服","渠道编码","渠道名","科目","比对项目","比对备注","工单数","工单金额","成功工单数","成功工单金额","失败工单数","应录金额","实录金额","差异金额","集中工单号","集中工单金额","原始工单号","原始工单金额","比对代码","比对结果" ] ];
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
-//			orderBy = " order by " + field[index] + " " + type + " ";
-//			search(0);
+
 		},
 		getSubRowsCallBack : function($tr) {
 			return {
@@ -27,12 +25,7 @@ $(function() {
 	$("#searchBtn").click(function(){
 		search(0);
 	});
-	/*$("#workOrder").keyup(function(){
-		var workOrder = $("#workOrder").val();
-		if(workOrder!=''){
-			queryWorkOrder();	
-		}
-	});*/
+	
 });
 
 var pageSize = 15;
@@ -49,33 +42,6 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
-
-/*function  queryWorkOrder(){
-	var workOrder = $("#workOrder").val();
-	var dealDate = $("#dealDate").val();
-	var sql="SELECT INIT_ID_JZ                        "+
-			"  FROM PMRT.TAB_MRT_COMM_BD_DATA_DETAIL T"+
-			" WHERE DEAL_DATE = "+dealDate+"          "+
-			" AND T.INIT_ID_JZ LIKE '%"+workOrder+"%' ";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length != 0) {overflow:hidden;
-			h += '<div style="width:170px;height:80px; overflow:scroll; border:1px solid;">';
-			for (var i = 0; i < d.length; i++) {
-				h += '<p>'+d[i].INIT_ID_JZ+'</p>';
-			}
-		}
-		h+="</div>";
-		var $area = $("#showWorkOrder");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).attr('value'));
-		});
-	}
-}
-	*/
 
 //列表信息
 function search(pageNumber) {
@@ -126,8 +92,6 @@ function search(pageNumber) {
 		sql+=" AND T.INIT_ID_JZ LIKE'%"+workOrder+"%'";
 	}
 	var csql = sql;
-	/*old*/
-	/*var cdata = query("select count(*) total " + csql);*/
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
 	if(cdata && cdata.length) {
@@ -159,12 +123,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-//function roundN(number,fractionDigits){   
-//    with(Math){   
-//        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
-//    }   
-//}   
-
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
@@ -215,83 +173,3 @@ function downsAll(){
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
-function listRegions(){
-	var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var region =$("#region").val();
-	if(orgLevel==1){
-		sql+="";
-	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1='"+code+"'";
-	}else{
-		sql+=" and T.GROUP_ID_1='"+region+"'";
-	}
-	sql+=" ORDER BY T.GROUP_ID_1"
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionCode");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).attr('value'));
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-
-/************查询营服中心***************/
-function listUnits(region){
-	var $unit=$("#unitCode");
-	var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
-	if(region!=''){
-		sql+=" AND T.GROUP_ID_1='"+region+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		/**查询营服中心编码条件是有地市编码，***/
-		if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else if(orgLevel==4){
-			sql+=" AND 1=2";
-		}else{
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	
-	sql+=" ORDER BY T.UNIT_ID"
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}

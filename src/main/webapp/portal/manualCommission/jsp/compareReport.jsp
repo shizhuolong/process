@@ -54,10 +54,7 @@
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
-	<!-- <div data-options="region:'west',split:false,title:'营服中心负责人管理'"
-		style="width: 220px; padding: 10px;">
-		<div id="ztree" class="ztree"></div>
-	</div> -->
+	
 	<div data-options="region:'center',title:'对比报表'">
 		<div id="container">
 			<form id="searchForm" method="post">
