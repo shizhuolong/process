@@ -6,7 +6,6 @@ var title=[["账期","地市","营服中心","渠道编码","渠道名称","HR�
 var orderBy='';	
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -53,20 +52,18 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var phoneNumber=$("#phoneNumber").val();
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$("#userName").val();
 	var itemDesc=$.trim($("#itemDesc").val());
 //条件
-	var sql = " from PMRT.TB_MRT_WXJF_OPERATOR_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
+	var sql = " FROM PMRT.TB_MRT_WXJF_OPERATOR_MON T WHERE  T.DEAL_DATE="+time;
+	
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
-	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" and t.UNIT_ID in("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
@@ -131,99 +128,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TB_MRT_WXJF_OPERATOR_MON t where 1=1 and group_id_1_name is not null ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TB_MRT_WXJF_OPERATOR_MON t where 1=1 and t.deal_date='"+time+"'";
-
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 function isNull(obj){
 	if(obj==0||obj=='0'){
 		return 0;
@@ -242,21 +146,18 @@ function roundN(number,fractionDigits){
 function downsAll(){
 	var sql="";
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$("#userName").val();
 	var phoneNumber=$("#phoneNumber").val();
 	var itemDesc=$.trim($("#itemDesc").val());
 	//条件
-	var sql = " from PMRT.TB_MRT_WXJF_OPERATOR_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
+	var sql = " from PMRT.TB_MRT_WXJF_OPERATOR_MON t where T.DEAL_DATE="+time;
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
-	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" and t.UNIT_ID in("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
