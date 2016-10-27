@@ -4,7 +4,6 @@ var field= ["地市名称","账期","基层单元编码","基层单元名称","�
 var orderBy = '';
 var report = null;
 $(function() {
-	getRegionName();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -27,33 +26,6 @@ $(function() {
 		search(0);
 	});
 });
-function getRegionName(){
-	var sql="select distinct t.地市名称  regionName from PMRT.TB_MRT_JCDY_YYT_MON t where 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.地市编码="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	if(result.length==1){
-		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
-		$("#regionName").empty().append($(html));
-		//getUnitName($("#regionName"));
-	}else{
-		 html +="<option value=''>全部</option>";
-		    for(var i=0;i<result.length;i++){
-		    	html+="<option value="+result[i].REGIONNAME+">"+result[i].REGIONNAME+"</option>";
-		    }
-	}
-    $("#regionName").empty().append($(html));
-}					 
 var pageSize = 15;
 //分页
 function initPagination(totalCount) {
@@ -75,7 +47,7 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var cityName=$.trim($("#regionName").val());
+	var cityCode=$.trim($("#regionCode").val());
 	var userName=$.trim($("#userName").val());
 	var hallName=$.trim($("#hallName").val());
 	var regionCode=$.trim($("#regionCode").val());
@@ -84,8 +56,8 @@ function search(pageNumber) {
 	if(time!=''){
 		sql+=" AND 账期='"+time+"' ";
 	}
-	if(cityName!=''){
-		sql+=" AND 地市名称 like '%"+cityName+"%'";
+	if(cityCode!=''){
+		sql+=" AND 地市编码 = '"+cityCode+"'";
 	}
 	if(hallName!=''){
 		sql+=" AND 营业厅名称 like '%"+hallName+"%'";
@@ -149,7 +121,7 @@ function search(pageNumber) {
 function downsAll(){
 	var sql="SELECT 账期,地市名称,基层单元编码,基层单元名称,营业厅编码,营业厅名称,HR编码,姓名,发展人编码,直销原始积分,直销渠道调节积分,直销区域调节积分,维系原始积分,维系渠道调节积分,维系区域调节积分,受理原始积分,受理服务调节积分,受理区域调节积分,调节后总积分   FROM PMRT.TB_MRT_JCDY_YYT_MON where 1=1 " ;
 	var time=$("#time").val();
-	var cityName=$.trim($("#regionName").val());
+	var cityCode=$.trim($("#regionCode").val());
 	var userName=$.trim($("#userName").val());
 	var hallName=$.trim($("#hallName").val());
 //条件
@@ -157,8 +129,8 @@ function downsAll(){
 	if(time!=''){
 		sql+=" AND 账期='"+time+"' ";
 	}
-	if(cityName!=''){
-		sql+=" AND 地市名称 like '%"+cityName+"%'";
+	if(cityCode!=''){
+		sql+=" AND 地市编码  '"+cityCode+"'";
 	}
 	if(userName!=''){
 		sql+=" AND 姓名 like '%"+userName+"%'";
