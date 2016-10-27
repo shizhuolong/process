@@ -1,6 +1,8 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="java.text.Format"%>
+<%@page import="java.text.DateFormat"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%
@@ -11,8 +13,7 @@ String currentmon = new java.text.SimpleDateFormat("yyyyMM").format(l.getTime())
 User user =	UserHolder.getCurrentLoginUser();
 Org org = user.getOrg();
 %>
-<%@page import="java.text.Format"%>
-<%@page import="java.text.DateFormat"%>
+
 <html>
   <head>
     <title>网格效益分析报表</title>

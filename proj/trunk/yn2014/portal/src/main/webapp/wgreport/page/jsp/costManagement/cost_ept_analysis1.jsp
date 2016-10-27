@@ -3,6 +3,8 @@
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@page import="java.text.Format"%>
+<%@page import="java.text.DateFormat"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%
   String path = request.getContextPath();
@@ -12,8 +14,7 @@
   ca.add(Calendar.MONTH, -1);
   String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
-<%@page import="java.text.Format"%>
-<%@page import="java.text.DateFormat"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -33,7 +34,7 @@
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
