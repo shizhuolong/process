@@ -2,7 +2,6 @@ var field=["ALL_JF_TOTAL","ALL_JF_QS","ALL_JF_YF","ALL_JF_YFSF","THIS_MONTH_TOTA
 var title=[["组织架构","本月计算积分","本月清算积分","本月延付积分","本月延付释放积分","本月合计积分","本月录入积分","本月录入金额","本月合计金额","年累计计算积分","年累计清算积分","年累计延付积分","年累计延付释放积分","年累计合计积分","年累计合计金额"]];
 var report=null;
 $(function(){
-	listRegions();
 	var sumSql=getSumField();
 	 report=new LchReport({
 		title:title,
@@ -18,8 +17,8 @@ $(function(){
 			var orgLevel='';
 			var qdate = $("#month").val();
 			var hr_id_name = $("#userName").val();
-			var regionName=$("#regionName").val();
-			var unitName=$("#unitName").val();
+			var regionCode=$("#regionCode").val();
+			var unitCode=$("#unitCode").val();
 			var orderBy="";
 			if($tr){
 				code=$tr.attr("row_id");
@@ -77,11 +76,11 @@ $(function(){
 			var sql='select '+preField+sumSql+' from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT ';
 						
 			where+=' and DEAL_DATE='+qdate+' ';
-			if(regionName!=''){
-				where+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+			if(regionCode!=''){
+				where+=" and GROUP_ID_1 = '"+regionCode+"'";
 			}
-			if(unitName!=''){
-				where+=" and UNIT_NAME = '"+unitName+"'";
+			if(unitCode!=''){
+				where+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 			}
 			if(hr_id_name!=''){
 				where+=" and HR_ID_NAME = '"+hr_id_name+"'";
@@ -114,8 +113,8 @@ function downsAll() {
 	var where=' WHERE INTEGRAL_SUB = 1';
 	var orderBy=" order by group_id_1,unit_id,hr_id,group_id_4 ";
 	var hr_id_name = $("#userName").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var groupBy=" group by group_id_1,group_id_1_name,unit_id,unit_name,hr_id,hr_id_name,group_id_4,group_id_4_name,fd_chnl_id";
 	var fieldSql=getSumField();
 		
@@ -127,15 +126,15 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where += " and GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " and unit_id='" + code + "' ";
+		where+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 	} else if (orgLevel == 4) {//
 		where += " and hr_id='" + hrId + "' ";
 	}
 	where+=' and DEAL_DATE='+qdate+' ';
-	if(regionName!=''){
-		where+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		where+=" and GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
+	if(unitCode!=''){
 		where+=" and unit_id IN(SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
 	}
 	if(hr_id_name!=''){
@@ -149,90 +148,6 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 ////////////////////////////////////////////////////////////////////////
-function listRegions(){
-	var qdate = $.trim($("#month").val());
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT  T WHERE T.DEAL_DATE = '"+qdate+"'";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID IN (SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var qdate = $.trim($("#month").val());
-	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T WHERE T.DEAL_DATE = '"+qdate+"'";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" AND T.UNIT_ID IN (SELECT T.OLD_UNIT_ID FROM PCDE.UNIT_HB T WHERE T.UNIT_ID = '"+code+"' UNION ALL SELECT '"+code+"' OLD_UNIT_ID FROM DUAL)";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 function getSumField(){
 	var fs = ",SUM(NVL(ALL_JF_TOTAL, 0)) ALL_JF_TOTAL,                        "+
 			"SUM(NVL(ALL_JF_QS, 0)) ALL_JF_QS,                              "+
