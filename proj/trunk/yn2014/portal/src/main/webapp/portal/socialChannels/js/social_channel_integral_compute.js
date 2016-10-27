@@ -4,7 +4,6 @@ var title=[["账期","地市","基层单元","HR编码","人员名","渠道编�
 var orderBy='';	
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -51,8 +50,8 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var dealDate=$("#dealDate").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
 	//指标类代码
@@ -107,16 +106,16 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else if(orgLevel==4){
 		sql+=" AND T.HR_ID='"+code+"'";
 	}
 	//条件查询
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
@@ -149,105 +148,12 @@ function search(pageNumber) {
 	nowData = d;
 
 	report.showSubRow();
-	/*///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
-*/	$(".page_count").width($("#lch_DataHead").width());
+	$(".page_count").width($("#lch_DataHead").width());
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
-}
-function listRegions(){
-	var sql="";
-	var dealDate=$("#dealDate").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") t where 1=1 and group_id_1_name is not null ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var dealDate=$("#dealDate").val();
-	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_INTEGRAL_DEV_DETAIL partition(P"+dealDate+") t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
 }
 function isNull(obj){
 	if(obj==0||obj=='0'){
@@ -267,8 +173,8 @@ function roundN(number,fractionDigits){
 function downsAll(){
 	var title=[["账期","地市","基层单元","HR编码","人员名","渠道编码","渠道名","用户编码","电话号码","指标小类编码","指标小类说明","指标类代码","指标类描述","指标标准值","入网时间","业务类型","办理编码","操作工位","套餐ID","活动ID","套餐月费","指标相关值 ","积分内部代码","积分值","是否促销","是否黑户"]];
 	var dealDate=$("#dealDate").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
 	//指标类代码
@@ -322,16 +228,16 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" AND T.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else if(orgLevel==4){
 		sql+=" AND T.HR_ID='"+code+"'";
 	}
 	//条件查询
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" AND T.HR_ID_NAME LIKE '%"+userName+"%'";
