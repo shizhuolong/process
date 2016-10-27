@@ -83,7 +83,7 @@ function search(pageNumber) {
 		sql+=" AND T. GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(''!=unitCode){
-		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(''!=channelCode){
 		sql+=" AND T.DEV_CHNL_ID = '"+channelCode+"'";
@@ -157,10 +157,10 @@ function downsAll(){
 				"  FROM PMRT.TAB_MRT_COMM_BD_DATA_DETAIL T  "+
 				" WHERE DEAL_DATE = '"+dealDate+"'";
 	if(''!=regionCode){
-		sql+=" AND T. GROUP_ID_1 = '"+regionCode+"'";
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(''!=unitCode){
-		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(''!=channelCode){
 		sql+=" AND T.DEV_CHNL_ID = '"+channelCode+"'";
