@@ -9,8 +9,6 @@
             ,"SHDEVELOPER_MON_NUM04","SHDEVELOPER_NUM_RATE04","SHRN4","SHDEVELOPER_NUM05","SHDEVELOPER_MON_NUM05"
             ,"SHDEVELOPER_NUM_RATE05","SHRN5"];
 $(function(){
-	//initRegion();netType
-	
 	var orderBy='';	
 	var report=new LchReport({
 		title:[["分公司","移动网","","","","自有渠道","","","","","","","","","","","","","","","","","","","","","","","","社会渠道","","","","","","","","","","","","","","","","","","",""],
@@ -22,16 +20,11 @@ $(function(){
 		rowParams:[],//第一个为rowId
 		content:"lchcontent",
 		orderCallBack:function(index,type){
-			/*if(index==0){
-				orderBy=" order by row_name "+type+" ";
-			}else if(index>0){
-				orderBy=" order by "+field[index-1]+" "+type+" ";
-			}
-			report.showSubRow();*/
+			
 		},
 		getSubRowsCallBack:function($tr){
 			var date = $.trim($("#time").val());
-			var fsql = '';//getSelect();
+			var fsql = '';
 			var net_type = $("#netType").val();
 			var sql = "SELECT T.GROUP_ID_1_NAME,T.DEVELOPER_NUM,T.DEVELOPER_MON_NUM," +
 			"DECODE(T.DEVELOPER_NUM_RATE,'','0%',round(T.DEVELOPER_NUM_RATE*100,2)||'%') AS DEVELOPER_NUM_RATE,T.DEVELOPER_NUM_RN,T.ZYDEVELOPER_NUM01," +
@@ -85,33 +78,12 @@ $(function(){
 		$(".sub_on,.sub_off,.space").remove();
 	});
 });
-/*
-function initRegion(){
-	var d=query("select t.code,t.orgname  from portal.apdp_org t where t.orglevel=2");
-	if(d&&d.length){
-		var h='';
-		for(var i=0;i<d.length;i++){
-			h+='<option value="'+d[i].CODE+'" >'+d[i].ORGNAME+'</option>'
-		}
-	}
-	$("#GROUP_ID_1").append(h);
-	
-}
 
-function getSelect() {
-	var where=$("#GROUP_ID_1").val();
-	if($.trim(where).length>0){
-		return " and T.group_id_1 ='"+where+"' ";
-	}else{
-		return "";
-	}
-}*/
 /////////////////////////下载开始/////////////////////////////////////////////
 //导出excel
 function downsAll(){
-	
 	var date = $.trim($("#time").val());
-	var fsql = '';//getSelect();
+	var fsql = '';
 	var net_type = $("#netType").val();
 	var sql = "SELECT T.GROUP_ID_1_NAME,T.DEVELOPER_NUM,T.DEVELOPER_MON_NUM," +
 	"DECODE(T.DEVELOPER_NUM_RATE,'','0%',round(T.DEVELOPER_NUM_RATE*100,2)||'%') AS DEVELOPER_NUM_RATE,T.DEVELOPER_NUM_RN,T.ZYDEVELOPER_NUM01," +

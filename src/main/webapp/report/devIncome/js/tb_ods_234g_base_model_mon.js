@@ -4,7 +4,6 @@ var title=[["账期","地市","营服中心","用户编号","电话号码","入�
 var orderBy='';	
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -49,8 +48,8 @@ function search(pageNumber) {
 	var phoneNumber=$("#phoneNumber").val();
 	var time=$("#time").val();
 	var code =$("#code").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
@@ -59,11 +58,11 @@ function search(pageNumber) {
 	if(time!=''){
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
-	if(regionName!=''){
-		sql+=" and T1.GROUP_ID_1 = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and T1.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and T1.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" and T1.UNIT_ID = '"+unitCode+"'";
 	}
 	if(phoneNumber!=''){
 		sql+=" and T1.DEVICE_NUMBER like '%"+phoneNumber+"%'";
@@ -81,16 +80,14 @@ function search(pageNumber) {
 	
 	
 	var orgLevel=$("#orgLevel").val();
-	/*alert(orgLevel);*/
 	var cityName=$("#cityName").val();
 	if(orgLevel==1){
-		/*sql+="  order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID"*/;
 	}else if(orgLevel==2){
-		sql+=" and T1.GROUP_ID_1='"+code+"'"/*'+ order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID"*/;	
+		sql+=" and T1.GROUP_ID_1='"+code+"'";	
 	}else if(orgLevel==3){
-		sql+=" and T1.UNIT_ID='"+code+"'"/*'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID "*/;
+		sql+=" AND T1.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}else if(orgLevel==4){
-		sql+=" and T1.GROUP_ID_4='"+code+"'"/*'order by T1.DEAL_DATE,T1.GROUP_ID_1,T1.UNIT_ID,T1.GROUP_ID_4,T1.PRODUCT_ID "*/;
+		sql+=" and T1.GROUP_ID_4='"+code+"'";
 	}else{
 	}
 	
@@ -121,87 +118,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var sql="";
-	var sqlregion="SELECT T1.REGION_NAME,T1.REGION_CODE FROM (";
-	 sql = " SELECT DISTINCT T.REGION_NAME,T.REGION_CODE FROM PORTAL.APDP_ORG T WHERE T.REGION_NAME<>'中国联通云南分公司'  ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		sql=sqlregion+sql+"  UNION ALL SELECT '云南省本部' AS REGION_NAME , '16099' AS REGION_CODE FROM DUAL) T1 ORDER BY T1.REGION_CODE ";
-	}else if(orgLevel==2){
-		sql+=" and T.REGION_CODE='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and T.CODE ='"+code+"'";
-	}else{
-		sql+=" and T.CODE='"+code+"'";
-	}
-	
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].REGION_CODE
-					+ '" selected >'
-					+ d[0].REGION_NAME + '</option>';
-			listUnits(d[0].REGION_CODE);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].REGION_CODE + '">' + d[i].REGION_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).attr('value'));
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionCode){
-	var $unit=$("#unitName");
-	var sql = "SELECT  DISTINCT T.ORGNAME FROM PORTAL.APDP_ORG T WHERE  T.ORGLEVEL=3";
-	if(regionCode!=''){
-		sql+=" and t.REGION_CODE='"+regionCode+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.REGION_CODE="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.CODE='"+code+"'";
-		}else{
-			sql+=" and t.CODE='"+code+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].ORGNAME
-					+ '" selected >'
-					+ d[0].ORGNAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].ORGNAME + '">' + d[i].ORGNAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 function getSql(){
 	var s="T1.DEAL_DATE,T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.SUBSCRIPTION_ID,T1.DEVICE_NUMBER,T1.INNET_DATE,T1.DEVELOPER1,T1.DEVELOPER,CASE WHEN T1.IS_ON='1' THEN '是' ELSE '否' END IS_ON,CASE WHEN T1.IS_NEW='1' THEN '是' ELSE '否' END IS_NEW,T1.PRODUCT_ID,T1.PRODUCT_NAME,T1.PRODUCT_FEE,CASE WHEN T1.NET_TYPE='-1' THEN '固网' WHEN T1.NET_TYPE='01' THEN '2G' WHEN T1.NET_TYPE IN('02','03') THEN '3G' WHEN T1.NET_TYPE='50' THEN '4G' END NET_TYPE,T1.YUYIN_MAX,T1.GPRS_MAX,T1.SMS_MAX,T1.YUYIN,ROUND(T1.GPRS,2) GPRS,T1.SMS,CASE WHEN T1.IS_SW='1' THEN '是' ELSE '否' END IS_SW,CASE WHEN T1.IS_JD ='1' THEN '是' ELSE '否' END IS_JD ,CASE WHEN T1.IS_LOW_DBH ='1' THEN '是' ELSE '否' END IS_LOW_DBH ,CASE WHEN T1.IS_LOW_DZT ='1' THEN '是' ELSE '否' END IS_LOW_DZT ,CASE WHEN T1.IS_ZLWB ='1' THEN '是' ELSE '否' END IS_ZLWB ,T1.CZ_AMOUNT,CASE WHEN T1.IS_CZ ='1' THEN '是' ELSE '否' END IS_CZ";
 	return s;
@@ -211,8 +127,8 @@ function downsAll(){
 	var sql="";
 	var phoneNumber=$("#phoneNumber").val();
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
@@ -220,11 +136,11 @@ function downsAll(){
 	if(time!=''){
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
 	}
-	if(regionName!=''){
-		sql+=" and T1.GROUP_ID_1 = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and T1.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and T1.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T1.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(phoneNumber!=''){
 		sql+=" and T1.DEVICE_NUMBER like '%"+phoneNumber+"%'";

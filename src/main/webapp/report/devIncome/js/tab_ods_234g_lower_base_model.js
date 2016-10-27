@@ -4,7 +4,6 @@ var title=[["账期","地市编码","地市名称","营服中心编码","营服�
 var orderBy='';	
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -48,8 +47,8 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var phoneNumber=$("#phoneNumber").val();
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
@@ -58,11 +57,11 @@ function search(pageNumber) {
 	if(time!=''){
 		sql+=" and deal_date='"+time+"'";
 	}
-	if(regionName!=''){
-		sql+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" and UNIT_ID = '"+unitCode+"'";
 	}
 	if(phoneNumber!=''){
 		sql+=" and DEVICE_NUMBER like '%"+phoneNumber+"%'";
@@ -78,12 +77,16 @@ function search(pageNumber) {
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
-	//var code=$("#code").val();
-	var cityName=$("#cityName").val();
-	if(orgLevel==1){
+	var code=$("#code").val();
+	
+    if(orgLevel==1){
 		
+	}else if(orgLevel==2){
+		sql+=" AND GROUP_ID_1='"+code+"'";	
+	}else if(orgLevel==3){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}else{
-		sql+=" and GROUP_ID_1_NAME='"+cityName+"'";
+		sql+=" AND 1=2";
 	}
 	sql+=" order by GROUP_ID_1,UNIT_ID,HR_ID,GROUP_ID_4";
 	var csql = sql;
@@ -113,86 +116,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var sql="";
-	var sql = "SELECT DISTINCT t.group_id_1,t.GROUP_ID_1_NAME FROM PCDE.TAB_CDE_CHANL_HQ_CODE t WHERE t.GROUP_ID_1_NAME <> '云南省直管-(省本部)' AND t.GROUP_ID_1_NAME <> '云南省本部' ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.GROUP_ID_4='"+code+"'";
-	}
-	sql+=" order by t.group_id_1 ";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from PCDE.TAB_CDE_CHANL_HQ_CODE t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.group_id_4='"+code+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 function getSql(){
 	var casewhen=["IS_ON","IS_NEW","IS_SW","IS_JD","IS_LOW_DBH","IS_LOW_DZT","IS_ZLWB","IS_CZ","IS_LOW_DBH_02","IS_LOW_DBH_03","IS_LOW_DBH_04","IS_LOW_DBH_ALL","IS_3_NULL_02","IS_3_NULL_03","IS_3_NULL_04","IS_3_NULL_ALL","IS_LOW_JD_02","IS_LOW_JD_03","IS_LOW_JD_04","IS_LOW_JD_ALL","IS_ZLWB_02","IS_ZLWB_03","IS_ZLWB_04","IS_ZLWB_ALL"];
 	var s="";
@@ -220,8 +143,9 @@ function getSql(){
 function downsAll(){
 	var phoneNumber=$("#phoneNumber").val();
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
+	var code=$("#code").val();
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
@@ -230,11 +154,11 @@ function downsAll(){
 	if(time!=''){
 		sql+=" and deal_date='"+time+"'";
 	}
-	if(regionName!=''){
-		sql+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(phoneNumber!=''){
 		sql+=" and DEVICE_NUMBER like '%"+phoneNumber+"%'";
@@ -250,14 +174,18 @@ function downsAll(){
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
-	//var code=$("#code").val();
-	var cityName=$("#cityName").val();
+	var code=$("#code").val();
+	
 	if(orgLevel==1){
 		
+	}else if(orgLevel==2){
+		sql+=" AND GROUP_ID_1='"+code+"'";	
+	}else if(orgLevel==3){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}else{
-		sql+=" and GROUP_ID_1_NAME='"+cityName+"'";
+		sql+=" AND 1=2";
 	}
-	sql+=" order by GROUP_ID_1,UNIT_ID,HR_ID,GROUP_ID_4";
+	sql+=" ORDER BY GROUP_ID_1,UNIT_ID,HR_ID,GROUP_ID_4";
 	showtext = '用户质态判定表-'+time;
 	downloadExcel(sql,title,showtext);
 }

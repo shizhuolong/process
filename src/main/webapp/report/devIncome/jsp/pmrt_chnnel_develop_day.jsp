@@ -34,10 +34,8 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/pmrt_chnnel_develop_day.js"></script>
 </head>
-<style>
-	
-</style>
-<body class="" style="overflow-x:auto;">
+
+<body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
