@@ -4,7 +4,6 @@ var report = null;
 $(function() {
 	var field=["DEAL_DATE","GROUP_ID_1_NAME","GROUP_AREA_NAME1","NEW_ALL","NEW_ALL_CZ","NEW_ALL_HB","IS_NEW","IS_MON_NEW","IS_CL_NEW","PRODUCT_FEE_96","PRODUCT_FEE_96_ZB"];
 	var title=[["账期","地市","分公司","当月新增","当月新增<br/>同期增减量","当月新增<br/>同期增减比","当日发展数","其中当月发展数","其中存量用户数","新增中96及以上<br/>套餐用户数","新增中96及以上<br/>套餐用户数占比"]];
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
