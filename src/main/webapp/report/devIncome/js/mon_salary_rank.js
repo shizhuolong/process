@@ -1,4 +1,4 @@
-var field=["GROUP_ID_1","UNIT_NAME","HR_NO","USER_NAME","ALL_JF_MONEY"];
+var field=["AREA_NAME","UNIT_NAME","HR_NO","USER_NAME","ALL_JF_MONEY"];
 var title=[["地市","营服中心","HR编码","人员姓名","提成（元）"]];
 var nowData = [];
 var orderBy = ' order by all_jf_money desc ';

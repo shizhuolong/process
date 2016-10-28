@@ -3,7 +3,7 @@ var nowData = [];
 var title=[["地市","营服中心","HR编码","人员姓名","本月发展量","","","","","本月全省排名","本月地市排名","本月营服中心排名"],
            ["","","","","2G","3G","4G","上网卡","合计","","",""]
 ];
-var field=["GROUP_ID_1","UNIT_ID","HR_NO","USER_NAME","G2SLL","G3SLL","G4SLL","SWSLL","TOTAL_SLL","RANK","GROUP_RANK","UNIT_RANK"];
+var field=["AREA_NAME","UNIT_NAME","HR_NO","USER_NAME","G2SLL","G3SLL","G4SLL","SWSLL","TOTAL_SLL","RANK","GROUP_RANK","UNIT_RANK"];
 var orderBy = ' order by RANK asc ';
 var report = null;
 $(function() {
