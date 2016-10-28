@@ -34,7 +34,6 @@ var nowData = [];
 var orderBy = ' order by GROUP_ID_1_NAME,UNIT_NAME,NAME,SUB_ORDER ';
 var report = null;
 $(function() {
-	listRegions();
 	listManus();
 	report = new LchReport({
 		title : title,
@@ -81,21 +80,19 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var channlName=$("#channlName").val();
 	var userName=$("#userName").val();
 	var manu=$("#manu").val();
 	//条件
-	var sql = " from pmrt.TB_MRT_JCDY_WYG_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
+	var sql = " FROM pmrt.TB_MRT_JCDY_WYG_MON T WHERE  T.DEAL_DATE="+time;
+	
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
-	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(channlName!=''){
 		sql+=" and t.GROUP_ID_4_NAME like '%"+channlName+"%'";
@@ -163,101 +160,6 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME AREA_NAME from pmrt.TB_MRT_JCDY_WYG_MON t where 1=1 ";
-	
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else{
-		 var hrIds=_jf_power(hrId,time);
-		 if(hrIds&&hrIds!=""){
-		   sql+=" and t.HR_ID in("+hrIds+") ";
-		 }else{
-		   sql+=" and 1=2 ";	 
-		 }
-	}
-	
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].AREA_NAME
-					+ '" selected >'
-					+ d[0].AREA_NAME + '</option>';
-			listUnits(d[0].AREA_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].AREA_NAME + '">' + d[i].AREA_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME UNIT_NAME from pmrt.TB_MRT_JCDY_WYG_MON t where 1=1 ";
-	
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else{
-			 var hrIds=_jf_power(hrId,time);
-			 if(hrIds&&hrIds!=""){
-			   sql+=" and t.HR_ID in("+hrIds+") ";
-			 }else{
-			   sql+=" and 1=2 ";	 
-			 }
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取信息失败");
-	}
-}
 function listManus(){
 	var sql="";
 	//条件
@@ -299,21 +201,19 @@ function roundN(number,fractionDigits){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var channlName=$("#channlName").val();
 	var userName=$("#userName").val();
 	var manu=$("#manu").val();
 	//条件
-	var sql = " from pmrt.TB_MRT_JCDY_WYG_MON t where 1=1 ";
-	if(time!=''){
-		sql+=" and t.DEAL_DATE="+time;
+	var sql = " from pmrt.TB_MRT_JCDY_WYG_MON t where  t.DEAL_DATE="+time;
+
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
-	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(channlName!=''){
 		sql+=" and t.GROUP_ID_4_NAME like '%"+channlName+"%'";
