@@ -38,41 +38,41 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">账期：</td>
-					<td width="10%">
+					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="5%" style="text-align:right;">地市：</td>
 					<td width="15%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">营服中心：</td>
+					<td width="8%" style="text-align:right;">营服中心：</td>
 					<td width="15%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="margin-left: 10px; margin-right: 10px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 				<tr>
-					<td width="8%">营业厅：</td>
-					<td width="10%">
+					<td width="5%" style="text-align:right;">营业厅：</td>
+					<td width="15%">
 						<input class="default-text-input wper80" name="hallName" type="text" id="hallName"/>
 					</td>
-					<td width="8%">姓名：</td>
-					<td width="10%">
+					<td width="5%" style="text-align:right;">姓名：</td>
+					<td width="15%">
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
-					<td width="8%">电话：</td>
+					<td width="8%" style="text-align:right;">电话：</td>
 					<td width="15%">
 						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
 					</td>
