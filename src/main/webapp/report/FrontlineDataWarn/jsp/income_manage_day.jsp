@@ -44,7 +44,7 @@
 			<tr height="35px">
 				<td width="5%" style="text-align:right;">账期：</td>
 				<td width="13%"><input type="text" class="Wdate default-text-input wper80" readonly="readonly"
-					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false,onpicked:function() {javascript:loadRegion();}})"
+					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})"
 					value="<%=day%>" id="day">
 				</td>
 				<td width="4%" style="text-align:right;">地市：</td>
@@ -54,7 +54,7 @@
 				</select></td>
 				<td width="7%" style="text-align:right;">营服中心：</td>
 				<td width="13%">
-					<select name="unitId" id="unitId" class="default-text-input wper80">
+					<select name="unitCode" id="unitCode" class="default-text-input wper80">
 						<option value=''>请选择</option>
 					</select>
 				</td>

@@ -7,10 +7,6 @@ var qdate="";
 var orderBy="";
 $(function(){
 	 qdate=$("#day").val();
-	 listRegions();
-	 $("#regionCode").change(function() {
-		listUnits($(this).val());
-	 });
 	 $("#remark").click(function() {
 		$("#remarkDiv").show();
 		$("#remarkDiv").dialog({
@@ -44,7 +40,7 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			var regionCode=$("#regionCode").val();
-			var unitId=$("#unitId").val();
+			var unitCode=$("#unitCode").val();
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -68,7 +64,7 @@ $(function(){
 					where+=" AND LEV=2 AND GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服中心,进去看渠道
 					preField="SELECT HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME,";
-					where+=" AND LEV=3 AND UNIT_ID='"+code+"'";
+					where+=" AND LEV=3 AND UNIT_ID IN("+_unit_relation(code)+") ";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -77,13 +73,12 @@ $(function(){
 			if(regionCode!=''){
 				where+=" AND GROUP_ID_1 = '"+regionCode+"'";
 			}
-			if(unitId!=''){
+			if(unitCode!=''){
 				if(orgLevel>=4){//营服人员点查询，展示渠道
-					where=" WHERE LEV=3 AND UNIT_ID = '"+unitId+"'";
+					where=" WHERE LEV=3 AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 				}else{//省级和市级人员如果选了营服点查询，省级查询结果收缩到地市，市级收缩到营服
-					where=" WHERE LEV=2 AND UNIT_ID = '"+unitId+"'";
+					where=" WHERE LEV=2 AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 				}
-				
 			}
 			
 			var sql =preField+getSql()+where;
@@ -97,17 +92,10 @@ $(function(){
 		}
 	});
     report.showSubRow();
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
 	
 	$("#searchBtn").click(function(){
+		qdate=$("#day").val();
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
@@ -116,7 +104,7 @@ function downsAll() {
 	var where=' WHERE LEV = 3';
 	var orderBy=" ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
 	var regionCode=$("#regionCode").val();
-	var unitId=$("#unitId").val();
+	var unitCode=$("#unitCode").val();
 		
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
@@ -126,15 +114,15 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where += " AND GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where += " AND UNIT_ID='" + code + "' ";
+		where+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 	} else {
 		
 	}
 	if(regionCode!=''){
 		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitId!=''){
-		where+=" AND UNIT_ID = '"+unitId+"'";
+	if(unitCode!=''){
+		where+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	
 	var sql =  getDownSql()+where+orderBy;
@@ -144,87 +132,6 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 
-function loadRegion(){
-	qdate=$("#day").val();
-	listRegions();
-}
-
-function listRegions(){
-	var sql = "SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_DEV_INCOME_MANAGE_DAY PARTITION(P"+qdate+") T WHERE 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" AND T.GROUP_ID_1='"+code+"'";
-	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" AND 1=2 ";
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionCode");
-		$area.empty().append($(h));
-		/*$area.change(function() {
-			listUnits($(this).val());
-		});*/
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionCode){
-	var $unit=$("#unitId");
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TAB_MRT_DEV_INCOME_MANAGE_DAY PARTITION(P"+qdate+") T WHERE 1=1 AND UNIT_ID IS NOT NULL";
-	if(regionCode!=''){
-		sql+=" AND T.GROUP_ID_1='"+regionCode+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" AND T.GROUP_ID_1='"+code+"'";
-		}else if(orgLevel==3){
-			sql+=" AND T.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" AND 1=2";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		$unit.empty().append($(h));
-	} else {
-		alert("获取营服信息失败");
-	}
-}
 function getSql(orgLevel){
  return "DEV_NUM                       "+
  "      ,DEV_LINK_RATIO                "+
