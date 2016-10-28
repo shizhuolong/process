@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>未定位渠道刘表</title>
+<title>未定位渠道列表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
@@ -38,13 +38,13 @@
 				<tr height="35px">
 					<td width="4%">地市：</td>
 					<td width="15%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="8%">营服中心：</td>
 					<td width="15%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
