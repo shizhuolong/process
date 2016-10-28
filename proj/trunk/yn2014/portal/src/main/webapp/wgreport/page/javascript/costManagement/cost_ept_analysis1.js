@@ -78,7 +78,7 @@ $(function(){
 					sql=preSql+sql+where+groupBy;
 				}else if(orgLevel==3){//营服中心
 					preSql="select unit_id as groupid,unit_name as groupname,";
-					where+=" and unit_id='"+code+"' AND EXISTS ( SELECT 1 FROM PCDE.TAB_CDE_GROUP_CODE WHERE UNIT_ID =T.UNIT_ID AND IS_VALID=1 ) ";
+					where+=" and unit_id IN("+_unit_relation(code)+")  AND EXISTS ( SELECT 1 FROM PCDE.TAB_CDE_GROUP_CODE WHERE UNIT_ID =T.UNIT_ID AND IS_VALID=1 ) ";
 					groupBy=" group by unit_id,unit_name";
 					sql=preSql+sql+where+groupBy;
 				}else{
@@ -183,7 +183,7 @@ function downsAll() {
 		where+=" and group_id_1='"+code+"'";
 		sql+=where+orderBy;
 	} else if (orgLevel == 3) {//营服中心
-		where+=" and unit_id='"+code+"'";
+		where+=" and unit_id IN("+_unit_relation(code)+")" ;
 		sql+=where;
 	} else{
 		where=" and 1=2";
