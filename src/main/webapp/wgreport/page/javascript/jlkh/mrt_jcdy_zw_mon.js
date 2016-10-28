@@ -3,7 +3,6 @@ var title=[["地市编码","地市","姓名","HR编码","角色","电话号码",
 var nowData = [];
 var report=null;
 $(function() {
-	listRegions();
 	 report = new LchReport({
 		title : title,
 		field : field,
@@ -46,7 +45,7 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#month").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
 	var item=$.trim($("#item").val());
@@ -58,8 +57,8 @@ function search(pageNumber) {
 	if(time!=''){
 		sql+=" and DEAL_DATE="+time;
 	}
-	if(regionName!=''){
-		sql+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(userName!=''){
 		sql+=" and NAME LIKE '%"+userName+"%'";
@@ -117,50 +116,11 @@ function getSql(){
 	var s="select "+field.join(",")+" from PMRT.TB_MRT_JCDY_ZW_MON where 1=1";
 	return s;
 }
-function listRegions(){
-	var sql="";
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME,t.group_id_1 from PMRT.TB_MRT_JCDY_ZW_MON t where 1=1 ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-		sql += " order by t.group_id_1";
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-	} else {
-		alert("获取地市信息失败");
-	}
-}
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	
 	var time=$("#month").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var userName=$.trim($("#userName").val());
 	var phone=$.trim($("#phone").val());
 	var item=$.trim($("#item").val());
@@ -171,8 +131,8 @@ function downsAll(){
 	if(time!=''){
 		sql+=" and DEAL_DATE="+time;
 	}
-	if(regionName!=''){
-		sql+=" and GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(userName!=''){
 		sql+=" and NAME LIKE '%"+userName+"%'";

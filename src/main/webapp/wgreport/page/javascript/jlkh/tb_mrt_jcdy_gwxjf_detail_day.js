@@ -1,4 +1,179 @@
-jQuery(function(){
+var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","ITEMCODE","ITEMDESC","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE","SOURCECRE","SOURCECODE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY"];
+var title=[['帐期','地市名称','基层单元','人员姓名','HR编码','用户编码','用户号码','入网时间','操作员工号','部门编码','套餐编码','指标编码','指标描述','指标值','发展人编码','所属渠道','渠道名称','渠道编码','原始积分','原始积分编码','渠道系数','乘渠道系数后积分','区域系数','乘区域系数后积分','积分金额']];
+var nowData = [];
+var report=null;
+$(function() {
+	 report = new LchReport({
+		title : title,
+		field : field,
+		rowParams : [],
+		//css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
+		content : "content",
+		getSubRowsCallBack : function($tr) {
+			return {
+				data : nowData,
+				extra : {}
+			};
+		}
+	});
+	search(0);
+	
+	$("#searchBtn").click(function(){
+		search(0);
+	});
+});
+
+var pageSize = 15;
+//分页
+function initPagination(totalCount) {
+	$("#totalCount").html(totalCount);
+	$("#pagination").pagination(totalCount, {
+		callback : search,
+		items_per_page : pageSize,
+		link_to : "###",
+		prev_text : '上页', //上一页按钮里text  
+		next_text : '下页', //下一页按钮里text  
+		num_display_entries : 5,
+		num_edge_entries : 2
+	});
+}
+
+//列表信息
+function search(pageNumber) {
+	pageNumber = pageNumber + 1;
+	var start = pageSize * (pageNumber - 1);
+	var end = pageSize * pageNumber;
+	
+	var sql = getSql();
+	var cdata = query("select count(*) total from(" + sql+")");
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}else{
+		return;
+	}
+	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
+			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+	var d = query(sql);
+	if (pageNumber == 1) {
+		initPagination(total);
+	}
+	nowData = d;
+	report.showSubRow();
+	///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
+	$(".page_count").width($("#lch_DataHead").width());
+	$("#lch_DataBody").find("TR").each(function(){
+		var area=$(this).find("TD:eq(0)").find("A").text();
+		if(area)
+			$(this).find("TD:eq(0)").empty().text(area);
+	});
+}
+function getSql(){
+	//权限
+	var code = $("#code").val();
+	var orgLevel = $("#orgLevel").val();
+	var hrId = $("#hrId").val();
+	//条件
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	var regionCode = $("#regionCode").val();
+	var unitCode = $("#unitCode").val();
+	var userPhone= $("#userPhone").val();
+	var userName = $("#userName").val();
+	var itemdesc = $("#itemdesc").val();
+	
+	
+	var sql=  
+			" SELECT T.DEAL_DATE,                                          "+
+			"        T.AREA_NAME,                                          "+
+			"        T.UNIT_NAME,                                          "+
+			"        T.USER_NAME,                                          "+
+			"        T.HR_NO,                                              "+
+			"        T.SUBSCRIPTION_ID,                                    "+
+			"        T.SERVICE_NUM,                                        "+
+			"        T.JOIN_DATE,                                          "+
+			"        T.OPERATOR_ID,                                        "+
+			"        T.OFFICE_ID,                                          "+
+			"        T.PRODUCT_ID,                                         "+
+			"        T.ITEMCODE,                                           "+
+			"        T.ITEMDESC,                                           "+
+			"        T.ITEMVALUE,                                          "+
+			"        T.DEVELOPER_ID,                                       "+
+			"        T.HQ_CHANL_CODE,                                      "+
+			"        T.HQ_CHAN_NAME,                                       "+
+			"        T.FD_CHANL_CODE,                                      "+
+			"        T.SOURCECRE,                                          "+
+			"        T.SOURCECODE,                                         "+
+			"        T.HQ_RATIO,                                           "+
+			"        T.HQ_CRE,                                             "+
+			"        T.UNIT_RATIO,                                         "+
+			"        T.UNIT_CRE,                                           "+
+			"        T.UNIT_MONEY                                          "+
+			"   FROM PMRT.TB_MRT_JCDY_GWXJF_DETAIL_DAY T                   "+
+			"  WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' ";
+
+
+	if(orgLevel==1){
+		
+	}else if(orgLevel == 2){
+		sql += " AND GROUP_ID_1 = '"+code+"' ";
+	}else if(group_level == 3) {
+		sql += " AND UNIT_ID IN("+_unit_relation(code)+") ";
+	}else {
+		sql += " 1=2 ";
+	}
+			
+	if(regionCode!=''){
+		sql+= " AND GROUP_ID_1 ='"+regionCode+"'";
+	}
+	if(unitCode!=''){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
+	}
+	if(userPhone!=''){
+		sql+=" AND SERVICE_NUM LIKE '%"+userPhone+"%'";
+	}
+	if(userName!=''){
+		sql+= " AND USER_NAME LIKE '%"+userName+"%'";
+	}
+	if(itemdesc!=''){
+		sql+= " AND ITEMDESC LIKE '%"+itemdesc+"%'";
+	}
+	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
+	return sql;
+}
+/////////////////////////下载开始/////////////////////////////////////////////
+function downsAll(){
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	var sql = getSql();
+	showtext = '固网积分日明细-('+startDate+"~"+endDate+")";
+	downloadExcel(sql,title,showtext);
+}
+/////////////////////////下载结束/////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*jQuery(function(){
 	var cols = ["deal_date","area_name","unit_name","user_name","hr_no",
 	            "subscription_id","service_num","join_date","operator_id","office_id","product_id","itemcode",
 	            "itemdesc","itemvalue","developer_id","hq_chanl_code","hq_chan_name","fd_chanl_code","sourcecre",
@@ -6,9 +181,9 @@ jQuery(function(){
 	//excel导出
 	$("#exceldown").click(downsAll);
 	regionSelect();
-	/**
+	*//**
 	 * 此方法和main.js中的方法重叠【2013-06-25】
-	 */
+	 *//*
 	$("#boxselect li input").click(function(){
 	//$("#boxselect li input").on("click",function(){
 		if($(this).is( ":checked" )){
@@ -318,3 +493,4 @@ function downsAll(){
 function _loadExcel(parameter,callback,excelName){
 	$.Project.downExcelByTemplate2(parameter,callback,excelName,$('#contions'));
 }
+*/
