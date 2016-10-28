@@ -16,7 +16,6 @@ var where = "";
 var orderBy = "";
 
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -125,10 +124,7 @@ function search(pageNumber) {
 	}
 	nowData = d;
 	report.showSubRow();
-	// /////////////////////////////////////////
-	// $("#lch_DataHead").find("TH").unbind();
-	// $("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	// /////////////////////////////////////////
+	
 	$(".page_count").width($("#lch_DataHead").width());
 
 	$("#lch_DataBody").find("TR").each(function() {
@@ -181,7 +177,7 @@ function getsql() {
 		where += " AND GROUP_ID_1='" + regionCode + "'";
 	}
 	if (unitCode != '') {
-		where += " AND UNIT_ID='" + unitCode + "'";
+		where+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if (device_number != '') {
 		where += " AND DEVICE_NUMBER='" + device_number + "'";
@@ -196,7 +192,7 @@ function getsql() {
 		where += " AND GROUP_ID_1='" + code + "'";
 		order = " ORDER BY UNIT_ID,HQ_CHAN_CODE";
 	} else if (orgLevel == 3) {
-		where += " AND UNIT_ID='" + code + "'";
+		where+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 		order = " ORDER BY HQ_CHAN_CODE";
 	} else {
 		where += " AND 1=2";
@@ -235,84 +231,6 @@ function getDownSql() {
 	sql += where + order;
 	return sql;
 }
-// /////////////////////////地市查询///////////////////////////////////////
-function listRegions() {
-	var sql = " SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_SUBS_LEAVE_MON T WHERE 1=1 AND T.GROUP_ID_1 IS NOT NULL";
-	var orgLevel = $("#orgLevel").val();
-	var code = $("#code").val();
-	if (orgLevel == 1) {
-
-	} else if (orgLevel == 2) {
-		sql += " AND T.GROUP_ID_1='" + code + "'";
-	} else {
-		sql += " AND T.UNIT_ID='" + code + "'";
-	}
-	sql += " ORDER BY T.GROUP_ID_1";
-	var d = query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1 + '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">'
-						+ d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionCode");
-		$area.empty().append($(h));
-		$area.change(function() {
-			listUnits($(this).attr('value'));
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-
-function listUnits(regionCode) {
-	var $unit = $("#unitCode");
-	var orgLevel = $("#orgLevel").val();
-	var code = $("#code").val();
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TAB_MRT_SUBS_LEAVE_MON T WHERE 1=1 ";
-	if (regionCode != '') {
-		sql += " AND T.GROUP_ID_1='" + regionCode + "' ";
-		if (orgLevel == 1) {
-
-		} else if (orgLevel == 2) {
-
-		} else if (orgLevel == 3) {
-			sql += " AND T.UNIT_ID='" + code + "'";
-		} else {
-			sql += " AND 1=2";
-		}
-	} else {
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-
-	sql += " ORDER BY T.UNIT_ID";
-	var d = query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID + '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME
-						+ '</option>';
-			}
-		}
-		$unit.empty().append($(h));
-	} else {
-		alert("获取营服中心信息失败");
-	}
-}
-
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	sql = getDownSql();

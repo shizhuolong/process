@@ -6,7 +6,6 @@ var title=[
 
 var report=null;
 $(function(){
-	 //listRegions();
 	 var orderBy="";
 	 report=new LchReport({
 		title:title,
@@ -29,10 +28,7 @@ $(function(){
 			var where=' WHERE T.DEAL_DATE = '+dealDate;
 			var code='';
 			var orgLevel='';
-			/*var regionCode=$("#regionCode").val();
-			var unitCode=$("#unitCode").val();
-			var hqCode =$.trim($("#hqCode").val());
-			var HrCode =$.trim($("#HrCode").val());*/
+			
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -63,26 +59,13 @@ $(function(){
 					where+=" AND T.LEVELS=2 AND T.GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服中心,进去看渠道
 					preField="SELECT T.UNIT_ID AS  ROW_ID,UNIT_NAME AS ROW_NAME,";
-					where+=" AND T.LEVELS=3 AND T.UNIT_ID='"+code+"'";
+					where+=" AND T.LEVELS=3 AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 				}else{
 					return {data:[],extra:{}};
 				}
 				orgLevel++;
 			}	
 			
-			/*if(regionCode!=''){
-				where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
-			}
-			if(unitCode!=''){
-				where+=" AND T.UNIT_ID = '"+unitCode+"'";
-			}
-			if(hqCode!=''){
-				where+=" AND T.HQ_CHAN_CODE = '"+hqCode+"'";
-			}
-			if(hqCode!=''){
-				where+=" AND T.HR_ID = '"+hqCode+"'";
-			}
-			*/
 			var sql =preField+getSql()+where;
 			
 			if(orderBy!=''){
@@ -94,17 +77,9 @@ $(function(){
 		}
 	});
     report.showSubRow();
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
-	
+		
 	$("#searchBtn").click(function(){
 	    report.showSubRow();
-		//$("#lch_DataHead").find("TH").unbind();
-		//$("#lch_DataHead").find(".sub_on,.sub_off").remove();
-		///////////////////////////////////////////
-		//$(".page_count").width($("#lch_DataHead").width());
 	});
 });
 
@@ -112,11 +87,6 @@ $(function(){
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var dealDate = $("#dealDate").val();
-	
-	/*var regionCode=$("#regionCode").val();
-	var unitCode=$("#unitCode").val();
-	var hqCode =$.trim($("#hqCode").val());
-	var HrCode =$.trim($("#HrCode").val());*/
 	var orderBy=" ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
 		
 	//先根据用户信息得到前几个字段
@@ -129,23 +99,11 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		sql += " AND GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		sql += " AND UNIT_ID='" + code + "' ";
+		sql+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 	} else {
 		
 	}
-	/*if(regionCode!=''){
-		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
-	}
-	if(unitCode!=''){
-		sql+=" AND T.UNIT_ID = '"+unitCode+"'";
-	}
-	if(hqCode!=''){
-		sql+=" AND T.HQ_CHAN_CODE = '"+hqCode+"'";
-	}
-	if(hqCode!=''){
-		sql+=" AND T.HR_ID = '"+hqCode+"'";
-	}*/
-	
+		
 	sql+=orderBy;
 	showtext = '宽带月预警总表' + dealDate;
 	var title=[
@@ -155,89 +113,6 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 
-
-///////////////////////////地市查询///////////////////////////////////////
-/*function listRegions(){
-    var sql=" SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PCDE.TB_CDE_REGION_CODE  T WHERE GROUP_ID_1 NOT IN('86000','16099') ";
-    var orgLevel=$("#orgLevel").val();
-    var code=$("#code").val();
-    var region =$("#region").val();
-    if(orgLevel==1){
-        sql+="";
-    }else if(orgLevel==2){
-        sql+=" and T.GROUP_ID_1='"+code+"'";
-    }else{
-        sql+=" and T.GROUP_ID_1='"+region+"'";
-    }
-    sql+=" ORDER BY T.GROUP_ID_1"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].GROUP_ID_1
-                    + '" selected >'
-                    + d[0].GROUP_ID_1_NAME + '</option>';
-            listUnits(d[0].GROUP_ID_1);
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].GROUP_ID_1 + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-            }
-        }
-        var $area = $("#regionCode");
-        var $h = $(h);
-        $area.empty().append($h);
-        $area.change(function() {
-            listUnits($(this).attr('value'));
-        });
-    } else {
-        alert("获取地市信息失败");
-    }
-}
-
-*//************查询营服中心***************//*
-function listUnits(region){
-    var $unit=$("#unitCode");
-    var sql = "SELECT  DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PCDE.TAB_CDE_GROUP_CODE T  WHERE 1=1 ";
-    if(region!=''){
-        sql+=" AND T.GROUP_ID_1='"+region+"' ";
-        //权限
-        var orgLevel=$("#orgLevel").val();
-        var code=$("#code").val();
-        if(orgLevel==3){
-            sql+=" and t.UNIT_ID='"+code+"'";
-        }else if(orgLevel==4){
-            sql+=" AND 1=2";
-        }else{
-        }
-    }else{
-        $unit.empty().append('<option value="" selected>请选择</option>');
-        return;
-    }
-
-    sql+=" ORDER BY T.UNIT_ID"
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].UNIT_ID
-                    + '" selected >'
-                    + d[0].UNIT_NAME + '</option>';
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME + '</option>';
-            }
-        }
-
-        var $h = $(h);
-        $unit.empty().append($h);
-    } else {
-        alert("获取基层单元信息失败");
-    }
-}
-
-*/
 function getSql(){
 	var sql =
 			"	T.GK_LEAVE_NOW		    ,"+		//--当月离网用户数

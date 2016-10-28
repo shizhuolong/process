@@ -54,11 +54,10 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var userName=$("#userName").val();
-	
-	
+		
 	var sql ="SELECT " +
 				"T.DEAL_DATE       ,"+
 				"T.GROUP_ID_1      ,"+
@@ -79,14 +78,13 @@ function search(pageNumber) {
 				"T.KPI_RANK        ,"+
 				"T.GROUP_RANK      ,"+
 				"T.UNIT_RANK       "+
-			"FROM  PMRT.TB_MRT_JCDY_KPI_RANK_MON T WHERE 1=1 ";
-
+			"FROM PMRT.TB_MRT_JCDY_KPI_RANK_MON T WHERE 1=1 ";
 //条件
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(userName!=''){
 		sql+=" and t.NAME like '%"+userName+"%'";
@@ -102,12 +100,11 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
+
 	}else{
 		sql+=" and t.HR_ID='"+hrId+"'";
 	}
-	
-	
 	
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
@@ -123,7 +120,6 @@ function search(pageNumber) {
 		sql += orderBy;
 	}
 
-
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
@@ -133,12 +129,6 @@ function search(pageNumber) {
 	nowData = d;
 
 	report.showSubRow();
-	///////////////////////////////////////////
-	//$("#lch_DataHead").find("TH").unbind();
-	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	///////////////////////////////////////////
-	//$(".page_count").width($("#lch_DataHead").width());
-
 	$("#lch_DataBody").find("TR").each(function(){
 		var area=$(this).find("TD:eq(0)").find("A").text();
 		if(area)

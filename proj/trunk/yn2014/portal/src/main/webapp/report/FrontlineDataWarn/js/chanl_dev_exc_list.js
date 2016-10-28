@@ -7,7 +7,6 @@ var downSql="";
 var orderBy="";
 
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -77,10 +76,7 @@ function search(pageNumber) {
 	}
 	nowData = d;
 	report.showSubRow();
-	// /////////////////////////////////////////
-	// $("#lch_DataHead").find("TH").unbind();
-	// $("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
-	// /////////////////////////////////////////
+	
 	$(".page_count").width($("#lch_DataHead").width());
 
 	$("#lch_DataBody").find("TR").each(function() {
@@ -120,7 +116,7 @@ function getsql() {
 		sql += " AND GROUP_ID_1='" + regionCode + "'";
 	}
 	if (unitCode != '') {
-		sql += " AND UNIT_ID='" + unitCode + "'";
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if (type_id != '') {
 		sql += " AND TYPE_ID='" + type_id + "'";
@@ -138,7 +134,7 @@ function getsql() {
 		sql += " AND GROUP_ID_1='" + code + "'";
 		orderBy = " ORDER BY UNIT_ID,HQ_CHAN_CODE";
 	} else if (orgLevel == 3) {
-		sql += " AND UNIT_ID='" + code + "'";
+		sql+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
 		orderBy = " ORDER BY HQ_CHAN_CODE";
 	} else {
 		sql += " AND 1=2";
@@ -146,85 +142,6 @@ function getsql() {
 	sql += orderBy;
 	return sql;
 }
-
-// /////////////////////////地市查询///////////////////////////////////////
-function listRegions() {
-	var sql = " SELECT DISTINCT T.GROUP_ID_1,T.GROUP_ID_1_NAME FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC T WHERE 1=1 AND T.GROUP_ID_1 IS NOT NULL";
-	var orgLevel = $("#orgLevel").val();
-	var code = $("#code").val();
-	if (orgLevel == 1) {
-
-	} else if (orgLevel == 2) {
-		sql += " AND T.GROUP_ID_1='" + code + "'";
-	} else {
-		sql += " AND T.UNIT_ID='" + code + "'";
-	}
-	sql += " ORDER BY T.GROUP_ID_1"
-	var d = query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1 + '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1 + '">'
-						+ d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionCode");
-		$area.empty().append($(h));
-		$area.change(function() {
-			listUnits($(this).attr('value'));
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-
-function listUnits(regionCode) {
-	var $unit = $("#unitCode");
-	var orgLevel = $("#orgLevel").val();
-	var code = $("#code").val();
-	var sql = "SELECT DISTINCT T.UNIT_ID,T.UNIT_NAME FROM PMRT.TAB_MRT_MOB_CHANL_DEV_EXC T WHERE 1=1 ";
-	if (regionCode != '') {
-		sql += " AND T.GROUP_ID_1='" + regionCode + "' ";
-		if (orgLevel == 1) {
-
-		} else if (orgLevel == 2) {
-
-		} else if (orgLevel == 3) {
-			sql += " AND T.UNIT_ID='" + code + "'";
-		} else {
-			sql += " AND 1=2";
-		}
-	} else {
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-
-	sql += " ORDER BY T.UNIT_ID"
-	var d = query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_ID + '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_ID + '">' + d[i].UNIT_NAME
-						+ '</option>';
-			}
-		}
-		$unit.empty().append($(h));
-	} else {
-		alert("获取营服中心信息失败");
-	}
-}
-
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var title = [["账期","分公司","营服名","HR编码","渠道经理","状态","渠道名称","渠道编码","当期发展量","较上月日均变化"]];
