@@ -53,13 +53,13 @@
 					</td>
 					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="11%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper90">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="5%" style="text-align:right;">营服中心：</td>
 					<td width="11%">
-						<select name="unitName" id="unitName" onchange="" class="default-text-input wper90">
+						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
@@ -72,7 +72,7 @@
 						style="float: right; margin-right: 30px;">查询</a>
 				   </td>
 				   <td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 				   </td>
 				</tr>
 				<tr height="35px">
@@ -84,7 +84,6 @@
 					<td width="15%">
 						<input class="default-text-input wper80" name="itemDesc" type="text" id="itemDesc"/>
 					</td>
-				   
 				 </tr>
 			</table>
 		</form>
@@ -97,9 +96,5 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-
 </body>
-<script>
-
-</script>
 </html>
