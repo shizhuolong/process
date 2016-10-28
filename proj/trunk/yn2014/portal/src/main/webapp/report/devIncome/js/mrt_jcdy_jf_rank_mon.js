@@ -1,6 +1,6 @@
 var nowData = [];
 var title=[["账期","地市","营服中心","人员姓名","本月销售积分","本月受理积分","本月维系积分","本月累计积分","本月累计薪酬","本月全省排名","本月地市排名","本月营服中心排名"]];
-var field=["DEAL_DATE","GROUP_ID_1","UNIT_ID","USER_NAME","UNIT_ALLJF","UNIT_SL_ALLJF","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY","PRO_RANK","GROUP_RANK","UNIT_RANK"];
+var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","UNIT_ALLJF","UNIT_SL_ALLJF","WX_UNIT_CRE","ALL_JF","ALL_JF_MONEY","PRO_RANK","GROUP_RANK","UNIT_RANK"];
 var orderBy = ' ORDER BY PRO_RANK,HR_NO ';
 var report = null;
 $(function() {
