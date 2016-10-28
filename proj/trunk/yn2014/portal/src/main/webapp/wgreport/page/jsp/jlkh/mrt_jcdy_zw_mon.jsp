@@ -40,35 +40,35 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="text-align:right;">账期：</td>
-					<td width="12%">
+					<td width="3%" style="text-align:right;">账期：</td>
+					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="month">
 					</td>
-					<td width="4%" style="text-align:right;">地市：</td>
+					<td width="3%" style="text-align:right;">地市：</td>
 					<td width="12%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper90">
+						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="7%" style="text-align:right;">人员姓名：</td>
-					<td width="12%">
+					<td width="10%">
 						<input class="default-text-input wper90" name="userName" type="text" id="userName"/>
 					</td>
 					<td width="4%" style="text-align:right;">电话：</td>
-					<td width="12%">
+					<td width="10%">
 						<input class="default-text-input wper80" name="phone" type="text" id="phone"/>
 					</td>
 					<td width="7%">指标编码：</td>
-					<td width="12%">
+					<td width="10%">
 						<input class="default-text-input wper90" name="item" type="text" id="item"/>
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 30px;">查询</a>
+						style=" margin-right: 10px;margin-left: 10px;">查询</a>
 					</td>
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>

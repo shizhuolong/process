@@ -42,7 +42,7 @@ String dealDate = new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 					<tr height="35px">
 					<td width="6%" style="padding-left: 10px;" align="right">账期：</td>
 					<td width="22%">
-					<input type="text" style="width:100px" class="Wdate" id="startDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>至
+					    <input type="text" style="width:100px" class="Wdate" id="startDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>至
 						<input type="text" style="width:100px" class="Wdate" id="endDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>
 					</td>
 					<td width="6%" align="right">地市：</td>
