@@ -6,7 +6,6 @@ var field=[
 var orderBy='';	
 
 $(function(){
-	listRegions();
 	
 	var report=new LchReport({
 		title:[["营销架构", "成本费用","预算费用","成本预算月占比"]],
@@ -27,8 +26,8 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			var qdate = $.trim($("#time").val());
-			var regionName=$("#regionName").val();
-			var unitName=$("#unitName").val();
+			var regionCode=$("#regionCode").val();
+			var unitCode=$("#unitCode").val();
 			
 			if($tr){
 				code=$tr.attr("row_id");
@@ -63,7 +62,7 @@ $(function(){
 				}else if(orgLevel==3){//营服中心
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
-					where=' where t.unit_id=\''+code+"\' ";
+					where=" where t.UNIT_ID IN("+_unit_relation(code)+") ";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -74,11 +73,11 @@ $(function(){
 			if(where!=''&&qdate!=''){
 				where+=' and  t.DEAL_DATE='+qdate+' ';
 			}
-			if(where!=''&&regionName!=''){
-				where+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+			if(where!=''&&regionCode!=''){
+				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
-			if(where!=''&&unitName!=''){
-				where+=" and t.UNIT_NAME = '"+unitName+"'";
+			if(where!=''&&unitCode!=''){
+				where+=" and t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 			}
 			
 			if(where!=''){
@@ -119,99 +118,12 @@ function getSql(field) {
 	}
 	return s;
 }
-function listRegions(){
-	var sql="";
-	
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from pmrt.TB_MRT_COST_RATE_MON t where 1=1 ";
-	
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and 1=2 ";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME from pmrt.TB_MRT_COST_RATE_MON t where 1=1 ";
-	
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and 1=2 ";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
+
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
 	var qdate = $.trim($("#time").val());
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	
 	var preField=' t.DEAL_DATE,t.group_id_1_name,t.unit_name,t.BUDGET_ITEM_NAME ';
 	var where='';
@@ -225,7 +137,7 @@ function downsAll() {
 	} else if (orgLevel == 2) {//市
 		where = " where t.GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where = " where t.unit_id='" + code + "' ";
+		where=" where t.UNIT_ID IN("+_unit_relation(code)+") ";
 	} else if (orgLevel >= 4) {//
 		where = " where 1=2 ";
 	}
@@ -233,11 +145,11 @@ function downsAll() {
 	if(qdate!=''){
 		where+=' and  t.DEAL_DATE='+qdate+' ';
 	}
-	if(regionName!=''){
-		where+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		where+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		where+=" and t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql

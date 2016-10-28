@@ -5,7 +5,6 @@ var field=["GROUP_ID_1_NAME","UNIT_NAME","GROUP_ID_4_NAME","HQ_CHAN_CODE"];
 var orderBy = '';
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -50,8 +49,8 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var channelName=$("#channelName").val();
 //条件
 	var sql = "     SELECT  t.GROUP_ID_1_NAME,t.UNIT_NAME,t.GROUP_ID_4_NAME,t.HQ_CHAN_CODE FROM PCDE.TAB_CDE_CHANL_HQ_CODE t, "
@@ -59,11 +58,11 @@ function search(pageNumber) {
     +" WHERE t.HQ_CHAN_CODE=wg.HQ_CHAN_CODE                        "
     +" AND wg.CHN_CDE_2 in('2010000','1010000')                    "
     +" and wg.status<>12                                           ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(channelName!=''){
 		sql+=" and t.GROUP_ID_4_NAME like '%"+channelName+"%'";
@@ -77,12 +76,10 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1='"+code+"' ";
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"' ";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" and 1=2 ";
 	}
-	
-	
 	
 	var csql = sql;
 	var cdata = query("select count(*) total from(" + csql+")");
@@ -120,92 +117,7 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-function listRegions(){
-	var sql="";
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME  from PCDE.TAB_CDE_CHANL_HQ_CODE t where 1=1 ";
-	
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1='"+code+"' ";
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"' ";
-	}else{
-		sql+=" and 1=2 ";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var sql = "select distinct t.UNIT_NAME  from PCDE.TAB_CDE_CHANL_HQ_CODE t where 1=1 ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1='"+code+"' ";
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"' ";
-		}else{
-			sql+=" and 1=2 ";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
+
 function isNull(obj){
 	if(obj==0||obj=='0'){
 		return 0;
@@ -217,8 +129,8 @@ function isNull(obj){
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	var channelName=$("#channelName").val();
 //条件
 	var sql = "     SELECT  t.GROUP_ID_1_NAME,t.UNIT_NAME,t.GROUP_ID_4_NAME,t.HQ_CHAN_CODE FROM PCDE.TAB_CDE_CHANL_HQ_CODE t, "
@@ -226,11 +138,11 @@ function downsAll(){
     +" WHERE t.HQ_CHAN_CODE=wg.HQ_CHAN_CODE                        "
     +" AND wg.CHN_CDE_2 in('2010000','1010000')                    "
     +" and wg.status<>12                                           ";
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and t.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 	if(channelName!=''){
 		sql+=" and t.GROUP_ID_4_NAME like '%"+channelName+"%'";
@@ -244,7 +156,7 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1='"+code+"' ";
 	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"' ";
+		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") ";
 	}else{
 		sql+=" and 1=2 ";
 	}
