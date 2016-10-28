@@ -1,13 +1,172 @@
-jQuery(function(){
+var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","HR_NO","USER_NAME","HQ_CHAN_CODE","HQ_NAME","OPERATOR_ID","BUSI_ID","BUSI_DESC","SLL","BIGBUSI_CODE","BIGBUSI_DESC","CRE","SLCRE","UNIT_RATIO","UNTI_CRE","SVR_RATIO","SVR_CRE","UNIT_MONEY"];
+var title=[['帐期','地市名称','营服中心','HR编码','人员姓名','渠道编码','渠道名称','操作员编码','业务编码','业务描述','受理量','业务大类','业务大类描述','原始积分','受理积分','区域调节系数','区域调节积分','服务调节系数','服务调节积分','积分金额']];
+var nowData = [];
+var report=null;
+$(function() {
+	 report = new LchReport({
+		title : title,
+		field : field,
+		rowParams : [],
+		//css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
+		content : "content",
+		getSubRowsCallBack : function($tr) {
+			return {
+				data : nowData,
+				extra : {}
+			};
+		}
+	});
+	search(0);
+	
+	$("#searchBtn").click(function(){
+		search(0);
+	});
+});
+
+var pageSize = 15;
+//分页
+function initPagination(totalCount) {
+	$("#totalCount").html(totalCount);
+	$("#pagination").pagination(totalCount, {
+		callback : search,
+		items_per_page : pageSize,
+		link_to : "###",
+		prev_text : '上页', //上一页按钮里text  
+		next_text : '下页', //下一页按钮里text  
+		num_display_entries : 5,
+		num_edge_entries : 2
+	});
+}
+
+//列表信息
+function search(pageNumber) {
+	pageNumber = pageNumber + 1;
+	var start = pageSize * (pageNumber - 1);
+	var end = pageSize * pageNumber;
+	
+	var sql = getSql();
+	var cdata = query("select count(*) total from(" + sql+")");
+	var total = 0;
+	if(cdata && cdata.length) {
+		total = cdata[0].TOTAL;
+	}else{
+		return;
+	}
+	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
+			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+	var d = query(sql);
+	if (pageNumber == 1) {
+		initPagination(total);
+	}
+	nowData = d;
+	report.showSubRow();
+	///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
+	$(".page_count").width($("#lch_DataHead").width());
+	$("#lch_DataBody").find("TR").each(function(){
+		var area=$(this).find("TD:eq(0)").find("A").text();
+		if(area)
+			$(this).find("TD:eq(0)").empty().text(area);
+	});
+}
+function getSql(){
+	//权限
+	var code = $("#code").val();
+	var orgLevel = $("#orgLevel").val();
+	var hrId = $("#hrId").val();
+	//条件
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	var regionCode = $("#regionCode").val();
+	var unitCode = $("#unitCode").val();
+	var userName = $("#userName").val();
+	var itemdesc = $("#itemdesc").val();
+	
+	
+	var sql=  
+			" SELECT T.DEAL_DATE,                                          "+
+			"        T.AREA_NAME,                                          "+
+			"        T.UNIT_NAME,                                          "+
+			"        T.HR_NO,                                              "+
+			"        T.USER_NAME,                                          "+
+			"        T.HQ_CHAN_CODE,                                       "+
+			"        T.HQ_NAME,                                            "+
+			"        T.OPERATOR_ID,                                        "+
+			"        T.BUSI_ID,                                            "+
+			"        T.BUSI_DESC,                                          "+
+			"        T.SLL,                                                "+
+			"        T.BIGBUSI_CODE,                                       "+
+			"        T.BIGBUSI_DESC,                                       "+
+			"        T.CRE,                                                "+
+			"        T.SLCRE,                                              "+
+			"        T.UNIT_RATIO,                                         "+
+			"        T.UNTI_CRE,                                           "+
+			"        T.SVR_RATIO,                                          "+
+			"        T.SVR_CRE,                                            "+
+			"        T.UNIT_MONEY                                          "+
+			"   FROM PMRT.TB_MRT_JCDY_SLJF_INFO_DAY T                      "+
+			"  WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' ";
+
+	if(orgLevel==1){
+		
+	}else if(orgLevel == 2){
+		sql += " AND GROUP_ID_1 = '"+code+"' ";
+	}else if(orgLevel == 3) {
+		sql+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
+	}else {
+		sql += " 1=2 ";
+	}	
+			
+	if(regionCode!=''){
+		sql+= " AND GROUP_ID_1 ='"+regionCode+"'";
+	}
+	if(unitCode!=''){
+		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
+	}
+	if(userName!=''){
+		sql+= " AND USER_NAME LIKE '%"+userName+"%'";
+	}
+	if(itemdesc!=''){
+		sql+= " AND ITEMDESC LIKE '%"+itemdesc+"%'";
+	}
+	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
+	return sql;
+}
+/////////////////////////下载开始/////////////////////////////////////////////
+function downsAll(){
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	var sql = getSql();
+	showtext = '营业人员积分日明细-('+startDate+"~"+endDate+")";
+	downloadExcel(sql,title,showtext);
+}
+/////////////////////////下载结束/////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*jQuery(function(){
 	var cols = ["deal_date","area_name","unit_name","hr_no","user_name",
 	            "hq_chan_code","hq_name","operator_id","busi_id","busi_desc","sll","bigbusi_code",
 	            "bigbusi_desc","cre","slcre","unit_ratio","unti_cre","svr_ratio","svr_cre","unit_money"];
 	//excel导出
 	$("#exceldown").click(downsAll);
 	regionSelect();
-	/**
+	*//**
 	 * 此方法和main.js中的方法重叠【2013-06-25】
-	 */
+	 *//*
 	$("#boxselect li input").click(function(){
 	//$("#boxselect li input").on("click",function(){
 		if($(this).is( ":checked" )){
@@ -316,3 +475,4 @@ function downsAll(){
 function _loadExcel(parameter,callback,excelName){
 	$.Project.downExcelByTemplate2(parameter,callback,excelName,$('#contions'));
 }
+*/
