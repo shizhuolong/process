@@ -66,7 +66,8 @@ $(function(){
 			var groupBy='';
 			var code='';
 			var orgLevel='';
-			var qdate = $("#time").val();
+			var startTime = $("#startTime").val();
+			var endTime = $("#endTime").val();
 			var regionCode=$("#regionCode").val();
 			var unitCode=$("#unitCode").val();
 			
@@ -120,8 +121,8 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+','+getSumSql(field)+' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY  PARTITION(P'+qdate+') T';
-			
+			var sql='select '+preField+','+getSumSql(field)+' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T';
+			where+=' AND T.DEAL_DATE BETWEEN \''+startTime+'\' AND \''+endTime+'\'';
 			if(where!=''&&regionCode!=''){
 				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
@@ -185,7 +186,8 @@ function getSql(field) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var qdate = $.trim($("#time").val());
+	var startTime = $.trim($("#startTime").val());
+	var endTime = $.trim($("#endTime").val());
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	
@@ -214,7 +216,9 @@ function downsAll() {
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY PARTITION(P'+qdate+') T';
+			+ ' from PMRT.TAB_MRT_INCOME_DEV_CHNL_DAY T';
+	
+	where+=' AND T.DEAL_DATE BETWEEN \''+startTime+'\' AND \''+endTime+'\'';
 	if (where != '') {
 		sql += where;
 	}
@@ -222,7 +226,7 @@ function downsAll() {
 		sql += orderBy;
 	}
 	
-	showtext = '移网发展收入日报-' + qdate;
+	showtext = '移网发展收入日报-' + startTime+"-"+endTime;
 	var title=[["营销架构","","","","","帐期",
 	            "总览","",
 	            "发展","","","",
