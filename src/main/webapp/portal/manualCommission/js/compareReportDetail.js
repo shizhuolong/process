@@ -5,7 +5,7 @@ var orderBy = '';
 var report = null;
 $(function() {
 		field=[ "DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","DEV_CHNL_ID","DEV_CHNL_NAME","ITEM","BD_TYPE_ID","BD_TYPE","INIT_NUM","INIT_FEE","SUCCESS_NUM","SUCCESS_FEE","FAIL_NUM","FAIL_FEE_YL","FAIL_FEE_SL","FAIL_FEE_XY","INIT_ID_JZ","FEE_JZ","INIT_ID_YS","FEE_YS","IS_SUCCESS","REMARKS" ];
-		title= [ [ "账期","地市","营服","渠道编码","渠道名","科目","比对项目","比对备注","工单数","工单金额","成功工单数","成功工单金额","失败工单数","应录金额","实录金额","差异金额","集中工单号","集中工单金额","原始工单号","原始工单金额","比对代码","比对结果" ] ];
+		title= [ [ "账期","地市","营服","渠道编码","渠道名","科目(集中)","比对项目","比对备注(网格、基层)","工单数","工单金额","成功工单数","成功工单金额","失败工单数","应录金额","实录金额","差异金额","集中工单号","集中工单金额","原始工单号","原始工单金额","比对代码","比对结果" ] ];
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -168,7 +168,7 @@ function downsAll(){
 	if(''!=workOrder){
 		sql+=" AND T.INIT_ID_JZ LIKE'%"+workOrder+"%'";
 	}
-	title= [ [ "账期","地市","营服","渠道编码","渠道名","科目","比对项目","比对备注","工单数","工单金额","成功工单数","成功工单金额","失败工单数","应录金额","实录金额","差异金额","集中工单号","集中工单金额","原始工单号","原始工单金额","比对代码","比对结果"] ];
+	title= [ [ "账期","地市","营服","渠道编码","渠道名","科目(集中)","比对项目","比对备注(网格、基层)","工单数","工单金额","成功工单数","成功工单金额","失败工单数","应录金额","实录金额","差异金额","集中工单号","集中工单金额","原始工单号","原始工单金额","比对代码","比对结果"] ];
 	showtext = '对比报表明细-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
