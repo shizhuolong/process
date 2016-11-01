@@ -11,6 +11,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>营服中心系数配置</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
@@ -62,7 +64,7 @@ function isGrantedNew(role){
           		<tr>
                 	<td align="right">营服中心：</td>
                     <td>
-                    	<input class="default-text-input w400" id="unit_name" name="unit_name" type="text" />
+                    	<input class="default-text-input w200" id="unit_name" name="unit_name" type="text" />
                     </td>
                     <td align="right">是否配置营服系数：</td>
                     <td>
@@ -72,10 +74,8 @@ function isGrantedNew(role){
 							<option value="0">否</option>
 						</select>
 					</td>
-                </tr>
-                <tr height="35px">
-                	<td colspan="4" align="center">
-                		<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+					<td align="center">
+                		<a class="default-btn fLeft mr10" style="margin-left:20px;" href="#" id="searchBtn">查询</a>
                 		<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
                 		<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
                 	</td>
