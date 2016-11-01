@@ -52,13 +52,13 @@
 					</td>
 					<td width="3%" align="right">地市：</td>
 					<td width="7%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="2%" align="right">营服中心：</td>
 					<td width="8%">
-						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper100">
+						<select name="unitCode" id="unitCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						</select>
 					</td>
@@ -68,7 +68,7 @@
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 				<tr>

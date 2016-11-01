@@ -45,13 +45,13 @@
 					</td>
 					<td width="4%">地市：</td>
 					<td width="15%">
-						<select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+						<select name="regionName" id="regionName"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="8%">营业厅：</td>
 					<td width="15%">
-						<select name="hallName" id="hallName" onchange="" class="default-text-input wper80">
+						<select name="hallName" id="hallName"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
@@ -61,26 +61,14 @@
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 15px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
 		</form>
 		<div id="lchcontent"></div>
-		<!-- div class="page_count">
-			<div class="page_count_left">
-				共有 <span id="totalCount"></span> 条数据
-			</div>
-			<div class="page_count_right">
-				<div id="pagination"></div>
-			</div>
-		</div-->
-
 </body>
-<script>
-
-</script>
 </html>

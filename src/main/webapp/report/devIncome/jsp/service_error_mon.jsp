@@ -30,18 +30,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/service_error_mon.js"></script>
-<style type="text/css">
-  #lch_DataHead TR TH,#lch_DataBody TR TD{
-   min-width: 10px;
-}
-</style>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-		<form id="searchForm" method="post">
+		<form id="searchForm" method="post" style="width:60%;">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="1%" style="padding-left: 10px;" align="right">账期：</td>
@@ -51,10 +46,10 @@
 					</td>
 					<td width="3%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 30px;">查询</a>
+						style="float: right; margin-right: 15px;">查询</a>
 					</td>
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
