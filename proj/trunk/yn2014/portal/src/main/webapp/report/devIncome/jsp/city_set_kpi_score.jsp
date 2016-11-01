@@ -20,31 +20,17 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>地市自设KPI得分</title>
-<link
-	href="<%=request.getContextPath()%>/platform/theme/style/public.css"
-	rel="stylesheet" type="text/css" />
-<link
-	href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css"
-	rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/jpagination.css" />
-<link
-	href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css"
-	rel="stylesheet" type="text/css" />
-<link type="text/css" rel="stylesheet"
-	href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css">
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/report/devIncome/js/city_set_kpi_score.js"></script>
+<link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
+<link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/city_set_kpi_score.js"></script>
 </head>
 <body class="" style="overflow-x: auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -53,35 +39,24 @@
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 	<input type="hidden" id="realName" value="<%=user.getRealName()%>">
 	<input type="hidden" id="userNameGet" value="<%=user.getUsername()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<form id="searchForm" method="post">
 		<table width="100%" style="margin: 10px 0; border: none;">
 			<tr height="35px">
 				<td width="6%" style="padding-left: 10px;">账期：</td>
-				<td width="15%"><input type="text"
-					class="Wdate default-text-input wper80"
-					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})"
+				<td width="15%"><input type="text" class="Wdate default-text-input wper80" onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})"
 					value="<%=deal_date%>" id="deal_date"></td>
 				<td width="4%">地市：</td>
-				<td width="13%"><select name="regionName" id="regionName"
-					onchange="" class="default-text-input wper80">
+				<td width="13%"><select name="regionCode" id="regionCode" class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
 				<td width="6%">营服中心：</td>
-				<td width="13%"><select name="unitName" id="unitName"
-					onchange="" class="default-text-input wper80">
+				<td width="13%"><select name="unitCode" id="unitCode"  class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
 				<td width="6%">人员名称：</td>
-				<td width="15%"><input class="default-text-input wper80"
-					name="userName" type="text" id="userName" /></td>
-				<!-- <td width="6%">用户号码：</td>
-				<td width="15%"><input class="default-text-input wper80"
-					name=userPhone type="text" id="userPhone" /></td> -->
-				<td width="5%"><a class="default-btn" href="#" id="searchBtn"
-					style="float: right; margin-right: 30px;">查询</a></td>
-				<td width="5%"><a class="default-btn" href="#" id="exportBtn"
-					onclick="downsAll()">导出</a></td>
+				<td width="15%"><input class="default-text-input wper80" name="userName" type="text" id="userName" /></td>
+				<td width="5%"><a class="default-btn" href="#" id="searchBtn" style="float: right; margin-right: 30px;">查询</a></td>
+				<td width="5%"><a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a></td>
 			</tr>
 		</table>
 	</form>
@@ -94,9 +69,5 @@
 			<div id="pagination"></div>
 		</div>
 	</div>
-
 </body>
-<script>
-	
-</script>
 </html>
