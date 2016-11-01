@@ -5,7 +5,6 @@ var field=["GROUP_ID_1_NAME","UNIT_NAME","DEAL_DATE","HR_NO","USER_NAME","POST_L
 var orderBy = '';
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -46,96 +45,6 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PORTAL.Tab_Portal_Qj_Person t where 1=1 and t.deal_date='"+time+"' ";
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.HR_ID='"+hrId+"'";
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PORTAL.Tab_Portal_Qj_Person t where 1=1 and t.deal_date='"+time+"' ";
-	
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
@@ -145,21 +54,18 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var userName=$.trim($("#userName").val());
 	
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 //条件
 	var sql = getSelectSql();
-	if(time!=''){
-		sql+=" and t.DEAL_DATE='"+time+"' ";
-	}
 	if(userName!=''){
-		sql+=" and t.USER_NAME like '%"+userName+"%'";
+		sql+=" AND T.USER_NAME like '%"+userName+"%'";
 	}
-	if(regionName!=''){
-		sql+=" and tr.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND TR.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and tr.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql += " AND TR.UNIT_ID IN("+_unit_relation(unitCode)+")";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -168,11 +74,11 @@ function search(pageNumber) {
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and tr.GROUP_ID_1="+code;
+		sql+=" AND TR.GROUP_ID_1="+code;
 	}else{
 		 var hrIds=_jf_power(hrId,time);
 		 if(hrIds!=""){
-		   sql+=" and t.HR_NO in("+hrIds+") ";
+		   sql+=" AND T.HR_NO in("+hrIds+") ";
 		 }else{
 		   sql+=" and 1=2 "; 
 		 }
@@ -214,8 +120,8 @@ function search(pageNumber) {
 function getSelectSql(){
 	var time=$("#time").val();
 	var sql="SELECT DEAL_DATE,                                                 		  "+
-			"		tr.GROUP_ID_1_NAME,                                               "+
-			"		tr.UNIT_NAME,                                                     "+
+			"		TR.GROUP_ID_1_NAME,                                               "+
+			"		TR.UNIT_NAME,                                                     "+
 			"		HR_NO,                                                            "+
 			"		USER_NAME,                                                        "+
 			"		POST_LEVEL,                                                       "+
@@ -250,10 +156,10 @@ function getSelectSql(){
 			"		PODS.GET_RADIX_POINT(OTHER_COST_1_ITEM,2)  AS OTHER_COST_1_ITEM  ,"+
 			"		PODS.GET_RADIX_POINT(DEDUCTED_TOTAL,2)     AS DEDUCTED_TOTAL     ,"+
 			"		PODS.GET_RADIX_POINT(FACT_TOTAL,2)         AS FACT_TOTAL         ,"+
-			"CASE USER_TYPE WHEN 1.00 then '合同内' else '外包' end user_type                                  "+
-			"from PODS.TB_ODS_JCDY_HR_SALARY t  left join (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID" +
-			",UNIT_NAME,HR_ID FROM PORTAL.Tab_Portal_Qj_Person where deal_date='"+time+"') tr on t.hr_no=tr.HR_ID " +
-			"where t.DEAL_DATE='"+time+"'";
+			"CASE USER_TYPE WHEN 1.00 THEN '合同内' ELSE '外包' END USER_TYPE                                  "+
+			"FROM PODS.TB_ODS_JCDY_HR_SALARY T  LEFT JOIN (SELECT DISTINCT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID" +
+			",UNIT_NAME,HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON WHERE DEAL_DATE='"+time+"') TR ON T.HR_NO=TR.HR_ID " +
+			"WHERE T.DEAL_DATE='"+time+"'";
 	return sql;
 }
 /////////////////////////下载开始/////////////////////////////////////////////
@@ -262,16 +168,16 @@ function downsAll(){
 	var sql=getSelectSql();
 	var userName=$.trim($("#userName").val());
 	
-	var regionName=$("#regionName").val();
-	var unitName=$("#unitName").val();
+	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
 	if(userName!=''){
-		sql+=" and t.USER_NAME like '%"+userName+"%'";
+		sql+=" AND T.USER_NAME like '%"+userName+"%'";
 	}
-	if(regionName!=''){
-		sql+=" and tr.GROUP_ID_1_NAME = '"+regionName+"'";
+	if(regionCode!=''){
+		sql+=" AND TR.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(unitName!=''){
-		sql+=" and tr.UNIT_NAME = '"+unitName+"'";
+	if(unitCode!=''){
+		sql += " AND TR.UNIT_ID IN("+_unit_relation(unitCode)+")";
 	}
 	//权限
 	var orgLevel=$("#orgLevel").val();
@@ -280,13 +186,13 @@ function downsAll(){
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and tr.GROUP_ID_1="+code;
+		sql+=" AND TR.GROUP_ID_1="+code;
 	}else{
 		 var hrIds=_jf_power(hrId,time);
 		 if(hrIds!=""){
-		   sql+=" and t.HR_NO in("+hrIds+") ";
+		   sql+=" AND T.HR_NO IN("+hrIds+") ";
 		 }else{
-		   sql+=" and 1=2 "; 
+		   sql+=" AND 1=2 "; 
 		 }
 	}
 	
