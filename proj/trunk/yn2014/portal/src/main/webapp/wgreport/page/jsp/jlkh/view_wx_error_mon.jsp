@@ -39,27 +39,23 @@
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 	<input type="hidden" id="realName" value="<%=user.getRealName()%>">
 	<input type="hidden" id="userName" value="<%=user.getUsername()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<form id="searchForm" method="post">
 		<table width="100%" style="margin: 10px 0; border: none;">
 			<tr height="35px">
 				<td width="4%" style="text-align:right;">账期：</td>
 				<td width="13%"><input type="text" class="Wdate default-text-input wper80" onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time"></td>
 				<td width="4%" style="text-align:right;">地市：</td>
-				<td width="14%"><select name="regionName" id="regionName" onchange="" class="default-text-input wper80">
+				<td width="14%"><select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
 				<td width="6%" style="text-align:right;">营服中心：</td>
-				<td width="14%"><select name="unitName" id="unitName" onchange="" class="default-text-input wper80">
+				<td width="14%"><select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
 						<option value=''>请选择</option>
 				</select></td>
 				<td width="6%" style="text-align:right;">用户号码：</td>
-				<td width="15%"><input class="default-text-input wper80"
-					name=device_number type="text" id="device_number" /></td>
-				<td width="5%"><a class="default-btn" href="#" id="searchBtn"
-					style="float: right; margin-right: 30px;">查询</a></td>
-				<td width="5%"><a class="default-btn" href="#" id="exportBtn"
-					onclick="downsAll()">导出</a></td>
+				<td width="15%"><input class="default-text-input wper80" name=device_number type="text" id="device_number" /></td>
+				<td width="5%"><a class="default-btn" href="#" id="searchBtn" style="float: right; margin-right: 30px;">查询</a></td>
+				<td width="5%"><a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a></td>
 			</tr>
 		</table>
 	</form>

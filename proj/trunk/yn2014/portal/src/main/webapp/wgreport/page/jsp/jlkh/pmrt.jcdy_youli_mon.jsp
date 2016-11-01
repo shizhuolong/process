@@ -37,7 +37,7 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
@@ -48,15 +48,15 @@
 					</td>
 					<td width="4%" style="text-align:right;">地市:</td>
                    	<td width="20%">
-                     <select id="regionName" name="regionName" class="default-text-input wper80">
+                     <select id="regionCode" name="regionCode" class="default-text-input wper80">
                        <option value="">全部</option>
                      </select>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 15px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>

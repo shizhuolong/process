@@ -37,19 +37,19 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;">账期：</td>
+					<td width="4%" style="padding-left: 10px;">账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
 					</td>
 					<td width="4%">地市:</td>
                     <td width="15%">
-                     <select id="regionName" name="regionName" class="default-text-input wper80">
-                       <option value"">全部</option>
+                     <select id="regionCode" name="regionCode" class="default-text-input wper80">
+                       <option value="">全部</option>
                      </select>
 					<td width="8%">营业厅名称：</td>
 					<td width="15%">
@@ -60,11 +60,10 @@
 						<input class="default-text-input wper80" name="userName" type="text" id="userName"/>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						<a class="default-btn" href="#" id="searchBtn" style=" margin-right: 15px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
@@ -78,9 +77,5 @@
 				<div id="pagination"></div>
 			</div>
 		</div>
-
 </body>
-<script>
-
-</script>
 </html>
