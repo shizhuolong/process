@@ -1,10 +1,9 @@
 var nowData = [];
-var title=["账期","地市","地市编码","用户编号","用户号码","入网时间","操作员编码","部门编码","套餐编码","套餐名称","指标编码","指标描述","卡面值","发展人编码","总部编码","原始积分","渠道系数","渠道调节积分","区域调节积分","小区地址","渠道名称"];
+var title=[["账期","地市","地市编码","用户编号","用户号码","入网时间","操作员编码","部门编码","套餐编码","套餐名称","指标编码","指标描述","卡面值","发展人编码","总部编码","原始积分","渠道系数","渠道调节积分","区域调节积分","小区地址","渠道名称"]];
 var field=["账期","地市","地市编码","用户编号","用户号码","入网时间","操作员编码","部门编码","套餐编码","套餐名称","指标编码","指标描述","卡面值","发展人编码","总部编码","原始积分","渠道系数","渠道调节积分","区域调节积分","小区地址","渠道名称"];
 var orderBy = '';
 var report = null;
 $(function() {
-	getRegionName();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -27,33 +26,6 @@ $(function() {
 		search(0);
 	});
 });
-function getRegionName(){
-	var sql="select distinct t.地市  regionName from PMRT.VIEW_JCDY_NOSTD_6_MON t where 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	//var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.地市编码="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	if(result.length==1){
-		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
-		$("#regionName").empty().append($(html));
-	}else{
-		 html +="<option value=''>全部</option>";
-		    for(var i=0;i<result.length;i++){
-		    	html+="<option value="+result[i].REGIONNAME+">"+result[i].REGIONNAME+"</option>";
-		    }
-	}
-    $("#regionName").empty().append($(html));
-}					 
 var pageSize = 15;
 //分页
 function initPagination(totalCount) {
@@ -75,18 +47,15 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
+	var region=$("#region").val();
 	var userNumber=$.trim($("#userNumber").val());
 	var regionCode=$("#regionCode").val();
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 //条件
-	var sql = " FROM PMRT.VIEW_JCDY_NOSTD_6_MON  WHERE 1=1 ";
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
-	if(regionName!=''){
-		sql+=" AND 地市  like '%"+regionName+"%'";
+	var sql = " FROM PMRT.VIEW_JCDY_NOSTD_6_MON  WHERE 账期='"+time+"' ";
+	if(regionCode!=''){
+		sql+=" AND 地市编码  = '"+regionCode+"'";
 	}
 	if(userNumber!=''){
 		sql+=" AND 用户号码  like '%"+userNumber+"%'";
@@ -96,7 +65,7 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" AND 地市编码='"+code+"' ";
 	}else{
-		sql+=" AND 地市编码='"+regionCode+"' ";
+		sql+=" AND 地市编码='"+region+"' ";
 	}
 	var csql = sql;
 	var cdata = query("select count(*) total" + csql);
@@ -132,19 +101,17 @@ function search(pageNumber) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var sql= "SELECT * FROM  PMRT.VIEW_JCDY_NOSTD_6_MON  where 1=1 ";
+	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
+	var region=$("#region").val();
 	var userNumber=$.trim($("#userNumber").val());
 	var regionCode=$("#regionCode").val();
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
+	var sql= "SELECT * FROM  PMRT.VIEW_JCDY_NOSTD_6_MON  WHERE 账期='"+time+"' ";
 	//条件
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
-	if(regionName!=''){
-		sql+=" AND 地市  like '%"+regionName+"%' ";
+	if(regionCode!=''){
+		sql+=" AND 地市编码  = '"+regionCode+"' ";
 	}
 	if(userNumber!=''){
 		sql+=" AND 用户号码  like '%"+userNumber+"%' ";
@@ -154,7 +121,7 @@ function downsAll(){
 	}else if(orgLevel==2){
 		sql+=" AND 地市编码='"+code+"' ";
 	}else{
-		sql+=" AND 地市编码='"+regionCode+"' ";
+		sql+=" AND 地市编码='"+region+"' ";
 	}
 	sql+=" order by 地市编码";
 	var title=[["账期","地市","地市编码","用户编号","用户号码","入网时间","操作员编码","部门编码","套餐编码","套餐名称","指标编码","指标描述","卡面值","发展人编码","总部编码","原始积分","渠道系数","渠道调节积分","区域调节积分","小区地址","渠道名称"]];

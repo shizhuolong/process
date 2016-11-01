@@ -4,7 +4,6 @@ var field= ["账期","地市编码","地市名称","基层单元编码","基层�
 var orderBy = '';
 var report = null;
 $(function() {
-	getRegionName();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -27,34 +26,6 @@ $(function() {
 		search(0);
 	});
 });
-function getRegionName(){
-	var sql="select distinct t.地市名称  regionName from PMRT.TB_MRT_JCDY_ACC_DETAIL_MON t where 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	//var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.地市编码="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	if(result.length==1){
-		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
-		$("#regionName").empty().append($(html));
-		//getUnitName($("#regionName"));
-	}else{
-		 html +="<option value=''>全部</option>";
-		    for(var i=0;i<result.length;i++){
-		    	html+="<option value="+result[i].REGIONNAME+">"+result[i].REGIONNAME+"</option>";
-		    }
-	}
-    $("#regionName").empty().append($(html));
-}					 
 var pageSize = 15;
 //分页
 function initPagination(totalCount) {
@@ -76,23 +47,20 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var cityName=$.trim($("#regionName").val());
+	var region=$.trim($("#region").val());
 	var userName=$.trim($("#userName").val());
 	var hallName=$.trim($("#hallName").val());
 	var regionCode=$.trim($("#regionCode").val());
 //条件
-	var sql = " FROM PMRT.TB_MRT_JCDY_ACC_DETAIL_MON WHERE 1=1 ";
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
-	if(cityName!=''){
-		sql+=" AND 地市名称 like '%"+cityName+"%'";
+	var sql = " FROM PMRT.TB_MRT_JCDY_ACC_DETAIL_MON WHERE 账期='"+time+"' ";
+	if(regionCode!=''){
+		sql+=" AND 地市编码 = '"+regionCode+"'";
 	}
 	if(userName!=''){
-		sql+=" AND 姓名 like '%"+userName+"%'";
+		sql+=" AND 姓名 LIKE '%"+userName+"%'";
 	}
 	if(hallName!=''){
-		sql+=" AND 营业厅名称 like '%"+hallName+"%'";
+		sql+=" AND 营业厅名称 LIKE '%"+hallName+"%'";
 	}
 	
 //权限
@@ -102,9 +70,9 @@ function search(pageNumber) {
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and 地市编码 ="+code;
+		sql+=" AND 地市编码 ="+code;
 	}else {
-		sql+=" and 地市编码="+regionCode;
+		sql+=" AND 地市编码="+region;
 	}
 
 	var csql = sql;
@@ -160,6 +128,10 @@ function search(pageNumber) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var time=$("#time").val();
+	var regionCode=$.trim($("#regionCode").val());
+	var userName=$.trim($("#userName").val());
+	var hallName=$.trim($("#hallName").val());
 	var sql=" SELECT 账期            ,"+
 			"地市编码        ,"+
 			"地市名称        ,"+
@@ -174,36 +146,27 @@ function downsAll(){
 			"服务调节系数    ,"+
 			"受理服务调节积分,"+
 			"区域调节系数    ,"+
-			"受理区域调节积分    FROM PMRT.TB_MRT_JCDY_ACC_DETAIL_MON where 1=1 " ;
-	
-	var time=$("#time").val();
-	var cityName=$.trim($("#regionName").val());
-	var userName=$.trim($("#userName").val());
-	var hallName=$.trim($("#hallName").val());
-//条件
-//	var sql = " FROM PMRT.TB_MRT_JCDY_YYT_MON WHERE 1=1 ";
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
-	if(cityName!=''){
-		sql+=" AND 地市名称 like '%"+cityName+"%'";
+			"受理区域调节积分    FROM PMRT.TB_MRT_JCDY_ACC_DETAIL_MON where  账期='"+time+"' ";
+	//条件
+	if(regionCode!=''){
+		sql+=" AND 地市名称 ='"+regionCode+"'";
 	}
 	if(userName!=''){
-		sql+=" AND 姓名 like '%"+userName+"%'";
+		sql+=" AND 姓名 LIKE '%"+userName+"%'";
 	}
 	if(hallName!=''){
-		sql+=" AND 营业厅名称 like '%"+hallName+"%'";
+		sql+=" AND 营业厅名称 LIKE '%"+hallName+"%'";
 	}
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var regionCode=$.trim($("#regionCode").val());
+	var region=$.trim($("#region").val());
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and 地市编码 ="+code;
+		sql+=" AND 地市编码 ="+code;
 	}else {
-		sql+=" and 地市编码="+regionCode;
+		sql+=" AND 地市编码="+region;
 	}
 	sql+=" ORDER BY 地市编码";
 	var title=[["账期","地市编码","地市名称","基层单元编码","基层单元名称","营业厅名称","HR编码","姓名","受理量","受理描述","受理原始积分","服务调节系数","受理服务调节积分","区域调节系数","受理区域调节积分"]];

@@ -4,7 +4,6 @@ var field=["DEAL_DATE","地市","地市编码","用户编号","用户号码","�
 var orderBy = '';
 var report = null;
 $(function() {
-	getRegionName();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -26,33 +25,6 @@ $(function() {
 		search(0);
 	});
 });
-function getRegionName(){
-	var sql="select distinct t.地市  regionName from PMRT.VIEW_JCDY_NOQD_MON t where 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	//var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.地市编码="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	if(result.length==1){
-		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
-		$("#regionName").empty().append($(html));
-	}else{
-		 html +="<option value=''>全部</option>";
-		    for(var i=0;i<result.length;i++){
-		    	html+="<option value="+result[i].REGIONNAME+">"+result[i].REGIONNAME+"</option>";
-		    }
-	}
-    $("#regionName").empty().append($(html));
-}
 var pageSize = 15;
 //分页
 function initPagination(totalCount) {
@@ -74,16 +46,14 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var time=$("#time").val();
-	var cityName=$.trim($("#regionName").val());
+	var region=$.trim($("#region").val());
 	var userCode=$.trim($("#userCode").val());
 	var regionCode=$.trim($("#regionCode").val());
 //条件
-	var sql = " FROM PMRT.VIEW_JCDY_NOQD_MON WHERE 1=1 ";
-	if(time!=''){
-		sql+=" AND DEAL_DATE='"+time+"' ";
-	}
-	if(cityName!=''){
-		sql+=" AND 地市 like '%"+cityName+"%'";
+	var sql = " FROM PMRT.VIEW_JCDY_NOQD_MON WHERE DEAL_DATE='"+time+"' ";
+	
+	if(regionCode!=''){
+		sql+=" AND 地市编码 = '"+regionCode+"'";
 	}
 	if(userCode!=''){
 		sql+=" AND 用户号码 like '%"+userCode+"%'";
@@ -98,7 +68,7 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and 地市编码 ="+code;
 	}else {
-		sql+=" and 地市编码="+regionCode;
+		sql+=" and 地市编码="+region;
 	}
 		
 	var csql = sql;
@@ -114,22 +84,22 @@ function search(pageNumber) {
 //		sql += orderBy;
 //	}
 	sql+=" ORDER BY 地市编码";
-	var s=" SELECT DEAL_DATE ,"+
-		"地市      ,"+
-		"地市编码  ,"+
-		"用户编号  ,"+
-		"用户号码  ,"+
-		"入网时间  ,"+
-		"操作员编号,"+
-		"部门编码  ,"+
-		"套餐编码  ,"+
-		"ITEMCODE  ,"+
-		"指标描述  ,"+
-		"面值      ,"+
-		"发展人编码,"+
-		"渠道编码  ,"+
-		"总部编码  ,"+
-		"原始积分   ";
+	var s=  " SELECT DEAL_DATE ,"+
+			"地市      ,"+
+			"地市编码  ,"+
+			"用户编号  ,"+
+			"用户号码  ,"+
+			"入网时间  ,"+
+			"操作员编号,"+
+			"部门编码  ,"+
+			"套餐编码  ,"+
+			"ITEMCODE  ,"+
+			"指标描述  ,"+
+			"面值      ,"+
+			"发展人编码,"+
+			"渠道编码  ,"+
+			"总部编码  ,"+
+			"原始积分   ";
 
 	sql = s + sql;
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
@@ -154,46 +124,44 @@ function search(pageNumber) {
   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var sql=" SELECT DEAL_DATE ,"+
-	"地市      ,"+
-	"地市编码  ,"+
-	"用户编号  ,"+
-	"用户号码  ,"+
-	"入网时间  ,"+
-	"操作员编号,"+
-	"部门编码  ,"+
-	"套餐编码  ,"+
-	"ITEMCODE  ,"+
-	"指标描述  ,"+
-	"面值      ,"+
-	"发展人编码,"+
-	"渠道编码  ,"+
-	"总部编码  ,"+
-	"原始积分  FROM  PMRT.VIEW_JCDY_NOQD_MON where 1=1 " ;
-	
 	var time=$("#time").val();
-	var cityName=$.trim($("#regionName").val());
+	var region=$.trim($("#region").val());
 	var userCode=$.trim($("#userCode").val());
-	//条件
-	if(time!=''){
-		sql+=" AND DEAL_DATE='"+time+"' ";
-	}
-	if(cityName!=''){
-		sql+=" AND 地市 like '%"+cityName+"%'";
-	}
-	if(userCode!=''){
-		sql+=" AND 用户号码 like '%"+userCode+"%'";
-	}
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
 	var regionCode=$.trim($("#regionCode").val());
+	var sql=" SELECT DEAL_DATE ,"+
+			"地市      ,"+
+			"地市编码  ,"+
+			"用户编号  ,"+
+			"用户号码  ,"+
+			"入网时间  ,"+
+			"操作员编号,"+
+			"部门编码  ,"+
+			"套餐编码  ,"+
+			"ITEMCODE  ,"+
+			"指标描述  ,"+
+			"面值      ,"+
+			"发展人编码,"+
+			"渠道编码  ,"+
+			"总部编码  ,"+
+			"原始积分  FROM  PMRT.VIEW_JCDY_NOQD_MON WHERE DEAL_DATE='"+time+"' ";
+	
+	//条件
+	if(regionCode!=''){
+		sql+=" AND 地市编码 = '"+regionCode+"'";
+	}
+	if(userCode!=''){
+		sql+=" AND 用户号码 like '%"+userCode+"%'";
+	}
+	
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
 		sql+=" and 地市编码 ="+code;
 	}else {
-		sql+=" and 地市编码="+regionCode;
+		sql+=" and 地市编码="+region;
 	}
 	sql+=" ORDER BY 地市编码";
 	var title=[["帐期","地市","地市编码","用户编号","用户号码","入网时间","操作员编号","部门编码","套餐编码","指标编码","指标描述","面值","发展人编码","渠道编码","总部编码","原始积分"]];

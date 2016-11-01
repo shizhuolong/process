@@ -4,7 +4,6 @@ var field=["账期","地市编码","地市名称","基层单元编码","基层�
 var orderBy = '';
 var report = null;
 $(function() {
-	getRegionName();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -27,34 +26,6 @@ $(function() {
 		search(0);
 	});
 });
-function getRegionName(){
-	var sql="select distinct t.地市名称 regionName from PMRT.TB_MRT_JCDY_YYT_DETAIL_MON t where 1=1 ";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	//var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.地市编码="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	if(result.length==1){
-		html+="<option selected value="+result[0].REGIONNAME+">"+result[0].REGIONNAME+"</option>";
-		$("#regionName").empty().append($(html));
-		//getUnitName($("#regionName"));
-	}else{
-		 html +="<option value=''>全部</option>";
-		    for(var i=0;i<result.length;i++){
-		    	html+="<option value="+result[i].REGIONNAME+">"+result[i].REGIONNAME+"</option>";
-		    }
-	}
-    $("#regionName").empty().append($(html));
-}					 
 var pageSize = 15;
 //分页
 function initPagination(totalCount) {
@@ -74,26 +45,24 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var sql = " FROM PMRT.TB_MRT_JCDY_YYT_DETAIL_MON  WHERE 1=1 ";
+	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
+	var regionCode=$("#regionCode").val();
 	var userNumber=$.trim($("#userNumber").val());
 	var hallName=$.trim($("#hallName").val());
-	var regionCode=$("#regionCode").val();
+	var region=$("#region").val();
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();	
+	var sql = " FROM PMRT.TB_MRT_JCDY_YYT_DETAIL_MON  WHERE 账期='"+time+"' ";
 //条件
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
-	if(regionName!=''){
-		sql+=" AND 地市名称  like '%"+regionName+"%'";
+	if(regionCode!=''){
+		sql+=" AND 地市编码  = '"+regionCode+"'";
 	}
 	if(userNumber!=''){
-		sql+=" AND 用户号码  like '%"+userNumber+"%'";
+		sql+=" AND 用户号码  LIKE '%"+userNumber+"%'";
 	}
 	if(hallName!=''){
-		sql+=" AND 营业厅名称 like '%"+hallName+"%'";
+		sql+=" AND 营业厅名称 LIKE '%"+hallName+"%'";
 	}
 	
     if(orgLevel==1){
@@ -101,7 +70,7 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" AND 地市编码='"+code+"' ";
 	}else{
-		sql+=" AND 地市编码='"+regionCode+"' ";
+		sql+=" AND 地市编码='"+region+"' ";
 	}
 	var csql = sql;
 	var cdata = query("select count(*) total" + csql);
@@ -137,33 +106,31 @@ function search(pageNumber) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var sql= "SELECT "+field.join(",")+" FROM  PMRT.TB_MRT_JCDY_YYT_DETAIL_MON  where 1=1 ";
+	
 	var time=$("#time").val();
-	var regionName=$("#regionName").val();
+	var region=$("#region").val();
 	var userNumber=$.trim($("#userNumber").val());
 	var hallName=$.trim($("#hallName").val());
 	var regionCode=$("#regionCode").val();
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-//条件
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
-	if(regionName!=''){
-		sql+=" AND 地市名称  like '%"+regionName+"%'";
+	var sql= "SELECT "+field.join(",")+" FROM  PMRT.TB_MRT_JCDY_YYT_DETAIL_MON  WHERE 账期='"+time+"' ";
+	//条件
+	if(regionCode!=''){
+		sql+=" AND 地市编码  = '"+regionCode+"'";
 	}
 	if(userNumber!=''){
-		sql+=" AND 用户号码  like '%"+userNumber+"%'";
+		sql+=" AND 用户号码  LIKE '%"+userNumber+"%'";
 	}
 	if(hallName!=''){
-		sql+=" AND 营业厅名称  like '%"+hallName+"%'";
+		sql+=" AND 营业厅名称  LIKE '%"+hallName+"%'";
 	}
     if(orgLevel==1){
 		
 	}else if(orgLevel==2){
 		sql+=" AND 地市编码='"+code+"' ";
 	}else{
-		sql+=" AND 地市编码='"+regionCode+"' ";
+		sql+=" AND 地市编码='"+region+"' ";
 	}
 	sql+=" order by 地市编码";
 	var title=[["账期","地市编码","地市名称","基层单元编码","基层单元名称","营业厅名称","HR编码","姓名","发展人编码","用户编号","用户号码","销售指标描述","直销原始积分","渠道调节系数","直销渠道调节积分","区域调节系数","直销区域调节积分"]];
