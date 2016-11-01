@@ -4,7 +4,6 @@ var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HR_ID","NAME","U
 var orderBy = '';
 var report = null;
 $(function() {
-	listRegions();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -49,13 +48,10 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var dealDate=$.trim($("#deal_date").val());
-	var regionName=$.trim($("#regionName").val());
-	var unitName=$.trim($("#unitName").val());
+	var regionCode=$.trim($("#regionCode").val());
+	var unitCode=$.trim($("#unitCode").val());
 	var userName=$.trim($("#userName").val());
 	var realName=$.trim($("#realName").val());
-//	var userNameGet=$.trim($("#userNameGet").val());
-//	var userCode=$.trim($("#userCode").val());
-	var regionCode=$.trim($("#regionCode").val());
 //条件
 	var sql = "SELECT T.DEAL_DATE,                           "+
 	"       T.GROUP_ID_1_NAME,                     	"+
@@ -81,15 +77,12 @@ function search(pageNumber) {
 	"       T.KPI_NAME,                            	"+
 	"       T.TARGET_NAME,                         	"+
 	"       T.TARGET                              	"+
-	"  FROM PMRT.TAB_MRT_JCDY_KPI_QJ_DETAIL_MON T  WHERE 1=1 	";
-	if(dealDate!=''){
-		sql+=" AND T.DEAL_DATE = '"+dealDate+"'";
+	"  FROM PMRT.TAB_MRT_JCDY_KPI_QJ_DETAIL_MON T  WHERE  T.DEAL_DATE = '"+dealDate+"'";
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
-	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME like '%"+unitName+"%'";
+	if(unitCode!=''){
+		sql += " AND UNIT_ID IN("+_unit_relation(unitCode)+")";
 	}
 	if(userName!=''){
 		sql+=" AND T.NAME LIKE '%"+userName+"%'";
@@ -107,7 +100,7 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and T.GROUP_ID_1 ='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.UNIT_ID ='"+code+"'";
+		sql += " AND UNIT_ID IN("+_unit_relation(code)+")";
 	}else{
 		sql+=" and T.NAME ='"+realName+"'";
 	}
@@ -146,170 +139,62 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-//function roundN(number,fractionDigits){   
-//    with(Math){   
-//        return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
-//    }   
-//}   
 
-
-function listRegions(){
-	var sql="";
-	var time=$("#time").val();
-	//条件
-	var sql = "select distinct t.GROUP_ID_1_NAME from PMRT.TAB_MRT_JCDY_KPI_QJ_DETAIL_MON t where 1=1 and group_id_1_name is not null ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	//权限
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	/*var hrId=$("#hrId").val();*/
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
-	}else if(orgLevel==3){
-		sql+=" and t.UNIT_ID='"+code+"'";
-	}else{
-		sql+=" and t.UNIT_ID='"+code+"'";
-		/*sql+=" and t.HR_ID='"+hrId+"'";*/
-	}
-	//排序
-	if (orderBy != '') {
-		sql += orderBy;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].GROUP_ID_1_NAME
-					+ '" selected >'
-					+ d[0].GROUP_ID_1_NAME + '</option>';
-			listUnits(d[0].GROUP_ID_1_NAME);
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].GROUP_ID_1_NAME + '">' + d[i].GROUP_ID_1_NAME + '</option>';
-			}
-		}
-		var $area = $("#regionName");
-		var $h = $(h);
-		$area.empty().append($h);
-		$area.change(function() {
-			listUnits($(this).val());
-		});
-	} else {
-		alert("获取地市信息失败");
-	}
-}
-function listUnits(regionName){
-	var $unit=$("#unitName");
-	var time=$("#time").val();
-	var sql = "select distinct t.UNIT_NAME from PMRT.TAB_MRT_JCDY_KPI_QJ_DETAIL_MON t where 1=1 ";
-	if(time!=''){
-		//sql+=" and t.DEAL_DATE="+time;
-	}
-	if(regionName!=''){
-		sql+=" and t.GROUP_ID_1_NAME='"+regionName+"' ";
-		//权限
-		var orgLevel=$("#orgLevel").val();
-		var code=$("#code").val();
-		var hrId=$("#hrId").val();
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2){
-			sql+=" and t.GROUP_ID_1="+code;
-		}else if(orgLevel==3){
-			sql+=" and t.UNIT_ID='"+code+"'";
-		}else{
-			sql+=" and t.UNIT_ID='"+code+"'";
-			/*sql+=" and t.HR_ID='"+hrId+"'";*/
-		}
-	}else{
-		$unit.empty().append('<option value="" selected>请选择</option>');
-		return;
-	}
-	var d=query(sql);
-	if (d) {
-		var h = '';
-		if (d.length == 1) {
-			h += '<option value="' + d[0].UNIT_NAME
-					+ '" selected >'
-					+ d[0].UNIT_NAME + '</option>';
-		} else {
-			h += '<option value="" selected>请选择</option>';
-			for (var i = 0; i < d.length; i++) {
-				h += '<option value="' + d[i].UNIT_NAME + '">' + d[i].UNIT_NAME + '</option>';
-			}
-		}
-		
-		var $h = $(h);
-		$unit.empty().append($h);
-	} else {
-		alert("获取基层单元信息失败");
-	}
-}
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
 	var dealDate=$.trim($("#deal_date").val());
-	var regionName=$.trim($("#regionName").val());
-	var unitName=$.trim($("#unitName").val());
+	var regionCode=$.trim($("#regionCode").val());
+	var unitCode=$.trim($("#unitCode").val());
 	var userName=$.trim($("#userName").val());
 	var realName=$.trim($("#realName").val());
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	var hrId=$("#hrId").val();
 	var sql = "SELECT T.DEAL_DATE,                           "+
-	"       T.GROUP_ID_1_NAME,                     	"+
-	"       T.UNIT_ID,                             	"+
-	"       T.UNIT_NAME,                           	"+
-	"       T.HR_ID,                               	"+
-	"       T.NAME,                                	"+
-	"       DECODE(T.USER_ROLE,                    	"+
-	"              1,                              	"+
-	"              '营服中心责任人',               	   	"+
-	"              2,                              	"+
-	"              '渠道经理',                       	"+
-	"              3,                              	"+
-	"              '集客经理',                       	"+
-	"              4,                              	"+
-	"              '营业员',                        	"+
-	"              5,                              	"+
-	"              '固网专员',                       	"+
-	"              6,                              	"+
-	"              '营业厅主任',                   	"+
-	"              7,                              	"+
-	"              '集客行业总监') USER_ROLE,          "+
-	"       T.KPI_NAME,                            	"+
-	"       T.TARGET_NAME,                         	"+
-	"       T.TARGET                              	"+
-	"  FROM PMRT.TAB_MRT_JCDY_KPI_QJ_DETAIL_MON T  WHERE 1=1 	";
+			"       T.GROUP_ID_1_NAME,                     	"+
+			"       T.UNIT_ID,                             	"+
+			"       T.UNIT_NAME,                           	"+
+			"       T.HR_ID,                               	"+
+			"       T.NAME,                                	"+
+			"       DECODE(T.USER_ROLE,                    	"+
+			"              1,                              	"+
+			"              '营服中心责任人',               	"+
+			"              2,                              	"+
+			"              '渠道经理',                       "+
+			"              3,                              	"+
+			"              '集客经理',                       "+
+			"              4,                              	"+
+			"              '营业员',                        	"+
+			"              5,                              	"+
+			"              '固网专员',                       "+
+			"              6,                              	"+
+			"              '营业厅主任',                   	"+
+			"              7,                              	"+
+			"              '集客行业总监') USER_ROLE,         "+
+			"       T.KPI_NAME,                            	"+
+			"       T.TARGET_NAME,                         	"+
+			"       T.TARGET                              	"+
+			"  FROM PMRT.TAB_MRT_JCDY_KPI_QJ_DETAIL_MON T  WHERE T.DEAL_DATE = '"+dealDate+"'";
 
 	//条件
-	if(dealDate!=''){
-		sql+=" AND T.DEAL_DATE = '"+dealDate+"'";
+	if(regionCode!=''){
+		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
-	if(regionName!=''){
-		sql+=" AND T.GROUP_ID_1_NAME like '%"+regionName+"%'";
-	}
-	if(unitName!=''){
-		sql+=" AND T.UNIT_NAME like '%"+unitName+"%'";
+	if(unitCode!=''){
+		sql += " AND UNIT_ID IN("+_unit_relation(unitCode)+")";
 	}
 	if(userName!=''){
 		sql+=" AND T.NAME LIKE '%"+userName+"%'";
 	}
-	
-	
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	var hrId=$("#hrId").val();
-	var regionCode=$.trim($("#regionCode").val());
-if(orgLevel==1){
+
+	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 ='"+code+"'";
+		sql+=" AND T.GROUP_ID_1 ='"+code+"'";
 	}else if(orgLevel==3){
-		sql+=" and T.UNIT_ID ='"+code+"'";
+		sql += " AND UNIT_ID IN("+_unit_relation(code)+")";
 	}else{
-		sql+=" and T.NAME ='"+realName+"'";
+		sql+=" AND T.NAME ='"+realName+"'";
 	}
 	sql+=" ORDER BY T.GROUP_ID_1,T.UNIT_ID";
 	var title=[["帐期","地市","营服编码","营服","HR编码","人员名称","人员角色","KPI指标","考核指标","考核指标数"]];
