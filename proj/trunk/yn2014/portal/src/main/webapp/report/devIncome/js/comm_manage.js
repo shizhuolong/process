@@ -52,11 +52,16 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 			    if(orgLevel==2){
-			    	preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
+			    	preSql="SELECT T.GROUP_ID_1 ROW_ID,T.GROUP_ID_1_NAME ROW_NAME,";
+					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
+					where+=" AND T.GROUP_ID_0='"+code+"'";
+					order=" ORDER BY T.GROUP_ID_1";
+				}else if(orgLevel==3){
+					preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
 					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME";
 					where+=" AND T.GROUP_ID_1='"+code+"'";
 					order=" ORDER BY T.UNIT_ID";
-				}else if(orgLevel==3){
+				}else if(orgLevel==4){
 					preSql="SELECT T.GROUP_ID_4 ROW_ID,T.GROUP_ID_4_NAME ROW_NAME,";
 					groupBy=" GROUP BY T.GROUP_ID_4,T.GROUP_ID_4_NAME";
 					where+=" AND T.UNIT_ID='"+code+"'";
@@ -69,19 +74,18 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){
-					preSql="SELECT T.GROUP_ID_1 ROW_ID,T.GROUP_ID_1_NAME ROW_NAME,";
-					order=" ORDER BY T.GROUP_ID_1";
-					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
+					preSql="SELECT T.GROUP_ID_0 ROW_ID,T.GROUP_ID_0_NAME ROW_NAME,";
+					order=" ORDER BY T.GROUP_ID_0";
+					groupBy=" GROUP BY T.GROUP_ID_0,T.GROUP_ID_0_NAME";
 					where+=" AND GROUP_ID_0='"+code+"'";
 				}else if(orgLevel==2){
-					preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
-					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME";
+					preSql="SELECT T.GROUP_ID_1 ROW_ID,T.GROUP_ID_1_NAME ROW_NAME,";
+					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
 					where+=" AND T.GROUP_ID_1='"+code+"'";
-					order=" ORDER BY T.UNIT_ID";
 				}else if(orgLevel==3){
-					preSql="SELECT T.GROUP_ID_4 ROW_ID,T.GROUP_ID_4_NAME ROW_NAME,";
+					preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
 					join=getJoinSql(qdate);
-					groupBy=" GROUP BY T.GROUP_ID_4,T.GROUP_ID_4_NAME,T2.HR_ID,T3.HR_ID";
+					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME,T2.HR_ID,T3.HR_ID";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -275,7 +279,6 @@ function downsAll() {
 		where+=" AND T.GROUP_ID_1='"+code+"'";
 	}else{
 		 join=getJoinSql(qdate);
-	//	 var hrIds=_jf_power(hrId,qdate);
 		 if(hrIds&&hrIds!=""){
 			 qx+=" WHERE HR_ID in("+hrIds+") ";
 		 }else{
