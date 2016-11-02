@@ -75,8 +75,10 @@ function search(pageNumber) {
 	}
 	if(code!=null&&code!=""){
 		if(level==1){
-			sql+=" AND group_id_1='"+code+"'";
+			sql+=" AND group_id_0='"+code+"'";
 		}else if(level==2){
+			sql+=" AND group_id_1='"+code+"'";
+		}else if(level==3){
 			sql+=" AND unit_id='"+code+"'";
 		}else{
 			sql+=" AND group_id_4='"+code+"'";
@@ -187,10 +189,13 @@ function downsAll(){
 	if(itemname!=''){
 		sql+=" AND ITEMNAME LIKE '%"+itemname+"%'";
 	}
+	
 	if(code!=null&&code!=""){
 		if(level==1){
-			sql+=" AND group_id_1='"+code+"'";
+			sql+=" AND group_id_0='"+code+"'";
 		}else if(level==2){
+			sql+=" AND group_id_1='"+code+"'";
+		}else if(level==3){
 			sql+=" AND unit_id='"+code+"'";
 		}else{
 			sql+=" AND group_id_4='"+code+"'";
