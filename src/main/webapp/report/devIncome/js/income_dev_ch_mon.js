@@ -139,8 +139,8 @@ var report=new LchReport({
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
-					groupBy=' group by t.group_id_1,t.group_id_1_name ';
+					preField=' NVL(t.group_id_1,\'86000\') ROW_ID,NVL(t.group_id_1_name,\'全省合计\') ROW_NAME';
+					groupBy=' GROUP BY GROUPING SETS  ( T.DEAL_DATE,(t.group_id_1, t.group_id_1_name)) ';
 					where=' where t.GROUP_ID_0=\''+code+"\' ";
 					orgLevel=2;
 				}else if(orgLevel==2){//市
