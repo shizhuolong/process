@@ -916,7 +916,7 @@ function exportUser(){
 	             "备注","用户拥有的角色列表","用户拥有的用户组列表","用户拥有的岗位列表",
 	             "账号过期","账户锁定","信用过期","账户可用"
 	             ,"联系电话","邮箱","数据所有者名称","编号",
-	             "创建时间","上一次更新时间","更新次数"]];
+	             "创建时间","上一次更新时间","更新次数","HR编码"]];
 	var fileName="用户信息";
 	var sql="";
 	sql+=" SELECT o.orgname,                                                  ";
@@ -957,7 +957,8 @@ function exportUser(){
 	sql+="        u.id,                                                       ";
 	sql+="        u.createtime,                                               ";
 	sql+="        u.updatetime,                                               ";
-	sql+="        u.version                                                   ";
+	sql+="        u.version,                                                  ";
+	sql+="        u.hr_id                                                     ";
 	sql+="   FROM portal.apdp_User u                                          ";
 	sql+="   left join portal.apdp_org o                                      ";
 	sql+="   on u.org_id=o.id                                                 ";
@@ -965,7 +966,7 @@ function exportUser(){
 	sql+="   on u1.id=u.id                                                    ";
 	sql+="   left join (                                                      ";
 	sql+="        select max(ur.userid) userid                                ";
-	sql+="    ,PODS.my_raoth_concat(PODS.raothObj(r.rolename, ',')) rolename                             ";
+	sql+="    ,PODS.my_raoth_concat(PODS.raothObj(r.rolename, ',')) rolename  ";
 	sql+="        from                                                        ";
 	sql+="              portal.apdp_user_role ur,                             ";
 	sql+="              portal.apdp_role r                                    ";
@@ -973,7 +974,7 @@ function exportUser(){
 	sql+="       group by ur.userid                                           ";
 	sql+="   ) r on                                                           ";
 	sql+="   r.userid=u.id                                                    ";
-	sql+="  where 1=1 ";
+	sql+="  where U.ENABLED=1 ";
 	if(search==true||search=='true'){
 		sql+="   and u.org_id in (select t.id                                     ";
 		sql+="                       from portal.apdp_org t                       ";
