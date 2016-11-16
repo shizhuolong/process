@@ -273,7 +273,7 @@ function downsAll() {
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
-		where = " AND T.GROUP_ID_1='" + region + "' ";
+		where = " AND T.GROUP_ID_1='"+region+"' ";
 	} 
 	if(regionCode!=""){
 		where+=" AND T.GROUP_ID_1='"+regionCode+"'";

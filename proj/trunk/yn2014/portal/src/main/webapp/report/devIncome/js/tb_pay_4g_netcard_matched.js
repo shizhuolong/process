@@ -232,7 +232,7 @@ function downsDetail(){
 	if(orgLevel==1){
 		sql+=" ORDER BY T.GROUP_ID_1_NAME";
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 ='" + code+"' ORDER BY T.UNIT_ID";
+		sql+=" and T.GROUP_ID_1 ='"+code+"' ORDER BY T.UNIT_ID";
 	}else if(orgLevel==3){
 		sql+=" AND T.UNIT_ID IN("+_unit_relation(code)+") "+" ORDER BY T.HALL_ID";
 	}else if(orgLevel==4){

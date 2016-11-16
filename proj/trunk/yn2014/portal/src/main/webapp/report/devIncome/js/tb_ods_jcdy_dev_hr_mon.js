@@ -7,7 +7,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:1,css:LchReport.RIGHT_ALIGN}],
+		css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {
@@ -141,6 +141,7 @@ function getSql(){
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
+	var dealDate =$("#dealDate").val();
 	var code =$("#code").val();
 	var region=$("#region").val();
 	//地市编码
@@ -172,7 +173,7 @@ function downsAll(){
 	if(orgLevel==1){
 
 	}else if(orgLevel==2){
-		sql+=" and T.GROUP_ID_1 =" + code+"'";
+		sql+=" and T.GROUP_ID_1 ='"+code+"'";
 	}else if(orgLevel==3){
 		sql += " AND UNIT_ID IN("+_unit_relation(code)+")";
 	}else{
