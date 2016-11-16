@@ -91,9 +91,9 @@ function getSql(){
 			"        T.STATUS,                            							"+	//--渠道状态
 			"        T.CHN_CDE_1_NAME,                    							"+	//--一级属性
 			"        T.PROFIT,                            							"+	//--毛利(收入-成本)
-			"        NVL(T.PROFIT_RATIO,0)*100||'%' AS PROFIT_RATIO,                "+  //--毛利率(毛利/收入)(%)
-			"        NVL(T.COST_INCOME_RATIO,0)*100||'%' AS COST_INCOME_RATIO,      "+  //--成本占收比(%)
-			"        NVL(T.DSDBCOST_RATIO,0)*100||'%' AS DSDBCOST_RATIO ,           "+  //--代收代办服务费占代收金额比(%)
+			"        DECODE(T.PROFIT_RATIO,'-','-',PODS.GET_RADIX_POINT(T.PROFIT_RATIO*100|| '%',2)) AS PROFIT_RATIO,"+  //--毛利率(毛利/收入)(%)
+			"        DECODE(T.COST_INCOME_RATIO,'-','-',PODS.GET_RADIX_POINT(T.COST_INCOME_RATIO*100|| '%',2)) AS COST_INCOME_RATIO,"+  //--成本占收比(%)
+			"        DECODE(T.DSDBCOST_RATIO,'-','-',PODS.GET_RADIX_POINT(T.DSDBCOST_RATIO*100|| '%',2)) AS DSDBCOST_RATIO,"+  //--代收代办服务费占代收金额比(%)
 			"        NVL(T.INCOME,0) AS   INCOME             ,        				"+	//--出账收入(减赠费、退费)(%)
 			"        NVL(T.DSDB_INCOME,0) AS DSDB_INCOME     ,                		"+	//--代收费金额
 			"        NVL(T.SLL_COUNT,0) AS  SLL_COUNT        ,              		"+	//--业务受理量(笔)(不含销售和收费)
