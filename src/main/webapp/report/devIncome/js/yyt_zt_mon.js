@@ -177,7 +177,7 @@ function downsAll(){
 	var userName=$("#userName").val();
 	var phone=$("#phone").val();
 	//条件
-	var sql = " from PMRT.TB_MRT_JCDY_ZTD_MON t where  And t.DEAL_DATE="+time;
+	var sql = " from PMRT.TB_MRT_JCDY_ZTD_MON t where  t.DEAL_DATE="+time;
 	if(regionCode!=''){
 		sql+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
@@ -201,7 +201,7 @@ function downsAll(){
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and t.GROUP_ID_1="+code;
+		sql+=" and t.GROUP_ID_1='"+code+"'";
 	}else{
 		 var hrIds=_jf_power(hrId,time);
 		 if(hrIds&&hrIds!=""){
