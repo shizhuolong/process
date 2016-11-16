@@ -128,7 +128,7 @@ function downsAll(){
 		sql+=" and DEAL_DATE="+time;
 	}
 	if(regionCode!=''){
-		sql+=" and GROUP_ID_1_NAME = '"+regionCode+"'";
+		sql+=" and GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode!=''){
 		sql+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
