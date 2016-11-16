@@ -149,7 +149,7 @@ function downsAll(){
 			"受理区域调节积分    FROM PMRT.TB_MRT_JCDY_ACC_DETAIL_MON where  账期='"+time+"' ";
 	//条件
 	if(regionCode!=''){
-		sql+=" AND 地市名称 ='"+regionCode+"'";
+		sql+=" AND 地市编码 ='"+regionCode+"'";
 	}
 	if(userName!=''){
 		sql+=" AND 姓名 LIKE '%"+userName+"%'";

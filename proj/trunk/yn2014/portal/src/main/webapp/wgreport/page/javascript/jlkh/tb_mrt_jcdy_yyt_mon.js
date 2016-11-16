@@ -52,10 +52,8 @@ function search(pageNumber) {
 	var hallName=$.trim($("#hallName").val());
 	var regionCode=$.trim($("#regionCode").val());
 //条件
-	var sql = " FROM PMRT.TB_MRT_JCDY_YYT_MON WHERE 1=1 ";
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
+	var sql = " FROM PMRT.TB_MRT_JCDY_YYT_MON WHERE  账期='"+time+"' ";
+
 	if(cityCode!=''){
 		sql+=" AND 地市编码 = '"+cityCode+"'";
 	}
@@ -73,12 +71,12 @@ function search(pageNumber) {
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and 地市编码 ="+code;
+		sql+=" AND 地市编码 ='"+code+"'";
 	}else {
 		/*sql+=" and 地市编码="+regionCode;*/
 		 var hrIds=_jf_power(hrId,time);
 		 if(hrIds!=""){
-		   sql+=" and HR编码  in("+hrIds+") ";
+		   sql+=" AND HR编码  IN("+hrIds+") ";
 		 }
 	}
 	var csql = sql;
@@ -119,18 +117,17 @@ function search(pageNumber) {
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var sql="SELECT 账期,地市名称,基层单元编码,基层单元名称,营业厅编码,营业厅名称,HR编码,姓名,发展人编码,直销原始积分,直销渠道调节积分,直销区域调节积分,维系原始积分,维系渠道调节积分,维系区域调节积分,受理原始积分,受理服务调节积分,受理区域调节积分,调节后总积分   FROM PMRT.TB_MRT_JCDY_YYT_MON where 1=1 " ;
-	var time=$("#time").val();
+		var time=$("#time").val();
 	var cityCode=$.trim($("#regionCode").val());
 	var userName=$.trim($("#userName").val());
 	var hallName=$.trim($("#hallName").val());
 //条件
 //	var sql = " FROM PMRT.TB_MRT_JCDY_YYT_MON WHERE 1=1 ";
-	if(time!=''){
-		sql+=" AND 账期='"+time+"' ";
-	}
+
+	var sql="SELECT 账期,地市名称,基层单元编码,基层单元名称,营业厅编码,营业厅名称,HR编码,姓名,发展人编码,直销原始积分,直销渠道调节积分,直销区域调节积分,维系原始积分,维系渠道调节积分,维系区域调节积分,受理原始积分,受理服务调节积分,受理区域调节积分,调节后总积分   FROM PMRT.TB_MRT_JCDY_YYT_MON where 账期='"+time+"' ";
+
 	if(cityCode!=''){
-		sql+=" AND 地市编码  '"+cityCode+"'";
+		sql+=" AND 地市编码  ='"+cityCode+"'";
 	}
 	if(userName!=''){
 		sql+=" AND 姓名 like '%"+userName+"%'";
@@ -146,7 +143,7 @@ function downsAll(){
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
-		sql+=" and 地市编码 ="+code;
+		sql+=" and 地市编码 ='"+code+"'";
 	}else {
 		/*sql+=" and 地市编码="+regionCode;*/
 		 var hrIds=_jf_power(hrId,time);

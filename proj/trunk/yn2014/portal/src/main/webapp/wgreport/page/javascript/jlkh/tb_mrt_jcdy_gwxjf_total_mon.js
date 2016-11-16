@@ -118,6 +118,7 @@ function getSelectSql(){
 	var dealDate=$("#dealDate").val();
 	var sql=
 			"	SELECT DEAL_DATE,                     "+
+			"	       AREA_NAME,                     "+
 			"	       UNIT_NAME,                     "+
 			"	       HR_NO,                         "+
 			"	       USER_NAME,                     "+
