@@ -139,7 +139,7 @@ function search(pageNumber) {
 				var hrNo=$tr.attr("HR_NO");
 				var userName=$tr.attr("USER_NAME");
 				var time=$("#time").val();
-				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='2GDK','2GHY'";
+				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode=2G";
 				window.parent.openWindow(userName+"-2G发展详细",null,url);
 			});
 			
@@ -152,7 +152,7 @@ function search(pageNumber) {
 				var hrNo=$tr.attr("HR_NO");
 				var userName=$tr.attr("USER_NAME");
 				var time=$("#time").val();
-				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='3GDK','3GHY'";
+				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode=3G";
 				window.parent.openWindow(userName+"-3G发展详细",null,url);
 			});
 			
@@ -165,7 +165,7 @@ function search(pageNumber) {
 				var hrNo=$tr.attr("HR_NO");
 				var userName=$tr.attr("USER_NAME");
 				var time=$("#time").val();
-				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode='4GDK','4GHY'";
+				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list.jsp?hrNo="+hrNo+"&time="+time+"&itemCode=4G";
 				window.parent.openWindow(userName+"-4G发展详细",null,url);
 			});
 			
@@ -179,7 +179,7 @@ function search(pageNumber) {
 				var hrNo=$tr.attr("HR_NO");
 				var userName=$tr.attr("USER_NAME");
 				var time=$("#time").val();
-				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list_swk.jsp?hrNo="+hrNo+"&time="+time+"&itemCode=";
+				var url=$("#ctx").val()+"/report/devIncome/jsp/dev_rank_mon_list_swk.jsp?hrNo="+hrNo+"&time="+time;
 				window.parent.openWindow(userName+"-上网卡发展详细",null,url);
 			});
 			
