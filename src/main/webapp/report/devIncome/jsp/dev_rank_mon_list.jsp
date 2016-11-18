@@ -8,7 +8,7 @@
 <%
 	String hrNo=(String)request.getParameter("hrNo");
 	String time=(String)request.getParameter("time");
-	String itemCode=(String)request.getParameter("itemCode");
+	String itemCode = request.getParameter("itemCode");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,7 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>用户发展详细列表</title>
+<title><%=itemCode%>2G发展详细</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
@@ -37,12 +37,11 @@
 	<input type="hidden" id="hrNo" value="<%=hrNo%>">
 	<input type="hidden" id="time" value="<%=time%>">
 	<input type="hidden" id="itemCode" value="<%=itemCode%>">
-	
-		<form id="searchForm" method="post">
+		<form id="searchForm" method="post" style="width:100px;">
 			<table width="100%" style="border:none;">
 				<tr height="35px">
 					<td width="1%" style="background-color:LightBlue;"></td>
-					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-btn" href="#" id="exportBtn"
+					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-gree-btn" href="#" id="exportBtn"
 						onclick="downsAll()">导出</a></td>
 				</tr>
 			</table>
@@ -60,8 +59,8 @@
 </body>
 <script>
 var nowData = [];
-var field = ["DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","PRODUCT_ID","DEVELOPER_ID","ITEMDESC","HQ_CHAN_NAME"];               
-var title=[["账期 ","用户编号","用户号码 ","入网时间 ","操作员工号"," 套餐编码","发展人编码","业务描述  "," 渠道名称 "]];
+var field = ["DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","PRODUCT_ID","ITEMDESC","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE"];
+var title=[["账期","用户编码","用户号码","入网时间","操作员编码","套餐编码","业务描述","指标","发展人编码 "," 所属渠道 ","渠道名称 ","直销发展人编码"]];
 //var field = ["HR_NO","DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","DEVELOPER_ID","ITEMDESC","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE"];               
 //var title=[["HR编码","账期 ","用户编号","用户号码 ","入网时间 ","操作员工号","部门编码"," 套餐编码","发展人编码","业务描述  ","所属渠道"," 渠道名称 ","渠道总部编码"]];
 var orderBy = ' order by DEAL_DATE asc ';
@@ -123,34 +122,8 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var hrNo = $("#hrNo").val();
-	var time = $("#time").val();
-	var itemCode = $("#itemCode").val();
 //上网卡的表TB_MRT_JCDY_SWK_DEV_DAY ，
-	var sql = "";
-	sql+="	select                                                                                     ";
-	sql+="		t.hr_no,                                                                               ";
-	sql+="		t.deal_date,                                                                           ";
-	sql+="		t.subscription_id,                                                                     ";
-	sql+="		t.service_num,                                                                         ";
-	sql+="		t.join_date,                                                                           ";
-	sql+="		t.operator_id,                                                                         ";
-	sql+="		t.product_id,                                                                          ";
-	sql+="		t.developer_id,                                                                        ";
-	sql+="		t.itemdesc,                                                                            ";
-	sql+="		t.hq_chanl_code,                                                                       ";
-	sql+="		t.hq_chan_name,                                                                        ";
-	sql+="		t.fd_chanl_code                                                                        ";
-	sql+="	from(                                                                                      ";
-	sql+="		select * from pmrt.TB_MRT_JCDY_JKXSJF_DAY                                              ";
-	sql+="		UNION                                                                                  ";
-	sql+="		SELECT * FROM pmrt.TB_MRT_JCDY_QDXSJF_DAY                                              ";
-	sql+="		UNION                                                                                  ";
-	sql+="		SELECT * FROM pmrt.TB_MRT_JCDY_GWXJF_DETAIL_DAY                                        ";
-	sql+="	) t                                                                                        ";
-	sql+="	                                                                                           ";
-	sql+="	where t.deal_date like '"+time+"__' and t.hr_no='"+hrNo+"' and t.itemcode in("+itemCode+") ";
-
+	var sql = getSql();
 	var cdata = query("select count(*) total from(" + sql+")");
 	var total = 0;
 	if (cdata && cdata.length) {
@@ -188,38 +161,67 @@ function search(pageNumber) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var hrNo = $("#hrNo").val();
 	var time = $("#time").val();
 	var itemCode = $("#itemCode").val();
-//上网卡的表TB_MRT_JCDY_SWK_DEV_DAY ，
-	var sql = "";
-	sql+="	select                                                                                     ";
-	sql+="		t.deal_date,                                                                           ";
-	sql+="		t.subscription_id,                                                                     ";
-	sql+="		t.service_num,                                                                         ";
-	sql+="		t.join_date,                                                                           ";
-	sql+="		t.operator_id,                                                                         ";
-	sql+="		t.product_id,                                                                          ";
-	sql+="		t.developer_id,                                                                        ";
-	sql+="		t.itemdesc,                                                                            ";
-	sql+="		t.hq_chan_name                                                                        ";
-	sql+="	from(                                                                                      ";
-	sql+="		select * from pmrt.TB_MRT_JCDY_JKXSJF_DAY                                              ";
-	sql+="		UNION                                                                                  ";
-	sql+="		SELECT * FROM pmrt.TB_MRT_JCDY_QDXSJF_DAY                                              ";
-	sql+="		UNION                                                                                  ";
-	sql+="		SELECT * FROM pmrt.TB_MRT_JCDY_GWXJF_DETAIL_DAY                                        ";
-	sql+="	) t                                                                                        ";
-	sql+="	                                                                                           ";
-	sql+="	where t.deal_date like '"+time+"__' and t.hr_no='"+hrNo+"' and t.itemcode in("+itemCode+") ";
-
+	var sql = getSql();
 
 	if (orderBy != '') {
 		sql += orderBy;
 	}
 
-	showtext = '用户发展详细列表-' + time;
+	showtext = itemCode+'发展详细-' + time;
 	downloadExcel(sql,title,showtext);
+}
+
+
+function getSql(){
+	var hrNo = $("#hrNo").val();
+	var time = $("#time").val();
+	var itemCode = $("#itemCode").val().toString();
+	var whereSql="";
+	if(itemCode=='2G'){
+		whereSql="  AND SOURCE_CODE in (1010)                        ";
+	}else if(itemCode=='3G'){
+		whereSql="	AND SOURCE_CODE in (1030, 1031) and ITEMCODE like '3G%' ";
+	}else if(itemCode=='4G'){
+		whereSql="	AND SOURCE_CODE in (1030, 1031) and ITEMCODE like '4G%' ";
+	}
+	var sql=" SELECT DEAL_DATE,                                   "+
+			"        SUBSCRIPTION_ID,                             "+
+			"        SERVICE_NUM,                                 "+
+			"        JOIN_DATE,                                   "+
+			"        OPERATOR_ID,                                 "+
+			"        PRODUCT_ID,                                  "+
+			"        ITEMDESC,                                    "+
+			"        ITEMVALUE,                                   "+
+			"        DEVELOPER_ID,                                "+
+			"        HQ_CHANL_CODE,                               "+
+			"        HQ_CHAN_NAME,                                "+
+			"        FD_CHANL_CODE                                "+
+			"   FROM PMRT.TB_MRT_JCDY_JKXSJF_DAY                  "+
+			"  WHERE SUBSTR(DEAL_DATE, 1, 6) = '"+time+"'         "+
+			"    AND HR_NO = '"+hrNo+"'                           "
+			+whereSql+
+			" UNION ALL                                           "+
+			" SELECT DEAL_DATE,                                   "+
+			"        SUBSCRIPTION_ID,                             "+
+			"        SERVICE_NUM,                                 "+
+			"        JOIN_DATE,                                   "+
+			"        OPERATOR_ID,                                 "+
+			"        PRODUCT_ID,                                  "+
+			"        ITEMDESC,                                    "+
+			"        ITEMVALUE,                                   "+
+			"        DEVELOPER_ID,                                "+
+			"        HQ_CHANL_CODE,                               "+
+			"        HQ_CHAN_NAME,                                "+
+			"        FD_CHANL_CODE                                "+
+			"   FROM PMRT.TB_MRT_JCDY_QDXSJF_DAY                  "+
+			"  WHERE SUBSTR(DEAL_DATE, 1, 6) = '"+time+"'         "+
+			"    AND HR_NO = '"+hrNo+"'                           "+
+			whereSql;
+			
+	
+	return sql;
 }
 /////////////////////////下载结束/////////////////////////////////////////////
 </script>
