@@ -8,7 +8,6 @@
 <%
 	String hrNo=(String)request.getParameter("hrNo");
 	String time=(String)request.getParameter("time");
-	String itemCode=(String)request.getParameter("itemCode");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,7 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>用户发展详细列表</title>
+<title>用户上网卡发展详细列表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -32,13 +31,12 @@
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="hrNo" value="<%=hrNo%>">
 	<input type="hidden" id="time" value="<%=time%>">
-	<input type="hidden" id="itemCode" value="<%=itemCode%>">
 	
-		<form id="searchForm" method="post">
+		<form id="searchForm" method="post" style="width:100px;">
 			<table width="100%" style="border:none;">
 				<tr height="35px">
 					<td width="1%" style="background-color:LightBlue;"></td>
-					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-btn" href="#" id="exportBtn"
+					<td width="20%" style="background-color:LightBlue;border:none;"><a class="default-gree-btn" href="#" id="exportBtn"
 						onclick="downsAll()">导出</a></td>
 				</tr>
 			</table>
@@ -56,8 +54,8 @@
 </body>
 <script>
 var nowData = [];
-var field = ["DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","PRODUCT_ID","PRODUCT_NAME","DEVELOPER_ID","HQ_CHANL_CODE"];
-var title=[["账期","用户编码","用户号码","入网时间","操作员编码","套餐编码","套餐名称","发展人编码","渠道编码"]];
+var field = ["DEAL_DATE","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","PRODUCT_ID","ITEMDESC","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","HQ_CHAN_NAME","FD_CHANL_CODE"];
+var title=[["账期","用户编码","用户号码","入网时间","操作员编码","套餐编码","业务描述","指标","发展人编码 "," 所属渠道 ","渠道名称 ","直销发展人编码"]];
 var orderBy = ' order by DEAL_DATE asc ';
 var report = null;
 $(function() {
@@ -100,55 +98,7 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var hrNo = $("#hrNo").val();
-	var time = $("#time").val();
-	var itemCode = $("#itemCode").val();
-	var sql = "";
-	sql+=" SELECT                                                                              ";
-	sql+="     t.deal_date ,                                                                   ";
-	sql+="     t.subscription_id,                                                              ";
-	sql+="     t.service_num,                                                                  ";
-	sql+="     TO_CHAR(t.join_date, 'yyyy-MM-dd hh24:SS:mm') join_date,                        ";
-	sql+="     t.operator_id,                                                                  ";
-	sql+="     t.product_id,                                                                   ";
-	sql+="     T.PRODUCT_NAME,                                                                 ";
-	sql+="     t.developer_id,                                                                 ";
-	sql+="     t.hq_chanl_code                                                                ";
-	sql+=" FROM (SELECT B.HR_NO, B.AREA_NAME, B.UNIT_NAME, B.USER_NAME, A.*                    ";
-	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
-	sql+="                (select group_id_1_name AREA_NAME,                                   ";
-	sql+="                        unit_name       UNIT_NAME,                                   ";
-	sql+="                        name            USER_NAME,                                   ";
-	sql+="                        hr_id           HR_NO,                                       ";
-	sql+="                        USER_CODE       USER_CODE                                    ";
-	sql+="                   from portal.tab_portal_mag_person where deal_date='"+time+"') b                              ";
-	sql+="          WHERE A.OPERATOR_ID = B.USER_CODE                                          ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
-	sql+="         UNION ALL                                                                   ";
-	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
-	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
-	sql+="                (SELECT group_id_1_name,                                             ";
-	sql+="                        unit_name,                                                   ";
-	sql+="                        name,                                                        ";
-	sql+="                        hr_id HR_NO,                                                 ";
-	sql+="                        HQ_CHAN_CODE                                                 ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON where deal_date='"+time+"') B                              ";
-	sql+="          WHERE A.HQ_CHANL_CODE = B.HQ_CHAN_CODE                                     ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
-	sql+="            AND A.HQ_CHANL_CODE NOT IN                                               ";
-	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person where deal_date='"+time+"')              ";
-	sql+="         UNION ALL                                                                   ";
-	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
-	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
-	sql+="                (SELECT group_id_1_name,                                             ";
-	sql+="                        unit_name,                                                   ";
-	sql+="                        name,                                                        ";
-	sql+="                        hr_id HR_NO,                                                 ";
-	sql+="                        DEVELOPER                                                    ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_GRP_PERSON where deal_date='"+time+"') B                              ";
-	sql+="          WHERE (A.DEVELOPER_ID = B.DEVELOPER or                                     ";
-	sql+="                A.fd_chanl_code = B.developer)                                       ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"') t  where t.hr_no='"+hrNo+"'                              ";
+	var sql=getSql();
 
 	var cdata = query("select count(*) total from(" + sql+")");
 	var total = 0;
@@ -186,65 +136,55 @@ function search(pageNumber) {
 }
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var hrNo = $("#hrNo").val();
 	var time = $("#time").val();
-	var itemCode = $("#itemCode").val();
-//上网卡的表TB_MRT_JCDY_SWK_DEV_DAY ，
-	var sql = "";
-	sql+=" SELECT                                                                              ";
-	sql+="     t.deal_date ,                                                                   ";
-	sql+="     t.subscription_id,                                                              ";
-	sql+="     t.service_num,                                                                  ";
-	sql+="     TO_CHAR(t.join_date, 'yyyy-MM-dd hh24:SS:mm') join_date,                        ";
-	sql+="     t.operator_id,                                                                  ";
-	sql+="     t.product_id,                                                                   ";
-	sql+="     T.PRODUCT_NAME,                                                                 ";
-	sql+="     t.developer_id,                                                                 ";
-	sql+="     t.hq_chanl_code                                                                ";
-	sql+=" FROM (SELECT B.HR_NO, B.AREA_NAME, B.UNIT_NAME, B.USER_NAME, A.*                    ";
-	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
-	sql+="                (select group_id_1_name AREA_NAME,                                   ";
-	sql+="                        unit_name       UNIT_NAME,                                   ";
-	sql+="                        name            USER_NAME,                                   ";
-	sql+="                        hr_id           HR_NO,                                       ";
-	sql+="                        USER_CODE       USER_CODE                                    ";
-	sql+="                   from portal.tab_portal_mag_person where deal_date='"+time+"') b                              ";
-	sql+="          WHERE A.OPERATOR_ID = B.USER_CODE                                          ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
-	sql+="         UNION ALL                                                                   ";
-	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
-	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
-	sql+="                (SELECT group_id_1_name,                                             ";
-	sql+="                        unit_name,                                                   ";
-	sql+="                        name,                                                        ";
-	sql+="                        hr_id HR_NO,                                                 ";
-	sql+="                        HQ_CHAN_CODE                                                 ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_MOB_PERSON where deal_date='"+time+"') B                              ";
-	sql+="          WHERE A.HQ_CHANL_CODE = B.HQ_CHAN_CODE                                     ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"'                               ";
-	sql+="            AND A.HQ_CHANL_CODE NOT IN                                               ";
-	sql+="                (SELECT HQ_CHAN_CODE FROM portal.tab_portal_mag_person where deal_date='"+time+"')              ";
-	sql+="         UNION ALL                                                                   ";
-	sql+="         SELECT B.HR_NO, B.GROUP_ID_1_NAME, B.UNIT_NAME, B.NAME, A.*                 ";
-	sql+="           FROM PMRT.TB_MRT_JCDY_SWK_DEV_DAY A,                                      ";
-	sql+="                (SELECT group_id_1_name,                                             ";
-	sql+="                        unit_name,                                                   ";
-	sql+="                        name,                                                        ";
-	sql+="                        hr_id HR_NO,                                                 ";
-	sql+="                        DEVELOPER                                                    ";
-	sql+="                   FROM PORTAL.TAB_PORTAL_GRP_PERSON where deal_date='"+time+"') B                              ";
-	sql+="          WHERE (A.DEVELOPER_ID = B.DEVELOPER or                                     ";
-	sql+="                A.fd_chanl_code = B.developer)                                       ";
-	sql+="            AND SUBSTR(A.DEAL_DATE, 1, 6) = '"+time+"') t  where t.hr_no='"+hrNo+"'                              ";
-
-
+	var sql = getSql();
 	
 	if (orderBy != '') {
 		sql += orderBy;
 	}
-
 	showtext = '用户上网卡发展详细列表-' + time;
 	downloadExcel(sql,title,showtext);
+}
+
+
+
+function getSql(){
+	var hrNo = $("#hrNo").val();
+	var time = $("#time").val();
+	var sql=" SELECT DEAL_DATE,                                                 "+	//--账期
+			"        SUBSCRIPTION_ID,                                           "+	//--用户编码
+			"        SERVICE_NUM,                                               "+	//--用户号码
+			"        JOIN_DATE,                                                 "+	//--入网时间
+			"        OPERATOR_ID,                                               "+	//--操作员编码     
+			"        PRODUCT_ID,                                                "+	//--套餐编码
+			"        ITEMDESC,                                                  "+	//--业务描述
+			"        ITEMVALUE,                                                 "+	//--指标
+			"        DEVELOPER_ID,                                              "+	//--发展人编码 
+			"        HQ_CHANL_CODE,                                             "+	//-- 所属渠道 
+			"        HQ_CHAN_NAME,                                              "+	//--渠道名称 
+			"        FD_CHANL_CODE                                              "+	//--直销发展人编码
+			"   FROM PMRT.TB_MRT_JCDY_JKXSJF_DAY                                "+
+			"  WHERE SUBSTR(DEAL_DATE,1,6) ='"+time+"' AND HR_NO='"+hrNo+"'     "+
+			"    AND( SOURCE_CODE IN (1020, 1021, 1022, 1023)                   "+
+			"     OR (SOURCE_CODE = 1025 AND PRODUCT_ID = 26960))               "+
+			" UNION ALL                                                         "+
+			" SELECT DEAL_DATE,                                                 "+
+			"        SUBSCRIPTION_ID,                                           "+
+			"        SERVICE_NUM,                                               "+
+			"        JOIN_DATE,                                                 "+
+			"        OPERATOR_ID,                                               "+
+			"        PRODUCT_ID,                                                "+
+			"        ITEMDESC,                                                  "+
+			"        ITEMVALUE,                                                 "+
+			"        DEVELOPER_ID,                                              "+
+			"        HQ_CHANL_CODE,                                             "+
+			"        HQ_CHAN_NAME,                                              "+
+			"        FD_CHANL_CODE                                              "+
+			"   FROM PMRT.TB_MRT_JCDY_QDXSJF_DAY                                "+
+			"  WHERE  SUBSTR(DEAL_DATE,1,6) ='"+time+"' AND HR_NO='"+hrNo+"'    "+
+			"    AND( SOURCE_CODE IN (1020, 1021, 1022, 1023)                   "+
+			"     OR (SOURCE_CODE = 1025 AND PRODUCT_ID = 26960))               ";
+	return sql;
 }
 /////////////////////////下载结束/////////////////////////////////////////////
 </script>
