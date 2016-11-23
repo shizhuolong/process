@@ -12,15 +12,17 @@
 	  				T.INSPEC_ID,
 	  				T.INSPEC_NAME,
 	  				T.C_USER_ID,
-	  				T.START_TIME,
-	            	T.END_TIME,
+	  				TO_CHAR(T.START_TIME, 'yyyy-MM-dd') START_TIME,
+	            	TO_CHAR(T.END_TIME, 'yyyy-MM-dd') END_TIME,
 	            	T.C_USER_NAME,
 	            	T.INSPEC_TYPE,
 	            	
-	            	CASE WHEN T.INSPEC_TYPE = '1' THEN '日常巡检' WHEN T.INSPEC_TYPE = '2' THEN '活动巡检' 
+	            	CASE WHEN T.INSPEC_TYPE = '1' THEN '日常巡检' 
+	            	WHEN T.INSPEC_TYPE = '2' THEN '活动巡检' 
+	            	WHEN T.INSPEC_TYPE = '3' THEN '信息收集' 
 	            	ELSE '' END AS INSPEC_TYPE_NAME,
 	            	
-	            	CASE WHEN TO_CHAR(SYSDATE, 'yyyy-MM-dd') > T.END_TIME THEN '1' 
+	            	CASE WHEN SYSDATE > T.END_TIME THEN '1' 
 	            	ELSE '0' END AS IS_DEL
 	           FROM PORTAL.TAB_PORTAL_INSPEC_TASK T WHERE T.IS_VALID = '1'
 	           <if test="orgLevel>1">
@@ -33,10 +35,10 @@
 	           		AND T.C_USER_NAME LIKE #{creator}
 	           </if>
 	           <if test="startTime != null">
-	           		AND T.START_TIME &gt;= #{startTime}
+	           		AND TO_CHAR(T.START_TIME, 'yyyy-MM-dd') &gt;= #{startTime}
 	           </if>
 	           <if test="endTime != null">
-	           		AND T.END_TIME &gt;= #{endTime}
+	           		AND TO_CHAR(T.END_TIME, 'yyyy-MM-dd') &gt;= #{endTime}
 	           </if>
 	           <if test="inspec_type != null">
 	           		AND T.INSPEC_TYPE = #{inspec_type}
@@ -101,6 +103,7 @@
 			WHERE 
 				T1.DEAL_DATE=#{month} 
 				AND T1.UNIT_ID=#{unitId}
+				AND T1.USERID=#{userId}
 				<if test="hqChanlName != null">
 					AND T1.HQ_CHAN_NAME LIKE #{hqChanlName}
 				</if>
@@ -181,7 +184,7 @@
    		C_USER_ID,C_USER_NAME,C_USER_REGION,HQ_CHANL_ID,CHANL_NAME,INSPEC_SUM,REMARK,IS_VALID,
    		CREATE_TIME,C_USER_REGION_LEVEL,R_USER_REGION_LEVEL,R_PHONE,C_PHONE,CHANL_TYPE,
    		R_USER_ID,R_USER_NAME,R_USER_REGION,INSPEC_TYPE) 
-   		VALUES(#{id},#{inspec_id},#{inspec_name},#{start_time},#{end_time},#{c_user_id},
+   		VALUES(#{id},#{inspec_id},#{inspec_name},to_date(#{start_time},'yyyy-MM-dd'),to_date(#{end_time},'yyyy-MM-dd'),#{c_user_id},
    		#{c_user_name},#{c_user_region},#{hq_chanl_id},#{chanl_name},#{inspec_sum},#{remark,jdbcType=VARCHAR},'1',
    		sysdate,#{c_user_region_level},#{r_user_region_level},#{r_phone,jdbcType=VARCHAR},#{c_phone,jdbcType=VARCHAR},#{chanl_type},
    		#{r_user_id},#{r_user_name},#{r_user_region},#{inspec_type})
@@ -193,51 +196,93 @@
 	</update>
 	
 	<select id="queryInspectionChanl" parameterType="String" resultType="java.util.Map">
-		SELECT T.* FROM PORTAL.TAB_PORTAL_INSPEC_TASK T
+		SELECT  
+			T.ID,
+			T.INSPEC_ID,
+			T.INSPEC_NAME,
+			TO_CHAR(T.START_TIME, 'yyyy-MM-dd') START_TIME,
+			TO_CHAR(T.END_TIME,'yyyy-MM-dd') END_TIME,
+			T.C_USER_ID,
+			T.C_USER_NAME,
+			T.C_USER_REGION,
+			T.R_USER_ID,
+			T.R_USER_NAME,
+			T.R_USER_REGION,
+			T.HQ_CHANL_ID,
+			T.CHANL_NAME,
+			T.INSPEC_SUM,
+			T.REMARK,
+			T.IS_VALID,
+			T.INSPEC_TYPE,
+			T.CREATE_TIME,
+			T.C_USER_REGION_LEVEL,
+			T.R_USER_REGION_LEVEL,
+			T.R_PHONE,
+			T.REGISTER_SUM,
+			T.C_PHONE,
+			T.CHANL_TYPE 
+		FROM PORTAL.TAB_PORTAL_INSPEC_TASK T
  		WHERE T.INSPEC_ID = #{inspec_id} AND T.IS_VALID = '1'
 	</select>
 	
 	<update id="updateHdInspec" parameterType="org.apdplat.taskManagement.inspection.bean.InspectionBean">
-		MERGE INTO PORTAL.TAB_PORTAL_INSPEC_TASK T1 
-		USING (
-			SELECT #{id} AS ID,
-              #{inspec_id} AS INSPEC_ID,
-              #{inspec_name} AS INSPEC_NAME,
-              #{start_time} AS START_TIME,
-              #{end_time} AS END_TIME,
-              #{c_user_id} AS C_USER_ID,
-              #{c_user_name} AS C_USER_NAME,
-              #{c_user_region} AS C_USER_REGION,
-              #{r_user_id} AS R_USER_ID,
-              #{r_user_name} AS R_USER_NAME,
-              #{r_user_region} AS R_USER_REGION,
-              #{hq_chanl_id} AS HQ_CHANL_ID,
-              #{chanl_name} AS CHANL_NAME,
-              #{inspec_sum} AS INSPEC_SUM,
-              #{remark,jdbcType=VARCHAR} AS REMARK,
-              #{inspec_type} AS INSPEC_TYPE,
-              #{c_user_region_level} AS C_USER_REGION_LEVEL,
-              #{r_user_region_level} AS R_USER_REGION_LEVEL,
-              #{r_phone,jdbcType=VARCHAR} AS R_PHONE,
-              #{c_phone,jdbcType=VARCHAR} AS C_PHONE,
-              #{chanl_type} AS CHANL_TYPE
-         FROM DUAL
-        ) T2 
-        ON (T1.INSPEC_ID = T2.INSPEC_ID AND T1.HQ_CHANL_ID = T2.HQ_CHANL_ID AND T1.R_USER_ID = T2.R_USER_ID AND T1.INSPEC_TYPE = T2.INSPEC_TYPE)
-		WHEN MATCHED THEN
-  			UPDATE SET T1.INSPEC_SUM = T2.INSPEC_SUM,T1.INSPEC_NAME = T2.INSPEC_NAME,
-         				T1.START_TIME = T2.START_TIME,T1.END_TIME = T2.END_TIME,
-         				T1.REMARK = T2.REMARK
-		WHEN NOT MATCHED THEN
-  			INSERT(T1.ID,T1.INSPEC_ID,T1.INSPEC_NAME,T1.START_TIME,T1.END_TIME,T1.C_USER_ID,
-  			T1.C_USER_NAME,T1.C_USER_REGION,T1.R_USER_ID,T1.R_USER_NAME,T1.R_USER_REGION,
-  			T1.HQ_CHANL_ID,T1.CHANL_NAME,T1.INSPEC_SUM,T1.REMARK,T1.IS_VALID,T1.INSPEC_TYPE,
-  			T1.CREATE_TIME,T1.C_USER_REGION_LEVEL,T1.R_USER_REGION_LEVEL,T1.R_PHONE,
-  			T1.C_PHONE,T1.CHANL_TYPE) VALUES(T2.ID,T2.INSPEC_ID,T2.INSPEC_NAME,T2.START_TIME,
-  			T2.END_TIME,T2.C_USER_ID,T2.C_USER_NAME,T2.C_USER_REGION,T2.R_USER_ID,
-  			T2.R_USER_NAME,T2.R_USER_REGION,T2.HQ_CHANL_ID,T2.CHANL_NAME,T2.INSPEC_SUM,
-  			T2.REMARK,'1',T2.INSPEC_TYPE,SYSDATE,T2.C_USER_REGION_LEVEL,
-  			T2.R_USER_REGION_LEVEL,T2.R_PHONE,T2.C_PHONE,T2.CHANL_TYPE)
+		<if test="inspec_type ==1 or inspec_type==2 ">
+			MERGE INTO PORTAL.TAB_PORTAL_INSPEC_TASK T1 
+			USING (
+				SELECT #{id} AS ID,
+	              #{inspec_id} AS INSPEC_ID,
+	              #{inspec_name} AS INSPEC_NAME,
+	              to_date(#{start_time},'yyyy-MM-dd') AS START_TIME,
+	              to_date(#{end_time},'yyyy-MM-dd') AS END_TIME,
+	              #{c_user_id} AS C_USER_ID,
+	              #{c_user_name} AS C_USER_NAME,
+	              #{c_user_region} AS C_USER_REGION,
+	              #{r_user_id} AS R_USER_ID,
+	              #{r_user_name} AS R_USER_NAME,
+	              #{r_user_region} AS R_USER_REGION,
+	              #{hq_chanl_id} AS HQ_CHANL_ID,
+	              #{chanl_name} AS CHANL_NAME,
+	              #{inspec_sum} AS INSPEC_SUM,
+	              #{remark,jdbcType=VARCHAR} AS REMARK,
+	              #{inspec_type} AS INSPEC_TYPE,
+	              #{c_user_region_level} AS C_USER_REGION_LEVEL,
+	              #{r_user_region_level} AS R_USER_REGION_LEVEL,
+	              #{r_phone,jdbcType=VARCHAR} AS R_PHONE,
+	              #{c_phone,jdbcType=VARCHAR} AS C_PHONE,
+	              #{chanl_type} AS CHANL_TYPE
+	         FROM DUAL
+	        ) T2 
+	        ON (T1.INSPEC_ID = T2.INSPEC_ID AND T1.HQ_CHANL_ID = T2.HQ_CHANL_ID AND T1.R_USER_ID = T2.R_USER_ID AND T1.INSPEC_TYPE = T2.INSPEC_TYPE)
+			WHEN MATCHED THEN
+	  			UPDATE SET T1.INSPEC_SUM = T2.INSPEC_SUM,T1.INSPEC_NAME = T2.INSPEC_NAME,
+	         				T1.START_TIME = T2.START_TIME,T1.END_TIME = T2.END_TIME,
+	         				T1.REMARK = T2.REMARK
+			WHEN NOT MATCHED THEN
+	  			INSERT(T1.ID,T1.INSPEC_ID,T1.INSPEC_NAME,T1.START_TIME,T1.END_TIME,T1.C_USER_ID,
+	  			T1.C_USER_NAME,T1.C_USER_REGION,T1.R_USER_ID,T1.R_USER_NAME,T1.R_USER_REGION,
+	  			T1.HQ_CHANL_ID,T1.CHANL_NAME,T1.INSPEC_SUM,T1.REMARK,T1.IS_VALID,T1.INSPEC_TYPE,
+	  			T1.CREATE_TIME,T1.C_USER_REGION_LEVEL,T1.R_USER_REGION_LEVEL,T1.R_PHONE,
+	  			T1.C_PHONE,T1.CHANL_TYPE) VALUES(T2.ID,T2.INSPEC_ID,T2.INSPEC_NAME,T2.START_TIME,
+	  			T2.END_TIME,T2.C_USER_ID,T2.C_USER_NAME,T2.C_USER_REGION,T2.R_USER_ID,
+	  			T2.R_USER_NAME,T2.R_USER_REGION,T2.HQ_CHANL_ID,T2.CHANL_NAME,T2.INSPEC_SUM,
+	  			T2.REMARK,'1',T2.INSPEC_TYPE,SYSDATE,T2.C_USER_REGION_LEVEL,
+	  			T2.R_USER_REGION_LEVEL,T2.R_PHONE,T2.C_PHONE,T2.CHANL_TYPE)
+		</if>
+		<if test="inspec_type ==3 ">
+			UPDATE PORTAL.TAB_PORTAL_INSPEC_TASK T1 
+			SET 
+			T1.INSPEC_NAME=#{inspec_name},
+			T1.START_TIME=to_date(#{start_time},'yyyy-MM-dd'),
+			T1.END_TIME=to_date(#{end_time},'yyyy-MM-dd'),
+			T1.REMARK= #{remark,jdbcType=VARCHAR},
+			T1.R_USER_ID=#{r_user_id},
+			T1.R_USER_NAME=#{r_user_name},
+			T1.R_USER_REGION=#{r_user_region},
+			T1.R_USER_REGION_LEVEL=#{r_user_region_level},
+			T1.R_PHONE= #{r_phone,jdbcType=VARCHAR},
+			T1.CHANL_TYPE= #{chanl_type,jdbcType=VARCHAR}
+			WHERE T1.INSPEC_ID=#{inspec_id}
+		</if>
 	</update>
 	
 </mapper>

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Calendar;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import net.sf.json.JSONArray;
@@ -75,7 +76,7 @@ public class ChanlInspectionAction extends BaseAction {
 			String phone = request.getParameter("phone");
 			//日常巡检只能营服中心负责人下发，所以用户的code就是营服ID
 			String unitId = org.getCode();
-			String month = request.getParameter("month");
+			String month = new SimpleDateFormat("yyyyMM").format(new Date());
 			
 			if(realName!=null && !"".equals(realName.trim())){
 				resultMap.put("realName", "%"+realName+"%");
@@ -107,18 +108,21 @@ public class ChanlInspectionAction extends BaseAction {
 			Org org = user.getOrg();
 			String unitId = org.getCode();
 			resultMap.put("unitId", unitId);
+	       
+			String userId = request.getParameter("userId");
+			resultMap.put("userId", userId);
 			
-	        String hqChanlName = request.getParameter("hqChanlName");
+			String month =  new SimpleDateFormat("yyyyMM").format(new Date());
+			resultMap.put("month", month);
+			
+			String hqChanlName = request.getParameter("hqChanlName");
 			String hqChanlCode = request.getParameter("hqChanlCode");
-			String month = request.getParameter("month");
+			
 			if(hqChanlName != null && !"".equals(hqChanlName.trim())) {
 				resultMap.put("hqChanlName", "%"+hqChanlName+"%");
 			}
 			if(hqChanlCode != null && !"".equals(hqChanlCode.trim())) {
 				resultMap.put("hqChanlCode", hqChanlCode);
-			}
-			if(month != null && !"".equals(month.trim())) {
-				resultMap.put("month", month);
 			}
 			
 			Object result = chanlInspectionService.queryRcChanl(resultMap);
@@ -182,7 +186,13 @@ public class ChanlInspectionAction extends BaseAction {
 	public String addHDInspection() {
 		return "addHDInspection";
 	}
-	
+	/**
+	 * 添加信息收集界面
+	 * @return
+	 */
+	public String addXXInspection() {
+		return "addXXInspection";
+	}
 	/**
 	 * 查询活动巡检人员
 	 * @return
@@ -257,6 +267,28 @@ public class ChanlInspectionAction extends BaseAction {
 		}
 		this.reponseJson(resultInfo);
 	}
+	/**
+	 * 添加信息收集
+	 */
+	public void saveXXInspection() {
+		ResultInfo resultInfo = new ResultInfo();
+		try {
+			String taskInfoJsonStr = request.getParameter("taskInfoJsonStr");
+			List<InspectionBean> list = JsonStrToList(taskInfoJsonStr);
+			chanlInspectionService.saveHdInspection(list);
+			resultInfo.setCode(ResultInfo._CODE_OK_);
+			resultInfo.setMsg("操作成功！");
+		} catch(BusiException e) {
+			logger.error(e.getMessage(),e);
+			resultInfo.setCode(ResultInfo._CODE_FAIL_);
+			resultInfo.setMsg(e.getMessage());
+		}catch(Exception e) {
+			logger.error(e.getMessage(),e);
+			resultInfo.setCode(ResultInfo._CODE_FAIL_);
+			resultInfo.setMsg("操作失败！");
+		}
+		this.reponseJson(resultInfo);
+	}
 	
 	/**
 	 * 删除活动巡检
@@ -308,7 +340,14 @@ public class ChanlInspectionAction extends BaseAction {
 		ServletActionContext.getContext().put("inspec_id", id);
 		return "updateHdInspection";
 	}
-	
+	/**
+	 * 修改信息采集
+	 */
+	public String updateXXInspection() {
+		String id = request.getParameter("id");
+		ServletActionContext.getContext().put("inspec_id", id);
+		return "updateXXInspection";
+	}
 	/**
 	 * 修改日常巡检
 	 * @return
