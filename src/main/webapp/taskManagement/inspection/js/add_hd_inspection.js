@@ -128,9 +128,6 @@ function searchHdChanl(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           //"resultMap.userId":userId,
-           "resultMap.realName":realName,
-           "resultMap.phone":phone,
            "resultMap.pLevel":pLevel,
            "resultMap.pCode":pCode,
            "hqChanlName":hqChanlName,
@@ -197,13 +194,13 @@ function valid(obj) {
 function initChanlPagination(totalCount) {
 	 $("#chanlTotalCount").html(totalCount);
 	 $("#chanlPagination").pagination(totalCount, {
-    callback: searchHdChanl,
-    items_per_page:pageSize,
-    link_to:"###",
-    prev_text: '上页',       //上一页按钮里text  
-	next_text: '下页',       //下一页按钮里text  
-	num_display_entries: 5, 
-	num_edge_entries: 2
+	     callback: searchHdChanl,
+	     items_per_page:pageSize,
+	     link_to:"###",
+	     prev_text: '上页',       //上一页按钮里text  
+		 next_text: '下页',       //下一页按钮里text  
+		 num_display_entries: 5, 
+		 num_edge_entries: 2
 	 });
 }
 
@@ -269,10 +266,10 @@ function closeHdDialog() {
 
 function addHdInpec() {
 	art.dialog.confirm('您确定要执行该操作吗？',function(){
-		var inspec_name = $.trim($("#inspec_name").val());
+		var inspec_name = $.trim($("#inspecName").val());
 		var startTime = $.trim($("#startTime").val());
 		var endTime = $.trim($("#endTime").val());
-		var inspec_desc = $.trim($("#inspec_desc").val());
+		var inspec_desc = $.trim($("#inspecDesc").val());
 		if(inspec_name == "") {
 			art.dialog.alert("巡检任务名称不能为空！");
 			return;

@@ -1,17 +1,7 @@
-<%@page import="org.apdplat.module.security.service.UserHolder"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="org.apdplat.module.security.model.Org"%>
-<%@page import="org.apdplat.module.security.model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
-	String unit_id=request.getParameter("unit_id");
-	String inspec_id=request.getParameter("inspec_id");
-	User user = UserHolder.getCurrentLoginUser();
-	Org org = user.getOrg();
-	String orgLevel = org.getOrgLevel();
-	String orgCode = org.getCode();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -35,11 +25,6 @@
 <script type="text/javascript" src="<%=path%>/taskManagement/inspection/js/update_rc_inspection.js"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
-	var unit_id="<%=unit_id%>";
-	var orgLevel = "<%=orgLevel%>";
-	var orgCode = "<%=orgCode%>";
-	var inspec_id = "<%=inspec_id%>";
-	
 </script>
 <style type="text/css">
 .taskTable td {
@@ -55,7 +40,7 @@
 				<div id="main" class="clearfix">
 					<div class="main-block">
 						<form id="updateSpectionFrom" method="post">
-							<input type="hidden" id="inspec_id" name="inspec_id" value="<%=request.getParameter("inspec_id") %>"> 
+							<input type="hidden" id="inspec_id" name="inspec_id" value="${inspec_id }"> 
 							<input type="hidden" id="taskInfoJsonStr" name="taskInfoJsonStr">
 							<div class="title-o"><i>修改日常巡检任务</i></div>
 						

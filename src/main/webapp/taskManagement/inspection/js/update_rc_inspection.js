@@ -25,9 +25,9 @@ $(function(){
 		$("#hqChanlCode").val("");
 	});
 });
-var	serid ="";
+var	userId ="";
 var	name ="";
-var	username ="";
+var	userName ="";
 var	phone = "";
 var	pLevel ="";
 var	pCode ="";
@@ -35,9 +35,9 @@ var	pCode ="";
 //查询日常巡检人员
 function search(pageNumber){
 	var pageNumber = pageNumber + 1;
-	var realName = $.trim($("#realName").val());
-	var username = $.trim($("#username").val());
-	var phone = $.trim($("#phone").val());
+	var srealName = $.trim($("#realName").val());
+	var suserName = $.trim($("#userName").val());
+	var sphone = $.trim($("#phone").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -46,10 +46,9 @@ function search(pageNumber){
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           "realName":realName,
-           "username":username,
-           "phone":phone,
-           "unit_id":unit_id
+           "realName":srealName,
+           "userName":suserName,
+           "phone":sphone
 	   	},
 	   	success:function(data){
 	   		if(data.msg) {
@@ -64,18 +63,16 @@ function search(pageNumber){
 	   		$.each(pages.rows,function(i,n){
 	   			content+="<tr>";
 	   			if(i==0) {
-	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"' pLevel='"+orgLevel+"' pCode='"+orgCode+"' checked='true'></td>";
+	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"' pLevel='"+n['ORGLEVEL']+"' pCode='"+n['CODE']+"' checked='true'></td>";
 	   				userId = n['USERID'];
 	   				name = n['NAME'];
-	   				username = n['USERNAME'];
+	   				userName = n['USERNAME'];
 	   				phone = n['PHONE'];
-	   				/*pLevel = n['ORGLEVEL'];
-	   				pCode = n['CODE'];*/
-	   				pLevel = orgLevel;
-	   				pCode = orgCode;
+	   				pLevel = n['ORGLEVEL'];
+	   				pCode = n['CODE'];
 	   				searchRcChanl(0);
 	   			} else {
-	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"'pLevel='"+orgLevel+"' pCode='"+orgCode+"'></td>"
+	   				content += "<td><input type='radio' name='person' onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' username='"+n['USERNAME']+"' phone='"+n['PHONE']+"'pLevel='"+n['ORGLEVEL']+"' pCode='"+n['CODE']+"'></td>"
 	   			}
 	   			content+="<td>"+isNull(n['NAME'])+"</td>"
 				+"<td>"+isNull(n['USERNAME'])+"</td>"
@@ -98,13 +95,13 @@ function search(pageNumber){
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
-     callback: search,
-     items_per_page:pageSize,
-     link_to:"###",
-     prev_text: '上页',       //上一页按钮里text  
- 	next_text: '下页',       //下一页按钮里text  
- 	num_display_entries: 5, 
- 	num_edge_entries: 2
+	     callback: search,
+	     items_per_page:pageSize,
+	     link_to:"###",
+	     prev_text: '上页',       //上一页按钮里text  
+	 	 next_text: '下页',       //下一页按钮里text  
+	 	 num_display_entries: 5, 
+	 	 num_edge_entries: 2
 	 });
 }
 //定义是否为空，作为查询结果给页面表单赋值处理
@@ -119,7 +116,7 @@ function isNull(obj){
 function getRcChanlMsg(ele){
 	userId = $(ele).attr("id");
 	name = $(ele).attr("uname")
-	username = $(ele).attr("username");
+	userName = $(ele).attr("username");
 	phone = $(ele).attr("phone");
 	pLevel = $(ele).attr("pLevel");
 	pCode = $(ele).attr("pCode");
@@ -139,7 +136,7 @@ function searchRcChanl(pageNumber){
 		data:{
 			"resultMap.page":pageNumber,
 			"resultMap.rows":pageSize,
-			"resultMap.userId":userId,
+			"userId":userId,
 	        "hqChanlName":hqChanlName,
 	        "hqChanlCode":hqChanlCode
 		},
@@ -162,10 +159,10 @@ function searchRcChanl(pageNumber){
    			content+="<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 			+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
 			+"<td>"+isNull(n['NAME'])+"</td>"
-			+"<td>"+isNull(n['PHONE'])+"</td>"
+			+"<td>"+phone+"</td>"
 			+"<td style='display:none;'>"+userId+"</td>"
    			+"<td><input type='text' size='15' onkeyup='valid(this)' id='"+n['CODE']+"_"+userId+"' value='"+value+"'></td>"
-   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['HQ_CHAN_NAME']+"' chl_code='"+n['HQ_CHAN_CODE']+"' pLevel='"+orgLevel+"' pCode='"+pCode+"' name='"+name+"' userId='"+userId+"' username='"+username+"' phone='"+phone+"'  chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
+   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['HQ_CHAN_NAME']+"' chl_code='"+n['HQ_CHAN_CODE']+"' pLevel='"+pLevel+"' pCode='"+pCode+"' name='"+name+"' userId='"+userId+"' username='"+userName+"' phone='"+phone+"'  chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
 			content+="</tr>";
 		});
 		if(content != "") {
@@ -205,13 +202,13 @@ function valid(obj) {
 function initChanlPagination(totalCount) {
 	 $("#chanlTotalCount").html(totalCount);
 	 $("#chanlPagination").pagination(totalCount, {
-    callback: searchRcChanl,
-    items_per_page:pageSize,
-    link_to:"###",
-    prev_text: '上页',       //上一页按钮里text  
-	next_text: '下页',       //下一页按钮里text  
-	num_display_entries: 5, 
-	num_edge_entries: 2
+	    callback: searchRcChanl,
+	    items_per_page:pageSize,
+	    link_to:"###",
+	    prev_text: '上页',       //上一页按钮里text  
+		next_text: '下页',       //下一页按钮里text  
+		num_display_entries: 5, 
+		num_edge_entries: 2
 	 });
 }
 
@@ -267,7 +264,7 @@ function del(ele,event) {
 }
 
 function closeRcDialog() {
-	window.parent.closeWindow("修改活动巡检信息");
+	window.parent.closeWindow("修改日常巡检信息");
 }
 
 function toDate(str){
@@ -340,7 +337,6 @@ function updateRcInpec() {
 				   		            window.parent.frames[id].location.reload();
 				   		        }
 				   		    });
-//			   		    	window.parent.closeWindow("添加日常巡检");
 			   		    	window.parent.closeWindow("修改日常巡检信息");
 			   		    	//此处还存在问题，需要刷新列表
 			   		    }
@@ -367,7 +363,7 @@ function initRcInspectionChanl() {
 		cache:false,
 		url:$("#ctx").val()+"/taskManagement/chanlInspection_queryInspectionChanl.action",
 		data:{
-		   "inspec_id":inspec_id
+		   "inspec_id":$("#inspec_id").val()
 	   	},
 	   	success:function(data){
 	   		if(data.msg) {

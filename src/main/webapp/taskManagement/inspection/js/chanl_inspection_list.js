@@ -16,6 +16,10 @@ $(function(){
 	$("#addHDInspection").click(function(){
 		addHDInspectionMsg();
 	});
+	//添加信息收集
+	$("#addXXInspection").click(function(){
+		addXXInspectionMsg();
+	});
 	$("#resetBtn").click(function(){
 		$("#qinspec_name").val("");
 		$("#qstartTime").val("");
@@ -30,7 +34,7 @@ function search(pageNumber) {
 	var qinspec_name = $.trim($("#qinspec_name").val());
 	var qcreator = $.trim($("#qcreator").val());
 	var qstartTime = $.trim($("#qstartTime").val());
-	var qendtTime = $.trim($("#qendtTime").val());
+	var qendTime = $.trim($("#qendTime").val());
 	var qinspec_type = $.trim($("#qinspec_type").val());
 	$.ajax({
 		type:"POST",
@@ -43,7 +47,7 @@ function search(pageNumber) {
            "inspec_name":qinspec_name,
            "creator":qcreator,
            "startTime":qstartTime,
-           "endtTime":qendtTime,
+           "endtTime":qendTime,
            "inspec_type":qinspec_type
 	   	}, 
 	   	success:function(data){
@@ -60,14 +64,14 @@ function search(pageNumber) {
 				content+="<tr>"
 				+"<td>"+isNull(n['INSPEC_ID'])+"</td>"
 				+"<td>"+isNull(n['INSPEC_NAME'])+"</td>"
-				+"<td>"+isNull(n['INSPEC_TYPE'])+"</td>"
+				+"<td>"+isNull(n['INSPEC_TYPE_NAME'])+"</td>"
 				+"<td>"+isNull(n['START_TIME'])+"</td>"
 				+"<td>"+isNull(n['END_TIME'])+"</td>"
 				+"<td>"+isNull(n['C_USER_NAME'])+"</td>";
 				var is_del = n['IS_DEL'];
-				if(is_del == "0") {
+				if(is_del == "0"&& n['C_USER_ID'] == userId) {
 					content+="<td style='text-align:center;'>" +
-							"<a href='#' onclick='editHd(this)' id='"+n['INSPEC_ID']+"' inspectype='"+n['INSPECTYPE']+"'>修改</a>&nbsp;&nbsp;&nbsp;" +
+							"<a href='#' onclick='editHd(this)' id='"+n['INSPEC_ID']+"' inspectype='"+n['INSPEC_TYPE']+"'>修改</a>&nbsp;&nbsp;&nbsp;" +
 							"<a href='#' onclick='del(this)' id='"+n['INSPEC_ID']+"'>删除</a>&nbsp;&nbsp;&nbsp;" +
 							"<a href='#' onclick='showDetails(this)' id='"+n['INSPEC_ID']+"'>详情</a>" +
 							"</td>";
@@ -122,6 +126,11 @@ function addHDInspectionMsg() {
 	var url = $("#ctx").val()+"/taskManagement/chanlInspection_addHDInspection.action";
 	window.parent.openWindow("添加活动巡检",'funMenu',url);
 }
+//添加活动巡检
+function addXXInspectionMsg() {
+	var url = $("#ctx").val()+"/taskManagement/chanlInspection_addXXInspection.action";
+	window.parent.openWindow("添加信息收集任务",'funMenu',url);
+}
 
 function del(ele) {
 	var id = $(ele).attr("id");
@@ -160,11 +169,14 @@ function editHd(ele) {
 	var inspec_id = $(ele).attr("id");
 	var inspectype = $(ele).attr("inspectype");
 	if(inspectype==1){
-		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateRcInspection.action?inspec_id="+inspec_id;
+		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateRcInspection.action?id="+inspec_id;
 		window.parent.openWindow("修改日常巡检信息",'funMenu',url);
-	}else{
+	}else if(inspectype==2){
 		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateHdInspection.action?id="+inspec_id;
 		window.parent.openWindow("修改活动巡检信息",'funMenu',url);
+	}else{
+		var url = $("#ctx").val()+"/taskManagement/chanlInspection_updateXXInspection.action?id="+inspec_id;
+		window.parent.openWindow("修改信息采集",'funMenu',url);
 	}
 }
 

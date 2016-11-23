@@ -26,7 +26,7 @@ $(function(){
 });
 
 
-var	serid ="";
+var	userId ="";
 var	name ="";
 var	userName ="";
 var	phone = "";
@@ -65,7 +65,7 @@ function search(pageNumber){
 	   		$.each(pages.rows,function(i,n){
 	   			content+="<tr>";
 	   			if(i==0) {
-	   				content += "<td><input type='radio'  name ='person'onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' userName='"+n['USERNAME']+"' phone='"+n['PHONE']+"' pLevel='"+orgLevel+"' pCode='"+orgCode+"' checked='true'></td>";
+	   				content += "<td><input type='radio'  name ='person'onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' userName='"+n['USERNAME']+"' phone='"+n['PHONE']+"' pLevel='"+n['ORGLEVEL']+"' pCode='"+n['CODE']+"' checked='true'></td>";
 	   				userId = n['USERID'];
 	   				name = n['NAME'];
 	   				userName = n['USERNAME'];
@@ -74,7 +74,7 @@ function search(pageNumber){
 	   				pCode = n['CODE'];
 	   				searchRcChanl(0);
 	   			} else {
-	   				content += "<td><input type='radio' name ='person'  onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' userName='"+n['USERNAME']+"' phone='"+n['PHONE']+"'pLevel='"+orgLevel+"' pCode='"+orgCode+"'></td>"
+	   				content += "<td><input type='radio' name ='person'  onclick='getRcChanlMsg(this);'  id='"+n['USERID']+"' uname='"+n['NAME']+"' userName='"+n['USERNAME']+"' phone='"+n['PHONE']+"'pLevel='"+n['ORGLEVEL']+"' pCode='"+n['CODE']+"'></td>"
 	   			}
 	   			content+="<td>"+isNull(n['NAME'])+"</td>"
 				+"<td>"+isNull(n['USERNAME'])+"</td>"
@@ -117,8 +117,8 @@ function searchRcChanl(pageNumber){
 		data:{
 			"resultMap.page":pageNumber,
 			"resultMap.rows":pageSize,
-			//"resultMap.userId":userId,
 	        "hqChanlName":hqChanlName,
+	        "userId":userId,
 	        "hqChanlCode":hqChanlCode
 		},
 		success:function(data){
@@ -143,7 +143,7 @@ function searchRcChanl(pageNumber){
 			+"<td>"+isNull(n['PHONE'])+"</td>"
 			+"<td style='display:none;'>"+userId+"</td>"
    			+"<td><input type='text' size='15' onkeyup='valid(this)' id='"+n['CODE']+"_"+userId+"' value='"+value+"'></td>"
-   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['HQ_CHAN_NAME']+"' chl_code='"+n['HQ_CHAN_CODE']+"' pLevel='"+orgLevel+"' pCode='"+pCode+"' name='"+name+"' userId='"+userId+"' userName='"+userName+"' phone='"+isNull(n['PHONE'])+"'  chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
+   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['HQ_CHAN_NAME']+"' chl_code='"+n['HQ_CHAN_CODE']+"' pLevel='"+pLevel+"' pCode='"+pCode+"' name='"+name+"' userId='"+userId+"' userName='"+userName+"' phone='"+isNull(n['PHONE'])+"'  chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
 			content+="</tr>";
 		});
 		if(content != "") {

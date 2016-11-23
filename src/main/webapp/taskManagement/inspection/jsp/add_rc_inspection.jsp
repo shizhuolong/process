@@ -1,17 +1,7 @@
-<%@page import="org.apdplat.module.security.service.UserHolder"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="org.apdplat.module.security.model.Org"%>
-<%@page import="org.apdplat.module.security.model.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
-	User user = UserHolder.getCurrentLoginUser();
-	String unitid=request.getParameter("unitid");
-	Org org = user.getOrg();
-	String code = org.getCode();
-	String orgLevel = org.getOrgLevel();
-	String orgName = org.getOrgName();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -35,10 +25,6 @@
 <script type="text/javascript" src="<%=path%>/taskManagement/inspection/js/add_rc_inspection.js"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
-	var unit_id ="<%=unitid%>";
-	var orgCode = "<%=code%>";
-	var orgLevel = "<%=orgLevel%>";
-	var orgName = "<%=orgName%>";
 </script>
 <style type="text/css">
 .taskTable td {
@@ -63,11 +49,11 @@
 	           						<td style="width: 20%;">
 	            						<input type="text" id="inspec_name" name="inspec_name" size="50">
 	           						</td>
-	           						<th style="width: 6%;">开始日期：</th>
+	           						<th style="width: 10%;">开始日期：</th>
 	                            	<td style="width: 10%;">
 	                            		<input readonly="readonly" id="start_time" style="width:90px" class="Wdate" type="text" value=""  onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})"/>
 	            					</td>
-	            					<th style="width: 6%;">结束日期：</th>
+	            					<th style="width: 10%;">结束日期：</th>
 	                            	<td style="width: 20px;">
 	                            		<input readonly="readonly" id="end_time" style="width:90px" class="Wdate" type="text" value=""  onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})"/>
 	            					</td>
@@ -137,7 +123,7 @@
 	                       		<table>
 	                       		<tr>
 				                	<td align="right">渠道名称：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanName" id="hqChanName" type="text"/></td>
+				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlName" id="hqChanlName" type="text"/></td>
 				                    <td align="right">渠道编码：</td>
 				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlCode" id="hqChanlCode" type="text"/></td>
 				                </tr>

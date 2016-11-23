@@ -38,6 +38,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/taskManagement/inspection/js/chanl_inspection_list.js"></script>
 <script type="text/javascript">
+	var userId='<%=userId%>';
 </script>
 </head>
 <body>
@@ -51,7 +52,6 @@
 					<div data-options="region:'center'">
 						<div id="main" class="clearfix">
 						<form id="taskForm" method="post">
-							<input type="hidden" id="actNodeName" name="actNodeName">
 							<div class="main-block">
 								<div class="title">
 									<i></i>渠道巡检
@@ -78,6 +78,7 @@
 					                    		<option value="">全部</option>
 					                    		<option value="1">日常巡检</option>
 					                    		<option value="2">活动巡检</option>
+					                    		<option value="3">信息收集</option>
 					                    	</select>
 					                    </td>
 					                </tr>
@@ -89,6 +90,7 @@
 					                		<a class="default-140-btn fLeft mr10" href="#" id="addRCInspection">添加日常巡检</a>
 					                		<% }%>
 					                		<a class="default-140-btn fLeft mr10" href="#" id="addHDInspection">添加活动巡检</a>
+					                		<a class="default-140-btn fLeft mr10" href="#" id="addXXInspection">添加信息收集</a>
 					                		<!-- <a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a> -->
 					                	</td>
 					                </tr>
