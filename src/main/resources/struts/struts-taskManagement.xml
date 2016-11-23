@@ -20,7 +20,9 @@
         	<result name="success">/taskManagement/inspection/jsp/chanl_inspection_list.jsp</result>
         	<result name="addRCInspection">/taskManagement/inspection/jsp/add_rc_inspection.jsp</result>
         	<result name="addHDInspection">/taskManagement/inspection/jsp/add_hd_inspection.jsp</result>
+        	<result name="addXXInspection">/taskManagement/inspection/jsp/add_xx_inspection.jsp</result>
         	<result name="updateHdInspection">/taskManagement/inspection/jsp/update_hd_inspection.jsp</result>
+        	<result name="updateXXInspection">/taskManagement/inspection/jsp/update_xx_inspection.jsp</result>
         	<result name="updateRcInspection">/taskManagement/inspection/jsp/update_rc_inspection.jsp</result>
         	<result name="showInspecInfo">/taskManagement/inspection/jsp/show_inspection_info.jsp</result>
         </action>
