@@ -14,7 +14,7 @@
     <java.version>1.7</java.version>
     <!-- 主要依赖库的版本定义 -->
     <org.springframework.version>3.2.3.RELEASE</org.springframework.version>
-    <poi.version>3.8-beta4</poi.version>
+    <poi.version>3.11</poi.version>
     <spring-security-core.version>3.1.4.RELEASE</spring-security-core.version>
     <spring-security-web.version>3.1.4.RELEASE</spring-security-web.version>
     <spring-security-config.version>3.1.4.RELEASE</spring-security-config.version>
@@ -247,7 +247,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <version>${org.springframework.version}</version>
-      <scope>test</scope>
+      <!--scope>test</scope-->
     </dependency>
     <!-- 加密工具 -->
     <dependency>
@@ -516,21 +516,26 @@
       <version>1.1.1</version>
     </dependency>
     <!-- mybatis 结束 -->
-    <dependency>
+    <!-- dependency>
       <groupId>jexcelapi</groupId>
       <artifactId>jxl</artifactId>
-      <version>2.6</version>
-    </dependency>
+      <version>2.6.12</version>
+    </dependency-->
+    <dependency>
+    <groupId>net.sourceforge.jexcelapi</groupId>
+    <artifactId>jxl</artifactId>
+    <version>2.6.12</version>
+</dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>3.11</version>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
       <version>3.11</version>
-    </dependency>
+    </dependency-->
     
     <dependency>
         <groupId>com.github.miemiedev</groupId>
@@ -569,6 +574,58 @@
 		<artifactId>gson</artifactId>
 		<version>1.7.1</version>
 	</dependency>
+    <!--本地jar-->
+    <dependency>
+      <groupId>com.jxcell</groupId>
+      <artifactId>jxcell</artifactId>
+      <version>1.1.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jxcell.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.jxl</groupId>
+      <artifactId>jxl-2.6</artifactId>
+      <version>2.6</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jxl-2.6.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.jxls</groupId>
+      <artifactId>jxls-core</artifactId>
+      <version>0.9.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jxls-core-0.9.5.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>6</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc6.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.8</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/poi-ooxml-3.8-20120326.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>spApi</groupId>
+      <artifactId>spApi</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/SGIP.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>ssoTool</groupId>
+      <artifactId>ssoTool</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ssoTool.jar</systemPath>
+    </dependency>
+    <!---->
 </dependencies>
 <build>
 	<plugins>
