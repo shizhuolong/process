@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>修改活动巡检</title>
+<title>添加信息收集任务</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=path%>/css/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery.validationEngine-zh_CN.js"></script>
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery.validationEngine.js"></script>
-<script type="text/javascript" src="<%=path%>/taskManagement/inspection/js/update_hd_inspection.js"></script>
+<script type="text/javascript" src="<%=path%>/taskManagement/inspection/js/add_xx_inspection.js"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
 </script>
@@ -40,16 +40,15 @@
 			<div id="cc" style="width:100%;">
 				<div id="main" class="clearfix">
 					<div class="main-block">
-						<form id="updateSpectionFrom" method="post">
-							<input type="hidden" id="inspec_id" name="inspec_id" value="${inspec_id }">
+						<form id="spectionFrom" method="post">
 							<input type="hidden" id="taskInfoJsonStr" name="taskInfoJsonStr">
-							<div class="title-o"><i>修改活动巡检任务</i></div>
+							<div class="title-o"><i>添加信息收集任务</i></div>
 						
 							<table id="sm-payment-order-apply" style="width: 100%;">
 	                       		<tr>
 	           						<th style="width: 15%;">巡检任务名称：</th>
 	           						<td style="width: 20%;">
-	            						<input type="text" id="inspec_name" name="inspec_name" size="50">
+	            						<input type="text" id="inspecName" name="inspecName" size="50">
 	           						</td>
 	           						<th style="width: 10%;">开始日期：</th>
 	                            	<td style="width: 10%;">
@@ -61,9 +60,17 @@
 	            					</td>
 	                           	</tr>
 	                           	<tr>
+	           						<th style="width: 15%;">所需收集信息：</th>
+	           						<td style="width: 20%;" colspan="5">
+	           							产品信息<input type="checkbox" name="taskCode" value="T01"/>
+	           							佣金政策信息<input type="checkbox" name="taskCode" value="T02"/>
+	           							营销活动信息<input type="checkbox" name="taskCode" value="T03"/>
+	           						</td>
+	                           	</tr>
+	                           	<tr>
 	           						<th style="width: 15%;">巡检任务描述：</th>
 	           						<td style="width: 20%;" colspan="5">
-	           							<textarea rows="4" cols="81"  id="inspec_desc"></textarea>
+	           							<textarea rows="4" cols="81"  id="inspecDesc"></textarea>
 	           						</td>
 	                           	</tr>
 	                       	</table>
@@ -119,83 +126,12 @@
 	                             	</table>
 	                             </div>
 	                       	</div>
-	                       	<div class="title" style="margin-top: 20px;"><i></i>巡检渠道</div>
-	                       	<div class="default-dt dt-autoH" style="margin-top: 12px;">
-	                       	<div class="no-js-table" style="padding-bottom: 5px;">
-	                       		<table>
-	                       		<tr>
-				                	<td align="right">渠道名称：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlName" id="hqChanlName" type="text"/></td>
-				                    <td align="right">渠道编码：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlCode" id="hqChanlCode" type="text"/></td>
-				                </tr>
-				                <tr height="35px">
-				                	<td colspan="4" align="center">
-				                		<a class="default-btn fLeft mr10" href="#" id="searchChlBtn">查询</a>
-				                		<a class="default-btn fLeft mr10" href="#" id="resetChlBtn">重置</a>
-				                	</td>
-				                </tr>
-				                </table>
-	                       	</div>
-	                       	</div>
-	                        <div class="default-dt dt-autoH" style="margin-top: 12px;">
-	                             	<div class="no-js-table">
-	                          			<table class="overflow-y taskTable" style="margin-top: 5px;">
-	                                		<thead>
-	                                			<tr>
-	                      						<th>巡检渠道名称</th>
-		                                       	<th>渠道编码</th>
-		                                       	<th>巡检人</th>
-		                                       	<th>巡检人电话号码</th>
-		                                       	<th>指派巡检次数</th>
-		                                       	<th>操作</th>
-		                                    </tr>
-	                              			</thead>
-	                              			<tbody id="inspection_chanl_data">
-	                              			</tbody>
-	                              			<tr>
-												<td colspan="6">
-													</div>
-													<div class="page_count">
-														<div class="page_count_left">
-															共有 <span id="chanlTotalCount"></span> 条数据
-														</div>
-	
-														<div class="page_count_right">
-															<div id="chanlPagination"></div>
-														</div>
-													</div>
-													</div>
-												</td>
-											</tr>
-	                              		</table>
-	                              	</div>
-	                       	</div>
-	                       	<div class="title" style="margin-top: 20px;"><i></i>已选择的巡检渠道</div>
-	                       	<div class="default-dt dt-autoH" style="margin-top: 12px;">
-                             	<div class="no-js-table">
-                          			<table class="overflow-y taskTable" style="margin-top: 5px;">
-                                		<thead>
-                                			<tr>
-                      						<th>巡检渠道名称</th>
-	                                       	<th>渠道编码</th>
-	                                       	<th>巡检人</th>
-	                                       	<th>巡检人电话号码</th>
-	                                       	<th>指派巡检次数</th>
-	                                       	<th>操作</th>
-	                                    </tr>
-                              			</thead>
-                              			<tbody id="selected_inspection_chanl">
-                              			</tbody>
-                              		</table>
-                              	</div>
-	                       	</div>
 	                       	 <div class="default-dt dt-autoH" style="margin-top: 12px;">
 	                       		<table class="overflow-y taskTable" style="margin-top: 5px;">
 	                       			<tr>
 						                <td style="padding-left: 480px;">
-							                <a href="javascript:void(0)" onclick="updateHdInpec()" class="default-btn fLeft mr10" id="confirmBtn">确认</a>
-							                <a href="javascript:void(0)" onclick="closeHdDialog()" class="default-btn fLeft ml10" id="cancleBtn">关闭</a>
+							                <a href="javascript:void(0)" onclick="addXXInpec()" class="default-btn fLeft mr10" id="confirmBtn">确认</a>
+							                <a href="javascript:void(0)" onclick="closeXXDialog()" class="default-btn fLeft ml10" id="cancleBtn">关闭</a>
 						                </td>
 									</tr>
 	                       		</table>

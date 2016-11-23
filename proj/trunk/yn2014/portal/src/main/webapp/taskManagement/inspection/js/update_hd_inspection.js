@@ -90,13 +90,13 @@ function searchHdPerson(pageNumber) {
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
-     callback: searchHdPerson,
-     items_per_page:pageSize,
-     link_to:"###",
-     prev_text: '上页',       //上一页按钮里text  
- 	next_text: '下页',       //下一页按钮里text  
- 	num_display_entries: 5, 
- 	num_edge_entries: 2
+	     callback: searchHdPerson,
+	     items_per_page:pageSize,
+	     link_to:"###",
+	     prev_text: '上页',       //上一页按钮里text  
+	 	 next_text: '下页',       //下一页按钮里text  
+	 	 num_display_entries: 5, 
+	 	 num_edge_entries: 2
 	 });
 }
 
@@ -333,7 +333,6 @@ function updateHdInpec() {
 				   		            window.parent.frames[id].location.reload();
 				   		        }
 				   		    });
-			   		    	window.parent.closeWindow("添加活动巡检");
 			   		    	window.parent.closeWindow("修改活动巡检信息");
 			   		    	//此处还存在问题，需要刷新列表
 			   		    }

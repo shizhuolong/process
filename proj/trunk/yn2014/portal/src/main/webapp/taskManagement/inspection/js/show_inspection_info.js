@@ -34,13 +34,31 @@ function initInspectionChanl() {
 	   				$("#endTime").html(n['END_TIME']);
 	   				$("#inspec_desc").html(n['REMARK']);
 	   			}
-	   			var sc = "<tr>" +
-				"<td>"+n['CHANL_NAME']+"</td><td>"+n['HQ_CHANL_ID']+"</td>" +
-				"<td>"+n['R_USER_NAME']+"</td><td>"+n['R_PHONE']+"</td>" +
-				"<td id='__"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>"+n['INSPEC_SUM']+"</td>" +
-				"<td userId='"+n['R_USER_ID']+"' pCode='"+n['R_USER_REGION']+"' p_levl='"+n['R_USER_REGION_LEVEL']+"' chanl_type='"+n['CHANL_TYPE']+"'><a href='#' del_hd_id='"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>&nbsp;</a></td></td>"+
-				"</tr>";
-				$("#selected_inspection_chanl").append(sc);
+	   			if(n['INSPEC_TYPE']=='3'){
+	   				$("#inspec_user").text(n['R_USER_NAME']);
+	   				$("#inspec_user_phone").text(n['R_PHONE']);
+	   				
+	   				var taskCodes=n['CHANL_TYPE'];
+	   				if(taskCodes){
+	   					taskCodes=taskCodes.split(",");
+	   					for(var j=0;j<taskCodes.length;j++){
+	   						$("INPUT[name='taskCode'][value='"+taskCodes[j]+"']").attr("checked","checked");
+	   					}
+	   				}
+	   				
+	   				$(".xx_cj").show();
+					$(".rc_hd").hide();
+	   			}else{
+		   			var sc = "<tr>" +
+					"<td>"+n['CHANL_NAME']+"</td><td>"+n['HQ_CHANL_ID']+"</td>" +
+					"<td>"+n['R_USER_NAME']+"</td><td>"+n['R_PHONE']+"</td>" +
+					"<td id='__"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>"+n['INSPEC_SUM']+"</td>" +
+					"<td userId='"+n['R_USER_ID']+"' pCode='"+n['R_USER_REGION']+"' p_levl='"+n['R_USER_REGION_LEVEL']+"' chanl_type='"+n['CHANL_TYPE']+"'><a href='#' del_hd_id='"+n['HQ_CHANL_ID']+"_"+n['R_USER_ID']+"'>&nbsp;</a></td></td>"+
+					"</tr>";
+					$("#selected_inspection_chanl").append(sc);
+					$(".xx_cj").hide();
+					$(".rc_hd").show();
+	   			}
 			});
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){

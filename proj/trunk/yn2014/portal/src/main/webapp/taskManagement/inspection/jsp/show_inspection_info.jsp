@@ -57,6 +57,22 @@
 	                            	<td id="endTime">
 	            					</td>
 	                           	</tr>
+	                           	<tr class='xx_cj'>
+	           						<th style="width: 15%;">巡检人：</th>
+	           						<td style="width: 20%;" id="inspec_user">
+	           						</td>
+	           						<th style="width: 10%;">巡检人电话：</th>
+	                            	<td style="width: 10%;" id="inspec_user_phone">
+	            					</td>
+	                           	</tr>
+	                           	<tr class="xx_cj">
+	           						<th style="width: 15%;">所需收集信息：</th>
+	           						<td style="width: 20%;" colspan="5">
+	           							产品信息<input readOnly="readOnly" type="checkbox" name="taskCode" value="T01"/>
+	           							佣金政策信息<input readOnly="readOnly" type="checkbox" name="taskCode" value="T02"/>
+	           							营销活动信息<input readOnly="readOnly" type="checkbox" name="taskCode" value="T03"/>
+	           						</td>
+	                           	</tr>
 	                           	<tr>
 	           						<th style="width: 15%;">巡检任务描述：</th>
 	           						<td style="width: 20%;" colspan="5">
@@ -64,8 +80,8 @@
 	           						</td>
 	                           	</tr>
 	                       	</table>
-	                       	<div class="title" style="margin-top: 20px;"><i></i>已选择的巡检渠道</div>
-	                       	<div class="default-dt dt-autoH" style="margin-top: 12px;">
+	                       	<div class="title rc_hd" style="margin-top: 20px;"><i></i>已选择的巡检渠道</div>
+	                       	<div class="default-dt dt-autoH rc_hd" style="margin-top: 12px;">
                              	<div class="no-js-table">
                           			<table class="overflow-y taskTable" style="margin-top: 5px;">
                                 		<thead>
