@@ -2,11 +2,7 @@
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	Calendar c = Calendar.getInstance();     
-    c.add(Calendar.MONTH, 0);
-	String currentMon = new SimpleDateFormat("yyyyMM").format(c.getTime());
-%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -56,22 +52,11 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td>(2)选择账期。</td>
+					<td>(2)点击浏览,并选择编辑好的EXCEL文件，提交既可。</td>
 				</tr>
 				<tr>
-					<td></td>
-					<td>(3)点击浏览,并选择编辑好的EXCEL文件，提交既可。</td>
-				</tr>
-				<tr>
-						<td style="width: 70px; text-align: right;">账期：</td>
-						<td><input readonly="readonly" type="text" class="Wdate"
-							id="deal_date" name="deal_date" value="<%=currentMon%>"
-							onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM',minDate:'%y-{%M-1}',maxDate:'%y-{%M}'})" />
-						</td>
-				</tr>
-				<tr>
-						<td style="width: 70px; text-align: right;">上传文件：</td>
-						<td><input type="file" size='70' name="myFile" /></td>
+					<td style="width: 70px; text-align: right;">上传文件：</td>
+					<td><input type="file" size='70' name="myFile" /></td>
 				</tr>
 				<tr>
 					<td></td>

@@ -2,11 +2,7 @@
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	Calendar c = Calendar.getInstance();     
-    c.add(Calendar.MONTH, 0);
-	String currentMon = new SimpleDateFormat("yyyyMM").format(c.getTime());
-%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -57,12 +53,6 @@
 										</td>
                                    </tr>
 									<tr>
-										<th style="width: 50px;">账期：</th>
-										<td style="width: 80px;">
-											<input readonly="readonly" type="text" style="width: 80px" class="Wdate"
-											id="deal_date" name="deal_date" value="<%=currentMon%>"
-											onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM',minDate:'%y-{%M-1}',maxDate:'%y-{%M}'})" />
-										</td>
 										<th style="width: 70px;">佣金总额：</th>
 										<td id="totalFee" style="color:red;width: 70px;">
 											
@@ -70,7 +60,7 @@
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
-											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">导入</a>
+											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空导入</a>
 										</td>
 									</tr>
 								</table>

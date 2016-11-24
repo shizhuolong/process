@@ -1,13 +1,12 @@
 var businessKey="";
 $(function() {
-	businessKey=art.dialog.data('businessKey');
+	businessKey=art.dialog.data('businessKey');//退回拟稿人的数据重导后保留init_id
 });
 /*
 *数据导入
 */
 function importExcel(){
-	var deal_date=$("#deal_date").val();
-	var url = $("#ctx").val()+"/unsupported/unsupported!importExcel.action?deal_date="+deal_date+"&businessKey="+businessKey;
+	var url = $("#ctx").val()+"/unsupported/unsupported!importExcel.action?businessKey="+businessKey;
 	$('#importForm').form('submit', {   
 	    url:url,   
 	    onSubmit: function(){   
