@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.unsupported.dao.UnsupportedDao">
+
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT
+			BILL_ID,
+			BILLINGCYCLID,
+			CHANNEL_NAME,
+			AGENTID,
+			DEPT_PTYPE,
+			COMM_TYPE,
+			SUBJECTID,
+			SVCTP,
+			FEE,
+			REMARK
+			FROM TAB_COMM_IMPORT
+			WHERE INIT_ID IS NULL 
+			AND ACCOUNT_ID=#{username}
+		<if test="orgLevel == 1">
+			AND 1=2
+		</if> 
+		<if test="orgLevel == 2">
+			AND GROUP_ID = #{code}
+		</if>
+		<if test="deal_date != null">
+			AND BILLINGCYCLID = #{deal_date}
+		</if>
+	</select>
+	
+	<select id="queryTotalFee" parameterType="java.util.Map" resultType="double">
+			SELECT
+			NVL(SUM(FEE),0) FEE
+			FROM TAB_COMM_IMPORT
+			WHERE INIT_ID IS NULL 
+			AND ACCOUNT_ID=#{username}
+		<if test="orgLevel == 1">
+			AND 1=2
+		</if>
+		<if test="orgLevel == 2">
+			AND GROUP_ID = #{code}
+		</if>
+		<if test="deal_date != null">
+			AND BILLINGCYCLID = #{deal_date}
+		</if>
+	</select>
+	
+	<select id="queryTotalFeeByInitId" parameterType="java.util.Map" resultType="double">
+			SELECT
+			NVL(SUM(FEE),0) FEE
+			FROM TAB_COMM_IMPORT
+			WHERE INIT_ID=#{workNo}
+	</select>
+	
+	<insert id="importData" parameterType="java.util.Map">
+		INSERT INTO TAB_COMM_IMPORT
+  		SELECT * FROM TAB_COMM_IMPORT_TEMP T1
+    	WHERE BILLINGCYCLID = #{deal_date} AND ACCOUNT_ID=#{username} AND GROUP_ID=#{code}
+	</insert>
+	
+	<update id="updateInitId" parameterType="String">
+		UPDATE TAB_COMM_IMPORT SET INIT_ID=#{businessKey} WHERE
+		BILLINGCYCLID = #{deal_date} AND ACCOUNT_ID=#{username} AND GROUP_ID=#{code}
+	</update>
+	
+	<delete id="delete" parameterType="java.util.Map">
+		DELETE FROM TAB_COMM_IMPORT WHERE BILL_ID=#{bill_id}
+	</delete>
+	
+	<delete id="deleteTemp" parameterType="java.util.Map">
+		DELETE FROM TAB_COMM_IMPORT_TEMP WHERE 
+		BILLINGCYCLID = #{deal_date} AND ACCOUNT_ID=#{username}
+		AND GROUP_ID=#{code} 
+	</delete>
+	
+	<delete id="deleteResult" parameterType="java.util.Map">
+		DELETE FROM TAB_COMM_IMPORT WHERE BILLINGCYCLID = #{deal_date}
+		AND ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NULL
+	</delete>
+	
+	<delete id="deleteResultByEdit" parameterType="java.util.Map">
+		DELETE FROM TAB_COMM_IMPORT WHERE BILLINGCYCLID = #{deal_date}
+		AND ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NOT NULL
+	</delete>
+	
+	<update id="update" parameterType="java.util.Map">
+		UPDATE TAB_COMM_IMPORT SET FEE = #{fee} WHERE BILL_ID = #{bill_id}
+	</update>
+	
+	<select id="getDataListCount" parameterType="java.util.Map" resultType="int">
+		SELECT 
+			COUNT(*) AS TOTALCOUNT
+  		FROM TAB_COMM_IMPORT 
+ 		WHERE INIT_ID IS NULL AND BILLINGCYCLID = #{deal_date} 
+ 		AND GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
+	</select>
+	
+	<update id="updateDataWorkNo" parameterType="java.util.Map">
+		UPDATE TAB_COMM_IMPORT 
+   			SET INIT_ID = #{workNo}
+ 		WHERE BILLINGCYCLID = #{deal_date}
+   		AND GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
+   		AND INIT_ID IS NULL
+	</update>
+	
+	<select id="listByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			BILL_ID,
+			BILLINGCYCLID,
+			CHANNEL_NAME,
+			AGENTID,
+			DEPT_PTYPE,
+			COMM_TYPE,
+			SUBJECTID,
+			SVCTP,
+			FEE,
+			REMARK
+			FROM TAB_COMM_IMPORT
+	    WHERE INIT_ID = #{businessKey}
+	 <if test="channel_name != null">
+	 	 AND CHANNEL_NAME LIKE '%' || #{channel_name} || '%'
+	 </if>
+	</select>
+	
+	<update id="updateStatus" parameterType="String">
+		UPDATE TAB_COMM_IMPORT T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
+	</update>
+	
+	
+</mapper>
