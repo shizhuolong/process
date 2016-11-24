@@ -65,15 +65,11 @@ public class UnsupportedAction extends BaseAction{
 			User user = UserHolder.getCurrentLoginUser();
 			Org org = user.getOrg();
 			String code = org.getCode();
-			String deal_date = request.getParameter("deal_date");
 			String username=user.getUsername();
 			resultMap.put("code", code);
 			resultMap.put("orgLevel", org.getOrgLevel());
 			resultMap.put("username", username);
 			
-			if(deal_date != null && !"".equals(deal_date.trim())) {
-				resultMap.put("deal_date", deal_date);
-			}
 			Object result = unsupportedService.list(resultMap);
 			this.reponseJson(result);
 	}
@@ -83,14 +79,10 @@ public class UnsupportedAction extends BaseAction{
 		Org org = user.getOrg();
 		String username=user.getUsername();
 		String code = org.getCode();
-		String deal_date = request.getParameter("deal_date");
 		resultMap.put("code", code);
 		resultMap.put("orgLevel", org.getOrgLevel());
 		resultMap.put("username", username);
 		
-		if(deal_date != null && !"".equals(deal_date.trim())) {
-			resultMap.put("deal_date", deal_date);
-		}
 		double result = unsupportedService.queryTotalFee(resultMap);
 		this.reponseJson(result);
    }
@@ -111,7 +103,6 @@ public class UnsupportedAction extends BaseAction{
 		User user = UserHolder.getCurrentLoginUser();
 		Org org = user.getOrg();
 		String username=user.getUsername();
-		String deal_date = request.getParameter("deal_date");
 		String businessKey = request.getParameter("businessKey");
 		String code=org.getCode();
 		String resultMsg = "";
@@ -121,7 +112,6 @@ public class UnsupportedAction extends BaseAction{
 			Map<String, String> resultMap=new HashMap<String,String>();
 			resultMap.put("code", code);
 			resultMap.put("username", username);
-			resultMap.put("deal_date", deal_date);
 			resultMap.put("businessKey", businessKey);
 			List<String[]> list = this.getExcel(myFile[0], 0);
 			
@@ -366,7 +356,6 @@ public class UnsupportedAction extends BaseAction{
 		try {
 			String theme = request.getParameter("theme");
 			String nextDealer = request.getParameter("nextDealer");
-			String deal_date = request.getParameter("deal_date");
 			if(StringUtils.isBlank(theme)) {
 				throw new BusiException("工单主题不能为空！");
 			}
@@ -376,7 +365,6 @@ public class UnsupportedAction extends BaseAction{
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("title", theme);
 			map.put("nextDealer", nextDealer);
-			map.put("deal_date", deal_date);
 			unsupportedService.doSendOrder(map);
 			info.setCode(ResultInfo._CODE_OK_);
 		} catch (BusiException e) {
