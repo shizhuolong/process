@@ -21,7 +21,6 @@ $(function(){
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
-	var deal_date = $("#deal_date").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -30,8 +29,7 @@ function search(pageNumber) {
 		url:$("#ctx").val()+"/unsupported/unsupported!list.action",
 		data:{
 		   "resultMap.page":pageNumber,
-           "resultMap.rows":pageSize,
-           "deal_date":deal_date
+           "resultMap.rows":pageSize
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -74,16 +72,12 @@ function search(pageNumber) {
 }
 
 function initTotalFee(){
-	var deal_date = $("#deal_date").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		async:false,//true是异步，false是同步
 		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
 		url:$("#ctx").val()+"/unsupported/unsupported!queryTotalFee.action",
-		data:{
-	       "deal_date":deal_date
-	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
 	    },
@@ -259,13 +253,8 @@ function validate(){
 	var flag = true ;
 	var nextRouter = $("#nextRouter").val();
 	var theme = $.trim($("#theme").val());
-	var deal_date = $.trim($("#deal_date").val());
 	if(!isNotBlank(theme)) {
 		art.dialog.alert("工单主题不能为空！");
-		return false;
-	}
-	if(!isNotBlank(deal_date)) {
-		art.dialog.alert("帐期不能为空！");
 		return false;
 	}
 	if(!isNotBlank(nextRouter)){
