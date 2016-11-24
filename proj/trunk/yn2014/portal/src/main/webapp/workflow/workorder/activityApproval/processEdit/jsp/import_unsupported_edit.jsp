@@ -2,11 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%
-	Calendar c = Calendar.getInstance();     
-    c.add(Calendar.MONTH, -1);
-	String currentMon = new SimpleDateFormat("yyyyMM").format(c.getTime());
-%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
