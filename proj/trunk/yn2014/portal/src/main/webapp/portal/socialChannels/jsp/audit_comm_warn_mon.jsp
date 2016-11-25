@@ -21,7 +21,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>月预警报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report-fix.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
@@ -39,20 +39,20 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="7%" style="text-align:right;">账期：</td>
 					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=mon%>" id="mon">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="7%" style="text-align:right;">地市：</td>
 					<td width="13%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">营服中心：</td>
+					<td width="7%" style="text-align:right;">营服中心：</td>
 					<td width="13%">
-						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+						<select name="unitCode" id="unitCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
@@ -61,20 +61,20 @@
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
 					<td width="3%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 				<tr height="35px">
-				    <td width="7%">网点：</td>
+				    <td width="7%" style="text-align:right;">网点：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="unit_id_3_name" type="text" id="unit_id_3_name"/>
 					</td>
-					<td width="7%">开始发展日期：</td>
+					<td width="7%" style="text-align:right;">开始发展日期：</td>
 					<td width="13%">
 						<input type="text" class="Wdate default-text-input wper80"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',maxDate:'#F{$dp.$D(\'mon\')}'})" id="startDevMonth">
 					</td>
-					<td width="7%">结束发展日期：</td>
+					<td width="7%" style="text-align:right;">结束发展日期：</td>
 					<td width="13%">
 						<input type="text" class="Wdate default-text-input wper80" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',minDate:'#F{$dp.$D(\'startDevMonth\')}',maxDate:'#F{$dp.$D(\'mon\')}'})" id="endDevMonth">

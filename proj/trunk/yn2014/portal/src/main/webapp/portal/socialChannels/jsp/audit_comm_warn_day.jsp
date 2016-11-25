@@ -21,7 +21,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <title>日预警报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report-fix.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
@@ -36,24 +36,24 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="padding-left: 10px;">账期：</td>
+					<td width="7%" style="text-align:right;">账期：</td>
 					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" readonly="true"
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=day %>" id="day">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="7%" style="text-align:right;">地市：</td>
 					<td width="13%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">营服中心：</td>
+					<td width="7%" style="text-align:right;">营服中心：</td>
 					<td width="13%">
-						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+						<select name="unitCode" id="unitCode"  class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="7%">网点：</td>
+					<td width="7%" style="text-align:right;">网点：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="unit_id_3_name" type="text" id="unit_id_3_name"/>
 					</td>
