@@ -15,7 +15,7 @@
 			SVCTP,
 			FEE,
 			REMARK
-			FROM TAB_COMM_IMPORT
+			FROM PAPP.TAB_COMM_IMPORT
 			WHERE INIT_ID IS NULL 
 			AND ACCOUNT_ID=#{username}
 		<if test="orgLevel == 1">
@@ -29,7 +29,7 @@
 	<select id="queryTotalFee" parameterType="java.util.Map" resultType="double">
 			SELECT
 			NVL(SUM(FEE),0) FEE
-			FROM TAB_COMM_IMPORT
+			FROM PAPP.TAB_COMM_IMPORT
 			WHERE INIT_ID IS NULL 
 			AND ACCOUNT_ID=#{username}
 		<if test="orgLevel == 1">
@@ -43,53 +43,53 @@
 	<select id="queryTotalFeeByInitId" parameterType="java.util.Map" resultType="double">
 			SELECT
 			NVL(SUM(FEE),0) FEE
-			FROM TAB_COMM_IMPORT
+			FROM PAPP.TAB_COMM_IMPORT
 			WHERE INIT_ID=#{workNo}
 	</select>
 	
 	<insert id="importData" parameterType="java.util.Map">
-		INSERT INTO TAB_COMM_IMPORT
-  		SELECT * FROM TAB_COMM_IMPORT_TEMP T1
+		INSERT INTO PAPP.TAB_COMM_IMPORT
+  		SELECT * FROM PAPP.TAB_COMM_IMPORT_TEMP T1
     	WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code}
 	</insert>
 	
 	<update id="updateInitId" parameterType="String">
-		UPDATE TAB_COMM_IMPORT SET INIT_ID=#{businessKey} WHERE
+		UPDATE PAPP.TAB_COMM_IMPORT SET INIT_ID=#{businessKey} WHERE
 		ACCOUNT_ID=#{username} AND GROUP_ID=#{code}
 	</update>
 	
 	<delete id="delete" parameterType="java.util.Map">
-		DELETE FROM TAB_COMM_IMPORT WHERE BILL_ID=#{bill_id}
+		DELETE FROM PAPP.TAB_COMM_IMPORT WHERE BILL_ID=#{bill_id}
 	</delete>
 	
 	<delete id="deleteTemp" parameterType="java.util.Map">
-		DELETE FROM TAB_COMM_IMPORT_TEMP WHERE 
+		DELETE FROM PAPP.TAB_COMM_IMPORT_TEMP WHERE 
 		ACCOUNT_ID=#{username}
 		AND GROUP_ID=#{code} 
 	</delete>
 	
 	<delete id="deleteResult" parameterType="java.util.Map">
-		DELETE FROM TAB_COMM_IMPORT WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NULL
+		DELETE FROM PAPP.TAB_COMM_IMPORT WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NULL
 	</delete>
 	
 	<delete id="deleteResultByEdit" parameterType="java.util.Map">
-		DELETE FROM TAB_COMM_IMPORT WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NOT NULL
+		DELETE FROM PAPP.TAB_COMM_IMPORT WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NOT NULL
 	</delete>
 	
 	<update id="update" parameterType="java.util.Map">
-		UPDATE TAB_COMM_IMPORT SET FEE = #{fee} WHERE BILL_ID = #{bill_id}
+		UPDATE PAPP.TAB_COMM_IMPORT SET FEE = #{fee} WHERE BILL_ID = #{bill_id}
 	</update>
 	
 	<select id="getDataListCount" parameterType="java.util.Map" resultType="int">
 		SELECT 
 			COUNT(*) AS TOTALCOUNT
-  		FROM TAB_COMM_IMPORT 
+  		FROM PAPP.TAB_COMM_IMPORT 
  		WHERE INIT_ID IS NULL
  		AND GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
 	</select>
 	
 	<update id="updateDataWorkNo" parameterType="java.util.Map">
-		UPDATE TAB_COMM_IMPORT 
+		UPDATE PAPP.TAB_COMM_IMPORT 
    			SET INIT_ID = #{workNo}
  		WHERE GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
    		AND INIT_ID IS NULL
@@ -107,7 +107,7 @@
 			SVCTP,
 			FEE,
 			REMARK
-			FROM TAB_COMM_IMPORT
+			FROM PAPP.TAB_COMM_IMPORT
 	    WHERE INIT_ID = #{businessKey}
 	 <if test="channel_name != null">
 	 	 AND CHANNEL_NAME LIKE '%' || #{channel_name} || '%'
@@ -115,7 +115,7 @@
 	</select>
 	
 	<update id="updateStatus" parameterType="String">
-		UPDATE TAB_COMM_IMPORT T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
+		UPDATE PAPP.TAB_COMM_IMPORT T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
 	</update>
 	
 </mapper>

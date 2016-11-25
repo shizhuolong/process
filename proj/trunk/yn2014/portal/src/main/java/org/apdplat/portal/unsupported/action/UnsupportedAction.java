@@ -106,7 +106,7 @@ public class UnsupportedAction extends BaseAction{
 		String businessKey = request.getParameter("businessKey");
 		String code=org.getCode();
 		String resultMsg = "";
-		String resultTableName="TAB_COMM_IMPORT_TEMP";
+		String resultTableName="PAPP.TAB_COMM_IMPORT_TEMP";
 		if(myFile != null && myFile.length > 0) {
 			
 			Map<String, String> resultMap=new HashMap<String,String>();
