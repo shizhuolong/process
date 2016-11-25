@@ -57,7 +57,7 @@ function search(pageNumber) {
 	//指标类代码
 	var indicators = $.trim($("#indicators").val());
 	//渠道编码
-	var chanCode = $.trim($("#chanCode").val());
+	var channelCode = $.trim($("#channelCode").val());
 	
 	var sql =   "SELECT DEAL_DATE,                         "+
 				"       GROUP_ID_1_NAME,                   "+
@@ -127,8 +127,8 @@ function search(pageNumber) {
 	if(indicators!=''){
 		sql+=" AND T.INDEX_CODE = '"+indicators+"'";
 	}
-	if(chanCode!=''){
-		sql+=" AND T.FD_CHNL_ID = '"+chanCode+"'";
+	if(channelCode!=''){
+		sql+=" AND T.FD_CHNL_ID = '"+channelCode+"'";
 	}
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
@@ -180,7 +180,7 @@ function downsAll(){
 	//指标类代码
 	var indicators = $.trim($("#indicators").val());
 	//渠道编码
-	var chanCode = $.trim($("#chanCode").val());
+	var channelCode = $.trim($("#channelCode").val());
 	var sql =   "SELECT DEAL_DATE,                         "+
 				"       GROUP_ID_1_NAME,                   "+
 				"       UNIT_NAME,                         "+
@@ -248,11 +248,11 @@ function downsAll(){
 	if(indicators!=''){
 		sql+=" AND T.INDEX_CODE = '"+indicators+"'";
 	}
-	if(chanCode!=''){
-		sql+=" AND T.FD_CHNL_ID = '"+chanCode+"'";
+	if(channelCode!=''){
+		sql+=" AND T.FD_CHNL_ID = '"+channelCode+"'";
 	}
 	
-	showtext = '社会渠道分等分级积分计算-'+dealDate;
+	showtext = '计算明细月报-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
