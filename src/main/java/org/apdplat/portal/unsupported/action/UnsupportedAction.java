@@ -116,7 +116,7 @@ public class UnsupportedAction extends BaseAction{
 			List<String[]> list = this.getExcel(myFile[0], 0);
 			
 			
-			String [] columnsId = {"BILLINGCYCLID","AGENTID","DEPT_PTYPE","CHANNEL_NAME","REGION","COUNTY_ID","SUBSCRIPTION_ID","JOB_ID","FEE","SVCNUM","COMM_TYPE","SUBJECTID","SVCTP","REMARK","NET_TYPE","PAY_FLAG"};
+			String [] columnsId = {"BILLINGCYCLID","AGENTID","DEPT_PTYPE","CHANNEL_NAME","REGION","COUNTY_ID","SUBSCRIPTION_ID","JOB_ID","FEE","TOTALFEE","NETFEE","SVCNUM","COMM_TYPE","SUBJECTID","SVCTP","REMARK","NET_TYPE","PAY_FLAG"};
 			String [] patterns = {"^\\S+$","^\\S+$","","","","","","","^\\S+$","^\\S+$","","","","","","^\\S+$"};
 			StringBuffer buf=new StringBuffer();
 			buf.append("insert into "+resultTableName+"(insert_date,group_id,account_id,bill_id,");
@@ -138,7 +138,7 @@ public class UnsupportedAction extends BaseAction{
 				try {
 					conn = this.getCon();
 					conn.setAutoCommit(false);
-					String sql=base_sql+value_sql+"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String sql=base_sql+value_sql+"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					System.out.println(sql);
 					pre = conn.prepareStatement(sql);
 					for(int i=1; i<list.size(); i++) {
@@ -161,13 +161,15 @@ public class UnsupportedAction extends BaseAction{
 						pre.setString(j++, str[6]);
 						pre.setString(j++, str[7]);
 						pre.setDouble(j++, Double.valueOf(str[8]));
-						pre.setString(j++, str[9]);
-						pre.setString(j++, str[10]);
+						pre.setDouble(j++, Double.valueOf(str[9]));
+						pre.setDouble(j++, Double.valueOf(str[10]));
 						pre.setString(j++, str[11]);
 						pre.setString(j++, str[12]);
 						pre.setString(j++, str[13]);
 						pre.setString(j++, str[14]);
 						pre.setString(j++, str[15]);
+						pre.setString(j++, str[16]);
+						pre.setString(j++, str[17]);
 						/*String uuid = UUID.randomUUID().toString().replace("-", "");
 						pre.setString(j++, uuid);*/
 						pre.addBatch();

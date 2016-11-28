@@ -7,9 +7,9 @@
 		<if test="orgLevel==1">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
-  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
- 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1
+				T.CHNL_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
  			<if test="hq_chan_name != null">
  				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
  			</if>
@@ -18,6 +18,21 @@
  			</if>
  			<if test="is_default != null">
  				AND T2.IS_DEFAULT=#{is_default}
+ 			</if>
+ 			<if test="is_default != null">
+ 				AND T2.IS_DEFAULT=#{is_default}
+ 			</if>
+ 			<if test="chn_cde_1_name != null">
+ 				AND T3.CHN_CDE_1_NAME LIKE #{chn_cde_1_name}
+ 			</if>
+ 			<if test="chn_cde_2_name != null">
+ 				AND T3.CHN_CDE_2_NAME LIKE #{chn_cde_2_name}
+ 			</if>
+ 			<if test="chn_cde_3_name != null">
+ 				AND T3.CHN_CDE_3_NAME LIKE #{chn_cde_3_name}
+ 			</if>
+ 			<if test="chn_cde_4_name != null">
+ 				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>	
@@ -36,6 +51,18 @@
  			<if test="is_default != null">
  				AND T2.IS_DEFAULT=#{is_default}
  			</if>
+ 			<if test="chn_cde_1_name != null">
+ 				AND T3.CHN_CDE_1_NAME LIKE #{chn_cde_1_name}
+ 			</if>
+ 			<if test="chn_cde_2_name != null">
+ 				AND T3.CHN_CDE_2_NAME LIKE #{chn_cde_2_name}
+ 			</if>
+ 			<if test="chn_cde_3_name != null">
+ 				AND T3.CHN_CDE_3_NAME LIKE #{chn_cde_3_name}
+ 			</if>
+ 			<if test="chn_cde_4_name != null">
+ 				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
+ 			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
 		<if test="orgLevel==3">
@@ -53,6 +80,18 @@
  			<if test="is_default != null">
  				AND T2.IS_DEFAULT=#{is_default}
  			</if>
+ 			<if test="chn_cde_1_name != null">
+ 				AND T3.CHN_CDE_1_NAME LIKE #{chn_cde_1_name}
+ 			</if>
+ 			<if test="chn_cde_2_name != null">
+ 				AND T3.CHN_CDE_2_NAME LIKE #{chn_cde_2_name}
+ 			</if>
+ 			<if test="chn_cde_3_name != null">
+ 				AND T3.CHN_CDE_3_NAME LIKE #{chn_cde_3_name}
+ 			</if>
+ 			<if test="chn_cde_4_name != null">
+ 				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
+ 			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
 		<if test="orgLevel==4">
@@ -63,6 +102,10 @@
  			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND 1=2
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
+	</select>
+	
+	<select id="listDetail1" parameterType="java.util.Map" resultType="java.util.Map">
+	   SELECT ID,TYPE_NAME FROM PCDE.TB_CDE_TYPE
 	</select>
 	
 	<select id="listUnit" parameterType="java.util.Map" resultType="java.util.Map">
@@ -153,5 +196,36 @@
    		WHERE T.GROUP_ID_4 = #{group_id_4}
    		AND T1.DEAL_DATE=to_char(sysdate,'yyyymm')
 	</select>
+	
+	<select id="isExist" parameterType="java.lang.String" resultType="java.util.Map">
+	   SELECT * FROM PCDE.TB_CDE_TYPE WHERE TYPE_NAME=#{type_name}
+	</select>
+	
+	<insert id="add" parameterType="java.lang.String">
+	   INSERT INTO PCDE.TB_CDE_TYPE(
+	    ID,
+	    TYPE_NAME
+	   )
+	   SELECT PCDE.CH_TYPE_ID.NEXTVAL
+	   ,#{type_name}
+	   FROM DUAL
+	</insert>
+	
+	<update id="update" parameterType="java.util.Map">
+	  UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE SET CHNL_TYPE=#{chnl_type},CHNL_ID=#{chnl_id}
+      WHERE HQ_CHAN_CODE=#{hq_chan_code} 
+	</update>
+	
+	<select id="loadChnlType" parameterType="java.lang.String" resultType="java.util.Map">
+	   SELECT DISTINCT ID,TYPE_NAME FROM PCDE.TB_CDE_TYPE
+	</select>
+	
+	<update id="updateDetail1" parameterType="java.util.Map">
+	  UPDATE PCDE.TB_CDE_TYPE SET TYPE_NAME=#{type_name} WHERE ID=#{id}
+	</update>
+	
+	<delete id="delDetail1" parameterType="java.lang.String">
+	  DELETE FROM PCDE.TB_CDE_TYPE WHERE ID=#{id}
+	</delete>
 	
 </mapper>
