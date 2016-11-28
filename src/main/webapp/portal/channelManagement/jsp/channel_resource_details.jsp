@@ -8,9 +8,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_details.js"></script>
 <title>渠道明细</title>
 <style type="text/css">
@@ -30,7 +33,10 @@
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="group_id_4" name="group_id_4" value="${group_id_4 }">
+	<input type="hidden" id="group_id_4" name="group_id_4" value="${group_id_4}">
+	<input type="hidden" id="chnl_id" name="chnl_id" value="${chnl_id}">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<div id="smartForm">
     	<div id="container">
             <div id="content">
@@ -62,6 +68,19 @@
                                 <th>渠道属性4:</th>
                                 <td id="chn_cde_4_name"></td>
                             </tr>
+                             <tr colspan="4">
+                                <th>渠道类型:</th>
+                                <td>
+                                  <select id="chnl_type" name="chnl_type">
+                                   
+                                  </select>
+                                </td>
+                                <td colspan="2">
+                                  <a class="default-btn fLeft mr10" href="#" id="addBtn">更多</a>
+                                  <a class="default-btn fLeft mr10" href="#" id="updateBtn">保存</a>
+                                </td>
+                             </tr>
+                             
                         </table>
                         <div class="title" style="border-bottom: 2px solid #e7d4b3;"><i></i>渠道联系方式</div>
                         <table class="chanlInfoForom">
@@ -132,6 +151,23 @@
             </div>
         </div>
     </div>
+    <div class="sticky-wrap" id="addFormDiv" style="display:none;">
+		<form id="addForm" method="POST">
+			<table class="default-table sticky-enabled">
+				<tr>
+					<td style="padding-left: 60px;">类型名称:</td>
+					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="类型名称不能为空" name="type_name" id="type_name"></td>
+				</tr>
+				<tr></tr>
+				<tr>
+	                <td colspan="2" style="padding-left: 120px;">
+		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
+		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel();">取消</a>
+	                </td>
+				</tr>
+			</table>
+		</form>
+    </div>		
 </body>
 <style>
 	.aui_w,.aui_e{
