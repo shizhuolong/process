@@ -62,18 +62,20 @@
 														<th>结算账期</th>
 														<th>渠道名称</th>
 														<th>渠道编码</th>
-														<th>渠道类型</th>
+														<!-- <th>渠道类型</th> -->
 														<th>佣金大类</th>
 														<th>佣金科目</th>
 														<th>业务类型</th>
 														<th>佣金金额</th>
+														<th>佣金总额</th>
+														<th>净额</th>
 														<th>备注</th>
 													</tr>
 											</thead>
 											<tbody id="dataBody">
 											</tbody>
 											<tr>
-												<td colspan="11">
+												<td colspan="14">
 													</div>
 													<div class="page_count">
 														<div class="page_count_left">
