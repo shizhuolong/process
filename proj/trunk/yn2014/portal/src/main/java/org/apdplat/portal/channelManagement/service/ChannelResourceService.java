@@ -68,4 +68,35 @@ public class ChannelResourceService {
 	public List<Map<String, Object>> loadChanlDetails(String group_id_4) {
 		return channelResourceDao.loadChanlDetails(group_id_4);
 	}
+
+	public List<Map<String, Object>> isExist(String type_name) {
+		return channelResourceDao.isExist(type_name);
+	}
+
+	public void add(String type_name) {
+		channelResourceDao.add(type_name);
+	}
+
+	public void update(Map<String, String> params) {
+		channelResourceDao.update(params);
+	}
+	
+	public void updateDetail1(Map<String, String> params) {
+		channelResourceDao.updateDetail1(params);
+	}
+
+	public Object listDetail1(Map<String, String> resultMap) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		PageList<Map<String, Object>> rows = channelResourceDao.listDetail1(resultMap);
+		result.put("rows", rows);
+		result.put("pagin", rows.getPaginator());
+		return result;
+	}
+	public void delDetail1(String id) {
+		channelResourceDao.delDetail1(id);
+	}
+
+	public List<Map<String, Object>> loadChnlType() {
+		return channelResourceDao.loadChnlType();
+	}
 }

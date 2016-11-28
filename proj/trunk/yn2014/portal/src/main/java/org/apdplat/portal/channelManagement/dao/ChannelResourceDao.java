@@ -5,6 +5,14 @@ import java.util.Map;
 
 
 
+
+
+
+
+
+
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface ChannelResourceDao {
@@ -65,4 +73,18 @@ public interface ChannelResourceDao {
 	 * @return
 	 */
 	public List<Map<String, Object>> loadChanlDetails(String group_id_4);
+
+	public List<Map<String, Object>> isExist(String type_name);
+
+	public void add(String type_name);
+
+	public void update(Map<String, String> params);
+
+	public PageList<Map<String, Object>> listDetail1(Map<String, String> resultMap);
+
+	public void updateDetail1(Map<String, String> params);
+
+	public void delDetail1(String id);
+
+	public List<Map<String, Object>> loadChnlType();
 }
