@@ -46,11 +46,13 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['BILLINGCYCLID'])+"</td>"
                 +"<td>"+isNull(n['CHANNEL_NAME'])+"</td>"
                 +"<td>"+isNull(n['AGENTID'])+"</td>"
-                +"<td>"+isNull(n['DEPT_PTYPE'])+"</td>"
+                /*+"<td>"+isNull(n['DEPT_PTYPE'])+"</td>"*/
                 +"<td>"+isNull(n['COMM_TYPE'])+"</td>"
                 +"<td>"+isNull(n['SUBJECTID'])+"</td>"
                 +"<td>"+isNull(n['SVCTP'])+"</td>"
                 +"<td>"+isNull(n['FEE'])+"</td>"
+                +"<td>"+isNull(n['TOTALFEE'])+"</td>"
+                +"<td>"+isNull(n['NETFEE'])+"</td>"
                 +"<td>"+isNull(n['REMARK'])+"</td>"
                 +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' fee='"+isNull(n['FEE'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
                 +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' onclick='del($(this));' style='color:#BA0C0C;'>删除</a></td>"
@@ -61,7 +63,7 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",false);
 			}else {
 				$("#submitTask").attr("disabled",true);
-				$("#dataBody").empty().html("<tr><td colspan='10'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='13'>暂无数据</td></tr>");
 			}
 			initTotalFee();
 	   	},
