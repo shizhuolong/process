@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>渠道资源管理</title>
+<title>查看</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
@@ -29,19 +29,10 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js"></script>
-<script type="text/javascript">
-	var privileges='<%=user.getAuthoritiesStr()%>';
-	function isGrantedNew(role){
-	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
-	        return true;
-	    }
-	    if(privileges.toString().indexOf(role)==-1){
-	        return false;
-	    }
-	    return true;
-	}
-</script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list_detail1.js"></script>
+<style>
+  .aui_title{cursor: move; display: block;width: 1000px;}
+</style>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -50,71 +41,16 @@
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
 	<input type="hidden" id="login_name" value="<%=user.getUsername()%>">
-	<div data-options="region:'west',split:false,title:'渠道资源管理'"
-		style="width: 220px; padding: 10px;">
-		<div id="ztree" class="ztree"></div>
-	</div>
-	<div data-options="region:'center',title:'渠道资源管理'">
+	
+	<div data-options="region:'center',title:'列表'">
 		<div id="container">
-			<form id="searchForm" method="post">
-				<input type="hidden" name="resultMap.page" /> <input type="hidden"
-					name="resultMap.rows" />
-				<table width="100%" style="margin: 10px 0;">
-					<tr height="35px">
-						<td width="10%" style="padding-left: 10px;">渠道名称：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="hq_chan_name" name="hq_chan_name" type="text" /></td>
-						<td width="5%">渠道编码：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="hq_chan_code" name="hq_chan_code" type="text" /></td>
-						<!-- <td width="8%" rowspan="2"><a class="default-btn" href="#"
-							id="searchBtn">查询</a></td> -->
-					</tr>
-					<tr height="35px">
-						<td width="10%" style="padding-left: 10px;">是否划分营服中心：</td>
-						<td width="20%">
-							<select class="default-text-input wper80" name="is_default" id="is_default">
-								<option value="">全部</option>
-								<option value="0">是</option>
-								<option value="1">否</option>
-							</select>
-						</td>
-						<td width="5%">渠道属性1：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="chn_cde_1_name" name="chn_cde_1_name" type="text" /></td>
-					</tr>
-					<tr height="35px">
-						<td width="5%">渠道属性2：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="chn_cde_2_name" name="chn_cde_2_name" type="text" /></td>
-						<td width="5%">渠道属性3：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="chn_cde_3_name" name="chn_cde_3_name" type="text" /></td>
-					</tr>
-					<tr height="35px" clospan="2">
-						<td width="5%">渠道属性4：</td>
-						<td width="20%"><input class="default-text-input wper80"
-							id="chn_cde_4_name" name="chn_cde_4_name" type="text" /></td>
-					</tr>
-					<tr>
-						<td colspan="4">
-                         	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 300px;">查询</a>
-                         	<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
-                         	<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
-                        </td>
-					</tr>
-				</table>
-			</form>
 			<div class="default-dt dt-autoH">
 				<div class="sticky-wrap">
 					<table class="default-table sticky-enabled">
 					<thead>
 						<tr>
-							<th class="first">地市名称</th>
-							<th>营服中心</th>
-							<th>渠道名称</th>
-							<th>渠道编码</th>
-							<th>操作</th>
+							<th class="first">类型名称</th>
+							<th class="first">操作</th>
 						</tr>
 					</thead>
 					<tbody id="dataBody">
@@ -137,6 +73,23 @@
 			</div>
 		</div>
 	</div>
-	
+	<div class="sticky-wrap" id="updateFormDiv" style="display:none;">
+		<form id="updateForm" method="POST">
+		  <input type="hidden" id="id" name="id"/>
+			<table class="default-table sticky-enabled">
+				<tr>
+					<td style="padding-left: 60px;">类型名称:</td>
+					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="类型名称不能为空" name="type_name" id="type_name"></td>
+				</tr>
+				<tr></tr>
+				<tr>
+	                <td colspan="2" style="padding-left: 120px;">
+		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
+		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel();">取消</a>
+	                </td>
+				</tr>
+			</table>
+		</form>
+    </div>		
 </body>
 </html>
