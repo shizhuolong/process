@@ -171,61 +171,16 @@ function showDetails(ele) {
 	var chnl_id= $(ele).attr("chnl_id");
 	var url = $("#ctx").val()+"/channelManagement/channelResource_loadChanlInfo.action?group_id_4="+group_id_4+"&chnl_id="+chnl_id;
 	window.parent.openWindow("渠道详细信息",'funMenu',url);
-	/*var group_id_4 = $(ele).attr("group_id_4");
-	var myDialog = art.dialog({
-		id:'stationInfo',
-		width:'465px',
-		height:'350px',
-		padding:'0 0',
-		title:'渠道详细信息',
-		lock:true,
-		resize:false
-	});
-	$.ajax({
-		type:"POST",
-		dataType:'json',
-		cache:false,
-		url:$("#ctx").val()+"/channelManagement/channelResource_queryChanelInfo.action",
-		data:{
-			"group_id_4":group_id_4
-	   	}, 
-	   	success:function(data){
-	   		var content = "<table style='width:100%;margin-top: 5px;' id='nRtable'>";
-	   		content+="<tr>";
-	   		content+="<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>地市名称</td><td style='height: 25px; padding: 0px;width: 150px;'>"+data[0].GROUP_ID_1_NAME+"</td>" +
-	   				"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>营服中心</td><td style='height: 25px; padding: 0px;width: 150px;'>"+data[0].UNIT_NAME+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道名称</td><td style='height: 25px; padding: 0px;width: 150px;'>"+data[0].GROUP_ID_4_NAME+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道编码</td><td style='height: 25px; padding: 0px;width: 150px;'>"+data[0].HQ_CHAN_CODE+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道经理</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].NAME)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道经理联系电话</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].PHONE)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道属性1</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].CHN_CDE_1_NAME)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道属性2</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].CHN_CDE_2_NAME)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道属性3</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].CHN_CDE_3_NAME)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道属性4</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].CHN_CDE_4_NAME)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>经度</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].LOG_NO)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>纬度</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].LAT_NO)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>渠道状态</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].LOG_NO)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>总部结算渠道ID</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].HQ_PAY_CHNL_ID)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>结算渠道名称</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].PAY_CHNL_NAME)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>是否接入联通受理系统</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].IS_INPUT_SYSTEM)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>接入系统数量</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].SYSTEM_NUM)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>是否有协议</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].IS_SIGN)+"</td></tr>" +
-   					"<tr><td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>是否发展人</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].IS_DEVELOPER)+"</td>" +
-   					"<td style='height: 25px; padding: 0px;width: 100px;background: #d8f0e5;'>是否迷你厅</td><td style='height: 25px; padding: 0px;width: 150px;'>"+isNull(data[0].IS_MINI_HALL)+"</td></tr>"
-	   		content += "</table>";
-	   		myDialog.content(content);// 填充对话框内容
-	   		//myDialog.close();
-		},
-	   	error:function(XMLHttpRequest, textStatus, errorThrown){
-		   alert("加载数据失败！");
-	    }
-	});*/
 }
 
 function downloadExcel() {
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var hq_chan_code = $.trim($("#hq_chan_code").val());
 	var is_default = $.trim($("#is_default option:selected").val());
+	var chn_cde_1_name = $.trim($("#chn_cde_1_name").val());
+	var chn_cde_2_name = $.trim($("#chn_cde_2_name").val());
+	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
+	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,                        "+
@@ -276,6 +231,18 @@ function downloadExcel() {
 	}
 	if(is_default != "") {
 		sql += "AND T2.IS_DEFAULT='"+is_default+"' ";
+	}
+	if(chn_cde_1_name != "") {
+		sql += " AND T3.CHN_CDE_1_NAME LIKE '%"+chn_cde_1_name+"%' ";
+	}
+	if(chn_cde_2_name != "") {
+		sql += " AND T3.CHN_CDE_2_NAME LIKE '%"+chn_cde_2_name+"%' ";
+	}
+	if(chn_cde_3_name != "") {
+		sql += " AND T3.CHN_CDE_3_NAME LIKE '%"+chn_cde_3_name+"%' ";
+	}
+	if(chn_cde_4_name != "") {
+		sql += " AND T3.CHN_CDE_4_NAME LIKE '%"+chn_cde_4_name+"%' ";
 	}
 	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	var showtext="Sheet";
