@@ -1,6 +1,6 @@
 var report;
 $(function(){
-	var title=[["组织架构","厅数","发展","","","","收入","","","",],
+	var title=[["组织架构","厅数","发展","","","","收入","","",""],
 	           ["","","日发展","月累计发展","单厅发展","累计发展环比","日收入","月累计收入","单厅收入","累计收入环比"]];
 	var field=["ROW_NAME","HALLCOUNT","DAYDEV","MONDEV","HALLDEV","DEVRATE","DAYINC","MONINC","HALLINC","INCRATE"];
 	$("#searchBtn").click(function(){
@@ -198,7 +198,7 @@ function downsAll() {
 	}
 	var sql = getSecondSql(where,dealDate);
 	var showtext = '自营厅发展收入日通报' + dealDate;
-	var title=[["账期","组织架构","","渠道编码","厅数","发展","","","","收入","","","",],
+	var title=[["账期","组织架构","","渠道编码","厅数","发展","","","","收入","","",""],
 	           ["","地市","营业厅","","","日发展","月累计发展","单厅发展","累计发展环比","日收入","月累计收入","单厅收入","累计收入环比"]];
 	downloadExcel(sql,title,showtext);
 }
