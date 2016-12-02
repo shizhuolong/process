@@ -190,13 +190,11 @@ function getSameDownSql(){
 
 function getDifferentDownSql(){
 	var s="SELECT                                                                                "+
-	"      T.DEAL_DATE                                                                     "+
-	"      ,T.GROUP_ID_1_NAME                                                              "+
+	"      T.GROUP_ID_1_NAME                                                              "+
 	"      ,T.HQ_CHAN_CODE                                                                 "+
 	"      ,T.HQ_CHAN_NAME                                                                 "+
 	"      ,T.CHNL_TYPE                                                                    "+
 	"      ,SUM(NVL(T.ALL_NUM,0))ALL_NUM                                                   "+
-	"      ,SUM(NVL(T.ALL_NUM1,0))ALL_NUM1                                                 "+
 	"      ,PMRT.LINK_RATIO(SUM(NVL(T.ALL_NUM,0)),SUM(NVL(T.LAST_NUM,0)),2) HB_NUM1        "+
 	"      ,SUM(NVL(T.HY_NUM,0))HY_NUM1                                                    "+
 	"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.ALL_NUM,0))=0 THEN 0                 "+
@@ -221,17 +219,17 @@ function downsAll() {
 	if(startDate==endDate){
 		sql=getSameDownSql();
 		showtext ='自营厅发展日通报('+startDate+")";
+		title=[["账期","地市","营业厅编码","营业厅名称","厅类型","日发展","本月累计","较上月环比","其中合约用户","合约占比","其中七彩蓝尊用户","七彩蓝尊占比"]];
 	}else{
 		sql=getDifferentDownSql();
 		showtext ='自营厅发展日通报(' + startDate+"~"+endDate+")";
 		groupBy=" GROUP BY                                                                     "+
-		"      T.DEAL_DATE                                                                     "+
-		"      ,T.GROUP_ID_1_ID,T.GROUP_ID_1_NAME                                              "+
+		"      T.GROUP_ID_1_ID,T.GROUP_ID_1_NAME                                              "+
 		"      ,T.HQ_CHAN_CODE                                                                 "+
 		"      ,T.HQ_CHAN_NAME                                                                 "+
 		"      ,T.CHNL_TYPE                                                                    ";
+		title=[["地市","营业厅编码","营业厅名称","厅类型","本月累计","较上月环比","其中合约用户","合约占比","其中七彩蓝尊用户","七彩蓝尊占比"]];
 	}
-	title=[["账期","地市","营业厅编码","营业厅名称","厅类型","日发展","本月累计","较上月环比","其中合约用户","合约占比","其中七彩蓝尊用户","七彩蓝尊占比"]];
 	//条件
 	if(""!=regionCode){
 		sql+=" AND T.GROUP_ID_1_ID  ='"+regionCode+"' ";
