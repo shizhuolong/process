@@ -3,8 +3,6 @@ var field="";
 var startDate="";
 var endDate="";
 $(function(){
-	
-	
 	$("#searchBtn").click(function(){
 		startDate=$("#startDate").val();
 		endDate=$("#endDate").val();
@@ -40,14 +38,13 @@ $(function(){
 				};
 			}
 		});
-		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		search(0);
 	});
 	
 	
 	$("#searchBtn").trigger("click");
 });
-var pageSize = 17;
+var pageSize = 25;
 //分页
 function initPagination(totalCount) {
 	$("#totalCount").html(totalCount);
@@ -96,14 +93,14 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND 1=2 ";
 	}
-	var csql = sql;
+	/*var csql = sql;
 	var cdata = query("select count(*) total FROM(" + csql+")");
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
 	}else{
 		return;
-	}
+	}*/
 	
 	
 	if(groupBy!=""&&groupBy!=null){
@@ -119,9 +116,9 @@ function search(pageNumber) {
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	var d = query(sql);
-	if (pageNumber == 1) {
+	/*if (pageNumber == 1) {
 		initPagination(total);
-	}
+	}*/
 	nowData = d;
 
 	report.showSubRow();
