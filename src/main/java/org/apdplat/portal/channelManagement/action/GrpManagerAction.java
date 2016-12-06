@@ -30,6 +30,7 @@ public class GrpManagerAction extends BaseAction {
 	private String phone;
 	private String developer;
 	private String dev_num;
+	private String bssCode;
 	
 	//新增集客经理
 	private String orgLevel;
@@ -261,6 +262,10 @@ public class GrpManagerAction extends BaseAction {
 		if(developer!=null&&!developer.trim().equals("")){
 			resultMap.put("developer", developer);
 		}
+		
+		if(bssCode!=null&&!bssCode.trim().equals("")){
+			resultMap.put("bssCode", bssCode);
+		}
 		Object result = service.queryGrpPerson(resultMap);
 		this.reponseJson(result);
 	}
@@ -405,6 +410,14 @@ public class GrpManagerAction extends BaseAction {
 
 	public void setChanName(String chanName) {
 		this.chanName = chanName;
+	}
+
+	public String getBssCode() {
+		return bssCode;
+	}
+
+	public void setBssCode(String bssCode) {
+		this.bssCode = bssCode;
 	}
 
 	
