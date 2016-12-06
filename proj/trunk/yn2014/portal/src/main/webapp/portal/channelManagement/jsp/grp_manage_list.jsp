@@ -52,7 +52,7 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
-	<div data-options="region:'west',split:false,title:'集客的客户经理及渠道经理'" style="width:220px;padding:10px;">
+	<div data-options="region:'west',split:false,title:'集客的客户经理及渠道经理'" style="width:185px;padding:10px;">
 		<div id="grptree" class="ztree"></div>
 	</div>
 	<div data-options="region:'center',title:'集客的客户经理及渠道经理'">
@@ -63,14 +63,13 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	            <input type="hidden" id="month" value="<%=month%>" />
 	          	<table width="100%" style="margin:10px 0px;">
 	                <tr height="35px">
-	                	<th style="width: 50px;">帐期：</th>
-						<td style="width: 80px;"><input readonly="readonly"
-							type="text" style="width: 80px" class="Wdate" id="dealDate"
+	                	<th style="text-align:right;">帐期：</th>
+						<td ><input readonly="readonly" type="text" class="Wdate default-text-input wper80" id="dealDate"
 							name="dealDate" value="<%=month%>"
 							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" />
 						</td>
-	                	<td width="6%" style="padding-left:10px;">类型：</td>
-	                    <td width="15%">
+	                	<th width="4%" style="text-align:right;">类型：</th>
+	                    <td width="13%">
 	                    	<select id="type" class="default-text-input wper80" name="type">
 	                    		<option value="">所有</option>
 	                    		<option value="1">渠道经理</option>
@@ -78,24 +77,23 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 	                    		<option value="3">其他</option>
 	                    	</select>
 	                    </td>
-	                    <td width="6%">姓名：</td>
-	                    <td width="15%"><input class="default-text-input wper80" name="name" type="text" /></td>
-						
+	                    <th width="6%" style="text-align:right;">姓名：</th>
+	                    <td width="13%"><input class="default-text-input wper80" name="name" type="text" /></td>
+						<th width="6%" style="text-align:right;">礼包：</th>
+	                    <td width="13%"><input class="default-text-input wper80" name="bssCode" type="text" /></td>
 					</tr>
 	                <tr height="35px">
-	                    <td width="6%">联系电话：</td>
-	                    <td width="15%"><input class="default-text-input wper80" name="phone" type="text" /></td>
-	                    <td width="6%" style="padding-left:10px;">渠道编码：</td>
-	                    <td width="15%"><input class="default-text-input wper80" name="chanCode" type="text" /></td>
-	                   <!--  <td width="6%">渠道名称：</td>
-	                    <td width="15%"><input class="default-text-input wper80" name="chanName" type="text" /></td> -->
-	                     <td width="6%">发展人编码：</td>
-	                    <td width="15%"><input class="default-text-input wper80" name="developer" type="text" /></td>
+	                    <th width="6%" style="text-align:right;">联系电话：</th>
+	                    <td width="13%"><input class="default-text-input wper80" name="phone" type="text" /></td>
+	                    <th width="6%" style="text-align:right;">渠道编码：</th>
+	                    <td width="13%"><input class="default-text-input wper80" name="chanCode" type="text" /></td>
+	                    <th width="6%" style="text-align:right;">发展人编码：</th>
+	                    <td width="13%"><input class="default-text-input wper80" name="developer" type="text" /></td>
 	                </tr>
 	                <tr>
 						<td colspan="6">
                          	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 300px;">查询</a>
-                         	<a class="default-btn fLeft mr10" href="#" id="addBtn">新增</a>
+                         	<a class="default-gree-btn fLeft mr10" href="#" id="addBtn">新增</a>
                          	<a class="default-btn fLeft mr10" href="#" id="resetBtn">重置</a>
                          	<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
                         </td>
@@ -111,6 +109,7 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 								<th>姓名</th>
 								<th>联系电话</th>
 								<th>发展人编码</th>
+								<th>BSS编码</th>
 								<th>营服中心</th>
 								<th>渠道编码</th>
 								<th>渠道名称</th>
