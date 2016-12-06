@@ -92,6 +92,7 @@ function search(){
 
 function getNextSql(){
 	var dealDate = $("#dealDate").val();
+	var contrastDate = getPrevMonth(dealDate);
 	var sql = "        T.OPERATE_TYPE,                                                                          "+		//--运营类型
 			"        SUM(NVL(T.JH_NUM1, 0)) JH_NUM1,                                                          "+		//--进货量
 			"        PODS.GET_RADIX_POINT(CASE                                                                "+		//
@@ -122,7 +123,7 @@ function getNextSql(){
 			"                             2) KC_SEQUE,                                                        "+		//--库存量环比
 			"        CASE                                                                                     "+		//
 			"          WHEN SUM(NVL(T.SALE_NUM1, 0)) <> 0 THEN                                                "+		//
-			"           ROUND(SUM(NVL(T.KC_NUM1, 0)) / (SUM(NVL(T.SALE_NUM1, 0)) * 31 * 7),                   "+		//
+			"           ROUND(SUM(NVL(T.KC_NUM1, 0)) / (SUM(NVL(T.SALE_NUM1, 0)) / TO_CHAR(LAST_DAY(TO_DATE(T.DEAL_DATE,'YYYYMM')),'dd') * 7),                   "+		//
 			"                 2)                                                                              "+		//
 			"          ELSE                                                                                   "+		//
 			"           0                                                                                     "+		//
@@ -162,20 +163,21 @@ function getNextSql(){
 			"                             2) KC_SEQUE1,                                                       "+		//--库存量环比
 			"        CASE                                                                                     "+		//
 			"          WHEN SUM(NVL(T.SALE_NUM3, 0)) <> 0 THEN                                                "+		//
-			"           ROUND(SUM(NVL(T.KC_NUM3, 0)) / (SUM(NVL(T.SALE_NUM3, 0)) * 31 * 7),                   "+		//
+			"           ROUND(SUM(NVL(T.KC_NUM3, 0)) / (SUM(NVL(T.SALE_NUM3, 0)) / TO_CHAR(LAST_DAY(TO_DATE(T.DEAL_DATE,'YYYYMM')),'dd') * 7), "+		//
 			"                 2)                                                                              "+		//
 			"          ELSE                                                                                   "+		//
 			"           0                                                                                     "+		//
 			"        END KC_CYCLE1                                                                            "+		//--库存周期         
 			"   FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON T                                                        "+		//
 			"   LEFT JOIN PMRT.TB_MRT_BUS_DEVICE_SALE_MON T1                                                  "+		//
-			"     ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE AND T1.DEAL_DATE = '"+dealDate+"')                     "+		//
+			"     ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE AND T1.DEAL_DATE = '"+contrastDate+"')                 "+		//
 			"  WHERE T.DEAL_DATE = '"+dealDate+"'                                                             ";		//
 	return sql;
 }
 
 function getSumSql() {
 	var dealDate = $("#dealDate").val();
+	var contrastDate = getPrevMonth(dealDate);
 	 var s=	 " SELECT T.GROUP_ID_1      AS ROW_ID ,                                                            	"+	//--分公司编码
 			 "        T.GROUP_ID_1_NAME AS ROW_NAME,                                                            	"+	//-- 分公司名称
 			 "        '-' AS OPERATE_TYPE ,                                                                      "+	//  --运营类型
@@ -208,7 +210,7 @@ function getSumSql() {
 			 "                             2) KC_SEQUE,                                                          "+	// --库存量环比
 			 "        CASE                                                                                       "+	//
 			 "          WHEN SUM(NVL(T.SALE_NUM1, 0)) <> 0 THEN                                                  "+	//
-			 "           ROUND(SUM(NVL(T.KC_NUM1, 0)) / (SUM(NVL(T.SALE_NUM1, 0)) * 30 * 7),                     "+	//
+			 "           ROUND(SUM(NVL(T.KC_NUM1, 0)) / (SUM(NVL(T.SALE_NUM1, 0)) / TO_CHAR(LAST_DAY(TO_DATE(T.DEAL_DATE,'YYYYMM')),'dd')  * 7),                     "+	//
 			 "                 2)                                                                                "+	//
 			 "          ELSE                                                                                     "+	//
 			 "           0                                                                                       "+	//
@@ -243,14 +245,14 @@ function getSumSql() {
 			 "                             2) KC_SEQUE1,                                                         "+	//      --库存量环比,
 			 "        CASE                                                                                       "+	//
 			 "          WHEN SUM(NVL(T.SALE_NUM3, 0)) <> 0 THEN                                                  "+	//
-			 "           ROUND(SUM(NVL(T.KC_NUM3, 0)) / (SUM(NVL(T.SALE_NUM3, 0)) * 30 * 7),                     "+	//
+			 "           ROUND(SUM(NVL(T.KC_NUM3, 0)) / (SUM(NVL(T.SALE_NUM3, 0)) / TO_CHAR(LAST_DAY(TO_DATE(T.DEAL_DATE,'YYYYMM')),'dd')  * 7),                     "+	//
 			 "                 2)                                                                                "+	//
 			 "          ELSE                                                                                     "+	//
 			 "           0                                                                                       "+	//
 			 "        END AS KC_CYCLE1                                                                           "+	//      --库存周期
 			 "   FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON T                                                          "+	//
 			 "   LEFT JOIN PMRT.TB_MRT_BUS_DEVICE_SALE_MON T1                                                    "+	//
-			 "     ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE AND T1.DEAL_DATE = '"+dealDate+"')                       "+	//
+			 "     ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE AND T1.DEAL_DATE = '"+contrastDate+"')                   "+	//
 			 "  WHERE T.DEAL_DATE = '"+dealDate+"'                                                               ";//
 		return s;
 }
@@ -288,9 +290,25 @@ function downsAll() {
 		where += " AND T.FLAG ='"+flag+"' ";
 	}
 	var sql = preField + where+groupBy+orderBy;
-	var showtext = '营业厅合约月报表' + dealDate;
+	var showtext = '终端进销存月报表' + dealDate;
 	title=[["账期","地市名称","营业厅名称","营业厅编码","经营模式","模式一","","","","","","","是否割接","模式三","","","","","",""],
 	       ["","","","","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期"]
 		];
 	downloadExcel(sql,title,showtext);
 }
+
+/**
+ * 获取账期的上一个月
+ * @param dealDate
+ * @returns {String}
+ */
+function getPrevMonth(dealDate){
+	var yearStr=dealDate.substr(0,4);
+	var monStr=dealDate.substr(4);
+	var mon=new Date(yearStr,monStr,1,0,0,0);
+	mon.setMonth(mon.getMonth()-2);
+	var m=mon.getMonth()+1;
+	var contrastDate=mon.getFullYear()+(m<10?"0"+m:""+m);
+	return contrastDate;
+}
+
