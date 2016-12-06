@@ -51,14 +51,14 @@ $(function() {
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	
-	var name=null,chanCode=null,type=null,phone=null,month=null,dealDate=null;
-	dealDate=$.trim($("#dealDate").val());
-	month=$.trim($("#month").val());
-	name=$.trim($("INPUT[name='name']").val());
-	chanCode=$.trim($("INPUT[name='chanCode']").val());
-	phone=$.trim($("INPUT[name='phone']").val());
-	type=$.trim($("#type").val());
+	var dealDate=$.trim($("#dealDate").val());
+	var month=$.trim($("#month").val());
+	var name=$.trim($("INPUT[name='name']").val());
+	var chanCode=$.trim($("INPUT[name='chanCode']").val());
+	var phone=$.trim($("INPUT[name='phone']").val());
+	var type=$.trim($("#type").val());
 	var developer=$.trim($("INPUT[name='developer']").val());
+	var bssCode = $.trim($("INPUT[name='bssCode']").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -74,7 +74,8 @@ function search(pageNumber) {
            "chanCode":chanCode,
            "dealDate":dealDate,
            "type":type,
-           "developer":developer
+           "developer":developer,
+           "bssCode":bssCode
 	   	}, 
 	   	success:function(data){
 	   		var pages=data;
@@ -87,10 +88,11 @@ function search(pageNumber) {
 	   			if(isGrantedNew(UPDATE_ROLE)){
 	   				$.each(pages.rows,function(i,n){
 		   				content+="<tr>"+
-							"<td>"+isNull(n['user_type'])+"</td>"+
+							"<td>"+isNull(n['USER_TYPE'])+"</td>"+
 							"<td>"+isNull(n['NAME'])+"</td>"+
 							"<td>"+isNull(n['PHONE'])+"</td>"+
 							"<td>"+isNull(n['DEVELOPER'])+"</td>"+
+							"<td>"+isNull(n['BSS_CHNL_CODE'])+"</td>"+
 							"<td>"+isNull(n['UNIT_NAME'])+"</td>"+
 							"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"+
 							"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"+
@@ -101,10 +103,11 @@ function search(pageNumber) {
 	   			}else{
 	   				$.each(pages.rows,function(i,n){
 		   				content+="<tr>"+
-							"<td>"+isNull(n['user_type'])+"</td>"+
+							"<td>"+isNull(n['USER_TYPE'])+"</td>"+
 							"<td>"+isNull(n['NAME'])+"</td>"+
 							"<td>"+isNull(n['PHONE'])+"</td>"+
 							"<td>"+isNull(n['DEVELOPER'])+"</td>"+
+							"<td>"+isNull(n['BSS_CHNL_CODE'])+"</td>"+
 							"<td>"+isNull(n['UNIT_NAME'])+"</td>"+
 							"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"+
 							"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"+
@@ -222,11 +225,28 @@ function downloadExcel() {
 	var phone=$.trim($("INPUT[name='phone']").val());
 	var type=$.trim($("#type").val());
 	var developer=$.trim($("INPUT[name='developer']").val());
+	var bssCode = $.trim($("INPUT[name='bssCode']").val());
 	
-	var sql = "SELECT CASE T.USER_TYPE WHEN '1' THEN '渠道经理' WHEN '2' THEN '客户经理' " +
-			"ELSE '其他' END as user_type,T.NAME, T.PHONE," +
-			"T.DEVELOPER,T.UNIT_NAME, T.HQ_CHAN_CODE, T.HQ_CHAN_NAME " +
-			"FROM PORTAL.TAB_PORTAL_GRP_PERSON T WHERE 1=1 ";
+	var sql = 	" SELECT T.DEAL_DATE,CASE T.USER_TYPE                   "+
+				"          WHEN '1' THEN                                "+
+				"           '渠道经理'                                  "+
+				"          WHEN '2' THEN                                "+
+				"           '客户经理'                                  "+
+				"          ELSE                                         "+
+				"           '其他'                                      "+
+				"        END USER_TYPE,                                 "+
+				"        T.NAME,                                        "+
+				"        T.PHONE,                                       "+
+				"        T.DEVELOPER,                                   "+
+				"        T1.BSS_CHNL_CODE,                              "+
+				"        T.UNIT_NAME,                                   "+
+				"        T.HQ_CHAN_CODE,                                "+
+				"        T.HQ_CHAN_NAME,                                "+
+				"        T.ACTIVE_TIME                                  "+
+				"   FROM PORTAL.TAB_PORTAL_GRP_PERSON T                 "+
+				"   JOIN PCDE.TB_CDE_CHANL_CODE T1                      "+
+				"     ON (T.DEVELOPER = T1.FD_CHNL_CODE)                "+
+				"  WHERE T.IS_VALUE = 1 AND T.DEAL_DATE ='"+dealDate+"' ";
 	if(level=="1") {
 	}else if(level == "2") {
 		sql += "AND T.Group_Id_1='"+groupId+"' ";
@@ -235,28 +255,30 @@ function downloadExcel() {
 	}else if(level == "4") {
 		sql += "AND T.UNIT_ID='"+groupId+"' ";
 	}
-	if(dealDate != "") {
-		sql += "AND T.DEAL_DATE='"+dealDate+"' ";
-	}
+	
 	if(type != "") {
-		sql += "AND T.User_Type='"+type+"' ";
+		sql += "AND T.USER_TYPE='"+type+"' ";
 	}
 	if(name != "") {
-		sql += "AND T.Name like '%"+name+"%' ";
+		sql += "AND T.NAME like '%"+name+"%' ";
 	}
 	if(phone != "") {
-		sql += "AND T.Phone like '%"+phone+"%' ";
+		sql += "AND T.PHONE like '%"+phone+"%' ";
 	}
 	if(chanCode != "") {
-		sql += "AND T.Hq_Chan_Code like '%"+chanCode+"%' ";
+		sql += "AND T.HQ_CHAN_CODE like '%"+chanCode+"%' ";
 	}
 	if(developer != "") {
 		sql += "AND T.DEVELOPER = '"+developer+"' ";
 	}
+	
+	if(bssCode != "") {
+		sql += "AND INSTR( T1.BSS_CHNL_CODE,'"+bssCode+"')>0 ";
+	}
 	sql += " ORDER BY T.HQ_CHAN_CODE";
 	var showtext="Sheet";
    var showtext1="result";
-   var _head=['类型','姓名','联系电话','发展人编码','营服中心','渠道编码','渠道名称'];
+   var _head=['账期','类型','姓名','联系电话','发展人编码','BSS编码','营服中心','渠道编码','渠道名称'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
