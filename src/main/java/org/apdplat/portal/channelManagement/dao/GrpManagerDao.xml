@@ -243,40 +243,48 @@
 	</select>
 
 
-	<select id="queryGrpPerson" parameterType="java.util.Map"
-		resultType="java.util.Map">
-		SELECT
-		CASE T.USER_TYPE
-		WHEN '1' THEN '渠道经理'
-		WHEN '2' THEN '客户经理'
-		ELSE
-		'其他' END "user_type"
-		,T.NAME, T.PHONE,T.DEVELOPER,T.UNIT_NAME,
-		T.HQ_CHAN_CODE, T.HQ_CHAN_NAME,T.ACTIVE_TIME
-		FROM
-		PORTAL.TAB_PORTAL_GRP_PERSON T
-		WHERE T.IS_VALUE=1
+	<select id="queryGrpPerson" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT CASE T.USER_TYPE
+		         WHEN '1' THEN
+		          '渠道经理'
+		         WHEN '2' THEN
+		          '客户经理'
+		         ELSE
+		          '其他'
+		       END USER_TYPE,
+		       T.NAME,
+		       T.PHONE,
+		       T.DEVELOPER,
+		       T1.BSS_CHNL_CODE,
+		       T.UNIT_NAME,
+		       T.HQ_CHAN_CODE,
+		       T.HQ_CHAN_NAME,
+		       T.ACTIVE_TIME
+		  FROM PORTAL.TAB_PORTAL_GRP_PERSON T
+		  JOIN PCDE.TB_CDE_CHANL_CODE T1
+		    ON (T.DEVELOPER = T1.FD_CHNL_CODE)
+		 WHERE T.IS_VALUE = 1
 		<if test="level==1">
 			<!--如果是省公司则全部查出 -->
 		</if>
 		<if test="level==2">
-			AND T.Group_Id_1=#{groupId}
+			AND T.GROUP_ID_1=#{groupId}
 		</if>
 		<if test="level==3 or level==4">
 			AND T.UNIT_ID=#{groupId}
 		</if>
 		<if test="type!=null">
-			AND T.User_Type=#{type}
+			AND T.USER_TYPE=#{type}
 		</if>
 
 		<if test="name!=null">
-			AND T.Name like #{name}
+			AND T.NAME like #{name}
 		</if>
 		<if test="phone!=null">
-			AND T.Phone like #{phone}
+			AND T.PHONE like #{phone}
 		</if>
 		<if test="chanCode!=null">
-			AND T.Hq_Chan_Code like #{chanCode}
+			AND T.HQ_CHAN_CODE like #{chanCode}
 		</if>
 		<if test="dealDate!=null">
 			AND T.DEAL_DATE = #{dealDate}
@@ -284,7 +292,9 @@
 		<if test="developer!=null">
 			AND T.DEVELOPER = #{developer}
 		</if>
-
+		<if test="bssCode!=null">
+			AND INSTR( T1.BSS_CHNL_CODE,#{bssCode})>0 
+		</if>
 		ORDER BY T.HQ_CHAN_CODE
 	</select>
 </mapper>
