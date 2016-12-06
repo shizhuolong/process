@@ -24,9 +24,39 @@ $(function() {
 			alert("请填写hr编码！");
 			return;
 		}
+		
+		
+		
+		//hr编码验证
+		var hrResult=checkHrCode();
+		if(hrResult){
+			alert("hr编码填写错误！");
+			return;
+		}
+		
+		//渠道编码验证
+		var chanlCodeResult  = checkChannelCode();
+		if(chanlCodeResult){
+			alert("渠道编码填写错误！");
+			return;
+		}
+		/*//hr编码验证
+		var hrResult=checkHrCode();
+		//渠道编码验证
+		var chanlCodeResult  = checkChannelCode();
+		if(hrResult){
+			alert("hr编码填写错误！");
+			return;
+		}else if(chanlCodeResult){
+			alert("渠道编码填写错误！");
+			return;
+		}else{
+			
+		}*/
 		$.ajax({
 			type:"POST",
 			dataType:'json',
+			async: false,
 			cache:false,
 			url:$("#ctx").val()+"/channelManagement/grpManager_updateGrpPerson.action",
 			data:{
@@ -67,12 +97,14 @@ function checkHrCode(){
 	var orgLevel = $("#orgLevel").val();
 	var chanCode =$("#chanNum").val();
 	var hrNum = $("#hrNum").val();
+	var message="";
 	$("#hrNum").css("color","#000000");
 	$("#userName").css("color","#000000");
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		cache:false,
+		async: false,
 		url:$("#ctx").val()+"/channelManagement/grpManager_checkHrCode.action",
 		data:{
 			"hrNum":hrNum,
@@ -81,6 +113,7 @@ function checkHrCode(){
 	   	},
 		success:function(data){
 			if(data.msg) {
+				message = data.msg;
 	   			art.dialog.alert(data.msg);
 	   			$("#userName").text(data.msg);
 	   			$("#hrNum").css("color","red");
@@ -90,6 +123,7 @@ function checkHrCode(){
 			$("#userName").text(data.REALNAME);
 		}
 	});
+	return message;
 }
 
 /**验证填写渠道编码是否正确*/
@@ -97,10 +131,12 @@ function checkChannelCode(){
 	$("#chanNum").css("color","#000000");
 	$("#chanName").css("color","#000000");
 	var devNum =$("#devNum").val();
-	var chanCode =$("#chanNum").val();
+	var chanCode =$("#chanNum").val(); 
+	var message="";
 	$.ajax({
 		type:"POST",
 		dataType:'json',
+		async: false,
 		cache:false,
 		url:$("#ctx").val()+"/channelManagement/grpManager_checkChannelCode.action",
 		data:{
@@ -109,6 +145,7 @@ function checkChannelCode(){
 	   	},
 		success:function(data){
 			if(data.msg) {
+				message = data.msg;
 	   			art.dialog.alert(data.msg);
 	   			$("#chanName").text(data.msg);
 	   			$("#chanNum").css("color","red");
@@ -118,6 +155,7 @@ function checkChannelCode(){
 			$("#chanName").text(data.GROUP_ID_4_NAME);
 		}
 	});
+	return message;
 }
 
 function queryBydevNum(){
