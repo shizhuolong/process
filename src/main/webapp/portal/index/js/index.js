@@ -24,6 +24,8 @@ $(function(){
 	indexAccessList();
 	//游离渠道数量
 	freeChannel();
+	//乡镇未打标
+	townNotMark();
 	//未定位渠道数量
 	noPositionChannel();
 	//游离小区数量
@@ -630,6 +632,19 @@ function freeChannel(){
 		}
 	});
 }
+
+//乡镇未打标
+function townNotMark(){
+	$.ajax({
+		url:$("#ctx").val()+"/channelManagement/channelResource_count.action",
+		type:'POST',
+		dataType:'json',
+		async:true,
+		success:function(data){
+			$("#townNotMark").html('乡镇未打标：'+data);
+		}
+	});
+}
 //未定位渠道数量
 function noPositionChannel(){
 	//条件
@@ -681,6 +696,27 @@ function searchfreeChannel(element) {
     parent.openWindow('游离渠道','computer', $("#ctx").val()+'/warningAndMonitor/freeChannel!index.action');
 	parent.switchFirstMenu('module-477161','预警监控');
 }
+
+function searchTownNotMark(element) {
+	var text = $(element).text();
+	if(text == '乡镇未打标：0') {
+		return;
+	}
+	var lis=parent.document.getElementById("navi").getElementsByTagName("li");
+	for(var i=0;i<lis.length;i++){
+        if(lis[i].className=="select1"){
+            lis[i].className="";
+            lis[i].getElementsByTagName("a")[0].className="";
+        }
+        if(i==8) {
+        	lis[i].className="select1";
+        	lis[i].getElementsByTagName("a")[0].className="select";
+        }
+    };
+    parent.openWindow('乡镇未打标','computer', $("#ctx").val()+'/portal/channelManagement/jsp/channel_resource_list.jsp');
+	parent.switchFirstMenu('module-86871','渠道资源');
+}
+
 function searchNoPositionChannel(element) {
 	
 	var text = $(element).text();
