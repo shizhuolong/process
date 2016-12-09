@@ -262,14 +262,18 @@ TABLE {
                                     <a href="javascript:void(0);" onclick="searchNoPositionChannel(this)" id="nopositionchannel">未定位渠道:0</a>
                                     <a href="javascript:void(0);" onclick="searchfreeCommunity(this)" id="freecommunity">游离小区:0</a>
                                 </div>
+                                 <div classType="left-module" moduleid="left-5" title="乡镇未打标">
+                                    <span><i class="menu-toDo"></i>乡镇未打标</span>
+                                    <a href="javascript:void(0);" onclick="searchTownNotMark(this)" id="townNotMark">乡镇未打标:0</a>
+                                </div>
                                 
-                                <div classType="left-module" moduleid="left-5" title="最新公告">
+                                <div classType="left-module" moduleid="left-6" title="最新公告">
                                     <span id="bulls"><i class="menu-note"></i>最新公告</span>
                                 </div>
-                                <div classType="left-module" moduleid="left-6" title="文件下载">
+                                <div classType="left-module" moduleid="left-7" title="文件下载">
                                     <span id="indexDocList"><i class="menu-fileDl"></i>文件下载</span>
                                 </div>
-                                <div classType="left-module" moduleid="left-7" title="访问统计">
+                                <div classType="left-module" moduleid="left-8" title="访问统计">
                                     <span id="indexAccessList"><i class="menu-note"></i>访问统计</span>
                                 </div>
                              
