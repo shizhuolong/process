@@ -13,6 +13,17 @@ import java.util.Map;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface ChannelResourceDao {
@@ -76,15 +87,45 @@ public interface ChannelResourceDao {
 
 	public List<Map<String, Object>> isExist(String type_name);
 
-	public void add(String type_name);
+	public void addChnlType(String type_name);
+	
+	public void addTownType(Map<String, String> params);
 
-	public void update(Map<String, String> params);
+	public void updateAgent(Map<String, String> params);
+	
+	public void updateNotAgent(Map<String, String> params);
 
-	public PageList<Map<String, Object>> listDetail1(Map<String, String> resultMap);
+	public PageList<Map<String, Object>> listChnlDetail(Map<String, String> resultMap);
 
-	public void updateDetail1(Map<String, String> params);
+	public void updateChnlDetail(Map<String, String> params);
+	
+	public void updateChnlInMain(Map<String, String> params);
+	
+	public void updateTownDetail(Map<String, String> params);
+	
+	public void updateTownInMain(Map<String, String> params);
 
-	public void delDetail1(String id);
+	public void delChnlDetail(String id);
+	
+	public void delTownDetail(String id);
 
 	public List<Map<String, Object>> loadChnlType();
+
+	public List<Map<String, String>> isAgentPoint(Map<String, String> params);
+
+	public List<Map<String, String>> isHavingMark(Map<String, String> params);
+
+	public List<Map<String, Object>> loadCityType();
+
+	public List<Map<String, Object>> loadTownType(Map<String, String> params);
+
+	public PageList<Map<String, Object>> listTownDetail(Map<String, String> resultMap);
+
+	public List<Map<String, Object>> isTownExist(String town_name);
+
+	public List<Map<String, Object>> beforeDelChnlDetail(String id);
+	
+	public List<Map<String, Object>> beforeDelTownDetail(String id);
+
+	public int count(Map<String, Object> params);
 }
