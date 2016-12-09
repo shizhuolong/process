@@ -32,14 +32,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
-	function isGrantedNew(role){
-	    if(privileges.toString().indexOf("ROLE_SUPERMANAGER")!=-1){
-	        return true;
-	    }
-	    if(privileges.toString().indexOf(role)==-1){
-	        return false;
-	    }
-	    return true;
+	function isGrantedNew(role) {
+		if (privileges.toString().indexOf("ROLE_SUPERMANAGER") != -1) {
+			return true;
+		} else if (privileges.toString().indexOf(role) ==-1) {
+			return false;
+		}
+		return true;
 	}
 </script>
 </head>
@@ -95,6 +94,14 @@
 						<td width="5%">渠道属性4：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_4_name" name="chn_cde_4_name" type="text" /></td>
+					    <td width="10%" style="padding-left: 10px;">是否打标：</td>
+						<td width="20%">
+							<select class="default-text-input wper80" name="isMark" id="isMark">
+								<option value="">全部</option>
+								<option value="0">是</option>
+								<option value="1">否</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -138,5 +145,74 @@
 		</div>
 	</div>
 	
+	<div class="sticky-wrap" id="updateAgentFormDiv" style="display:none;">
+		<form id="updateAgentForm" method="POST">
+			<table style="height:100px;">
+				<tr>
+					<td>代理点类型:</td>
+					<td>
+					  <select id="agent_chnl_id" name="chnl_id">
+					  </select>
+					</td>
+					<td>
+					  <a class="default-gree-btn fLeft mr10" href="#" id="agentMoreChnl" onclick="openAgentChnlType();">更多</a>
+					</td>
+				</tr>
+				<tr colspan="3">
+				    <td>区县归属:</td>
+					<td>
+					  <select id="agent_city_id" name="city_id">
+					  </select>
+					</td>
+				</tr>
+				<tr>
+				    <td>乡镇归属:</td>
+					<td>
+					  <select id="agent_town_id" name="town_id">
+					  </select>
+					</td>
+					<td>
+					  <a class="default-gree-btn fLeft mr10" href="#" id="agentMoreTown" onclick="openAgentTownType();">更多</a>
+					</td>
+				</tr>
+				<tr>
+	                <td colspan="2" style="padding-left: 120px;">
+		                <a href="#" class="default-btn fLeft mr10" id="updateAgentBtn">保存</a>
+		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel('updateAgentFormDiv');">取消</a>
+	                </td>
+				</tr>
+			</table>
+		</form>
+    </div>		
+    
+    <div class="sticky-wrap" id="updateNotAgentFormDiv" style="display:none;">
+		<form id="updateNotAgentForm" method="POST">
+			<table style="height:200px;">
+				<tr colspan="3">
+				    <td>区县归属:</td>
+					<td>
+					  <select id="notAgent_city_id" name="city_id">
+					  </select>
+					</td>
+				</tr>
+				<tr>
+				    <td>乡镇归属:</td>
+					<td>
+					  <select id="notAgent_town_id" name="town_id">
+					  </select>
+					</td>
+					<td>
+					  <a class="default-gree-btn fLeft mr10" href="#" id="notAgentMoreTown" onclick="openNotAgentTownType();">更多</a>
+					</td>
+				</tr>
+				<tr>
+	                <td colspan="2" style="padding-left: 120px;">
+		                <a href="#" class="default-btn fLeft mr10" id="updateNotAgentBtn">保存</a>
+		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel('updateNotAgentFormDiv');">取消</a>
+	                </td>
+				</tr>
+			</table>
+		</form>
+    </div>		
 </body>
 </html>

@@ -3,6 +3,7 @@
     <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
 	User user = UserHolder.getCurrentLoginUser();
@@ -40,11 +41,11 @@
 </style>
 </head>
 <body>
-	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="group_id_4" name="group_id_4" value="${group_id_4}">
-	<input type="hidden" id="chnl_id" name="chnl_id" value="${chnl_id}">
-	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=org.getCode()%>">
+	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
+	<input type="hidden" id="group_id_4" name="group_id_4" value="<%=request.getParameter("group_id_4")%>"/>
+	<input type="hidden" id="chnl_id" name="chnl_id" value="<%=request.getParameter("chnl_id")%>"/>
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>"/>
+	<input type="hidden" id="code" value="<%=org.getCode()%>"/>
 	<div id="smartForm">
     	<div id="container">
             <div id="content">
@@ -76,19 +77,6 @@
                                 <th>渠道属性4:</th>
                                 <td id="chn_cde_4_name"></td>
                             </tr>
-                             <tr colspan="4">
-                                <th>渠道类型:</th>
-                                <td>
-                                  <select id="chnl_type" name="chnl_type">
-                                   
-                                  </select>
-                                </td>
-                                <td colspan="2">
-                                  <a class="default-btn fLeft mr10" href="#" id="addBtn">更多</a>
-                                  <a class="default-btn fLeft mr10" href="#" id="updateBtn">保存</a>
-                                </td>
-                             </tr>
-                             
                         </table>
                         <div class="title" style="border-bottom: 2px solid #e7d4b3;"><i></i>渠道联系方式</div>
                         <table class="chanlInfoForom">
@@ -159,23 +147,7 @@
             </div>
         </div>
     </div>
-    <div class="sticky-wrap" id="addFormDiv" style="display:none;">
-		<form id="addForm" method="POST">
-			<table class="default-table sticky-enabled">
-				<tr>
-					<td style="padding-left: 60px;">类型名称:</td>
-					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="类型名称不能为空" name="type_name" id="type_name"></td>
-				</tr>
-				<tr></tr>
-				<tr>
-	                <td colspan="2" style="padding-left: 120px;">
-		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
-		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel();">取消</a>
-	                </td>
-				</tr>
-			</table>
-		</form>
-    </div>		
+    
 </body>
 <style>
 	.aui_w,.aui_e{

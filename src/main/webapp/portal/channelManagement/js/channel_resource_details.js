@@ -1,7 +1,6 @@
 $(function(){
 	var group_id_4 = $("#group_id_4").val();
 	var chnl_id = $("#chnl_id").val();
-	listChnlType();
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel>1){
 		$("#addBtn").remove();
@@ -102,115 +101,6 @@ $(function(){
 	});
 	
 });
-
-function add(){
-	var url = $("#ctx").val()+'/channelManagement/channelResource_add.action';
-	var addForm=$('#addForm');
-	addForm.form('submit',{
-		url:url,
-		dataType:"json",
-		async: false,
-		type: "POST", 
-		onSubmit:function(){
-			if($(this).form('validate')==false){
-				return false;
-			}
-			var d=isExist();
-			if(d==true){
-				return false;
-			}
-		},
-		success:function(data){
-			var d = $.parseJSON(data);
-			alert(d.msg);
-			$('#addFormDiv').dialog('close');
-			listChnlType();
-			openDetail1();
-		}
-	});
-}
-
-function openDetail1(){
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_list_detail1.jsp";
-	/*art.dialog.open(url,{
-		id:'update',
-		width:'1200px',
-		height:'1000px',
-		padding:'0 0',
-		lock:true,
-		resize:false,
-		title:'列表'
-	});*/
-	window.parent.openWindow("渠道类型列表",null,url);
-}
-
-function isExist(){
-	var r=false;
-	$.ajax({ 
-        type: "POST", 
-        async: false,
-        url: $("#ctx").val()+"/channelManagement/channelResource_isExist.action", 
-        dataType: "json",
-		data:{
-			type_name:$("#type_name").val()
-		},
-		 success:function(data){
-			 if(data.msg){
-				 r=true;
-				 alert(data.msg);
-			 }
-    	},
-    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            alert(errorThrown); 
-		} 
-	});
-	return r;
-}
-
-function update(){
-	$.ajax({ 
-        type: "POST", 
-        async: false,
-        url: $("#ctx").val()+"/channelManagement/channelResource_update.action", 
-        dataType: "json",
-		data:{
-			chnl_id:$("#chnl_type").val(),
-			chnl_type:$("#chnl_type").find("option:selected").attr("chnl_type"),
-			hq_chan_code:$("#hq_chan_code").text()
-		},
-		 success:function(data){
-			alert(data.msg);
-    	},
-    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            alert(errorThrown); 
-		} 
-	});
-}
-
-function listChnlType(){
-	$.ajax({ 
-        type: "POST", 
-        async: false,
-        url: $("#ctx").val()+"/channelManagement/channelResource_loadChnlType.action", 
-        dataType: "json",
-        async:false,
-		success:function(d){
-			if (d&&d[0]) {
-				var h = '';
-					//h += '<option value="" selected>请选择</option>';
-					for (var i = 0; i < d.length; i++) {
-						h += '<option chnl_type="'+d[i].TYPE_NAME+'" value="' + d[i].ID + '">' + d[i].TYPE_NAME + '</option>';
-					}
-				$("#chnl_type").empty().append($(h));
-    	 } else {
-    		alert("获取渠道类型失败!");
-    	 }
-	    },
-    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            alert(errorThrown); 
-		} 
-	});
-}
 
 function showMap(){
 	var log_no=$("#log_no").text();

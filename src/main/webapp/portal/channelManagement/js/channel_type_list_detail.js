@@ -4,6 +4,9 @@ $(function() {
 	$("#saveBtn").click(function(){
 		save();
 	});
+	$("#addSaveBtn").click(function(){
+		add();
+	});
 });
 
 //列表信息
@@ -13,7 +16,7 @@ function search(pageNumber) {
 		type:"POST",
 		dataType:'json',
 		cache:false,
-		url:$("#ctx").val()+"/channelManagement/channelResource_listDetail1.action",
+		url:$("#ctx").val()+"/channelManagement/channelResource_listChnlDetail.action",
 		data:{
            "resultMap.page":pageNumber,
            "resultMap.rows":pageSize
@@ -38,7 +41,7 @@ function search(pageNumber) {
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {
-				$("#dataBody").empty().html("<tr><td colspan='8'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='3'>暂无数据</td></tr>");
 			}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -46,6 +49,7 @@ function search(pageNumber) {
 	    }
 	});
 }
+
 function update(obj){
 	art.dialog.data('id',obj.attr("id"));
 	$("#type_name").val(obj.attr("type_name"));
@@ -60,13 +64,28 @@ function update(obj){
 		modal : false,
 		maximizable : true
 	});
-
 }
+
+function openAdd(){
+	var formdiv=$('#addFormDiv');
+	formdiv.show();
+	formdiv.dialog({
+		title : '添加',
+		width : 400,
+		height : 100,
+		closed : false,
+		cache : false,
+		modal : false,
+		maximizable : true
+	});
+}
+
 function save(){
 	var id=art.dialog.data('id');
 	$("#id").val(id);
-	var url = $("#ctx").val()+'/channelManagement/channelResource_updateDetail1.action';
+	var url = $("#ctx").val()+'/channelManagement/channelResource_updateChnlDetail.action';
 	var updateForm=$('#updateForm');
+	var type_name=$.trim($("#type_name").val());
 	updateForm.form('submit',{
 		url:url,
 		dataType:"json",
@@ -76,21 +95,51 @@ function save(){
 			if($(this).form('validate')==false){
 				return false;
 			}
-			var d=isExist();
+			var d=isExist(type_name);
 			if(d==true){
 				return false;
 			}
 		},
 		success:function(data){
+			var win = artDialog.open.origin;//来源页面
 			var d = $.parseJSON(data);
 			alert(d.msg);
 			$('#updateFormDiv').dialog('close');
 			search(0);
+			//win.reload();
 		}
 	});
-
 }
-function isExist(){
+
+function add(){
+	var url = $("#ctx").val()+'/channelManagement/channelResource_addChnlType.action';
+	var addForm=$('#addForm');
+	var type_name=$.trim($("#type_name").val());
+	addForm.form('submit',{
+		url:url,
+		dataType:"json",
+		async: false,
+		type: "POST", 
+		onSubmit:function(){
+			if($(this).form('validate')==false){
+				return false;
+			}
+			var d=isExist(type_name);
+			if(d==true){
+				return false;
+			}
+		},
+		success:function(data){
+			var win = artDialog.open.origin;//来源页面
+			var d = $.parseJSON(data);
+			alert(d.msg);
+			$('#addFormDiv').dialog('close');
+			search(0);
+			//window.parent().listChnlType(0);
+		}
+	});
+}
+function isExist(type_name){
 	var r=false;
 	$.ajax({ 
         type: "POST", 
@@ -98,7 +147,7 @@ function isExist(){
         url: $("#ctx").val()+"/channelManagement/channelResource_isExist.action", 
         dataType: "json",
 		data:{
-			type_name:$("#type_name").val()
+			type_name:type_name
 		},
 		 success:function(data){
 			 if(data.msg){
@@ -107,7 +156,7 @@ function isExist(){
 			 }
     	},
     	error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            alert(errorThrown); 
+            alert("验证出现异常！"); 
 		} 
 	});
 	return r;
@@ -116,24 +165,53 @@ function isExist(){
 function del(obj){
 	var id=obj.attr("id");
 	if(confirm('确认刪除吗?')){
-		$.ajax({ 
-	        type: "POST", 
-	        async: false,
-	        url: $("#ctx").val()+"/channelManagement/channelResource_delDetail1.action?id="+id, 
-	        dataType: "json",
-			data:{
-				id:id
-			},
-			 success:function(data){
-			    alert(data);
-			    search(0);
-	    	},
-	    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	            alert(errorThrown); 
-			} 
-		});
+		if(beforeDelete(id)){
+			$.ajax({ 
+		        type: "POST", 
+		        async: false,
+		        url: $("#ctx").val()+"/channelManagement/channelResource_delChnlDetail.action?id="+id, 
+		        dataType: "json",
+				data:{
+					id:id
+				},
+				 success:function(data){
+				    alert(data);
+				    search(0);
+		    	},
+		    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+		            alert("删除出现异常！"); 
+				} 
+			});
+		}
 	}
 }
+
+function beforeDelete(id){
+	var isCanDelete;
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_beforeDelChnlDetail.action?id="+id, 
+        dataType: "json",
+		data:{
+			id:id
+		},
+		 success:function(data){
+			 if(data=="ok"){
+				 isCanDelete=true; 
+			 }else{
+				 isCanDelete=false;
+				 alert(data);
+			 }
+    	},
+    	error: function (XMLHttpRequest, textStatus, errorThrown) {
+    		isCanDelete=false;
+            alert("验证出现异常！"); 
+		} 
+	});
+	return isCanDelete;
+}
+
 //分页
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
@@ -153,4 +231,8 @@ function isNull(obj){
 		return "&nbsp;";
 	}
 	return obj;
+}
+
+function cancel(id) {
+	$("#"+id).dialog('close');
 }

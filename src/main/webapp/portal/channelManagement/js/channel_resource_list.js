@@ -26,7 +26,7 @@ $(function() {
 	};
 	var isp = true;
 	if(orgLevel==3 || orgLevel==4) {
-		isp = false
+		isp = false;
 	}
 	var zNodes =[{ id:orgId, pId:-1, name:initOrgName,code:code,orgLevel:orgLevel,open:true, isParent:isp}];
 	$.fn.zTree.init($("#ztree"), setting, zNodes);
@@ -47,6 +47,22 @@ $(function() {
 		$("#chn_cde_2_name").val("");
 		$("#chn_cde_3_name").val("");
 		$("#chn_cde_4_name").val("");
+		$("#isMark").val("");
+	});
+	
+	$("#updateAgentBtn").click(function(){
+		updateAgent();
+	});
+	
+	$("#updateNotAgentBtn").click(function(){
+		updateNotAgent();
+	});
+		
+	$("#agent_city_id").change(function(){
+		listTownType(true,$(this).val());
+	});
+	$("#notAgent_city_id").change(function(){
+		listTownType(false,$(this).val());
 	});
 });
 
@@ -60,6 +76,7 @@ function search(pageNumber) {
 	var chn_cde_2_name = $.trim($("#chn_cde_2_name").val());
 	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
+	var isMark = $("#isMark").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -77,7 +94,8 @@ function search(pageNumber) {
            	"chn_cde_1_name":chn_cde_1_name,
            	"chn_cde_2_name":chn_cde_2_name,
            	"chn_cde_3_name":chn_cde_3_name,
-           	"chn_cde_4_name":chn_cde_4_name
+           	"chn_cde_4_name":chn_cde_4_name,
+           	"isMark":isMark
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -100,10 +118,11 @@ function search(pageNumber) {
 				if(isGrantedNew(UPDATE_ROLE)) {
 					//已划分
 					if(isDivision == "1") {
-						content += "<td><a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='channelDivide(this);'>修改渠道归属</a>&nbsp;&nbsp;&nbsp;" +
+						content += "<td><a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='channelDivide(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
 								"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' onclick='showDetails(this);'>详细信息</a></td>";
 					} else {
-						content += "<td><a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='channelDivide(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
+						content += "<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
+								"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivide(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
 								"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' onclick='showDetails(this);'>详细信息</a></td>";
 					}
 				}else {
@@ -128,20 +147,371 @@ function search(pageNumber) {
 function channelDivide(ele) {
 	var group_id_1 = $(ele).attr("group_id_1");
 	var group_id_4 = $(ele).attr("group_id_4");
+	var hq_chan_code = $(ele).attr("hq_chan_code");
 	var login_name = $("#login_name").val();
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('group_id_4',group_id_4);
 	art.dialog.data('login_name',login_name);
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
-	art.dialog.open(url,{
-		id:'channelDivideDialog',
-		width:'410px',
-		height:'310px',
-		lock:true,
-		resize:false
+	if(hq_chan_code){
+		$.ajax({
+			type:"POST",
+			dataType:'json',
+			async:false,
+			cache:false,
+			url:$("#ctx").val()+"/channelManagement/channelResource_isAgentPoint.action",
+			data:{
+		       "hq_chan_code":hq_chan_code
+		   	}, 
+		   	success:function(data){
+		   		if(data=="isAgentPoint"){
+		   			if(isHavingMark(hq_chan_code,0)){
+		   				var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
+		   				art.dialog.open(url,{
+		   					id:'channelDivideDialog',
+		   					width:'410px',
+		   					height:'310px',
+		   					lock:true,
+		   					resize:false
+		   				});
+		   			}
+		   		}else{
+		   			if(isHavingMark(hq_chan_code,1)){
+		   				var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
+		   				art.dialog.open(url,{
+		   					id:'channelDivideDialog',
+		   					width:'410px',
+		   					height:'310px',
+		   					lock:true,
+		   					resize:false
+		   				});
+		   			}
+		   		}
+		    },
+	        error: function(XMLHttpRequest, textStatus, errorThrown) {
+	          alert("验证出现异常！");
+	        }
+		});
+	}else{
+		    var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
+			art.dialog.open(url,{
+				id:'channelDivideDialog',
+				width:'410px',
+				height:'310px',
+				lock:true,
+				resize:false
+			});
+	}
+}
+
+function isAgentPoint(hq_chan_code){
+	var pointType;
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/channelManagement/channelResource_isAgentPoint.action",
+		data:{
+	       "hq_chan_code":hq_chan_code
+	   	}, 
+	   	success:function(data){
+	   		if(data=="isAgentPoint"){
+	   			pointType="isAgentPoint";
+	   		}else{
+	   			pointType="notAgentPoint";
+	   		}
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert("验证出现异常！");
+        }
+	});
+	return pointType;
+}
+
+function openAgentChnlType(){
+	var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_type_list_detail.jsp";
+	window.parent.openWindow("代理点列表",null,url);
+}
+
+function openAgentTownType(){
+	var city_id=$("#agent_city_id").val();
+	var group_id_1=$("#agent_city_id").find("option:selected").attr("group_id_1");
+	var group_id_1_name=$("#agent_city_id").find("option:selected").attr("group_id_1_name");
+	var city_name=$("#agent_city_id").find("option:selected").attr("city_name");
+	group_id_1_name = encodeURI(encodeURI(group_id_1_name)); 
+	city_name = encodeURI(encodeURI(city_name)); 
+	if(city_id==""){
+		alert("请选择区县归属!");
+	}else{
+		var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_town_list_detail.jsp?city_id="+city_id+"&city_name="+city_name+"&group_id_1="+group_id_1+"&group_id_1_name="+group_id_1_name;
+		window.parent.openWindow("乡镇列表",null,url);
+	}
+}
+
+function openNotAgentTownType(){
+	var city_id=$("#notAgent_city_id").val();
+	var group_id_1=$("#notAgent_city_id").find("option:selected").attr("group_id_1");
+	var group_id_1_name=$("#notAgent_city_id").find("option:selected").attr("group_id_1_name");
+	var city_name=$("#notAgent_city_id").find("option:selected").attr("city_name");
+	group_id_1_name = encodeURI(encodeURI(group_id_1_name)); 
+	city_name = encodeURI(encodeURI(city_name)); 
+	if(city_id==""){
+		alert("请选择区县归属!");
+	}else{
+		var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_town_list_detail.jsp?city_id="+city_id;
+		window.parent.openWindow("乡镇列表",null,url);
+	}
+}
+
+function isExist(){
+	var r=false;
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_isExist.action", 
+        dataType: "json",
+		data:{
+			type_name:$("#type_name").val()
+		},
+		 success:function(data){
+			 if(data.msg){
+				 r=true;
+				 alert(data.msg);
+			 }
+    	},
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            alert(errorThrown); 
+		} 
+	});
+	return r;
+}
+
+function updateAgent(){
+	var hq_chan_code=art.dialog.data("hq_chan_code");
+	if($("#agent_chnl_id").val()==""||$("#agent_city_id").val()==""||$("#agent_town_id").val()==""){
+		alert("下拉选择不能为空！");
+		return;
+	}
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_updateAgent.action", 
+        dataType: "json",
+		data:{
+			chnl_id:$("#agent_chnl_id").val(),
+			chnl_type:$("#agent_chnl_id").find("option:selected").attr("chnl_type"),
+			hq_chan_code:hq_chan_code,
+			city_id:$("#agent_city_id").val(),
+			city_name:$("#agent_city_id").find("option:selected").attr("city_name"),
+			town_id:$("#agent_town_id").val(),
+			town_name:$("#agent_town_id").find("option:selected").attr("town_name")
+		},
+		 success:function(data){
+			alert(data.msg);
+			$("#updateAgentFormDiv").dialog('close');
+			search(0);
+    	},
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            alert(errorThrown); 
+		} 
 	});
 }
 
+function updateNotAgent(){
+	var hq_chan_code=art.dialog.data("hq_chan_code");
+	if($("#notAgent_city_id").val()==""||$("#notAgent_town_id").val()==""){
+		alert("下拉框不能为空！");
+		return;
+	}
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_updateNotAgent.action", 
+        dataType: "json",
+		data:{
+			hq_chan_code:hq_chan_code,
+			city_id:$("#notAgent_city_id").val(),
+			city_name:$("#notAgent_city_id").find("option:selected").attr("city_name"),
+			town_id:$("#notAgent_town_id").val(),
+			town_name:$("#notAgent_town_id").find("option:selected").attr("town_name")
+		},
+		 success:function(data){
+			alert(data.msg);
+			$("#updateNotAgentFormDiv").dialog('close');
+			search(0);
+    	},
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            alert("修改失败！"); 
+		} 
+	});
+}
+
+function listChnlType(isAgent){
+		$.ajax({ 
+	        type: "POST", 
+	        async: false,
+	        url: $("#ctx").val()+"/channelManagement/channelResource_loadChnlType.action", 
+	        dataType: "json",
+	        async:false,
+			success:function(d){
+				if (d&&d[0]) {
+					var h = '';
+						h += '<option value="" selected>请选择</option>';
+						for (var i = 0; i < d.length; i++) {
+							h += '<option chnl_type="'+d[i].TYPE_NAME+'" value="' + d[i].ID + '">' + d[i].TYPE_NAME + '</option>';
+						}
+						if(isAgent){
+							$("#agent_chnl_id").empty().append($(h));
+						}else{
+							$("#notAgent_chnl_id").empty().append($(h));
+						}
+	    	 } else {
+	    		alert("获取代理点类型失败!");
+	    	 }
+		    },
+	    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	    		alert("获取代理点类型失败!");
+			} 
+		});
+}
+
+function listCityType(isAgent){
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_loadCityType.action", 
+        dataType: "json",
+        async:false,
+		success:function(d){
+			if (d&&d[0]) {
+				var h = '';
+					h += '<option value="" selected>请选择</option>';
+					for (var i = 0; i < d.length; i++) {
+						h += '<option city_name="'+d[i].CITY_NAME+'" group_id_1="'+d[i].GROUP_ID_1+'" group_id_1_name="'+d[i].GROUP_ID_1_NAME+'" value="' + d[i].CITY_ID + '">' + d[i].CITY_NAME + '</option>';
+					}
+				if(isAgent){
+					$("#agent_city_id").empty().append($(h));
+				}else{
+					$("#notAgent_city_id").empty().append($(h));
+				}	
+    	 } else {
+    		alert("获取区县归属失败!");
+    	 }
+	    },
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+    		alert("获取区县归属失败!");
+		} 
+	});
+}
+
+function listTownType(isAgent,city_id){
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_loadTownType.action", 
+        dataType: "json",
+        async:false,
+        data:{
+        	city_id:city_id
+        },
+		success:function(d){
+			if (d&&d[0]) {
+				var h = '';
+				h += '<option value="" selected>请选择</option>';
+					for (var i = 0; i < d.length; i++) {
+						h += '<option town_name="'+d[i].TOWN_NAME+'" value="' + d[i].TOWN_ID + '">' + d[i].TOWN_NAME + '</option>';
+					}
+					if(isAgent){
+						$("#agent_town_id").empty().append($(h));
+					}else{
+						$("#notAgent_town_id").empty().append($(h));
+					}	
+    	   } else {
+    		   alert("获取乡镇归属失败!");
+    	   }
+	    },
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+    		alert("获取乡镇归属失败!");
+		} 
+	});
+}
+
+function isHavingMark(hq_chan_code,type){
+	var isHavingMark;
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/channelManagement/channelResource_isHavingMark.action",
+		data:{
+	       "hq_chan_code":hq_chan_code,
+	       "type":type
+	   	}, 
+	   	success:function(data){
+	   		if(data=="isHavingMark"){
+	   			isHavingMark=true;
+	   		}else{
+	   			if(type==0){
+	   				alert("该代理点未打标，请先打标！");
+	   			}else{
+	   				alert("该渠道未打标，请先打标！");
+	   			}
+	   			isHavingMark=false;
+	   		}
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert("验证出现异常！");
+        }
+	});
+	return isHavingMark;
+}
+
+function mark(ele){
+	var hq_chan_code=$(ele).attr("hq_chan_code");
+	var chnl_id=$(ele).attr("chnl_id");
+	var city_id=$(ele).attr("city_id");
+	var town_id=$(ele).attr("town_id");
+	art.dialog.data("hq_chan_code",hq_chan_code);
+	var pointType=isAgentPoint(hq_chan_code);
+	if(pointType=="isAgentPoint"){
+		var formdiv=$('#updateAgentFormDiv');
+		listChnlType(true);
+		listCityType(true);
+		listTownType(true,"");
+		$("#agent_chnl_id").val(chnl_id);
+		$("#agent_city_id").val(city_id);
+		$("#agent_town_id").val(town_id);
+		formdiv.show();
+		art.dialog.data("type",0);
+		formdiv.dialog({
+			title : '修改',
+			width : 500,
+			height : 200,
+			closed : false,
+			cache : false,
+			modal : false,
+			maximizable : true
+		});
+    }else{
+    	var formdiv=$('#updateNotAgentFormDiv');
+		listCityType(false);
+		listTownType(false,"");
+		$("#notAgent_city_id").val(city_id);
+		$("#notAgent_town_id").val(town_id);
+		art.dialog.data("type",1);
+		formdiv.show();
+		formdiv.dialog({
+			title : '修改',
+			width : 500,
+			height : 300,
+			closed : false,
+			cache : false,
+			modal : false,
+			maximizable : true
+		});
+	}
+}
 //分页
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
@@ -155,9 +525,11 @@ function initPagination(totalCount) {
 	   num_edge_entries: 2
 	 });
 }
-function cancel() {
-	$("#addFormDiv").dialog('close');
+
+function cancel(id) {
+	$("#"+id).dialog('close');
 }
+
 function isNull(obj){
 	if(obj == undefined || obj == null || obj == '') {
 		return "&nbsp;";
