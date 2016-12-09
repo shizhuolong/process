@@ -6,6 +6,10 @@
 <%
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
+    String city_name=request.getParameter("city_name");
+    city_name=java.net.URLDecoder.decode(city_name,"UTF-8"); 
+    String group_id_1_name=request.getParameter("group_id_1_name");
+    group_id_1_name=java.net.URLDecoder.decode(group_id_1_name,"UTF-8"); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -29,10 +33,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list_detail1.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_town_list_detail.js"></script>
 <style>
   .aui_title{cursor: move; display: block;width: 1000px;}
 </style>
+
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -46,17 +51,19 @@
 		<div id="container">
 			<div class="default-dt dt-autoH">
 				<div class="sticky-wrap">
+				 <a class="default-gree-btn fLeft mr10" href="#" id="openAdd" onclick="openAdd();">新增</a>
 					<table class="default-table sticky-enabled">
 					<thead>
 						<tr>
-							<th class="first">类型名称</th>
+						    <th class="first">区县归属</th>
+							<th class="first">乡镇归属</th>
 							<th class="first">操作</th>
 						</tr>
 					</thead>
 					<tbody id="dataBody">
 					</tbody>
 					<tr>
-						<td colspan="5">
+						<td colspan="4">
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据
@@ -78,18 +85,44 @@
 		  <input type="hidden" id="id" name="id"/>
 			<table class="default-table sticky-enabled">
 				<tr>
-					<td style="padding-left: 60px;">类型名称:</td>
-					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="类型名称不能为空" name="type_name" id="type_name"></td>
+					<td style="padding-left: 60px;">乡镇归属:</td>
+					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="乡镇归属不能为空" name="town_name" id="town_name"></td>
 				</tr>
 				<tr></tr>
 				<tr>
 	                <td colspan="2" style="padding-left: 120px;">
 		                <a href="#" class="default-btn fLeft mr10" id="saveBtn">保存</a>
-		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel();">取消</a>
+		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel('updateFormDiv');">取消</a>
+	                </td>
+				</tr>
+			</table>
+		</form>
+    </div>		
+    
+    <div class="sticky-wrap" id="addFormDiv" style="display:none;">
+		<form id="addForm" method="POST">
+		<input type="hidden" id="city_id" name="city_id" value="<%=request.getParameter("city_id")%>">
+		<input type="hidden" id="city_name" name="city_name">
+		<input type="hidden" id="group_id_1" name="group_id_1" value="<%=request.getParameter("group_id_1")%>">
+		<input type="hidden" id="group_id_1_name" name="group_id_1_name">
+			<table class="default-table sticky-enabled">
+				<tr>
+					<td style="padding-left: 60px;">乡镇归属:</td>
+					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="乡镇归属不能为空" name="town_name" id="add_town_name"></td>
+				</tr>
+				<tr></tr>
+				<tr>
+	                <td colspan="2" style="padding-left: 120px;">
+		                <a href="#" class="default-btn fLeft mr10" id="addSaveBtn">保存</a>
+		                <a href="#" class="default-btn fLeft ml10" id="addCancleBtn" onclick="cancel('addFormDiv');">取消</a>
 	                </td>
 				</tr>
 			</table>
 		</form>
     </div>		
 </body>
+<script type="text/javascript">
+   $("#city_name").val("<%=city_name%>");
+   $("#group_id_1_name").val("<%=group_id_1_name%>");
+</script>
 </html>
