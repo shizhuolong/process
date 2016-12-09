@@ -52,7 +52,21 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td>(2)点击浏览,并选择编辑好的EXCEL文件，提交既可。</td>
+					<td>(2)选择数据去向。</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>(3)点击浏览,并选择编辑好的EXCEL文件，提交既可。</td>
+				</tr>
+				<tr>
+					<td style="width: 70px; text-align: right;">去向：</td>
+					<td>
+					   <select id="pay_address" name="pay_address">
+					      <option value="">请选择</option>
+					      <option value="集中系统">集中系统</option>
+					      <option value="BSS系统">BSS系统</option>
+					   </select>
+					</td>
 				</tr>
 				<tr>
 					<td style="width: 70px; text-align: right;">上传文件：</td>

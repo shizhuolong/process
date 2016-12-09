@@ -6,10 +6,16 @@ $(function() {
 *数据导入
 */
 function importExcel(){
-	var url = $("#ctx").val()+"/unsupported/unsupported!importExcel.action?businessKey="+businessKey;
+	var pay_address=$("#pay_address").val();
+	var url = $("#ctx").val()+"/unsupported/unsupported!importExcel.action?businessKey="+businessKey+"&pay_address="+encodeURI(encodeURI(pay_address));
 	$('#importForm').form('submit', {   
 	    url:url,   
 	    onSubmit: function(){   
+	      var pay_address=$("#pay_address").val();
+	      if(pay_address==""){
+	    	  art.dialog.alert("请选择数据去向!");
+	    	  return false;
+	      }
 	      return checkOptions();
 	    },   
 	    success:function(data){
