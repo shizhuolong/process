@@ -104,6 +104,8 @@ public class UnsupportedAction extends BaseAction{
 		Org org = user.getOrg();
 		String username=user.getUsername();
 		String businessKey = request.getParameter("businessKey");
+		String pay_address = request.getParameter("pay_address");
+		
 		String code=org.getCode();
 		String resultMsg = "";
 		String resultTableName="PAPP.TAB_COMM_IMPORT_TEMP";
@@ -114,9 +116,8 @@ public class UnsupportedAction extends BaseAction{
 			resultMap.put("username", username);
 			resultMap.put("businessKey", businessKey);
 			List<String[]> list = this.getExcel(myFile[0], 0);
-			
-			
-			String [] columnsId = {"BILLINGCYCLID","AGENTID","DEPT_PTYPE","CHANNEL_NAME","REGION","COUNTY_ID","SUBSCRIPTION_ID","JOB_ID","FEE","TOTALFEE","NETFEE","SVCNUM","COMM_TYPE","SUBJECTID","SVCTP","REMARK","NET_TYPE","PAY_FLAG"};
+						
+			String [] columnsId = {"BILLINGCYCLID","AGENTID","DEPT_PTYPE","CHANNEL_NAME","REGION","COUNTY_ID","SUBSCRIPTION_ID","JOB_ID","FEE","TOTALFEE","NETFEE","SVCNUM","COMM_TYPE","SUBJECTID","SVCTP","REMARK","NET_TYPE","PAY_FLAG","PAY_ADDRESS"};
 			String [] patterns = {"^\\S+$","^\\S+$","","","","","","","^\\S+$","^\\S+$","","","","","","^\\S+$"};
 			StringBuffer buf=new StringBuffer();
 			buf.append("insert into "+resultTableName+"(insert_date,group_id,account_id,bill_id,");
@@ -136,9 +137,10 @@ public class UnsupportedAction extends BaseAction{
 				Connection conn = null;
 				PreparedStatement pre = null;
 				try {
+					pay_address=URLDecoder.decode(pay_address,"UTF-8");
 					conn = this.getCon();
 					conn.setAutoCommit(false);
-					String sql=base_sql+value_sql+"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String sql=base_sql+value_sql+"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					System.out.println(sql);
 					pre = conn.prepareStatement(sql);
 					for(int i=1; i<list.size(); i++) {
@@ -170,8 +172,7 @@ public class UnsupportedAction extends BaseAction{
 						pre.setString(j++, str[15]);
 						pre.setString(j++, str[16]);
 						pre.setString(j++, str[17]);
-						/*String uuid = UUID.randomUUID().toString().replace("-", "");
-						pre.setString(j++, uuid);*/
+						pre.setString(j++, pay_address);
 						pre.addBatch();
 					}
 					if(resultMsg!=""){
