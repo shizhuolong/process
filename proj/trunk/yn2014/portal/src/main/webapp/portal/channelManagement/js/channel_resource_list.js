@@ -474,6 +474,13 @@ function mark(ele){
 	var town_id=$(ele).attr("town_id");
 	art.dialog.data("hq_chan_code",hq_chan_code);
 	var pointType=isAgentPoint(hq_chan_code);
+	var orgLevel=$("#orgLevel").val();
+	if(orgLevel>1){
+		$("#agentMoreChnl").remove();
+		$("#agentMoreChnl").remove();
+		$("#notAgentMoreChnl").remove();
+		$("#notAgentMoreChnl").remove();
+	}
 	if(pointType=="isAgentPoint"){
 		var formdiv=$('#updateAgentFormDiv');
 		listChnlType(true);
