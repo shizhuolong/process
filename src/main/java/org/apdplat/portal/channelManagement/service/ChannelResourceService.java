@@ -73,30 +73,101 @@ public class ChannelResourceService {
 		return channelResourceDao.isExist(type_name);
 	}
 
-	public void add(String type_name) {
-		channelResourceDao.add(type_name);
-	}
-
-	public void update(Map<String, String> params) {
-		channelResourceDao.update(params);
+	public void addChnlType(String type_name) {
+		channelResourceDao.addChnlType(type_name);
 	}
 	
-	public void updateDetail1(Map<String, String> params) {
-		channelResourceDao.updateDetail1(params);
+	public void addTownType(Map<String, String> params) {
+		channelResourceDao.addTownType(params);
 	}
 
-	public Object listDetail1(Map<String, String> resultMap) {
+	public void updateAgent(Map<String, String> params) {
+		channelResourceDao.updateAgent(params);
+	}
+	
+	public void updateNotAgent(Map<String, String> params) {
+		channelResourceDao.updateNotAgent(params);
+	}
+	
+	@Transactional
+	public void updateChnlDetail(Map<String, String> params) {
+		channelResourceDao.updateChnlDetail(params);
+	}
+	
+	@Transactional
+	public void updateChnlInMain(Map<String, String> params) {
+		channelResourceDao.updateChnlInMain(params);
+	}
+	
+	@Transactional
+	public void updateTownDetail(Map<String, String> params) {
+		channelResourceDao.updateTownDetail(params);
+	}
+	
+	@Transactional
+	public void updateTownInMain(Map<String, String> params) {
+		channelResourceDao.updateTownInMain(params);
+	}
+	
+	public Object listChnlDetail(Map<String, String> resultMap) {
 		Map<String,Object> result = new HashMap<String,Object>();
-		PageList<Map<String, Object>> rows = channelResourceDao.listDetail1(resultMap);
+		PageList<Map<String, Object>> rows = channelResourceDao.listChnlDetail(resultMap);
 		result.put("rows", rows);
 		result.put("pagin", rows.getPaginator());
 		return result;
 	}
-	public void delDetail1(String id) {
-		channelResourceDao.delDetail1(id);
+	
+	public void delChnlDetail(String id) {
+		channelResourceDao.delChnlDetail(id);
 	}
 
+	public void delTownDetail(String id) {
+		channelResourceDao.delTownDetail(id);
+	}
+	
 	public List<Map<String, Object>> loadChnlType() {
 		return channelResourceDao.loadChnlType();
 	}
+
+	public List<Map<String, String>> isAgentPoint(Map<String, String> params) {
+		return channelResourceDao.isAgentPoint(params);
+	}
+
+	public List<Map<String, String>> isHavingMark(Map<String, String> params) {
+		return channelResourceDao.isHavingMark(params);
+	}
+
+	public List<Map<String, Object>> loadCityType() {
+		return channelResourceDao.loadCityType();
+	}
+
+	public List<Map<String, Object>> loadTownType(Map<String, String> params) {
+		return channelResourceDao.loadTownType(params);
+	}
+
+	public Object listTownDetail(Map<String, String> resultMap) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		PageList<Map<String, Object>> rows = channelResourceDao.listTownDetail(resultMap);
+		result.put("rows", rows);
+		result.put("pagin", rows.getPaginator());
+		return result;
+	}
+
+	public List<Map<String, Object>> isTownExist(String town_name) {
+		return channelResourceDao.isTownExist(town_name);
+	}
+
+	public List<Map<String, Object>> beforeDelChnlDetail(String id) {
+		return channelResourceDao.beforeDelChnlDetail(id);
+	}
+	
+	public List<Map<String, Object>> beforeDelTownDetail(String id) {
+		return channelResourceDao.beforeDelTownDetail(id);
+	}
+
+	public int count(Map<String, Object> params) {
+		return channelResourceDao.count(params);
+	}
+	
+	
 }

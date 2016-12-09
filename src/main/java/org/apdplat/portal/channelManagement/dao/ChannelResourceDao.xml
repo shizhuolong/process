@@ -7,9 +7,10 @@
 		<if test="orgLevel==1">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				T.CHNL_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+				T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
   			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
  			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
+ 			AND T.GROUP_ID_1 !=16017
  			<if test="hq_chan_name != null">
  				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
  			</if>
@@ -33,6 +34,13 @@
  			</if>
  			<if test="chn_cde_4_name != null">
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
+ 			</if>
+ 			<if test="isMark == 0">
+ 				AND (T.CHNL_TYPE IS NOT NULL OR T.CITY_ID IS NOT NULL OR
+ 				T.TOWN_ID IS NOT NULL)
+ 			</if>
+ 			<if test="isMark == 1">
+ 				AND T.CHNL_TYPE IS NULL AND T.CITY_ID IS NULL AND T.TOWN_ID IS NULL
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>	
@@ -63,6 +71,13 @@
  			<if test="chn_cde_4_name != null">
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
+ 			<if test="isMark == 0">
+ 				AND (T.CHNL_TYPE IS NOT NULL OR T.CITY_ID IS NOT NULL OR
+ 				T.TOWN_ID IS NOT NULL)
+ 			</if>
+ 			<if test="isMark == 1">
+ 				AND T.CHNL_TYPE IS NULL AND T.CITY_ID IS NULL AND T.TOWN_ID IS NULL
+ 			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
 		<if test="orgLevel==3">
@@ -92,20 +107,27 @@
  			<if test="chn_cde_4_name != null">
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
+ 			<if test="isMark == 0">
+ 				AND (T.CHNL_TYPE IS NOT NULL OR T.CITY_ID IS NOT NULL OR
+ 				T.TOWN_ID IS NOT NULL)
+ 			</if>
+ 			<if test="isMark == 1">
+ 				AND T.CHNL_TYPE IS NULL AND T.CITY_ID IS NULL AND T.TOWN_ID IS NULL
+ 			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
-		<if test="orgLevel==4">
-			SELECT 
-				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
-  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
- 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND 1=2
- 			ORDER BY T.GROUP_ID_1, T.UNIT_ID
-		</if>
+		
 	</select>
 	
-	<select id="listDetail1" parameterType="java.util.Map" resultType="java.util.Map">
+	<select id="listChnlDetail" parameterType="java.util.Map" resultType="java.util.Map">
 	   SELECT ID,TYPE_NAME FROM PCDE.TB_CDE_TYPE
+	</select>
+	
+	<select id="listTownDetail" parameterType="java.util.Map" resultType="java.util.Map">
+	     SELECT T.GROUP_ID_2 CITY_ID,T.GROUP_ID_2_NAME CITY_NAME,
+	     T.TOWN_ID ID,T.TOWN_NAME
+         FROM PCDE.TB_CDE_TOWN_CODE T
+         WHERE T.GROUP_ID_2=#{city_id}
 	</select>
 	
 	<select id="listUnit" parameterType="java.util.Map" resultType="java.util.Map">
@@ -201,7 +223,11 @@
 	   SELECT * FROM PCDE.TB_CDE_TYPE WHERE TYPE_NAME=#{type_name}
 	</select>
 	
-	<insert id="add" parameterType="java.lang.String">
+	<select id="isTownExist" parameterType="java.lang.String" resultType="java.util.Map">
+	   SELECT * FROM PCDE.TB_CDE_TOWN_CODE WHERE TOWN_NAME=#{town_name}
+	</select>
+	
+	<insert id="addChnlType" parameterType="java.lang.String">
 	   INSERT INTO PCDE.TB_CDE_TYPE(
 	    ID,
 	    TYPE_NAME
@@ -211,21 +237,120 @@
 	   FROM DUAL
 	</insert>
 	
-	<update id="update" parameterType="java.util.Map">
-	  UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE SET CHNL_TYPE=#{chnl_type},CHNL_ID=#{chnl_id}
+	<insert id="addTownType" parameterType="java.util.Map">
+	   INSERT INTO PCDE.TB_CDE_TOWN_CODE(
+	    GROUP_ID_0_NAME,
+		GROUP_ID_1_NAME,
+		GROUP_ID_2_NAME,
+		TOWN_NAME,
+		GROUP_ID_0,
+		GROUP_ID_1,
+		GROUP_ID_2,
+		TOWN_ID
+	   )
+	   SELECT 
+	     '云南省',#{group_id_1_name},#{city_name},#{town_name},'86000',
+	     #{group_id_1},#{city_id},'T'||PCDE.town_id.NEXTVAL
+	   FROM DUAL
+	</insert>
+	
+	<update id="updateAgent" parameterType="java.util.Map">
+	  UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE SET CHNL_TYPE=#{chnl_type},
+	  CHNL_ID=#{chnl_id},CITY_ID=#{city_id},CITY_NAME=#{city_name},
+	  TOWN_ID=#{town_id},TOWN_NAME=#{town_name}
       WHERE HQ_CHAN_CODE=#{hq_chan_code} 
 	</update>
 	
-	<select id="loadChnlType" parameterType="java.lang.String" resultType="java.util.Map">
+	<update id="updateNotAgent" parameterType="java.util.Map">
+	  UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE SET 
+	  CITY_ID=#{city_id},CITY_NAME=#{city_name},
+	  TOWN_ID=#{town_id},TOWN_NAME=#{town_name}
+      WHERE HQ_CHAN_CODE=#{hq_chan_code} 
+	</update>
+	
+	<select id="loadChnlType" resultType="java.util.Map">
 	   SELECT DISTINCT ID,TYPE_NAME FROM PCDE.TB_CDE_TYPE
 	</select>
 	
-	<update id="updateDetail1" parameterType="java.util.Map">
+	<select id="loadCityType" resultType="java.util.Map">
+	    SELECT DISTINCT
+		GROUP_ID_1_NAME,
+		GROUP_ID_2_NAME CITY_NAME,
+		GROUP_ID_1,
+		GROUP_ID_2 CITY_ID
+        FROM PCDE.TB_CDE_TOWN_CODE 
+	</select>
+	
+	<select id="loadTownType" parameterType="java.util.Map" resultType="java.util.Map">
+	    SELECT T.TOWN_ID,T.TOWN_NAME
+        FROM PCDE.TB_CDE_TOWN_CODE T 
+        <if test="city_id != ''">
+ 			WHERE T.GROUP_ID_2=#{city_id}
+ 		</if>
+	</select>
+	
+	<update id="updateChnlDetail" parameterType="java.util.Map">
 	  UPDATE PCDE.TB_CDE_TYPE SET TYPE_NAME=#{type_name} WHERE ID=#{id}
 	</update>
 	
-	<delete id="delDetail1" parameterType="java.lang.String">
+	<update id="updateChnlInMain" parameterType="java.util.Map">
+	   UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE T SET T.CHNL_TYPE=#{type_name}
+       WHERE T.CHNL_ID=#{id}
+	</update>
+	
+	<update id="updateTownDetail" parameterType="java.util.Map">
+	  UPDATE PCDE.TB_CDE_TOWN_CODE SET TOWN_NAME=#{town_name} WHERE TOWN_ID=#{id}
+	</update>
+	
+	<update id="updateTownInMain" parameterType="java.util.Map">
+	  UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE T SET T.TOWN_NAME=#{town_name}
+      WHERE T.TOWN_ID=#{id}
+	</update>
+	
+	<delete id="delChnlDetail" parameterType="java.lang.String">
 	  DELETE FROM PCDE.TB_CDE_TYPE WHERE ID=#{id}
 	</delete>
 	
+	<delete id="delTownDetail" parameterType="java.lang.String">
+	   DELETE PCDE.TB_CDE_TOWN_CODE WHERE TOWN_ID=#{id}
+	</delete>
+	
+	<select id="isAgentPoint" parameterType="java.util.Map" resultType="java.util.Map">
+	  SELECT HQ_CHAN_CODE
+      FROM PCDE.TB_CDE_CHANL_HQ_CODE T
+      WHERE T.HQ_CHAN_CODE=#{hq_chan_code} AND T.CHN_CDE_3_NAME LIKE '%代理点%'
+	</select>
+	
+	<select id="isHavingMark" parameterType="java.util.Map" resultType="java.util.Map">
+	   <if test="type == 0">
+ 			SELECT * FROM PCDE.TAB_CDE_CHANL_HQ_CODE WHERE 
+ 			HQ_CHAN_CODE=#{hq_chan_code} AND (CHNL_ID IS NULL OR
+ 			CITY_ID IS NULL OR TOWN_ID IS NULL)  
+ 	   </if>
+	   <if test="type==1">
+	       SELECT * FROM PCDE.TAB_CDE_CHANL_HQ_CODE
+	       WHERE HQ_CHAN_CODE=#{hq_chan_code} AND (CITY_ID IS NULL OR TOWN_ID IS NULL)
+	   </if>
+	</select>
+	
+	<select id="beforeDelChnlDetail" parameterType="java.lang.String" resultType="java.util.Map">
+	     SELECT *
+		 FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
+		 WHERE T.CHNL_ID=#{id} 
+	</select>
+	
+	<select id="beforeDelTownDetail" parameterType="java.lang.String" resultType="java.util.Map">
+	     SELECT *
+		 FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
+		 WHERE T.TOWN_ID=#{id}
+	</select>
+	
+	<select id="count" parameterType="java.util.Map" resultType="int" useCache="false">
+		 SELECT COUNT(1)
+         FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
+         WHERE T.TOWN_ID IS NULL AND T.GROUP_ID_1 !=16017
+		 <if test="orgLevel==2">
+		 	AND T.GROUP_ID_1 = #{orgCode}
+		 </if>
+	</select>
 </mapper>

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
+import org.apdplat.module.security.model.Org;
+import org.apdplat.module.security.model.User;
+import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.portal.channelManagement.service.ChannelResourceService;
@@ -40,6 +43,7 @@ public class ChannelResourceAction extends BaseAction {
 			String chn_cde_2_name = request.getParameter("chn_cde_2_name");
 			String chn_cde_3_name = request.getParameter("chn_cde_3_name");
 			String chn_cde_4_name = request.getParameter("chn_cde_4_name");
+			String isMark=request.getParameter("isMark");
 			if (hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 				resultMap.put("hq_chan_code", hq_chan_code);
 			}
@@ -61,6 +65,9 @@ public class ChannelResourceAction extends BaseAction {
 			if (chn_cde_4_name != null && !"".equals(chn_cde_4_name.trim())) {
 				resultMap.put("chn_cde_4_name", "%"+chn_cde_4_name+"%");
 			}
+			if (isMark != null && !"".equals(isMark.trim())) {
+				resultMap.put("isMark", isMark);
+			}
 			Object result = channelResourceService.listChannel(resultMap);
 			this.reponseJson(result);
 		} catch (Exception e) {
@@ -69,12 +76,20 @@ public class ChannelResourceAction extends BaseAction {
 		}
 	}
 
-	public void listDetail1() {
+	public void listChnlDetail() {
 		Object result = channelResourceService
-				.listDetail1(resultMap);
+				.listChnlDetail(resultMap);
 		this.reponseJson(result);
 	}
 
+	public void listTownDetail() {
+		String city_id=request.getParameter("city_id");
+		resultMap.put("city_id",city_id);
+		Object result = channelResourceService
+				.listTownDetail(resultMap);
+		this.reponseJson(result);
+	}
+	
 	/**
 	 * 查询营服中心
 	 */
@@ -157,11 +172,11 @@ public class ChannelResourceAction extends BaseAction {
 
 	}
 
-	public void add() {
+	public void addChnlType() {
 		Map m = new HashMap<String, String>();
 		try {
 			String type_name = request.getParameter("type_name");
-			channelResourceService.add(type_name);
+			channelResourceService.addChnlType(type_name);
 			m.put("msg", "添加成功！");
 		} catch (Exception e) {
 			logger.error("出现异常，添加失败！", e);
@@ -169,6 +184,31 @@ public class ChannelResourceAction extends BaseAction {
 		}
 		this.reponseJson(m);
 	}
+	
+	public void addTownType() {
+		Map m = new HashMap<String, String>();
+		try {
+			Map<String,String> params = new HashMap<String, String>();
+			String town_name = request.getParameter("town_name");
+			String group_id_1_name = request.getParameter("group_id_1_name");
+			String city_name = request.getParameter("city_name");
+			String group_id_1 = request.getParameter("group_id_1");
+			String city_id = request.getParameter("city_id");
+			
+			params.put("town_name", town_name);
+			params.put("group_id_1_name", group_id_1_name);
+			params.put("city_name", city_name);
+			params.put("group_id_1", group_id_1);
+			params.put("city_id", city_id);
+			channelResourceService.addTownType(params);
+			m.put("msg", "添加成功！");
+		} catch (Exception e) {
+			logger.error("出现异常，添加失败！", e);
+			m.put("msg", "出现异常,添加失败！");
+		}
+		this.reponseJson(m);
+	}
+	
 
 	public void isExist() {
 		Map m = new HashMap<String, String>();
@@ -176,10 +216,22 @@ public class ChannelResourceAction extends BaseAction {
 		List<Map<String, Object>> list = channelResourceService
 				.isExist(type_name);
 		if (list != null && !list.isEmpty()) {
-			m.put("msg", "类型名称已存在,添加失败！");
+			m.put("msg", "代理点名称已存在,编辑失败！");
 		}
 		this.reponseJson(m);
 	}
+	
+	public void isTownExist() {
+		Map m = new HashMap<String, String>();
+		String town_name = request.getParameter("town_name");
+		List<Map<String, Object>> list = channelResourceService
+				.isTownExist(town_name);
+		if (list != null && !list.isEmpty()) {
+			m.put("msg", "乡镇名称已存在,编辑失败！");
+		}
+		this.reponseJson(m);
+	}
+	
 	
 	public void loadChnlType() {
 		List<Map<String, Object>> list = channelResourceService
@@ -187,17 +239,40 @@ public class ChannelResourceAction extends BaseAction {
 		this.reponseJson(list);
 	}
 	
-	public void update() {
+	public void loadCityType() {
+		List<Map<String, Object>> list = channelResourceService
+				.loadCityType();
+		this.reponseJson(list);
+	}
+	
+	public void loadTownType() {
+		String city_id=request.getParameter("city_id");
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("city_id",city_id);
+		List<Map<String, Object>> list = channelResourceService
+				.loadTownType(params);
+		this.reponseJson(list);
+	}
+	
+	public void updateAgent() {
 		Map m = new HashMap<String, String>();
 		try {
 			Map<String, String> params = new HashMap<String, String>();
 			String chnl_type = request.getParameter("chnl_type");
 			String chnl_id = request.getParameter("chnl_id");
 			String hq_chan_code = request.getParameter("hq_chan_code");
-			params.put("chnl_type", chnl_type);
+			String city_id = request.getParameter("city_id");
+			String city_name = request.getParameter("city_name");
+			String town_id = request.getParameter("town_id");
+			String town_name = request.getParameter("town_name");
 			params.put("chnl_id", chnl_id);
+			params.put("chnl_type", chnl_type);
+			params.put("city_id", city_id);
+			params.put("city_name", city_name);
+			params.put("town_id", town_id);
+			params.put("town_name", town_name);
 			params.put("hq_chan_code", hq_chan_code);
-			channelResourceService.update(params);
+			channelResourceService.updateAgent(params);
 			m.put("msg", "修改成功！");
 		} catch (Exception e) {
 			logger.error("出现异常，修改失败！", e);
@@ -206,7 +281,30 @@ public class ChannelResourceAction extends BaseAction {
 		this.reponseJson(m);
 	}
 
-	public void updateDetail1(){
+	public void updateNotAgent() {
+		Map m = new HashMap<String, String>();
+		try {
+			Map<String, String> params = new HashMap<String, String>();
+			String hq_chan_code = request.getParameter("hq_chan_code");
+			String city_id = request.getParameter("city_id");
+			String city_name = request.getParameter("city_name");
+			String town_id = request.getParameter("town_id");
+			String town_name = request.getParameter("town_name");
+			params.put("city_id", city_id);
+			params.put("city_name", city_name);
+			params.put("town_id", town_id);
+			params.put("town_name", town_name);
+			params.put("hq_chan_code", hq_chan_code);
+			channelResourceService.updateNotAgent(params);
+			m.put("msg", "修改成功！");
+		} catch (Exception e) {
+			logger.error("出现异常，修改失败！", e);
+			m.put("msg", "出现异常,修改失败！");
+		}
+		this.reponseJson(m);
+	}
+	
+	public void updateChnlDetail(){
 		Map m=new HashMap<String,String>();
 		try {
 			Map<String,String> params=new HashMap<String,String>();
@@ -214,7 +312,8 @@ public class ChannelResourceAction extends BaseAction {
 			String type_name=request.getParameter("type_name");
 			params.put("id",id);
 			params.put("type_name",type_name);
-			channelResourceService.updateDetail1(params);
+			channelResourceService.updateChnlDetail(params);
+			channelResourceService.updateChnlInMain(params);
 			m.put("msg","修改成功！");
 		} catch (Exception e) {
 			logger.error("出现异常，修改失败！", e);
@@ -222,17 +321,111 @@ public class ChannelResourceAction extends BaseAction {
 		}
 		this.reponseJson(m);
 	}
-	public void delDetail1() {
+	
+	public void updateTownDetail(){
+		Map m=new HashMap<String,String>();
+		try {
+			Map<String,String> params=new HashMap<String,String>();
+			String id = request.getParameter("id");
+			String town_name=request.getParameter("town_name");
+			params.put("id",id);
+			params.put("town_name",town_name);
+			channelResourceService.updateTownDetail(params);
+			channelResourceService.updateTownInMain(params);
+			m.put("msg","修改成功！");
+		} catch (Exception e) {
+			logger.error("出现异常，修改失败！", e);
+			m.put("msg","出现异常,修改失败！");
+		}
+		this.reponseJson(m);
+	}
+	
+	public void delChnlDetail() {
 		try {
 			String id = request.getParameter("id");
-			channelResourceService.delDetail1(id);
+			channelResourceService.delChnlDetail(id);
 			this.reponseJson("删除成功！");
 		} catch (Exception e) {
 			logger.error("出现异常，删除失败！", e);
 			this.reponseJson("删除失败！");
 		}
 	}
-
+	
+	public void beforeDelChnlDetail() {
+		try {
+			String id = request.getParameter("id");
+			List<Map<String, Object>> list=channelResourceService.beforeDelChnlDetail(id);
+			if(list!=null&&list.size()>0){
+				this.reponseJson("该代理点已被一些渠道打标，无法删除！");
+			}
+			this.reponseJson("ok");
+		} catch (Exception e) {
+			logger.error("出现异常，验证失败！", e);
+			this.reponseJson("验证失败！");
+		}
+	}
+	
+	public void delTownDetail() {
+		try {
+			String id = request.getParameter("id");
+			channelResourceService.delTownDetail(id);
+			this.reponseJson("删除成功！");
+		} catch (Exception e) {
+			logger.error("出现异常，删除失败！", e);
+			this.reponseJson("删除失败！");
+		}
+	}
+		
+	public void beforeDelTownDetail() {
+		try {
+			String id = request.getParameter("id");
+			List<Map<String, Object>> list=channelResourceService.beforeDelTownDetail(id);
+			if(list!=null&&list.size()>0){
+				this.reponseJson("该乡镇已被一些渠道打标，无法删除！");
+			}
+			this.reponseJson("ok");
+		} catch (Exception e) {
+			logger.error("出现异常，验证失败！", e);
+			this.reponseJson("验证失败！");
+		}
+	}
+	
+    public void isAgentPoint(){
+    	String hq_chan_code=request.getParameter("hq_chan_code");
+    	Map<String,String> params=new HashMap<String,String>();
+    	params.put("hq_chan_code", hq_chan_code);
+      	List<Map<String,String>> l=channelResourceService.isAgentPoint(params);
+      	if(l!=null&&!l.isEmpty()){
+      		this.reponseJson("isAgentPoint");
+      	}
+      	this.reponseJson("notAgentPoint");
+    }
+    
+    public void isHavingMark(){
+    	String type=request.getParameter("type");
+    	String hq_chan_code=request.getParameter("hq_chan_code");
+    	Map<String,String> params=new HashMap<String,String>();
+    	params.put("hq_chan_code", hq_chan_code);
+    	params.put("type", type);
+      	List<Map<String,String>> l=channelResourceService.isHavingMark(params);
+      	if(l!=null&&!l.isEmpty()){
+      		this.reponseJson("notHavingMark");
+      	}
+      	this.reponseJson("isHavingMark");
+    }
+    
+    public void count(){
+    	Map<String, Object> params = new HashMap<String,Object>();
+		User user = UserHolder.getCurrentLoginUser();
+		Org org = user.getOrg();
+		String orgCode = org.getCode();
+		String orgLevel = org.getOrgLevel();
+		params.put("orgCode", orgCode);
+		params.put("orgLevel",orgLevel);
+		int count = channelResourceService.count(params);
+		this.reponseJson(count);
+    }
+    
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}
