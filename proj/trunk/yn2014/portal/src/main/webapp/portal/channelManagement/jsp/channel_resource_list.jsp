@@ -149,34 +149,34 @@
 		<form id="updateAgentForm" method="POST">
 			<table style="height:100px;">
 				<tr>
-					<td>代理点类型:</td>
-					<td>
-					  <select id="agent_chnl_id" name="chnl_id">
+					<td style="width:100px;">代理点类型:</td>
+					<td style="width:100px;">
+					  <select id="agent_chnl_id" name="chnl_id" style="width:100px;">
 					  </select>
 					</td>
-					<td>
-					  <a class="default-gree-btn fLeft mr10" href="#" id="agentMoreChnl" onclick="openAgentChnlType();">更多</a>
+					<td style="width:100px;">
+					  <a style="margin-left: 20px;" class="default-gree-btn fLeft mr10" href="#" id="agentMoreChnl" onclick="openAgentChnlType();">更多</a>
 					</td>
 				</tr>
 				<tr colspan="3">
-				    <td>区县归属:</td>
-					<td>
-					  <select id="agent_city_id" name="city_id">
+				    <td style="width:100px;">区县归属:</td>
+					<td style="width:100px;">
+					  <select id="agent_city_id" name="city_id" style="width:100px;">
 					  </select>
 					</td>
 				</tr>
 				<tr>
-				    <td>乡镇归属:</td>
-					<td>
-					  <select id="agent_town_id" name="town_id">
+				    <td style="width:100px;">乡镇归属:</td>
+					<td style="width:100px;">
+					  <select id="agent_town_id" name="town_id" style="width:100px;">
 					  </select>
 					</td>
-					<td>
-					  <a class="default-gree-btn fLeft mr10" href="#" id="agentMoreTown" onclick="openAgentTownType();">更多</a>
+					<td style="width:100px;">
+					  <a style="margin-left: 20px;" class="default-gree-btn fLeft mr10" href="#" id="agentMoreTown" onclick="openAgentTownType();">更多</a>
 					</td>
 				</tr>
 				<tr>
-	                <td colspan="2" style="padding-left: 120px;">
+	                <td style="padding-left: 120px;padding-top: 20px;" colspan="3">
 		                <a href="#" class="default-btn fLeft mr10" id="updateAgentBtn">保存</a>
 		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel('updateAgentFormDiv');">取消</a>
 	                </td>
@@ -189,24 +189,24 @@
 		<form id="updateNotAgentForm" method="POST">
 			<table style="height:200px;">
 				<tr colspan="3">
-				    <td>区县归属:</td>
-					<td>
-					  <select id="notAgent_city_id" name="city_id">
+				    <td style="width:100px;">区县归属:</td>
+					<td style="width:100px;">
+					  <select id="notAgent_city_id" name="city_id" style="width:100px;">
 					  </select>
 					</td>
 				</tr>
 				<tr>
-				    <td>乡镇归属:</td>
-					<td>
-					  <select id="notAgent_town_id" name="town_id">
+				    <td style="width:100px;">乡镇归属:</td>
+					<td style="width:100px;">
+					  <select id="notAgent_town_id" name="town_id" style="width:100px;">
 					  </select>
 					</td>
-					<td>
-					  <a class="default-gree-btn fLeft mr10" href="#" id="notAgentMoreTown" onclick="openNotAgentTownType();">更多</a>
+					<td style="width:100px;">
+					  <a style="margin-left: 20px;" class="default-gree-btn fLeft mr10" href="#" id="notAgentMoreTown" onclick="openNotAgentTownType();">更多</a>
 					</td>
 				</tr>
 				<tr>
-	                <td colspan="2" style="padding-left: 120px;">
+	                <td colspan="3" style="padding-left: 120px;width:100px;">
 		                <a href="#" class="default-btn fLeft mr10" id="updateNotAgentBtn">保存</a>
 		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel('updateNotAgentFormDiv');">取消</a>
 	                </td>
