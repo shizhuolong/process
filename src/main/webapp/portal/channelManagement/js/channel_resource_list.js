@@ -118,8 +118,9 @@ function search(pageNumber) {
 				if(isGrantedNew(UPDATE_ROLE)) {
 					//已划分
 					if(isDivision == "1") {
-						content += "<td><a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='channelDivide(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
-								"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' onclick='showDetails(this);'>详细信息</a></td>";
+						content += "<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
+							       "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivide(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
+								   "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' onclick='showDetails(this);'>详细信息</a></td>";
 					} else {
 						content += "<td><a href='#' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
 								"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivide(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
@@ -152,7 +153,6 @@ function channelDivide(ele) {
 	art.dialog.data('group_id_1',group_id_1);
 	art.dialog.data('group_id_4',group_id_4);
 	art.dialog.data('login_name',login_name);
-	if(hq_chan_code){
 		$.ajax({
 			type:"POST",
 			dataType:'json',
@@ -191,16 +191,6 @@ function channelDivide(ele) {
 	          alert("验证出现异常！");
 	        }
 		});
-	}else{
-		    var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
-			art.dialog.open(url,{
-				id:'channelDivideDialog',
-				width:'410px',
-				height:'310px',
-				lock:true,
-				resize:false
-			});
-	}
 }
 
 function isAgentPoint(hq_chan_code){
@@ -258,7 +248,7 @@ function openNotAgentTownType(){
 	if(city_id==""){
 		alert("请选择区县归属!");
 	}else{
-		var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_town_list_detail.jsp?city_id="+city_id;
+		var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_town_list_detail.jsp?city_id="+city_id+"&city_name="+city_name+"&group_id_1="+group_id_1+"&group_id_1_name="+group_id_1_name;
 		window.parent.openWindow("乡镇列表",null,url);
 	}
 }
@@ -493,7 +483,7 @@ function mark(ele){
 		art.dialog.data("type",0);
 		formdiv.dialog({
 			title : '修改',
-			width : 500,
+			width : 450,
 			height : 200,
 			closed : false,
 			cache : false,
@@ -510,8 +500,8 @@ function mark(ele){
 		formdiv.show();
 		formdiv.dialog({
 			title : '修改',
-			width : 500,
-			height : 300,
+			width : 400,
+			height : 250,
 			closed : false,
 			cache : false,
 			modal : false,
