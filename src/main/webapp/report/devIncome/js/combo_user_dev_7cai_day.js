@@ -13,7 +13,7 @@ function search(){
 		title=[["组织架构","经营模式","自有厅当日新增用户发展量","","","","","","","","","全网当日新增用户发展量","","","","","","","","","自有厅本月累计新增用户发展量","","","","","","","","","全网本月累计新增用户发展量","","","","","","","",""],
 		       ["","","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）"]
 			];
-		field=["OPERATE_TYPE","QC_19_NUM","QC_39_NUM","QC_59_NUM","QC_89_NUM","QC_119_NUM","QC_139_NUM","QC_RZK_NUM","ALL_QC_NUM","ALL_QC_HB","QQD_QC_19_NUM","QQD_QC_39_NUM","QQD_QC_59_NUM","QQD_QC_89_NUM","QQD_QC_119_NUM","QQD_QC_139_NUM","QQD_QC_RZK_NUM","QQD_ALL_QC_NUM","QC_19_NUM1","QC_39_NUM1","QC_59_NUM1","QC_89_NUM1","QC_119_NUM1","QC_139_NUM1","QC_RZK_NUM1","ALL_QC_NUM1","ALL_QC_HB1","QQD_QC_19_NUM1","QQD_QC_39_NUM1","QQD_QC_59_NUM1","QQD_QC_89_NUM1","QQD_QC_119_NUM1","QQD_QC_139_NUM1","QQD_QC_RZK_NUM1","QQD_ALL_QC_NUM1","QQD_ALL_HB1"];
+		field=["OPERATE_TYPE","QC_19_NUM","QC_39_NUM","QC_59_NUM","QC_89_NUM","QC_119_NUM","QC_139_NUM","QC_RZK_NUM","ALL_QC_NUM","ALL_QC_HB","QQD_QC_19_NUM","QQD_QC_39_NUM","QQD_QC_59_NUM","QQD_QC_89_NUM","QQD_QC_119_NUM","QQD_QC_139_NUM","QQD_QC_RZK_NUM","QQD_ALL_QC_NUM","QQD_ALL_HB","QC_19_NUM1","QC_39_NUM1","QC_59_NUM1","QC_89_NUM1","QC_119_NUM1","QC_139_NUM1","QC_RZK_NUM1","ALL_QC_NUM1","ALL_QC_HB1","QQD_QC_19_NUM1","QQD_QC_39_NUM1","QQD_QC_59_NUM1","QQD_QC_89_NUM1","QQD_QC_119_NUM1","QQD_QC_139_NUM1","QQD_QC_RZK_NUM1","QQD_ALL_QC_NUM1","QQD_ALL_HB1"];
 	var report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -40,7 +40,7 @@ function search(){
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
 					preField=" SELECT BUS_HALL_NAME AS ROW_NAME , HQ_CHAN_CODE AS ROW_ID, "+getNextSql()+" AND GROUP_ID_1= '"+code+"'";
-					groupBy= " GGROUP BY BUS_HALL_NAME, HQ_CHAN_CODE, OPERATE_TYPE  ";
+					groupBy= " GROUP BY BUS_HALL_NAME, HQ_CHAN_CODE, OPERATE_TYPE  ";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -182,6 +182,11 @@ function getSumSql() {
 			 "        NVL(QQD_QC_139_NUM, 0) QQD_QC_139_NUM,                                                   "+
 			 "        NVL(QQD_QC_RZK_NUM, 0) QQD_QC_RZK_NUM,                                                   "+
 			 "        NVL(QQD_ALL_QC_NUM, 0) QQD_ALL_QC_NUM,                                                   "+
+			 "  	  PODS.GET_RADIX_POINT(CASE                                                                "+
+			 "  									WHEN NVL(QQD_ALL_NUM, 0) <> 0 THEN                         "+  
+			 "  									NVL(QQD_ALL_QC_NUM, 0) * 100 / NVL(QQD_ALL_NUM, 0)         "+ 
+			 "  								END || '%',                                                    "+   
+			 "  								2) QQD_ALL_HB,                                                 "+
 			 "        SUM(NVL(QC_19_NUM1, 0)) QC_19_NUM1,                                                      "+
 			 "        SUM(NVL(QC_39_NUM1, 0)) QC_39_NUM1,                                                      "+
 			 "        SUM(NVL(QC_59_NUM1, 0)) QC_59_NUM1,                                                      "+
@@ -226,20 +231,20 @@ function downsAll() {
 	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
 	var where ="";
-	var preField = " DEAL_DATE,GROUP_ID_1_NAME,BUS_HALL_NAME,HQ_CHAN_CODE,"+	getNextSql();
+	var preField = " SELECT DEAL_DATE,GROUP_ID_1_NAME,BUS_HALL_NAME,HQ_CHAN_CODE,"+	getNextSql();
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
-		where = " AND T.GROUP_ID_1='"+region+"' ";
+		where = " AND GROUP_ID_1='"+region+"' ";
 	} 
 	if(regionCode!=""){
-		where+=" AND T.GROUP_ID_1='"+regionCode+"'";
+		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(operateType!=""){
-		where+=" AND T.OPERATE_TYPE='"+operateType+"'";
+		where+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
 	if(chanlCode!=""){
-		where += " AND T.HQ_CHAN_CODE ='"+chanlCode+"' ";
+		where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 	}
 	var sql = preField + where+groupBy+orderBy;
 	var showtext = '七彩套餐用户发展日表' + dealDate;

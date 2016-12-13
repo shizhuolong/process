@@ -1,5 +1,5 @@
 var nowData = [];
-var field=["GROUP_ID_1_NAME","ZY_DEV","GT_DEV","TTY_DEV","ALL_DEV","ZY_ZB","GT_ZB","TY_ZB","ALL_DEV_ZB","ZY_LAST_12DEV","ALL_LAST_12DEV","ZY_LAST_12ZB","ZY_HB","GT_LAST_12DEV","ALL_LAST_12DEV2","GT_LAST_12ZB","GT_HB","TY_LAST_12DEV","ALL_LAST_12DEV3","TY_LAST_12ZB","TY_HB","ALL_HB","ZY_LAST_MNDEV","ALL_LAST_MNDEV","ZY_LAST_MNZB","ZY_TB","GT_LAST_MNDEV","ALL_LAST_MNDEV2","GT_LAST_MNZB","GT_TB","TY_LAST_MNDEV","ALL_LAST_MNDEV3","TY_LAST_MNZB","TY_TB","ALL_TB"];
+var field=["GROUP_ID_1_NAME","ZY_SR","GT_SR","TTY_SR","ALL_SR","ZY_ZB","GT_ZB","TY_ZB","ALL_SR_ZB","ZY_LAST_12SR","ALL_LAST_12SR","ZY_LAST_12ZB","ZY_HB","GT_LAST_12SR","ALL_LAST_12SR2","GT_LAST_12ZB","GT_HB","TY_LAST_12SR","ALL_LAST_12SR3","TY_LAST_12ZB","TY_HB","ALL_HB","ZY_LAST_MNSR","ALL_LAST_MNSR","ZY_LAST_MNZB","ZY_TB","GT_LAST_MNSR","ALL_LAST_MNSR2","GT_LAST_MNZB","GT_TB","TY_LAST_MNSR","ALL_LAST_MNSR3","TY_LAST_MNZB","TY_TB","ALL_TB"];
 var title=[["州市","收入量","","","","占全渠道份额比","","","","环比","","","","","","","","","","","","","同比","","","","","","","","","","","",""],
            ["","自营厅","柜台外包厅","他营厅","全业务收入量","自营厅","柜台外包厅","他营厅","小计占比","去年12月自营收入量","去年12月全业务收入量","去年12月自营份额占比","自营厅环比","去年12月柜台收入量","去年12月全业务收入量","去年12月柜台份额占比","柜台外包厅环比","去年12月他营收入量","去年12月全业务收入量","去年12月他营份额占比","他营厅环比","小计环比","去年同期自营累计收入量","去年同期全业务累计收入量","去年同期自营份额占比","自营厅累计同比","去年同期柜台累计收入量","去年同期全业务累计收入量","去年同期柜台份额占比","柜台外包厅累计同比","去年同期他营累计收入量","去年同期全业务累计收入量","去年同期他营份额占比","他营厅累计同比","小计同期累计同比"]];
 var report = null;
@@ -79,41 +79,41 @@ function getSql(){
 		
 	var sql ="SELECT DEAL_DATE                                 "+
 	"    ,GROUP_ID_1_NAME                                      "+
-	"    ,ZY_DEV                                               "+
-	"    ,GT_DEV                                               "+
-	"    ,TTY_DEV                                              "+
-	"    ,ALL_DEV                                              "+
+	"    ,ZY_SR                                               "+
+	"    ,GT_SR                                               "+
+	"    ,TTY_SR                                              "+
+	"    ,ALL_SR                                              "+
 	"    ,ZY_ZB                                                "+
 	"    ,GT_ZB                                                "+
 	"    ,TY_ZB                                                "+
-	"    ,ALL_DEV_ZB                                           "+
-	"    ,ZY_LAST_12DEV                                        "+
-	"    ,ALL_LAST_12DEV                                       "+
+	"    ,ALL_SR_ZB                                           "+
+	"    ,ZY_LAST_12SR                                        "+
+	"    ,ALL_LAST_12SR                                       "+
 	"    ,ZY_LAST_12ZB                                         "+
 	"    ,ZY_HB                                                "+
-	"    ,GT_LAST_12DEV                                        "+
-	"    ,ALL_LAST_12DEV  ALL_LAST_12DEV2                      "+
+	"    ,GT_LAST_12SR                                        "+
+	"    ,ALL_LAST_12SR  ALL_LAST_12SR2                      "+
 	"    ,GT_LAST_12ZB                                         "+
 	"    ,GT_HB                                                "+
-	"    ,TY_LAST_12DEV                                        "+
-	"    ,ALL_LAST_12DEV   ALL_LAST_12DEV3                     "+
+	"    ,TY_LAST_12SR                                        "+
+	"    ,ALL_LAST_12SR   ALL_LAST_12SR3                     "+
 	"    ,TY_LAST_12ZB                                         "+
 	"    ,TY_HB                                                "+
 	"    ,ALL_HB                                               "+
-	"    ,ZY_LAST_MNDEV                                        "+
-	"    ,ALL_LAST_MNDEV                                       "+
+	"    ,ZY_LAST_MNSR                                        "+
+	"    ,ALL_LAST_MNSR                                       "+
 	"    ,ZY_LAST_MNZB                                         "+
 	"    ,ZY_TB                                                "+
-	"    ,GT_LAST_MNDEV                                        "+
-	"    ,ALL_LAST_MNDEV    ALL_LAST_MNDEV2                    "+
+	"    ,GT_LAST_MNSR                                        "+
+	"    ,ALL_LAST_MNSR    ALL_LAST_MNSR2                    "+
 	"    ,GT_LAST_MNZB                                         "+
 	"    ,GT_TB                                                "+
-	"    ,TY_LAST_MNDEV                                        "+
-	"    ,ALL_LAST_MNDEV    ALL_LAST_MNDEV3                    "+
+	"    ,TY_LAST_MNSR                                        "+
+	"    ,ALL_LAST_MNSR    ALL_LAST_MNSR3                    "+
 	"    ,TY_LAST_MNZB                                         "+
 	"    ,TY_TB                                                "+
 	"    ,ALL_TB                                               "+
-	"FROM PMRT.TB_MRT_BUS_LJFE_DEV_MON WHERE DEAL_DATE='"+dealDate+"'";
+	"FROM PMRT.TB_MRT_BUS_LJFE_SR_MON WHERE DEAL_DATE='"+dealDate+"'";
 
 	// 权限
 	var orgLevel=$("#orgLevel").val();
