@@ -365,13 +365,16 @@ function listChnlType(isAgent){
 		});
 }
 
-function listCityType(isAgent){
+function listCityType(isAgent,hq_chan_code){
 	$.ajax({ 
         type: "POST", 
         async: false,
         url: $("#ctx").val()+"/channelManagement/channelResource_loadCityType.action", 
         dataType: "json",
         async:false,
+        data:{
+        	"hq_chan_code":hq_chan_code
+        },
 		success:function(d){
 			if (d&&d[0]) {
 				var h = '';
@@ -467,14 +470,13 @@ function mark(ele){
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel>1){
 		$("#agentMoreChnl").remove();
-		$("#agentMoreChnl").remove();
-		$("#notAgentMoreChnl").remove();
-		$("#notAgentMoreChnl").remove();
+		$("#agentMoreTown").remove();
+		$("#notAgentMoreTown").remove();
 	}
 	if(pointType=="isAgentPoint"){
 		var formdiv=$('#updateAgentFormDiv');
 		listChnlType(true);
-		listCityType(true);
+		listCityType(true,hq_chan_code);
 		listTownType(true,"");
 		$("#agent_chnl_id").val(chnl_id);
 		$("#agent_city_id").val(city_id);
@@ -492,7 +494,7 @@ function mark(ele){
 		});
     }else{
     	var formdiv=$('#updateNotAgentFormDiv');
-		listCityType(false);
+		listCityType(false,hq_chan_code);
 		listTownType(false,"");
 		$("#notAgent_city_id").val(city_id);
 		$("#notAgent_town_id").val(town_id);
