@@ -24,10 +24,12 @@ import java.util.Map;
 
 
 
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface ChannelResourceDao {
-
+	
+	public List<Map<String, Object>> listTreeNode(Map<String, Object> params);
 	/**
 	 * 查询渠道信息
 	 * @param params

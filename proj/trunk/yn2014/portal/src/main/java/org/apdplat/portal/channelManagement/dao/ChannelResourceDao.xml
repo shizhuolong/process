@@ -2,7 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.apdplat.portal.channelManagement.dao.ChannelResourceDao">
-
+	
+	<select id="listTreeNode" parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="orgLevel==null">
+			SELECT 
+				T.ID AS "id",'-1' AS "pId",T.ORGNAME AS "name",
+				T.CODE AS "code",T.ORGLEVEL AS "orgLevel",'true' as "isParent"
+			FROM PORTAL.APDP_ORG T WHERE T.ORGLEVEL = '1'
+		</if>
+		<if test="orgLevel==1">
+			SELECT 
+				T.ID AS "id",T.PARENT_ID AS "pId",T.ORGNAME AS "name",
+				T.CODE AS "code",T.ORGLEVEL AS "orgLevel",'true' as "isParent"
+			FROM PORTAL.APDP_ORG T WHERE T.PARENT_ID = #{orgId}
+		</if>
+		<if test="orgLevel==2">
+			SELECT 
+				T.ID AS "id",T.PARENT_ID AS "pId",T.ORGNAME AS "name",
+				T.CODE AS "code",T.ORGLEVEL AS "orgLevel",'false' as "isParent"
+			FROM PORTAL.APDP_ORG T WHERE T.PARENT_ID = #{orgId}
+		</if>
+	</select>
+	
 	<select id="listChannel" parameterType="java.util.Map" resultType="java.util.Map">
 		<if test="orgLevel==1">
 			SELECT 
@@ -16,9 +37,6 @@
  			</if>
  			<if test="hq_chan_code != null">
  				AND T.HQ_CHAN_CODE=#{hq_chan_code}
- 			</if>
- 			<if test="is_default != null">
- 				AND T2.IS_DEFAULT=#{is_default}
  			</if>
  			<if test="is_default != null">
  				AND T2.IS_DEFAULT=#{is_default}
@@ -47,9 +65,10 @@
 		<if test="orgLevel==2">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
-  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
- 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND T.GROUP_ID_1 = #{code}
+				T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
+ 			AND T.GROUP_ID_1 =#{code}
  			<if test="hq_chan_name != null">
  				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
  			</if>
@@ -83,9 +102,10 @@
 		<if test="orgLevel==3">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
-  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2
- 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.IS_SIGN = 1 AND T.UNIT_ID = #{code}
+				T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+  			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
+ 			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
+ 			AND T.UNIT_ID = #{code}
  			<if test="hq_chan_name != null">
  				AND T.GROUP_ID_4_NAME LIKE #{hq_chan_name}
  			</if>

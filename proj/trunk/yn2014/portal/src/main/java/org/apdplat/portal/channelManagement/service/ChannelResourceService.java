@@ -17,7 +17,9 @@ public class ChannelResourceService {
 	@Autowired
 	private ChannelResourceDao channelResourceDao;
 	
-	
+	public List<Map<String, Object>> listTreeNode(Map<String, Object> params) {
+		return channelResourceDao.listTreeNode(params);
+	}
 	/**
 	 * 查询渠道信息
 	 * @param params
