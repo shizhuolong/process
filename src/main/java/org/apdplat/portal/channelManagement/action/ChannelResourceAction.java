@@ -32,6 +32,18 @@ public class ChannelResourceAction extends BaseAction {
 	private Map<String, String> resultMap;
 
 	/**
+	 * 查询渠道经理及营服中心负责人组织架构
+	 */
+	public void listTreeNode() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orgId", orgId);
+		params.put("orgLevel", orgLevel);
+		params.put("code", code);
+		List<Map<String, Object>> list = channelResourceService.listTreeNode(params);
+		this.reponseJson(list);
+	}
+	
+	/**
 	 * 查询渠道信息列表
 	 */
 	public void listChannel() {
