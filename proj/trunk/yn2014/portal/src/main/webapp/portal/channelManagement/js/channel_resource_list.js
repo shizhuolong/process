@@ -12,7 +12,7 @@ $(function() {
 	var setting = {
 		async : {
 			enable : true,
-			url : $("#ctx").val()+"/channelManagement/channelManager_listTreeNode.action",
+			url : $("#ctx").val()+"/channelManagement/channelResource_listTreeNode.action",
 			autoParam : ["id=orgId","orgLevel=orgLevel","code=code"]
 		},
 		callback:{
@@ -552,37 +552,41 @@ function downloadExcel() {
 	var chn_cde_2_name = $.trim($("#chn_cde_2_name").val());
 	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
+	var isMark = $("#isMark").val();
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,                        "+
-		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                            "+
+		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
+		",T.CITY_NAME,T.TOWN_NAME "+
 		"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
 		"AND    T.HQ_CHAN_CODE=T3.HQ_CHAN_CODE                                                               "+   
-		"AND T.IS_SIGN = 1                                                                                   ";
+		"AND T.IS_SIGN = 1  AND T.GROUP_ID_1 !=16017                                                         ";
 	}else if(orgLevel == "2") {
 	    sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,                        "+
-		"       T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                            "+
+		"       T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                  "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
+		",T.CITY_NAME,T.TOWN_NAME "+
 		"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
 		"AND    T.HQ_CHAN_CODE=T3.HQ_CHAN_CODE                                                               "+   
-		"AND T.IS_SIGN = 1 AND T.GROUP_ID_1 = '"+code+"' ";
+		"AND T.IS_SIGN = 1 AND T.GROUP_ID_1 !=16017 AND T.GROUP_ID_1 = '"+code+"' ";
 	}else if(orgLevel == "3") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,                 "+
-		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                            "+
+		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                 "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
+		",T.CITY_NAME,T.TOWN_NAME "+
 		"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
 		"AND    T.HQ_CHAN_CODE=T3.HQ_CHAN_CODE                                                               "+   
-		"AND T.IS_SIGN = 1 AND T.UNIT_ID = '"+code+"' ";
+		"AND T.IS_SIGN = 1 AND T.GROUP_ID_1 !=16017 AND T.UNIT_ID = '"+code+"' ";
 	}else {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,                 "+
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                            "+
@@ -615,10 +619,17 @@ function downloadExcel() {
 	if(chn_cde_4_name != "") {
 		sql += " AND T3.CHN_CDE_4_NAME LIKE '%"+chn_cde_4_name+"%' ";
 	}
-	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
+	if (isMark == "0"){
+		sql+=" AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND T.TOWN_ID IS NOT NULL"
+	}
+	if(isMark == "1"){
+		sql+=" AND T.TOWN_ID IS NULL";
+	}
+	
+	sql += " ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	var showtext="Sheet";
    var showtext1="result";
-   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道类型','是否划分营服中心','状态'];
+   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道类型','是否划分营服中心','状态',"区县","乡镇"];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
