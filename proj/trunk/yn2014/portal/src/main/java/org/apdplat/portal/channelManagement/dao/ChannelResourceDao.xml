@@ -36,11 +36,11 @@
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
  			<if test="isMark == 0">
- 				AND (T.CHNL_TYPE IS NOT NULL OR T.CITY_ID IS NOT NULL OR
- 				T.TOWN_ID IS NOT NULL)
+ 				AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND
+ 				T.TOWN_ID IS NOT NULL
  			</if>
  			<if test="isMark == 1">
- 				AND T.CHNL_TYPE IS NULL AND T.CITY_ID IS NULL AND T.TOWN_ID IS NULL
+ 				AND T.TOWN_ID IS NULL
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>	
@@ -72,11 +72,11 @@
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
  			<if test="isMark == 0">
- 				AND (T.CHNL_TYPE IS NOT NULL OR T.CITY_ID IS NOT NULL OR
- 				T.TOWN_ID IS NOT NULL)
+ 				AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND
+ 				T.TOWN_ID IS NOT NULL
  			</if>
  			<if test="isMark == 1">
- 				AND T.CHNL_TYPE IS NULL AND T.CITY_ID IS NULL AND T.TOWN_ID IS NULL
+ 				AND T.TOWN_ID IS NULL
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
@@ -108,11 +108,11 @@
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
  			<if test="isMark == 0">
- 				AND (T.CHNL_TYPE IS NOT NULL OR T.CITY_ID IS NOT NULL OR
- 				T.TOWN_ID IS NOT NULL)
+ 				AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND
+ 				T.TOWN_ID IS NOT NULL
  			</if>
  			<if test="isMark == 1">
- 				AND T.CHNL_TYPE IS NULL AND T.CITY_ID IS NULL AND T.TOWN_ID IS NULL
+ 				AND T.TOWN_ID IS NULL
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
@@ -279,6 +279,8 @@
 		GROUP_ID_1,
 		GROUP_ID_2 CITY_ID
         FROM PCDE.TB_CDE_TOWN_CODE 
+        WHERE GROUP_ID_1 IN(SELECT GROUP_ID_1 FROM
+        PCDE.TAB_CDE_CHANL_HQ_CODE WHERE HQ_CHAN_CODE=#{hq_chan_code})
 	</select>
 	
 	<select id="loadTownType" parameterType="java.util.Map" resultType="java.util.Map">
@@ -348,7 +350,7 @@
 	<select id="count" parameterType="java.util.Map" resultType="int" useCache="false">
 		 SELECT COUNT(1)
          FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
-         WHERE T.TOWN_ID IS NULL AND T.GROUP_ID_1 !=16017
+         WHERE T.TOWN_ID IS NULL AND T.IS_SIGN = 1 AND T.GROUP_ID_1 !=16017
 		 <if test="orgLevel==2">
 		 	AND T.GROUP_ID_1 = #{orgCode}
 		 </if>
