@@ -115,7 +115,7 @@ public interface ChannelResourceDao {
 
 	public List<Map<String, String>> isHavingMark(Map<String, String> params);
 
-	public List<Map<String, Object>> loadCityType();
+	public List<Map<String, Object>> loadCityType(String hq_chan_code);
 
 	public List<Map<String, Object>> loadTownType(Map<String, String> params);
 

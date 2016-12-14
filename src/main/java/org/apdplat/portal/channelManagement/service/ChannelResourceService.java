@@ -137,8 +137,8 @@ public class ChannelResourceService {
 		return channelResourceDao.isHavingMark(params);
 	}
 
-	public List<Map<String, Object>> loadCityType() {
-		return channelResourceDao.loadCityType();
+	public List<Map<String, Object>> loadCityType(String hq_chan_code) {
+		return channelResourceDao.loadCityType(hq_chan_code);
 	}
 
 	public List<Map<String, Object>> loadTownType(Map<String, String> params) {

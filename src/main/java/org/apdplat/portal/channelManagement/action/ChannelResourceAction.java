@@ -240,8 +240,9 @@ public class ChannelResourceAction extends BaseAction {
 	}
 	
 	public void loadCityType() {
+		String hq_chan_code=request.getParameter("hq_chan_code");
 		List<Map<String, Object>> list = channelResourceService
-				.loadCityType();
+				.loadCityType(hq_chan_code);
 		this.reponseJson(list);
 	}
 	
