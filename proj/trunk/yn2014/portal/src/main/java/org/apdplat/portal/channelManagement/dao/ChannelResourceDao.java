@@ -25,6 +25,8 @@ import java.util.Map;
 
 
 
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface ChannelResourceDao {
@@ -123,11 +125,13 @@ public interface ChannelResourceDao {
 
 	public PageList<Map<String, Object>> listTownDetail(Map<String, String> resultMap);
 
-	public List<Map<String, Object>> isTownExist(String town_name);
+	public List<Map<String, Object>> isTownExist(Map<String, String> params);
 
 	public List<Map<String, Object>> beforeDelChnlDetail(String id);
 	
 	public List<Map<String, Object>> beforeDelTownDetail(String id);
 
 	public int count(Map<String, Object> params);
+	
+	public void updateMarkStatus(Map<String, String> params);
 }

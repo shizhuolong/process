@@ -28,7 +28,7 @@
 		<if test="orgLevel==1">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+				T.IS_MARK,T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
   			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
  			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
  			AND T.GROUP_ID_1 !=16017
@@ -53,19 +53,16 @@
  			<if test="chn_cde_4_name != null">
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
- 			<if test="isMark == 0">
- 				AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND
- 				T.TOWN_ID IS NOT NULL
+ 			<if test="isMark != null">
+ 				AND T.IS_MARK=#{isMark}
  			</if>
- 			<if test="isMark == 1">
- 				AND T.TOWN_ID IS NULL
- 			</if>
+ 			
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>	
 		<if test="orgLevel==2">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+				T.IS_MARK,T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
   			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
  			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
  			AND T.GROUP_ID_1 =#{code}
@@ -90,19 +87,15 @@
  			<if test="chn_cde_4_name != null">
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
- 			<if test="isMark == 0">
- 				AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND
- 				T.TOWN_ID IS NOT NULL
- 			</if>
- 			<if test="isMark == 1">
- 				AND T.TOWN_ID IS NULL
+ 			<if test="isMark != null">
+ 				AND T.IS_MARK=#{isMark}
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
 		<if test="orgLevel==3">
 			SELECT 
 				T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.UNIT_ID,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.GROUP_ID_4,T.HQ_CHAN_CODE,
-				T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
+				T.IS_MARK,T.CHNL_ID,T.CITY_ID,T.TOWN_ID,CASE WHEN T2.IS_DEFAULT = 0 THEN 1 ELSE 0 END AS ISDIVISION
   			FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T2,PCDE.TB_CDE_CHANL_HQ_CODE T3
  			WHERE T.UNIT_ID = T2.UNIT_ID AND T.FD_CHNL_CODE=T3.FD_CHNL_CODE AND T.IS_SIGN = 1
  			AND T.UNIT_ID = #{code}
@@ -127,12 +120,8 @@
  			<if test="chn_cde_4_name != null">
  				AND T3.CHN_CDE_4_NAME LIKE #{chn_cde_4_name}
  			</if>
- 			<if test="isMark == 0">
- 				AND T.CHNL_TYPE IS NOT NULL AND T.CITY_ID IS NOT NULL AND
- 				T.TOWN_ID IS NOT NULL
- 			</if>
- 			<if test="isMark == 1">
- 				AND T.TOWN_ID IS NULL
+ 			<if test="isMark != null">
+ 				AND T.IS_MARK=#{isMark}
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
@@ -226,6 +215,7 @@
 			T.HQ_CHAN_CODE,T.GROUP_ID_4_NAME,T.GROUP_ID_1_NAME,T0.UNIT_NAME,T.CHN_CDE_1_NAME,
 			T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.CONTACT_NAME,T.CONTACT_PHONE,
 			T.CON_OFFICE_PHONE,T.LOG_NO,T.LAT_NO,T.CHNL_ADDR,
+			T0.CHNL_TYPE,T0.CITY_NAME,T0.TOWN_NAME,
 			DECODE(T.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止','') AS STATUS,
        		DECODE(T.IS_MINI_HALL, '1', '是', '0', '否', '') AS IS_MINI_HALL,
        		TO_CHAR(T.CREATE_TIME, 'yyyy-MM-dd HH:mi:ss') AS CREATE_TIME,
@@ -243,8 +233,8 @@
 	   SELECT * FROM PCDE.TB_CDE_TYPE WHERE TYPE_NAME=#{type_name}
 	</select>
 	
-	<select id="isTownExist" parameterType="java.lang.String" resultType="java.util.Map">
-	   SELECT * FROM PCDE.TB_CDE_TOWN_CODE WHERE TOWN_NAME=#{town_name}
+	<select id="isTownExist" parameterType="java.util.Map" resultType="java.util.Map">
+	   SELECT * FROM PCDE.TB_CDE_TOWN_CODE WHERE TOWN_NAME=#{town_name} AND GROUP_ID_2=#{city_id}
 	</select>
 	
 	<insert id="addChnlType" parameterType="java.lang.String">
@@ -286,6 +276,11 @@
 	  CITY_ID=#{city_id},CITY_NAME=#{city_name},
 	  TOWN_ID=#{town_id},TOWN_NAME=#{town_name}
       WHERE HQ_CHAN_CODE=#{hq_chan_code} 
+	</update>
+	
+	<update id="updateMarkStatus" parameterType="java.util.Map">
+	  UPDATE PCDE.TAB_CDE_CHANL_HQ_CODE SET 
+	  IS_MARK='1' WHERE HQ_CHAN_CODE=#{hq_chan_code} 
 	</update>
 	
 	<select id="loadChnlType" resultType="java.util.Map">
@@ -370,7 +365,7 @@
 	<select id="count" parameterType="java.util.Map" resultType="int" useCache="false">
 		 SELECT COUNT(1)
          FROM PCDE.TAB_CDE_CHANL_HQ_CODE T
-         WHERE T.TOWN_ID IS NULL AND T.IS_SIGN = 1 AND T.GROUP_ID_1 !=16017
+         WHERE T.IS_MARK='0' AND T.IS_SIGN = 1 AND T.GROUP_ID_1 !=16017
 		 <if test="orgLevel==2">
 		 	AND T.GROUP_ID_1 = #{orgCode}
 		 </if>

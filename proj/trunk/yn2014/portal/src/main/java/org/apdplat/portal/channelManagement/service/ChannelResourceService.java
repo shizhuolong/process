@@ -74,21 +74,27 @@ public class ChannelResourceService {
 	public List<Map<String, Object>> isExist(String type_name) {
 		return channelResourceDao.isExist(type_name);
 	}
-
+	
+	@Transactional
 	public void addChnlType(String type_name) {
 		channelResourceDao.addChnlType(type_name);
 	}
 	
+	@Transactional
 	public void addTownType(Map<String, String> params) {
 		channelResourceDao.addTownType(params);
 	}
-
+	
+	@Transactional
 	public void updateAgent(Map<String, String> params) {
 		channelResourceDao.updateAgent(params);
+		channelResourceDao.updateMarkStatus(params);
 	}
 	
+	@Transactional
 	public void updateNotAgent(Map<String, String> params) {
 		channelResourceDao.updateNotAgent(params);
+		channelResourceDao.updateMarkStatus(params);
 	}
 	
 	@Transactional
@@ -155,8 +161,8 @@ public class ChannelResourceService {
 		return result;
 	}
 
-	public List<Map<String, Object>> isTownExist(String town_name) {
-		return channelResourceDao.isTownExist(town_name);
+	public List<Map<String, Object>> isTownExist(Map<String, String> params) {
+		return channelResourceDao.isTownExist(params);
 	}
 
 	public List<Map<String, Object>> beforeDelChnlDetail(String id) {

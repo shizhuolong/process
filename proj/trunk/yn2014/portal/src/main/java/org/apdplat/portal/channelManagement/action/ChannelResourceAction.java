@@ -235,9 +235,13 @@ public class ChannelResourceAction extends BaseAction {
 	
 	public void isTownExist() {
 		Map m = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<String, String>();
 		String town_name = request.getParameter("town_name");
+		String city_id = request.getParameter("city_id");
+		params.put("town_name", town_name);
+		params.put("city_id", city_id);
 		List<Map<String, Object>> list = channelResourceService
-				.isTownExist(town_name);
+				.isTownExist(params);
 		if (list != null && !list.isEmpty()) {
 			m.put("msg", "乡镇名称已存在,编辑失败！");
 		}
@@ -369,7 +373,7 @@ public class ChannelResourceAction extends BaseAction {
 			String id = request.getParameter("id");
 			List<Map<String, Object>> list=channelResourceService.beforeDelChnlDetail(id);
 			if(list!=null&&list.size()>0){
-				this.reponseJson("该代理点已被一些渠道打标，无法删除！");
+				this.reponseJson("该代理点已被渠道打标，无法删除！");
 			}
 			this.reponseJson("ok");
 		} catch (Exception e) {
@@ -394,7 +398,7 @@ public class ChannelResourceAction extends BaseAction {
 			String id = request.getParameter("id");
 			List<Map<String, Object>> list=channelResourceService.beforeDelTownDetail(id);
 			if(list!=null&&list.size()>0){
-				this.reponseJson("该乡镇已被一些渠道打标，无法删除！");
+				this.reponseJson("该乡镇已被渠道打标，无法删除！");
 			}
 			this.reponseJson("ok");
 		} catch (Exception e) {
