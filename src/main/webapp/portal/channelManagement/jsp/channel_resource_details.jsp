@@ -43,7 +43,6 @@
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
 	<input type="hidden" id="group_id_4" name="group_id_4" value="<%=request.getParameter("group_id_4")%>"/>
-	<input type="hidden" id="chnl_id" name="chnl_id" value="<%=request.getParameter("chnl_id")%>"/>
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>"/>
 	<input type="hidden" id="code" value="<%=org.getCode()%>"/>
 	<div id="smartForm">
@@ -76,6 +75,16 @@
                                 <td id="chn_cde_3_name"></td>
                                 <th>渠道属性4:</th>
                                 <td id="chn_cde_4_name"></td>
+                            </tr>
+                             <tr>
+                                <th>代理点类型:</th>
+                                <td id="chnl_type"></td>
+                                <th>区县归属:</th>
+                                <td id="city_name"></td>
+                            </tr>
+                            <tr colspan="2">
+                                <th>乡镇归属:</th>
+                                <td id="town_name"></td>
                             </tr>
                         </table>
                         <div class="title" style="border-bottom: 2px solid #e7d4b3;"><i></i>渠道联系方式</div>
