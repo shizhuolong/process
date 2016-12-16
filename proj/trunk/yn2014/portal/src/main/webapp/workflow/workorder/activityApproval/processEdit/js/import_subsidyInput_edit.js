@@ -2,9 +2,6 @@ var isNeedApprover = true;
 var pageSize = 10;
 $(function(){
 	search(0);
-	$("#searchBtn").click(function(){
-		search(0);
-	});
 	$("#downExcelTemp").click(function(){
 		downExcelTemp();
 	});
@@ -16,18 +13,16 @@ $(function(){
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
-	var channel_name=$.trim($("#channel_name").val());
 	var businessKey = $("#businessKey").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		cache:false,
-		async:false,
-		url:$("#ctx").val()+"/unsupported/unsupported!listByWorkNo.action",
+		async: false,
+		url:$("#ctx").val()+"/subsidyInput/subsidy-input!listByWorkNo.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           "channel_name":channel_name,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -42,36 +37,32 @@ function search(pageNumber) {
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
 				content+="<tr>"
-					+"<td>"+isNull(n['BILLINGCYCLID'])+"</td>"
-	                +"<td>"+isNull(n['CHANNEL_NAME'])+"</td>"
-	                +"<td>"+isNull(n['AGENTID'])+"</td>"
-	                /*+"<td>"+isNull(n['DEPT_PTYPE'])+"</td>"*/
-	                +"<td>"+isNull(n['COMM_TYPE'])+"</td>"
-	                +"<td>"+isNull(n['SUBJECTID'])+"</td>"
-	                +"<td>"+isNull(n['SVCTP'])+"</td>"
-	                +"<td>"+isNull(n['FEE'])+"</td>"
-	                +"<td>"+isNull(n['TOTALFEE'])+"</td>"
-	                +"<td>"+isNull(n['NETFEE'])+"</td>"
-	                +"<td>"+isNull(n['REMARK'])+"</td>"
-	                +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' fee='"+isNull(n['FEE'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
-	                +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' onclick='del($(this));' style='color:#BA0C0C;'>删除</a></td>"
-	                +"</tr>";
+				+"<td>"+isNull(n['DEVELOP_CHNL_CODE'])+"</td>"
+                +"<td>"+isNull(n['DEVELOP_CHNL_NAME'])+"</td>"
+                +"<td>"+isNull(n['PAY_CHNL_CODE'])+"</td>"
+                +"<td>"+isNull(n['PAY_CHNL_NAME'])+"</td>"
+                +"<td>"+isNull(n['BILLINGCYCLID'])+"</td>"
+                +"<td>"+isNull(n['CUST_TYPE'])+"</td>"
+                +"<td>"+isNull(n['SUBSIDY_TYPE'])+"</td>"
+                +"<td>"+isNull(n['SUBSIDY_WAY'])+"</td>"
+                +"<td>"+isNull(n['SUBSIDY_FEE'])+"</td>"
+                +"<td><a href='#' seque_no='"+isNull(n['SEQUE_NO'])+"' subsidy_type='"+isNull(n['SUBSIDY_TYPE'])+"' subsidy_way='"+isNull(n['SUBSIDY_WAY'])+"' subsidy_fee='"+isNull(n['SUBSIDY_FEE'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
+                +"<td><a href='#' seque_no='"+isNull(n['SEQUE_NO'])+"' onclick='del($(this));' style='color:#BA0C0C;'>删除</a></td>"
+                +"</tr>";
 			});
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 				$("#submitTask").attr("disabled",false);
 			}else {
 				$("#submitTask").attr("disabled",true);
-				$("#dataBody").empty().html("<tr><td colspan='13'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='11'>暂无数据</td></tr>");
 			}
-			initTotalFee();
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
 		   alert("加载数据失败！");
 	    }
 	});
 }
-
 
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
@@ -93,39 +84,21 @@ function isNull(obj){
 	return obj;
 }
 
-function initTotalFee(){
-	var workNo = $("#businessKey").val();
-	var channel_name=$.trim($("#channel_name").val());
-	$.ajax({
-		type:"POST",
-		dataType:'json',
-		cache:false,
-		async:false,
-		url:$("#ctx").val()+"/unsupported/unsupported!queryTotalFeeByInitId.action",
-		data:{
-           "workNo":workNo,
-           "channel_name":channel_name
-	   	}, 
-	   	success:function(data){
-	   		$("#totalFee").text(data+"元");
-	   	},
-	   	error:function(XMLHttpRequest, textStatus, errorThrown){
-		   alert("加载数据失败！");
-	    }
-	});
-}
-
 function edit(obj){
-	var bill_id=$(obj).attr("bill_id");
-    art.dialog.data('bill_id',bill_id);
-	var fee=$(obj).attr("fee")
-	$("#fee").val(fee);
+	var seque_no=$(obj).attr("seque_no");
+    art.dialog.data('seque_no',seque_no);
+	var subsidy_type=$(obj).attr("subsidy_type");
+	var subsidy_way=$(obj).attr("subsidy_way");
+	var subsidy_fee=$(obj).attr("subsidy_fee");
+	$("#subsidy_type").val(subsidy_type);
+	$("#subsidy_way").val(subsidy_way);
+	$("#subsidy_fee").val(subsidy_fee);
 	var formdiv=$('#updateFormDiv');
 	formdiv.show();
 	formdiv.dialog({
 		title : '修改',
 		width : 400,
-		height : 100,
+		height : 200,
 		closed : false,
 		cache : false,
 		modal : false,
@@ -134,16 +107,16 @@ function edit(obj){
 }
 
 function del(obj){
-	var bill_id=obj.attr("bill_id");
+	var seque_no=obj.attr("seque_no");
 	if(confirm('确认刪除吗?')){
 	  $.ajax({
 			type:"POST",
 			dataType:'json',
 			cache:false,
 			async: false,
-			url:$("#ctx").val()+"/unsupported/unsupported!delEdit.action",
+			url:$("#ctx").val()+"/subsidyInput/subsidy-input!delEdit.action",
 			data:{
-	           "bill_id":bill_id
+	           "seque_no":seque_no
 		   	}, 
 		   	success:function(data){
 		   		search(0);
@@ -156,9 +129,12 @@ function del(obj){
 }
 
 function save(){
-	var bill_id=art.dialog.data('bill_id');
-	$("#bill_id").val(bill_id);
-	var url = $("#ctx").val()+'/unsupported/unsupported!update.action';
+	var seque_no=art.dialog.data('seque_no');
+	var subsidy_type=$("#subsidy_type").val();
+	var subsidy_way=$("#subsidy_way").val();
+	var subsidy_fee=$("#subsidy_fee").val();
+	$("#seque_no").val(seque_no);
+	var url = $("#ctx").val()+'/subsidyInput/subsidy-input!update.action';
 	var updateForm=$('#updateForm');
 	updateForm.form('submit',{
 		url:url,
@@ -167,6 +143,10 @@ function save(){
 		type: "POST", 
 		onSubmit:function(){
 			if($(this).form('validate')==false){
+				return false;
+			}
+			if(subsidy_type==""||subsidy_way==""){
+				alert("下拉选项能不为空,请选择！");
 				return false;
 			}
 		},
@@ -182,14 +162,14 @@ function save(){
 //导入excel
 function importExcel() {
 	var businessKey = $("#businessKey").val();
-	var url = $("#ctx").val()+"/portal/unsupported/jsp/importExcel.jsp";
 	art.dialog.data('businessKey',businessKey);
+	var url = $("#ctx").val()+"/portal/subsidyInput/jsp/importExcel.jsp";
 	art.dialog.open(url,{
 		id:'importExcelDailog',
 		width:'530px',
 		height:'300px',
 		padding:'0 0',
-		title:'未支撑补贴审批导入',
+		title:'渠道补贴',
 		lock:true,
 		resize:false
 	});
@@ -197,5 +177,5 @@ function importExcel() {
 
 //下载模板
 function downExcelTemp() {
-	location.href = $("#ctx").val()+"/unsupported/unsupported!downloadTemplate.action";
+	location.href = $("#ctx").val()+"/subsidyInput/subsidy-input!downloadTemplate.action";
 }
