@@ -89,8 +89,12 @@ public class UnsupportedAction extends BaseAction{
 	
 	public void queryTotalFeeByInitId() {
 		String workNo=request.getParameter("workNo");
+		String channel_name=request.getParameter("channel_name");
 		if(workNo != null && !"".equals(workNo.trim())) {
 			resultMap.put("workNo", workNo);
+		}
+		if(channel_name != null && !"".equals(channel_name.trim())) {
+			resultMap.put("channel_name", channel_name);
 		}
 		double result = unsupportedService.queryTotalFeeByInitId(resultMap);
 		this.reponseJson(result);
@@ -152,7 +156,7 @@ public class UnsupportedAction extends BaseAction{
 						int j= 1;
 						boolean result=checkByRex(patterns[i-1],str[i-1]);
 						if(!result){
-							resultMsg+="【第"+i+"列数据错误,";
+							resultMsg+="【第"+i+"行数据错误,";
 						}
 						pre.setString(j++, str[0]);
 						pre.setString(j++, str[1]);
@@ -227,7 +231,9 @@ public class UnsupportedAction extends BaseAction{
 	}
 
 	public boolean checkByRex(String rex,String input){
-		boolean flag=true;
+		if(input.equals("")){
+			return false;
+		}
 		/*if(!"".equals(rex) && null !=rex){
 			String tmp = "";
 			String[]rexs=rex.split("@");
@@ -254,7 +260,7 @@ public class UnsupportedAction extends BaseAction{
 				
 			}
 		}*/
-		return flag;
+		return true;
 	}
 	
 	public void update() {
@@ -278,12 +284,21 @@ public class UnsupportedAction extends BaseAction{
 			Map<String, String> params = new HashMap<String,String>();
 			params.put("bill_id", bill_id);
 			unsupportedService.delete(params);
-			//outJsonPlainString(response,"{\"msg\":\"删除成功！\"}");
 		} catch (Exception e) {
-			logger.error("修改未支撑信息失败",e);
-			//outJsonPlainString(response,"{\"msg\":\"修改未支撑信息失败\"}");
+			logger.error("删除未支撑信息失败！",e);
 		}
 		return "index";
+	}
+	
+	public void delEdit(){
+		try {
+			String bill_id = request.getParameter("bill_id");
+			Map<String, String> params = new HashMap<String,String>();
+			params.put("bill_id", bill_id);
+			unsupportedService.delete(params);
+		} catch (Exception e) {
+			logger.error("删除未支撑信息失败！",e);
+		}
 	}
 	
 	/**
