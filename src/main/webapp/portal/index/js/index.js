@@ -713,7 +713,7 @@ function searchTownNotMark(element) {
         	lis[i].getElementsByTagName("a")[0].className="select";
         }
     };
-    parent.openWindow('乡镇未打标','computer', $("#ctx").val()+'/portal/channelManagement/jsp/channel_resource_list.jsp');
+    parent.openWindow('乡镇未打标','computer', $("#ctx").val()+'/portal/channelManagement/jsp/channel_resource_list_byIndex.jsp');
 	parent.switchFirstMenu('module-86871','渠道资源');
 }
 
