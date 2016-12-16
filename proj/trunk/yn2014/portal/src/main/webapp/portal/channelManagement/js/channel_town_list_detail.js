@@ -149,7 +149,8 @@ function isExist(town_name){
         url: $("#ctx").val()+"/channelManagement/channelResource_isTownExist.action", 
         dataType: "json",
 		data:{
-			town_name:town_name
+			town_name:town_name,
+			city_id:$("#city_id").val()
 		},
 		 success:function(data){
 			 if(data.msg){
