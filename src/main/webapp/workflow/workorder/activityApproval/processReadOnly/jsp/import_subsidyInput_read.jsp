@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>未支撑补贴审批(只读)</title>
+<title>渠道补贴(只读)</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/platform/theme/style/easyui.css">
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_unsupported_read.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_subsidyInput_read.js"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,45 +37,29 @@
 							<div class="main-block">
 						<form id="taskReadForm" method="post">
 								<div class="title">
-									<i></i>未支撑补贴审批导入
+									<i></i>渠道补贴导入
 								</div>
-								<table id="sm-payment-order-apply" style="width: 100%;">
-									<tr>
-										<th style="width: 80px;">渠道名称：</th>
-										<td style="width: 80px;">
-											<input type="text" id="channel_name" name="channel_name"/>
-										</td>
-										<th style="width: 70px;">佣金总额：</th>
-									    <td id="totalFee" style="color:red;width: 70px;">
-										
-										</td>
-										<td>
-											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
-										</td>
-									</tr>
-								</table>
+								
 								<div class="default-dt dt-autoH">
 									<div class="no-js-table">
 										<table class="overflow-y">
 											<thead>
 													<tr>
-														<th>结算账期</th>
-														<th>渠道名称</th>
-														<th>渠道编码</th>
-														<!-- <th>渠道类型</th> -->
-														<th>佣金大类</th>
-														<th>佣金科目</th>
-														<th>业务类型</th>
-														<th>佣金金额</th>
-														<th>佣金总额</th>
-														<th>净额</th>
-														<th>备注</th>
+														<th>发展渠道编码</th>
+														<th>发展渠道名称</th>
+														<th>结算渠道编码</th>
+														<th>结算渠道名称</th>
+														<th>帐期</th>
+														<th>客户类型</th>
+														<th>补贴用途</th>
+														<th>补贴方式</th>
+														<th>补贴金额</th>  
 													</tr>
 											</thead>
 											<tbody id="dataBody">
 											</tbody>
 											<tr>
-												<td colspan="14">
+												<td colspan="9">
 													</div>
 													<div class="page_count">
 														<div class="page_count_left">
