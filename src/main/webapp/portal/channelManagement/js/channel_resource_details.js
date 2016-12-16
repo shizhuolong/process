@@ -1,26 +1,7 @@
 $(function(){
 	var group_id_4 = $("#group_id_4").val();
-	var chnl_id = $("#chnl_id").val();
 	var orgLevel=$("#orgLevel").val();
-	if(orgLevel>1){
-		$("#addBtn").remove();
-	}
-	$("#addBtn").click(function(){
-		var formdiv=$('#addFormDiv');
-		formdiv.show();
-		formdiv.dialog({
-			title : '添加',
-			width : 400,
-			height : 100,
-			closed : false,
-			cache : false,
-			modal : false,
-			maximizable : true
-		});
-	});
-	$("#saveBtn").click(function(){
-		add();
-	});
+	
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -54,7 +35,9 @@ $(function(){
 	   		$("#name").html(data[0].NAME);
 	   		$("#account").html(data[0].ACCOUNT);
 	   		$("#phone").html(data[0].PHONE);
-	   		$("#chnl_type").val(chnl_id);
+	   		$("#chnl_type").html(data[0].CHNL_TYPE);
+	   		$("#city_name").html(data[0].CITY_NAME);
+	   		$("#town_name").html(data[0].TOWN_NAME);
 	   		if(data[0].IMGFORNT != null && data[0].IMGFORNT != "") {
 	   			$("#imgfornt").attr("src","http://130.86.10.199:10006/portal/"+data[0].IMGFORNT);
 	   		}
@@ -66,9 +49,7 @@ $(function(){
 	   		}
 	   	}
 	});
-	$("#updateBtn").click(function(){
-		update();
-	});
+	
 	$("#imgfornt").click(function(){
 		var url = $(this).attr("src");
 		var t = $(this).attr("alt");

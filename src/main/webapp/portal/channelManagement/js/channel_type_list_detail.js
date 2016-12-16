@@ -114,7 +114,7 @@ function save(){
 function add(){
 	var url = $("#ctx").val()+'/channelManagement/channelResource_addChnlType.action';
 	var addForm=$('#addForm');
-	var type_name=$.trim($("#type_name").val());
+	var type_name=$.trim($("#add_type_name").val());
 	addForm.form('submit',{
 		url:url,
 		dataType:"json",
