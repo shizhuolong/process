@@ -77,6 +77,7 @@ function initPagination(totalCount) {
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
+	var channel_name=$.trim($("#channel_name").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -84,7 +85,8 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/unsupported/unsupported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo
+           "workNo":workNo,
+           "channel_name":channel_name
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
