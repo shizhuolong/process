@@ -55,8 +55,7 @@
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/performanceAppraisal/payment/js/sale_target_config.js"></script>
 <script type="text/javascript">
-var privileges='<%=user.getAuthoritiesStr()%>
-	';
+var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role) {
 		if (privileges.toString().indexOf("ROLE_SUPERMANAGER") != -1) {
 			return true;
