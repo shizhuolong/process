@@ -36,9 +36,9 @@
 	
 	<insert id="saveTarget" parameterType="java.util.Map">
 		INSERT INTO PODS.TB_ODS_JCDY_SALLCRE
-		(SOURCECODE, ITEMCODE, ITEMDESC, BUSITYPE, BUSIDESC, CRE, MONEY, STATE)
+		(SOURCECODE, ITEMCODE, ITEMDESC, BUSITYPE, BUSIDESC, CRE, MONEY, STATE,ACTIVE_TIME)
 		VALUES (PORTAL.SALE_TARGET_CONFIG_SEQ.NEXTVAL, #{itemcode}, #{itemdesc},
-		 #{busitype}, #{busidesc}, #{cre}, #{money}, '1')
+		 #{busitype}, #{busidesc}, #{cre}, #{money}, '1',(SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL))
 	</insert>
 	
 	<select id="loadTarget" parameterType="java.util.Map" resultType="java.util.Map">
