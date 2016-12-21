@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>系統支撑2G补贴审批</title>
+<title>系統支撑4G补贴审批</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/platform/theme/style/easyui.css">
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
@@ -27,7 +27,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/supported/js/import_gsmSupported_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/supported/js/import_fourSupported_list.js"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -43,7 +43,7 @@
 							<input type="hidden" id="actNodeName" name="actNodeName">
 							<div class="main-block">
 								<div class="title">
-									<i></i>未支撑补贴审批
+									<i></i>系统支撑4G补贴审批
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
