@@ -142,7 +142,8 @@
 	<select id="queryHdChanl" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
 			T.HQ_CHAN_CODE AS CODE, T.GROUP_ID_4_NAME AS NAME, 1 AS CHLTYPE
-		FROM PCDE.TAB_CDE_CHANL_HQ_CODE T WHERE T.STATUS = '10'
+		FROM PCDE.TAB_CDE_CHANL_HQ_CODE T WHERE T.STATUS = '10' AND T.CHN_CDE_1_NAME='社会' AND T.CHN_CDE_2_NAME='实体'
+		
 		<if test="pLevel==2">
 			AND T.GROUP_ID_1 = #{pCode}
 		</if>
@@ -161,7 +162,7 @@
 		UNION
 		SELECT 
 			T.CHANLID AS CODE, T.CHANLNAME AS NAME, 2 AS CHLTYPE
-		FROM PORTAL.TAB_PORTAL_NOTREATY_CHANL T WHERE T.STATE = '1'
+		FROM PORTAL.TAB_PORTAL_NOTREATY_CHANL T WHERE T.STATE = '1' 
 		<if test="pLevel==2">
 			AND T.GROUP_ID_1 = #{pCode}
 		</if>
