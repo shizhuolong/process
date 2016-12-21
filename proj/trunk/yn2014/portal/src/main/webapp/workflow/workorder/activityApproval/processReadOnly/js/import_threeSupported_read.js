@@ -15,7 +15,7 @@ function search(pageNumber) {
 		type:"POST",
 		dataType:'json',
 		cache:false,
-		url:$("#ctx").val()+"/gsmSupported/gsmSupported!listByWorkNo.action",
+		url:$("#ctx").val()+"/threeSupported/three-supported!listByWorkNo.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
@@ -83,7 +83,7 @@ function initTotalFee(){
 		dataType:'json',
 		cache:false,
 		async:false,
-		url:$("#ctx").val()+"/gsmSupported/gsmSupported!queryTotalFeeByInitId.action",
+		url:$("#ctx").val()+"/threeSupported/three-supported!queryTotalFeeByInitId.action",
 		data:{
            "workNo":workNo,
            "channel_name":channel_name
