@@ -7,7 +7,7 @@ $(function() {
 */
 function importExcel(){
 	var pay_address=$("#pay_address").val();
-	var url = $("#ctx").val()+"/twoSupported/two-supported!importExcel.action?businessKey="+businessKey+"&pay_address="+encodeURI(encodeURI(pay_address));
+	var url = $("#ctx").val()+"/fourSupported/four-supported!importExcel.action?businessKey="+businessKey+"&pay_address="+encodeURI(encodeURI(pay_address));
 	$('#importForm').form('submit', {   
 	    url:url,   
 	    onSubmit: function(){   
