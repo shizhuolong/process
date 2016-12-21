@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>系统支撑2G补贴审批(只读)</title>
+<title>系统支撑3G补贴审批(只读)</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/platform/theme/style/easyui.css">
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_gsmSupported_read.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_threeSupported_read.js"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,7 +37,7 @@
 							<div class="main-block">
 						<form id="taskReadForm" method="post">
 								<div class="title">
-									<i></i>未支撑补贴审批导入
+									<i></i>未支撑补贴3G审批导入
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
