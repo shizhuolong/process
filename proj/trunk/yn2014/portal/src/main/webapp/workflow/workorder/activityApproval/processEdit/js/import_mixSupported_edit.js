@@ -23,7 +23,7 @@ function search(pageNumber) {
 		dataType:'json',
 		cache:false,
 		async:false,
-		url:$("#ctx").val()+"/twoSupported/two-supported!listByWorkNo.action",
+		url:$("#ctx").val()+"/mixSupported/mix-supported!listByWorkNo.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
@@ -101,7 +101,7 @@ function initTotalFee(){
 		dataType:'json',
 		cache:false,
 		async:false,
-		url:$("#ctx").val()+"/twoSupported/two-supported!queryTotalFeeByInitId.action",
+		url:$("#ctx").val()+"/mixSupported/mix-supported!queryTotalFeeByInitId.action",
 		data:{
            "workNo":workNo,
            "channel_name":channel_name
@@ -141,7 +141,7 @@ function del(obj){
 			dataType:'json',
 			cache:false,
 			async: false,
-			url:$("#ctx").val()+"/twoSupported/two-supported!delEdit.action",
+			url:$("#ctx").val()+"/mixSupported/mix-supported!delEdit.action",
 			data:{
 	           "bill_id":bill_id
 		   	}, 
@@ -158,7 +158,7 @@ function del(obj){
 function save(){
 	var bill_id=art.dialog.data('bill_id');
 	$("#bill_id").val(bill_id);
-	var url = $("#ctx").val()+'/twoSupported/two-supported!update.action';
+	var url = $("#ctx").val()+'/mixSupported/mix-supported!update.action';
 	var updateForm=$('#updateForm');
 	updateForm.form('submit',{
 		url:url,
@@ -182,14 +182,14 @@ function save(){
 //导入excel
 function importExcel() {
 	var businessKey = $("#businessKey").val();
-	var url = $("#ctx").val()+"/portal/supported/jsp/importExcel.jsp";
+	var url = $("#ctx").val()+"/portal/supported/jsp/importExcelMix.jsp";
 	art.dialog.data('businessKey',businessKey);
 	art.dialog.open(url,{
 		id:'importExcelDailog',
 		width:'530px',
 		height:'300px',
 		padding:'0 0',
-		title:'未支撑补贴2G审批导入',
+		title:'未支撑补贴融合审批导入',
 		lock:true,
 		resize:false
 	});
@@ -197,5 +197,5 @@ function importExcel() {
 
 //下载模板
 function downExcelTemp() {
-	location.href = $("#ctx").val()+"/twoSupported/two-supported!downloadTemplate.action";
+	location.href = $("#ctx").val()+"/mixSupported/mix-supported!downloadTemplate.action";
 }
