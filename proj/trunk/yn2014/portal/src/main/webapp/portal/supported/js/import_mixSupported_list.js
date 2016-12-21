@@ -26,7 +26,7 @@ function search(pageNumber) {
 		dataType:'json',
 		cache:false,
 		async: false,
-		url:$("#ctx").val()+"/fourSupported/four-supported!list.action",
+		url:$("#ctx").val()+"/mixSupported/mix-supported!list.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize
@@ -79,7 +79,7 @@ function initTotalFee(){
 		dataType:'json',
 		async:false,//true是异步，false是同步
 		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
-		url:$("#ctx").val()+"/fourSupported/four-supported!queryTotalFee.action",
+		url:$("#ctx").val()+"/mixSupported/mix-supported!queryTotalFee.action",
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
 	    },
@@ -110,7 +110,7 @@ function edit(obj){
 function del(obj){
 	var bill_id=obj.attr("bill_id");
 	if(confirm('确认刪除吗?')){
-	  window.location.href=$("#ctx").val()+"/fourSupported/four-supported!del.action?bill_id="+bill_id;
+	  window.location.href=$("#ctx").val()+"/mixSupported/mix-supported!del.action?bill_id="+bill_id;
 	  //search(0);
 	}
 }
@@ -118,7 +118,7 @@ function del(obj){
 function save(){
 	var bill_id=art.dialog.data('bill_id');
 	$("#bill_id").val(bill_id);
-	var url = $("#ctx").val()+'/fourSupported/four-supported!update.action';
+	var url = $("#ctx").val()+'/mixSupported/mix-supported!update.action';
 	var updateForm=$('#updateForm');
 	updateForm.form('submit',{
 		url:url,
@@ -141,13 +141,13 @@ function save(){
 }
 //导入excel
 function importExcel() {
-	var url = $("#ctx").val()+"/portal/supported/jsp/importExcelFour.jsp";
+	var url = $("#ctx").val()+"/portal/supported/jsp/importExcelMix.jsp";
 	art.dialog.open(url,{
 		id:'importExcelDailog',
 		width:'530px',
 		height:'300px',
 		padding:'0 0',
-		title:'未支撑补贴4G审批导入',
+		title:'未支撑补贴融合审批导入',
 		lock:true,
 		resize:false
 	});
@@ -155,7 +155,7 @@ function importExcel() {
 
 //下载模板
 function downExcelTemp() {
-	location.href = $("#ctx").val()+"/fourSupported/four-supported!downloadTemplate.action";
+	location.href = $("#ctx").val()+"/mixSupported/mix-supported!downloadTemplate.action";
 }
 
 function initPagination(totalCount) {
@@ -215,7 +215,7 @@ function submitTask(){
 			var actNodeName = $("#nextDealer option:selected").text();
 			$("#actNodeName").val(actNodeName);
 			$("#taskForm").form("submit",{
-				url:$("#ctx").val()+'/fourSupported/four-supported!doSubmitTask.action',
+				url:$("#ctx").val()+'/mixSupported/mix-supported!doSubmitTask.action',
 				onSubmit:function(){
 					jQuery.blockUI({
 						message: "<div style='text-align:center;'><h2>正在发送中，请稍等...</h2></div>",
