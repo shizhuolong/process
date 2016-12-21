@@ -23,7 +23,7 @@ function search(pageNumber) {
 		dataType:'json',
 		cache:false,
 		async:false,
-		url:$("#ctx").val()+"/gsmSupported/gsmSupported!listByWorkNo.action",
+		url:$("#ctx").val()+"/threeSupported/three-supported!listByWorkNo.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
@@ -101,7 +101,7 @@ function initTotalFee(){
 		dataType:'json',
 		cache:false,
 		async:false,
-		url:$("#ctx").val()+"/gsmSupported/gsmSupported!queryTotalFeeByInitId.action",
+		url:$("#ctx").val()+"/threeSupported/three-supported!queryTotalFeeByInitId.action",
 		data:{
            "workNo":workNo,
            "channel_name":channel_name
@@ -141,7 +141,7 @@ function del(obj){
 			dataType:'json',
 			cache:false,
 			async: false,
-			url:$("#ctx").val()+"/gsmSupported/gsmSupported!delEdit.action",
+			url:$("#ctx").val()+"/threeSupported/three-supported!delEdit.action",
 			data:{
 	           "bill_id":bill_id
 		   	}, 
@@ -158,7 +158,7 @@ function del(obj){
 function save(){
 	var bill_id=art.dialog.data('bill_id');
 	$("#bill_id").val(bill_id);
-	var url = $("#ctx").val()+'/gsmSupported/gsmSupported!update.action';
+	var url = $("#ctx").val()+'/threeSupported/three-supported!update.action';
 	var updateForm=$('#updateForm');
 	updateForm.form('submit',{
 		url:url,
@@ -182,14 +182,14 @@ function save(){
 //导入excel
 function importExcel() {
 	var businessKey = $("#businessKey").val();
-	var url = $("#ctx").val()+"/portal/gsmSupported/jsp/importExcel.jsp";
+	var url = $("#ctx").val()+"/portal/supported/jsp/importExcelThree.jsp";
 	art.dialog.data('businessKey',businessKey);
 	art.dialog.open(url,{
 		id:'importExcelDailog',
 		width:'530px',
 		height:'300px',
 		padding:'0 0',
-		title:'未支撑补贴审批导入',
+		title:'未支撑补贴3G审批导入',
 		lock:true,
 		resize:false
 	});
@@ -197,5 +197,5 @@ function importExcel() {
 
 //下载模板
 function downExcelTemp() {
-	location.href = $("#ctx").val()+"/gsmSupported/gsmSupported!downloadTemplate.action";
+	location.href = $("#ctx").val()+"/threeSupported/three-supported!downloadTemplate.action";
 }
