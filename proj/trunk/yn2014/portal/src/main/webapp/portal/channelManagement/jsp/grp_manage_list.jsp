@@ -100,7 +100,6 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 					</tr>
 	            </table>
 	        </form>
-			<div class="default-dt dt-autoH">
 				<div class="sticky-wrap">
 					<table id="dataTale" class="default-table sticky-enabled">
 						<thead>
@@ -135,6 +134,5 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>
