@@ -105,7 +105,8 @@ var report=new LchReport({
 			var groupBy='';
 			var code='';
 			var orgLevel='';
-			var qdate = $("#time").val();
+			var startDate = $("#startDate").val();
+			var endDate = $("#endDate").val();
 			var regionCode=$("#regionCode").val();
 			var unitCode=$("#unitCode").val();
 			
@@ -140,7 +141,7 @@ var report=new LchReport({
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
 					preField=' NVL(t.group_id_1,\'86000\') ROW_ID,NVL(t.group_id_1_name,\'全省合计\') ROW_NAME';
-					groupBy=' GROUP BY GROUPING SETS  ( T.DEAL_DATE,(t.group_id_1, t.group_id_1_name)) ';
+					groupBy=' GROUP BY GROUPING SETS  ( T.GROUP_ID_0,(t.group_id_1, t.group_id_1_name)) ';
 					where=' where t.GROUP_ID_0=\''+code+"\' ";
 					orgLevel=2;
 				}else if(orgLevel==2){//市
@@ -159,12 +160,9 @@ var report=new LchReport({
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+','+getSumSql(field)+' from PMRT.TAB_MRT_INCOME_DEV_CH_MON t ';
-			
-			
-			if(where!=''&&qdate!=''){
-				where+=' and t.DEAL_DATE='+qdate+' ';
-			}
+			var sql='select '+preField+','+getSumSql(field)+' from PMRT.VIEW_MRT_INCOME_DEV_CH_MON t ';
+						
+			where+=' and t.DEAL_DATE BETWEEN \''+startDate+'\' AND \''+endDate+'\'';
 			if(where!=''&&regionCode!=''){
 				where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 			}
@@ -229,7 +227,8 @@ function getSql(field) {
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var qdate = $("#time").val();
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	
@@ -249,9 +248,7 @@ function downsAll() {
 	} else if (orgLevel >= 4) {//
 		where = " where t.GROUP_ID_4='" + code + "' ";
 	}
-	if(where!=''&&qdate!=''){
-		where+=' and  t.DEAL_DATE='+qdate+' ';
-	}
+	where+=' and t.DEAL_DATE BETWEEN \''+startDate+'\' AND \''+endDate+'\'';
 	if(where!=''&&regionCode!=''){
 		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
 	}
@@ -260,7 +257,7 @@ function downsAll() {
 	}
 
 	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from PMRT.TAB_MRT_INCOME_DEV_CH_MON t';
+			+ ' from PMRT.VIEW_MRT_INCOME_DEV_CH_MON t';
 	if (where != '') {
 		sql += where;
 	}
@@ -268,7 +265,7 @@ function downsAll() {
 		sql += orderBy;
 	}
 	
-	showtext = '移网发展收入月报-' + qdate;
+	showtext = '移网发展收入月报-' + startDate+'-'+endDate;
 	var title=[["营销架构","","","","","帐期",
 	            
 	            "总览","",
