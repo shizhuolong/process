@@ -42,10 +42,15 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="5%" style="text-align:right;">账期：</td>
+					<td width="7%" style="text-align:right;">开始账期：</td>
 					<td width="10%">
-						<input type="text"  class="Wdate default-text-input wper90" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=month %>" id="time">
+						<input type="text"  class="Wdate default-text-input wper90" readonly
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month %>" id="startDate">
+					</td>
+					<td width="7%" style="text-align:right;">结束账期：</td>
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper90" readonly
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month %>" id="endDate">
 					</td>
 					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="10%">
