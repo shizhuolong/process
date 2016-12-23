@@ -4,7 +4,6 @@ var field=["DEAL_DATE","GROUP_ID_1","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HR_
 var orderBy = '';
 var report = null;
 var downSql="";
-var time="";
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -52,12 +51,13 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	
-	time=$("#time").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	var userName=$.trim($("#userName").val());
 //条件
-	var sql = " FROM PODS.TB_ODS_KPI_ALL_DEATIL_MON PARTITION(P"+time+") where 1=1 ";
+	var sql = " FROM PODS.TB_ODS_KPI_ALL_DEATIL_MON where DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'";
 	if(regionCode!=''){
 		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
@@ -120,7 +120,9 @@ function search(pageNumber) {
   
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var showtext = 'KPI分月汇总月报-'+time;
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
+	var showtext = 'KPI分月汇总月报-'+startDate+"-"+endDate;
 	downloadExcel(downSql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
