@@ -47,10 +47,15 @@
 			<input type="hidden" name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="6%" style="padding-left: 10px;" align="right">账期：</td>
+					<td width="6%" style="padding-left: 10px;" align="right">开始账期：</td>
 					<td width="13%">
-						<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time %>" id="time">
+						<input type="text"  class="Wdate default-text-input wper80" readonly
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time %>" id="startDate">
+					</td>
+					<td width="6%" style="padding-left: 10px;" align="right">结束账期：</td>
+					<td width="13%">
+						<input type="text"  class="Wdate default-text-input wper80" readonly
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time %>" id="endDate">
 					</td>
 					<td width="6%" align="right">地市：</td>
 					<td width="13%">
