@@ -16,15 +16,15 @@ function search(){
 	startDate=$("#startDate").val();
 	endDate=$("#endDate").val();
 	if(startDate==endDate){
-		title=[["组织架构","经营模式","全业务（移动网+固网）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","",""],
-		       ["","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%"]
+		title=[["组织架构","经营模式","厅类型","全业务（移动网+固网）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","",""],
+		       ["","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%"]
 			];
-		field=["OPERATE_TYPE","ALL_SR","ALL_SR1","ALL_HBJZ","ALL_LJHB","YWGW_01","THIS_YW_SR","THIS_YW_SR1","YW_HBJZ","YW_LJHB","YW_01","THIS_NET_SR","THIS_NET_SR1","NET_HBJZ","NET_LJHB","NET_01","THIS_ZHWJ_SR","THIS_ZHWJ_SR1","ZHWJ_HBJZ","ZHWJ_LJHB","ZHWJ_01"];
+		field=["OPERATE_TYPE","CHNL_TYPE","ALL_SR","ALL_SR1","ALL_HBJZ","ALL_LJHB","YWGW_01","THIS_YW_SR","THIS_YW_SR1","YW_HBJZ","YW_LJHB","YW_01","THIS_NET_SR","THIS_NET_SR1","NET_HBJZ","NET_LJHB","NET_01","THIS_ZHWJ_SR","THIS_ZHWJ_SR1","ZHWJ_HBJZ","ZHWJ_LJHB","ZHWJ_01"];
 	    sumSql=getSumSql();
 	}else{
-		title=[["组织架构","经营模式","全业务（移动网+固网）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
-		       ["","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
-		field=["OPERATE_TYPE","ALL_SR","ALL_LJHB","THIS_YW_SR","YW_LJHB","THIS_NET_SR","NET_LJHB","THIS_ZHWJ_SR","ZHWJ_LJHB"];
+		title=[["组织架构","经营模式","厅类型","全业务（移动网+固网）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
+		       ["","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
+		field=["OPERATE_TYPE","CHNL_TYPE","ALL_SR","ALL_LJHB","THIS_YW_SR","YW_LJHB","THIS_NET_SR","NET_LJHB","THIS_ZHWJ_SR","ZHWJ_LJHB"];
 		sumSql=getSumSql1();
 	}
 	var report=new LchReport({
@@ -52,12 +52,12 @@ function search(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
-					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
-					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
+					preField=' GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,\'--\' CHNL_TYPE,';
+					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME ';
 				}else if(orgLevel==3){//点击市
-					preField=' T1.BUS_HALL_NAME ROW_NAME,OPERATE_TYPE AS OPERATE_TYPE,';
-					groupBy=' GROUP BY T1.BUS_HALL_NAME ,T1.OPERATE_TYPE';
-					where=' AND T1.GROUP_ID_1=\''+code+'\'';
+					preField=' BUS_HALL_NAME ROW_NAME,OPERATE_TYPE,CHNL_TYPE,';
+					groupBy=' GROUP BY BUS_HALL_NAME ,OPERATE_TYPE,CHNL_TYPE';
+					where=' AND GROUP_ID_1=\''+code+'\'';
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -67,32 +67,31 @@ function search(){
 				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'--\' AS OPERATE_TYPE,';
-					groupBy=' GROUP BY T1.GROUP_ID_0';
+					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'--\' AS OPERATE_TYPE,\'--\' CHNL_TYPE,';
+					groupBy=' GROUP BY GROUP_ID_0';
 					orgLevel=2;
 				}else if(orgLevel==2){//市
-					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
-					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
-					where=' AND T1.GROUP_ID_1=\''+code+'\'';
+					preField=' GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,\'--\' CHNL_TYPE,';
+					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME ';
+					where=' AND GROUP_ID_1=\''+code+'\'';
 					orgLevel=3;
 				}else if(orgLevel==3){
-					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
-					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
-					where=' AND T1.GROUP_ID_1=\''+code+'\'';
+					preField=' GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,\'--\' CHNL_TYPE,';
+					groupBy=' GROUP BY GROUP_ID_1,GROUP_ID_1_NAME ';
+					where=' AND GROUP_ID_1=\''+code+'\'';
 					orgLevel=3;
 				}else{
-
 					return {data:[],extra:{}};
 				}
 			}
 			if(regionCode!=""){
-				where+=" AND T1.GROUP_ID_1='"+regionCode+"'";
+				where+=" AND GROUP_ID_1='"+regionCode+"'";
 			}
 			if(operateType!=""){
-				where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
+				where+=" AND OPERATE_TYPE='"+operateType+"'";
 			}
 			if(chnlCode!=""){
-				where += " AND T1.HQ_CHAN_CODE ='"+chnlCode+"' ";
+				where += " AND HQ_CHAN_CODE ='"+chnlCode+"' ";
 			}
 			var sql='SELECT'+preField+sumSql+where+groupBy;
 			var d=query(sql);
@@ -143,8 +142,8 @@ function getSumSql() {
     	"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ZHWJ_01,0))<>0                                                           "+	    //
     	"                                 THEN SUM(NVL(THIS_ZHWJ_SR1,0))*100/SUM(NVL(ZHWJ_01,0))                                "+	    //
     	"                                 ELSE 0 END || '%' ,2)       ZHWJ_01                     								"+		//--定比1月                                                                   
-    	"  FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY T1                                                                              "+	
-    	" WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
+    	"  FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY                                                                               "+	
+    	" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
 	return s;
 }
 
@@ -166,15 +165,15 @@ function getSumSql1() {
     	"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(LAST_ZHWJ_SR,0))<>0	                                                    "+	
     	"                                 THEN (SUM(NVL(THIS_ZHWJ_SR,0))-SUM(NVL(LAST_ZHWJ_SR,0)))*100/SUM(NVL(LAST_ZHWJ_SR,0))	"+	 
     	"                                 ELSE 0 END|| '%',2)     ZHWJ_LJHB                                                     "+		//--累计环比 
-    	"  FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY T1	                                                                            "+	
-    	" WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
+    	"  FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY 	                                                                            "+	
+    	" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
 	return s;
 }
 function downsAll() {
-	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE,';
+	var preField=' GROUP_ID_1_NAME,BUS_HALL_NAME,CHNL_TYPE,HQ_CHAN_CODE,OPERATE_TYPE,';
 	var where='';
-	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.HQ_CHAN_CODE";
-	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE";
+	var orderBy=" ORDER BY GROUP_ID_1,HQ_CHAN_CODE";
+	var groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,BUS_HALL_NAME,CHNL_TYPE,HQ_CHAN_CODE,OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -184,27 +183,27 @@ function downsAll() {
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
-		where = " AND T1.GROUP_ID_1='" + region + "' ";
+		where = " AND GROUP_ID_1='" + region + "' ";
 	} 
 	
 	if(regionCode!=""){
-		where+=" AND T1.GROUP_ID_1='"+regionCode+"'";
+		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(operateType!=""){
-		where+=" AND T1.OPERATE_TYPE='"+operateType+"'";
+		where+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
 	if(chnlCode!=""){
-		where += " AND T1.HQ_CHAN_CODE ='"+chnlCode+"' ";
+		where += " AND HQ_CHAN_CODE ='"+chnlCode+"' ";
 	}
 	var sql = 'SELECT' + preField + sumSql+where+groupBy+orderBy;
 	var showtext = '营业厅收入报表' + startDate+"-"+endDate;
 	if(startDate==endDate){
-		title=[["地市","营业厅","渠道编码","经营模式","全业务（移动网+固网）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","",""],
-		       ["","","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%"]
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","全业务（移动网+固网）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","",""],
+		       ["","","","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%"]
 			];
 	}else{
-		title=[["地市","营业厅","渠道编码","经营模式","全业务（移动网+固网）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
-		       ["","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","全业务（移动网+固网）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
+		       ["","","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
 	}
 	downloadExcel(sql,title,showtext);
 }

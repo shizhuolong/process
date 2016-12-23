@@ -16,14 +16,14 @@ function search(){
 	startDate=$("#startDate").val();
 	endDate=$("#endDate").val();
 	if(startDate==endDate){
-		title=[["组织架构","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
-		       ["","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
-		field=["OPERATE_TYPE","THIS_YW_NUM","THIS_YW_NUM1","HB1_THIS_YW","THIS_NET_NUM","THIS_NET_NUM1","HB1_THIS_NET","THIS_YWGW_NUM","THIS_YWGW_NUM1","HB1_THIS_YWGW","THIS_ZHWJ_NUM","THIS_ZHWJ_NUM1","HB1_THIS_ZHWJ","THIS_QC_NUM","THIS_QC_NUM1","ZB_QC"];
+		title=[["组织架构","经营模式","厅类型","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
+		       ["","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
+		field=["OPERATE_TYPE","CHNL_TYPE","THIS_YW_NUM","THIS_YW_NUM1","HB1_THIS_YW","THIS_NET_NUM","THIS_NET_NUM1","HB1_THIS_NET","THIS_YWGW_NUM","THIS_YWGW_NUM1","HB1_THIS_YWGW","THIS_ZHWJ_NUM","THIS_ZHWJ_NUM1","HB1_THIS_ZHWJ","THIS_QC_NUM","THIS_QC_NUM1","ZB_QC"];
 	    sumSql=getSumSql();
 	}else{
-		title=[["组织架构","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
-		       ["","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
-		field=["OPERATE_TYPE","THIS_YW_NUM","HB1_THIS_YW","THIS_NET_NUM","HB1_THIS_NET","THIS_YWGW_NUM","HB1_THIS_YWGW","THIS_ZHWJ_NUM","HB1_THIS_ZHWJ","THIS_QC_NUM","ZB_QC"];
+		title=[["组织架构","经营模式","厅类型","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
+		       ["","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
+		field=["OPERATE_TYPE","CHNL_TYPE","THIS_YW_NUM","HB1_THIS_YW","THIS_NET_NUM","HB1_THIS_NET","THIS_YWGW_NUM","HB1_THIS_YWGW","THIS_ZHWJ_NUM","HB1_THIS_ZHWJ","THIS_QC_NUM","ZB_QC"];
 		sumSql=getSumSql1();
 	}
 	var report=new LchReport({
@@ -52,11 +52,11 @@ function search(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
-					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
+					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,\'--\' AS CHNL_TYPE,';
 					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
 				}else if(orgLevel==3){//点击市
-					preField=' T1.BUS_HALL_NAME ROW_NAME,OPERATE_TYPE AS OPERATE_TYPE,';
-					groupBy=' GROUP BY T1.BUS_HALL_NAME ,T1.OPERATE_TYPE';
+					preField=' T1.BUS_HALL_NAME ROW_NAME,T1.OPERATE_TYPE,T1.CHNL_TYPE,';
+					groupBy=' GROUP BY T1.BUS_HALL_NAME,T1.OPERATE_TYPE,T1.CHNL_TYPE ';
 					where=' AND T1.GROUP_ID_1=\''+code+'\'';
 				}else{
 					return {data:[],extra:{}}
@@ -67,16 +67,16 @@ function search(){
 				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'--\' AS OPERATE_TYPE,';
+					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'--\' AS OPERATE_TYPE,\'--\' AS CHNL_TYPE,';
 					groupBy=' GROUP BY T1.GROUP_ID_0';
 					orgLevel=2;
 				}else if(orgLevel==2){//市
-					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
+					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,\'--\' AS CHNL_TYPE,';
 					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
 					where=' AND T1.GROUP_ID_1=\''+code+'\'';
 					orgLevel=3;
 				}else if(orgLevel==3){
-					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,';
+					preField=' T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,\'--\' AS OPERATE_TYPE,\'--\' AS CHNL_TYPE,';
 					groupBy=' GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ';
 					where=' AND T1.GROUP_ID_1=\''+code+'\'';
 					orgLevel=3;
@@ -210,10 +210,10 @@ function getSumSql1() {
 }
 
 function downsAll() {
-	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE,';
+	var preField=' T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.CHNL_TYPE,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE,';
 	var where='';
 	var orderBy=" ORDER BY T1.GROUP_ID_1,T1.HQ_CHAN_CODE";
-	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE";
+	var groupBy=" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.BUS_HALL_NAME,T1.CHNL_TYPE,T1.HQ_CHAN_CODE,T1.OPERATE_TYPE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -237,11 +237,11 @@ function downsAll() {
 	var sql = 'SELECT' + preField + sumSql+where+groupBy+orderBy;
 	var showtext = '营业厅发展报表' + startDate+"-"+endDate;
 	if(startDate==endDate){
-		title=[["地市","营业厅","渠道编码","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
-		       ["","","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
+		       ["","","","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
 	}else{
-		title=[["地市","营业厅","渠道编码","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
-		       ["","","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
+		       ["","","","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
 	}
 	downloadExcel(sql,title,showtext);
 }
