@@ -33,7 +33,10 @@ $(function(){
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
-			    if(orgLevel==2||orgLevel==3||orgLevel==4){
+				if(orgLevel==2){
+					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
+					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
+				}else if(orgLevel==3||orgLevel==4){
 			    	preField=" SELECT T.HQ_CHAN_NAME ROW_NAME,T.HQ_CHAN_CODE ROW_ID,T.HQ_CHAN_CODE,T.OPERATE_TYPE,			  "+
 							 "      SUM(NVL(T.USER_4G_ACCT,0))USER_4G_ACCT                                           		  "+
 							 "      ,SUM(NVL(T.USER_ALL_ACCT,0))USER_ALL_ACCT                                                 "+
@@ -54,9 +57,9 @@ $(function(){
 			}else{
 				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
-				if(orgLevel==1){//省   展示市
-					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
-					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
+				if(orgLevel==1){//省   展示省
+					preField=" SELECT '云南省' ROW_NAME,T.GROUP_ID_0 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
+					groupBy=" GROUP BY T.GROUP_ID_0";
 				}else if(orgLevel==2){//市
 					preField=" SELECT T.GROUP_ID_1_NAME ROW_NAME,T.GROUP_ID_1 ROW_ID,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' OPERATE_TYPE,"+getSumField();
 					groupBy=" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME";
