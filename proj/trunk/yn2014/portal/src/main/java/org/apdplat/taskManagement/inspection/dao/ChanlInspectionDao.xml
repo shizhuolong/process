@@ -24,9 +24,15 @@
 	            	
 	            	CASE WHEN SYSDATE > T.END_TIME THEN '1' 
 	            	ELSE '0' END AS IS_DEL
-	           FROM PORTAL.TAB_PORTAL_INSPEC_TASK T WHERE T.IS_VALID = '1'
-	           <if test="orgLevel>1">
-	           		AND T.C_USER_REGION=#{code}
+	           FROM PORTAL.TAB_PORTAL_INSPEC_TASK T 
+	           JOIN  PCDE.TAB_CDE_GROUP_CODE T1
+	           ON	(T.R_USER_REGION=T1.UNIT_ID)
+	           WHERE T.IS_VALID = '1' AND T1.IS_VALID=1
+	            <if test="orgLevel==2">
+	           		AND T1.GROUP_ID_1=#{code}
+	           </if>
+	           <if test="orgLevel>2">
+	           		AND T.R_USER_REGION=#{code}
 	           </if>
 	           <if test="inspec_name != null">
 	           		AND T.INSPEC_NAME LIKE #{inspec_name}
