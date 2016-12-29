@@ -43,34 +43,34 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="10%" style="padding-left: 10px;">开始账期：</td>
-					<td width="25%">
-						<input type="text"  class="Wdate default-text-input wper40" 
+					<td width="8%" style="text-align:right;">开始账期：</td>
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper90" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month %>" id="startTime">
 					</td>
-					<td width="10%" style="padding-left: 10px;">结束账期：</td>
-					<td width="25%">
-						<input type="text"  class="Wdate default-text-input wper40" 
+					<td width="8%" style="text-align:right;">结束账期：</td>
+					<td width="10%">
+						<input type="text"  class="Wdate default-text-input wper90" 
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month %>" id="endTime">
 					</td>
-					<td width="4%">地市：</td>
-					<td width="15%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+					<td width="8%" style="text-align:right;">地市：</td>
+					<td width="20%">
+						<select name="regionCode" id="regionCode"  class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="8%">营服中心：</td>
-					<td width="15%">
-						<select name="unitCode" id="unitCode" onchange="" class="default-text-input wper80">
+					<td width="8%" style="text-align:right;">营服中心：</td>
+					<td width="20%">
+						<select name="unitCode" id="unitCode"  class="default-text-input wper90">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 18px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
