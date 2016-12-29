@@ -67,5 +67,10 @@
         <action name="magPerson_*" class="org.apdplat.portal.channelManagement.action.MagPersonAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/portal_mag_person_list.jsp</result>
         </action>
+        <!-- sap终端导入 -->
+        <action name="importTerm" class="org.apdplat.portal.channelManagement.action.ImportTermAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_term_sap_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_term_sap.jsp</result>            
+        </action>
 	</package>
 </struts>
