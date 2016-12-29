@@ -146,15 +146,15 @@ function showDataDetail(orgCode,orgName,dayStr,orgLevel,devType,dealDate){
 		columns:[[
 		  		{field:'UNIT_NAME',title:'营服名称'},
 		  		{field:'HQ_CHAN_CODE',title:'渠道编码'},
-		  		{field:'GROUP_ID_4_NAME',title:'渠道名称',
+		  		{field:'GROUP_ID_4_NAME',title:'渠道名称',width:220},
 		  		{field:'DEVELOPER',title:'bss发展编码'},
-		  		{field:'FD_CHNL_CODE',title:'直销礼包编码'},
+		  		{field:'FD_CHNL_CODE',title:'直销礼包编码',width:100},
 		  		{field:'HR_ID',title:'HR编码',width:80},
-		  		{field:'USERNAME',title:'直销人/渠道经理'},
-		  		{field:'SUBSCRIPTION_ID',title:'用户编码'},
-		  		{field:'SERVICE_NUM',title:'用户号码'},
-		  		{field:'WG_NET_TYPE',title:'网别'},
-		  		{field:'JOIN_DATE',title:'入网时间'}
+		  		{field:'USERNAME',title:'直销人/渠道经理',width:100},
+		  		{field:'SUBSCRIPTION_ID',title:'用户编码',width:130},
+		  		{field:'SERVICE_NUM',title:'用户号码',width:97},
+		  		{field:'WG_NET_TYPE',title:'网别',width:50},
+		  		{field:'JOIN_DATE',title:'入网时间',width:100}
 		      ]]
 	});
 	/*$("#chanlDataDeatil").find(".datagrid-toolbar").find("A").css({
