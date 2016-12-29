@@ -42,8 +42,11 @@ function search(){
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
-				if(orgLevel==2){//点击省
-					preField=" SELECT T.BUS_HALL_NAME AS ROW_NAME,T.HQ_CHAN_CODE AS ROW_ID,"+getNextSql()+" AND T.GROUP_ID_1= '"+code+"'";
+				if(orgLevel==1){//点击省
+					preField=" SELECT T.GROUP_ID_1 AS ROW_ID , T.GROUP_ID_1_NAME AS ROW_NAME,"+getSumSql();
+					groupBy= "  GROUP BY T.DEAL_DATE,  T.GROUP_ID_1, T.GROUP_ID_1_NAME ";
+				}else if(orgLevel==2){//点击地市
+					preField=" SELECT T.BUS_HALL_NAME AS ROW_NAME,T.HQ_CHAN_CODE AS ROW_ID, T.OPERATE_TYPE,"+getNextSql()+" AND T.GROUP_ID_1= '"+code+"'";
 					groupBy= "  GROUP BY T.DEAL_DATE,T.BUS_HALL_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE,T.FLAG ";
 				}else{
 					return {data:[],extra:{}}
@@ -54,11 +57,11 @@ function search(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					preField=getSumSql();
-					groupBy = " GROUP BY T.DEAL_DATE,  T.GROUP_ID_1, T.GROUP_ID_1_NAME "; 
-					orgLevel=2;
+					preField=" SELECT T.GROUP_ID_0 AS ROW_ID ,'云南省' AS ROW_NAME, "+getSumSql();
+					groupBy = " GROUP BY T.DEAL_DATE, T.GROUP_ID_0 "; 
+					orgLevel=1;
 				}else if(orgLevel==2||orgLevel==3){//市
-					preField=getSumSql()+' AND T.GROUP_ID_1=\''+region+'\'';
+					preField=" SELECT T.GROUP_ID_1 AS ROW_ID , T.GROUP_ID_1_NAME AS ROW_NAME,  "+getSumSql()+' AND T.GROUP_ID_1=\''+region+'\'';
 					groupBy = " GROUP BY T.DEAL_DATE,  T.GROUP_ID_1, T.GROUP_ID_1_NAME "; 
 					orgLevel=2;
 				}else{
@@ -93,7 +96,7 @@ function search(){
 function getNextSql(){
 	var dealDate = $("#dealDate").val();
 	var contrastDate = getPrevMonth(dealDate);
-	var sql = "        T.OPERATE_TYPE,                                                                          "+		//--运营类型
+	var sql = 
 			"        SUM(NVL(T.JH_NUM1, 0)) JH_NUM1,                                                          "+		//--进货量
 			"        PODS.GET_RADIX_POINT(CASE                                                                "+		//
 			"                               WHEN SUM(NVL(T1.JH_NUM1, 0)) <> 0 THEN                            "+		//
@@ -178,8 +181,7 @@ function getNextSql(){
 function getSumSql() {
 	var dealDate = $("#dealDate").val();
 	var contrastDate = getPrevMonth(dealDate);
-	 var s=	 " SELECT T.GROUP_ID_1      AS ROW_ID ,                                                            	"+	//--分公司编码
-			 "        T.GROUP_ID_1_NAME AS ROW_NAME,                                                            	"+	//-- 分公司名称
+	 var s=	 
 			 "        '-' AS OPERATE_TYPE ,                                                                      "+	//  --运营类型
 			 "        SUM(NVL(T.JH_NUM1, 0)) JH_NUM1,                                                           	"+	//--进货量
 			 "        PODS.GET_RADIX_POINT(CASE                                                                  "+	//
@@ -271,7 +273,7 @@ function downsAll() {
 	var operateType=$("#operateType").val();
 	var flag = $("#flag").val();
 	var where ="";
-	var preField = " SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.BUS_HALL_NAME,T.HQ_CHAN_CODE,"+	getNextSql();
+	var preField = " SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.BUS_HALL_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE,"+	getNextSql();
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
