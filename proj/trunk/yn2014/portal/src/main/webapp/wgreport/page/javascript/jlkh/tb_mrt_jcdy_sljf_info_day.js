@@ -129,7 +129,7 @@ function getSql(){
 		sql+= " AND USER_NAME LIKE '%"+userName+"%'";
 	}
 	if(itemdesc!=''){
-		sql+= " AND ITEMDESC LIKE '%"+itemdesc+"%'";
+		sql+= " AND T.BUSI_DESC LIKE '%"+itemdesc+"%'";
 	}
 	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	return sql;
