@@ -72,5 +72,19 @@
             <result name="success">/portal/channelManagement/jsp/import_term_sap_list.jsp</result>
             <result name="error">/portal/channelManagement/jsp/import_term_sap.jsp</result>            
         </action>
+        <!-- 实时销量明细-->
+         <action name="sales_*" class="org.apdplat.portal.costManagement.action.SalesActualTimeAction" method="{1}">
+			<result name="success">/portal/costManagement/jsp/sales_actual_time.jsp</result>
+        </action>
+        
+        <!-- 成本中心确认-->
+         <action name="costCenter_*" class="org.apdplat.portal.costManagement.action.CostCenterVerifyAction" method="{1}">
+			<result name="success">/portal/costManagement/jsp/cost_center_verify.jsp</result>
+        </action>
+        
+         <!-- 全业务发展收入月报-->
+         <!-- <action name="incomeAndDev_*" class="org.apdplat.portal.costManagement.action.IncomAndDevReportAction" method="{1}">
+			<result name="success">/portal/costManagement/jsp/income_and_dev_month_report.jsp</result>
+         </action> -->
 	</package>
 </struts>
