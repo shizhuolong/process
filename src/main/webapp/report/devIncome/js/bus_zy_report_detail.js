@@ -13,9 +13,9 @@ $(function(){
 			       ["","","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","日发展","月累计","单厅","日发展","月累计","单厅","日发展","月累计","单厅"]];
 			field=["GROUP_ID_1_NAME","BUS_COUNT","THIS_YW_DAY_DEV","THIS_NET_DAY_DEV","THIS_YW_MON_DEV","THIS_NET_MON_DEV","DT_YW_DEV","DT_NET_DEV","LJ_YW_DEV_RATE","LJ_NET_DEV_RATE","THIS_YW_DAY_SR","THIS_NET_DAY_SR","THIS_YW_MON_SR","THIS_NET_MON_SR","DT_YW_SR","DT_NET_SR","LJ_YW_SR_RATE","LJ_NET_SR_RATE","TYPE1_DEV_DAY","TYPE1_DEV_MON","TYPE1_DEV","TYPE3_DEV_DAY","TYPE3_DEV_MON","TYPE3_DEV","TYPE_ALL_DAY","TYPE_ALL_MON","TYPE_ALL"];
 		}else{
-			title=[["分公司","厅数","发展","","","","","","收入","","","","","","终端（模式一+模式三）","","","","","","","",""],
-			       ["","","月累计","","单厅","","累计环比","","月累计","","单厅","","累计环比","","模式一","","","模式三","","","小计","",""],
-			       ["","","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","月累计","","单厅","月累计","","单厅","月累计","","单厅"]];
+			title=[["分公司","厅数","发展","","","","","","收入","","","","","","终端（模式一+模式三）","","","","",""],
+			       ["","","月累计","","单厅","","累计环比","","月累计","","单厅","","累计环比","","模式一","","模式三","","小计",""],
+			       ["","","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","移动网","固网","月累计","单厅","月累计","单厅","月累计","单厅"]];
 			field=["GROUP_ID_1_NAME","BUS_COUNT","THIS_YW_MON_DEV","THIS_NET_MON_DEV","DT_YW_DEV","DT_NET_DEV","LJ_YW_DEV_RATE","LJ_NET_DEV_RATE","THIS_YW_MON_SR","THIS_NET_MON_SR","DT_YW_SR","DT_NET_SR","LJ_YW_SR_RATE","LJ_NET_SR_RATE","TYPE1_DEV_MON","TYPE1_DEV","TYPE3_DEV_MON","TYPE3_DEV","TYPE_ALL_MON","TYPE_ALL"];
 		}
 		report = new LchReport({
@@ -64,6 +64,7 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	
 	var chnlType=$("#chnlType").val();
+	var operateType=$("#operateType").val();
 	var orgLevel = $("#orgLevel").val();
 	var region = $("#region").val();
 	var sql ="";
@@ -77,6 +78,9 @@ function search(pageNumber) {
 	//条件
 	if(""!=chnlType){
 		sql+=" AND CHNL_TYPE  ='"+chnlType+"' ";
+	}
+	if(""!=operateType){
+		sql+=" AND OPERATE_TYPE  ='"+operateType+"' ";
 	}
 	//权限
 	if(orgLevel==1){
@@ -202,7 +206,7 @@ function getDifferentDateSql() {
 	"            THEN (NVL(SUM(THIS_NET_SR1),0)-NVL(SUM(LAST_NET_SR),0))*100/NVL(SUM(LAST_NET_SR),0)      "+
 	"            ELSE 0                                                                                   "+
 	"            END  || '%',2) LJ_NET_SR_RATE                                                            "+
-	"       ,NVL(SUM(TYPE1_DEV),0) TYPE1_DEV_MOM                                                          "+
+	"       ,NVL(SUM(TYPE1_DEV),0) TYPE1_DEV_MON                                                          "+
 	"       ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                        "+
 	"                                               ROUND(NVL(SUM(TYPE1_DEV),0)/COUNT(HQ_CHAN_CODE),0)    "+
 	"                                         ELSE 0 END TYPE1_DEV                                        "+
@@ -220,6 +224,7 @@ function getDifferentDateSql() {
 
 function downsAll() {
 	var chnlType=$("#chnlType").val();
+	var operateType=$("#operateType").val();
 	var orgLevel = $("#orgLevel").val();
 	var region = $("#region").val();
 	var sql ="";
@@ -229,9 +234,13 @@ function downsAll() {
 	}else{
 		sql=getDifferentDateSql();
 	}
+	
 	//条件
 	if(""!=chnlType){
 		sql+=" AND CHNL_TYPE  ='"+chnlType+"' ";
+	}
+	if(""!=operateType){
+		sql+=" AND OPERATE_TYPE  ='"+operateType+"' ";
 	}
 	//权限
 	if(orgLevel==1){
