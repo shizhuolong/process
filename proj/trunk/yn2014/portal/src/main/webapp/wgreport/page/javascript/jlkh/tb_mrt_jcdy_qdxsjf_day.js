@@ -43,9 +43,12 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
 	var sql = getSql();
-	var cdata = query("select count(*) total from(" + sql+")");
+	//var cdata = query("select count(*) total from(" + sql+")");
+	var totalSql= "SELECT COUNT(*) TOTAL FROM PMRT.TB_MRT_JCDY_QDXSJF_DAY T WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' "+getWhere();
+	var cdata = query(totalSql);
 	var total = 0;
 	if(cdata && cdata.length) {
 		total = cdata[0].TOTAL;
@@ -72,19 +75,8 @@ function search(pageNumber) {
 	});
 }
 function getSql(){
-	//权限
-	var code = $("#code").val();
-	var orgLevel = $("#orgLevel").val();
-	var hrId = $("#hrId").val();
-	//条件
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
-	var regionCode = $("#regionCode").val();
-	var unitCode = $("#unitCode").val();
-	var userPhone= $("#userPhone").val();
-	var userName = $("#userName").val();
-	var itemdesc = $("#itemdesc").val();
-	
 	
 	var sql=  
 			" SELECT T.DEAL_DATE,                                          "+
@@ -111,7 +103,28 @@ function getSql(){
 			"        T.UNIT_CRE,                                           "+
 			"        T.UNIT_MONEY                                          "+
 			"   FROM PMRT.TB_MRT_JCDY_QDXSJF_DAY T                         "+
-			"  WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' ";
+			"  WHERE T.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"' "+
+			getWhere();
+	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
+	return sql;
+}
+
+function getWhere(){
+	//权限
+	var code = $("#code").val();
+	var orgLevel = $("#orgLevel").val();
+	var hrId = $("#hrId").val();
+	//条件
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	var regionCode = $("#regionCode").val();
+	var unitCode = $("#unitCode").val();
+	var userPhone= $("#userPhone").val();
+	var userName = $("#userName").val();
+	var itemdesc = $("#itemdesc").val();
+	
+	var sql="";
+	
 	if(orgLevel==1){
 		
 	}else if(orgLevel == 2){
@@ -137,7 +150,6 @@ function getSql(){
 	if(itemdesc!=''){
 		sql+= " AND ITEMDESC LIKE '%"+itemdesc+"%'";
 	}
-	sql += "ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	return sql;
 }
 /////////////////////////下载开始/////////////////////////////////////////////
