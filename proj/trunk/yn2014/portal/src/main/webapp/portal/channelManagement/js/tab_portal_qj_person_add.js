@@ -152,7 +152,7 @@ function initName(){
 	 var name=d[0].NAME;
 	 $("#name").val(name);
 	}else{
-		//alert("主管编码错误");
+		//alert("HR编码错误");
 	}
 	
 }
