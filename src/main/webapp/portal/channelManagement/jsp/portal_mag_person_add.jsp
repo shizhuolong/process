@@ -48,7 +48,7 @@
 				 </td>
 				</tr>
 				<tr>
-				 <td>主管编码：<input type="text" style="margin-left:12px;" required="true" class="easyui-validatebox" missingMessage="主管编码不能为空" name="hr_id" id="hr_id"/>
+				 <td>HR编码：<input type="text" style="margin-left:12px;" required="true" class="easyui-validatebox" missingMessage="HR编码不能为空" name="hr_id" id="hr_id"/>
 				 </td>
 				</tr>
 				<tr>
