@@ -48,9 +48,19 @@
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=month%>" id="endDate">
 					</td>
+					<td width="4%" align="right">运营模式：</td>
+					<td width="13%">
+						<select name="operateType" id="operateType" class="default-text-input wper80">
+						        <option value=''>全部</option>
+								<option value='柜台外包'>柜台外包</option>
+								<option value='自营'>自营</option>
+								<option value='他营'>他营</option>
+						</select>
+					</td>
 					<td width="4%" align="right">厅类型：</td>
 					<td width="13%">
 						<select name="chnlType" id="chnlType" class="default-text-input wper80">
+						        <option value=''>全部</option>
 								<option value='小型厅'>小型厅</option>
 								<option value='标准厅'>标准厅</option>
 								<option value='旗舰厅'>旗舰厅</option>
