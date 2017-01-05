@@ -356,7 +356,7 @@ $(function(){
 					where=' where t.GROUP_ID_0=\''+code+"\' ";
 					orgLevel=2;
 					
-					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.VIEW_MRT_TARGET_CH_MON t ';
+					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.TAB_MRT_TARGET_CH_MON t ';
 					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  and  t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
@@ -375,7 +375,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 			}	
-			var sql='select '+preField+','+sumSql+' from PMRT.VIEW_MRT_TARGET_CH_MON t ';
+			var sql='select '+preField+','+sumSql+' from PMRT.TAB_MRT_TARGET_CH_MON t ';
 			
 			
 			if(where!=''){
@@ -603,12 +603,13 @@ function getdownField(where){
 	+"                                             2)                                                "
 	+"                                    END,                                                       "
 	+"                                    2) AVG_FLOW_4G                                             "
-	+"          FROM PMRT.VIEW_MRT_TARGET_CH_MON T                                                    "
+	+"          FROM PMRT.TAB_MRT_TARGET_CH_MON T                                                    "
+	/*+"          FROM PMRT.TAB_MRT_TARGET_CH_MON T                                                    "*/
 	+where
 	+"         GROUP BY T.HQ_CHAN_CODE) T                                                            "
 	+"  LEFT JOIN (SELECT T.*,                                                                       "
 	+"                    ROW_NUMBER() OVER(PARTITION BY T.HQ_CHAN_CODE ORDER BY T.DEAL_DATE DESC) RN"
-	+"               FROM PMRT.VIEW_MRT_TARGET_CH_MON T                                               "
+	+"               FROM PMRT.TAB_MRT_TARGET_CH_MON T                                               "
 	+where
 	+") T1                      "
 	+"    ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE AND RN = 1)                                           ";
