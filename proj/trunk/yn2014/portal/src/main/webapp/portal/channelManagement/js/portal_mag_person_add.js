@@ -102,7 +102,7 @@ function initName(){
 	 var name=d[0].REALNAME;
 	 $("#name").val(name);
 	}else{
-		alert("主管编码错误");
+		alert("HR编码错误");
 	}
 }
 function initChanName(){
