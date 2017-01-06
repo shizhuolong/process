@@ -67,10 +67,35 @@
         <action name="magPerson_*" class="org.apdplat.portal.channelManagement.action.MagPersonAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/portal_mag_person_list.jsp</result>
         </action>
-        <!-- sap终端导入 -->
-        <action name="importTerm" class="org.apdplat.portal.channelManagement.action.ImportTermAction" method="{1}">
+         <!--SAP终端导入-->
+        <action name="importTerm_*" class="org.apdplat.portal.channelManagement.action.ImportTermAction" method="{1}">
             <result name="success">/portal/channelManagement/jsp/import_term_sap_list.jsp</result>
             <result name="error">/portal/channelManagement/jsp/import_term_sap.jsp</result>            
+        </action>
+        <!--ESS用户订单明细导入-->
+        <action name="userOrder_*" class="org.apdplat.portal.channelManagement.action.UserOrderAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_user_order_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_user_order.jsp</result>            
+        </action>
+         <!--CBSS终端销售订单日报导入-->
+        <action name="terminalSales_*" class="org.apdplat.portal.channelManagement.action.TerminalSalesAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_terminal_sales_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_terminal_sales.jsp</result>            
+        </action>
+        <!--铁塔起租存量自由导入-->
+        <action name="ironOwn_*" class="org.apdplat.portal.channelManagement.action.ImportIronOwnAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_iron_own_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_iron_own.jsp</result>            
+        </action>
+         <!--铁塔起租既有共享导入-->
+        <action name="ironShare_*" class="org.apdplat.portal.channelManagement.action.ImportIronShareAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_iron_share_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_iron_share.jsp</result>            
+        </action>
+         <!--铁塔起租存量自改导入-->
+        <action name="ironStock_*" class="org.apdplat.portal.channelManagement.action.ImportIronStockAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_iron_stock_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_iron_stock.jsp</result>            
         </action>
         <!-- 实时销量明细-->
          <action name="sales_*" class="org.apdplat.portal.costManagement.action.SalesActualTimeAction" method="{1}">
@@ -81,10 +106,6 @@
          <action name="costCenter_*" class="org.apdplat.portal.costManagement.action.CostCenterVerifyAction" method="{1}">
 			<result name="success">/portal/costManagement/jsp/cost_center_verify.jsp</result>
         </action>
-        
-         <!-- 全业务发展收入月报-->
-         <!-- <action name="incomeAndDev_*" class="org.apdplat.portal.costManagement.action.IncomAndDevReportAction" method="{1}">
-			<result name="success">/portal/costManagement/jsp/income_and_dev_month_report.jsp</result>
-         </action> -->
+       
 	</package>
 </struts>
