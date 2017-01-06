@@ -5,7 +5,7 @@ public class WorkflowConstant {
 	public static final String TASK_TYPE_PRO = "1";
 	public static final String TASK_TYPE_COM = "2";
 	public static final String TASK_TYPE_DEP = "3";
-
+	public static final String PROVINCIALAGENCY = "7";
 	
 	public static final String DEPART_LEADER_TASK_ID ="departLeaderAudit";
 	
