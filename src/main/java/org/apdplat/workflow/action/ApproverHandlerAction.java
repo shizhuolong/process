@@ -65,6 +65,8 @@ public class ApproverHandlerAction extends BaseAction {
 			approverList = approverHandlerService.qryTaskApprover(taskId,oaComId, "");
 		}else if(WorkflowConstant.TASK_TYPE_DEP.equals(taskFlag)) {
 			approverList = approverHandlerService.qryTaskApprover(taskId, oaComId,oaDepId);
+		}else if(WorkflowConstant.PROVINCIALAGENCY.equals(taskFlag)) {
+			approverList = approverHandlerService.qryTaskApprover(taskId, "", "");
 		}
 		this.reponseJson(approverList);
 	}
