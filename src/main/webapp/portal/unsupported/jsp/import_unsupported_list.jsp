@@ -77,8 +77,9 @@
 														<th>佣金科目</th>
 														<th>业务类型</th>
 														<th>佣金金额</th>
-												        <th>佣金总额</th>
+												        <th>总额</th>
 												        <th>净额</th>
+												        <th>数据去向</th>
 														<th>备注</th>
 														<th colspan='2'>操作</th>
 													</tr>

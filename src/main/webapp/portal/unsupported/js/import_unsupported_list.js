@@ -53,6 +53,7 @@ function search(pageNumber) {
                 +"<td>"+isNull(n['FEE'])+"</td>"
                 +"<td>"+isNull(n['TOTALFEE'])+"</td>"
                 +"<td>"+isNull(n['NETFEE'])+"</td>"
+                +"<td>"+isNull(n['PAY_ADDRESS'])+"</td>"
                 +"<td>"+isNull(n['REMARK'])+"</td>"
                 +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' fee='"+isNull(n['FEE'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
                 +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' onclick='del($(this));' style='color:#BA0C0C;'>删除</a></td>"
