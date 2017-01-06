@@ -6,7 +6,7 @@
 	<!-- 成本中心列表 -->
 	<select id="findCostCenterList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT T.GROUP_ID_1_NAME,T.GROUP_ID_1, T.CC_CODE, T.CC_DESC, T.UNIT_NAME, T.UNIT_ID
-		  FROM PODS.TAB_ODS_GB_CENTER_UNIT_BACK T WHERE 1=1 
+		  FROM PODS.TAB_ODS_GB_CENTER_UNIT T WHERE 1=1 
 		  <if test="@org.apache.commons.lang.StringUtils@isNotBlank(orgLevel)">
 		  	<choose>
 	        	<when test="orgLevel==1">
@@ -54,7 +54,7 @@
 	
 	<!--修改单条成本中心信息 -->
 	<update id="saveRow" parameterType="java.util.Map">
-		UPDATE PODS.TAB_ODS_GB_CENTER_UNIT_BACK T
+		UPDATE PODS.TAB_ODS_GB_CENTER_UNIT T
 		   SET T.UNIT_ID = #{unitCode}, 
 		       T.UNIT_NAME = #{unitName}
 		 WHERE T.CC_CODE = #{centerCode}
@@ -115,7 +115,7 @@
 	
 	<!-- 使用临时表中的数据更新结果表 -->
 	<update id="updateCostData" parameterType="java.util.Map">
-		MERGE INTO PODS.TAB_ODS_GB_CENTER_UNIT_BACK T1
+		MERGE INTO PODS.TAB_ODS_GB_CENTER_UNIT T1
 			USING (SELECT T1.CC_CODE,T2.UNIT_NAME,T2.UNIT_ID
 			       FROM PODS.TAB_ODS_GB_CENTER_UNIT_TEMP T1
 			       JOIN PCDE.TAB_CDE_GROUP_CODE T2
@@ -148,14 +148,14 @@
 	<!--根据地市编码查询成本中心表中是否有营服中心名称或编码为空的数据  -->
 	<select id="queryNullUnit" parameterType="java.lang.String" resultType="java.util.Map">
 		SELECT T.CC_DESC
-			  FROM PODS.TAB_ODS_GB_CENTER_UNIT_BACK T
+			  FROM PODS.TAB_ODS_GB_CENTER_UNIT T
 			 WHERE T.GROUP_ID_1 = #{regionCode}
 			   AND T.UNIT_ID IS NULL
 	</select>
 	
 	<!-- 更新成本中心表数据(确认划分成本中心) -->
 	<update id="updateState" parameterType="java.lang.String">
-		UPDATE PODS.TAB_ODS_GB_CENTER_UNIT_BACK T
+		UPDATE PODS.TAB_ODS_GB_CENTER_UNIT T
 			   SET T.STATE = 1
 			 WHERE T.GROUP_ID_1 = #{regionCode}
 	</update>
