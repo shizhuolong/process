@@ -38,6 +38,7 @@ $(function(){
 	   		$("#chnl_type").html(data[0].CHNL_TYPE);
 	   		$("#city_name").html(data[0].CITY_NAME);
 	   		$("#town_name").html(data[0].TOWN_NAME);
+	   		$("#is_jk").html(data[0].IS_JK);
 	   		if(data[0].IMGFORNT != null && data[0].IMGFORNT != "") {
 	   			$("#imgfornt").attr("src","http://130.86.10.199:10006/portal/"+data[0].IMGFORNT);
 	   		}

@@ -602,7 +602,7 @@ function downloadExcel() {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
-		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO  "+
+		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
 		"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -613,7 +613,7 @@ function downloadExcel() {
 	    sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
 		"       T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                  "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
-		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO  "+
+		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
 		"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -624,7 +624,7 @@ function downloadExcel() {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                 "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
-		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO  "+
+		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
 		"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -670,7 +670,7 @@ function downloadExcel() {
 	sql += " ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	var showtext="Sheet";
    var showtext1="result";
-   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','代理点类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度"];
+   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','代理点类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度","渠道属性"];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
