@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,8 +62,6 @@ public class SubsidyInputAction extends BaseAction{
 	 */
 	public void list() {
 			User user = UserHolder.getCurrentLoginUser();
-			Org org = user.getOrg();
-			String code = org.getCode();
 			String username=user.getUsername();
 			resultMap.put("username", username);
 			
@@ -81,7 +78,6 @@ public class SubsidyInputAction extends BaseAction{
 		String username=user.getUsername();
 		String businessKey = request.getParameter("businessKey");
 		
-		String code=org.getCode();
 		String resultMsg = "";
 		String resultTableName="PAPP.TAB_COMMI_SUBSIDY_INFO_TEMP";
 		if(myFile != null && myFile.length > 0) {
@@ -117,13 +113,18 @@ public class SubsidyInputAction extends BaseAction{
 					pre = conn.prepareStatement(sql);
 					for(int i=1; i<list.size(); i++) {
 						if(list.get(i)[0]==null||list.get(i)[0].equals("")){
+							if(i==1){
+								resultMsg+="【模板不能为空，请编辑后重新导入！】";
+								this.reponseJson(resultMsg);
+							}
 							break;
 						}
 						String[] str = list.get(i);
 						int j= 1;
-						boolean result=checkByRex(str[i-1]);
-						if(!result){
-							resultMsg+="【第"+i+"行数据为空,";
+						String result=checkByRex(str);
+						if(result!=null){
+							resultMsg+="【第"+(i+1)+"行,"+result+"】";
+							this.reponseJson(resultMsg);
 						}
 						pre.setString(j++, str[0]);
 						pre.setString(j++, str[1]);
@@ -186,11 +187,13 @@ public class SubsidyInputAction extends BaseAction{
 		}
 	}
 
-	public boolean checkByRex(String input){
-		if(input.equals("")){
-			return false;
+	public String checkByRex(String[] input){
+		for(int i=8;i<input.length;i++){
+			if(input[i]!=null&&input[i].equals("")){
+				return "第"+(i+1)+"列数据为空,请编辑！";
+			}
 		}
-		return true;
+		return null;
 	}
 	
 	public void update() {
