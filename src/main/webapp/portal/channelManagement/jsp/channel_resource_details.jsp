@@ -85,6 +85,8 @@
                             <tr colspan="2">
                                 <th>乡镇归属:</th>
                                 <td id="town_name"></td>
+                                <th>渠道属性:</th>
+                                <td id="is_jk"></td>
                             </tr>
                         </table>
                         <div class="title" style="border-bottom: 2px solid #e7d4b3;"><i></i>渠道联系方式</div>
