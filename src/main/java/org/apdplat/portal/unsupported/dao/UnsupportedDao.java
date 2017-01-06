@@ -2,7 +2,6 @@ package org.apdplat.portal.unsupported.dao;
 
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 

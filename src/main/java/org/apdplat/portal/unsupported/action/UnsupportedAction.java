@@ -122,7 +122,6 @@ public class UnsupportedAction extends BaseAction{
 			List<String[]> list = this.getExcel(myFile[0], 0);
 						
 			String [] columnsId = {"BILLINGCYCLID","AGENTID","DEPT_PTYPE","CHANNEL_NAME","REGION","COUNTY_ID","SUBSCRIPTION_ID","JOB_ID","FEE","TOTALFEE","NETFEE","SVCNUM","COMM_TYPE","SUBJECTID","SVCTP","REMARK","NET_TYPE","PAY_FLAG","PAY_ADDRESS"};
-			String [] patterns = {"^\\S+$","^\\S+$","","","","","","","^\\S+$","^\\S+$","","","","","","^\\S+$"};
 			StringBuffer buf=new StringBuffer();
 			buf.append("insert into "+resultTableName+"(insert_date,group_id,account_id,bill_id,");
 			for(int i=0;i<columnsId.length;i++){
@@ -150,13 +149,18 @@ public class UnsupportedAction extends BaseAction{
 					for(int i=1; i<list.size(); i++) {
 						//System.out.println(list.get(0)[0]);
 						if(list.get(i)[0]==null||list.get(i)[0].equals("")){
+							if(i==1){
+								resultMsg+="【模板不能为空，请编辑后重新导入！】";
+								this.reponseJson(resultMsg);
+							}
 							break;
 						}
 						String[] str = list.get(i);
 						int j= 1;
-						boolean result=checkByRex(patterns[i-1],str[i-1]);
-						if(!result){
-							resultMsg+="【第"+i+"行数据错误,";
+						String result=checkByRex(str);
+						if(result!=null){
+							resultMsg+="【第"+(i+1)+"行,"+result+"】";
+							this.reponseJson(resultMsg);
 						}
 						pre.setString(j++, str[0]);
 						pre.setString(j++, str[1]);
@@ -166,9 +170,9 @@ public class UnsupportedAction extends BaseAction{
 						pre.setString(j++, str[5]);
 						pre.setString(j++, str[6]);
 						pre.setString(j++, str[7]);
-						pre.setDouble(j++, Double.valueOf(str[8]));
-						pre.setDouble(j++, Double.valueOf(str[9]));
-						pre.setDouble(j++, Double.valueOf(str[10]));
+						pre.setDouble(j++, Double.valueOf(isNull(str[8])));
+						pre.setDouble(j++, Double.valueOf(isNull(str[9])));
+						pre.setDouble(j++, Double.valueOf(isNull(str[10])));
 						pre.setString(j++, str[11]);
 						pre.setString(j++, str[12]);
 						pre.setString(j++, str[13]);
@@ -205,7 +209,7 @@ public class UnsupportedAction extends BaseAction{
 					this.reponseJson(resultMsg);
 				} catch (Exception e) {
 					e.printStackTrace();
-					logger.error("格式错误，未支撑导入失败!",e);
+					logger.error("出现异常，未支撑导入失败!",e);
 					try {
 						conn.rollback();
 						conn.setAutoCommit(true);
@@ -213,7 +217,7 @@ public class UnsupportedAction extends BaseAction{
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
-					this.reponseJson("格式错误，未支撑导入失败!");
+					this.reponseJson("出现异常，未支撑导入失败!");
 				}finally {
 					if(conn != null) {
 						try {
@@ -226,41 +230,18 @@ public class UnsupportedAction extends BaseAction{
 			}
 			this.reponseJson(resultMsg);
 		} else {
-			this.reponseJson("文件不能为空");
+			this.reponseJson("文件不能为空!");
 		}
 	}
 
-	public boolean checkByRex(String rex,String input){
-		if(input.equals("")){
-			return false;
+	public String checkByRex(String[] input){
+		if(input[8].equals("")){
+			return "第9列佣金金额不能为空,请编辑！";
 		}
-		/*if(!"".equals(rex) && null !=rex){
-			String tmp = "";
-			String[]rexs=rex.split("@");
-			for(int i=0;i<rexs.length;i++){
-				tmp = rexs[i];
-				if(tmp.indexOf("special")!=-1){
-					String[] res = tmp.split("special");
-					char [] c = {};
-					c = res[0].toCharArray();
-					for(int j=0;j<c.length;j++){
-						if(input.indexOf(c[j])!=-1){
-							System.out.println("特殊字符错误验证");
-							flag=false;
-							break;
-						}
-					}
-				}else{
-					if(!(null!=input && input.matches(rexs[i]))){
-						System.out.println("************正则验证。。。");
-						flag=false;
-						break;
-					}
-				}
-				
-			}
-		}*/
-		return true;
+		if(input[9].equals("")&&input[10].equals("")){
+			return "第10、11列总额与净额数据不能都为空,请编辑！";
+		}
+		return null;
 	}
 	
 	public void update() {
@@ -314,6 +295,12 @@ public class UnsupportedAction extends BaseAction{
 		}
 	}
 	
+	public String isNull(String content){
+		if(content.equals("")){
+			return "0";
+		}
+		return content;
+	}
 	/**
 	 * 文件下载
 	 * @param filePath

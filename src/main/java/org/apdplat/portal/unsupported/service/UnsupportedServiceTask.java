@@ -7,7 +7,6 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.apdplat.platform.exception.BusiException;
 import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.portal.channelSubsidyPay.ChannelPayStatus;
 import org.apdplat.portal.unsupported.dao.UnsupportedDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
