@@ -64,7 +64,7 @@
 						<td width="10%" style="padding-left: 10px;">渠道名称：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="hq_chan_name" name="hq_chan_name" type="text" /></td>
-						<td width="5%">渠道编码：</td>
+						<td width="10%">渠道编码：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="hq_chan_code" name="hq_chan_code" type="text" /></td>
 						<!-- <td width="8%" rowspan="2"><a class="default-btn" href="#"
@@ -79,20 +79,20 @@
 								<option value="1">否</option>
 							</select>
 						</td>
-						<td width="5%">渠道属性1：</td>
+						<td width="10%">渠道属性1：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_1_name" name="chn_cde_1_name" type="text" /></td>
 					</tr>
 					<tr height="35px">
-						<td width="5%">渠道属性2：</td>
+						<td width="10%">渠道属性2：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_2_name" name="chn_cde_2_name" type="text" /></td>
-						<td width="5%">渠道属性3：</td>
+						<td width="10%">渠道属性3：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_3_name" name="chn_cde_3_name" type="text" /></td>
 					</tr>
 					<tr height="35px" clospan="2">
-						<td width="5%">渠道属性4：</td>
+						<td width="10%">渠道属性4：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_4_name" name="chn_cde_4_name" type="text" /></td>
 					    <td width="10%" style="padding-left: 10px;">乡镇是否打标：</td>
