@@ -148,13 +148,18 @@ public class TwoSupportedAction extends BaseAction{
 					for(int i=1; i<list.size(); i++) {
 						//System.out.println(list.get(0)[0]);
 						if(list.get(i)[0]==null||list.get(i)[0].equals("")){
+							if(i==1){
+								resultMsg+="【模板不能为空，请编辑后重新导入！】";
+								this.reponseJson(resultMsg);
+							}
 							break;
 						}
 						String[] str = list.get(i);
 						int j= 1;
-						boolean result=checkByRex(str[i-1]);
-						if(!result){
-							resultMsg+="【第"+i+"行数据错误,";
+						String result=checkByRex(str);
+						if(result!=null){
+							resultMsg+="【第"+(i+1)+"行,"+result+"】";
+							this.reponseJson(resultMsg);
 						}
 						pre.setString(j++, str[0]);
 						pre.setString(j++, str[1]);
@@ -228,37 +233,13 @@ public class TwoSupportedAction extends BaseAction{
 		}
 	}
 
-	public boolean checkByRex(String input){
-		if(input.equals("")){
-			return false;
-		}
-		/*if(!"".equals(rex) && null !=rex){
-			String tmp = "";
-			String[]rexs=rex.split("@");
-			for(int i=0;i<rexs.length;i++){
-				tmp = rexs[i];
-				if(tmp.indexOf("special")!=-1){
-					String[] res = tmp.split("special");
-					char [] c = {};
-					c = res[0].toCharArray();
-					for(int j=0;j<c.length;j++){
-						if(input.indexOf(c[j])!=-1){
-							System.out.println("特殊字符错误验证");
-							flag=false;
-							break;
-						}
-					}
-				}else{
-					if(!(null!=input && input.matches(rexs[i]))){
-						System.out.println("************正则验证。。。");
-						flag=false;
-						break;
-					}
-				}
-				
+	public String checkByRex(String[] input){
+		for(int i=8;i<input.length;i++){
+			if(input[i]!=null&&input[i].equals("")){
+				return "第"+(i+1)+"列数据为空,请编辑！";
 			}
-		}*/
-		return true;
+		}
+		return null;
 	}
 	
 	public void update() {
