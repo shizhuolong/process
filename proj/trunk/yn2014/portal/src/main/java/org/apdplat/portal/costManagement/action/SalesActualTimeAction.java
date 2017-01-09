@@ -40,9 +40,6 @@ public class SalesActualTimeAction extends BaseAction{
 			if(endDate!=null&&!"".equals(endDate)){
 				paramsMap.put("dealDate", endDate);
 			}
-			if(orgCode!=null&&!"".equals(orgCode)){
-				paramsMap.put("orgCode", orgCode);
-			}
 			if(orgLevel!=null&&!"".equals(orgLevel)){
 				paramsMap.put("orgLevel", orgLevel);
 			}
@@ -56,10 +53,10 @@ public class SalesActualTimeAction extends BaseAction{
 				paramsMap.put("nextCode", nextCode);
 			}
 			
-			System.out.println(paramsMap);
+			//System.out.println(paramsMap);
 			List<Map<String,Object>> list = salesActualTimeService.listSales(paramsMap);
 			this.reponseJson(list);
-			System.out.println(list);
+			//System.out.println(list);
 		} catch (Exception e) {
 			logger.error("查询实时销量数据失败",e);
 			outJsonPlainString(response,"{\"msg\":\"查询实时销量数据失败\"}");
