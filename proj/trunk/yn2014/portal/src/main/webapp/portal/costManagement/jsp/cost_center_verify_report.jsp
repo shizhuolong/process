@@ -86,7 +86,7 @@
 										<td >
 											<a class="default-btn fLeft mr10" href="#" id="downExcelTemp">导出模板</a>&nbsp;&nbsp;&nbsp;
 											<a class="default-btn fLeft mr10" href="#" id="importExcel">导入Excel</a>&nbsp;&nbsp;&nbsp;
-											<a class="default-gree-btn fLeft mr10" href="#" id="confirmBtn">划分成本中心</a>
+											<a class="default-gree-btn fLeft mr10" href="#" id="confirmBtn">确认成本中心</a>
 										</td>
 										<%}%> 
 									</tr>
