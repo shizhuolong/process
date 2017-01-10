@@ -44,29 +44,29 @@ function queryDevData(){
 	if(devStartDate==devEndDate){
 		$.each(data,function(i,n){
 			content+="<tr>"
-			+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
-			+"<td>"+isNull(n['BUS_COUNT'])+"</td>"
-			+"<td>"+isNull(n['THIS_YW_DAY_DEV'])+"</td>"
-			+"<td>"+isNull(n['THIS_NET_DAY_DEV'])+"</td>"
-			+"<td>"+isNull(n['THIS_YW_MON_DEV'])+"</td>"
-			+"<td>"+isNull(n['THIS_NET_MON_DEV'])+"</td>"
-			+"<td>"+isNull(n['DT_YW_DEV'])+"</td>"
-			+"<td>"+isNull(n['DT_NET_DEV'])+"</td>"
-			+"<td>"+isNull(n['LJ_YW_DEV_RATE'])+"</td>"
-			+"<td>"+isNull(n['LJ_NET_DEV_RATE'])+"</td>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['BUS_COUNT'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_YW_DAY_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_NET_DAY_DEV'])+"</td>"
+				+"<td class='numberStyle  background'>"+isNull(n['THIS_YW_MON_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_NET_MON_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_YW_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_NET_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_YW_DEV_RATE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_NET_DEV_RATE'])+"</td>"
 			content+="</tr>";
 		});
 	}else{
 		$.each(data,function(i,n){
 			content+="<tr>"
-			+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
-			+"<td>"+isNull(n['BUS_COUNT'])+"</td>"
-			+"<td>"+isNull(n['THIS_YW_MON_DEV'])+"</td>"
-			+"<td>"+isNull(n['THIS_NET_MON_DEV'])+"</td>"
-			+"<td>"+isNull(n['DT_YW_DEV'])+"</td>"
-			+"<td>"+isNull(n['DT_NET_DEV'])+"</td>"
-			+"<td>"+isNull(n['LJ_YW_DEV_RATE'])+"</td>"
-			+"<td>"+isNull(n['LJ_NET_DEV_RATE'])+"</td>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['BUS_COUNT'])+"</td>"
+				+"<td class='numberStyle  background'>"+isNull(n['THIS_YW_MON_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_NET_MON_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_YW_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_NET_DEV'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_YW_DEV_RATE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_NET_DEV_RATE'])+"</td>"
 			content+="</tr>";
 		});	
 	}
@@ -118,16 +118,16 @@ function getDevSql(){
 	if(devStartDate==devEndDate){
 		sql=" SELECT                                                                                          		"+
 			"       NVL(GROUP_ID_1_NAME,'合计') GROUP_ID_1_NAME                                                      "+
-			"       ,COUNT(HQ_CHAN_CODE) BUS_COUNT                                                                   "+
+			"       ,COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT                                                          "+
 			"       ,NVL(SUM(THIS_YW_DEV),0) THIS_YW_DAY_DEV                                                         "+
 			"       ,NVL(SUM(THIS_NET_DEV),0) THIS_NET_DAY_DEV                                                       "+
 			"       ,NVL(SUM(THIS_YW_DEV1),0) THIS_YW_MON_DEV                                                        "+
 			"       ,NVL(SUM(THIS_NET_DEV1),0) THIS_NET_MON_DEV                                                      "+
-			"       ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                           "+
-			"                                                ROUND(NVL(SUM(THIS_YW_DEV1),0)/COUNT(HQ_CHAN_CODE),0)   "+
+			"       ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                  "+
+			"                        ROUND(NVL(SUM(THIS_YW_DEV1),0)/COUNT(DISTINCT HQ_CHAN_CODE),0)                  "+
 			"                                          ELSE 0 END DT_YW_DEV                                          "+
-			"       ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                           "+
-			"                                                ROUND(NVL(SUM(THIS_NET_DEV1),0)/COUNT(HQ_CHAN_CODE),0)  "+
+			"       ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                  "+
+			"                       ROUND(NVL(SUM(THIS_NET_DEV1),0)/COUNT(DISTINCT HQ_CHAN_CODE),0)                  "+
 			"                                          ELSE 0 END DT_NET_DEV                                         "+
 			"       ,PODS.GET_RADIX_POINT(CASE WHEN NVL(SUM(LAST_YW_DEV1),0)<>0                                      "+
 			"             THEN (NVL(SUM(THIS_YW_DEV1),0)-NVL(SUM(LAST_YW_DEV1),0))*100/NVL(SUM(LAST_YW_DEV1),0)      "+
@@ -141,14 +141,14 @@ function getDevSql(){
 	}else{
 		sql=	"SELECT                                                                                        		  "+
 				"      NVL(GROUP_ID_1_NAME,'合计') GROUP_ID_1_NAME                                                    "+
-				"      ,COUNT(HQ_CHAN_CODE) BUS_COUNT                                                                 "+
+				"      ,COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT                                                        "+
 				"      ,NVL(SUM(THIS_YW_DEV),0) THIS_YW_MON_DEV                                                       "+
 				"      ,NVL(SUM(THIS_NET_DEV),0) THIS_NET_MON_DEV                                                     "+
-				"      ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                         "+
-				"                                               ROUND(NVL(SUM(THIS_YW_DEV),0)/COUNT(HQ_CHAN_CODE),0)  "+
+				"      ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                "+
+				"                            ROUND(NVL(SUM(THIS_YW_DEV),0)/COUNT(DISTINCT HQ_CHAN_CODE),0)  		  "+
 				"                                         ELSE 0 END DT_YW_DEV                                        "+
-				"      ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                         "+
-				"                                               ROUND(NVL(SUM(THIS_NET_DEV),0)/COUNT(HQ_CHAN_CODE),0) "+
+				"      ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                "+
+				"                           ROUND(NVL(SUM(THIS_NET_DEV),0)/COUNT(DISTINCT HQ_CHAN_CODE),0)            "+
 				"                                         ELSE 0 END DT_NET_DEV                                       "+
 				"      ,PODS.GET_RADIX_POINT(CASE WHEN NVL(SUM(LAST_YW_DEV),0)<>0                                     "+
 				"            THEN (NVL(SUM(THIS_YW_DEV),0)-NVL(SUM(LAST_YW_DEV),0))*100/NVL(SUM(LAST_YW_DEV),0)       "+
@@ -175,7 +175,8 @@ function getDevSql(){
 	}else{
 		sql+=" AND 1=2 ";
 	}
-	sql+=" GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))";
+	sql+=" GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))"+
+		 " ORDER BY THIS_YW_MON_DEV ";
 	return sql;
 }
 
@@ -247,29 +248,29 @@ function queryIncomData(){
 	if(IncomeStartDate==IncomeEndDate){
 		$.each(data,function(i,n){
 			content+="<tr>"
-			+"<td>"+isNull(n['GROUP_ID_1_NAME1'])+"</td>"
-			+"<td>"+isNull(n['BUS_COUNT1'])+"</td>"
-			+"<td>"+isNull(n['THIS_YW_DAY_SR'])+"</td>"
-			+"<td>"+isNull(n['THIS_NET_DAY_SR'])+"</td>"
-			+"<td>"+isNull(n['THIS_YW_MON_SR'])+"</td>"
-			+"<td>"+isNull(n['THIS_NET_MON_SR'])+"</td>"
-			+"<td>"+isNull(n['DT_YW_SR'])+"</td>"
-			+"<td>"+isNull(n['DT_NET_SR'])+"</td>"
-			+"<td>"+isNull(n['LJ_YW_SR_RATE'])+"</td>"
-			+"<td>"+isNull(n['LJ_NET_SR_RATE'])+"</td>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME1'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['BUS_COUNT1'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_YW_DAY_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_NET_DAY_SR'])+"</td>"
+				+"<td class='numberStyle background'>"+isNull(n['THIS_YW_MON_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_NET_MON_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_YW_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_NET_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_YW_SR_RATE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_NET_SR_RATE'])+"</td>"
 			content+="</tr>";
 		});
 	}else{
 		$.each(data,function(i,n){
 			content+="<tr>"
-			+"<td>"+isNull(n['GROUP_ID_1_NAME1'])+"</td>"
-			+"<td>"+isNull(n['BUS_COUNT1'])+"</td>"
-			+"<td>"+isNull(n['THIS_YW_MON_SR'])+"</td>"
-			+"<td>"+isNull(n['THIS_NET_MON_SR'])+"</td>"
-			+"<td>"+isNull(n['DT_YW_SR'])+"</td>"
-			+"<td>"+isNull(n['DT_NET_SR'])+"</td>"
-			+"<td>"+isNull(n['LJ_YW_SR_RATE'])+"</td>"
-			+"<td>"+isNull(n['LJ_NET_SR_RATE'])+"</td>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME1'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['BUS_COUNT1'])+"</td>"
+				+"<td class='numberStyle background'>"+isNull(n['THIS_YW_MON_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_NET_MON_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_YW_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['DT_NET_SR'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_YW_SR_RATE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['LJ_NET_SR_RATE'])+"</td>"
 			content+="</tr>";
 		});
 	}
@@ -370,18 +371,18 @@ function getIncomSql(){
 	var orgLevel 	 = $("#orgLevel").val();
 	var sql ="";
 	if(IncomeStartDate==IncomeEndDate){
-		sql=" SELECT                                                                                          		"+
+		sql=" SELECT                                                                                          		 "+
 			"       NVL(GROUP_ID_1_NAME,'合计') GROUP_ID_1_NAME1                                                      "+
-			"       ,COUNT(HQ_CHAN_CODE) BUS_COUNT1                                                                   "+
+			"       ,COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT1                                                         "+
 			"       ,NVL(SUM(THIS_YW_SR),0) THIS_YW_DAY_SR                                                           "+
 			"       ,NVL(SUM(THIS_NET_SR),0) THIS_NET_DAY_SR                                                         "+
 			"       ,NVL(SUM(THIS_YW_SR1),0) THIS_YW_MON_SR                                                          "+
 			"       ,NVL(SUM(THIS_NET_SR1),0) THIS_NET_MON_SR                                                        "+
-			"       ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                           "+
-			"                                                ROUND(NVL(SUM(THIS_YW_SR1),0)/COUNT(HQ_CHAN_CODE),3)    "+
+			"       ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                  "+
+			"                           ROUND(NVL(SUM(THIS_YW_SR1),0)/COUNT(DISTINCT HQ_CHAN_CODE),3)                "+
 			"                                          ELSE 0 END DT_YW_SR                                           "+
-			"       ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                           "+
-			"                                                ROUND(NVL(SUM(THIS_NET_SR1),0)/COUNT(HQ_CHAN_CODE),3)   "+
+			"       ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                  "+
+			"                           ROUND(NVL(SUM(THIS_NET_SR1),0)/COUNT(DISTINCT HQ_CHAN_CODE),3)               "+
 			"                                          ELSE 0 END DT_NET_SR                                          "+
 			"       ,PODS.GET_RADIX_POINT(CASE WHEN NVL(SUM(LAST_YW_SR1),0)<>0                                       "+
 			"             THEN (NVL(SUM(THIS_YW_SR1),0)-NVL(SUM(LAST_YW_SR1),0))*100/NVL(SUM(LAST_YW_SR1),0)         "+
@@ -395,14 +396,14 @@ function getIncomSql(){
 	}else{
 		sql=	" SELECT                                                                                              "+
 				"       NVL(GROUP_ID_1_NAME,'合计') GROUP_ID_1_NAME1                                                   "+
-				"       ,COUNT(HQ_CHAN_CODE) BUS_COUNT1                                                               "+
+				"       ,COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT1                                                      "+
 				"      ,NVL(SUM(THIS_YW_SR),0) THIS_YW_MON_SR                                                         "+
 				"      ,NVL(SUM(THIS_NET_SR),0) THIS_NET_MON_SR                                                       "+
-				"      ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                         "+
-				"                                               ROUND(NVL(SUM(THIS_YW_SR),0)/COUNT(HQ_CHAN_CODE),3)   "+
+				"      ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                "+
+				"                      ROUND(NVL(SUM(THIS_YW_SR),0)/COUNT(DISTINCT HQ_CHAN_CODE),3)   				  "+
 				"                                         ELSE 0 END DT_YW_SR                                         "+
-				"      ,CASE WHEN COUNT(HQ_CHAN_CODE)<>0 THEN                                                         "+
-				"                                               ROUND(NVL(SUM(THIS_NET_SR),0)/COUNT(HQ_CHAN_CODE),3)  "+
+				"      ,CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0 THEN                                                "+
+				"                       ROUND(NVL(SUM(THIS_NET_SR),0)/COUNT(DISTINCT HQ_CHAN_CODE),3)  				  "+
 				"                                         ELSE 0 END DT_NET_SR                                        "+
 				"      ,PODS.GET_RADIX_POINT(CASE WHEN NVL(SUM(LAST_YW_SR),0)<>0                                      "+
 				"            THEN (NVL(SUM(THIS_YW_SR1),0)-NVL(SUM(LAST_YW_SR),0))*100/NVL(SUM(LAST_YW_SR),0)         "+
@@ -429,7 +430,8 @@ function getIncomSql(){
 	}else{
 		sql+=" AND 1=2 ";
 	}
-	sql+=" GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))";
+	sql+=" GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))"+
+		 " ORDER BY THIS_YW_MON_SR ";
 	return sql;
 }
 
@@ -449,30 +451,29 @@ function queryTerminalData(){
 	if(termnalStartDate==termnalEndDate){
 		$.each(data,function(i,n){
 			content+="<tr>"
-			+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
-			+"<td>"+isNull(n['BUS_COUNT'])+"</td>"
-			+"<td>"+isNull(n['TYPE1_DEV_DAY'])+"</td>"
-			+"<td>"+isNull(n['TYPE1_DEV_MON'])+"</td>"
-			+"<td>"+isNull(n['TYPE3_DEV_DAY'])+"</td>"
-			+"<td>"+isNull(n['TYPE3_DEV_MON'])+"</td>"
-			+"<td>"+isNull(n['TYPE_ALL_DAY'])+"</td>"
-			+"<td>"+isNull(n['TYPE_ALL_MON'])+"</td>"
-			+"<td>"+isNull(n['TYPE_ALL'])+"</td>"
-			+"<td>"+isNull(n['HB_ALL'])+"</td>"
-			+"<td>"+isNull(n['HB_DT'])+"</td>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['BUS_COUNT'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE1_DEV_DAY'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE1_DEV_MON'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE3_DEV_DAY'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE3_DEV_MON'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE_ALL_DAY'])+"</td>"
+				+"<td class='numberStyle background'>"+isNull(n['TYPE_ALL_MON'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE_ALL'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['HB_ALL'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['HB_DT'])+"</td>"
 			content+="</tr>";
 		});
 	}else{
 		$.each(data,function(i,n){
 			content+="<tr>"
-			+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
-			+"<td>"+isNull(n['BUS_COUNT'])+"</td>"
-			+"<td>"+isNull(n['TYPE1_DEV_MON'])+"</td>"
-			+"<td>"+isNull(n['TYPE3_DEV_MON'])+"</td>"
-			+"<td>"+isNull(n['TYPE_ALL_MON'])+"</td>"
-			+"<td>"+isNull(n['TYPE_ALL'])+"</td>"
-			+"<td>"+isNull(n['HB_ALL'])+"</td>"
-			+"<td>"+isNull(n['HB_DT'])+"</td>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['BUS_COUNT'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE1_DEV_MON'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE3_DEV_MON'])+"</td>"
+				+"<td class='numberStyle background'>"+isNull(n['TYPE_ALL_MON'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['TYPE_ALL'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['HB_ALL'])+"</td>"
 			content+="</tr>";
 		});
 	}
@@ -496,12 +497,12 @@ function downTermnalData(){
 	if(devStartDate==devEndDate){
 		title=[
 				["分公司","厅数","模式一","","","模式三","","","小计","",""],
-				["","","日发展","月累计","单厅","日发展","月累计","单厅","日发展","月累计","单厅"]
+				["","","日发展","月累计","单厅","日发展","月累计","单厅","日发展","月累计","单厅环比"]
 		       ];
 	}else{
 		title=[
-				["分公司","厅数","模式一","","模式三","","小计",""],
-				["","","月累计","单厅","月累计","单厅","月累计","单厅"]
+				["分公司","厅数","模式一","","模式三","","小计"],
+				["","","月累计","单厅","月累计","单厅","月累计"]
 		       ];
 	}
 	var sql = getTerminalSql();
@@ -546,7 +547,7 @@ function getTerminalColumns(){
 					"<th rowspan='2'>厅数</th>" +
 					"<th >模式一</th>" +
 					"<th >模式三</th>" +
-					"<th colspan='4'>小计</th>" +
+					"<th colspan='3'>小计</th>" +
 				"</tr>" +
 				"<tr>" +
 					"<th>月累计</th>" +
@@ -554,7 +555,7 @@ function getTerminalColumns(){
 					"<th>月累计</th>" +
 					"<th>单厅</th>" +
 					"<th>月累计环比</th>" +
-					"<th>单厅环比</th>" +
+					/*"<th>单厅环比</th>" +*/
 				"</tr>" +
 				"</thead>";
 	}
@@ -574,103 +575,55 @@ function getTerminalSql(){
 	var region 		 = $("#region").val();
 	var orgLevel 	 = $("#orgLevel").val();
 	if(termnalStartDate==termnalEndDate){
-		sql+=" 									                                                            "+
-			" SELECT NVL(T1.GROUP_ID_1_NAME, '合计') GROUP_ID_1_NAME,									    "+
-			"        COUNT(T1.HQ_CHAN_CODE) BUS_COUNT,									                    "+
-			"        NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,									            "+
-			"        NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,									            "+
-			"        NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,									            "+
-			"        NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,									            "+
-			"        NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,									                "+
-			"        NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,									            "+
-			"        CASE									                                                "+
-			"          WHEN COUNT(T1.HQ_CHAN_CODE) <> 0 THEN									            "+
-			"           ROUND(NVL(SUM(T1.TYPE_ALL1), 0) / COUNT(T1.HQ_CHAN_CODE), 0)						"+		
-			"          ELSE									                                                "+
-			" 						0									                                    "+
-			"        END TYPE_ALL,														                    "+
-/*			"        PODS.GET_RADIX_POINT(CASE									                            "+
-			"          WHEN NVL(SUM(T1.TYPE_ALLL),0)<>0 THEN 									            "+
-			"                                       NVL(SUM(T1.TYPE_ALL),0)*100/NVL(SUM(T1.TYPE_ALLL),0)	"+							
-			"                                        ELSE 0 END ||'%'									    "+
-			"                                        ,2)  HB_ALL ,									        "+*/
-			" PODS.GET_RADIX_POINT(CASE                                                                     "+
-	        "  WHEN NVL(SUM(T1.TYPE_ALLL),0)<>0 THEN                                                        "+
-	        "           (NVL(SUM(T1.TYPE_ALL1),0)-NVL(SUM(T1.TYPE_ALLL),0))*100/NVL(SUM(T1.TYPE_ALLL),0)    "+                  
-	        "                                ELSE 0 END ||'%'                                               "+
-	        "                                ,2)  HB_ALL ,                                                  "+
-			"        CASE WHEN (CASE									                                    "+
-			"                    WHEN SUM(T1.HALL_COUNTL) <> 0 THEN									        "+
-			"                     ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /SUM(T1.HALL_COUNTL))						"+		
-			"                    ELSE									                                    "+
-			" 							0									                                "+
-			"                    END)<>0 									                                "+
-			"             THEN （(CASE									                                    "+
-			"                    WHEN SUM(T1.HALL_COUNT) <> 0 THEN									        "+
-			"                     ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /SUM(T1.HALL_COUNT))						"+		
-			"                    ELSE									                                    "+
-			" 							0									                                "+
-			"                    END)-									                                    "+
-			"                    (CASE									                                    "+
-			"                    WHEN SUM(T1.HALL_COUNTL) <> 0 THEN									        "+
-			"                     ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /SUM(T1.HALL_COUNTL))						"+		
-			"                    ELSE									                                    "+
-			" 							0									                                "+
-			"                    END))*100/									                                "+
-			"                     (CASE									                                    "+
-			"                    WHEN SUM(T1.HALL_COUNTL) <> 0 THEN									        "+
-			"                     ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /SUM(T1.HALL_COUNTL))						"+		
-			"                    ELSE									                                    "+
-			" 							0									                                "+
-			"                    END)     									                                "+
-			"        ELSE 0 END         HB_DT                                  								"+
-			"   FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1									                "+
+		sql+=
+			"  SELECT NVL(T1.GROUP_ID_1_NAME, '合计') GROUP_ID_1_NAME,                                                                             "+
+			"        COUNT(DISTINCT T1.HQ_CHAN_CODE) BUS_COUNT,                                                                                    "+
+			"        NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                                      "+
+			"        NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                                     "+
+			"        NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                                      "+
+			"        NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                                     "+
+			"        NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                                        "+
+			"        NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                                       "+
+			"        CASE                                                                                                                          "+
+			"          WHEN COUNT(DISTINCT T1.HQ_CHAN_CODE) <> 0 THEN                                                                              "+
+			"           ROUND(NVL(SUM(T1.TYPE_ALL1), 0) / COUNT(DISTINCT T1.HQ_CHAN_CODE),                                                         "+
+			"                 0)                                                                                                                   "+
+			"          ELSE                                                                                                                        "+
+			"           0                                                                                                                          "+
+			"        END TYPE_ALL,                                                                                                                 "+
+			"        PODS.GET_RADIX_POINT(CASE                                                                                                     "+
+			"                               WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                                               "+
+			"                                (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                                       "+
+			"                                NVL(SUM(T1.TYPE_ALLL), 0)                                                                             "+
+			"                               ELSE                                                                                                   "+
+			"                                0                                                                                                     "+
+			"                             END || '%',                                                                                              "+
+			"                             2) HB_ALL,                                                                                               "+
+			"         PODS.GET_RADIX_POINT(CASE WHEN(CASE WHEN SUM(T1.HALL_COUNTL) <> 0                                                            "+
+			"          THEN ROUND(NVL(SUM(T1.TYPE_ALLL), 0) / SUM(T1.HALL_COUNTL)) ELSE 0 END) <> 0                                                "+
+			"            THEN （(CASE WHEN SUM(T1.HALL_COUNT) <> 0                                                                                 "+
+			"              THEN ROUND(NVL(SUM(T1.TYPE_ALL1), 0) / SUM(T1.HALL_COUNT)) ELSE 0 END) - (CASE WHEN SUM(T1.HALL_COUNTL) <> 0            "+
+			"                THEN ROUND(NVL(SUM(T1.TYPE_ALLL), 0) / SUM(T1.HALL_COUNTL)) ELSE 0 END)) * 100 / (CASE WHEN SUM(T1.HALL_COUNTL) <> 0  "+ 
+			"                  THEN ROUND(NVL(SUM(T1.TYPE_ALLL), 0) / SUM(T1.HALL_COUNTL)) ELSE 0 END) ELSE 0 END ||'%' ,2) HB_DT                  "+
+			"   FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                           "+
 			"  WHERE T1.DEAL_DATE = '"+termnalStartDate+"'									                ";
 
 	}else{
-		sql+=" SELECT NVL(T1.GROUP_ID_1_NAME, '合计') GROUP_ID_1_NAME,                                                     "+
-			"       COUNT(T1.HQ_CHAN_CODE) BUS_COUNT,                                                                     "+
-			"       NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_MON,                                                              "+
-			"       NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_MON,                                                              "+
-			"       NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_MON,                                                                "+
-			"       CASE                                                                                                  "+
-			"         WHEN COUNT(T1.HQ_CHAN_CODE) <> 0 THEN                                                               "+
-			"          ROUND(NVL(SUM(T1.TYPE_ALL), 0) / COUNT(T1.HQ_CHAN_CODE), 0)                                        "+
-			"         ELSE                                                                                                "+
-			"				0                                                                                             "+
-			"       END TYPE_ALL,                                                                                         "+
-			"       PODS.GET_RADIX_POINT(CASE                                                                             "+
-			"         WHEN NVL(SUM(T1.LAST_TYPEALL_DEV),0)<>0 THEN                                                        "+
-			"             (NVL(SUM(T1.TYPE_ALL),0)-NVL(SUM(T1.LAST_TYPEALL_DEV),0))*100/NVL(SUM(T1.LAST_TYPEALL_DEV),0)   "+          
-			"                                       ELSE 0 END ||'%'                                                      "+
-			"                                       ,2)  HB_ALL ,                                                         "+
-			"       CASE WHEN (CASE                                                                                       "+
-			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                        "+
-			"                    ROUND(NVL(SUM(T1.LAST_TYPEALL_DEV), 0) /SUM(T1.HALL_COUNTL))                             "+
-			"                   ELSE                                                                                      "+
-			"					0                                                                                         "+
-			"                   END)<>0                                                                                   "+
-			"            THEN （(CASE                                                                                     "+
-			"                   WHEN SUM(T1.HALL_COUNT) <> 0 THEN                                                         "+
-			"                    ROUND(NVL(SUM(T1.TYPE_ALL), 0) /SUM(T1.HALL_COUNT))                                      "+
-			"                   ELSE                                                                                      "+
-			"						0                                                                                     "+
-			"                   END)-                                                                                     "+
-			"                   (CASE                                                                                     "+
-			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                        "+
-			"                    ROUND(NVL(SUM(T1.LAST_TYPEALL_DEV), 0) /SUM(T1.HALL_COUNTL))                             "+
-			"                   ELSE                                                                                      "+
-			"						0                                                                                     "+
-			"                   END))*100/                                                                                "+
-			"                    (CASE                                                                                    "+
-			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                        "+
-			"                    ROUND(NVL(SUM(T1.LAST_TYPEALL_DEV), 0) /SUM(T1.HALL_COUNTL))                             "+
-			"                   ELSE                                                                                      "+
-			"						0                                                                                     "+
-			"                   END)                                                                                      "+
-			"       ELSE 0 END      HB_DT                                                                                 "+
-			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                   "+
-			" WHERE T1.DEAL_DATE BETWEEN '"+termnalStartDate+"' AND '"+termnalEndDate+"'                                  ";
+		sql+=" SELECT NVL(T1.GROUP_ID_1_NAME, '合计') GROUP_ID_1_NAME,                                             "+
+			"        COUNT(DISTINCT T1.HQ_CHAN_CODE) BUS_COUNT,                                                   "+
+			"        NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_MON,                                                     "+
+			"        NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_MON,                                                     "+
+			"        NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_MON,                                                       "+
+			"        ROUND(CASE WHEN COUNT(DISTINCT HQ_CHAN_CODE)<>0                                              "+
+			"             THEN NVL(SUM(T1.TYPE_ALL),0)/COUNT(DISTINCT HQ_CHAN_CODE)                               "+
+			"              ELSE 0 END ,0) TYPE_ALL,                                                               "+
+			"        PODS.GET_RADIX_POINT(CASE                                                                    "+
+			"          WHEN NVL(SUM(T1.LAST_TYPEALL_DEV),0)<>0 THEN                                               "+
+			"        (NVL(SUM(T1.TYPE_ALL),0)-NVL(SUM(T1.LAST_TYPEALL_DEV),0))*100/NVL(SUM(T1.LAST_TYPEALL_DEV),0) "+            
+			"                                        ELSE 0 END ||'%'                                             "+
+			"                                        ,2)  HB_ALL                                                  "+             
+			"   FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                          "+
+			" WHERE T1.DEAL_DATE BETWEEN '"+termnalStartDate+"' AND '"+termnalEndDate+"'                          ";
 			
 
 	}
@@ -688,8 +641,9 @@ function getTerminalSql(){
 	}else{
 		sql+=" AND 1=2 ";
 	}
-	sql+=" GROUP BY GROUPING SETS(T1.GROUP_ID_0,(T1.GROUP_ID_0, T1.GROUP_ID_1_NAME)) "+	
-		 " ORDER BY TYPE_ALL_MON								                     ";
+	sql+=" GROUP BY GROUPING SETS(T1.GROUP_ID_0,(T1.GROUP_ID_0, T1.GROUP_ID_1_NAME))" +
+		 " ORDER BY TYPE_ALL_MON ";
+		 
 	return sql;
 }
 /**
@@ -738,46 +692,6 @@ function getDate(dealDate){
 	var contrastDate =year+""+(month<10?"0"+month:""+month)+"" + (day<10?"0"+day:""+day); 
 	return contrastDate;
 } 
-  
-////////////////////////下载开始/////////////////////////////////////////////
-function downsAll(orgCode,orgName,dealDate,orgLevel,devType,dealDate){
-	dayStr=dealDate.substr(0,8);
-	var sql = 	" SELECT SUBSTR(T.DEAL_DATE, 1, 8)  DEAL_DATE,  "+	//-账期
-				"        T.GROUP_ID_1_NAME, 					"+	//--地市名称
-				"        T.UNIT_NAME, 							"+	//--营服名称
-				"        T.HQ_CHAN_CODE, 						"+	//--渠道编码
-				"        T.GROUP_ID_4_NAME, 					"+	//--渠道名称
-				"        T.DEVELOPER, 							"+	//--bss发展编码
-				"        T.FD_CHNL_CODE, 						"+	//--直销礼包编码
-				"        T.HR_ID, 								"+	//--HR编码
-				"        T.USERNAME, 							"+	//--直销人/渠道经理
-				"        T.SUBSCRIPTION_ID, 					"+	//--用户编码
-				"        T.SERVICE_NUM, 						"+	//--用户号码
-				"        T.WG_NET_TYPE, 						"+	//--网别
-				"        T.JOIN_DATE 							"+	//--入网时间
-				"   FROM PODS.VIEW_ODS_DEVE_INFO_HOUR T         "+
-				//显示数据为(给定时间dealDate)当天的零点到给定时间(到小时)之间的数据,传入参数dayStr作为查询时候DEAL_DATE参数，dealDate为入网时间JOIN_DATE的参数
-				"  WHERE SUBSTR(T.DEAL_DATE, 1, 8) = '"+dayStr+"' AND T.JOIN_DATE<='"+dealDate+"'" ;
-	if(orgLevel==1){
-		sql+=" AND T.GROUP_ID_0='"+orgCode+"'";
-	}else if(orgLevel==2){
-		sql+=" AND T.GROUP_ID_1='"+orgCode+"'";
-	}else if(orgLevel==3){
-		sql+=" AND T.UNIT_ID='"+orgCode+"'";
-	}else if(orgLevel==4){
-		sql+=" AND T.HQ_CHAN_CODE='"+orgCode+"'";
-	}else if(orgLevel==4){
-		sql+=" AND 1=2 ";
-	}
-	if(devType){
-		sql+=" AND T.WG_NET_TYPE ='"+devType+"'";
-	}
-	
-	var title=[["账期","地市名称","营服名称","渠道编码","渠道名称","BSS发展编码","直销礼包编码","HR编码","直销人/渠道经理","用户编码","用户号码","网别","入网时间"]];
-	showtext = "("+orgName+")("+devType+")实时销量明细-"+dealDate;
-	downloadExcel(sql,title,showtext);
-}
-/////////////////////////下载结束/////////////////////////////////////////////
 
 function isNull(obj){
 	if(obj == undefined) {
