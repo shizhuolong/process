@@ -294,7 +294,7 @@ function downIncomeData(){
 	var IncomeStartDate = $("#IncomeStartDate").val();
 	var IncomeEndDate   = $("#IncomeEndDate").val();
 	var title;
-	if(devStartDate==devEndDate){
+	if(IncomeStartDate==IncomeEndDate){
 		title = [
 					["分公司","厅数","日收入","","月累计","","单厅","","累计环比",""],
 					["","","移动网","固网","移动网","固网","移动网","固网","移动网","固网"]
@@ -498,15 +498,15 @@ function downTermnalData(){
 	var termnalStartDate = $("#termnalStartDate").val();
 	var termnalEndDate   = $("#termnalEndDate").val();
 	var title;
-	if(devStartDate==devEndDate){
+	if(termnalStartDate==termnalEndDate){
 		title=[
-				["分公司","厅数","模式一","","","模式三","","","小计","",""],
-				["","","日发展","月累计","单厅","日发展","月累计","单厅","日发展","月累计","单厅环比"]
+				["分公司","厅数","模式一" ,""     ,"模式三",""     ,"小计"  ,""     ,""    ,""        ,""       ],
+				[""     ,""    ,"日发展","月累计","日发展","月累计","日发展","月累计","单厅","月累计环比","单厅环比"]
 		       ];
 	}else{
 		title=[
-				["分公司","厅数","模式一","","模式三","","小计"],
-				["","","月累计","单厅","月累计","单厅","月累计"]
+				["分公司","厅数","模式一","模式三","小计","",""],
+				["","","月累计","月累计 ","月累计  ","单厅","月累计环比"]
 		       ];
 	}
 	var sql = getTerminalSql();
