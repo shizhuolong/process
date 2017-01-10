@@ -233,8 +233,8 @@ TABLE TBODY TR TD{
 								</select>
 							</td>
 							<td style="border:none;">
-								<a class="default-btn fLeft mr10" id="TermnalSearchBtn" class="easyui-linkbutton">查询</a>
-								<a class="default-gree-btn fLeft mr10" id="TermnalDownBtn" class="easyui-linkbutton">导出</a>
+								<a class="default-btn fLeft mr10" id="TermnalSearchBtn" >查询</a>
+								<a class="default-gree-btn fLeft mr10" id="TermnalDownBtn">导出</a>
 							</td>
 						</tr>
 					</table>
