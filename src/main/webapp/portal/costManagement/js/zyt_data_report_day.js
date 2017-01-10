@@ -1,4 +1,8 @@
-	$(function() {
+/**
+ * @author xuxuejiang
+ * 发展收入终端日通报js
+ */	
+$(function() {
 
 		//发展日通报
 		queryDevData();
@@ -100,7 +104,7 @@ function downDevData(){
 	}
 	var sql = getDevSql();
 	//var title=[["账期","地市名称","营服名称","渠道编码","渠道名称","BSS发展编码","直销礼包编码","HR编码","直销人/渠道经理","用户编码","用户号码","网别","入网时间"]];
-	showtext = "自有厅数据日通报(发展日通报)-("+devStartDate+"~"+devEndDate+")";
+	showtext = "发展收入终端日通报(发展日通报)-("+devStartDate+"~"+devEndDate+")";
 	downloadExcel(sql,title,showtext);
 }
 /**
@@ -303,7 +307,7 @@ function downIncomeData(){
 	}
 	var sql = getIncomSql();
 	//var title=[["账期","地市名称","营服名称","渠道编码","渠道名称","BSS发展编码","直销礼包编码","HR编码","直销人/渠道经理","用户编码","用户号码","网别","入网时间"]];
-	showtext = "自有厅数据日通报(收入日通报)-("+IncomeStartDate+"~"+IncomeEndDate+")";
+	showtext = "发展收入终端日通报(收入日通报)-("+IncomeStartDate+"~"+IncomeEndDate+")";
 	downloadExcel(sql,title,showtext);
 }
 /**
@@ -507,7 +511,7 @@ function downTermnalData(){
 	}
 	var sql = getTerminalSql();
 	//var title=[["账期","地市名称","营服名称","渠道编码","渠道名称","BSS发展编码","直销礼包编码","HR编码","直销人/渠道经理","用户编码","用户号码","网别","入网时间"]];
-	showtext = "自有厅数据日通报(终端日通报)-("+termnalStartDate+"~"+termnalEndDate+")";
+	showtext = "发展收入终端日通报(终端日通报)-("+termnalStartDate+"~"+termnalEndDate+")";
 	downloadExcel(sql,title,showtext);
 }
 
