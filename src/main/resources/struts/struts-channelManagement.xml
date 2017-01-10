@@ -97,6 +97,11 @@
             <result name="success">/portal/channelManagement/jsp/import_iron_stock_list.jsp</result>
             <result name="error">/portal/channelManagement/jsp/import_iron_stock.jsp</result>            
         </action>
+         <!--室分产品-->
+        <action name="ironPro_*" class="org.apdplat.portal.channelManagement.action.ImportIronProAction" method="{1}">
+            <result name="success">/portal/channelManagement/jsp/import_iron_pro_list.jsp</result>
+            <result name="error">/portal/channelManagement/jsp/import_iron_pro.jsp</result>            
+        </action>
         <!-- 实时销量明细-->
          <action name="sales_*" class="org.apdplat.portal.costManagement.action.SalesActualTimeAction" method="{1}">
 			<result name="success">/portal/costManagement/jsp/sales_actual_time.jsp</result>
