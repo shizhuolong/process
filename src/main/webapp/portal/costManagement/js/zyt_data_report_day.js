@@ -780,9 +780,18 @@ function downsAll(orgCode,orgName,dealDate,orgLevel,devType,dealDate){
 /////////////////////////下载结束/////////////////////////////////////////////
 
 function isNull(obj){
-	if(obj == undefined || obj == null || obj == '') {
+	if(obj == undefined) {
 		return "&nbsp;";
+	}else if(obj == null){
+		return "&nbsp;";
+	}else if(obj == ''){
+		if(obj==0){
+			return obj;
+		}else{
+			return "&nbsp;";	
+		}
+	}else{
+		return obj;
 	}
-	return obj;
 }
 
