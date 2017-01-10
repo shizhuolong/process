@@ -67,8 +67,6 @@ TABLE TBODY TR TD{
     white-space: nowrap;
 }
 .titleDivStyle{
-  	/* color: #F0FFF0; */
-  	color: #FFFFBB;
     font-size: 14px;
     font-weight: bold;
     min-width: 10px;
@@ -76,14 +74,17 @@ TABLE TBODY TR TD{
     text-align: center;
     white-space: nowrap;
     border:1px solid #c0e2ef;
-   /*  background-color:#FC9513;  */
-   background-color: #FFBB66 ;
+   background-color: #FDCD81;
 }
 .titleDivStyle P{
 	word-spacing:50px;
+	letter-spacing:8px;
 }
-.queryStyle{
-	style="text-align:right;border:none;"
+.numberStyle{
+	text-align:right;
+}
+.background{
+	background-color:#FFECC8;
 }
 </style>
 </head>
@@ -92,8 +93,10 @@ TABLE TBODY TR TD{
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<div>
-		<div style="padding:5px;border:1px solid #c0e2ef">
-			<div class="titleDivStyle"><p>发展日通报</p></div>
+		<div style="padding:5px;border:1px solid #c0e2ef;border-top:none;">
+			<div class="titleDivStyle">
+				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">发展日通报</FONT></P>
+			</div>
 			<div id="devDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
 					<table class="default-table sticky-enabled">
@@ -142,27 +145,29 @@ TABLE TBODY TR TD{
 			</div>
 		</div>
 		
-		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:30px;">
-			<div class="titleDivStyle" >收入日通报</div>
+		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:40px;;border-top:none;">
+			<div class="titleDivStyle">
+				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">收入日通报</FONT></P>
+			</div>
 			<div id="incomeDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
 					<table class="default-table sticky-enabled">
 						<tr>
 							<th style="text-align:right;border:none;">开始账期：</th>
 							<td style="text-align:right;border:none;">
-								<input readonly="readonly" type="text" style="width: 120px;padding:3px;" class="Wdate"
+								<input readonly="readonly" type="text" class="Wdate default-text-input wper80"
 												id="IncomeStartDate" name="IncomeStartDate" value="<%=dealDate %>"
 												onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" />
 							</td>
 							<th style="text-align:right;border:none;">结束账期：</th>
 							<td style="text-align:right;border:none;">
-								<input readonly="readonly" type="text" style="width: 120px;padding:3px;" class="Wdate"
+								<input readonly="readonly" type="text" class="Wdate default-text-input wper80"
 												id="IncomeEndDate" name="IncomeEndDate" value="<%=dealDate %>"
 												onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" />
 							</td>
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
-								<select id="IncomeOpeType" name="IncomeOpeType" style="width:120px;">
+								<select id="IncomeOpeType" name="IncomeOpeType" class="Wdate default-text-input wper80">
 									<option value=''>全部</option>
 									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
@@ -171,7 +176,7 @@ TABLE TBODY TR TD{
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
 							<td style="text-align:right;border:none;">
-								<select id="IncomeChnlType" name="IncomeChnlType" style="width:120px;">
+								<select id="IncomeChnlType" name="IncomeChnlType" class="Wdate default-text-input wper80">
 									<option value=''>全部</option>
 									<option value='小型厅'>小型厅</option>
 									<option value='标准厅'>标准厅</option>
@@ -188,28 +193,30 @@ TABLE TBODY TR TD{
 				<table id="incomeDataGrid"></table>
 			</div>
 		</div>
-		
-		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:30px;">
-			<div class="titleDivStyle" >终端日通报</div>
+
+		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:40px;border-top:none;">
+			<div class="titleDivStyle">
+				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">终端日通报</FONT></P>
+			</div>
 			<div id="termnalDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
 					<table>
 						<tr>
 							<th>开始账期：</th>
 							<td>
-								<input readonly="readonly" type="text" style="width: 120px;padding:3px;" class="Wdate"
+								<input readonly="readonly" type="text" class="Wdate default-text-input wper80"
 												id="termnalStartDate" name=" termnalStartDate" value="<%=dealDate %>"
 												onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" />
 							</td>
 							<th>结束账期：</th>
 							<td>
-								<input readonly="readonly" type="text" style="width: 120px;padding:3px;" class="Wdate"
+								<input readonly="readonly" type="text" class="Wdate default-text-input wper80"
 												id="termnalEndDate" name="termnalEndDate" value="<%=dealDate %>"
 												onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" />
 							</td>
 							<th>运营模式：</th>
 							<td>
-								<select id="TermnalOpeType" name="TermnalOpeType" style="width:120px;">
+								<select id="TermnalOpeType" name="TermnalOpeType" class="Wdate default-text-input wper80">
 									<option value=''>全部</option>
 									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
@@ -218,7 +225,7 @@ TABLE TBODY TR TD{
 							</td>
 							<th>厅类型：</th>
 							<td>
-								<select id="TermnalChnlType" name="TermnalChnlType" style="width:120px;">
+								<select id="TermnalChnlType" name="TermnalChnlType" class="Wdate default-text-input wper80">
 									<option value=''>全部</option>
 									<option value='小型厅'>小型厅</option>
 									<option value='标准厅'>标准厅</option>
