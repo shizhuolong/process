@@ -66,14 +66,14 @@
 					</td>
 					<td width="2%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right; margin-right: 12px;">查询</a>
+					</td>
+					<td width="2%">
+						<a class="default-gree-btn" style="float: right; margin-right: 12px;" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 					<td width="2%">
 						<a class="default-btn" href="#" id="showMark"
-						style="float: right; margin-right: 48px;">口径</a>
-					</td>
-					<td width="2%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						style="float: right; margin-right: 12px;">口径</a>
 					</td>
 				</tr>
 			</table>
