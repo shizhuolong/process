@@ -74,7 +74,7 @@
 	<!-- 查询日常巡检人员 -->
 	<select id="queryRcPerson" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
-			T1.USERID, T1.NAME, T2.USERNAME, T2.PHONE,T2.ORG_ID,T3.CODE,T3.ORGLEVEL 
+			T2.ID, T2.REALNAME, T2.USERNAME, T2.PHONE,T2.ORG_ID,T3.CODE,T3.ORGLEVEL 
 		FROM 
 			PORTAL.VIEW_U_PORTAL_PERSON T1 
 			JOIN PORTAL.APDP_USER T2 
@@ -85,6 +85,7 @@
 			T1.DEAL_DATE=#{month} 
 			AND T1.UNIT_ID = #{unitId} 
 			AND T1.USER_CODE = '2' <!-- 营服中心负责人只能给渠道经理下发任务 -->
+			AND	T2.ENABLED=1  <!--取有效人员信息-->
 		<if test="realName != null">
 			AND T1.NAME LIKE #{realName}
 		</if>
