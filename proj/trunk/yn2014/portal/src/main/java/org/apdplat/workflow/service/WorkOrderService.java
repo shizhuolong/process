@@ -77,7 +77,7 @@ public class WorkOrderService {
 		
 		processInstance =runtimeService.startProcessInstanceByKey(vo.getProcessKey(),
 						vo.getBusinessKey(), variables);
-		/*//添加代办同步云门户
+		//添加代办同步云门户
 		try{
 			//发起的时候要注意组装参数
 			vo.setStartManName(user.getRealName());
@@ -87,7 +87,7 @@ public class WorkOrderService {
 				vo.setTaskId(newVo.getTaskId());
 			}
 			taskTo4AService.sendAddOrderTo4A(vo);
-		}catch(Exception e){e.printStackTrace();}*/
+		}catch(Exception e){e.printStackTrace();}
 		//添加短信发送
 		////////////////////// 
 		return processInstance;
@@ -567,11 +567,11 @@ public class WorkOrderService {
 		}else {
 			variables.put(WorkflowConstant.NEED_PAY,"yes"); // 
 		}
-		/*try{
+		try{
 			taskTo4AService.sendDoneOrderTo4A(workOrderVo);
-		}catch(Exception e){e.printStackTrace();}*/
+		}catch(Exception e){e.printStackTrace();}
 		taskService.complete(workOrderVo.getTaskId(),variables);
-		/*//添加代办同步云门户
+		//添加代办同步云门户
 		try{
 			WorkOrderVo newVo=this.qryTaskByKey(workOrderVo.getBusinessKey());
 			if(null!=newVo){
@@ -580,7 +580,7 @@ public class WorkOrderService {
 			taskTo4AService.sendAddOrderTo4A(workOrderVo);
 		}catch(Exception e){e.printStackTrace();}
 		//添加短信发送 
-*/	}
+	}
 
 	
 	
