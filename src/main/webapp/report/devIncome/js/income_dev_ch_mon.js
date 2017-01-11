@@ -232,41 +232,74 @@ function downsAll() {
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	
-	var preField=' t.group_id_1_name,t.unit_name,t.AGENT_M_NAME,t.group_id_4_name,t.HQ_CHAN_CODE,t.DEAL_DATE ';
-	var where='';
+/*	var preField=' t.group_id_1_name,t.unit_name,t.AGENT_M_NAME,t.group_id_4_name,t.HQ_CHAN_CODE,t.DEAL_DATE ';
 	var orderBy=" order by t.group_id_1_name,t.unit_name,t.AGENT_M_NAME,t.group_id_4_name,t.HQ_CHAN_CODE,t.DEAL_DATE ";
-	var fieldSql=field.join(",");
+	var fieldSql=field.join(",");*/
+	var orderBy=" ORDER BY T.GROUP_ID_1_NAME,T.UNIT_NAME,T.AGENT_M_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE ";
+	var where='';
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
-		where = " where t.GROUP_ID_0='" + code + "' ";
+		where = " WHERE T.GROUP_ID_0='" + code + "' ";
 	} else if (orgLevel == 2) {//市
-		where = " where t.GROUP_ID_1='" + code + "' ";
+		where = " WHERE T.GROUP_ID_1='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where=" where t.UNIT_ID IN("+_unit_relation(code)+") ";
+		where=" WHERE T.UNIT_ID IN("+_unit_relation(code)+") ";
 	} else if (orgLevel >= 4) {//
-		where = " where t.GROUP_ID_4='" + code + "' ";
+		where = " WHERE T.GROUP_ID_4='" + code + "' ";
 	}
-	where+=' and t.DEAL_DATE BETWEEN \''+startDate+'\' AND \''+endDate+'\'';
+	where+=' AND T.DEAL_DATE BETWEEN \''+startDate+'\' AND \''+endDate+'\'';
 	if(where!=''&&regionCode!=''){
-		where+=" and t.GROUP_ID_1 = '"+regionCode+"'";
+		where+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(where!=''&&unitCode!=''){
-		where+=" and t.UNIT_ID IN("+_unit_relation(unitCode)+") ";
+		where+=" AND T.UNIT_ID IN("+_unit_relation(unitCode)+") ";
 	}
 
-	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from PMRT.VIEW_MRT_INCOME_DEV_CH_MON t';
+	var sql =   " SELECT T.GROUP_ID_1_NAME            AS GROUP_ID_1_NAME   ,  "+
+				"        T.UNIT_NAME                  AS UNIT_NAME         ,  "+
+				"        T.AGENT_M_NAME               AS AGENT_M_NAME      ,  "+
+				"        T.GROUP_ID_4_NAME            AS GROUP_ID_4_NAME   ,  "+
+				"        T.HQ_CHAN_CODE               AS HQ_CHAN_CODE      ,  "+
+				"        SUM(NVL(DEV_NUM,0))          AS DEV_NUM           ,  "+
+				"        SUM(NVL(INCOME_NUM,0))       AS INCOME_NUM        ,  "+
+				"        SUM(NVL(DEV_2G_NUM,0))       AS DEV_2G_NUM        ,  "+
+				"        SUM(NVL(DEV_3G_NUM,0))       AS DEV_3G_NUM        ,  "+
+				"        SUM(NVL(DEV_WIFI_NUM,0))     AS DEV_WIFI_NUM      ,  "+
+				"        SUM(NVL(DEV_4G_NUM,0))       AS DEV_4G_NUM        ,  "+
+				"        SUM(NVL(SR_2G_NUM,0))        AS SR_2G_NUM         ,  "+
+				"        SUM(NVL(SR_3G_NUM,0))        AS SR_3G_NUM         ,  "+
+				"        SUM(NVL(SR_WIFI_NUM,0))      AS SR_WIFI_NUM       ,  "+
+				"        SUM(NVL(SR_4G_NUM,0))        AS SR_4G_NUM         ,  "+
+				"        SUM(NVL(STOCK_2G_NUM,0))     AS STOCK_2G_NUM      ,  "+
+				"        SUM(NVL(STOCK_3G_NUM,0))     AS STOCK_3G_NUM      ,  "+
+				"        SUM(NVL(STOCK_WIFI_NUM,0))   AS STOCK_WIFI_NUM    ,  "+
+				"        SUM(NVL(STOCK_4G_NUM,0))     AS STOCK_4G_NUM      ,  "+
+				"        SUM(NVL(CREDIT_NUM,0))       AS CREDIT_NUM        ,  "+
+				"        SUM(NVL(ACCT_NUM_2G,0))      AS ACCT_NUM_2G       ,  "+
+				"        SUM(NVL(ACCT_NUM_3G,0))      AS ACCT_NUM_3G       ,  "+
+				"        SUM(NVL(ACCT_NUM_WIFI,0))    AS ACCT_NUM_WIFI     ,  "+
+				"        SUM(NVL(ACCT_NUM_4G,0))      AS ACCT_NUM_4G       ,  "+
+				"        SUM(NVL(GIVE_2G_NUM,0))      AS GIVE_2G_NUM       ,  "+
+				"        SUM(NVL(GIVE_3G_NUM,0))      AS GIVE_3G_NUM       ,  "+
+				"        SUM(NVL(GIVE_WIFI_NUM,0))    AS GIVE_WIFI_NUM     ,  "+
+				"        SUM(NVL(GIVE_4G_NUM,0))      AS GIVE_4G_NUM       ,  "+
+				"        SUM(NVL(RETURN_2G_NUM,0))    AS RETURN_2G_NUM     ,  "+
+				"        SUM(NVL(RETURN_3G_NUM,0))    AS RETURN_3G_NUM     ,  "+
+				"        SUM(NVL(RETURN_WIFI_NUM,0))  AS RETURN_WIFI_NUM   ,  "+
+				"        SUM(NVL(RETURN_4G_NUM,0))    AS RETURN_4G_NUM        "+
+				"   FROM PMRT.VIEW_MRT_INCOME_DEV_CH_MON T                    ";
 	if (where != '') {
 		sql += where;
 	}
+	sql+=" GROUP BY  T.GROUP_ID_1_NAME,T.UNIT_NAME,T.AGENT_M_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE ";
 	if(orderBy!=''){
 		sql += orderBy;
 	}
 	
 	showtext = '移网发展收入月报-' + startDate+'-'+endDate;
-	var title=[["营销架构","","","","","帐期",
+	var title=[["营销架构","","","","",
 	            
 	            "总览","",
 	            "发展","","","",
@@ -277,7 +310,7 @@ function downsAll() {
 	            "赠费","","","",
 	            "退费","","",""
 	            ],
-	           ["地市","营服中心","人员","渠道名称","渠道编码","",
+	           ["地市","营服中心","人员","渠道名称","渠道编码",
 	            
 	            "移网总发展","移网总收入",
 	            
