@@ -149,13 +149,13 @@ function searchHdChanl(pageNumber) {
 	   				value = "";
 	   			}
 	   			content+="<tr>";
-	   			content+="<td>"+isNull(n['NAME'])+"</td>"
+	   			content+="<td algin='left'>"+isNull(n['NAME'])+"</td>"
 				+"<td>"+isNull(n['CODE'])+"</td>"
 				+"<td>"+realName+"</td>"
 				+"<td>"+phone+"</td>"
 				+"<td style='display:none;'>"+userId+"</td>"
 	   			+"<td><input type='text' size='15' onkeyup='valid(this)' id='"+n['CODE']+"_"+userId+"' value='"+value+"'></td>"
-	   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['NAME']+"' chl_code='"+n['CODE']+"' pCode='"+pCode+"' realName='"+realName+"' userId='"+userId+"' userName='"+userName+"' phone='"+phone+"' pLevel='"+pLevel+"' chanl_type='"+n['CHLTYPE']+"'>选择</a></td>"
+	   			+"<td><a href='#' onclick='create(this,event)' chl_name='"+n['NAME']+"' chl_code='"+n['CODE']+"' pCode='"+pCode+"' realName='"+realName+"' userId='"+userId+"' userName='"+userName+"' phone='"+phone+"' pLevel='"+pLevel+"' chanl_type='"+n['CHLTYPE']+"'>添加到巡检列表</a></td>"
 				content+="</tr>";
 			});
 			if(content != "") {
@@ -288,12 +288,18 @@ function addHdInpec() {
 			art.dialog.alert("结束时间不能小于起始时间！");
 			return;
 		}
+		var trSelected=$("#selected_inspection_chanl tr");
+		if(trSelected.length<=0){
+			art.dialog.alert("请添加巡检渠道，操作步骤看“巡检渠道”栏提示！");
+			return;
+		}
 		jQuery.blockUI({
 			message: "<div style='text-align:center;'><b>正在处理中，请稍等...</b></div>",
 			fadeIn: 700,
 			centerY: true,
 			showOverlay: true
 		});
+		
 		var taskInfo = '{taskInfo:[';
 		$("#selected_inspection_chanl tr").each(function(i){
 			taskInfo += '{"inspec_type":"2","inspec_name":"'+inspec_name+'","start_time":"'+startTime+'","end_time":"'+endTime+'","remark":"'+inspec_desc+'",';
