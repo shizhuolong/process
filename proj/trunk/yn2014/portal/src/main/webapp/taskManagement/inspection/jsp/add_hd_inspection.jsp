@@ -102,7 +102,6 @@
 	                             		</tbody>
 	                             		<tr>
 											<td colspan="4">
-												</div>
 												<div class="page_count">
 													<div class="page_count_left">
 														共有 <span id="totalCount"></span> 条数据
@@ -111,7 +110,6 @@
 													<div class="page_count_right">
 														<div id="pagination"></div>
 													</div>
-												</div>
 												</div>
 											</td>
 										</tr>
@@ -123,15 +121,23 @@
 	                       	<div class="no-js-table" style="padding-bottom: 5px;">
 	                       		<table>
 	                       		<tr>
-				                	<td align="right">渠道名称：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlName" id="hqChanlName" type="text"/></td>
-				                    <td align="right">渠道编码：</td>
-				                    <td><input class="default-text-input" style="width: 250px;" name="hqChanlCode" id="hqChanlCode" type="text"/></td>
-				                </tr>
-				                <tr height="35px">
-				                	<td colspan="4" align="center">
+				                	<td style="width: 15%;" align="right">渠道名称：</td>
+				                    <td style="width: 25%;"><input class="default-text-input" style="width: 100%;" name="hqChanlName" id="hqChanlName" type="text"/></td>
+				                    <td style="width: 15%;" align="right">渠道编码：</td>
+				                    <td style="width: 25%;"><input class="default-text-input" style="width: 100%;" name="hqChanlCode" id="hqChanlCode" type="text"/></td>
+				                	<td style="width: 20%;">
 				                		<a class="default-btn fLeft mr10" href="#" id="searchChlBtn">查询</a>
 				                		<a class="default-btn fLeft mr10" href="#" id="resetChlBtn">重置</a>
+				                	</td>
+				                </tr>
+				                <tr height="35px" style="background-color:#D9F1E7;">
+				                	<td colspan="5" align="left" >
+				                		<FONT style="FONT-SIZE: 12pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR:  	rgb(255,0,0);LINE-HEIGHT: 100%; FONT-FAMILY: 微软雅黑">
+				                			操作步骤：<br/>
+				                			&nbsp;&nbsp;&nbsp;&nbsp;1、填写巡检次数<br/>
+				                			&nbsp;&nbsp;&nbsp;&nbsp;2、点击"操作栏"的&nbsp;"添加到巡检列表"&nbsp; 添加渠道到《已选择的巡检渠道》<br/>
+				                			原因：要把需要巡检的渠道添加到《已选择的巡检渠道》列表中,点击"确认"按钮提交数据才有效
+				                		</FONT>
 				                	</td>
 				                </tr>
 				                </table>
@@ -154,7 +160,6 @@
 	                              			</tbody>
 	                              			<tr>
 												<td colspan="6">
-													</div>
 													<div class="page_count">
 														<div class="page_count_left">
 															共有 <span id="chanlTotalCount"></span> 条数据
@@ -163,7 +168,6 @@
 														<div class="page_count_right">
 															<div id="chanlPagination"></div>
 														</div>
-													</div>
 													</div>
 												</td>
 											</tr>
