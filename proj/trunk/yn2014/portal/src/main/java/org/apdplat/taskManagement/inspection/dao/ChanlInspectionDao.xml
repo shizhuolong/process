@@ -74,7 +74,7 @@
 	<!-- 查询日常巡检人员 -->
 	<select id="queryRcPerson" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
-			T2.ID, T2.REALNAME, T2.USERNAME, T2.PHONE,T2.ORG_ID,T3.CODE,T3.ORGLEVEL 
+			T2.ID USERID, T2.REALNAME NAME, T2.USERNAME, T2.PHONE,T2.ORG_ID,T3.CODE,T3.ORGLEVEL 
 		FROM 
 			PORTAL.VIEW_U_PORTAL_PERSON T1 
 			JOIN PORTAL.APDP_USER T2 
