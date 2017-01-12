@@ -115,7 +115,7 @@ function getSql(){
 	var unitCode = $("#unitCode").val();
 	var phoneNumber = $.trim($("#phoneNumber").val());
 	var userName = $.trim($("#userName").val());
-	var itemdesc =$.trim( $("#itemdesc").val());
+	var itemdesc =$.trim( $("#itemDesc").val());
 	var remark = $.trim($("#remark").val());
 	var sql=
 		" SELECT DEAL_DATE,                                       "+	//--账期
