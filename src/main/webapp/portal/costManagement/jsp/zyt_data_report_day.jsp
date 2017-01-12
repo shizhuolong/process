@@ -86,6 +86,13 @@ TABLE TBODY TR TD{
 .background{
 	background-color:#FFECC8;
 }
+
+.toolbarStyle{
+	background-color:#FFFFFF;
+	font-size: 10pt;
+	/* font-weight: bold; */
+	color:red;
+}
 </style>
 </head>
 <body class="" style="overflow-x:auto;">
@@ -95,7 +102,8 @@ TABLE TBODY TR TD{
 	<div>
 		<div style="padding:5px;border:1px solid #c0e2ef;border-top:none;">
 			<div class="titleDivStyle">
-				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">发展日通报</FONT></P>
+				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B;
+					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">云南联通自营厅新增发展日通报</FONT></P>
 			</div>
 			<div id="devDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
@@ -136,18 +144,27 @@ TABLE TBODY TR TD{
 								<a class="default-btn fLeft mr10" id="DevSearchBtn">查询</a>
 								<a class="default-gree-btn fLeft mr10" id="DevDownBtn" >导出</a>
 							</td>
-							
 						</tr>
 					</tbody>
 				</table>
 				</div>
-				<table id="devDataGrod"></table>
+				<div>
+					<div id="devDataBar" style="border-left:1px solid #c0e2ef;border-right:1px solid #c0e2ef;diaplay:none;">
+						<span>单位：&nbsp;</span>
+						<span class="toolbarStyle">户&nbsp;&nbsp;&nbsp;&nbsp;</span>|&nbsp;&nbsp;&nbsp;&nbsp;
+						<span>本月截止:&nbsp;&nbsp;</span>
+						<span id='devDataBarSpan' class="toolbarStyle" style="color:red;"></span >
+						<span class="toolbarStyle">日</span>
+					</div>
+					<table id="devDataGrod"></table>
+				</div>
 			</div>
 		</div>
 		
 		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:40px;;border-top:none;">
 			<div class="titleDivStyle">
-				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">收入日通报</FONT></P>
+				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; 
+				LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">云南联通自营厅实时收入日通报</FONT></P>
 			</div>
 			<div id="incomeDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
@@ -190,13 +207,23 @@ TABLE TBODY TR TD{
 						</tr>
 					</table>
 				</div>
-				<table id="incomeDataGrid"></table>
+				<div>
+					<div id="incomeDataBar" style="border-left:1px solid #c0e2ef;border-right:1px solid #c0e2ef;">
+						<span>单位：&nbsp;</span>
+						<span class="toolbarStyle">户&nbsp;&nbsp;&nbsp;&nbsp;</span>|
+						<span>本月截止:&nbsp;&nbsp;</span>
+						<span id='incomeDataBarSpan' class="toolbarStyle" style="color:red;"></span >
+						<span class="toolbarStyle">日</span>
+					</div>
+					<table id="incomeDataGrid"></table>
+				</div>
 			</div>
 		</div>
 
 		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:40px;border-top:none;">
 			<div class="titleDivStyle">
-				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">终端日通报</FONT></P>
+				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B;
+					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">云南联通自营厅终端销量日通报</FONT></P>
 			</div>
 			<div id="termnalDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
@@ -239,7 +266,16 @@ TABLE TBODY TR TD{
 						</tr>
 					</table>
 				</div>
-		    	<table id="termnalDataGridTable"></table>
+				<div>
+					<div id="termnalDataBar" style="border-left:1px solid #c0e2ef;border-right:1px solid #c0e2ef;">
+						<span>单位：&nbsp;</span>
+						<span class="toolbarStyle">户&nbsp;&nbsp;&nbsp;&nbsp;</span>|
+						<span>本月截止:&nbsp;&nbsp;</span>
+						<span id='termnalDataBarSpan' class="toolbarStyle" style="color:red;"></span >
+						<span class="toolbarStyle">日</span>
+					</div>
+		    		<table id="termnalDataGridTable"></table>
+		    	</div>
 		    </div>
 		</div>
 	</div>
