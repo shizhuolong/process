@@ -1,5 +1,5 @@
-var title=[["组织架构","派发次数","巡店次数","完成率","派发店数","巡店数","完成率"]];
-var field=["INSPEC_SUM","REG_SUM","SUM_RATIO","HQ_COUNT","REG_COUNT","HQ_RATIO"];
+var title=[["组织架构","派发次数","巡店次数","完成率","派发店数","巡店数","社会实体数","完成率"]];
+var field=["INSPEC_SUM","REG_SUM","SUM_RATIO","HQ_COUNT","REG_COUNT","CHN_SH_COUNTS","HQ_RATIO"];
 var orderBy='';	
 $(function(){
 var report=new LchReport({
@@ -116,6 +116,6 @@ function downsAll() {
 
 	sql+=where;
 	showtext = '渠道巡检统计-' + dealDate;
-	var title=[["账期","地市名称","营服名称","派发次数","巡店次数","完成率","派发店数","巡店数","完成率"]];
+	var title=[["账期","地市名称","营服名称","派发次数","巡店次数","完成率","派发店数","巡店数","社会实体数","完成率"]];
 	downloadExcel(sql,title,showtext);
 }
