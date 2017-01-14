@@ -73,6 +73,7 @@ var processCommon = {
 			    <input type="hidden" id="processKey" name="workOrderVo.processKey" value="${workOrderVo.processKey}"/>
 			    <input type="hidden" id="actNodeName" name="workOrderVo.actNodeName" value=""/>
 			    <input type="hidden" id="isNeedApprover" name="isNeedApprover" value="true"/>
+			    <input type="hidden" id="isHavingFile" name="isHavingFile"/>
 			    <!-- 金额>xx时为true否则为false -->
 			    <input type="hidden" id="maxAmountFlag" name="workOrderVo.exceed" value="false"/>
 				<div id="chose-sender">

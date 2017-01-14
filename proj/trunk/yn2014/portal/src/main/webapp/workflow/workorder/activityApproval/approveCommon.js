@@ -195,8 +195,59 @@ function submitTask(){
 		art.dialog.confirm('确定发送吗？', function () {
 			var actNodeName = $("#nextRouter option:selected").text();
 			$("#actNodeName").val(actNodeName);
+			if(isHavingFile=="withFile"){//有附件上传
+				$("#isHavingFile").val(isHavingFile);
+			}
 			$("#taskForm").form("submit",{
 				url:path+'/workflow/work-flow!doSubmitTask.action',
+				onSubmit:function(){
+					jQuery.blockUI({
+						message: "<div style='text-align:center;'><h3>正在发送中，请稍等...</h3></div>",
+						fadeIn: 700,
+						centerY: true,
+						showOverlay: true
+					});	
+					return true;
+				},
+				success:function(data){
+					data=eval('('+data+')');
+					jQuery.unblockUI();
+					if(data.code=='OK') {
+						art.dialog({
+				   			title: '提示',
+				   		    content: data.msg,
+				   		    icon: 'succeed',
+				   		    lock: true,
+				   		    ok: function () {
+				   		    	location.href = path+"/workflow/workorder/activityApproval/processApprove/processApprove.jsp";
+				   		    }
+				   		});
+					}else {
+						art.dialog.alert(data.msg);
+					}
+					return false;
+				},
+			 	error:function(XMLHttpRequest, textStatus, errorThrown){
+			 		art.dialog.alert("发送失败！"+errorThrown);
+			   	}
+	      	});
+		}, function () {
+		    //art.dialog.tips('执行取消操作');
+		});
+	}
+}
+
+function submitTaskWithFile(){
+	
+	if(validate()){
+		art.dialog.confirm('确定发送吗？', function () {
+			var actNodeName = $("#nextRouter option:selected").text();
+			$("#actNodeName").val(actNodeName);
+			$("#taskForm").form("submit",{
+				url:path+'/workflow/work-flow!doSubmitTask.action',
+				data:{
+					isHavingFile:isHavingFile
+				},
 				onSubmit:function(){
 					jQuery.blockUI({
 						message: "<div style='text-align:center;'><h3>正在发送中，请稍等...</h3></div>",
