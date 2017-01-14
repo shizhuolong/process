@@ -30,6 +30,7 @@ import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.exception.BusiException;
 import org.apdplat.platform.util.Pagination;
 import org.apdplat.platform.util.ResultInfo;
+import org.apdplat.wgreport.common.SpringManager;
 import org.apdplat.workflow.WorkflowConstant;
 import org.apdplat.workflow.common.BaseAction;
 import org.apdplat.workflow.service.WorkOrderService;
@@ -87,7 +88,7 @@ public class WorkFlowAction extends BaseAction{
 	private String isNeedApprover;
 	
 	private String jobId;
-	
+	private String isHavingFile;
 	
 
 	public String getJobId() {
@@ -96,6 +97,16 @@ public class WorkFlowAction extends BaseAction{
 
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
+	}
+
+	
+
+	public String getIsHavingFile() {
+		return isHavingFile;
+	}
+
+	public void setIsHavingFile(String isHavingFile) {
+		this.isHavingFile = isHavingFile;
 	}
 
 	/**
@@ -344,7 +355,8 @@ public class WorkFlowAction extends BaseAction{
 	 * 任务审批
 	 */
 	public void doSubmitTask() {
-		
+		User user = UserHolder.getCurrentLoginUser();
+		String username=user.getUsername();
 		ResultInfo resultInfo = new ResultInfo();
 		try{
 			if("true".equals(isNeedApprover) && StringUtils.isBlank(workOrderVo.getNextDealer())) {
@@ -357,6 +369,10 @@ public class WorkFlowAction extends BaseAction{
 				throw new BusiException("下一步审批步骤不能为空！");
 			}
 			workOrderService.submitTask(workOrderVo);
+			if(isHavingFile.equals("withFile")){
+				String addSql = "INSERT INTO PORTAL.TAB_INIT_FILE_MSG SELECT * FROM PORTAL.TAB_INIT_FILE_MSG_TEMP WHERE USERNAME='"+username+"' AND INIT_ID='"+workOrderVo.getBusinessKey()+"'";
+				SpringManager.getUpdateDao().update(addSql);
+			}
 			resultInfo.setCode(ResultInfo._CODE_OK_);
 			resultInfo.setMsg("发送成功!");
 		}catch(BusiException e) {
