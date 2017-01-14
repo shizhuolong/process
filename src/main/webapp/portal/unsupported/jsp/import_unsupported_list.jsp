@@ -2,6 +2,10 @@
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+    String path=request.getContextPath();
+    String sessionid=request.getSession().getId();
+%>	
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
+<link href="<%=path%>/css/uploadify.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery.blockUI.js"></script>
 <script type="text/javascript" type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery-ui.js"></script>
@@ -27,7 +32,12 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=path%>/js/jqueryUpload/swfobject.js"></script>
+<script type="text/javascript" src="<%=path%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/unsupported/js/import_unsupported_list.js"></script>
+<script type="text/javascript">
+   var path="<%=path%>";
+</script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -40,6 +50,7 @@
 					<div data-options="region:'center'">
 						<div id="main" class="clearfix">
 						<form id="taskForm" method="post">
+						    <input type="hidden" id="isHavingFile" name="isHavingFile">
 							<input type="hidden" id="actNodeName" name="actNodeName">
 							<div class="main-block">
 								<div class="title">
@@ -102,8 +113,22 @@
 										</table>
 									</div>
 								</div>
+								<div class="title-o"><i style="margin-top:20px;">上传附件</i></div>
+								<span style="color:red;font-size:10px;">注意：上传采取批量覆盖的方式，支持批量上传；先点击添加附件选择文件，再点击开始上传。</span>
+								<!-- 上传附件 -->
+								<div region="south" style="height:auto;" >
+									<div style="margin-left:10px;margin-top:10px"><input type="file" name="uploadify" id="uploadify" align="right"/></div>
+									<br/>
+									<div id="fileQueue"></div> 
+									<p><span id="speed"></span></p>
+									<p>
+										&nbsp;&nbsp;<a style="font-size:15px;" href="javascript:uploasFile()">开始上传</a>&nbsp;
+										<a style="font-size:15px;"  href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消选择</a>
+									</p>
+								</div> 
+								<!--上传附件-->
 								<div id="chose-sender">
-                               	<div class="title-o"><i>选择发送人</i></div>
+                               	<div class="title-o"><i style="margin-top:40px;">选择发送人</i></div>
                                	<table width="70%" id="sm-payment-order-apply">
                                      <tr>
                                          <td width="15%">审核步骤：</td>
