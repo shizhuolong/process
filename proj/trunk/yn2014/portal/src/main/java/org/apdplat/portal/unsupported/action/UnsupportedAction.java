@@ -53,6 +53,7 @@ public class UnsupportedAction extends BaseAction{
 	private Map<String, String> resultMap=new HashMap<String,String>();
 	private File[] myFile;
 	private String myFileFileName;
+    private String isHavingFile;
     
 	public String index() {
 		return "index";
@@ -295,6 +296,18 @@ public class UnsupportedAction extends BaseAction{
 		}
 	}
 	
+	public void downloadFile() {
+		String filePath = request.getParameter("filePath");
+		String fileName = request.getParameter("fileName");
+		try {
+			filePath=URLDecoder.decode(filePath, "UTF-8"); 
+			fileName=URLDecoder.decode(fileName, "UTF-8"); 
+			this.download(filePath, fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public String isNull(String content){
 		if(content.equals("")){
 			return "0";
@@ -370,6 +383,7 @@ public class UnsupportedAction extends BaseAction{
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("title", theme);
 			map.put("nextDealer", nextDealer);
+			map.put("isHavingFile", isHavingFile);
 			unsupportedService.doSendOrder(map);
 			info.setCode(ResultInfo._CODE_OK_);
 		} catch (BusiException e) {
@@ -408,6 +422,12 @@ public class UnsupportedAction extends BaseAction{
 			outJsonPlainString(response,"{\"msg\":\"查询数据失败\"}");
 		}
 	}
+	
+	public void queryFiles(){
+		String initId=request.getParameter("initId");
+		List<Map<String,Object>> fileInformation = unsupportedService.queryFiles(initId);
+		this.reponseJson(fileInformation);
+	}
 
 	public Map<String, String> getResultMap() {
 		return resultMap;
@@ -432,6 +452,16 @@ public class UnsupportedAction extends BaseAction{
 	public void setMyFileFileName(String myFileFileName) {
 		this.myFileFileName = myFileFileName;
 	}
+
+	public String getIsHavingFile() {
+		return isHavingFile;
+	}
+
+	public void setIsHavingFile(String isHavingFile) {
+		this.isHavingFile = isHavingFile;
+	}
+
+	
 	
 	
 }

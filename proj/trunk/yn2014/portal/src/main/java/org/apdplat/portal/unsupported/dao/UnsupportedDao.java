@@ -1,6 +1,10 @@
 package org.apdplat.portal.unsupported.dao;
 
+import java.util.List;
 import java.util.Map;
+
+
+
 
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -45,5 +49,11 @@ public interface UnsupportedDao {
 	public void deleteResultByEdit(Map<String, String> params);
 
 	public double queryTotalFeeByInitId(Map<String, String> params);
+
+	public void updateTempInitId(Map<String, String> map);
+
+	public void insertToResult(Map<String, String> map);
+
+	public List<Map<String, Object>> queryFiles(String initId);
 	
 }
