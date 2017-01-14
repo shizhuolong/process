@@ -2,6 +2,10 @@ var isNeedApprover = true;
 var pageSize = 10;
 $(function(){
 	search(0);
+	initFileDiv();
+	$("a[name='downFile']").click(function(){
+		downFile($(this).attr("fileName"),$(this).attr("filePath"));
+	});
 	$("#searchBtn").click(function(){
 		search(0);
 	});
@@ -60,6 +64,36 @@ function search(pageNumber) {
 		   alert("加载数据失败！");
 	    }
 	});
+}
+
+function initFileDiv(){
+	var businessKey = $("#businessKey").val();
+	$.ajax({
+		type:"post",
+		dataType:'json',
+        cache:false,
+        async:false,
+		url:path+'/unsupported/unsupported!queryFiles.action',
+		data:{
+			initId:businessKey
+		},
+		success:function(data){
+			var html="<ol>";
+			for(var i=0;i<data.length;i++){
+				html+="<li><a name='downFile' style='color:blue;font-size:15px;cursor:pointer' filePath='"+data[i].FILE_PATH+"' fileName='"+data[i].FILE_NAME+"'>"+data[i].FILE_NAME+"</a></li>";
+			}
+			html+="</ol>";
+			$("#fileDiv").append($(html));
+		},
+		error:function(XMLResponse){
+			alert("加载文件列表失败！");
+		}
+	});
+}
+
+
+function downFile(fileName,filePath){
+	location.href = $("#ctx").val()+"/unsupported/unsupported!downloadFile.action?filePath="+encodeURI(encodeURI(filePath))+"&fileName="+encodeURI(encodeURI(fileName));
 }
 
 function initPagination(totalCount) {

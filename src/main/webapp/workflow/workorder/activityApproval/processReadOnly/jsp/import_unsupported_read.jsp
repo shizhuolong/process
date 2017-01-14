@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+   String path=request.getContextPath();
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,6 +26,9 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_unsupported_read.js"></script>
+<script type="text/javascript">
+  var path="<%=path%>";
+</script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -93,6 +99,14 @@
 									</div>
 								</div>
 							</form>
+							
+							<div class="title-o">
+			                     <i>附件列表</i>
+		                    </div>
+							<div id="fileDiv" name="fileDiv">
+							  
+							</div>
+							
 							<jsp:include page="/workflow/workorder/activityApproval/approveCommon.jsp"></jsp:include>
 							</div>
 						</div>
