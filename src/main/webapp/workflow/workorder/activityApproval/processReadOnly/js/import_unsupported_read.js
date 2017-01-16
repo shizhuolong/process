@@ -1,5 +1,6 @@
 var isNeedApprover = true;
 var pageSize = 10;
+var isHavingFile="notWithFile";
 $(function(){
 	search(0);
 	initFileDiv();
