@@ -195,9 +195,7 @@ function submitTask(){
 		art.dialog.confirm('确定发送吗？', function () {
 			var actNodeName = $("#nextRouter option:selected").text();
 			$("#actNodeName").val(actNodeName);
-			if(isHavingFile=="withFile"){//有附件上传
-				$("#isHavingFile").val(isHavingFile);
-			}
+			$("#isHavingFile").val("notWithFile");
 			$("#taskForm").form("submit",{
 				url:path+'/workflow/work-flow!doSubmitTask.action',
 				onSubmit:function(){
