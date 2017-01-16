@@ -132,7 +132,7 @@ String path=request.getContextPath();
 								<!--上传附件-->
 								
 							
-							<jsp:include page="/workflow/workorder/activityApproval/approveCommon.jsp"></jsp:include>
+							<jsp:include page="/workflow/workorder/activityApproval/approveCommonWithFile.jsp"></jsp:include>
 							</div>
 						</div>
 				</div>
