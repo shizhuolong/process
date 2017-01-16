@@ -107,7 +107,7 @@
 							  
 							</div>
 							
-							<jsp:include page="/workflow/workorder/activityApproval/approveCommon.jsp"></jsp:include>
+							<jsp:include page="/workflow/workorder/activityApproval/approveCommonWithFile.jsp"></jsp:include>
 							</div>
 						</div>
 				</div>
