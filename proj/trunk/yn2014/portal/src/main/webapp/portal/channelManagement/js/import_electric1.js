@@ -11,12 +11,10 @@ function complete(){
 	$("#upload").hide();
 	var flag=checkOptions();
 	var orgLevel=$("#orgLevel").val();
-	if(orgLevel==2){
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
 		document.mainForm.submit(); 
 	 }
-  }
 }
 /**校验**/
 function checkOptions(){
@@ -48,8 +46,13 @@ function getRegionName(){
 	}
 	var result=query(sql);
 	 var html="";
-	  for(var i=0;i<result.length;i++){
+	 if(result.length==1){
 		 html+="<option value="+result[i].REGIONCODE+">"+result[i].REGIONNAME+"</option>";
-	  }
+	 }else{
+		 html+="<option value=''>全部</option>";
+		 for(var i=0;i<result.length;i++){
+			 html+="<option value="+result[i].REGIONCODE+">"+result[i].REGIONNAME+"</option>";
+		  }
+	 }
     $("#regionName").empty().append($(html));
 }					 

@@ -44,7 +44,8 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
 	var regionCode=$("#cityCode").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+	var userId=$("#userId").val();
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+userId+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
