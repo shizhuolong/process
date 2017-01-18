@@ -49,14 +49,16 @@ public class ImportContractAction extends BaseAction {
 	DataSource dataSource;
 
 	public void importToResult() {
+		User user = UserHolder.getCurrentLoginUser();
+		String username=user.getUsername();
 		boolean r = false;
 		try {
 			String time = request.getParameter("time");
 			String regionCode = request.getParameter("regionCode");
-			String delRepeat = "DELETE PMRT.TAB_MRT_CONTRACT_ALL_MON WHERE DEAL_DATE='"	+ time+ "' AND GROUP_ID_1="+ regionCode;
+			String delRepeat = "DELETE PMRT.TAB_MRT_CONTRACT_ALL_MON WHERE DEAL_DATE='"	+ time+ "' AND USERNAME='"+ username+"'";
 
 			SpringManager.getUpdateDao().update(delRepeat);
-			String importToResult = "INSERT INTO PMRT.TAB_MRT_CONTRACT_ALL_MON SELECT * FROM PMRT.TAB_MRT_CONTRACT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1="+ regionCode;
+			String importToResult = "INSERT INTO PMRT.TAB_MRT_CONTRACT_ALL_MON SELECT * FROM PMRT.TAB_MRT_CONTRACT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+ username+"'";
 			SpringManager.getUpdateDao().update(importToResult);
 			r = true;
 		} catch (Exception e) {
@@ -69,7 +71,9 @@ public class ImportContractAction extends BaseAction {
 	public String importToTemp() {
 		User user = UserHolder.getCurrentLoginUser();
 		Org org=user.getOrg();
+		String orgLevel=org.getOrgLevel();
 		String regionName=org.getRegionName();
+		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_CONTRACT_ALL_MON_TEMP";
 		if (uploadFile == null) {
@@ -78,8 +82,7 @@ public class ImportContractAction extends BaseAction {
 			try {
 				// 上传时覆盖
 				String delSql = "delete from " + resultTableName
-						+ " where deal_date='" + time + "' and group_id_1='"
-						+ regionCode + "'";
+						+ " where deal_date='" + time + "' and username='"+username+"'";
 				SpringManager.getUpdateDao().update(delSql);
 				FileInputStream in = new FileInputStream(uploadFile);
 				HSSFWorkbook wb = new HSSFWorkbook(in);
@@ -92,7 +95,7 @@ public class ImportContractAction extends BaseAction {
 					int end = sheet.getLastRowNum();
 					for (int y = start; y <= end; y++) {
 						String sql = "INSERT INTO PMRT.TAB_MRT_CONTRACT_ALL_MON_TEMP";
-						String values = " values('" + time + "','" + regionCode	+ "','" + regionName + "'";
+						String values = " values('" + time +"'";
 						HSSFRow row = sheet.getRow(y);
 						if (row == null)
 							continue;
@@ -102,7 +105,7 @@ public class ImportContractAction extends BaseAction {
 						for (int i = cstart; i < cend; i++) {
 								values += "," + getCellValue(row.getCell(i));
 						}
-						values += ")";
+						values +=",'"+username+"')";
 						int n = SpringManager.getUpdateDao().update(sql + values);
 						if (n <= 0) {
 							err.add("导入第" + (y + 1) + "条记录失败");
