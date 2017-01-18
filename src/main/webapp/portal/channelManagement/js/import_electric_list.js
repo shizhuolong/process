@@ -41,9 +41,10 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
+	var userId=$("#userId").val();
 	var time=$("#time").val();
 	var regionCode=$("#cityCode").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_ELECTRIC_CHARGE_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_ELECTRIC_CHARGE_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+userId+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;

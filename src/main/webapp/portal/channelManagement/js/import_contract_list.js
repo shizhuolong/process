@@ -43,8 +43,9 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
+	var userId=$("#userId").val();
 	var regionCode=$("#cityCode").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_CONTRACT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_CONTRACT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+userId+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
