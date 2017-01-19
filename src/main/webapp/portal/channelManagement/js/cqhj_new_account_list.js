@@ -1,8 +1,8 @@
 var nowData = [];
 var title=[
-           ["账期","地市","营服中心","HR编码","渠道经理","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","合约类型","上上月状态","上月状态","当月状态","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
+           ["账期","地市","营服中心","HR编码","渠道经理","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","合约类型","上上月状态","上月状态","当月状态","欠费金额","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
 		];		
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","DEV_CHNL_ID","DEV_CHNL_NAME","SUBSCRIPTION_ID","SERVICE_NUM","NET_TYPE","OPEN_DATE","JOIN_DATE","SCHEME_ID","SCHEME_NAME","SCHEME_TYPE_NAME","LAST2_STATUS","LAST_STATUS","SERVICE_STATUS","PRODUCT_ID","PRODUCT_NAME","CARD_FEE","DISCOUNT","SS_FEE","CZ_FEE","IS_NULL_USER","IS_LOW_USER"];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","HR_ID_NAME","DEV_CHNL_ID","DEV_CHNL_NAME","SUBSCRIPTION_ID","SERVICE_NUM","NET_TYPE","OPEN_DATE","JOIN_DATE","SCHEME_ID","SCHEME_NAME","SCHEME_TYPE_NAME","LAST2_STATUS","LAST_STATUS","SERVICE_STATUS","BALANCE","PRODUCT_ID","PRODUCT_NAME","CARD_FEE","DISCOUNT","SS_FEE","CZ_FEE","IS_NULL_USER","IS_LOW_USER"];
 var orderBy = ' ORDER BY GROUP_ID_1,UNIT_ID';
 var report = null;
 $(function() {
@@ -123,6 +123,7 @@ function getsql(){
 			"        T.LAST2_STATUS,                                            "+		//--上上月状态
 			"        T.LAST_STATUS,                                             "+		//--上月状态
 			"        T.SERVICE_STATUS,                                          "+		//--当前月状态
+			"        T.BALANCE,                                                 "+		//--欠费金额
 			"        T.PRODUCT_ID,                                              "+		//--套餐ID
 			"        T.PRODUCT_NAME,                                            "+		//--套餐名
 			"        T.CARD_FEE,                                                "+		//--卡面值
@@ -164,7 +165,7 @@ function downsAll(){
 
 	var sql = getsql()+" ORDER BY T.GROUP_ID_1,T.UNIT_ID";
 	var title=[
-	           ["账期","地市","营服中心","HR编码","渠道经理","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","合约类型","上上月状态","上月状态","当月状态","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
+	           ["账期","地市","营服中心","HR编码","渠道经理","渠道编码","渠道名","用户编码","电话号码","品牌","开户时间","入网时间","活动ID","活动名","合约类型","上上月状态","上月状态","当月状态","欠费金额","套餐ID","套餐名","卡面值","提卡折扣","实时话费余额","出账金额","是否三无","是否极低"]
 			];	
 	showtext = '重庆华记新开户清单-'+dealDate;
 	downloadExcel(sql,title,showtext);
