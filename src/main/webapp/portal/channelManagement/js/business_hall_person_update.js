@@ -126,6 +126,11 @@ $(function() {
 		var hq_chan_name = $.trim($("#hq_chan_name").val());
 		var hr_id = $.trim($("#hr_id").val());
 		var f_hr_id = $.trim($("#f_hr_id").val());
+		if(hq_chan_name==null || hq_chan_name==''){
+			alert("工位不在该渠道下,不能提交！");
+			return;
+		}
+		
 		//alert("===============|"+f_hr_id+"|=========");
 		$.ajax({
 			type:"POST",
