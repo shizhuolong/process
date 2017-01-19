@@ -114,7 +114,14 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 				+"<td>"+isNull(n['USER_CODE'])+"</td>"
 				+"<td>"+isNull(n['F_HR_ID'])+"</td>"
-				 +"<td><a onclick='update($(this))' user_code='"+isNull(n['USER_CODE'])+"' hr_id='"+isNull(n['HR_ID'])+"' f_hr_id='"+isNull(n['F_HR_ID'])+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' hq_chan_name='"+isNull(n['HQ_CHAN_NAME'])+"' name='"+isNull(n['NAME'])+"' f_hr_id='"+isNull(n['F_HR_ID'])+"' user_login_name='"+isNull(n['USER_LOGIN_NAME'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
+				 +"<td><a onclick='update($(this))' user_code='"+isNull(n['USER_CODE'])+
+				 "' hr_id='"+isNull(n['HR_ID'])+
+				 "' f_hr_id='"+isNull(n['F_HR_ID'])+
+				 "' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+
+				 "' hq_chan_name='"+isNull(n['HQ_CHAN_NAME'])+
+				 "' name='"+isNull(n['NAME'])+
+				 "' f_hr_id='"+isNull(n['F_HR_ID'])+
+				 "' user_login_name='"+isNull(n['USER_LOGIN_NAME'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
 			 		"<a onclick='del($(this))' user_code='"+isNull(n['USER_CODE'])+"' href='#'>删除</a></td>";
 				content+="</tr>";
 			});
