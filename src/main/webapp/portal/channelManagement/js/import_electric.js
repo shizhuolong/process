@@ -47,7 +47,7 @@ function getRegionName(){
 	var result=query(sql);
 	 var html="";
 	 if(result.length==1){
-		 html+="<option value="+result[i].REGIONCODE+">"+result[i].REGIONNAME+"</option>";
+		 html+="<option value="+result[0].REGIONCODE+">"+result[0].REGIONNAME+"</option>";
 	 }else{
 		 html+="<option value=''>全部</option>";
 		 for(var i=0;i<result.length;i++){
