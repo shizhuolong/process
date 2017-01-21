@@ -173,10 +173,20 @@ function switchFirstMenu(pModuleId,moduleName) {
 		viewport.doLayout();
 		return;
 	} else {
-		$("#indexPage").remove();
-		$("#center-panel").children().fadeIn();
-		viewport.get("west-panel").show().doLayout();
-		viewport.doLayout();
+		if(pModuleId=="module-200292"/*县总工作台*/){
+			$("#indexPage").remove();
+			$("#center-panel").children().fadeIn();
+			viewport.get("west-panel").hide().doLayout();
+			viewport.doLayout();
+			var jfUrl=contextPath+"/tojf/to-jf!redirect.action?redirectUrl=http://135.64.20.78:8889/dss_hn/WgLogin!Checklogin.action";
+			openWindow(moduleName,"",jfUrl);
+			return;
+		}else{
+			$("#indexPage").remove();
+			$("#center-panel").children().fadeIn();
+			viewport.get("west-panel").show().doLayout();
+			viewport.doLayout();
+		}
 	}
     
 	westPanel.removeAll(true);
