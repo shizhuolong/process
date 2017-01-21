@@ -26,7 +26,7 @@ public class RegexText {
 		String reg = "^((13[0-2])|(145)|(15[5-6])|(18[5-6])|(176))\\d{8}$";
 		Pattern p = Pattern.compile(reg);
 		Matcher m = p.matcher(str);
-		System.out.println(m.matches());
+		//System.out.println(m.matches());
 	}
 	
 	@Test
@@ -42,6 +42,17 @@ public class RegexText {
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
     	String time = format.format(new Date());
     	//System.out.println(time);
+	}
+	@Test
+	public void testABAB(){
+		String str = "asdABAdk";
+		String reg = ".*(AB){2}.*";
+		Pattern p = Pattern.compile(reg);
+		Matcher m = p.matcher(str);
+		System.out.println("testABAB:"+m.matches());
+		if(m.matches()){
+			System.out.println(m.group(0));
+		}
 	}
 	
 }

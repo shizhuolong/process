@@ -22,7 +22,8 @@ public class EncodeTest {
 		
 		System.out.println(UUID.randomUUID().toString().replaceAll("-", ""));*/
 		
-		System.out.println(getDisOrgList("28059",2));
+		//System.out.println(getDisOrgList("28059",2));
+		System.out.println("${passOrNotAll== 'true' &&  exceed=='".replaceAll("\\ ", ""));
 	}
 	//游离渠道树
 			public static String getDisOrgList(String groupId,int orgLevel) {
