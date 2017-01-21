@@ -11,7 +11,7 @@
 	pageEncoding="utf-8"%>
 <%
 	String path=request.getContextPath();
-	Report r=(Report) request.getAttribute("report");
+	Report report=(Report) request.getAttribute("report");
 %>
 <!DOCTYPE html>
 <html>
@@ -35,43 +35,7 @@
 	<input type="hidden" id="ctx" value="<%=path %>"/>
 	<div id="lchContent" style="position: absolute;width: 100%; height: 100%;margin:0;padding:0;">
 		<div class="condition" >
-			<form id="condition">
-<%
-	Condition cd=r.getCondition();
-	if(cd!=null){
-		for(Object o:cd.getConditions()){
-			//模糊查询
-			if(o instanceof Like){
-				Like like=(Like) o;
-%>
-				<%=like.getDesc() %>:<input type="text" value='' name="<%=like.getColumn()%>"/>&nbsp;
-<%			
-			}else if(o instanceof Equal){
-				Equal equal=(Equal) o;
-				//下拉选择
-				if(equal.getType().equals("select")){
-%>
-					<%=equal.getDesc() %>:<select  value='' cdtype='select' name="<%=equal.getColumn()%>" table="<%=equal.getTableName()%>">
-					</select>
-<%		
-				}else if(equal.getType().equals("date")){
-					Calendar ca=Calendar.getInstance();
-					String time=new SimpleDateFormat(equal.getFormat()).format(ca.getTime());
-%>
-					<input type="text"  class="Wdate default-text-input wper80" 
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'<%=equal.getFormat()%>'})" value="<%=time %>" name="<%=equal.getColumn() %>">
-<%	
-				}
-			}else if(o instanceof Button){
-				Button btn=(Button) o;
-%>
-				<input type="button" value='<%=btn.getValue() %>' onclick="<%=btn.getMethod()%>"/>&nbsp;
-<%			
-			}
-		}
-	}
-%>
-			</form>
+			<%@ include  file="condition.jsp"%> 
 		</div>
 		
 		<div class="cpBody">
@@ -348,7 +312,7 @@
 		
 		
 		//////////////////////////////////////////
-		var pageSize =<%=r.getPageSize()%>;
+		var pageSize =<%=report.getPageSize()%>;
 		$(".page_count").width("100%");
 		getPage(0);
 	</script>
