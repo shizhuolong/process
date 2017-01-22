@@ -1,7 +1,7 @@
 jQuery(function(){
-	getRegionName(); 
 	$("#upload").click(complete);
 });
+
 function downloadFile() {
 	window.location.href=$("#ctx").val()+"/rent/import-rent!downfile.action";
 }
@@ -10,49 +10,33 @@ function downloadFile() {
 function complete(){
 	$("#upload").hide();
 	var flag=checkOptions();
-	var orgLevel=$("#orgLevel").val();
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
+		var action=$("#ctx").val()+"/rent/import-rent!importToTemp.action?fileType="+$("#fileType").val();
+		$("#uploadForm").attr("action",action);
 		document.mainForm.submit(); 
   }
 }
 /**校验**/
 function checkOptions(){
 	var file=$(':file');
-	var allow = new Array('xls'); //允许的拓展名
+	var allow = new Array('xls','xlsx'); //允许的拓展名
 	if(null==file.val() || ''==file.val()){
 		alert("请选择上传文件!");
 		return false;
 	}else{
 		var ext=file.val().split('.').pop().toLowerCase(); 
 		if(jQuery.inArray(ext, allow) == -1) {
-			alert('请选择xls文件!'); 
+			alert('请选择xls、xlsx文件!'); 
 			return false;
 		} 
 	}
+	var index=file.val().lastIndexOf(".");
+	var fileType=file.val().substring(index);
+	$("#fileType").val(fileType);
 	return true;
 }
-//执行方法
-function getRegionName(){
-	var sql="SELECT distinct t.region_name regionName,t.region_code regionCode FROM portal.apdp_org  t where 1=1";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.region_code='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	 if(result.length==1){
-		 html+="<option value="+result[0].REGIONCODE+">"+result[0].REGIONNAME+"</option>";
-	 }else{
-		 html+="<option value=''>全部</option>";
-		 for(var i=0;i<result.length;i++){
-			 html+="<option value="+result[i].REGIONCODE+">"+result[i].REGIONNAME+"</option>";
-		  }
-	 }
-    $("#regionName").empty().append($(html));
-}					 
+
+function toBack(){
+	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_rent_list.jsp";
+}
