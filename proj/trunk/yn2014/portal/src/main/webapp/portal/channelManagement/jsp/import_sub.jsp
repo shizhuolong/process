@@ -22,17 +22,14 @@
  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-    <link href="<%=path %>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
+    <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 	<link href="<%=path%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
-    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
-    <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
-	
-	<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
+    <link type="text/css" rel="stylesheet" href="<%=path%>/page/js/date/skin/WdatePicker.css"> 
+    <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
+	<script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_sub.js"></script>
-	<script type="text/javascript">
-	  var paths="<%=path%>";
-	</script>
+	
 	<style>
 		th {
 		    background: #ffecc8 none repeat scroll 0 0;
@@ -64,11 +61,6 @@
   </head>
   <body class="taskPage">
     <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
-	
 		<div id="main" class="clearfix">
 			<div class="main-block">
 				<div class="title">
@@ -79,9 +71,8 @@
 						<i>文件上载步骤</i>
 					</div>
 					<form id="uploadForm" name="mainForm"
-						action="<%=request.getContextPath()%>/sub/import-sub!importToTemp.action"
 						method="post" enctype="multipart/form-data">
-
+                        <input type="hidden" id="fileType" name="fileType">
 						<table cellspacing="0" width="100%">
 							<tr>
 								<th  width="100px">第一步</th>
@@ -101,23 +92,23 @@
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						         </td>
-					             <td width="">地市：
-					                <select style="width: 200px;" id="regionName" name="regionCode"></select>
-					             </td>
 							</tr>
 							<tr>
 								<th  width="100px">上传文件</th>
 								<td>
 								    <input style="display:inline-block;" type="file" size="60" name="uploadFile" />
 								</td>
-								<td>
-								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">
-								    <font color='red'>（注意：文件目前只支持XLS格式，且内容为文本格式。模板下载下来为非文本格式，上传前请手动转化为文本格式，否则导入数据可能不完整。）</font>
-								    </span>
+								<td colspan="2">
+								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">&nbsp;
+								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" onclick="toBack();">返回</a><span style="display:inline-block;">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+								    <span style="color:red;font-size:15px;">(注意事项：上传的模板中的单元格必须要有实线边框;模板中不能有公式,拉伸或者特殊格式,否则无法解析。)</span>
 								</td>
 							</tr>
 						</table>
-						<input type="hidden" id="userId" name="userId" value="<%=user.getUsername()%>"/>
 					</form>
 					<%
   if(err!=null){	
