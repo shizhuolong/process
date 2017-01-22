@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","营服中心","站址或局房编码","期末预提余额","成本中心代码","本月预提标准","月末预提起日期","增值税","铁塔公司站点","铁塔公司交纳水电费","最近的水电支付单价","本月用量或预计用量"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","ROOM_ADDR","END_YT_MONEY","AC_PREFIX","THIS_MON_YT","END_MON_DATE","ZZ_FAX","OIL_COMPANY","WATER_FEE","PER_WATER_FEE","THIS_NUM"];
+var title=[["账期","地市","站址或局房编码","期末预提余额","成本中心代码","本月预提标准","月末预提起日期","增值税","铁塔公司站点","铁塔公司交纳水电费","最近的水电支付单价","本月用量或预计用量"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","ROOM_ADDR","END_YT_MONEY","AC_PREFIX","THIS_MON_YT","END_MON_DATE","ZZ_FAX","OIL_COMPANY","WATER_FEE","PER_WATER_FEE","THIS_NUM"];
 var report = null;
 
 $(function() {
@@ -41,10 +41,8 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var userId=$("#userId").val();
 	var time=$("#time").val();
-	var regionCode=$("#cityCode").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_ELECTRIC_CHARGE_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+userId+"'";
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_ELECTRIC_CHARGE_MON WHERE DEAL_DATE='"+time+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -74,8 +72,6 @@ function search(pageNumber) {
 
 function importToResult(){
 	var time=$("#time").val();
-	var userId=$("#userId").val();
-	var regionCode=$("#cityCode").val();
 	if(totalCount){
 		if(confirm("确认导入？")){
 			$("#importToResultBtn").hide();
@@ -84,11 +80,9 @@ function importToResult(){
 				dataType:'json',
 				async:true,
 				cache:false,
-				url:paths+"/electric/import-electric!importToResult.action",
+				url:$("#ctx").val()+"/electric/import-electric!importToResult.action",
 				data:{
-		           "time":time,
-		           "userId":userId,
-		           "regionCode":regionCode
+		           "time":time
 			   	}, 
 			   	success:function(data){
 			   		if(data&&data.ok){
@@ -105,6 +99,9 @@ function importToResult(){
 		window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_electric.jsp";
 	}
   }
+
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_electric.jsp";
  }
+  
+ 

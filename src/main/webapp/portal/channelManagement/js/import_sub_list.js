@@ -42,8 +42,8 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
-	var regionCode=$("#cityCode").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_SUBS_MAINTAIN_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+	var code=$("#code").val();
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_SUBS_MAINTAIN_MON WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+code+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -71,39 +71,6 @@ function search(pageNumber) {
 	});
 }
 
-function importToResult(){
-	var time=$("#time").val();
-	var userId=$("#userId").val();
-	var regionCode=$("#cityCode").val();
-	if(totalCount){
-		if(confirm("确认导入？")){
-			$("#importToResultBtn").hide();
-			$.ajax({
-				type:"POST",
-				dataType:'json',
-				async:true,
-				cache:false,
-				url:paths+"/sub/import-sub!importToResult.action",
-				data:{
-		           "time":time,
-		           "userId":userId,
-		           "regionCode":regionCode
-			   	}, 
-			   	success:function(data){
-			   		if(data&&data.ok){
-			   			alert("已经成功入库！");
-			   		}else{
-			   			alert("入库失败,请重试！");
-			   			$("#importToResultBtn").show();
-			   		}
-			    }
-			});
-		}
-	}else{
-		alert("没有要入库的数据,请先导入！");
-		window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_sub.jsp";
-	}
-  }
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_sub.jsp";
  }

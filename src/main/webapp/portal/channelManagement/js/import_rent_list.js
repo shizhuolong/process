@@ -1,7 +1,7 @@
 var nowData = [];
-var title=[["账期","地市名称","营服中心","基站名称","合同编号","合同名称","主合同编号","预提类型","期初余额","本月预提","","本月支付","","","期末余额","成本中心代码","局站编号","铁塔公司站点(是/否)","铁塔公司交纳房租物业费(是/否)"],
-           ["","","","","","","","","","本月预提","月预提标准","付费金额","价款","税款","","","","",""]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","CELL_NAME","CONTRACT_NO","CONTRACT_NAME","MAIN_CONTRACT_NO","YT_TYPE","BEGIN_FEE","THIS_MON_YT","THIS_MON_YT_STA","PAY_FEE","PRICE","FAX","END_FEE","ACPEFIX","CELL_ID","IS_COM","IS_WY_FEE"];
+var title=[["账期","地市名称","基站名称","合同编号","合同名称","主合同编号","预提类型","期初余额","本月预提","","本月支付","","","期末余额","成本中心代码","局站编号","铁塔公司站点(是/否)","铁塔公司交纳房租物业费(是/否)"],
+           ["","","","","","","","","本月预提","月预提标准","付费金额","价款","税款","","","","",""]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","CELL_NAME","CONTRACT_NO","CONTRACT_NAME","MAIN_CONTRACT_NO","YT_TYPE","BEGIN_FEE","THIS_MON_YT","THIS_MON_YT_STA","PAY_FEE","PRICE","FAX","END_FEE","ACPEFIX","CELL_ID","IS_COM","IS_WY_FEE"];
 var report = null;
 
 $(function() {
@@ -43,9 +43,7 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
-	var regionCode=$("#cityCode").val();
-	var userId=$("#userId").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+userId+"'";
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_RENT_ALL_MON WHERE DEAL_DATE='"+time+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -75,8 +73,6 @@ function search(pageNumber) {
 
 function importToResult(){
 	var time=$("#time").val();
-	var userId=$("#userId").val();
-	var regionCode=$("#cityCode").val();
 	if(totalCount){
 		if(confirm("确认导入？")){
 			$("#importToResultBtn").hide();
@@ -85,11 +81,9 @@ function importToResult(){
 				dataType:'json',
 				async:true,
 				cache:false,
-				url:paths+"/rent/import-rent!importToResult.action",
+				url:$("#ctx").val()+"/rent/import-rent!importToResult.action",
 				data:{
-		           "time":time,
-		           "userId":userId,
-		           "regionCode":regionCode
+		           "time":time
 			   	}, 
 			   	success:function(data){
 			   		if(data&&data.ok){
@@ -106,6 +100,8 @@ function importToResult(){
 		window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_rent.jsp";
 	}
   }
+
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_rent.jsp";
  }
+ 
