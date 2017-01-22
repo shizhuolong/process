@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +17,17 @@ import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.apdplat.module.security.model.Org;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
@@ -42,85 +47,90 @@ import org.springframework.stereotype.Controller;
 public class ImportRentAction extends BaseAction {
 	private File uploadFile;
 	private String time;
-	private String regionCode;
-	private String userId;
 
 	@Resource
 	DataSource dataSource;
 
 	public void importToResult() {
-		User user = UserHolder.getCurrentLoginUser();
-		String username=user.getUsername();
-		boolean r = false;
-		try {
-			String time = request.getParameter("time");
-			String regionCode = request.getParameter("regionCode");
-			String delRepeat = "DELETE PMRT.TAB_MRT_RENT_ALL_MON WHERE DEAL_DATE='"	+ time+ "' AND USERNAME='"+ username+"'";
-
-			SpringManager.getUpdateDao().update(delRepeat);
-			String importToResult = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON SELECT * FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND USERNAME='"+ username+"'";
-			SpringManager.getUpdateDao().update(importToResult);
-			r = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			r = false;
-		}
-		Struts2Utils.renderJson("{\"ok\":" + r + "}", "no-cache");
+		String delRepeat = "DELETE PMRT.TAB_MRT_RENT_ALL_MON WHERE DEAL_DATE='"	+ time+ "'";
+		SpringManager.getUpdateDao().update(delRepeat);
+		String importToResult = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON SELECT * FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"'";
+		SpringManager.getUpdateDao().update(importToResult);
 	}
 	
 	public String importToTemp() {
 		User user = UserHolder.getCurrentLoginUser();
-		Org org=user.getOrg();
-		String orgLevel=org.getOrgLevel();
-		String regionName=org.getRegionName();
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_RENT_ALL_MON_TEMP";
+		String field="DEAL_DATE,GROUP_ID_1,UNIT_ID,UNIT_NAME,USERNAME,CELL_NAME,CONTRACT_NO,CONTRACT_NAME,MAIN_CONTRACT_NO,YT_TYPE,BEGIN_FEE,THIS_MON_YT,THIS_MON_YT_STA,PAY_FEE,PRICE,FAX,END_FEE,GROUP_ID_1_NAME,ACPEFIX,CELL_ID,IS_COM,IS_WY_FEE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
+			String fileType=request.getParameter("fileType");
+			FileInputStream in =null;
+		    Workbook wb = null;
+			Connection conn = null;
+			PreparedStatement pre = null;
 			try {
+				conn = this.getCon();
+				conn.setAutoCommit(false); 
 				// 上传时覆盖
-				String delSql = "delete from " + resultTableName
-						+ " where deal_date='" + time + "' and username='"+username+"'";
+				String delSql = "DELETE FROM " + resultTableName
+						+ " WHERE DEAL_DATE='" + time+"'";
 				SpringManager.getUpdateDao().update(delSql);
-				FileInputStream in = new FileInputStream(uploadFile);
-				HSSFWorkbook wb = new HSSFWorkbook(in);
+				in = new FileInputStream(uploadFile);
+				wb = WorkbookFactory.create(in);
+				/*if(fileType.equals(".xlsx")){
+					wb = new XSSFWorkbook(in);
+				}else{
+					wb = new HSSFWorkbook(in);
+				}*/
 				int sheetNum = wb.getNumberOfSheets();// 得到sheet数量
 				System.out.println("准备导入...");
 				if (sheetNum > 0) {
-					HSSFSheet sheet = wb.getSheetAt(0);
+					Sheet sheet = wb.getSheetAt(0);
 					System.out.println("导入Sheet页0:" + sheet.getSheetName());
-					int start = sheet.getFirstRowNum() + 2;// 去前两行标题
+					int start = sheet.getFirstRowNum() +4 ;// 去前4行标题
 					int end = sheet.getLastRowNum();
+					Row row;
+					String sql = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON_TEMP("+field+") values('"+time+"','','','','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					pre=conn.prepareStatement(sql);
 					for (int y = start; y <= end; y++) {
-						String sql = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON_TEMP";
-						String values = " values('" + time +"'";
-						HSSFRow row = sheet.getRow(y);
+						row = sheet.getRow(y);
 						if (row == null)
 							continue;
-						int cstart = row.getFirstCellNum();
+						int cstart = row.getFirstCellNum()+1;//排除第一列
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
 						for (int i = cstart; i < cend; i++) {
-								values += "," + getCellValue(row.getCell(i));
+								pre.setString(i,getCellValue(row.getCell(i)));
 						}
-						values +=",'"+username+"')";
-						int n = SpringManager.getUpdateDao().update(sql + values);
-						if (n <= 0) {
-							err.add("导入第" + (y + 1) + "条记录失败");
-						}
+						pre.addBatch();
+						
 					}
+					pre.executeBatch();
+					conn.commit();
+					conn.setAutoCommit(true);
+					importToResult();
 				}
-				wb.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 				err.add(e.getMessage());
+			}finally{
+				try {
+					conn.close();
+					if(wb instanceof XSSFWorkbook){
+						in.close();
+					}else{
+						 wb.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-
 		request.setAttribute("time", time);
-		request.setAttribute("regionCode", regionCode);
 		if(err.size()>0){
 		   Struts2Utils.getRequest().setAttribute("err", err);
 		   return "error";
@@ -176,33 +186,17 @@ public class ImportRentAction extends BaseAction {
 		this.time = time;
 	}
 
-	public String getRegionCode() {
-		return regionCode;
-	}
-
-	public void setRegionCode(String regionCode) {
-		this.regionCode = regionCode;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	private String getCellValue(HSSFCell cell){
-		String value="''";
+	private String getCellValue(Cell cell){
+		String value="";
 		if(cell==null){
 			return value;
 		}
 		int cellType=cell.getCellType();
-		if(cellType==HSSFCell.CELL_TYPE_STRING){//HSSFCell.CELL_TYPE_BLANK HSSFCell.CELL_TYPE_BOOLEAN HSSFCell.CELL_TYPE_ERROR HSSFCell.CELL_TYPE_FORMULA HSSFCell.CELL_TYPE_NUMERIC HSSFCell.CELL_TYPE_STRING
-			value="'"+cell.getStringCellValue()+"'";
+		if(cellType==HSSFCell.CELL_TYPE_STRING){
+			value=cell.getStringCellValue()+"";
 		}else if(cellType==HSSFCell.CELL_TYPE_NUMERIC){
 			if(HSSFDateUtil.isCellDateFormatted(cell)){
-				value="'"+new SimpleDateFormat("yyyy年MM月dd日").format(cell.getDateCellValue())+"'";
+				value=new SimpleDateFormat("yyyy年MM月dd日").format(cell.getDateCellValue())+"";
 			}else{
 				value=cell.getNumericCellValue()+"";
 			}
