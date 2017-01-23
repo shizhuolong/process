@@ -106,14 +106,14 @@ $(function(){
 	});
 	report.showSubRow();
 ///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	//$("#lch_DataHead").find("TH").unbind();
+	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 ///////////////////////////////////////////
-		$("#lch_DataHead").find("TH").unbind();
-		$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+		//$("#lch_DataHead").find("TH").unbind();
+		//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 		///////////////////////////////////////////
 	});
 });
