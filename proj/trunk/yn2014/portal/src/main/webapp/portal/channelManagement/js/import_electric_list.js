@@ -42,7 +42,7 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_ELECTRIC_CHARGE_MON WHERE DEAL_DATE='"+time+"'";
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_ELECTRIC_CHARGE_MON WHERE DEAL_DATE='"+time+"'";
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
