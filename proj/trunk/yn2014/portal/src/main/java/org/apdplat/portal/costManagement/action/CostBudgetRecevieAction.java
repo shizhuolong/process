@@ -55,7 +55,7 @@ public class CostBudgetRecevieAction extends BaseAction{
 			String unit_name = request.getParameter("unit_name");
 			String is_confirm = request.getParameter("is_confirm");
 			if(deal_date != null && !"".equals(deal_date.trim())) {
-				resultMap.put("deal_date", deal_date);
+				resultMap.put("deal_date", "%"+deal_date+"%");
 			}
 			if(unit_name != null && !"".equals(unit_name.trim())) {
 				resultMap.put("unit_name", "%"+unit_name+"%");

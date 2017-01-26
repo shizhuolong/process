@@ -28,7 +28,7 @@
 			AND 1=2
 		</if>
 		<if test="deal_date != null">
-			AND T.DEAL_DATE = #{deal_date}
+			AND T.DEAL_DATE LIKE #{deal_date}
 		</if>
 		<if test="unit_name != null">
 			AND T.UNIT_NAME LIKE #{unit_name}
