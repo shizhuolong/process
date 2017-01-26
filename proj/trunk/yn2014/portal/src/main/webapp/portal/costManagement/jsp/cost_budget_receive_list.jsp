@@ -1,11 +1,18 @@
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
 <%@page import="org.apdplat.module.security.model.Org"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%
 	User user = UserHolder.getCurrentLoginUser();
-    Org org = user.getOrg();
+	Org org = user.getOrg();
+	Calendar ca=Calendar.getInstance();
+	ca.add(Calendar.MONTH, -1);
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -65,13 +72,11 @@
 									<i></i>成本预算接收
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
-									<tr>
-										<th style="width: 50px;">帐期：</th>
-										<td style="width: 80px;">
-											<input readonly="readonly" type="text" style="width: 80px" class="Wdate"
-											id="deal_date" name="deal_date" value=""
-											onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" />
-										</td>
+								  <tr>
+									    <th style="width: 50px;">账期：</th>
+					                    <td style="width: 80px;">
+						                    <input class="default-text-input wper80" id="deal_date" name="deal_date" type="text"/>
+					                    </td>
 										<th style="width: 50px;">地市：</th>
 										<td style="width: 120px;">
 											<select id="group_id_1" name="group_id_1">
