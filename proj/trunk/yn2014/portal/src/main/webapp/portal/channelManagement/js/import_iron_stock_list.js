@@ -4,6 +4,10 @@ var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","P_ADDR_CODE","BUSI_CONF_CO
 var report = null;
 
 $(function() {
+	var orgLevel=$("#orgLevel").val();
+	if(orgLevel==1){
+		$("#reppeatBtn").remove();
+	}
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -44,7 +48,16 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var code=$("#code").val();
 	var hallType=$("#hallType").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_IRON_STOCK_MON WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+code+"' AND HALL_TYPE='"+hallType+"'";
+	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_IRON_STOCK_MON WHERE DEAL_DATE='"+time+"' AND HALL_TYPE='"+hallType+"'";
+	var orgLevel=$("#orgLevel").val();
+	var regionCode=$("#regionCode").val();
+	if(orgLevel==1){
+		if(regionCode!=""){
+			sql+=" AND GROUP_ID_1='"+regionCode+"'";
+		}
+	}else{
+		sql+=" AND GROUP_ID_1='"+code+"'";
+	}
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;

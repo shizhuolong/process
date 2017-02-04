@@ -34,15 +34,21 @@
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="hallType" value="<%=hallType%>">
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width:60%;">
 					<tr>
-						<td  width="1%">账期：</td>
+						<td  width="2%">账期：</td>
 						<td width="1%">
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						</td>
+						<td width="13%">
+						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
+								<option value=''>请选择</option>
+						     </select>
+					    </td>
 					    <td width="1%">
 						   <a class="default-btn" href="#" id="searchBtn"
 						    style="float: right; margin-right: 18px;">查询</a>

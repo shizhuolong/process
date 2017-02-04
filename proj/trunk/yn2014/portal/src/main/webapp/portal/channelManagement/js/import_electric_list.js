@@ -49,7 +49,12 @@ function search(pageNumber) {
 	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_ELECTRIC_CHARGE_MON WHERE DEAL_DATE='"+time+"'";
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	if(orgLevel!=1){
+	var regionCode=$("#regionCode").val();
+	if(orgLevel==1){
+		if(regionCode!=""){
+			sql+=" AND GROUP_ID_1='"+regionCode+"'";
+		}
+	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
 	}
 	var csql = sql;
