@@ -4,6 +4,10 @@ var field=["DEAL_DATE","GROUP_ID_1_NAME","ROOM_ADDR","END_YT_MONEY","AC_PREFIX",
 var report = null;
 
 $(function() {
+	var orgLevel=$("#orgLevel").val();
+	if(orgLevel!=1){
+		$("#reppeatBtn").remove();
+	}
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -43,6 +47,11 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
 	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_ELECTRIC_CHARGE_MON WHERE DEAL_DATE='"+time+"'";
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	if(orgLevel!=1){
+		sql+=" AND GROUP_ID_1='"+code+"'";
+	}
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;

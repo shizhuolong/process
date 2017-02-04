@@ -32,6 +32,8 @@
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width:60%;">
 					<tr>
