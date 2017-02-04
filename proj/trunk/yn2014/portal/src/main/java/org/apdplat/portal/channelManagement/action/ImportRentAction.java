@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,6 @@ import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -52,10 +53,25 @@ public class ImportRentAction extends BaseAction {
 	DataSource dataSource;
 
 	public void importToResult() {
-		String delRepeat = "DELETE PMRT.TAB_MRT_RENT_ALL_MON WHERE DEAL_DATE='"	+ time+ "'";
+		/*String delRepeat = "DELETE PMRT.TAB_MRT_RENT_ALL_MON WHERE DEAL_DATE='"	+ time+ "' AND GROUP_ID_1='"+regionCode+"'";
 		SpringManager.getUpdateDao().update(delRepeat);
-		String importToResult = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON SELECT * FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"'";
-		SpringManager.getUpdateDao().update(importToResult);
+		String importToResult = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON SELECT * FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+		SpringManager.getUpdateDao().update(importToResult);*/
+		Connection conn =null;
+		CallableStatement stmt=null;
+		//调用存储过程
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.prepareCall("{call PMRT.PRC_MRT_IRON_IMPORT_GROUP(?,?,?,?)}");
+			
+			stmt.setString(1,time);
+			stmt.setString(2,"TAB_MRT_RENT_ALL_MON_TEMP");
+			stmt.setString(3,"TAB_MRT_RENT_ALL_MON");
+			stmt.registerOutParameter(4,java.sql.Types.DECIMAL);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String importToTemp() {
@@ -104,10 +120,13 @@ public class ImportRentAction extends BaseAction {
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
 						for (int i = cstart; i < cend; i++) {
+							if(i>=6 && i<=12){
+								pre.setDouble(i,Double.parseDouble(getCellValue(row.getCell(i))));  	
+							}else{
 								pre.setString(i,getCellValue(row.getCell(i)));
+							}
 						}
 						pre.addBatch();
-						
 					}
 					pre.executeBatch();
 					conn.commit();
@@ -130,7 +149,6 @@ public class ImportRentAction extends BaseAction {
 				}
 			}
 		}
-		request.setAttribute("time", time);
 		if(err.size()>0){
 		   Struts2Utils.getRequest().setAttribute("err", err);
 		   return "error";
