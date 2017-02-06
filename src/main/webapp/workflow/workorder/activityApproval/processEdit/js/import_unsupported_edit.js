@@ -367,3 +367,7 @@ function downloadFile(element) {
 function downExcelTemp() {
 	location.href = $("#ctx").val()+"/unsupported/unsupported!downloadTemplate.action";
 }
+
+function cancel() {
+	$("#updateFormDiv").dialog('close');
+}
