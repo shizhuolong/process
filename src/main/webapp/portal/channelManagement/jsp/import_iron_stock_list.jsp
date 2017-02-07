@@ -44,6 +44,7 @@
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						</td>
+						<td width="5%" style="text-align:right;">地市：</td>
 						<td width="13%">
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
