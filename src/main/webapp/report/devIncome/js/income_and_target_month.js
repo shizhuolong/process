@@ -612,7 +612,12 @@ function getdownField(where){
 	+"                                             SUM(T.ACCT_4G_NUM),                               "
 	+"                                             2)                                                "
 	+"                                    END,                                                       "
-	+"                                    2) AVG_FLOW_4G                                             "
+	+"                                    2) AVG_FLOW_4G,                                             "
+	+"               SUM(T.ON_2G) ON_2G, "
+	+"               SUM(T.ON_3G) ON_3G, "
+	+"               SUM(T.ON_4G) ON_4G, "
+	+"               SUM(T.ZZX_ZHTZ) ZZX_ZHTZ, "
+	+"               SUM(T.ICT_ZHTZ) ICT_ZHTZ  "
 	+"          FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                    "
 	+where
 	+"         GROUP BY T.HQ_CHAN_CODE) T                                                            "
