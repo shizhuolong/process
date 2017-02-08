@@ -92,6 +92,7 @@ $(function(){
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 	$("#searchBtn").click(function(){
+		sumSql=getSumSql();
 		report.showSubRow();
 		report.showAllCols(0);
 
