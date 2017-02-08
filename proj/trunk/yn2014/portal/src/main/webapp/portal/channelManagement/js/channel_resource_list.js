@@ -118,7 +118,12 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 				+"<td>"+isNull(n['GROUP_ID_4_NAME'])+"</td>"
-				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>";
+				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+				+"<td>"+isNull(n['CHNL_TYPE'])+"</td>"
+				+"<td>"+isNull(n['CHN_CDE_1_NAME'])+"</td>"
+				+"<td>"+isNull(n['CHN_CDE_2_NAME'])+"</td>"
+				+"<td>"+isNull(n['CHN_CDE_3_NAME'])+"</td>"
+				+"<td>"+isNull(n['CHN_CDE_4_NAME'])+"</td>";
 				//是否已经划分营服中心
 				var isDivision = n['ISDIVISION'];
 				var is_mark=n['IS_MARK'];
