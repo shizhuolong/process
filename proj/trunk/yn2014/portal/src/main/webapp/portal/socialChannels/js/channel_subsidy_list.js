@@ -122,7 +122,7 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['WORK_NO'])+"</td>"
 				+"<td>"+isNull(n['MONEY'])+"</td>"
 				+"<td>"+isNull(n['DEAL_DATE_NUM'])+"</td>";
-				if(dealDate==$("#nowMonth").val()){
+				if(dealDate==$("#nowMonth").val()&&isNull(n['IS_OPEN'])=="1"){
 					content+="<td><a onclick='update($(this))' "
 						+" workNo='"+n['WORK_NO']
 						+"' money='"+isNull(n['MONEY'])
@@ -134,6 +134,8 @@ function search(pageNumber) {
 						+"<a onclick='del($(this))'  "
 						+" hqChanCode='"+isNull(n['HQ_CHAN_CODE'])
 				 		+"' href='javascript:void(0);'>删除</a></td>";
+				}else{
+					content+="<td></td>";
 				}
 				content+="</tr>";
 			});
