@@ -11,6 +11,7 @@ import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.workflow.WorkflowConstant;
 import org.apdplat.workflow.common.BaseAction;
 import org.apdplat.workflow.service.ApproverHandlerService;
+import org.apdplat.workflow.util.WorkflowUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,78 +20,75 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/approver")
 @Results({
-	@Result(name="processList",location="/workflow/jsp/deployProcessDefinition.jsp"),
-	@Result(name="activeProcessList",location="/workflow/jsp/activeProcessList.jsp")
-})
+		@Result(name = "processList", location = "/workflow/jsp/deployProcessDefinition.jsp"),
+		@Result(name = "activeProcessList", location = "/workflow/jsp/activeProcessList.jsp") })
 public class ApproverHandlerAction extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(ApproverHandlerAction.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(ApproverHandlerAction.class);
+	private String applyUserId;
 	private String taskId;
-	private String taskFlag; //0:拟稿人 1:查询省公司审批人员	2：查询分公司审批人员	3：本部门审批人员
-	
-	/*private static final Properties properties;
-	
-	static {
-		InputStream inputStream = ApproverHandlerAction.class.getClassLoader().getResourceAsStream("activityProcess.properties");
-		properties = new Properties();
-		try {
-			properties.load(inputStream);
-		} catch (IOException e) {
-			logger.error(e.getMessage(),e);
-		}finally{
-			try {
-				inputStream.close();
-			} catch (IOException e) {
-				logger.error(e.getMessage(),e);
-			}
-		}
-	}*/
+	private String taskFlag; // 0:拟稿人 1:查询省公司审批人员 2：查询分公司审批人员 3：本部门审批人员
+
+	/*
+	 * private static final Properties properties;
+	 * 
+	 * static { InputStream inputStream =
+	 * ApproverHandlerAction.class.getClassLoader
+	 * ().getResourceAsStream("activityProcess.properties"); properties = new
+	 * Properties(); try { properties.load(inputStream); } catch (IOException e)
+	 * { logger.error(e.getMessage(),e); }finally{ try { inputStream.close(); }
+	 * catch (IOException e) { logger.error(e.getMessage(),e); } } }
+	 */
 
 	@Autowired
 	private ApproverHandlerService approverHandlerService;
-	
-	/**获取任务节点的审批人员**/
+
+	/** 获取任务节点的审批人员 **/
 	public void qryTaskApprover() {
-		
-		List<Map<String,String>> approverList = null;
+
+		List<Map<String, String>> approverList = null;
 		User user = UserHolder.getCurrentLoginUser();
-		String oaComId = user.getOaComId();
+		String oaComId = "";
+		User startUser=WorkflowUtils.getUserInfo(Long.valueOf(applyUserId));
+		oaComId=startUser.getOaComId();
 		String oaDepId = user.getOaDepId();
-		
-		if(WorkflowConstant.TASK_TYPE_PRO.equals(taskFlag)) {
-			approverList = approverHandlerService.qryTaskApprover(taskId, "", "");
-		}else if(WorkflowConstant.TASK_TYPE_COM.equals(taskFlag)) {
-			approverList = approverHandlerService.qryTaskApprover(taskId,oaComId, "");
-		}else if(WorkflowConstant.TASK_TYPE_DEP.equals(taskFlag)) {
-			approverList = approverHandlerService.qryTaskApprover(taskId, oaComId,oaDepId);
-		}else if(WorkflowConstant.PROVINCIALAGENCY.equals(taskFlag)) {
-			approverList = approverHandlerService.qryTaskApprover(taskId, "", "");
+		if (WorkflowConstant.TASK_TYPE_PRO.equals(taskFlag)) {
+			approverList = approverHandlerService.qryTaskApprover(taskId, "",
+					"");
+		} else if (WorkflowConstant.TASK_TYPE_COM.equals(taskFlag)) {
+			approverList = approverHandlerService.qryTaskApprover(taskId,
+					oaComId, "");
+		} else if (WorkflowConstant.TASK_TYPE_DEP.equals(taskFlag)) {
+			approverList = approverHandlerService.qryTaskApprover(taskId,
+					oaComId, oaDepId);
 		}
 		this.reponseJson(approverList);
 	}
-	
-	//获取当前用户的部门领导
+
+	// 获取当前用户的部门领导
 	public void qryMyDepartLeader() {
-		
+
 		User user = UserHolder.getCurrentLoginUser();
 		String oaComId = user.getOaComId();
 		String oaDepId = user.getOaDepId();
-		List<Map<String,String>> list = null;
-		//现在节点审批人员配置表（tb_act_task_approver）中查是否有配置部门领导审批人，
-		//没有的话再查同部门job_name like '%经理%' or job_name like '%主任%' 的人员
-		list = approverHandlerService.qryTaskApprover(WorkflowConstant.DEPART_LEADER_TASK_ID, oaComId,oaDepId);
-		if(list.size()==0) {
+		List<Map<String, String>> list = null;
+		// 现在节点审批人员配置表（tb_act_task_approver）中查是否有配置部门领导审批人，
+		// 没有的话再查同部门job_name like '%经理%' or job_name like '%主任%' 的人员
+		list = approverHandlerService.qryTaskApprover(
+				WorkflowConstant.DEPART_LEADER_TASK_ID, oaComId, oaDepId);
+		if (list.size() == 0) {
 			list = approverHandlerService.qryMyDepartLeader(oaComId, oaDepId);
 		}
 		this.reponseJson(list);
 	}
-	
+
 	//
 	public void qryUserTaskProperty() {
-		
-		Map<String, Object> map = approverHandlerService.getUserTaskProperty(taskId);
+
+		Map<String, Object> map = approverHandlerService
+				.getUserTaskProperty(taskId);
 		this.reponseJson(map);
 	}
 
@@ -109,7 +107,13 @@ public class ApproverHandlerAction extends BaseAction {
 	public void setTaskFlag(String taskFlag) {
 		this.taskFlag = taskFlag;
 	}
-	
-	
-	
+
+	public String getApplyUserId() {
+		return applyUserId;
+	}
+
+	public void setApplyUserId(String applyUserId) {
+		this.applyUserId = applyUserId;
+	}
+
 }
