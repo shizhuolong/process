@@ -49,7 +49,6 @@
 	<input type="hidden" id="orgId" value="<%=org.getId()%>">
 	<input type="hidden" id="orgName" value="<%=org.getOrgName()%>">
 	<input type="hidden" id="login_name" value="<%=user.getUsername()%>">
-	<input type="hidden" id="isHavingMark" value="0">
 	<div data-options="region:'west',split:false,title:'渠道资源管理'"
 		style="width: 220px; padding: 10px;">
 		<div id="ztree" class="ztree"></div>
@@ -95,6 +94,14 @@
 						<td width="5%">渠道属性4：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_4_name" name="chn_cde_4_name" type="text" /></td>
+					    <td width="10%" style="padding-left: 10px;">是否打标：</td>
+						<td width="20%">
+							<select class="default-text-input wper80" name="isMark" id="isMark">
+								<option value="">全部</option>
+								<option value="1">是</option>
+								<option value="0" selected>否</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -114,13 +121,18 @@
 							<th>营服中心</th>
 							<th>渠道名称</th>
 							<th>渠道编码</th>
+							<th>代理点类型</th>
+							<th>渠道属性1</th>
+							<th>渠道属性2</th>
+							<th>渠道属性3</th>
+							<th>渠道属性4</th>
 							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody id="dataBody">
 					</tbody>
 					<tr>
-						<td colspan="5">
+						<td colspan="10">
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据

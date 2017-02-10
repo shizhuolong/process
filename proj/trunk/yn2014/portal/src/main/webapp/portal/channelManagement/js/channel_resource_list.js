@@ -76,13 +76,7 @@ function search(pageNumber) {
 	var chn_cde_2_name = $.trim($("#chn_cde_2_name").val());
 	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
-	var isHavingMark = $("#isHavingMark").val();
-	var isMark="";
-	if(isHavingMark=="0"){
-		isMark="0";
-	}else{
-	    isMark = $("#isMark").val();
-	}
+	var isMark= $("#isMark").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -172,51 +166,6 @@ function search(pageNumber) {
 //渠道划分
 function channelDivideNotMark(ele) {
 	alert("该渠道还未打标，请打标！");
-	/*var group_id_1 = $(ele).attr("group_id_1");
-	var group_id_4 = $(ele).attr("group_id_4");
-	var hq_chan_code = $(ele).attr("hq_chan_code");
-	var login_name = $("#login_name").val();
-	art.dialog.data('group_id_1',group_id_1);
-	art.dialog.data('group_id_4',group_id_4);
-	art.dialog.data('login_name',login_name);
-		$.ajax({
-			type:"POST",
-			dataType:'json',
-			async:false,
-			cache:false,
-			url:$("#ctx").val()+"/channelManagement/channelResource_isAgentPoint.action",
-			data:{
-		       "hq_chan_code":hq_chan_code
-		   	}, 
-		   	success:function(data){
-		   		if(data=="isAgentPoint"){
-		   			if(isHavingMark(hq_chan_code,0)){
-		   				var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
-		   				art.dialog.open(url,{
-		   					id:'channelDivideDialog',
-		   					width:'410px',
-		   					height:'310px',
-		   					lock:true,
-		   					resize:false
-		   				});
-		   			}
-		   		}else{
-		   			if(isHavingMark(hq_chan_code,1)){
-		   				var url = $("#ctx").val()+"/portal/channelManagement/jsp/channel_resource_divide.jsp";
-		   				art.dialog.open(url,{
-		   					id:'channelDivideDialog',
-		   					width:'410px',
-		   					height:'310px',
-		   					lock:true,
-		   					resize:false
-		   				});
-		   			}
-		   		}
-		    },
-	        error: function(XMLHttpRequest, textStatus, errorThrown) {
-	          alert("验证出现异常！");
-	        }
-		});*/
 }
 
 function channelDivideIsMark(ele) {
@@ -595,13 +544,7 @@ function downloadExcel() {
 	var chn_cde_2_name = $.trim($("#chn_cde_2_name").val());
 	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
-	var isHavingMark = $("#isHavingMark").val();
-	var isMark="";
-	if(isHavingMark=="0"){
-		isMark="0";
-	}else{
-	    isMark = $("#isMark").val();
-	}
+	var isMark=$("#isMark").val();
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
