@@ -95,7 +95,7 @@
 						<td width="10%">渠道属性4：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_4_name" name="chn_cde_4_name" type="text" /></td>
-					    <td width="10%" style="padding-left: 10px;">乡镇是否打标：</td>
+					    <td width="10%" style="padding-left: 10px;">是否打标：</td>
 						<td width="20%">
 							<select class="default-text-input wper80" name="isMark" id="isMark">
 								<option value="">全部</option>
@@ -133,7 +133,7 @@
 					<tbody id="dataBody">
 					</tbody>
 					<tr>
-						<td colspan="5">
+						<td colspan="10">
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据
