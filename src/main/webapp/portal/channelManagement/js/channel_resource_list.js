@@ -77,6 +77,7 @@ function search(pageNumber) {
 	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
 	var isMark= $("#isMark").val();
+	var isAgent= $("#isAgent").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -95,7 +96,8 @@ function search(pageNumber) {
            	"chn_cde_2_name":chn_cde_2_name,
            	"chn_cde_3_name":chn_cde_3_name,
            	"chn_cde_4_name":chn_cde_4_name,
-           	"isMark":isMark
+           	"isMark":isMark,
+           	"isAgent":isAgent
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -545,6 +547,7 @@ function downloadExcel() {
 	var chn_cde_3_name = $.trim($("#chn_cde_3_name").val());
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
 	var isMark=$("#isMark").val();
+	var isAgent=$("#isAgent").val();
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
@@ -614,7 +617,12 @@ function downloadExcel() {
 	if (isMark != ""){
 		sql+=" AND T.IS_MARK ='"+isMark+"'";
 	}
-	
+	if (isAgent == "1"){
+		sql+=" AND T.CHNL_TYPE IS NOT NULL";
+	}
+	if (isAgent == "0"){
+		sql+=" AND T.CHNL_TYPE IS NULL";
+	}
 	sql += " ORDER BY T.GROUP_ID_1, T.UNIT_ID";
 	var showtext="Sheet";
    var showtext1="result";
