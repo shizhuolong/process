@@ -152,7 +152,7 @@ function findTaskExterPro() {
 					$(".approver_td").hide();
 					$("#isNeedApprover").val("false");
 				}else {
-			   		findNextDealer(taskId,taskFlag);
+			   		findNextDealer(taskId,taskFlag,applyUserId);
 				}		
 	 	   	}
 		 }
@@ -160,7 +160,7 @@ function findTaskExterPro() {
 }
 
 //下一步审批人
-function findNextDealer(taskId,taskFlag) {
+function findNextDealer(taskId,taskFlag,applyUserId) {
 	
 	var url = "";
 	if(taskFlag == '4') {	//查本部门领导
@@ -176,7 +176,8 @@ function findNextDealer(taskId,taskFlag) {
 		url:url,
 		data:{
      		taskId:taskId,
-        	taskFlag:taskFlag
+        	taskFlag:taskFlag,
+        	applyUserId:applyUserId
 		}, 
 	 	success:function(data){
 	 		var str = "";
