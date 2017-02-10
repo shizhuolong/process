@@ -50,8 +50,13 @@ public class ApproverHandlerAction extends BaseAction {
 
 		List<Map<String, String>> approverList = null;
 		User user = UserHolder.getCurrentLoginUser();
+		User startUser;
 		String oaComId = "";
-		User startUser=WorkflowUtils.getUserInfo(Long.valueOf(applyUserId));
+		if(applyUserId!=null&&!applyUserId.equals("")){
+			startUser=WorkflowUtils.getUserInfo(Long.valueOf(applyUserId));
+		}else{
+			startUser=user;
+		}
 		oaComId=startUser.getOaComId();
 		String oaDepId = user.getOaDepId();
 		if (WorkflowConstant.TASK_TYPE_PRO.equals(taskFlag)) {
