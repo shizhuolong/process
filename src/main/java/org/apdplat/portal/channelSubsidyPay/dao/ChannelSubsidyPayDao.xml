@@ -195,10 +195,10 @@
              1.0 * nvl(IS_JF_FCX, 0) * 5 + nvl(BJ_COMM, 0)
               ELSE
          0
-         END),2) IS_COMM_LJ_DH_fcx,<!--自2015年06月累计已兑金额 -->
-       SUM(NVL(T.ALL_JF_TOTAL,0)+NVL(T.ALL_JF_QS,0)-NVL(T.ALL_JF_YF,0)+NVL(T.ALL_JF_YFSF,0) -  NVL(T.IS_JF_CX,0)-NVL(T.IS_JF_FCX,0))-SUM(NVL(T.IS_JF_YZF,0)) 
+         END),2) IS_COMM_LJ_DH_fcx<!--,自2015年06月累计已兑金额 -->
+       <!--  SUM(NVL(T.ALL_JF_TOTAL,0)+NVL(T.ALL_JF_QS,0)-NVL(T.ALL_JF_YF,0)+NVL(T.ALL_JF_YFSF,0) -  NVL(T.IS_JF_CX,0)-NVL(T.IS_JF_FCX,0))-SUM(NVL(T.IS_JF_YZF,0)) 
 
-IS_JF_SPLUS_ALL <!--自201506累计剩余未兑积分 -->
+IS_JF_SPLUS_ALL --><!--自201506累计剩余未兑积分 -->
           
       FROM PMRT.TAB_MRT_INTEGRAL_DEV_REPORT T
      WHERE T.DEAL_DATE BETWEEN 201506 AND #{dealDate}
@@ -217,7 +217,7 @@ IS_JF_SPLUS_ALL <!--自201506累计剩余未兑积分 -->
                  ,T1.IS_JF_SPLUS_FCX = T2.IS_JF_SPLUS_FCX
                  ,T1.IS_JF_LJ_DH = T2.IS_JF_LJ_DH
                  ,T1.IS_COMM_LJ_DH = T2.is_comm_lj_dh_cx +t2.is_comm_lj_dh_fcx
-                 ,T1.IS_JF_SPLUS_ALL = T2.IS_JF_SPLUS_ALL
+                 <!--  ,T1.IS_JF_SPLUS_ALL = T2.IS_JF_SPLUS_ALL-->
      WHERE T1.INTEGRAL_SUB  = 1 and T1.fd_chnl_id=#{hqCode}
     </update>
     <update id="updateStatus" parameterType="String">
