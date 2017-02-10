@@ -57,6 +57,12 @@
  			<if test="isMark != null">
  				AND T.IS_MARK=#{isMark}
  			</if>
+ 			<if test="isAgent == 1">
+ 				AND T.CHNL_TYPE IS NOT NULL
+ 			</if>
+ 			<if test="isAgent == 0">
+ 				AND T.CHNL_TYPE IS NULL
+ 			</if>
  			
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>	
@@ -91,6 +97,12 @@
  			<if test="isMark != null">
  				AND T.IS_MARK=#{isMark}
  			</if>
+ 			<if test="isAgent == 1">
+ 				AND T.CHNL_TYPE IS NOT NULL
+ 			</if>
+ 			<if test="isAgent == 0">
+ 				AND T.CHNL_TYPE IS NULL
+ 			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
 		<if test="orgLevel==3">
@@ -123,6 +135,12 @@
  			</if>
  			<if test="isMark != null">
  				AND T.IS_MARK=#{isMark}
+ 			</if>
+ 			<if test="isAgent == 1">
+ 				AND T.CHNL_TYPE IS NOT NULL
+ 			</if>
+ 			<if test="isAgent == 0">
+ 				AND T.CHNL_TYPE IS NULL
  			</if>
  			ORDER BY T.GROUP_ID_1, T.UNIT_ID
 		</if>
