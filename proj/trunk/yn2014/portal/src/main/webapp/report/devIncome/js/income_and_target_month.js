@@ -362,6 +362,12 @@ $(function(){
 					
 					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.TAB_MRT_TARGET_HQ_MON t ';
 					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  and  t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
+					if(regionCode!=''){
+						provinceSql+=" AND t.GROUP_ID_1='"+regionCode+"'";
+					}
+					if(chnlType!=''){
+						provinceSql+=" AND t.IS_JK='"+chnlType+"'";
+					}
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
