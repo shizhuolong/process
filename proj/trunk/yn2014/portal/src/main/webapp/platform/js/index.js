@@ -180,6 +180,7 @@ function switchFirstMenu(pModuleId,moduleName) {
 			viewport.doLayout();
 			var jfUrl=contextPath+"/tojf/to-jf!redirect.action?redirectUrl=http://135.64.20.78:8889/dss_hn/WgLogin!Checklogin.action";
 			openWindow(moduleName,"",jfUrl);
+			$(".x-tab-panel-header").hide();
 			return;
 		}else{
 			$("#indexPage").remove();
