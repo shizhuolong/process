@@ -84,7 +84,7 @@
 							id="chn_cde_1_name" name="chn_cde_1_name" type="text" /></td>
 					</tr>
 					<tr height="35px">
-						<td width="10%">渠道属性2：</td>
+						<td width="10%" style="padding-left: 10px;">渠道属性2：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_2_name" name="chn_cde_2_name" type="text" /></td>
 						<td width="10%">渠道属性3：</td>
@@ -92,10 +92,10 @@
 							id="chn_cde_3_name" name="chn_cde_3_name" type="text" /></td>
 					</tr>
 					<tr height="35px">
-						<td width="10%">渠道属性4：</td>
+						<td width="10%" style="padding-left: 10px;">渠道属性4：</td>
 						<td width="20%"><input class="default-text-input wper80"
 							id="chn_cde_4_name" name="chn_cde_4_name" type="text" /></td>
-					    <td width="10%" style="padding-left: 10px;">是否打标：</td>
+					    <td width="10%">是否打标：</td>
 						<td width="20%">
 							<select class="default-text-input wper80" name="isMark" id="isMark">
 								<option value="">全部</option>
