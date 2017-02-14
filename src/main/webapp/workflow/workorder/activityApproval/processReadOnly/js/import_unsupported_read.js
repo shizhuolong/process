@@ -49,6 +49,7 @@ function search(pageNumber) {
 	                +"<td>"+isNull(n['FEE'])+"</td>"
 	                +"<td>"+isNull(n['TOTALFEE'])+"</td>"
 	                +"<td>"+isNull(n['NETFEE'])+"</td>"
+	                +"<td>"+isNull(n['PAY_ADDRESS'])+"</td>"
 	                +"<td>"+isNull(n['REMARK'])+"</td>"
 	                +"</tr>";
 			});
