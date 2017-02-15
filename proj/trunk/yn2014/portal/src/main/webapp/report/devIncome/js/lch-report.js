@@ -14,6 +14,7 @@
 			return;
 		}
 		this.title=options.title;
+		this.closeHeader=options.closeHeader;
 		pageHeader=this.title;
 		this.content=options.content;
 		this.field=options.field;
@@ -23,7 +24,10 @@
 		this.afterShowSubRows=options.afterShowSubRows;
 		this.initTable();
 		this.renderHeader();
-		this.showAllCols(1);
+		if(this.closeHeader)
+			this.showAllCols(0);
+		else
+			this.showAllCols(1);
 		this.OnOrder(options.orderCallBack);
 	}
 	LchReport.prototype={
