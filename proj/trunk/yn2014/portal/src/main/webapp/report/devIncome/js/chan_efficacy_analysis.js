@@ -10,6 +10,7 @@ var report = null;
 $(function() {
 	report = new LchReport({
 		title : title,
+		closeHeader:true,
 		field : field,
 		css:[{gt:6,css:LchReport.RIGHT_ALIGN},{array:[8,9,10,11,12,14,15,28,36,45],css:LchReport.NORMAL_STYLE}],
 		rowParams : [],//第一个为rowId
