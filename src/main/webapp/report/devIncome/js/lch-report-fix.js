@@ -21,7 +21,8 @@
 		if(this.closeHeader){
 			var showColFunc=this.showCol;
 			$("#lch_DataHead").find("TR:eq(0)").find("TH").each(function(){
-				showColFunc($(this),1);
+				showColFunc($(this),0);
+				$(window).trigger("resize");
 			});
 		}
 		this.OnOrder(options.orderCallBack);
@@ -330,6 +331,7 @@
 					$oldOrder.click(function(event){
 						event.stopPropagation();
 					});
+					$(window).trigger("resize");
 				}
 			});
 			
@@ -339,6 +341,7 @@
 				if(!($(this).find(".space").length||$(this).find(".asc").length||$(this).find(".desc").length)){
 					$(this).append(space);
 				}
+				$(window).trigger("resize");
 			}});
 			//初始化排序结束
 		
