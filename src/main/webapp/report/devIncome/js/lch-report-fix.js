@@ -8,6 +8,7 @@
 		this.title=options.title;
 		pageHeader=this.title;
 		this.lock=options.lock;
+		this.closeHeader=options.closeHeader;
 		this.content=options.content;
 		this.field=options.field;
 		this.css=options.css;
@@ -17,7 +18,12 @@
 		this.afterShowSubRows=options.afterShowSubRows;
 		this.initTable();
 		this.renderHeader();
-		this.showAllCols(1);
+		if(this.closeHeader){
+			var showColFunc=this.showCol;
+			$("#lch_DataHead").find("TR:eq(0)").find("TH").each(function(){
+				showColFunc($(this),1);
+			});
+		}
 		this.OnOrder(options.orderCallBack);
 	}
 	LchReport.prototype={
