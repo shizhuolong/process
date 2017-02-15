@@ -38,6 +38,7 @@ var orderBy='';
 $(function(){
 	var report=new LchReport({
 		title:title,
+		closeHeader:true,
 		field:["GROUPNAME"].concat(field),
 		css:[
 		     {gt:0,css:LchReport.RIGHT_ALIGN},{array:[1,8,9,23,29,30,42,43,44],css:LchReport.NORMAL_STYLE}
