@@ -54,10 +54,15 @@ public class ApproverHandlerAction extends BaseAction {
 		String oaComId = "";
 		if(applyUserId!=null&&!applyUserId.equals("")){
 			startUser=WorkflowUtils.getUserInfo(Long.valueOf(applyUserId));
+			if(WorkflowConstant.TASK_TYPE_PRO.equals(startUser.getOrg().getOrgLevel())){
+				oaComId=user.getOaComId();
+			}else{
+				oaComId=startUser.getOaComId();
+			}
 		}else{
-			startUser=user;
+			oaComId=user.getOaComId();
 		}
-		oaComId=startUser.getOaComId();
+		
 		String oaDepId = user.getOaDepId();
 		if (WorkflowConstant.TASK_TYPE_PRO.equals(taskFlag)) {
 			approverList = approverHandlerService.qryTaskApprover(taskId, "",
