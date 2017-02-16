@@ -286,7 +286,7 @@ public class ImportCostBudgetAction extends BaseAction {
 					List<Map<String, Object>> datas = importCostBudgetService
 							.queryNotExistsUnit(params);
 					if (datas.size() > 0) {
-						resultMsg = "成本中心名称【";
+						resultMsg = "营服名称【";
 						for (int i = 0; i < datas.size(); i++) {
 							Map<String, Object> m = datas.get(i);
 							String unit_name = m.get("COST_CENTER_NAME")
