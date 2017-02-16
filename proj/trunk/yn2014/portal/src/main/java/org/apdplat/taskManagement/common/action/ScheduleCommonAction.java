@@ -91,6 +91,9 @@ public class ScheduleCommonAction extends BaseAction{
 				}else if("7".equals(userType.trim())) {
 					params.put("userType", userType);
 					list = scheduleCommonService.qryRegionByManager(params);
+				}else if("20".equals(userType.trim())){
+					params.put("userType", userType);
+					list = scheduleCommonService.qryRegionByManager(params);
 				}
 			//营服中心下级负责人
 			} else {
