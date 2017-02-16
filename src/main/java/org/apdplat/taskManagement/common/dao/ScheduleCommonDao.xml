@@ -32,7 +32,12 @@
 		SELECT 
 			T.USERID, T.NAME || '(' || T.USER_TYPE || ')' AS NAME, T.HR_ID, T.USER_CODE
   		FROM PORTAL.VIEW_U_PORTAL_PERSON T
- 		WHERE T.DEAL_DATE=#{month} AND T.UNIT_ID = #{task_region_code} AND T.USER_CODE = 3 AND EXISTS (SELECT 1
+ 		WHERE T.DEAL_DATE=#{month} AND T.UNIT_ID = #{task_region_code} AND T.USER_CODE = 3 
+ 		AND T.USER_CODE IN
+ 		<foreach collection="types" item="item" index="index" open="(" separator="," close=")">
+ 			#{item}
+ 		</foreach>
+ 		AND EXISTS (SELECT 1
         FROM PORTAL.TAB_PORTAL_GRP_PERSON T2 WHERE T.HR_ID = T2.HR_ID
         AND T2.F_HR_ID IS NULL AND T2.IS_VALID = 1 AND T2.USER_TYPE = 2 AND T2.DEAL_DATE=#{month})
 	</select>
@@ -64,6 +69,16 @@
   			FROM PORTAL.TAB_PORTAL_GRP_PERSON T, PORTAL.TAB_PORTAL_GRP_PERSON T1
  			WHERE T.HR_ID = T1.F_HR_ID AND T.USERID = #{task_region_code} AND T.USER_TYPE = '1'
    			AND T.IS_VALID = '1' AND T1.IS_VALID = '1' AND T.DEAL_DATE=#{month} AND T1.DEAL_DATE=#{month}
+		</if>
+		<if test="userType == 20">
+			SELECT T1.NAME as NAME, NAMEID as USERID, '20' as USER_CODE
+			  FROM PORTAL.TAB_PORTAL_AGENT_PERSON T1
+			  JOIN PORTAL.TAB_PORTAL_MOB_PERSON T
+			    ON (T1.HQ_CHAN_CODE = T.HQ_CHAN_CODE)
+			 WHERE T1.DEAL_DATE = #{month}
+			   AND T.DEAL_DATE = #{month}
+			   AND T1.LEV = 2
+			   AND T.USERID = #{task_region_code}
 		</if>
 	</select>
 	
