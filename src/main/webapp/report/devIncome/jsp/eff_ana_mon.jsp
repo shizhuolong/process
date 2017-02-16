@@ -18,14 +18,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>营业厅毛利率评价月报表</title>
+<title>自有厅效能月报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/bus_eff_ana_mon.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/eff_ana_mon.js?v=3"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -46,28 +46,6 @@
 						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
-					</td>
-					<td width="8%" align="right">经营模式：</td>
-					<td width="15%">
-						<select name="operateType" id="operateType" class="default-text-input wper80">
-								<option value=''>请选择</option>
-								<option value='自营'>自营</option>
-								<option value='柜台外包'>柜台外包</option>
-								<option value='他营'>他营</option>
-						</select>
-					</td>
-					<td width="10%" align="right">营业厅类型：</td>
-					<td width="15%">
-						<select name="hallType" id="hallType" class="default-text-input wper80">
-								<option value=''>请选择</option>
-								<option value="旗舰厅">旗舰厅</option>
-								<option value="小型厅">小型厅</option>
-								<option value="标准厅">标准厅</option>
-						</select>
-					</td>
-					<td width="10%" align="right">营业厅编码：</td>
-					<td width="15%">
-						<input class="default-text-input wper80" name="hall_id" type="text" id="hall_id"/>
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
