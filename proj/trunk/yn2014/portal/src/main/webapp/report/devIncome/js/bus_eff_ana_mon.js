@@ -119,7 +119,7 @@ function getSql(orgLevel,where){
 		"      ,SUM(NVL(ACCEPT,0))                 ACCEPT                                             "+
 		"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                           "+
 		"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                   "+
-		"                THEN NVL(MON_RENT,0) END) MON_RENT_ZY                                        "+
+		"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                        "+
 		"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                             "+
 		"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                       "+
 		"      ,SUM(NVL(SECURITY,0))               SECURITY                                           "+
@@ -172,7 +172,7 @@ function getSql(orgLevel,where){
 		"      ,SUM(NVL(ACCEPT,0))                 ACCEPT                                              "+
 		"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                            "+
 		"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                    "+
-		"                THEN NVL(MON_RENT,0) END) MON_RENT_ZY                                         "+
+		"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                         "+
 		"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                              "+
 		"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                        "+
 		"      ,SUM(NVL(SECURITY,0))               SECURITY                                            "+
@@ -300,7 +300,7 @@ function getSql(orgLevel,where){
 		"      ,SUM(NVL(ACCEPT,0))                 ACCEPT                                                               "+
 		"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                                             "+
 		"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                                     "+
-		"                THEN NVL(MON_RENT,0) END) MON_RENT_ZY                                                          "+
+		"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                                          "+
 		"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                                               "+
 		"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                                         "+
 		"      ,SUM(NVL(SECURITY,0))               SECURITY                                                             "+
@@ -443,7 +443,7 @@ function getSql(orgLevel,where){
 		"      ,SUM(NVL(ACCEPT,0))                 ACCEPT                                                               "+
 		"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                                             "+
 		"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                                     "+
-		"                THEN NVL(MON_RENT,0) END) MON_RENT_ZY                                                          "+
+		"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                                          "+
 		"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                                               "+
 		"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                                         "+
 		"      ,SUM(NVL(SECURITY,0))               SECURITY                                                             "+
