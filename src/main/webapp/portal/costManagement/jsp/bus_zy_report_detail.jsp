@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/jquery-easyui-1.4.5/echarts.min.js"></script> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script> 
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/bus_zy_report_detail.js"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/bus_zy_report_detail.js?v=4"></script> 
 <style type="text/css">
 body {
     color: #717171;
@@ -104,7 +104,7 @@ TABLE TBODY TR TD{
 		<div style="padding:5px;border:1px solid #c0e2ef;border-top:none;width:120%;">
 			<div class="titleDivStyle">
 				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B;
-					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅新增发展厅维度展示TOP前20个厅 </FONT></P>
+					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅新增发展厅维度展示TOP前10个厅 </FONT></P>
 			</div>
 			<div id="devDataGridDiv">
 				<div style="padding:2px;background:#fafafa;border:1px solid #ccc">
@@ -124,6 +124,15 @@ TABLE TBODY TR TD{
 									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
 									<option value='他营'>他营</option>
+								</select>
+							</td>
+							<th style="text-align:right;border:none;">厅类型：</th>
+							<td style="text-align:right;border:none;">
+								<select id="devHallType" name="devHallType" class="Wdate default-text-input wper80">
+									<option value=''>全部</option>
+									<option value='小型厅'>小型厅</option>
+									<option value='标准厅'>标准厅</option>
+									<option value='旗舰厅'>旗舰厅</option>
 								</select>
 							</td>
 							<td style="text-align:right;border:none;">
@@ -171,6 +180,15 @@ TABLE TBODY TR TD{
 									<option value='他营'>他营</option>
 								</select>
 							</td>
+							<th style="text-align:right;border:none;">厅类型：</th>
+							<td style="text-align:right;border:none;">
+								<select id="devAfterHallType" name="devAfterHallType" class="Wdate default-text-input wper80">
+									<option value=''>全部</option>
+									<option value='小型厅'>小型厅</option>
+									<option value='标准厅'>标准厅</option>
+									<option value='旗舰厅'>旗舰厅</option>
+								</select>
+							</td>
 							<td style="text-align:right;border:none;">
 								<a class="default-btn fLeft mr10" id="devAfterTopSearchBtn">查询</a>
 								<a class="default-gree-btn fLeft mr10" id="devAfterTopDownBtn">导出</a>
@@ -194,7 +212,7 @@ TABLE TBODY TR TD{
 		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:40px;border-top:none;width:120%;">
 			<div class="titleDivStyle">
 				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B;
-					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅实时收入厅维度展示TOP前20个厅</FONT></P>
+					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅实时收入厅维度展示TOP前10个厅</FONT></P>
 			</div>
 			<div id="incomeDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
@@ -213,6 +231,15 @@ TABLE TBODY TR TD{
 									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
 									<option value='他营'>他营</option>
+								</select>
+							</td>
+							<th style="text-align:right;border:none;">厅类型：</th>
+							<td style="text-align:right;border:none;">
+								<select id="incomeHallType" name="incomeHallType" class="Wdate default-text-input wper80">
+									<option value=''>全部</option>
+									<option value='小型厅'>小型厅</option>
+									<option value='标准厅'>标准厅</option>
+									<option value='旗舰厅'>旗舰厅</option>
 								</select>
 							</td>
 							<td style="border:none;">
@@ -260,6 +287,15 @@ TABLE TBODY TR TD{
 									<option value='他营'>他营</option>
 								</select>
 							</td>
+							<th style="text-align:right;border:none;">厅类型：</th>
+							<td style="text-align:right;border:none;">
+								<select id="incomeAfterHallType" name="incomeAfterHallType" class="Wdate default-text-input wper80">
+									<option value=''>全部</option>
+									<option value='小型厅'>小型厅</option>
+									<option value='标准厅'>标准厅</option>
+									<option value='旗舰厅'>旗舰厅</option>
+								</select>
+							</td>
 							<td style="border:none;">
 								<a class="default-btn fLeft mr10" id="incomeAfterTopSearchBtn" >查询</a>
 								<a class="default-gree-btn fLeft mr10" id="incomeAfterTopDownBtn">导出</a>
@@ -284,7 +320,7 @@ TABLE TBODY TR TD{
 	<div style="padding:5px;border:1px solid #c0e2ef;margin-top:40px;border-top:none;width:120%;">
 			<div class="titleDivStyle">
 				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B;
-					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅终端销售维度展示TOP前20个厅</FONT></P>
+					 LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅终端销售维度展示TOP前10个厅</FONT></P>
 			</div>
 			<div id="salesDataGridDiv">
 				<div style="padding:2px;background:#fafafa;width:99.5%;border:1px solid #ccc">
@@ -303,6 +339,15 @@ TABLE TBODY TR TD{
 									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
 									<option value='他营'>他营</option>
+								</select>
+							</td>
+							<th style="text-align:right;border:none;">厅类型：</th>
+							<td style="text-align:right;border:none;">
+								<select id="salesHallType" name="salesHallType" class="Wdate default-text-input wper80">
+									<option value=''>全部</option>
+									<option value='小型厅'>小型厅</option>
+									<option value='标准厅'>标准厅</option>
+									<option value='旗舰厅'>旗舰厅</option>
 								</select>
 							</td>
 							<td style="border:none;">
@@ -348,6 +393,15 @@ TABLE TBODY TR TD{
 									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
 									<option value='他营'>他营</option>
+								</select>
+							</td>
+							<th style="text-align:right;border:none;">厅类型：</th>
+							<td style="text-align:right;border:none;">
+								<select id="salesAfterHallType" name="salesAfterHallType" class="Wdate default-text-input wper80">
+									<option value=''>全部</option>
+									<option value='小型厅'>小型厅</option>
+									<option value='标准厅'>标准厅</option>
+									<option value='旗舰厅'>旗舰厅</option>
 								</select>
 							</td>
 							<td style="border:none;">

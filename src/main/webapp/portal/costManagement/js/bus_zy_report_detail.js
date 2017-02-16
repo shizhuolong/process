@@ -1,5 +1,5 @@
 $(function() {
-		//发展TOP前20	
+		//发展TOP前10	
 		queryDevData(true);
 		$("#devSearchBtn").click(function(){
 			$("#devDataBar").hide();
@@ -18,7 +18,7 @@ $(function() {
 			downDevData(false);
 		});
 		
-		//收入TOP前20
+		//收入TOP前10
 		queryIncomeData(true);
 		$("#incomeSearchBtn").click(function(){
 			$("#incomeDataBar").hide();
@@ -39,7 +39,7 @@ $(function() {
 		});
 		
 		
-		//销售TOP前20
+		//销售TOP前10
 		querySalesData(true);
 		$("#salesSearchBtn").click(function(){
 			$("#salesDataBar").hide();
@@ -77,6 +77,7 @@ function queryDevData(isBeforeTop){
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['BUS_HALL_NAME'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['OPERATE_TYPE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['CHNL_TYPE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['THIS_YW_DAY_DEV'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['THIS_NET_DAY_DEV'])+"</td>"
@@ -88,7 +89,8 @@ function queryDevData(isBeforeTop){
 				+"<td class='numberStyle'>"+isNull(n['LJ_NET_DEV_RATE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['T_RANK'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['T_MANAGE_NAME'])+"</td>"
-			content+="</tr>";
+				+"<td class='numberStyle'>"+getImage(n['FLAG'])+"</td>"
+		    	+"</tr>";
 		});
 	content+="</tbody>";
 	var table = columns+content;
@@ -115,12 +117,12 @@ function queryDevData(isBeforeTop){
  */
 function downDevData(isBeforeTop){
 	var title=[
-				["州市","厅名称","渠道编码","厅类型","日发展","","月累计","","发展累计","累计环比","","","发展累计排名","店长名字"],
-				["","","","","移动网","固网","移动网","固网","","小计","移动网","固网","",""]
+				["州市","厅名称","渠道编码","经营模式","厅类型","日发展","","月累计","","发展累计","累计环比","","","发展累计排名","店长名字","评议标识"],
+				["","","","","","移动网","固网","移动网","固网","","小计","移动网","固网","","",""]
 			  ];
 	var sql = getDevSql(isBeforeTop);
 	if(isBeforeTop){
-		showtext = "自营厅新增发展厅维度展示TOP前20个厅-"+$("#devDealDate").val();
+		showtext = "自营厅新增发展厅维度展示TOP前10个厅-"+$("#devDealDate").val();
 	}else{
 		showtext = "自营厅新增发展厅维度展示TOP后20个厅-"+$("#devAfterTopDate").val();
 	}
@@ -133,12 +135,12 @@ function downDevData(isBeforeTop){
  */
 function downIncomeData(isBeforeTop){
 	var title=[
-				["州市","厅名称","渠道编码","厅类型","日收入","","月累计","","收入累计","累计环比","","","收入累计排名","店长名字"],
-				["","","","","移动网","固网","移动网","固网","","小计","移动网","固网","",""]
+				["州市","厅名称","渠道编码","经营模式","厅类型","日收入","","月累计","","收入累计","累计环比","","","收入累计排名","店长名字","评议标识"],
+				["","","","","","移动网","固网","移动网","固网","","小计","移动网","固网","","",""]
 			  ];
 	var sql = getIncomeSql(isBeforeTop);
 	if(isBeforeTop){
-		showtext = "自营厅实时收入厅维度展示TOP前20个厅-"+$("#incomeDealDate").val();
+		showtext = "自营厅实时收入厅维度展示TOP前10个厅-"+$("#incomeDealDate").val();
 	}else{
 		showtext = "自营厅实时收入厅维度展示TOP后20个厅-"+$("#incomeAfterTopDate").val();
 	}
@@ -151,12 +153,12 @@ function downIncomeData(isBeforeTop){
  */
 function downSalesData(isBeforeTop){
 	var title=[
-				["州市","厅名称","渠道编码","厅类型","模式一","","模式三","","小计","","月累计环比","小计排名","店长名字"],
-				["","","","","日发展","月累计","日发展","月累计","日发展","月累计","","",""]
+				["州市","厅名称","渠道编码","经营模式","厅类型","模式一","","模式三","","小计","","月累计环比","小计排名","店长名字","评议标识"],
+				["","","","","","日发展","月累计","日发展","月累计","日发展","月累计","","","",""]
 			  ];
 	var sql = getSalesSql(isBeforeTop);
 	if(isBeforeTop){
-		showtext = "自营厅终端销售维度展示TOP前20个厅-"+$("#salesDealDate").val();
+		showtext = "自营厅终端销售维度展示TOP前10个厅-"+$("#salesDealDate").val();
 	}else{
 		showtext = "自营厅终端销售维度展示TOP后20个厅-"+$("#salesAfterTopDate").val();
 	}
@@ -169,6 +171,7 @@ function downSalesData(isBeforeTop){
 function getDevSql(isBeforeTop){
 	var devDealDate = "";
 	var devOpeType = "";
+	var devHallType = "";
 	var region = $("#region").val();
 	var orgLevel = $("#orgLevel").val();
 	var sql = "";
@@ -176,13 +179,18 @@ function getDevSql(isBeforeTop){
 	if(isBeforeTop){
 		devDealDate=$("#devDealDate").val();
 		devOpeType=$("#devOpeType").val();
+		devHallType=$("#devHallType").val();
 	}else{
 		devDealDate=$("#devAfterTopDate").val();
 		devOpeType=$("#devAfterTopOpeType").val();
+		devHallType=$("#devAfterHallType").val();
 	}
 	//条件
 	if(""!=devOpeType){
 		where+=" AND OPERATE_TYPE  ='"+devOpeType+"' ";
+	}
+	if(""!=devHallType){
+		where+=" AND CHNL_TYPE  ='"+devHallType+"' ";
 	}
 	//权限
 	if(orgLevel==1){
@@ -193,130 +201,169 @@ function getDevSql(isBeforeTop){
 		where+=" AND 1=2 ";
 	}
 	if(isBeforeTop){
-		sql="SELECT GROUP_ID_1_NAME ,                                                                                            "+
-		"       BUS_HALL_NAME，                                                                                                                                                                                                                                                                                            "+
-		"       HQ_CHAN_CODE,                                                                                                "+
-		"       CHNL_TYPE,                                                                                                   "+
-		"       THIS_YW_DAY_DEV,                                                                                             "+
-		"       THIS_NET_DAY_DEV,                                                                                            "+
-		"       THIS_YW_MON_DEV,                                                                                             "+
-		"       THIS_NET_MON_DEV,                                                                                            "+
-		"       THIS_ALL_MON_DEV,                                                                                            "+
-		"       LJ_ALL_DEV_RATE,                                                                                             "+
-		"       LJ_YW_DEV_RATE,                                                                                              "+
-		"       LJ_NET_DEV_RATE,                                                                                             "+
-		"       T_RANK,                                                                                                      "+
-		"       T_MANAGE_NAME                                                                                                "+
-		"FROM(                                                                                                               "+
-		"  SELECT T.* , ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY THIS_ALL_MON_DEV DESC) T_RANK                     "+
-		"  FROM (SELECT GROUP_ID_0,                                                                                          "+
-		"               GROUP_ID_1_NAME ,                                                                                    "+
-		"               HQ_CHAN_CODE,                                                                                        "+
-		"               BUS_HALL_NAME,                                                                                       "+
-		"               T_MANAGE_NAME,                                                                                       "+
-		"               CHNL_TYPE,                                                                                           "+
-		"               NVL(SUM(THIS_YW_DEV), 0) THIS_YW_DAY_DEV,                                                            "+
-		"               NVL(SUM(THIS_NET_DEV), 0) THIS_NET_DAY_DEV,                                                          "+
-		"               NVL(SUM(THIS_YW_DEV1), 0) THIS_YW_MON_DEV,                                                           "+
-		"               NVL(SUM(THIS_NET_DEV1), 0) THIS_NET_MON_DEV,                                                         "+
-		"               NVL(SUM(THIS_YW_DEV1), 0) + NVL(SUM(THIS_NET_DEV1), 0) THIS_ALL_MON_DEV,                             "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                            "+
-		"                                      WHEN NVL(SUM(LAST_ALL_DEV1), 0) <> 0 THEN                                     "+
-		"                                       (NVL(SUM(THIS_ALL_DEV1), 0) - NVL(SUM(LAST_ALL_DEV1), 0)) * 100 /            "+
-		"                                       NVL(SUM(LAST_ALL_DEV1), 0)                                                   "+
-		"                                      ELSE                                                                          "+
-		"                                       0                                                                            "+
-		"                                    END || '%',                                                                     "+
-		"                                    2) LJ_ALL_DEV_RATE,                                                             "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                            "+
-		"                                      WHEN NVL(SUM(LAST_YW_DEV1), 0) <> 0 THEN                                      "+
-		"                                       (NVL(SUM(THIS_YW_DEV1), 0) - NVL(SUM(LAST_YW_DEV1), 0)) * 100 /              "+
-		"                                       NVL(SUM(LAST_YW_DEV1), 0)                                                    "+
-		"                                      ELSE                                                                          "+
-		"                                       0                                                                            "+
-		"                                    END || '%',                                                                     "+
-		"                                    2) LJ_YW_DEV_RATE,                                                              "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                            "+
-		"                                      WHEN NVL(SUM(LAST_NET_DEV1), 0) <> 0 THEN                                     "+
-		"                                       (NVL(SUM(THIS_NET_DEV1), 0) - NVL(SUM(LAST_NET_DEV1), 0)) * 100 /            "+
-		"                                       NVL(SUM(LAST_NET_DEV1), 0)                                                   "+
-		"                                      ELSE                                                                          "+
-		"                                       0                                                                            "+
-		"                                    END || '%',                                                                     "+
-		"                                    2) LJ_NET_DEV_RATE                                                              "+
-		"          FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                     "+
-		"         WHERE DEAL_DATE = '"+devDealDate+                                                                        "'"+
-		                       where            +
-		"         GROUP BY GROUP_ID_0,                                                                                       "+
-		"                  GROUP_ID_1_NAME ,                                                                                 "+
-		"                  HQ_CHAN_CODE,                                                                                     "+
-		"                  BUS_HALL_NAME,                                                                                    "+
-		"                  T_MANAGE_NAME,                                                                                    "+
-		"                  CHNL_TYPE) T                                                                                      "+
-		") WHERE  T_RANK<=20                                                                                                 ";
+		sql="SELECT GROUP_ID_1_NAME,                                                                                                         "+
+		"       BUS_HALL_NAME,                                                                                                               "+
+		"       HQ_CHAN_CODE,                                                                                                                "+
+		"       OPERATE_TYPE,                                                                                                                "+
+		"       CHNL_TYPE,                                                                                                                   "+
+		"       THIS_YW_DAY_DEV,                                                                                                             "+
+		"       THIS_NET_DAY_DEV,                                                                                                            "+
+		"       THIS_YW_MON_DEV,                                                                                                             "+
+		"       THIS_NET_MON_DEV,                                                                                                            "+
+		"       THIS_ALL_MON_DEV,                                                                                                            "+
+		"       LJ_ALL_DEV_RATE,                                                                                                             "+
+		"       LJ_YW_DEV_RATE,                                                                                                              "+
+		"       LJ_NET_DEV_RATE,                                                                                                             "+
+		"       T_RANK,                                                                                                                      "+
+		"       T_MANAGE_NAME,                                                                                                               "+
+		"       CASE WHEN T_RANK<=ROUND(T_NUM * 0.2 ,0)                                                                                      "+
+		"            THEN '优秀'                                                                                                              "+
+		"            WHEN T_RANK>ROUND(T_NUM * 0.2 ,0) AND T_RANK <=ROUND(T_NUM * 0.9 ,0)                                                    "+
+		"            THEN '良好'                                                                                                              "+
+		"            ELSE '差评'  END FLAG                                                                                                    "+
+		"  FROM (SELECT T.*,                                                                                                                 "+
+		"               ROW_NUMBER() OVER(PARTITION BY T.GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(LJ_ALL_DEV_RATE,'%')) DESC) T_RANK            "+
+		"               ,T1.T_NUM                                                                                                            "+
+		"          FROM (SELECT GROUP_ID_0,                                                                                                  "+
+		"                       GROUP_ID_1_NAME,                                                                                             "+
+		"                       HQ_CHAN_CODE,                                                                                                "+
+		"                       BUS_HALL_NAME,                                                                                               "+
+		"                       T_MANAGE_NAME,                                                                                               "+
+		"                       OPERATE_TYPE,                                                                                                "+
+		"                       CHNL_TYPE,                                                                                                   "+
+		"                       NVL(SUM(THIS_YW_DEV), 0) THIS_YW_DAY_DEV,                                                                    "+
+		"                       NVL(SUM(THIS_NET_DEV), 0) THIS_NET_DAY_DEV,                                                                  "+
+		"                       NVL(SUM(THIS_YW_DEV1), 0) THIS_YW_MON_DEV,                                                                   "+
+		"                       NVL(SUM(THIS_NET_DEV1), 0) THIS_NET_MON_DEV,                                                                 "+
+		"                       NVL(SUM(THIS_YW_DEV1), 0) + NVL(SUM(THIS_NET_DEV1), 0) THIS_ALL_MON_DEV,                                     "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                    "+
+		"                                              WHEN NVL(SUM(LAST_YW_DEV1), 0) + NVL(SUM(LAST_NET_DEV1), 0) <> 0 THEN                 "+
+		"                                               ( NVL(SUM(THIS_YW_DEV1), 0) + NVL(SUM(THIS_NET_DEV1), 0) -                           "+
+		"                                                (NVL(SUM(LAST_YW_DEV1), 0) + NVL(SUM(LAST_NET_DEV1), 0))) * 100 /                   "+
+		"                                               (NVL(SUM(LAST_YW_DEV1), 0) + NVL(SUM(LAST_NET_DEV1), 0))                             "+
+		"                                              ELSE                                                                                  "+
+		"                                               0                                                                                    "+
+		"                                            END || '%',                                                                             "+
+		"                                            2) LJ_ALL_DEV_RATE,                                                                     "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                    "+
+		"                                              WHEN NVL(SUM(LAST_YW_DEV1), 0) <> 0 THEN                                              "+
+		"                                               (NVL(SUM(THIS_YW_DEV1), 0) -                                                         "+
+		"                                               NVL(SUM(LAST_YW_DEV1), 0)) * 100 /                                                   "+
+		"                                               NVL(SUM(LAST_YW_DEV1), 0)                                                            "+
+		"                                              ELSE                                                                                  "+
+		"                                               0                                                                                    "+
+		"                                            END || '%',                                                                             "+
+		"                                            2) LJ_YW_DEV_RATE,                                                                      "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                    "+
+		"                                              WHEN NVL(SUM(LAST_NET_DEV1), 0) <> 0 THEN                                             "+
+		"                                               (NVL(SUM(THIS_NET_DEV1), 0) -                                                        "+
+		"                                               NVL(SUM(LAST_NET_DEV1), 0)) * 100 /                                                  "+
+		"                                               NVL(SUM(LAST_NET_DEV1), 0)                                                           "+
+		"                                              ELSE                                                                                  "+
+		"                                               0                                                                                    "+
+		"                                            END || '%',                                                                             "+
+		"                                            2) LJ_NET_DEV_RATE                                                                      "+
+		"                  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                             "+
+		"         WHERE DEAL_DATE = '"+devDealDate+                                                                                        "'"+
+				                       where            +
+		"                 GROUP BY GROUP_ID_0,                                                                                               "+
+		"                          GROUP_ID_1_NAME,                                                                                          "+
+		"                          HQ_CHAN_CODE,                                                                                             "+
+		"                          BUS_HALL_NAME,                                                                                            "+
+		"                          T_MANAGE_NAME,                                                                                            "+
+		"                          OPERATE_TYPE,                                                                                             "+
+		"                          CHNL_TYPE                                                                                                 "+
+		"        ) T                                                                                                                         "+
+		"        LEFT JOIN (SELECT GROUP_ID_0,COUNT(HQ_CHAN_CODE) T_NUM FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                "+
+		"         WHERE DEAL_DATE = '"+devDealDate+                                                                                        "'"+
+				                       where            +
+		"                   GROUP BY GROUP_ID_0                                                                                              "+
+		"        )T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                                                          "+
+		" )                                                                                                                                  "+
+		" WHERE T_RANK <= 10                                                                                                                 "+
+		" ORDER BY T_RANK                                                                                                                    ";
 	}else{
-		sql="SELECT GROUP_ID_1_NAME,                                                                                      "+
-		"       BUS_HALL_NAME,                                                                                        "+
-		"       HQ_CHAN_CODE,                                                                                         "+
-		"       CHNL_TYPE,                                                                                            "+
-		"       THIS_YW_DAY_DEV,                                                                                      "+
-		"       THIS_NET_DAY_DEV,                                                                                     "+
-		"       THIS_YW_MON_DEV,                                                                                      "+
-		"       THIS_NET_MON_DEV,                                                                                     "+
-		"       THIS_ALL_MON_DEV,                                                                                     "+
-		"       LJ_ALL_DEV_RATE,                                                                                      "+
-		"       LJ_YW_DEV_RATE,                                                                                       "+
-		"       LJ_NET_DEV_RATE,                                                                                      "+
-		"       T_RANK,                                                                                               "+
-		"       T_MANAGE_NAME                                                                                         "+
-		"FROM(                                                                                                        "+
-		"  SELECT T.* , ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY THIS_ALL_MON_DEV) T_RANK                   "+
-		"  FROM (SELECT GROUP_ID_0,                                                                                   "+
-		"               GROUP_ID_1_NAME ,                                                                             "+
-		"               HQ_CHAN_CODE,                                                                                 "+
-		"               BUS_HALL_NAME,                                                                                "+
-		"               CHNL_TYPE,                                                                                    "+
-		"               T_MANAGE_NAME,                                                                                "+
-		"               NVL(SUM(THIS_YW_DEV), 0) THIS_YW_DAY_DEV,                                                     "+
-		"               NVL(SUM(THIS_NET_DEV), 0) THIS_NET_DAY_DEV,                                                   "+
-		"               NVL(SUM(THIS_YW_DEV1), 0) THIS_YW_MON_DEV,                                                    "+
-		"               NVL(SUM(THIS_NET_DEV1), 0) THIS_NET_MON_DEV,                                                  "+
-		"               NVL(SUM(THIS_YW_DEV1), 0) + NVL(SUM(THIS_NET_DEV1), 0) THIS_ALL_MON_DEV,                      "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                     "+
-		"                                      WHEN NVL(SUM(LAST_ALL_DEV1), 0) <> 0 THEN                              "+
-		"                                       (NVL(SUM(THIS_ALL_DEV1), 0) - NVL(SUM(LAST_ALL_DEV1), 0)) * 100 /     "+
-		"                                       NVL(SUM(LAST_ALL_DEV1), 0)                                            "+
-		"                                      ELSE                                                                   "+
-		"                                       0                                                                     "+
-		"                                    END || '%',                                                              "+
-		"                                    2) LJ_ALL_DEV_RATE,                                                      "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                     "+
-		"                                      WHEN NVL(SUM(LAST_YW_DEV1), 0) <> 0 THEN                               "+
-		"                                       (NVL(SUM(THIS_YW_DEV1), 0) - NVL(SUM(LAST_YW_DEV1), 0)) * 100 /       "+
-		"                                       NVL(SUM(LAST_YW_DEV1), 0)                                             "+
-		"                                      ELSE                                                                   "+
-		"                                       0                                                                     "+
-		"                                    END || '%',                                                              "+
-		"                                    2) LJ_YW_DEV_RATE,                                                       "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                     "+
-		"                                      WHEN NVL(SUM(LAST_NET_DEV1), 0) <> 0 THEN                              "+
-		"                                       (NVL(SUM(THIS_NET_DEV1), 0) - NVL(SUM(LAST_NET_DEV1), 0)) * 100 /     "+
-		"                                       NVL(SUM(LAST_NET_DEV1), 0)                                            "+
-		"                                      ELSE                                                                   "+
-		"                                       0                                                                     "+
-		"                                    END || '%',                                                              "+
-		"                                    2) LJ_NET_DEV_RATE                                                       "+
-		"          FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                              "+
-		"                                                                                                             "+
-		"	   WHERE DEAL_DATE = '"+devDealDate+"'"          +
-		                                where                +
-		"         GROUP BY GROUP_ID_0,                                                                                "+
-		"                  GROUP_ID_1_NAME ,                                                                          "+
-		"                  HQ_CHAN_CODE,                                                                              "+
-		"                  CHNL_TYPE,                                                                                 "+
-		"                  BUS_HALL_NAME,                                                                             "+
-		"                  T_MANAGE_NAME) T                                                                           "+
-		") WHERE  T_RANK<=20                                                                                          "
+		sql="SELECT GROUP_ID_1_NAME,                                                                                                      "+
+		"       BUS_HALL_NAME，                                                                                                                                                                                                                                                                                                                                 "+
+		"       HQ_CHAN_CODE,                                                                                                             "+
+		"       OPERATE_TYPE,                                                                                                             "+
+		"       CHNL_TYPE,                                                                                                                "+
+		"       THIS_YW_DAY_DEV,                                                                                                          "+
+		"       THIS_NET_DAY_DEV,                                                                                                         "+
+		"       THIS_YW_MON_DEV,                                                                                                          "+
+		"       THIS_NET_MON_DEV,                                                                                                         "+
+		"       THIS_ALL_MON_DEV,                                                                                                         "+
+		"       LJ_ALL_DEV_RATE,                                                                                                          "+
+		"       LJ_YW_DEV_RATE,                                                                                                           "+
+		"       LJ_NET_DEV_RATE,                                                                                                          "+
+		"       T_RANK,                                                                                                                   "+
+		"       T_MANAGE_NAME,                                                                                                            "+
+		"       CASE WHEN T_RANK<=ROUND(T_NUM * 0.1 ,0)                                                                                   "+
+		"            THEN '差评'                                                                                                           "+
+		"            WHEN T_RANK>ROUND(T_NUM * 0.1 ,0) AND T_RANK <=ROUND(T_NUM * 0.8 ,0)                                                 "+
+		"            THEN '良好'                                                                                                           "+
+		"            ELSE '优秀'  END FLAG                                                                                                 "+
+		"  FROM (SELECT T.*,                                                                                                              "+
+		"               ROW_NUMBER() OVER(PARTITION BY T.GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(LJ_ALL_DEV_RATE,'%')) ) T_RANK             "+
+		"               ,T1.T_NUM                                                                                                         "+
+		"          FROM (SELECT GROUP_ID_0,                                                                                               "+
+		"                       GROUP_ID_1_NAME,                                                                                          "+
+		"                       HQ_CHAN_CODE,                                                                                             "+
+		"                       BUS_HALL_NAME,                                                                                            "+
+		"                       T_MANAGE_NAME,                                                                                            "+
+		"                       OPERATE_TYPE,                                                                                             "+
+		"                       CHNL_TYPE,                                                                                                "+
+		"                       NVL(SUM(THIS_YW_DEV), 0) THIS_YW_DAY_DEV,                                                                 "+
+		"                       NVL(SUM(THIS_NET_DEV), 0) THIS_NET_DAY_DEV,                                                               "+
+		"                       NVL(SUM(THIS_YW_DEV1), 0) THIS_YW_MON_DEV,                                                                "+
+		"                       NVL(SUM(THIS_NET_DEV1), 0) THIS_NET_MON_DEV,                                                              "+
+		"                       NVL(SUM(THIS_YW_DEV1), 0) + NVL(SUM(THIS_NET_DEV1), 0) THIS_ALL_MON_DEV,                                  "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                 "+
+		"                                              WHEN NVL(SUM(LAST_YW_DEV1), 0) + NVL(SUM(LAST_NET_DEV1), 0) <> 0 THEN              "+
+		"                                               ( NVL(SUM(THIS_YW_DEV1), 0) + NVL(SUM(THIS_NET_DEV1), 0) -                        "+
+		"                                                (NVL(SUM(LAST_YW_DEV1), 0) + NVL(SUM(LAST_NET_DEV1), 0))) * 100 /                "+
+		"                                               (NVL(SUM(LAST_YW_DEV1), 0) + NVL(SUM(LAST_NET_DEV1), 0))                          "+
+		"                                              ELSE                                                                               "+
+		"                                               0                                                                                 "+
+		"                                            END || '%',                                                                          "+
+		"                                            2) LJ_ALL_DEV_RATE,                                                                  "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                 "+
+		"                                              WHEN NVL(SUM(LAST_YW_DEV1), 0) <> 0 THEN                                           "+
+		"                                               (NVL(SUM(THIS_YW_DEV1), 0) -                                                      "+
+		"                                               NVL(SUM(LAST_YW_DEV1), 0)) * 100 /                                                "+
+		"                                               NVL(SUM(LAST_YW_DEV1), 0)                                                         "+
+		"                                              ELSE                                                                               "+
+		"                                               0                                                                                 "+
+		"                                            END || '%',                                                                          "+
+		"                                            2) LJ_YW_DEV_RATE,                                                                   "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                 "+
+		"                                              WHEN NVL(SUM(LAST_NET_DEV1), 0) <> 0 THEN                                          "+
+		"                                               (NVL(SUM(THIS_NET_DEV1), 0) -                                                     "+
+		"                                               NVL(SUM(LAST_NET_DEV1), 0)) * 100 /                                               "+
+		"                                               NVL(SUM(LAST_NET_DEV1), 0)                                                        "+
+		"                                              ELSE                                                                               "+
+		"                                               0                                                                                 "+
+		"                                            END || '%',                                                                          "+
+		"                                            2) LJ_NET_DEV_RATE                                                                   "+
+		"                  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                          "+
+		"         WHERE DEAL_DATE = '"+devDealDate+                                                                                     "'"+
+						                       where            +
+		"                 GROUP BY GROUP_ID_0,                                                                                            "+
+		"                          GROUP_ID_1_NAME,                                                                                       "+
+		"                          HQ_CHAN_CODE,                                                                                          "+
+		"                          BUS_HALL_NAME,                                                                                         "+
+		"                          T_MANAGE_NAME,                                                                                         "+
+		"                          OPERATE_TYPE,                                                                                          "+
+		"                          CHNL_TYPE                                                                                              "+
+		"        ) T                                                                                                                      "+
+		"        LEFT JOIN (SELECT GROUP_ID_0,COUNT(HQ_CHAN_CODE) T_NUM FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                             "+
+		"         WHERE DEAL_DATE = '"+devDealDate+                                                                                     "'"+
+						                       where            +
+		"                   GROUP BY GROUP_ID_0                                                                                           "+
+		"        )T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                                                       "+
+		" )                                                                                                                               "+
+		" WHERE T_RANK <= 20                                                                                                              "+
+		" ORDER BY T_RANK                                                                                                                 ";
 	}
 	return sql;
 }
@@ -332,6 +379,7 @@ function getDevTitle(){
 					"<th rowspan='2'>州市</th>" +
 					"<th rowspan='2'>厅名称</th>" +
 					"<th rowspan='2'>渠道编码</th>" +
+					"<th rowspan='2'>经营模式</th>" +
 					"<th rowspan='2'>厅类型</th>" +
 					"<th colspan='2'>日发展</th>" +
 					"<th colspan='2'>月累计</th>" +
@@ -339,6 +387,7 @@ function getDevTitle(){
 					"<th colspan='3'>累计环比(%)</th>" +
 					"<th rowspan='2'>发展累计排名</th>" +
 					"<th rowspan='2'>店长名字</th>" +
+					"<th rowspan='2'>评议标识</th>" +
 				"</tr>" +
 				"<tr>" +
 					"<th>移动网</th>" +
@@ -360,6 +409,7 @@ function getIncomeTitle(){
 					"<th rowspan='2'>州市</th>" +
 					"<th rowspan='2'>厅名称</th>" +
 					"<th rowspan='2'>渠道编码</th>" +
+					"<th rowspan='2'>经营模式</th>" +
 					"<th rowspan='2'>厅类型</th>" +
 					"<th colspan='2'>日收入</th>" +
 					"<th colspan='2'>月累计</th>" +
@@ -367,6 +417,7 @@ function getIncomeTitle(){
 					"<th colspan='3'>累计环比(%)</th>" +
 					"<th rowspan='2'>收入累计排名</th>" +
 					"<th rowspan='2'>店长名字</th>" +
+					"<th rowspan='2'>评议标识</th>" +
 				"</tr>" +
 				"<tr>" +
 					"<th>移动网</th>" +
@@ -388,6 +439,7 @@ function getSalesTitle(){
 					"<th rowspan='2'>州市</th>" +
 					"<th rowspan='2'>厅名称</th>" +
 					"<th rowspan='2'>渠道编码</th>" +
+					"<th rowspan='2'>经营模式</th>" +
 					"<th rowspan='2'>厅类型</th>" +
 					"<th colspan='2'>模式一</th>" +
 					"<th colspan='2'>模式三</th>" +
@@ -395,6 +447,7 @@ function getSalesTitle(){
 					"<th rowspan='2'>月累计环比(%)</th>" +
 					"<th rowspan='2'>小计排名</th>" +
 					"<th rowspan='2'>店长名字</th>" +
+					"<th rowspan='2'>评议标识</th>" +
 				"</tr>" +
 				"<tr>" +
 					"<th>日发展</th>" +
@@ -424,6 +477,7 @@ function queryIncomeData(isBeforeTop){
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['BUS_HALL_NAME'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['OPERATE_TYPE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['CHNL_TYPE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['THIS_YW_DAY_SR'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['THIS_NET_DAY_SR'])+"</td>"
@@ -435,7 +489,8 @@ function queryIncomeData(isBeforeTop){
 				+"<td class='numberStyle'>"+isNull(n['LJ_NET_SR_RATE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['T_RANK'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['T_MANAGE_NAME'])+"</td>"
-			content+="</tr>";
+				+"<td class='numberStyle'>"+getImage(n['FLAG'])+"</td>"
+			    +"</tr>";
 		});
 	content+="</tbody>";
 	var table = columns+content;
@@ -473,6 +528,7 @@ function querySalesData(isBeforeTop){
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['BUS_HALL_NAME'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['OPERATE_TYPE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['CHNL_TYPE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE1_DEV_DAY'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE1_DEV_MON'])+"</td>"
@@ -483,7 +539,8 @@ function querySalesData(isBeforeTop){
 				+"<td class='numberStyle'>"+isNull(n['HB_ALL'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['T_RANK'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['T_MANAGE_NAME'])+"</td>"
-			content+="</tr>";
+				+"<td class='numberStyle'>"+getImage(n['FLAG'])+"</td>"
+				+"</tr>";
 		});
 	content+="</tbody>";
 	var table = columns+content;
@@ -511,6 +568,7 @@ function querySalesData(isBeforeTop){
 function getIncomeSql(isBeforeTop){
 	var incomeDealDate = "";
 	var incomeOpeType = "";
+	var incomeHallType="";
 	var region = $("#region").val();
 	var orgLevel = $("#orgLevel").val();
 	var sql = "";
@@ -518,13 +576,18 @@ function getIncomeSql(isBeforeTop){
 	if(isBeforeTop){
 		incomeDealDate=$("#incomeDealDate").val();
 		incomeOpeType=$("#incomeOpeType").val();
+		incomeHallType=$("#incomeHallType").val();
 	}else{
 		incomeDealDate=$("#incomeAfterTopDate").val();
 		incomeOpeType=$("#incomeAfterTopOpeType").val();
+		incomeHallType=$("#incomeAfterHallType").val();
 	}
 	//条件
 	if(""!=incomeOpeType){
 		where+=" AND OPERATE_TYPE  ='"+incomeOpeType+"' ";
+	}
+	if(""!=incomeHallType){
+		where+=" AND CHNL_TYPE  ='"+incomeHallType+"' ";
 	}
 	//权限
 	if(orgLevel==1){
@@ -535,129 +598,169 @@ function getIncomeSql(isBeforeTop){
 		where+=" AND 1=2 ";
 	}
 	if(isBeforeTop){
-		sql="SELECT GROUP_ID_1_NAME,                                                                                 "+
-		"       BUS_HALL_NAME,                                                                                   "+
-		"       HQ_CHAN_CODE,                                                                                    "+
-		"       CHNL_TYPE,                                                                                       "+
-		"       THIS_YW_DAY_SR,                                                                                  "+
-		"       THIS_NET_DAY_SR,                                                                                 "+
-		"       THIS_YW_MON_SR,                                                                                  "+
-		"       THIS_NET_MON_SR,                                                                                 "+
-		"       THIS_ALL_MON_SR,                                                                                 "+
-		"       LJ_ALL_SR_RATE,                                                                                  "+
-		"       LJ_YW_SR_RATE,                                                                                   "+
-		"       LJ_NET_SR_RATE,                                                                                  "+
-		"       T_RANK,                                                                                          "+
-		"       T_MANAGE_NAME                                                                                    "+
-		"FROM(                                                                                                   "+
-		"  SELECT T.* , ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY THIS_ALL_MON_SR DESC) T_RANK          "+
-		"  FROM (SELECT GROUP_ID_0,                                                                              "+
-		"               GROUP_ID_1_NAME ,                                                                        "+
-		"               HQ_CHAN_CODE,                                                                            "+
-		"               BUS_HALL_NAME,                                                                           "+
-		"               T_MANAGE_NAME,                                                                           "+
-		"               CHNL_TYPE,                                                                               "+
-		"               NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                  "+
-		"               NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                "+
-		"               NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                 "+
-		"               NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                               "+
-		"               NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                    "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                "+
-		"                                      WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                          "+
-		"                                       (NVL(SUM(THIS_ALL_SR1), 0) - NVL(SUM(LAST_ALL_SR1), 0)) * 100 /  "+
-		"                                       NVL(SUM(LAST_ALL_SR1), 0)                                        "+
-		"                                      ELSE                                                              "+
-		"                                       0                                                                "+
-		"                                    END || '%',                                                         "+
-		"                                    2) LJ_ALL_SR_RATE,                                                  "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                "+
-		"                                      WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                           "+
-		"                                       (NVL(SUM(THIS_YW_SR1), 0) - NVL(SUM(LAST_YW_SR1), 0)) * 100 /    "+
-		"                                       NVL(SUM(LAST_YW_SR1), 0)                                         "+
-		"                                      ELSE                                                              "+
-		"                                       0                                                                "+
-		"                                    END || '%',                                                         "+
-		"                                    2) LJ_YW_SR_RATE,                                                   "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                "+
-		"                                      WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                          "+
-		"                                       (NVL(SUM(THIS_NET_SR1), 0) - NVL(SUM(LAST_NET_SR1), 0)) * 100 /  "+
-		"                                       NVL(SUM(LAST_NET_SR1), 0)                                        "+
-		"                                      ELSE                                                              "+
-		"                                       0                                                                "+
-		"                                    END || '%',                                                         "+
-		"                                    2) LJ_NET_SR_RATE                                                   "+
-		"          FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                         "+
+		sql="SELECT GROUP_ID_1_NAME,                                                                                                               "+
+		"        BUS_HALL_NAME,                                                                                                                "+
+		"        HQ_CHAN_CODE,                                                                                                                 "+
+		"        OPERATE_TYPE,                                                                                                                 "+
+		"        CHNL_TYPE,                                                                                                                    "+
+		"        THIS_YW_DAY_SR,                                                                                                               "+
+		"        THIS_NET_DAY_SR,                                                                                                              "+
+		"        THIS_YW_MON_SR,                                                                                                               "+
+		"        THIS_NET_MON_SR,                                                                                                              "+
+		"        THIS_ALL_MON_SR,                                                                                                              "+
+		"        LJ_ALL_SR_RATE,                                                                                                               "+
+		"        LJ_YW_SR_RATE,                                                                                                                "+
+		"        LJ_NET_SR_RATE,                                                                                                               "+
+		"        T_RANK,                                                                                                                       "+
+		"        T_MANAGE_NAME,                                                                                                                "+
+		"        CASE WHEN T_RANK<=ROUND(T_NUM * 0.2 ,0)                                                                                       "+
+		"            THEN '优秀'                                                                                                               "+
+		"            WHEN T_RANK>ROUND(T_NUM * 0.2 ,0) AND T_RANK <=ROUND(T_NUM * 0.9 ,0)                                                      "+
+		"            THEN '良好'                                                                                                               "+
+		"            ELSE '差评'  END FLAG                                                                                                     "+
+		"   FROM (SELECT T.*,                                                                                                                  "+
+		"                ROW_NUMBER() OVER(PARTITION BY T.GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(LJ_ALL_SR_RATE,'%')) DESC) T_RANK,             "+
+		"                T1.T_NUM                                                                                                              "+
+		"           FROM (SELECT GROUP_ID_0,                                                                                                   "+
+		"                        GROUP_ID_1_NAME,                                                                                              "+
+		"                        HQ_CHAN_CODE,                                                                                                 "+
+		"                        BUS_HALL_NAME,                                                                                                "+
+		"                        T_MANAGE_NAME,                                                                                                "+
+		"                        OPERATE_TYPE,                                                                                                 "+
+		"                        CHNL_TYPE,                                                                                                    "+
+		"                        NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                       "+
+		"                        NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                     "+
+		"                        NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                                      "+
+		"                        NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                                    "+
+		"                        NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                                         "+
+		"                        PODS.GET_RADIX_POINT(CASE                                                                                     "+
+		"                                               WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                                               "+
+		"                                                (NVL(SUM(THIS_ALL_SR1), 0) -                                                          "+
+		"                                                NVL(SUM(LAST_ALL_SR1), 0)) * 100 /                                                    "+
+		"                                                NVL(SUM(LAST_ALL_SR1), 0)                                                             "+
+		"                                               ELSE                                                                                   "+
+		"                                                0                                                                                     "+
+		"                                             END || '%',                                                                              "+
+		"                                             2) LJ_ALL_SR_RATE,                                                                       "+
+		"                        PODS.GET_RADIX_POINT(CASE                                                                                     "+
+		"                                               WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                                                "+
+		"                                                (NVL(SUM(THIS_YW_SR1), 0) -                                                           "+
+		"                                                NVL(SUM(LAST_YW_SR1), 0)) * 100 /                                                     "+
+		"                                                NVL(SUM(LAST_YW_SR1), 0)                                                              "+
+		"                                               ELSE                                                                                   "+
+		"                                                0                                                                                     "+
+		"                                             END || '%',                                                                              "+
+		"                                             2) LJ_YW_SR_RATE,                                                                        "+
+		"                        PODS.GET_RADIX_POINT(CASE                                                                                     "+
+		"                                               WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                                               "+
+		"                                                (NVL(SUM(THIS_NET_SR1), 0) -                                                          "+
+		"                                                NVL(SUM(LAST_NET_SR1), 0)) * 100 /                                                    "+
+		"                                                NVL(SUM(LAST_NET_SR1), 0)                                                             "+
+		"                                               ELSE                                                                                   "+
+		"                                                0                                                                                     "+
+		"                                             END || '%',                                                                              "+
+		"                                             2) LJ_NET_SR_RATE                                                                        "+
+		"                   FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                              "+
 		"          WHERE DEAL_DATE = '"+incomeDealDate+"'" +
-		                   where                           +
-		"         GROUP BY GROUP_ID_0,                                                                           "+
-		"                  GROUP_ID_1_NAME ,                                                                     "+
-		"                  HQ_CHAN_CODE,                                                                         "+
-		"                  CHNL_TYPE,                                                                            "+
-		"                 BUS_HALL_NAME,                                                                         "+
-		"                  T_MANAGE_NAME) T                                                                      "+
-		") WHERE  T_RANK<=20                                                                                      ";
+				                   where                           +
+		"                  GROUP BY GROUP_ID_0,                                                                                                "+
+		"                           GROUP_ID_1_NAME,                                                                                           "+
+		"                           HQ_CHAN_CODE,                                                                                              "+
+		"                           CHNL_TYPE,                                                                                                 "+
+		"                           OPERATE_TYPE,                                                                                              "+
+		"                           BUS_HALL_NAME,                                                                                             "+
+		"                           T_MANAGE_NAME                                                                                              "+
+		"         ) T                                                                                                                          "+
+		"         LEFT JOIN (SELECT GROUP_ID_0,COUNT(HQ_CHAN_CODE) T_NUM FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                 "+
+		"          WHERE DEAL_DATE = '"+incomeDealDate+"'" +
+				                   where                           +
+		"                   GROUP BY GROUP_ID_0                                                                                                "+
+		"        )T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                                                            "+
+		"  )                                                                                                                                   "+
+		"  WHERE T_RANK <= 10                                                                                                                  "+
+		" ORDER BY T_RANK                                                                                                                      ";
 	}else{
-		sql="SELECT GROUP_ID_1_NAME,                                                                                   "+
-		"       BUS_HALL_NAME,                                                                                     "+
-		"       HQ_CHAN_CODE,                                                                                      "+
-		"       CHNL_TYPE,                                                                                         "+
-		"       THIS_YW_DAY_SR,                                                                                    "+
-		"       THIS_NET_DAY_SR,                                                                                   "+
-		"       THIS_YW_MON_SR,                                                                                    "+
-		"       THIS_NET_MON_SR,                                                                                   "+
-		"       THIS_ALL_MON_SR,                                                                                   "+
-		"       LJ_ALL_SR_RATE,                                                                                    "+
-		"       LJ_YW_SR_RATE,                                                                                     "+
-		"       LJ_NET_SR_RATE,                                                                                    "+
-		"       T_RANK,                                                                                            "+
-		"       T_MANAGE_NAME                                                                                      "+
-		"FROM(                                                                                                     "+
-		"  SELECT T.* , ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY THIS_ALL_MON_SR ) T_RANK                "+
-		"  FROM (SELECT GROUP_ID_0,                                                                                "+
-		"               GROUP_ID_1_NAME ,                                                                          "+
-		"               HQ_CHAN_CODE,                                                                              "+
-		"               CHNL_TYPE,                                                                                 "+
-		"               BUS_HALL_NAME,                                                                             "+
-		"               T_MANAGE_NAME,                                                                             "+
-		"               NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                    "+
-		"               NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                  "+
-		"               NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                   "+
-		"               NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                 "+
-		"               NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                      "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                  "+
-		"                                      WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                            "+
-		"                                       (NVL(SUM(THIS_ALL_SR1), 0) - NVL(SUM(LAST_ALL_SR1), 0)) * 100 /    "+
-		"                                       NVL(SUM(LAST_ALL_SR1), 0)                                          "+
-		"                                      ELSE                                                                "+
-		"                                       0                                                                  "+
-		"                                    END || '%',                                                           "+
-		"                                    2) LJ_ALL_SR_RATE,                                                    "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                  "+
-		"                                      WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                             "+
-		"                                       (NVL(SUM(THIS_YW_SR1), 0) - NVL(SUM(LAST_YW_SR1), 0)) * 100 /      "+
-		"                                       NVL(SUM(LAST_YW_SR1), 0)                                           "+
-		"                                      ELSE                                                                "+
-		"                                       0                                                                  "+
-		"                                    END || '%',                                                           "+
-		"                                    2) LJ_YW_SR_RATE,                                                     "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                  "+
-		"                                      WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                            "+
-		"                                       (NVL(SUM(THIS_NET_SR1), 0) - NVL(SUM(LAST_NET_SR1), 0)) * 100 /    "+
-		"                                       NVL(SUM(LAST_NET_SR1), 0)                                          "+
-		"                                      ELSE                                                                "+
-		"                                       0                                                                  "+
-		"                                    END || '%',                                                           "+
-		"                                    2) LJ_NET_SR_RATE                                                     "+
-		"          FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                           "+
+		sql="SELECT GROUP_ID_1_NAME,                                                                                                      "+
+		"        BUS_HALL_NAME,                                                                                                           "+
+		"        HQ_CHAN_CODE,                                                                                                            "+
+		"        OPERATE_TYPE,                                                                                                            "+
+		"        CHNL_TYPE,                                                                                                               "+
+		"        THIS_YW_DAY_SR,                                                                                                          "+
+		"        THIS_NET_DAY_SR,                                                                                                         "+
+		"        THIS_YW_MON_SR,                                                                                                          "+
+		"        THIS_NET_MON_SR,                                                                                                         "+
+		"        THIS_ALL_MON_SR,                                                                                                         "+
+		"        LJ_ALL_SR_RATE,                                                                                                          "+
+		"        LJ_YW_SR_RATE,                                                                                                           "+
+		"        LJ_NET_SR_RATE,                                                                                                          "+
+		"        T_RANK,                                                                                                                  "+
+		"        T_MANAGE_NAME,                                                                                                           "+
+		"        CASE WHEN T_RANK<=ROUND(T_NUM * 0.1 ,0)                                                                                  "+
+		"            THEN '差评'                                                                                                           "+
+		"            WHEN T_RANK>ROUND(T_NUM * 0.1 ,0) AND T_RANK <=ROUND(T_NUM * 0.8 ,0)                                                 "+
+		"            THEN '良好'                                                                                                           "+
+		"            ELSE '优秀'  END FLAG                                                                                                 "+
+		"   FROM (SELECT T.*,                                                                                                             "+
+		"                ROW_NUMBER() OVER(PARTITION BY T.GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(LJ_ALL_SR_RATE,'%'))) T_RANK,             "+
+		"                T1.T_NUM                                                                                                         "+
+		"           FROM (SELECT GROUP_ID_0,                                                                                              "+
+		"                        GROUP_ID_1_NAME,                                                                                         "+
+		"                        HQ_CHAN_CODE,                                                                                            "+
+		"                        BUS_HALL_NAME,                                                                                           "+
+		"                        T_MANAGE_NAME,                                                                                           "+
+		"                        OPERATE_TYPE,                                                                                            "+
+		"                        CHNL_TYPE,                                                                                               "+
+		"                        NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                  "+
+		"                        NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                "+
+		"                        NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                                 "+
+		"                        NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                               "+
+		"                        NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                                    "+
+		"                        PODS.GET_RADIX_POINT(CASE                                                                                "+
+		"                                               WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                                          "+
+		"                                                (NVL(SUM(THIS_ALL_SR1), 0) -                                                     "+
+		"                                                NVL(SUM(LAST_ALL_SR1), 0)) * 100 /                                               "+
+		"                                                NVL(SUM(LAST_ALL_SR1), 0)                                                        "+
+		"                                               ELSE                                                                              "+
+		"                                                0                                                                                "+
+		"                                             END || '%',                                                                         "+
+		"                                             2) LJ_ALL_SR_RATE,                                                                  "+
+		"                        PODS.GET_RADIX_POINT(CASE                                                                                "+
+		"                                               WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                                           "+
+		"                                                (NVL(SUM(THIS_YW_SR1), 0) -                                                      "+
+		"                                                NVL(SUM(LAST_YW_SR1), 0)) * 100 /                                                "+
+		"                                                NVL(SUM(LAST_YW_SR1), 0)                                                         "+
+		"                                               ELSE                                                                              "+
+		"                                                0                                                                                "+
+		"                                             END || '%',                                                                         "+
+		"                                             2) LJ_YW_SR_RATE,                                                                   "+
+		"                        PODS.GET_RADIX_POINT(CASE                                                                                "+
+		"                                               WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                                          "+
+		"                                                (NVL(SUM(THIS_NET_SR1), 0) -                                                     "+
+		"                                                NVL(SUM(LAST_NET_SR1), 0)) * 100 /                                               "+
+		"                                                NVL(SUM(LAST_NET_SR1), 0)                                                        "+
+		"                                               ELSE                                                                              "+
+		"                                                0                                                                                "+
+		"                                             END || '%',                                                                         "+
+		"                                             2) LJ_NET_SR_RATE                                                                   "+
+		"                   FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                         "+
 		"          WHERE DEAL_DATE = '"+incomeDealDate+"'" +
-		                   where                           +
-		"         GROUP BY GROUP_ID_0,                                                                             "+
-		"                  GROUP_ID_1_NAME ,                                                                       "+
-		"                  HQ_CHAN_CODE,                                                                           "+
-		"                  CHNL_TYPE,                                                                              "+
-		"                  BUS_HALL_NAME,                                                                          "+
-		"                  T_MANAGE_NAME) T                                                                        "+
-		") WHERE  T_RANK<=20                                                                                       ";
+						                   where                           +
+		"                  GROUP BY GROUP_ID_0,                                                                                           "+
+		"                           GROUP_ID_1_NAME,                                                                                      "+
+		"                           HQ_CHAN_CODE,                                                                                         "+
+		"                           OPERATE_TYPE,                                                                                         "+
+		"                           CHNL_TYPE,                                                                                            "+
+		"                           BUS_HALL_NAME,                                                                                        "+
+		"                           T_MANAGE_NAME                                                                                         "+
+		"         ) T                                                                                                                     "+
+		"         LEFT JOIN (SELECT GROUP_ID_0,COUNT(HQ_CHAN_CODE) T_NUM FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                            "+
+		"          WHERE DEAL_DATE = '"+incomeDealDate+"'" +
+						                   where                           +
+		"                   GROUP BY GROUP_ID_0                                                                                           "+
+		"        )T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                                                       "+
+		"  )                                                                                                                              "+
+		"  WHERE T_RANK <= 20                                                                                                             "+
+		"   ORDER BY T_RANK                                                                                                               ";
 	}
 	return sql;
 }
@@ -669,6 +772,7 @@ function getIncomeSql(isBeforeTop){
 function getSalesSql(isBeforeTop){
 	var salesDealDate = "";
 	var salesOpeType = "";
+	var salesHallType="";
 	var region = $("#region").val();
 	var orgLevel = $("#orgLevel").val();
 	var sql = "";
@@ -676,13 +780,18 @@ function getSalesSql(isBeforeTop){
 	if(isBeforeTop){
 		salesDealDate=$("#salesDealDate").val();
 		salesOpeType=$("#salesOpeType").val();
+		salesHallType=$("#salesHallType").val();
 	}else{
 		salesDealDate=$("#salesAfterTopDate").val();
 		salesOpeType=$("#salesAfterTopOpeType").val();
+		salesHallType=$("#salesAfterHallType").val();
 	}
 	//条件
 	if(""!=salesOpeType){
 		where+=" AND OPERATE_TYPE  ='"+salesOpeType+"' ";
+	}
+	if(""!=salesHallType){
+		where+=" AND CHNL_TYPE  ='"+salesHallType+"' ";
 	}
 	//权限
 	if(orgLevel==1){
@@ -693,97 +802,134 @@ function getSalesSql(isBeforeTop){
 		where+=" AND 1=2 ";
 	}
 	if(isBeforeTop){
-		sql="SELECT GROUP_ID_1_NAME,                                                                                "+
-		"       BUS_HALL_NAME,                                                                                  "+
-		"       HQ_CHAN_CODE,                                                                                   "+
-		"       CHNL_TYPE,                                                                                      "+
-		"       TYPE1_DEV_DAY,                                                                                  "+
-		"       TYPE1_DEV_MON,                                                                                  "+
-		"       TYPE3_DEV_DAY,                                                                                  "+
-		"       TYPE3_DEV_MON,                                                                                  "+
-		"       TYPE_ALL_DAY,                                                                                   "+
-		"       TYPE_ALL_MON,                                                                                   "+
-		"       HB_ALL,                                                                                         "+
-		"       T_RANK,                                                                                         "+
-		"       T_MANAGE_NAME                                                                                   "+
-		"FROM(                                                                                                  "+
-		"  SELECT T.* , ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY TYPE_ALL_MON DESC) T_RANK            "+
-		"  FROM (SELECT GROUP_ID_0,                                                                             "+
-		"               GROUP_ID_1_NAME ,                                                                       "+
-		"               HQ_CHAN_CODE,                                                                           "+
-		"               BUS_HALL_NAME,                                                                          "+
-		"               T_MANAGE_NAME,                                                                          "+
-		"               CHNL_TYPE,                                                                              "+
-		"               NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                "+
-		"               NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                               "+
-		"               NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                "+
-		"               NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                               "+
-		"               NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                  "+
-		"               NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                 "+
-		"               PODS.GET_RADIX_POINT(CASE                                                               "+
-		"                                      WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                         "+
-		"                                       (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 / "+
-		"                                       NVL(SUM(T1.TYPE_ALLL), 0)                                       "+
-		"                                      ELSE                                                             "+
-		"                                       0                                                               "+
-		"                                    END || '%',                                                        "+
-		"                                    2) HB_ALL                                                          "+
-		"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                             "+
-		" WHERE DEAL_DATE = '"+salesDealDate+"'"+
-		                       where            +
-		"         GROUP BY GROUP_ID_0,                                                                          "+
-		"                  GROUP_ID_1_NAME ,                                                                    "+
-		"                  HQ_CHAN_CODE,                                                                        "+
-		"                  CHNL_TYPE,                                                                           "+
-		"                  BUS_HALL_NAME,                                                                       "+
-		"                  T_MANAGE_NAME) T                                                                     "+
-		") WHERE  T_RANK<=20                                                                                    ";
+		sql="SELECT GROUP_ID_1_NAME,                                                                                                            "+
+		"       BUS_HALL_NAME,                                                                                                              "+
+		"       HQ_CHAN_CODE,                                                                                                               "+
+		"       OPERATE_TYPE,                                                                                                               "+
+		"       CHNL_TYPE,                                                                                                                  "+
+		"       TYPE1_DEV_DAY,                                                                                                              "+
+		"       TYPE1_DEV_MON,                                                                                                              "+
+		"       TYPE3_DEV_DAY,                                                                                                              "+
+		"       TYPE3_DEV_MON,                                                                                                              "+
+		"       TYPE_ALL_DAY,                                                                                                               "+
+		"       TYPE_ALL_MON,                                                                                                               "+
+		"       HB_ALL,                                                                                                                     "+
+		"       T_RANK,                                                                                                                     "+
+		"       T_MANAGE_NAME,                                                                                                              "+
+		"       CASE WHEN T_RANK<=ROUND(T_NUM * 0.2 ,0)                                                                                     "+
+		"            THEN '优秀'                                                                                                            "+
+		"            WHEN T_RANK>ROUND(T_NUM * 0.2 ,0) AND T_RANK <=ROUND(T_NUM * 0.9 ,0)                                                   "+
+		"            THEN '良好'                                                                                                            "+
+		"            ELSE '差评'  END FLAG                                                                                                  "+
+		"  FROM (SELECT T.*,                                                                                                                "+
+		"               ROW_NUMBER() OVER(PARTITION BY T.GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(HB_ALL,'%')) DESC) T_RANK，                  "+
+		"               T1.T_NUM                                                                                                            "+
+		"          FROM (SELECT GROUP_ID_0,                                                                                                 "+
+		"                       GROUP_ID_1_NAME,                                                                                            "+
+		"                       HQ_CHAN_CODE,                                                                                               "+
+		"                       BUS_HALL_NAME,                                                                                              "+
+		"                       T_MANAGE_NAME,                                                                                              "+
+		"                       OPERATE_TYPE,                                                                                               "+
+		"                       CHNL_TYPE,                                                                                                  "+
+		"                       NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                    "+
+		"                       NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                   "+
+		"                       NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                    "+
+		"                       NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                   "+
+		"                       NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                      "+
+		"                       NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                     "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                   "+
+		"                                              WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                             "+
+		"                                               (NVL(SUM(T1.TYPE_ALL1), 0) -                                                        "+
+		"                                               NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                                                  "+
+		"                                               NVL(SUM(T1.TYPE_ALLL), 0)                                                           "+
+		"                                              ELSE                                                                                 "+
+		"                                               0                                                                                   "+
+		"                                            END || '%',                                                                            "+
+		"                                            2) HB_ALL                                                                              "+
+		"                  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                         "+
+		"                      where DEAL_DATE = '"+salesDealDate+"'"+                                                                      
+				                       where            +
+		"                 GROUP BY GROUP_ID_0,                                                                                              "+
+		"                          GROUP_ID_1_NAME,                                                                                         "+
+		"                          HQ_CHAN_CODE,                                                                                            "+
+		"                          CHNL_TYPE,                                                                                               "+
+		"                          OPERATE_TYPE,                                                                                            "+
+		"                          BUS_HALL_NAME,                                                                                           "+
+		"                          T_MANAGE_NAME                                                                                            "+
+		"           ) T                                                                                                                     "+
+		"        LEFT JOIN (SELECT GROUP_ID_0,COUNT(HQ_CHAN_CODE) T_NUM FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                               "+
+		"                      where DEAL_DATE = '"+salesDealDate+"'"+                                                                      
+				                       where            +
+		"                   GROUP BY GROUP_ID_0                                                                                             "+
+		"        )T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                                                         "+
+		"  )                                                                                                                                "+
+		" WHERE T_RANK <= 10                                                                                                                "+
+		" ORDER BY T_RANK                                                                                                                   ";
 	}else{
-	    sql="SELECT GROUP_ID_1_NAME,                                                                                  "+
-		"       BUS_HALL_NAME,                                                                                    "+
-		"       HQ_CHAN_CODE,                                                                                     "+
-		"       CHNL_TYPE,                                                                                        "+
-		"       TYPE1_DEV_DAY,                                                                                    "+
-		"       TYPE1_DEV_MON,                                                                                    "+
-		"       TYPE3_DEV_DAY,                                                                                    "+
-		"       TYPE3_DEV_MON,                                                                                    "+
-		"       TYPE_ALL_DAY,                                                                                     "+
-		"       TYPE_ALL_MON,                                                                                     "+
-		"       HB_ALL,                                                                                           "+
-		"       T_RANK,                                                                                           "+
-		"       T_MANAGE_NAME                                                                                     "+
-		"FROM(                                                                                                    "+
-		"  SELECT T.* , ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY TYPE_ALL_MON) T_RANK                   "+
-		"  FROM (SELECT GROUP_ID_0,                                                                               "+
-		"               GROUP_ID_1_NAME ,                                                                         "+
-		"               HQ_CHAN_CODE,                                                                             "+
-		"               BUS_HALL_NAME,                                                                            "+
-		"               T_MANAGE_NAME,                                                                            "+
-		"               CHNL_TYPE,                                                                                "+
-		"               NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                  "+
-		"               NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                 "+
-		"               NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                  "+
-		"               NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                 "+
-		"               NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                    "+
-		"               NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                   "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                 "+
-		"                                      WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                           "+
-		"                                       (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /   "+
-		"                                       NVL(SUM(T1.TYPE_ALLL), 0)                                         "+
-		"                                      ELSE                                                               "+
-		"                                       0                                                                 "+
-		"                                    END || '%',                                                          "+
-		"                                    2) HB_ALL                                                            "+
-		"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                               "+
-		" WHERE DEAL_DATE = '"+salesDealDate+"'"+
-		                           where        +
-		"         GROUP BY GROUP_ID_0,                                                                            "+
-		"                  GROUP_ID_1_NAME ,                                                                      "+
-		"                  HQ_CHAN_CODE,                                                                          "+
-		"                  CHNL_TYPE,                                                                             "+
-		"                  BUS_HALL_NAME,                                                                         "+
-		"                  T_MANAGE_NAME) T                                                                       "+
-		") WHERE  T_RANK<=20                                                                                      ";
+		sql="SELECT GROUP_ID_1_NAME,                                                                                                                  "+
+		"       BUS_HALL_NAME,                                                                                                                    "+
+		"       HQ_CHAN_CODE,                                                                                                                     "+
+		"       OPERATE_TYPE,                                                                                                                     "+
+		"       CHNL_TYPE,                                                                                                                        "+
+		"       TYPE1_DEV_DAY,                                                                                                                    "+
+		"       TYPE1_DEV_MON,                                                                                                                    "+
+		"       TYPE3_DEV_DAY,                                                                                                                    "+
+		"       TYPE3_DEV_MON,                                                                                                                    "+
+		"       TYPE_ALL_DAY,                                                                                                                     "+
+		"       TYPE_ALL_MON,                                                                                                                     "+
+		"       HB_ALL,                                                                                                                           "+
+		"       T_RANK,                                                                                                                           "+
+		"       T_MANAGE_NAME,                                                                                                                    "+
+		"       CASE WHEN T_RANK<=ROUND(T_NUM * 0.1 ,0)                                                                                           "+
+		"            THEN '差评'                                                                                                                  "+
+		"            WHEN T_RANK>ROUND(T_NUM * 0.1 ,0) AND T_RANK <=ROUND(T_NUM * 0.8 ,0)                                                         "+
+		"            THEN '良好'                                                                                                                  "+
+		"            ELSE '优秀'  END FLAG                                                                                                        "+
+		"  FROM (SELECT T.*,                                                                                                                      "+
+		"               ROW_NUMBER() OVER(PARTITION BY T.GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(HB_ALL,'%'))) T_RANK，                             "+
+		"               T1.T_NUM                                                                                                                  "+
+		"          FROM (SELECT GROUP_ID_0,                                                                                                       "+
+		"                       GROUP_ID_1_NAME,                                                                                                  "+
+		"                       HQ_CHAN_CODE,                                                                                                     "+
+		"                       BUS_HALL_NAME,                                                                                                    "+
+		"                       T_MANAGE_NAME,                                                                                                    "+
+		"                       OPERATE_TYPE,                                                                                                     "+
+		"                       CHNL_TYPE,                                                                                                        "+
+		"                       NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                          "+
+		"                       NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                         "+
+		"                       NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                          "+
+		"                       NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                         "+
+		"                       NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                            "+
+		"                       NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                           "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                         "+
+		"                                              WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                                   "+
+		"                                               (NVL(SUM(T1.TYPE_ALL1), 0) -                                                              "+
+		"                                               NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                                                        "+
+		"                                               NVL(SUM(T1.TYPE_ALLL), 0)                                                                 "+
+		"                                              ELSE                                                                                       "+
+		"                                               0                                                                                         "+
+		"                                            END || '%',                                                                                  "+
+		"                                            2) HB_ALL                                                                                    "+
+		"                  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                               "+
+		"                      where DEAL_DATE = '"+salesDealDate+"'"+                                                                      
+						                       where            +
+
+		"                 GROUP BY GROUP_ID_0,                                                                                                    "+
+		"                          GROUP_ID_1_NAME,                                                                                               "+
+		"                          HQ_CHAN_CODE,                                                                                                  "+
+		"                          CHNL_TYPE,                                                                                                     "+
+		"                          OPERATE_TYPE,                                                                                                  "+
+		"                          BUS_HALL_NAME,                                                                                                 "+
+		"                          T_MANAGE_NAME                                                                                                  "+
+		"           ) T                                                                                                                           "+
+		"        LEFT JOIN (SELECT GROUP_ID_0,COUNT(HQ_CHAN_CODE) T_NUM FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                     "+
+		"                      where DEAL_DATE = '"+salesDealDate+"'"+                                                                      
+						                       where            +
+		"                   GROUP BY GROUP_ID_0                                                                                                   "+
+		"        )T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                                                               "+
+		"  )                                                                                                                                      "+
+		" WHERE T_RANK <= 20                                                                                                                      "+
+		" ORDER BY T_RANK                                                                                                                         ";
 	}
 	return sql;
 }
@@ -828,5 +974,19 @@ function isNull(obj){
 		return "&nbsp;";
 	}
 	return obj;
+}
+
+function getImage(flag){
+	if(flag){
+		if(flag=="优秀"){
+			flag=flag+"<image src='..//images/good.png'>";
+		}else if(flag=="良好"){
+			flag=flag+"<image src='..//images/good.png'>";
+		}else{
+			flag=flag+"<image src='..//images/bad.png'>";
+		}
+		return flag;
+	}
+	return "";
 }
 
