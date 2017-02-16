@@ -139,4 +139,16 @@
 	    SELECT * FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{initId}
 	</select>
 	
+	<delete id="deleteResultByWorkNo" parameterType="java.util.Map">
+		DELETE FROM PAPP.TAB_COMM_IMPORT WHERE INIT_ID=#{workNo}
+	</delete>
+	
+	<select id="findFilesByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
+	    SELECT FILE_PATH FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{workNo}
+	</select>
+	
+	<delete id="deleteFilesByWorkNo" parameterType="java.util.Map">
+	    DELETE FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{workNo}
+	</delete>
+	
 </mapper>

@@ -7,6 +7,9 @@ import java.util.Map;
 
 
 
+
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 
@@ -55,5 +58,12 @@ public interface UnsupportedDao {
 	public void insertToResult(Map<String, String> map);
 
 	public List<Map<String, Object>> queryFiles(String initId);
+
+	public void deleteResultByWorkNo(Map<String, String> params);
+
+	public List<Map<String, String>> findFilesByWorkNo(
+			Map<String, String> params);
+
+	public void deleteFilesByWorkNo(Map<String, String> params);
 	
 }
