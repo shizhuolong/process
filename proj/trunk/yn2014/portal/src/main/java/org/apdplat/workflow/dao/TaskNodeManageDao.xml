@@ -5,8 +5,8 @@
 	
 	<select id="queryTaskNodeList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT TASK_ID,TASK_NAME FROM TB_ACT_TASK_CONFIG WHERE IS_VALID='1' AND TASK_FLAG NOT IN('0','5')
-		<if test="orgLevel==1">
-			AND TASK_FLAG IN ('1','2','3','4','7')
+		<if test="orgLevel==2">
+			AND TASK_FLAG IN ('2','3','4','7')
 		</if>
 		<if test="taskName!=null and taskName!=''">
 			AND TASK_NAME LIKE  '%'||#{taskName}||'%'  
