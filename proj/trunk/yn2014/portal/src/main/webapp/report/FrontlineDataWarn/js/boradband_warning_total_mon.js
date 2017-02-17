@@ -1,7 +1,7 @@
-var field=["GK_LEAVE_NOW","GK_LEAVE_LS","GK_LEAVE_RATE","GK_OFF_NOW","GK_OFF_LS","GK_OFF_RATE","GK_PASSAGE_NOW","GK_PASSAGE_LS","GK_PASSAGE_RATE","GK_PREDEM_NOW","GK_PREDEM_LS","GK_PREDEM_RATE","GK_OWESTOP_NOW","GK_OWESTOP_LS","GK_OWESTOP_RATE","GK_PHONE_01_NOW","GK_PHONE_01_LS","GK_PHONE_01_RATE","GK_PHONE_02_NOW","GK_PHONE_02_LS","GK_PHONE_02_RATE","ADDR_ERROR_NOW","ADDR_ERROR_LS","ADDR_ERROR_RATE"];
+var field=["GK_LEAVE_NOW","GK_LEAVE_LS","GK_LEAVE_RATE","GK_OFF_NOW","GK_OFF_LS","GK_OFF_RATE","GK_PASSAGE_NOW","GK_PASSAGE_LS","GK_PASSAGE_RATE","GK_PREDEM_NOW","GK_PREDEM_LS","GK_PREDEM_RATE","GK_OWESTOP_NOW","GK_OWESTOP_LS","GK_OWESTOP_RATE","GK_PHONE_01_NOW","GK_PHONE_01_LS","GK_PHONE_01_RATE","GK_PHONE_02_NOW","GK_PHONE_02_LS","GK_PHONE_02_RATE","ADDR_ERROR_NOW","ADDR_ERROR_LS","ADDR_ERROR_RATE","GK_ONLINE60_NOW","GK_ONLINE60_LS","GK_ONLINE60_RATE"];
 var title=[
-           ["组织机构","离网用户数","","","主动离网用户数","","","在途工单数","","","预拆用户数","","","欠费停机用户数","","","装宽带送手机融合业务，零元开卡未捆绑群组数","","","用手机业务送宽带融合业务，零元开宽带未捆绑群组数","","","宽带装机地址不合规用户数","",""],
-           ["","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比"]
+           ["组织机构","离网用户数","","","主动离网用户数","","","在途工单数","","","预拆用户数","","","欠费停机用户数","","","装宽带送手机融合业务，零元开卡未捆绑群组数","","","用手机业务送宽带融合业务，零元开宽带未捆绑群组数","","","宽带装机地址不合规用户数","","","已在网60个月的用户数","",""],
+           ["","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比"]
           ];
 
 var report=null;
@@ -107,8 +107,8 @@ function downsAll() {
 	sql+=orderBy;
 	showtext = '宽带月预警总表' + dealDate;
 	var title=[
-	           ["账期","地市","应付中心","渠道经理","渠道名称","离网用户数","","","主动离网用户数","","","在途工单数","","","预拆用户数","","","欠费停机用户数","","","装宽带送手机融合业务，零元开卡未捆绑群组数","","","用手机业务送宽带融合业务，零元开宽带未捆绑群组数","","","宽带装机地址不合规用户数","",""],
-	           ["","","","","","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比"]
+	           ["账期","地市","营服中心","渠道经理","渠道名称","离网用户数","","","主动离网用户数","","","在途工单数","","","预拆用户数","","","欠费停机用户数","","","装宽带送手机融合业务，零元开卡未捆绑群组数","","","用手机业务送宽带融合业务，零元开宽带未捆绑群组数","","","宽带装机地址不合规用户数","","","已在网60个月的用户数","",""],
+	           ["","","","","","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比","当月","上月","环比"]
 	          ];
 	downloadExcel(sql,title,showtext);
 }
@@ -138,7 +138,11 @@ function getSql(){
 			"	T.GK_PHONE_02_RATE	    ,"+		//--环比
 			"	T.ADDR_ERROR_NOW		,"+		//--当月宽带装机地址不合规用户数
 			"	T.ADDR_ERROR_LS		    ,"+		//--上月宽带装机地址不合规用户数
-			"	T.ADDR_ERROR_RATE		 "+		//--环比
+			"	T.ADDR_ERROR_RATE		,"+		//--环比
+			
+			"	T.GK_ONLINE60_NOW		,"+		
+			"	T.GK_ONLINE60_LS 	    ,"+		
+			"	T.GK_ONLINE60_RATE		 "+
 			" FROM  PMRT.TB_MRT_GK_ALLINFO_MON	T " ;
 	return sql;
 }
