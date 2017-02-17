@@ -27,7 +27,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/boradband_warning_total_mon.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/FrontlineDataWarn/js/boradband_warning_total_mon.js?v=4"></script>
 </head>
 <body  style="overflow-x: auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
