@@ -95,6 +95,8 @@ function initFileDiv(){
 
 
 function downFile(fileName,filePath){
+	fileName=fileName.replace(/%/g,"%25");
+    filePath=filePath.replace(/%/g,"%25");
 	location.href = $("#ctx").val()+"/unsupported/unsupported!downloadFile.action?filePath="+encodeURI(encodeURI(filePath))+"&fileName="+encodeURI(encodeURI(fileName));
 }
 
