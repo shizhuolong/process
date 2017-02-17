@@ -107,6 +107,8 @@ function initFileDiv(){
 }
 
 function downFile(fileName,filePath){
+	fileName=fileName.replace(/%/g,"%25");
+    filePath=filePath.replace(/%/g,"%25");
 	location.href = $("#ctx").val()+"/unsupported/unsupported!downloadFile.action?filePath="+encodeURI(encodeURI(filePath))+"&fileName="+encodeURI(encodeURI(fileName));
 }
 
@@ -359,6 +361,8 @@ function delAttachement(element) {
 function downloadFile(element) {
 	var filePath = $.trim($(element).attr("path"));
 	var fileName = $(element).attr("name");
+	fileName=fileName.replace(/%/g,"%25");
+    filePath=filePath.replace(/%/g,"%25");
 	filePath = encodeURI(encodeURI(filePath));
 	fileName = encodeURI(encodeURI(fileName));
 	window.location.href=path+"/upload/upload!download.action?fileName="+fileName+"&filePath="+filePath;
