@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery.validationEngine-zh_CN.js"></script>
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery.validationEngine.js"></script>
 <script type="text/javascript" src="<%=path%>/taskManagement/saleschedule/js/task_common.js"></script>
-<script type="text/javascript" src="<%=path%>/taskManagement/saleschedule/js/saleschedule_decomposition.js"></script>
+<script type="text/javascript" src="<%=path%>/taskManagement/saleschedule/js/saleschedule_decomposition.js?v=4"></script>
 <script type="text/javascript">
 	var id = '<%=id%>';
 	var path = '<%=path%>';
