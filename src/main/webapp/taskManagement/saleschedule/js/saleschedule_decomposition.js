@@ -28,6 +28,7 @@ function getUnitTask() {
         		var targetIdArr = [];
         		var targetUnitArr = [];
         		var targetTypeArr = [];
+        		var targetCode1 ="";
         		$("#dateValue").val(data.dateValue);
         		$("#dateType").val(data.dateType);
         		$("#taskCode").val(data.taskCode);
@@ -38,6 +39,7 @@ function getUnitTask() {
         			targetUnitArr.push(data.taskDetailList[i].indexTargetBean.unit);
         			targetTypeArr.push(data.taskDetailList[i].indexTargetBean.name1);
         			if(i == 0) {
+        				targetCode1=data.taskDetailList[i].indexTargetBean.code1;
         				content += "<tr flag='"+data.taskDetailList[i].indexTargetBean.flag+"'>" +
         				"<td style='text-align:center;' rowspan="+data.taskDetailList.length+">"+data.regionName+"</td>" +
         				"<td style='text-align:center;'>"+data.taskDetailList[i].indexTargetBean.name2+"</td>" +
@@ -58,7 +60,7 @@ function getUnitTask() {
         		}
         		$("#sumDataBoby").empty().append(content);
         		//加载下级地域
-        		getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr);
+        		getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr,targetCode1);
         	}
         },
         error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -68,9 +70,16 @@ function getUnitTask() {
 }
 
 //查询渠道经理
-function getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr) {
+function getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr,targetCode1) {
 	var task_region_code = $("#task_region_code").val();
 	var month = $("#dateValue").val();
+	var type="2,3,5,6,7";
+	if(targetCode1=="broad_income"||targetCode1=="broad_dev"){//如果是宽带类指标（宽带发展和宽带收入）进行特殊处理
+		type="2";
+		if(userType=="2"){
+			userType="20";//代理商
+		}
+	}
 	if(targetIdArr.length<=0) {
 		art.dialog.alert("获取下级地域信息失败！");
 		return;
@@ -84,7 +93,7 @@ function getNextRegion(targetNameArr,targetIdArr,targetUnitArr,targetTypeArr) {
 			data:{
 				task_region_code:task_region_code,
 				month:month,
-				type:"2,5,6,7",
+				type:type,
 				userType:userType
 			},
 			success:function(data){
