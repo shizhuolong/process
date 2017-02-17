@@ -386,6 +386,8 @@ function downloadFile(element) {
 	var filePath = $.trim($(element).attr("path"));
 	//var filepath = '/upload/1301/20130120221304_电脑操作快捷键.txt';
 	var fileName = $(element).attr("name");
+	fileName=fileName.replace(/%/g,"%25");
+    filePath=filePath.replace(/%/g,"%25");
 	filePath = encodeURI(encodeURI(filePath));
 	fileName = encodeURI(encodeURI(fileName));
 	//alert(filepath);
