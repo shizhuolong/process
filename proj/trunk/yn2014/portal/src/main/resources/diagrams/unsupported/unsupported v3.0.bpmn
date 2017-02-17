@@ -8,7 +8,7 @@
     <userTask id="MunicipalLeader" name="地市分管领导审批" activiti:assignee="${nextDealer}"></userTask>
     <userTask id="ProvincialDepartment" name="省级分管部门" activiti:assignee="${nextDealer}"></userTask>
     <userTask id="ProvincialLeader" name="省公司领导审批" activiti:assignee="${nextDealer}"></userTask>
-    <serviceTask id="servicetask1" name="结束" activiti:delegateExpression="#{unsupportedServiceTask.complete(execution)}"></serviceTask>
+    <serviceTask id="servicetask1" name="结束" activiti:expression="#{unsupportedServiceTask.complete(execution)}"></serviceTask>
     <sequenceFlow id="flow29" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusiveGateway1" name="Parallel Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusiveGateway2" name="Parallel Gateway"></exclusiveGateway>
