@@ -6,6 +6,9 @@ $(function(){
 	$("#searchBtn").click(function(){
 		search(0);
 	});
+	$("#downloadExcel").click(function(){
+		download();
+	});
 	init_sitem();
 });
 
@@ -244,5 +247,93 @@ function listUnits(regionCode){
 		$unit.empty().append($h);
 	} else {
 		alert("获取基层单元信息失败");
+	}
+}
+
+function download() {
+	var deal_date = $.trim($("#deal_date").val());
+	var unit_name = $("#unit_name").val();
+	var is_confirm = $("#is_confirm").val();
+	var group_id_1 = $("#group_id_1").val();
+	var orgLevel = $("#orgLevel").val();
+	var code = $("#code").val();
+	
+	var sql = "SELECT DISTINCT T.DEAL_DATE,                                                 "+
+	"                T.GROUP_ID_1_NAME,                                                     "+
+	"                T.UNIT_NAME,                                                           "+
+	"                T.INIT_ID,                                                             "+
+	"                TO_CHAR(T1.END_TIME_, 'yyyy-MM-dd HH24:mi:ss') AS END_TIME_,           "+
+	"                T2.REALNAME,                                                           "+
+	"                DECODE(T.ISCONFIM, '1', '已确认', 2,'已拒绝','未确认') AS ISCONFIM_CN        "+
+	"  		FROM PORTAL.TAB_PORTAL_COST_BUDGETTOERP_IM T,PORTAL.ACT_HI_PROCINST T1,         "+
+	"       		PORTAL.APDP_USER T2                                                     "+
+	" 		WHERE T.INIT_ID = T1.BUSINESS_KEY_                                              "+
+	"   		AND T1.START_USER_ID_ = T2.ID                                               "+
+	"   		AND T.STATUS = '10'                                                         ";
+
+	if(orgLevel==1) {
+		
+	}else if(orgLevel == 2) {
+		sql+=" AND T.GROUP_ID_1='"+code+"'";
+	}else if(orgLevel == 3) {
+		sql+=" AND T.UNIT_ID='"+code+"'";
+	}else {
+		sql+=" AND 1=2";
+	}
+	
+	if(deal_date != "") {
+		sql+=" AND T.DEAL_DATE ='"+deal_date+"' ";
+	}
+	if(group_id_1 != "") {
+		sql+=" AND T.GROUP_ID_1 ='"+group_id_1+"' ";
+	}
+	if(unit_name != "") {
+		sql+=" AND T.UNIT_NAME ='"+unit_name+"' ";
+	}
+	if(is_confirm == "1") {
+		sql+=" AND T.ISCONFIM = '1'";
+	}
+	if(is_confirm == "0") {
+		sql+=" AND T.ISCONFIM IS NULL";
+	}
+	sql+=" ORDER BY T.DEAL_DATE DESC";
+   var showtext="成本预算接收";
+   var _head=["帐期","地市","营服中心","工单编号","下发时间","创建人","状态"];
+   loadWidowMessage(1);
+   _execute(3001,{type:12,
+		     data:{
+		    	  sql:sql,
+		    	  contname:_head,
+		    	  startRow:1,
+		    	  startCol:0,
+		    	  cols:-1,
+		    	  sheetname:showtext,
+		    	  excelModal:'reportModel.xls'
+		     }     
+	},function(res){
+		loadWidowMessage(0);
+		 click_flag=0;
+		 var url=[$.Project.downURL,'?path=',encodeURI('system:'+res),$.isNullStr(showtext)?'':'&alias='+encodeURI(encodeURI(showtext+'.xls'))].join('');
+		 window.location.href=url;
+	});
+}
+
+function _execute(type, parameter, callback, msg, dom){
+   $.Project.execute(type, parameter, callback, msg, dom);
+}
+
+/**
+ * 程序锁屏信息，1为加载，其他为去除锁屏信息
+ * @param flag
+ * @return
+ */
+function loadWidowMessage(flag){
+	if(flag == 1){
+		$.messager.progress({
+			text:'正在处理数据，请稍等...',
+			interval:100
+		}); 
+	}else{
+		$.messager.progress('close'); 
 	}
 }

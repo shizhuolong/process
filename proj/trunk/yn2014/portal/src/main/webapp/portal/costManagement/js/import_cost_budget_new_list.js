@@ -11,6 +11,9 @@ $(function(){
 	$("#importExcel").click(function(){
 		importExcel();
 	});
+	$("#downloadExcel").click(function(){
+		downloadExcel();
+	});
 	//查询下一步骤审批人
 	findNextDealer("financeLeaderAudit",4);
 	$("#submitTask").click(function(){
@@ -154,6 +157,79 @@ function isNull(obj){
 	return obj;
 }
 
+function downloadExcel() {
+	var cost_center_name = $.trim($("#cost_center_name").val());
+	var deal_date = $("#deal_date").val();
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	var sql = "SELECT                                                                                                "+
+	"			T.DEAL_DATE,T.GROUP_ID_1_NAME,T.UNIT_NAME,T.COST_CENTER_CODE,                                        "+
+	"       		T.COST_CENTER_NAME,T.UNIT_ITEM,T.BUDGET_ITEM_CODE,T.BUDGET_ITEM_NAME,                            "+
+	"       		TO_CHAR(T.BUDGET_MONEY, 'fm9999999999990.00') AS BUDGET_MONEY,                                   "+
+	"       		TO_CHAR(T.ZSB_RATE, 'fm99999999990.00') AS ZSB_RATE,                                             "+
+	"       		DECODE(T.FLAG, '1', '占收比', '2', '定额', '') AS FLAG,                                             "+
+	"       		DECODE(T.STATUS, '10', '已下发', '未下发') AS STATUS,                                                "+
+	"       		DECODE(T.ISCONFIM, '2', '已拒绝', '1', '已确认', '未确认') AS ISCONFIM,                                "+
+	"       		ISCONFIM as ISCONFIM_EN                                                                          "+
+	"  		FROM PORTAL.TAB_PORTAL_COST_BUDGETTOERP_IM T WHERE (T.STATUS IS NULL OR STATUS = '11' OR T.ISCONFIM = 2) ";
+	
+	if(orgLevel==1) {
+		
+	}else if(orgLevel == 2) {
+		sql+=" AND T.GROUP_ID_1='"+code+"'";
+	}else if(orgLevel == 3) {
+		sql+=" AND T.UNIT_ID='"+code+"'";
+	}else {
+		sql+=" AND 1=2";
+	}
+	
+	if(cost_center_name != "") {
+		sql+=" AND T.COST_CENTER_NAME LIKE '%"+cost_center_name+"%'";
+	}
+	if(deal_date != "") {
+		sql+=" AND T.DEAL_DATE ='"+deal_date+"' ";
+	}
+   var showtext="成本预算";
+   var _head=["账期","地市","营服中心","成本中心代码","成本中心名称","基层单元成本项","预算科目编码","预算科目名称","预算金额","占收比","标识","下发状态标识","确认状态"];
+   loadWidowMessage(1);
+   _execute(3001,{type:12,
+		     data:{
+		    	  sql:sql,
+		    	  contname:_head,
+		    	  startRow:1,
+		    	  startCol:0,
+		    	  cols:-1,
+		    	  sheetname:showtext,
+		    	  excelModal:'reportModel.xls'
+		     }     
+	},function(res){
+		 loadWidowMessage(0);
+		 click_flag=0;
+		 var url=[$.Project.downURL,'?path=',encodeURI('system:'+res),$.isNullStr(showtext)?'':'&alias='+encodeURI(encodeURI(showtext+'.xls'))].join('');
+		 window.location.href=url;
+	});
+}
+
+function _execute(type, parameter, callback, msg, dom){
+   $.Project.execute(type, parameter, callback, msg, dom);
+}
+
+/**
+ * 程序锁屏信息，1为加载，其他为去除锁屏信息
+ * @param flag
+ * @return
+ */
+function loadWidowMessage(flag){
+	if(flag == 1){
+		$.messager.progress({
+			text:'正在处理数据，请稍等...',
+			interval:100
+		}); 
+	}else{
+		$.messager.progress('close'); 
+	}
+}
+
 //下一步审批人
 function findNextDealer(taskId,taskFlag) {
 	
@@ -255,3 +331,5 @@ function validate(){
 function isNotBlank(obj){
     return !(obj == undefined || obj == null || obj =='' || obj=='null');
 }
+
+
