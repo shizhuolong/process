@@ -36,8 +36,12 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.ba-throttle-debounce.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/common.jquery.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_budget_receive_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_budget_receive_list.js?v=7"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 
 <script type="text/javascript">
@@ -102,6 +106,7 @@
 										</td>
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+											<a class="default-gree-btn fLeft mr10" href="#" id="downloadExcel">导出</a>
 										</td>
 									</tr>
 								</table>
