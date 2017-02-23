@@ -11,7 +11,7 @@
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
-	String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -26,7 +26,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/net_perme_mon.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/net_perme_mon.js?v=7"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -40,7 +40,7 @@
 					<td width="3%" style="text-align:right;">账期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month %>" id="month">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate %>" id="dealDate">
 					</td>
 					<td width="3%" style="text-align:right;">地市：</td>
 					<td width="10%">
@@ -48,9 +48,18 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
+					<td width="4%" style="text-align:right;">厅类型：</td>
+					<td width="10%">
+				     	<select name="hallType" id="hallType" class="default-text-input wper80">
+							<option value=''>全部</option>
+							<option value='小型厅'>小型厅</option>
+							<option value='标准厅'>标准厅</option>
+							<option value='旗舰厅'>旗舰厅</option>
+						</select>
+					</td>
 					<td width="4%" style="text-align:right;">经营模式：</td>
 					<td width="10%">
-				     	<select name="operate_type" id="operate_type" class="default-text-input wper80">
+				     	<select name="operateType" id="operateType" class="default-text-input wper80">
 							<option value=''>全部</option>
 							<option value='柜台外包'>柜台外包</option>
 							<option value='他营'>他营</option>
