@@ -10,10 +10,10 @@ $(function(){
 function search(){
 	var dealDate=$("#dealDate").val();
 		//省，地市
-		title=[["组织架构","经营模式","自有厅新增用户发展量","","","","","","","","","全网新增用户发展量","","","","","","","",""],
-		       ["","","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）"]
+		title=[["组织架构","经营模式","厅类型","自有厅新增用户发展量","","","","","","","","","全网新增用户发展量","","","","","","","",""],
+		       ["","","","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）"]
 			];
-		field=["OPERATE_TYPE","QC_19_NUM","QC_39_NUM","QC_59_NUM","QC_89_NUM","QC_119_NUM","QC_139_NUM","QC_RZK_NUM","ALL_QC_NUM","ALL_QC_HB","QQD_QC_19_NUM","QQD_QC_39_NUM","QQD_QC_59_NUM","QQD_QC_89_NUM","QQD_QC_119_NUM","QQD_QC_139_NUM","QQD_QC_RZK_NUM","QQD_ALL_QC_NUM","QQD_ALL_HB"];
+		field=["OPERATE_TYPE","CHNL_TYPE","QC_19_NUM","QC_39_NUM","QC_59_NUM","QC_89_NUM","QC_119_NUM","QC_139_NUM","QC_RZK_NUM","ALL_QC_NUM","ALL_QC_HB","QQD_QC_19_NUM","QQD_QC_39_NUM","QQD_QC_59_NUM","QQD_QC_89_NUM","QQD_QC_119_NUM","QQD_QC_139_NUM","QQD_QC_RZK_NUM","QQD_ALL_QC_NUM","QQD_ALL_HB"];
 	var report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),
@@ -33,6 +33,7 @@ function search(){
 			var chanlCode = $("#chanlCode").val();
 			var regionCode=$("#regionCode").val();
 			var operateType=$("#operateType").val();
+			var chnlType=$("#chnlType").val();
 			var flag = $("#flag").val();
 			var groupBy = "";
 			if($tr){
@@ -40,7 +41,7 @@ function search(){
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
 					preField=" SELECT HQ_CHAN_CODE  AS ROW_ID,BUS_HALL_NAME AS ROW_NAME, "+getNextSql()+" AND GROUP_ID_1= '"+code+"'";
-					groupBy= "  GROUP BY   HQ_CHAN_CODE,BUS_HALL_NAME,OPERATE_TYPE  ";
+					groupBy= "  GROUP BY HQ_CHAN_CODE,BUS_HALL_NAME,OPERATE_TYPE,CHNL_TYPE  ";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -70,6 +71,9 @@ function search(){
 			if(chanlCode!=""){
 				preField += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 			}
+			if(chnlType!=""){
+				preField += " AND CHNL_TYPE ='"+chnlType+"' ";
+			}
 			
 			var sql=preField+groupBy;
 			var d=query(sql);
@@ -86,6 +90,7 @@ function search(){
 function getNextSql(){
 	var dealDate = $("#dealDate").val();
 	var sql = 	"        T.OPERATE_TYPE,                                                                 "+
+	            "        T.CHNL_TYPE,                                                                    "+
 				"        SUM(NVL(T.QC_19_NUM, 0)) QC_19_NUM,                                             "+
 				"        SUM(NVL(T.QC_39_NUM, 0)) QC_39_NUM,                                             "+
 				"        SUM(NVL(T.QC_59_NUM, 0)) QC_59_NUM,                                             "+
@@ -109,6 +114,7 @@ function getSumSql() {
 	 var s=	 " SELECT GROUP_ID_1 AS ROW_ID,                                                               "+
 			 "        GROUP_ID_1_NAME AS ROW_NAME,                                                        "+
 			 "        '-' AS OPERATE_TYPE,                                                                "+
+			 "        '-' AS CHNL_TYPE,                                                                   "+
 			 "        SUM(NVL(QC_19_NUM, 0)) QC_19_NUM,                                                   "+
 			 "        SUM(NVL(QC_39_NUM, 0)) QC_39_NUM,                                                   "+
 			 "        SUM(NVL(QC_59_NUM, 0)) QC_59_NUM,                                                   "+
@@ -144,7 +150,7 @@ function getSumSql() {
 
 function downsAll() {
 	var orderBy= " ORDER BY T.GROUP_ID_1,T.HQ_CHAN_CODE ";
-	var groupBy= " GROUP BY T.DEAL_DATE,T.GROUP_ID_1_NAME,T.BUS_HALL_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE,T.GROUP_ID_1 ";
+	var groupBy= " GROUP BY T.DEAL_DATE,T.GROUP_ID_1_NAME,T.BUS_HALL_NAME,T.HQ_CHAN_CODE,T.OPERATE_TYPE,T.GROUP_ID_1,T.CHNL_TYPE ";
 	//先根据用户信息得到前几个字段
 	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
@@ -152,6 +158,7 @@ function downsAll() {
 	var chanlCode = $("#chanlCode").val();
 	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
+	var chnlType=$("#chnlType").val();
 	var where ="";
 	var preField = " SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.BUS_HALL_NAME,T.HQ_CHAN_CODE,"+	getNextSql();
 	if (orgLevel == 1) {//省
@@ -168,10 +175,13 @@ function downsAll() {
 	if(chanlCode!=""){
 		where += " AND T.HQ_CHAN_CODE ='"+chanlCode+"' ";
 	}
+	if(chnlType!=""){
+		where += " AND T.CHNL_TYPE ='"+chnlType+"' ";
+	}
 	var sql = preField + where+groupBy+orderBy;
 	var showtext = '七彩套餐用户发展月表' + dealDate;
-	title=[["账期","地市","营业厅名称","渠道编码","经营模式","自有厅新增用户发展量","","","","","","","",""],
-	       ["","","","","","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）"]
+	title=[["账期","地市","营业厅名称","渠道编码","经营模式","厅类型","自有厅新增用户发展量","","","","","","","",""],
+	       ["","","","","","","七彩金惠19元","七彩金惠39元","七彩乐红59元","七彩乐红89元","七彩蓝尊119元","七彩蓝尊139元及以上套餐","七彩流量日租卡","合计发展量","占移网发展的比重（剔除小流量卡）"]
 		];
 	downloadExcel(sql,title,showtext);
 }
