@@ -1,8 +1,8 @@
 var report;
 $(function(){
-	var title=[["组织架构","渠道编码","经营模式","自有厅新增","","","自有厅20M以上","","","","","全网新增","","","全网20M以上","","","",""],
-	           ["","","","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比"]];
-	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","ZY_DEV_NUM","ZY_DEV_NUM1","ZY_INCREASE_DEV","ZY_20_50_NUM1","ZY_20_50_ZB","ZY_50_100_NUM1","ZY_50_100_ZB","ZY_GREAT_20_ZB","QW_DEV_NUM","QW_DEV_NUM1","QW_INCREASE_DEV","QW_20_50_NUM1","QW_20_50_ZB","QW_50_100_NUM1","QW_50_100_ZB","QW_GREAT_20_ZB"];
+	var title=[["组织架构","渠道编码","经营模式","厅类型","自有厅新增","","","自有厅20M以上","","","","","全网新增","","","全网20M以上","","","",""],
+	           ["","","","","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比"]];
+	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","ZY_DEV_NUM","ZY_DEV_NUM1","ZY_INCREASE_DEV","ZY_20_50_NUM1","ZY_20_50_ZB","ZY_50_100_NUM1","ZY_50_100_ZB","ZY_GREAT_20_ZB","QW_DEV_NUM","QW_DEV_NUM1","QW_INCREASE_DEV","QW_20_50_NUM1","QW_20_50_ZB","QW_50_100_NUM1","QW_50_100_ZB","QW_GREAT_20_ZB"];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		$("#lch_DataHead").find("TH").unbind();
@@ -26,6 +26,7 @@ $(function(){
 			var code=$("#code").val();
 			var regionCode=$("#regionCode").val();
 			var operateType=$("#operateType").val();
+			var chnlType=$("#chnlType").val();
 			var where = "WHERE 1=1";
 			var level;
 			if($tr){
@@ -69,6 +70,9 @@ $(function(){
 			if(chanlCode!=""){
 				where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 			}
+			if(chnlType!=""){
+				where += " AND CHNL_TYPE ='"+chnlType+"' ";
+			}
 			var sql="";
 			if(level<2){
 				sql=getFristSql(where);
@@ -88,10 +92,11 @@ $(function(){
 });
 
 function getFristSql(where){
-	var s="select  NVL(GROUP_ID_1,'合计') ROW_ID                                                "+
-	"        ,NVL(GROUP_ID_1_NAME,'合计') ROW_NAME                                        "+
+	var s="select  NVL(GROUP_ID_1,'合计') ROW_ID                                           "+
+	"        ,NVL(GROUP_ID_1_NAME,'合计') ROW_NAME                                         "+
 	"        ,'-' HQ_CHAN_CODE                                                            "+
 	"        ,'-' OPERATE_TYPE                                                            "+
+	"        ,'-' CHNL_TYPE                                                               "+
 	"        ,SUM(NVL(ZY_DEV_NUM,0)) ZY_DEV_NUM                                           "+
 	"        ,SUM(NVL(ZY_DEV_NUM1,0)) ZY_DEV_NUM1                                         "+
 	"        ,SUM(NVL(ZY_INCREASE_DEV,0)) ZY_INCREASE_DEV                                 "+
@@ -130,6 +135,7 @@ function getSecondSql(where) {
 	return "select HQ_CHAN_NAME ROW_NAME  "+
 	"        ,HQ_CHAN_CODE             "+
 	"        ,OPERATE_TYPE             "+
+	"        ,CHNL_TYPE                "+
 	"        ,ZY_DEV_NUM               "+
 	"        ,ZY_DEV_NUM1              "+
 	"        ,ZY_INCREASE_DEV          "+
@@ -156,6 +162,7 @@ function getDownSql(where) {
 	"        ,HQ_CHAN_NAME                  "+
 	"        ,HQ_CHAN_CODE                  "+
 	"        ,OPERATE_TYPE                  "+
+	"        ,OPERATE_TYPE                  "+
 	"        ,ZY_DEV_NUM                    "+
 	"        ,ZY_DEV_NUM1                   "+
 	"        ,ZY_INCREASE_DEV               "+
@@ -176,6 +183,7 @@ function downsAll() {
 	var chanlCode = $("#chanlCode").val();
 	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
+	var chnlType=$("#chnlType").val();
 	var where ="WHERE 1=1";
 	where+=" AND DEAL_DATE='"+dealDate+"'";
 	if (orgLevel == 1) {//省
@@ -192,9 +200,12 @@ function downsAll() {
 	if(chanlCode!=""){
 		where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 	}
+	if(chnlType!=""){
+		where += " AND CHNL_TYPE ='"+chnlType+"' ";
+	}
 	var sql = getDownSql(where);
 	var showtext = '宽带20M以上新增占比(日)' + dealDate;
-	var title=[["账期","组织架构","","渠道编码","经营模式","自有厅新增","","","自有厅20M以上","","","",""],
-	           ["","地市","营业厅","","","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比"]];
+	var title=[["账期","组织架构","","渠道编码","经营模式","厅类型","自有厅新增","","","自有厅20M以上","","","",""],
+	           ["","地市","营业厅","","","","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比"]];
 	downloadExcel(sql,title,showtext);
 }
