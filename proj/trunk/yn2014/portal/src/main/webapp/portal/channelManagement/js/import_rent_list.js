@@ -3,6 +3,7 @@ var title=[["账期","地市名称","基站名称","合同编号","合同名称"
            ["","","","","","","","","本月预提","月预提标准","付费金额","价款","税款","","","","",""]];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","CELL_NAME","CONTRACT_NO","CONTRACT_NAME","MAIN_CONTRACT_NO","YT_TYPE","BEGIN_FEE","THIS_MON_YT","THIS_MON_YT_STA","PAY_FEE","PRICE","FAX","END_FEE","ACPEFIX","CELL_ID","IS_COM","IS_WY_FEE"];
 var report = null;
+var downSql="";
 
 $(function() {
 	var orgLevel=$("#orgLevel").val();
@@ -58,6 +59,7 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
 	}
+	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -117,5 +119,11 @@ function importToResult(){
 
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_rent.jsp";
+ }
+ 
+ function exportData(){
+	var time=$("#time").val();
+	var showtext = '房租汇总-'+time;
+	downloadExcel(downSql,title,showtext);
  }
  

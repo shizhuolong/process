@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_iron_own_list.js"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_iron_own_list.js?v=1"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,12 +37,12 @@
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width:60%;">
 					<tr>
-						<td  width="4%">账期：</td>
+						<td  width="8%">账期：</td>
 						<td width="1%">
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						</td>
-						<td width="5%" style="text-align:right;">地市：</td>
+						<td width="8%" style="text-align:right;">地市：</td>
 					    <td width="13%">
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
@@ -55,6 +55,9 @@
 					    <td width="1%">
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
 					    </td> 
+					    <td width="1%">
+						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="exportBtn" onclick="exportData()">导出</a>
+					    </td>
 					</tr>
 				</table>
 	</div>
