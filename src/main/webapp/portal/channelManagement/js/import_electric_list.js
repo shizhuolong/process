@@ -2,7 +2,7 @@ var nowData = [];
 var title=[["账期","地市","站址或局房编码","期末预提余额","成本中心代码","本月预提标准","月末预提起日期","增值税","铁塔公司站点","铁塔公司交纳水电费","最近的水电支付单价","本月用量或预计用量"]];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","ROOM_ADDR","END_YT_MONEY","AC_PREFIX","THIS_MON_YT","END_MON_DATE","ZZ_FAX","OIL_COMPANY","WATER_FEE","PER_WATER_FEE","THIS_NUM"];
 var report = null;
-
+var downSql="";
 $(function() {
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel!=1){
@@ -57,6 +57,7 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
 	}
+	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -118,4 +119,8 @@ function importToResult(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_electric.jsp";
  }
   
- 
+ function exportData(){
+	var time=$("#time").val();
+	var showtext = '电费汇总(建设)-'+time;
+	downloadExcel(downSql,title,showtext);
+ }

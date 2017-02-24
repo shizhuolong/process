@@ -2,6 +2,7 @@ var nowData = [];
 var title=[["账期","地市","营服中心","业务","项目","专业","单位","实际代维量","不含税单价","代维费计提金额","成本中心"]];
 var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","BUSINESS","ITEM","PROFESS","UNIT","FACT_MAINTAIN_NUM","PER_NO_FAX","MAINTAIN_FEE","ACFIX_CODE"];
 var report = null;
+var downSql="";
 
 $(function() {
 	var orgLevel=$("#orgLevel").val();
@@ -57,6 +58,7 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
 	}
+	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -86,4 +88,10 @@ function search(pageNumber) {
 
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_sub.jsp";
+ }
+ 
+ function exportData(){
+	var time=$("#time").val();
+	var showtext = '代维成本划分区县-'+time;
+	downloadExcel(downSql,title,showtext);
  }

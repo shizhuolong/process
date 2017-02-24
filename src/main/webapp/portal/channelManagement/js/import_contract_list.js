@@ -4,6 +4,7 @@ var title=[["账期","地市名称","合同编号","合同名称","基站名称"
 var field=["DEAL_DATE","GROUP_ID_1_NAME","CONTRACT_NO","CONTRACT_NAME","CELL_NAME","YT_TYPE","BEGIN_FEE","THIS_MON_YT","THIS_MON_YT_STA","PAY_FEE","PRICE","FAX","END_FEE","ACPEFIX","CELL_ID","IS_COM","IS_WY_FEE"];
 var report = null;
 
+var downSql="";
 $(function() {
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel!=1){
@@ -58,6 +59,7 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
 	}
+	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -119,3 +121,8 @@ function importToResult(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_contract.jsp";
  }
   
+ function exportData(){
+	var time=$("#time").val();
+	var showtext = '房租总合同汇总-'+time;
+	downloadExcel(downSql,title,showtext);
+ }
