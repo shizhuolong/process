@@ -77,7 +77,13 @@
 									</div>
 								</div>
 							</form>
-							<jsp:include page="/workflow/workorder/activityApproval/approveCommon.jsp"></jsp:include>
+							<div class="title-o">
+			                     <i>附件列表</i>
+		                    </div>
+							<div id="fileDiv" name="fileDiv">
+							  
+							</div>
+							<jsp:include page="/workflow/workorder/activityApproval/approveCommonWithFile.jsp"></jsp:include>
 							</div>
 						</div>
 				</div>
