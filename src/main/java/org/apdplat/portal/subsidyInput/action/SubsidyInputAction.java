@@ -52,11 +52,20 @@ public class SubsidyInputAction extends BaseAction{
 	private Map<String, String> resultMap=new HashMap<String,String>();
 	private File[] myFile;
 	private String myFileFileName;
+	private String isHavingFile;
     
 	public String index() {
 		return "index";
 	}
 	
+	public String getIsHavingFile() {
+		return isHavingFile;
+	}
+
+	public void setIsHavingFile(String isHavingFile) {
+		this.isHavingFile = isHavingFile;
+	}
+
 	/**
 	 * 列表
 	 */
@@ -301,6 +310,18 @@ public class SubsidyInputAction extends BaseAction{
 		}
     }
 	
+	public void downloadFile() {
+		String filePath = request.getParameter("filePath");
+		String fileName = request.getParameter("fileName");
+		try {
+			filePath=URLDecoder.decode(filePath, "UTF-8"); 
+			fileName=URLDecoder.decode(fileName, "UTF-8"); 
+			this.download(filePath, fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 提交审批 
 	 */
@@ -318,6 +339,7 @@ public class SubsidyInputAction extends BaseAction{
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("title", theme);
 			map.put("nextDealer", nextDealer);
+			map.put("isHavingFile", isHavingFile);
 			subsidyInputService.doSendOrder(map);
 			info.setCode(ResultInfo._CODE_OK_);
 		} catch (BusiException e) {
@@ -352,7 +374,13 @@ public class SubsidyInputAction extends BaseAction{
 			outJsonPlainString(response,"{\"msg\":\"查询数据失败！\"}");
 		}
 	}
-
+	
+	public void queryFiles(){
+		String initId=request.getParameter("initId");
+		List<Map<String,Object>> fileInformation = subsidyInputService.queryFiles(initId);
+		this.reponseJson(fileInformation);
+	}
+	
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}
