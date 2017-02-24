@@ -14,6 +14,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
 <link href="<%=request.getContextPath()%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/css/uploadify.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery.blockUI.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
@@ -25,6 +26,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_subsidyInput_edit.js"></script>
 </head>
 <body>
@@ -88,7 +91,29 @@
 									</div>
 								</div>
 							</form>
-							<jsp:include page="/workflow/workorder/activityApproval/approveCommon.jsp"></jsp:include>
+							<div class="title-o">
+			                     <i style="margin-top:20px;">附件列表</i>
+		                    </div>
+		                    <div id="fileDiv" name="fileDiv">
+							  
+							</div>
+		                    <!-- 上传附件 -->
+		                    <div class="title-o">
+			                     <i style="margin-top:40px;">上传附件</i>
+		                    </div>
+		                    <span style="color:red;font-size:10px;">注意：上传采取批量覆盖的方式，支持批量上传；先点击添加附件选择文件，再点击开始上传。</span>
+								<div region="south" style="height:auto;" >
+									<div style="margin-left:10px;margin-top:10px"><input type="file" name="uploadify" id="uploadify" align="right"/></div>
+									<br/>
+									<div id="fileQueue"></div> 
+									<p><span id="speed"></span></p>
+									<p>
+										&nbsp;&nbsp;<a style="font-size:15px;" href="javascript:uploasFile()">开始上传</a>&nbsp;
+										<a style="font-size:15px;" href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消选择</a>
+									</p>
+								</div> 
+								<!--上传附件-->
+							<jsp:include page="/workflow/workorder/activityApproval/approveCommonWithFile.jsp"></jsp:include>
 							</div>
 						</div>
 				</div>
