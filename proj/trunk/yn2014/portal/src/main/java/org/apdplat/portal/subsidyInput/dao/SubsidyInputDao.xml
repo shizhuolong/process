@@ -70,4 +70,27 @@
 		UPDATE PAPP.TAB_COMMI_SUBSIDY_INFO T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
 	</update>
 	
+	<update id="updateTempInitId" parameterType="java.util.Map">
+	    UPDATE PORTAL.TAB_INIT_FILE_MSG_TEMP SET INIT_ID=#{initId} WHERE USERNAME=#{username} AND INIT_ID IS NULL
+	</update>
+	
+	<insert id="insertToResult" parameterType="java.util.Map">
+	    INSERT INTO PORTAL.TAB_INIT_FILE_MSG SELECT * FROM PORTAL.TAB_INIT_FILE_MSG_TEMP WHERE USERNAME=#{username} AND INIT_ID=#{initId}
+	</insert>
+	
+	<select id="queryFiles" parameterType="string" resultType="java.util.Map">
+	    SELECT * FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{initId}
+	</select>
+	
+	<delete id="deleteResultByWorkNo" parameterType="java.util.Map">
+		DELETE FROM PAPP.TAB_COMMI_SUBSIDY_INFO WHERE INIT_ID=#{workNo}
+	</delete>
+	
+	<select id="findFilesByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
+	    SELECT FILE_PATH FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{workNo}
+	</select>
+	
+	<delete id="deleteFilesByWorkNo" parameterType="java.util.Map">
+	    DELETE FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{workNo}
+	</delete>
 </mapper>

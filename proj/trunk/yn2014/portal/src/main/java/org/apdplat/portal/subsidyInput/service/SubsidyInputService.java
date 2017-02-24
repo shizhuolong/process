@@ -3,6 +3,7 @@ package org.apdplat.portal.subsidyInput.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.runtime.ProcessInstance;
@@ -76,6 +77,7 @@ public class SubsidyInputService {
 			map.put("userId", String.valueOf(user.getId()));
 			map.put("username", user.getUsername());
 			map.put("code", org.getCode());
+			map.put("initId",businessKey);
 			int count = subsidyInputDao.getDataListCount(map);
 			if(count <= 0) {
 				throw new BusiException("审核数据为空！");
@@ -99,6 +101,11 @@ public class SubsidyInputService {
 			workOrderVo.setRegionName(org.getRegionName());
 			
 			ProcessInstance processInstance = workOrderService.startProcessInstanceByKey(workOrderVo);
+			//发起人发起有附件的工单，update附件临时表的init_id，带上条件操作人
+			if(map.get("isHavingFile").equals("withFile")){
+				subsidyInputDao.updateTempInitId(map);
+				subsidyInputDao.insertToResult(map);
+			}
 			if(null == processInstance) {
 				throw new BusiException("发送失败！");
 			}
@@ -141,4 +148,7 @@ public class SubsidyInputService {
 		subsidyInputDao.deleteResultByEdit(params);
 	}
 
+	public List<Map<String, Object>> queryFiles(String initId) {
+		return subsidyInputDao.queryFiles(initId);
+	}
 }

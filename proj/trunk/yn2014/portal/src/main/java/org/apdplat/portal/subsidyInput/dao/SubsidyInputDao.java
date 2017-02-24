@@ -1,6 +1,8 @@
 package org.apdplat.portal.subsidyInput.dao;
 
+import java.util.List;
 import java.util.Map;
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 
@@ -38,5 +40,17 @@ public interface SubsidyInputDao {
 	public void updateInitId(Map<String, String> params);
 
 	public void deleteResultByEdit(Map<String, String> params);
+	
+	public void updateTempInitId(Map<String, String> map);
 
+	public void insertToResult(Map<String, String> map);
+	
+	public void deleteResultByWorkNo(Map<String, String> params);
+
+	public List<Map<String, String>> findFilesByWorkNo(
+			Map<String, String> params);
+	
+	public void deleteFilesByWorkNo(Map<String, String> params);
+	
+	public List<Map<String, Object>> queryFiles(String initId);
 }
