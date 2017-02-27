@@ -30,6 +30,7 @@ $(function(){
 			var chanlCode = $("#chanlCode").val();
 			var regionCode=$("#regionCode").val();
 			var operateType=$("#operateType").val();
+			var hallType=$("#hallType").val();
 			var groupBy = "";
 			var where="";
 			if($tr){
@@ -70,6 +71,9 @@ $(function(){
 			}
 			if(operateType!=""){
 				where+=" AND OPERATE_TYPE='"+operateType+"'";
+			}
+			if(hallType!=""){
+				where += " AND CHNL_TYPE ='"+hallType+"' ";
 			}
 			if(chanlCode!=""){
 				where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
@@ -226,6 +230,7 @@ function downsAll() {
 	var chanlCode = $("#chanlCode").val();
 	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
+	var hallType=$("#hallType").val();
 	var where ="";
 	if (orgLevel == 1) {//省
 		
@@ -238,11 +243,14 @@ function downsAll() {
 	if(operateType!=""){
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
+	if(hallType!=""){
+		where += " AND CHNL_TYPE ='"+hallType+"' ";
+	}
 	if(chanlCode!=""){
 		where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 	}
 	var sql = preField+getSumSql()+where+groupBy+orderBy;
-	var showtext = '自有营业厅用户保有率发展月报表-' + dealDate;
+	var showtext = '自有营业厅用户保有率收入月报表-' + dealDate;
 	var title=[["厅名称","渠道编码","经营模式(自营/柜台)","厅类型（旗舰/标准/小型)","2016年12月","2017年1月","","2017年2月","","2017年3月","","2017年4月","","2017年5月","","2017年6月","","2017年7月","","2017年8月","","2017年9月","","2017年10月","","2017年11月","","2017年12月",""],
 	           ["","","","","拍照收入(考核口径)","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率"]];
 	downloadExcel(sql,title,showtext);

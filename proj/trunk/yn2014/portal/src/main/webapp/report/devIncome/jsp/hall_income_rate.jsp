@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/hall_income_rate.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/hall_income_rate.js?v=1"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -56,6 +56,15 @@
 								<option value='自营'>自营</option>
 								<option value='柜台外包'>柜台外包</option>
 								<option value='他营'>他营</option>
+						</select>
+					</td>
+					<td width="10%" align="right">营业厅类型：</td>
+					<td width="15%">
+						<select name="hallType" id="hallType" class="default-text-input wper80">
+								<option value=''>请选择</option>
+								<option value="旗舰厅">旗舰厅</option>
+								<option value="小型厅">小型厅</option>
+								<option value="标准厅">标准厅</option>
 						</select>
 					</td>
 					<td width="5%" align="right">渠道编码：</td>
