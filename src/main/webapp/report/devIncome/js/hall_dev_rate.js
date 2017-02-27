@@ -1,8 +1,8 @@
 $(function(){
 	var dealDate=$("#dealDate").val();
-	var title=[["组织架构","渠道编码","经营模式(自营/柜台)","厅类型（旗舰/标准/小型)","2016年12月","截止2017年1月","截止2017年2月","截止2017年3月","截止2017年4月","截止2017年5月","截止2017年6月","截止2017年7月","截止2017年8月","截止2017年9月","截止2017年10月","截止2017年11月","截止2017年12月"],
-	           ["","","","","拍照用户(考核口径)","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率"]];
-    var field=["HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","LAST_12_NUM","ONERATE","TWORATE","THREERATE","FOURRATE","FIVERATE","SIXRATE","SEVENRATE","EIGHTRATE","NINERATE","TENRATE","ELEVENRATE","TWELVERATE"];
+	var title=[["组织架构","渠道编码","经营模式(自营/柜台)","厅类型（旗舰/标准/小型)","2016年12月","2017年1月","","2017年2月","","2017年3月","","2017年4月","","2017年5月","","2017年6月","","2017年7月","","2017年8月","","2017年9月","","2017年10月","","2017年11月","","2017年12月",""],
+	           ["","","","","拍照收入(考核口径)","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率"]];
+    var field=["HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","LAST_12_NUM","ONERATE1","ONERATE","TWORATE1","TWORATE","THREERATE1","THREERATE","FOURRATE1","FOURRATE","FIVERATE1","FIVERATE","SIXRATE1","SIXRATE","SEVENRATE1","SEVENRATE","EIGHTRATE1","EIGHTRATE","NINERATE1","NINERATE","TENRATE1","TENRATE","ELEVENRATE1","ELEVENRATE","TWELVERATE1","TWELVERATE"];
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -30,6 +30,7 @@ $(function(){
 			var chanlCode = $("#chanlCode").val();
 			var regionCode=$("#regionCode").val();
 			var operateType=$("#operateType").val();
+			var hallType=$("#hallType").val();
 			var groupBy = "";
 			var where="";
 			if($tr){
@@ -71,6 +72,9 @@ $(function(){
 			if(operateType!=""){
 				where+=" AND OPERATE_TYPE='"+operateType+"'";
 			}
+			if(hallType!=""){
+				where += " AND CHNL_TYPE ='"+hallType+"' ";
+			}
 			if(chanlCode!=""){
 				where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 			}
@@ -89,70 +93,395 @@ $(function(){
 function getSumSql() {
 	var dealDate = $("#dealDate").val();
 	var year=dealDate.substr(0,4);
-	return "      SUM(CASE WHEN DEAL_DATE='"+dealDate+"'                                                                  "+
-	"                THEN NVL(LAST_12_NUM,0)                                                                              "+
-	"                 END)  LAST_12_NUM                                                                                   "+
-	"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='01' THEN NVL(LAST_12_NUM,0) END )<>0        "+
-	"                                 THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='01' THEN NVL(THIS_ACCT_NUM1,0) END )*100    "+
-	"                                    /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='01' THEN NVL(LAST_12_NUM,0) END)*1)         "+
-	"                                 ELSE 0 END                                                                          "+
-	"                                 ||  '%'  ,2)   oneRate                                                              "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='02' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='02' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='02' THEN NVL(LAST_12_NUM,0) END)*2)        "+
-	"                                  ELSE 0 END                                                                         "+
-	"                                 ||  '%'  ,2)   twoRate                                                              "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='03' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='03' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='03' THEN NVL(LAST_12_NUM,0) END)*3)        "+
-	"                                 ELSE 0 END                                                                          "+
-	"                                 ||  '%'  ,2)   threeRate                                                            "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='04' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='04' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='04' THEN NVL(LAST_12_NUM,0) END)*4)        "+
-	"                                  ELSE 0 END                                                                         "+
-	"                                 ||  '%'  ,2)    fourRate                                                            "+
-	"        ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='05' THEN NVL(LAST_12_NUM,0) END )<>0      "+
-	"                                   THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='05' THEN NVL(THIS_ACCT_NUM1,0) END )*100  "+
-	"                                      /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='05' THEN NVL(LAST_12_NUM,0) END)*5)       "+
-	"                                 ELSE 0 END                                                                          "+
-	"                                 ||  '%'  ,2)   fiveRate                                                             "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='06' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='06' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='06' THEN NVL(LAST_12_NUM,0) END)*6)        "+
-	"                                  ELSE 0 END                                                                         "+
-	"                                 ||  '%'  ,2)   sixRate                                                              "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='07' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='07' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='07' THEN NVL(LAST_12_NUM,0) END)*7)        "+
-	"                                 ELSE 0 END                                                                          "+
-	"                                 ||  '%'  ,2)    sevenRate                                                           "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='08' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='08' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='08' THEN NVL(LAST_12_NUM,0) END)*8)        "+
-	"                                  ELSE 0 END                                                                         "+
-	"                                 ||  '%'  ,2)    eightRate                                                           "+
-	"        ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='09' THEN NVL(LAST_12_NUM,0) END )<>0      "+
-	"                                   THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='09' THEN NVL(THIS_ACCT_NUM1,0) END )*100  "+
-	"                                      /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='09' THEN NVL(LAST_12_NUM,0) END)*9)       "+
-	"                                 ELSE 0 END                                                                          "+
-	"                                 ||  '%'  ,2)    nineRate                                                            "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='10' THEN NVL(LAST_12_NUM,0) END )<>0       "+
-	"                                  THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='10' THEN NVL(THIS_ACCT_NUM1,0) END )*100   "+
-	"                                     /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='10' THEN NVL(LAST_12_NUM,0) END)*10)       "+
-	"                                  ELSE 0 END                                                                         "+
-	"                                 ||  '%'  ,2)    tenRate                                                             "+
-	"        ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='11' THEN NVL(LAST_12_NUM,0) END )<>0      "+
-	"                                   THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='11' THEN NVL(THIS_ACCT_NUM1,0) END )*100  "+
-	"                                      /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='11' THEN NVL(LAST_12_NUM,0) END)*11)      "+
-	"                                 ELSE 0 END                                                                          "+
-	"                                 ||  '%'  ,2)    elevenRate                                                          "+
-	"        ,PODS.GET_RADIX_POINT(CASE WHEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='12' THEN NVL(LAST_12_NUM,0) END )<>0      "+
-	"                                   THEN SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='12' THEN NVL(THIS_ACCT_NUM1,0) END )*100  "+
-	"                                      /(SUM(CASE WHEN SUBSTR(DEAL_DATE,5)='12' THEN NVL(LAST_12_NUM,0) END)*12)      "+
-	"                                  ELSE 0 END                                                                         "+
-	"                                 ||  '%'  ,2)    twelveRate                                                          "+                                                                
-	"FROM PMRT.TB_MRT_BUS_HALL_DEV_RATE_MON WHERE DEAL_DATE LIKE '%"+year+"%' AND DEAL_DATE<="+dealDate                    ;    
+	return "       SUM(CASE                                                                                          "+
+	"             WHEN DEAL_DATE = '"+dealDate+"' THEN                                                        "+
+	"              NVL(LAST_12_NUM, 0)                                                                        "+
+	"           END) LAST_12_NUM,                                                                             "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '01' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '01' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '01' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) oneRate1,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '01' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '01' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '01' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 1)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) oneRate,                                                                  "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '02' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '02' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '02' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) twoRate1,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '02' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '02' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '02' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 2)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) twoRate,                                                                  "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '03' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '03' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '03' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) threeRate1,                                                               "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '03' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '03' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '03' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 3)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) threeRate,                                                                "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '04' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '04' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '04' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) fourRate1,                                                                "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '04' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '04' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '04' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 4)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) fourRate,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '05' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '05' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '05' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) fiveRate1,                                                                "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '05' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '05' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '05' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 5)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) fiveRate,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '06' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '06' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '06' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) sixRate1,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '06' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '06' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '06' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 6)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) sixRate,                                                                  "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '07' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '07' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '07' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) sevenRate1,                                                               "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '07' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '07' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '07' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 7)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) sevenRate,                                                                "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '08' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '08' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '08' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) eightRate1,                                                               "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '08' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '08' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '08' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 8)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) eightRate,                                                                "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '09' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '09' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '09' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) nineRate1,                                                                "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '09' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '09' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '09' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 9)                                           "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) nineRate,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '10' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '10' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '10' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) tenRate1,                                                                 "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '10' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '10' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '10' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 10)                                          "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) tenRate,                                                                  "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '11' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '11' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '11' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) elevenRate1,                                                              "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '11' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '11' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '11' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 11)                                          "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) elevenRate,                                                               "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '12' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '12' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM, 0)                                              "+
+	"                                   END) * 100 / SUM(CASE                                                 "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '12' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END)                                                "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) twelveRate1    ,                                                          "+
+	"       PODS.GET_RADIX_POINT(CASE                                                                         "+
+	"                              WHEN SUM(CASE                                                              "+
+	"                                         WHEN SUBSTR(DEAL_DATE, 5) = '12' THEN                           "+
+	"                                          NVL(LAST_12_NUM, 0)                                            "+
+	"                                       END) <> 0 THEN                                                    "+
+	"                               SUM(CASE                                                                  "+
+	"                                     WHEN SUBSTR(DEAL_DATE, 5) = '12' THEN                               "+
+	"                                      NVL(THIS_ACCT_NUM1, 0)                                             "+
+	"                                   END) * 100 / (SUM(CASE                                                "+
+	"                                                       WHEN SUBSTR(DEAL_DATE, 5) = '12' THEN             "+
+	"                                                        NVL(LAST_12_NUM, 0)                              "+
+	"                                                     END) * 12)                                          "+
+	"                              ELSE                                                                       "+
+	"                               0                                                                         "+
+	"                            END || '%',                                                                  "+
+	"                            2) twelveRate                                                                "+
+	"FROM PMRT.TB_MRT_BUS_HALL_DEV_RATE_MON WHERE DEAL_DATE LIKE '%"+year+"%' AND DEAL_DATE<="+dealDate;    
 }
 
 function downsAll() {
@@ -166,6 +495,7 @@ function downsAll() {
 	var chanlCode = $("#chanlCode").val();
 	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
+	var hallType=$("#hallType").val();
 	var where ="";
 	if (orgLevel == 1) {//省
 		
@@ -178,12 +508,16 @@ function downsAll() {
 	if(operateType!=""){
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
+	if(hallType!=""){
+		where += " AND CHNL_TYPE ='"+hallType+"' ";
+	}
 	if(chanlCode!=""){
 		where += " AND HQ_CHAN_CODE ='"+chanlCode+"' ";
 	}
+	
 	var sql = preField+getSumSql()+where+groupBy+orderBy;
 	var showtext = '自有营业厅用户保有率发展月报表-' + dealDate;
-	var title=[["厅名称","渠道编码","经营模式(自营/柜台)","厅类型（旗舰/标准/小型)","2016年12月","截止2017年1月","截止2017年2月","截止2017年3月","截止2017年4月","截止2017年5月","截止2017年6月","截止2017年7月","截止2017年8月","截止2017年9月","截止2017年10月","截止2017年11月","截止2017年12月"],
-           ["","","","","","拍照用户(考核口径)","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率","用户保有率"]];
+	var title=[["厅名称","渠道编码","经营模式(自营/柜台)","厅类型（旗舰/标准/小型)","2016年12月","2017年1月","","2017年2月","","2017年3月","","2017年4月","","2017年5月","","2017年6月","","2017年7月","","2017年8月","","2017年9月","","2017年10月","","2017年11月","","2017年12月",""],
+	           ["","","","","拍照收入(考核口径)","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率","当月保有率","累计保有率"]];
 	downloadExcel(sql,title,showtext);
 }
