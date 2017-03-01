@@ -284,7 +284,7 @@ function getDevSql(isBeforeTop){
 		" ORDER BY T_RANK                                                                                                                    ";
 	}else{
 		sql="SELECT GROUP_ID_1_NAME,                                                                                                      "+
-		"       BUS_HALL_NAME，                                                                                                                                                                                                                                                                                                                                 "+
+		"       BUS_HALL_NAME,                                                                                                                                                                                                                                                                                                                                 "+
 		"       HQ_CHAN_CODE,                                                                                                             "+
 		"       OPERATE_TYPE,                                                                                                             "+
 		"       CHNL_TYPE,                                                                                                                "+
