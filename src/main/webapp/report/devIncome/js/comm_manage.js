@@ -47,7 +47,6 @@ $(function(){
 			chnlName=$.trim($("#chnlName").val());
 			var hrId=$("#hrId").val();
 			var order='';
-			var join='';
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -84,22 +83,15 @@ $(function(){
 					where+=" AND T.GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){
 					preSql="SELECT T.UNIT_ID ROW_ID,T.UNIT_NAME ROW_NAME,";
-					join=getJoinSql(qdate);
-					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME,T2.HR_ID,T3.HR_ID";
+					groupBy=" GROUP BY T.UNIT_ID,T.UNIT_NAME";
+					hrIds=_jf_power(hrId,qdate);
+					if(hrIds&&hrIds!=""){
+						 where+=" AND T.HR_ID in("+hrIds+") ";
+					}else{
+						 where+=" AND 1=2 ";	 
+					 }
 				}else{
 					return {data:[],extra:{}};
-				}
-				
-				//权限
-				var qx="";
-				if(orgLevel>2){
-					//营服中心以下用新权限
-				     hrIds=_jf_power(hrId,qdate);
-					 if(hrIds&&hrIds!=""){
-						 qx+=" WHERE HR_ID in("+hrIds+") ";
-					 }else{
-						 qx+=" WHERE 1=2 ";	 
-					 }
 				}
 			}	
 			orgLevel++;
@@ -107,12 +99,7 @@ $(function(){
 			if(chnlName!=''){
 				where+=" AND T.GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
 			}
-			if(join==""){
-				var sql = preSql+getSumSql()+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT PARTITION(P"+qdate+") T "+where+groupBy+order;
-			}else{
-				var sql = "SELECT * FROM("+preSql+getSumSql()+join+where+groupBy+order+")"+qx;
-			}
-			
+			var sql = preSql+getSumSql()+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT PARTITION(P"+qdate+") T "+where+groupBy+order;
 			if(orderBy!=''){
 				sql="select * from( "+sql+") a "+orderBy;
 			}
@@ -267,38 +254,27 @@ function downsAll() {
 	var where=' WHERE 1 = 1';
 	var orderBy=" ORDER BY T.GROUP_ID_1,T.UNIT_ID,T.GROUP_ID_4";
 	var chnlName=$.trim($("#chnlName").val());
-	var join="";	
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	//权限
-	var qx="";
 	if(orgLevel==1){
 		where+=" AND T.GROUP_ID_0='"+code+"'";
 	}else if(orgLevel==2){
 		where+=" AND T.GROUP_ID_1='"+code+"'";
 	}else{
-		 join=getJoinSql(qdate);
 		 if(hrIds&&hrIds!=""){
-			 qx+=" WHERE HR_ID in("+hrIds+") ";
+			 where+=" AND HR_ID in("+hrIds+") ";
 		 }else{
-			 qx+=" WHERE 1=2 ";	 
+			 where+=" AND 1=2 ";	 
 		 }
 	}
 	if(chnlName!=''){
 		where+=" AND T.GROUP_ID_4_NAME LIKE '%"+chnlName+"%'";
 	}
-	var title;
-	if(join==""){
-		title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
+	var title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税"],
 		           ["","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","",""]];
-		var sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.DEV_CHNL_ID,T.CHN_CDE_1_NAME,T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT PARTITION(P"+qdate+") T "+where+orderBy;
-	}else{
-		title=[["地市","营服","渠道","渠道编码","渠道属性1","渠道属性2","渠道属性3","渠道属性4","帐期","2G","","","","","","3G","","","","","","4G","","","","","","固网","","","","","融合","","","","","渠道补贴","手工佣金","紧密型外包的佣金","总计","含税",""],
-		           ["","","","","","","","","","BSS系统","集中系统","网格系统","现返佣金","未支撑","2G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","3G合计","BSS系统","集中系统","网格系统","现返佣金","未支撑","4G合计","BSS系统","集中系统","网格系统","未支撑","固网合计","BSS系统","集中系统","网格系统","未支撑","融合合计","","","","","",""]];
-		var sql = "SELECT * FROM(SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.DEV_CHNL_ID,T.CHN_CDE_1_NAME,T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.BILLINGCYCLID,"+field.join(",")+join+where+orderBy+")"+qx;
-	}
-	
+	var sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.DEV_CHNL_ID,T.CHN_CDE_1_NAME,T.CHN_CDE_2_NAME,T.CHN_CDE_3_NAME,T.CHN_CDE_4_NAME,T.BILLINGCYCLID,"+field.join(",")+" FROM PMRT.TAB_MRT_COMM_AGENT_REPORT PARTITION(P"+qdate+") T "+where+orderBy;
 	showtext = '佣金汇总月报' + qdate;
 	downloadExcel(sql,title,showtext);
 }
@@ -313,51 +289,3 @@ function getSumSql(orgLevel){
 	}
 	return s;
 }
-function getJoinSql(deal_date) {
-	var join = ",NVL(T2.HR_ID,T3.HR_ID) HR_ID FROM PMRT.TAB_MRT_COMM_AGENT_REPORT PARTITION(P"+deal_date+") T"
-			+ " LEFT JOIN (SELECT *                            "
-			+ "             FROM  PORTAL.TAB_PORTAL_MOB_PERSON T1       "
-			+ "             WHERE T1.DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')"
-			+ "             )T2                                         "
-			+ "  ON    (T.DEV_CHNL_ID=T2.HQ_CHAN_CODE)                  "
-			+ "  LEFT JOIN (SELECT *                                    "
-			+ "             FROM  PORTAL.TAB_PORTAL_MOB_PERSON T1       "
-			+ "             WHERE T1.DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')"
-			+ "             AND   T1.LEV=1                              "
-			+ "             )T3                                         "
-			+ "  ON    (T.UNIT_ID=T3.UNIT_ID)                           ";
-	return join;
-}
-/*//格式化数值，每三位加逗号
-function numberFormat(num){
-    var head="";
-	var end="";
-	var total = String(num);
-	total=total.replace(/(^\s*)|(\s*$)/g, "");
-	if(total.charAt(total.length-1)=='%'){
-		end="%";
-		total=total.substr(0,total.length-1);
-	}
-	if(total.charAt(0)=='-'){
-		head="-";
-		total=total.substr(1);
-	}
-	 
-	var arr_total = total.split('.');
-	var len   = arr_total.length;
-	 
-	var b = String(arr_total[0]);
-	var c = b.length;
-	var gap = c%3;
-	var step = parseInt(c/3);
-	var outStr = b.substring(0,gap);
-	for(var i=0; i<step; i++){
-	   var showSep = ( i==0 && gap==0 )? '' : ',' ;
-	   outStr += showSep+b.substring(gap,(gap+3));
-	   gap+=3;
-	}
-	if( len>1 ){
-	   outStr = outStr+'.'+arr_total[1]; 
-	}
-    return head+outStr+end;
-}*/
