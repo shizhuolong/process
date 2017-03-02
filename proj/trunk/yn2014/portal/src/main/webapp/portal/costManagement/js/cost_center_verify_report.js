@@ -108,8 +108,8 @@ function downExcelTemp() {
 				"        T.CC_CODE,                       "+
 				"        T.UNIT_NAME                      "+
 				"   FROM PODS.TAB_ODS_GB_CENTER_UNIT T    "+
-				"  WHERE T.CC_CODE IS NOT NULL  AND T.CC_CODE <> '0' ";
-	if(regionCode){
+				"  WHERE  1=1";//T.CC_CODE IS NOT NULL  AND T.CC_CODE <> '0'
+	if(regionCode){ 
 		sql+=" AND T.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(unitCode){
