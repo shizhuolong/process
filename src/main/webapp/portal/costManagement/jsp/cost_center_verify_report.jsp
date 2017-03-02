@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_center_verify_report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_center_verify_report.js?v=2"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 </head>
 <body>
@@ -60,7 +60,7 @@
 											</select>
 										</td>
 										<td width="10%" align="right">是否划分成本中心：</td>
-										<td width="5%">
+										<td width="8%">
 											<select name="isMarking" id="isMarking"  class="default-text-input wper80">
 													<!-- <option value=''>请选择</option> -->
 													<option value="1">是</option>
@@ -69,6 +69,7 @@
 										</td>
 										<td style="text-decoration: none;text-align:center">
 											<a class="default-btn fLeft mr10"  href="#" id="searchBtn">查询</a>
+									        <a class="default-btn fLeft mr10" href="#" id="downExcelTemp">导出</a>
 										</td>
 									</tr>
 									<tr>
@@ -84,7 +85,6 @@
 										<td></td>
 										<%if(lev==2){%>
 										<td >
-											<a class="default-btn fLeft mr10" href="#" id="downExcelTemp">导出模板</a>&nbsp;&nbsp;&nbsp;
 											<a class="default-btn fLeft mr10" href="#" id="importExcel">导入Excel</a>&nbsp;&nbsp;&nbsp;
 											<a class="default-gree-btn fLeft mr10" href="#" id="confirmBtn">确认成本中心</a>
 										</td>
