@@ -16,6 +16,11 @@ public class ApproverHandlerService {
 	@Resource
 	private ApproverHandlerDao approverHandlerDao;
 	
+	public List<Map<String,String>> qryTaskApproverTreeData(String userIds) {
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("userIds", userIds);
+		return approverHandlerDao.qryTaskApproverTreeData(params);
+	}
 	/**
 	 * 根据activiti的userTask节点id查询TB_ACT_TASK_APPROVER表中配置的改节点下的审批人员
 	 * 如果为省公司节点（如“省总经理”），表中该节点只配置了省公司人员，只需传taskId即可
