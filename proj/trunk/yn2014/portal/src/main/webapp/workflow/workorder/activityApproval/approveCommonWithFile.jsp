@@ -11,6 +11,7 @@ String exceedFlag = request.getParameter("exceedFlag");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>审批意见公用界面</title>
 <link rel="stylesheet" type="text/css" href="<%=path%>/workflow/js/qtip/jquery.qtip.css">
+<link href="<%=path%>/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>/workflow/js/jui/themes/redmond/jquery-ui-1.9.2.custom.min.css">
 <link href="<%=path %>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
@@ -32,9 +33,10 @@ var processCommon = {
 <script type="text/javascript" src="<%=path%>/workflow/js/jui/jquery-ui-1.9.2.min.js"></script>
 <script type="text/javascript" src="<%=path%>/workflow/js/qtip/jquery.qtip.js"></script>
 <script type="text/javascript" src="<%=path%>/workflow/js/jquery.outerhtml.js"></script> --%>
-
+<script type="text/javascript" src="<%=path%>/js/zTree/js/jquery.ztree.core-3.1.min.js"></script>
+<script type="text/javascript" src="<%=path%>/js/zTree/js/jquery.ztree.excheck-3.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/workflow/workorder/activityApproval/graphTrace.js"></script>
-<script type="text/javascript" src="<%=path%>/workflow/workorder/activityApproval/approveCommonWithFile.js"></script>
+<script type="text/javascript" src="<%=path%>/workflow/workorder/activityApproval/approveCommonWithFile.js?v=3"></script>
 </head>
 <body>
 	<div id="defer-list">
@@ -110,10 +112,12 @@ var processCommon = {
 								<select id="nextRouter" name="workOrderVo.nextRouter" style="padding: 2px;font-size:13px;" onchange="findTaskExterPro()">
 		    					</select>
 							</td>
-							<td width="15%" class="approver_td">选择下一步审批人：</td>
+							<td width="15%" class="approver_td">选择下一步审批人：
+								<input id="nextDealer" type="hidden" value="" name="workOrderVo.nextDealer"/>
+							</td>
 							<td width="35%" class="approver_td">
-								<select class="default-text-input wper80" name="workOrderVo.nextDealer" id="nextDealer">
-								</select>
+								<div class="ztree"  id="nextDealerTree">
+								</div>
 							</td>
 						</tr>
 					</table>
