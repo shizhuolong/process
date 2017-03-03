@@ -142,7 +142,8 @@ function downloadExcel() {
 	var group_id_4_name = $.trim($("#group_id_4_name").val());
 	var sql = "SELECT T.GROUP_ID_1_NAME, T.UNIT_NAME, T.HQ_CHAN_CODE, T.GROUP_ID_4_NAME " +
 	"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T, PCDE.TAB_CDE_GROUP_CODE T1 " +
-	"WHERE T.UNIT_ID = T1.UNIT_ID AND T1.IS_DEFAULT = 1 AND T.IS_SIGN = 1 ";
+	"WHERE T.UNIT_ID = T1.UNIT_ID AND T1.IS_DEFAULT = 1 " +
+	" AND T.IS_SIGN = 1 AND NOT EXISTS (SELECT 1 FROM PCDE.TB_CDE_CHNL_FREE_CODE T2 WHERE T.HQ_CHAN_CODE=T2.HQ_CHAN_CODE) ";
 	if(orgLevel == 2) {
 		sql += " AND T.GROUP_ID_1 = '"+code+"' ";
 	} else if(orgLevel == 3){
