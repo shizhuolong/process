@@ -4,7 +4,6 @@ var optionFalse = "";
 var optionExceedTrue = "";
 var optionExceedFalse = "";
 $(document).ready(function(){
-	
 	 $('.trace').click(graphProcessTrace);
 	
 	processHistory();
@@ -140,13 +139,13 @@ function findTaskExterPro() {
 	        taskId:taskId
 	 	}, 
 	 	success:function(data){
-	 		$("#nextDealer").html("");
+	 		$("#nextDealer").val("");
 			if(null != data) {
 		 		//taskFlag:0-当前审批环节审批人为拟稿人；1-当前审批环节审批人为省公司人员；2-当前审批环节审批人为同分公司人员；3-当前审批人为同部门人员。
 			 	var taskFlag = data.TASK_FLAG; 
 			 	$(".approver_td").show();
 				if(taskFlag == '0') {
-					$("#nextDealer").html("<option value='"+applyUserId+"'>"+applyUserName+"</option>");
+					updateUserTree(applyUserId+"");
 				}else if(taskFlag == '5'){ //不需审批人
 					isNeedApprover = false;
 					$(".approver_td").hide();
@@ -180,15 +179,51 @@ function findNextDealer(taskId,taskFlag,applyUserId) {
         	applyUserId:applyUserId
 		}, 
 	 	success:function(data){
-	 		var str = "";
+			var userIds = "";
 	 		$.each(data,function(i,n){
-	 			str += "<option value='"+n.USER_ID+"'>"+n.USER_NAME+"</option>";
+	 			if(userIds.length>0) userIds+=",";
+	 			userIds+=n.USER_ID;
 			});
-	 		$("#nextDealer").html(str);
+	 		updateUserTree(userIds);
 		 }
 	 });
 }
-
+function updateUserTree(userIds){
+		$.ajax({
+			type:"POST",
+			dataType:'json',
+			cache:false,
+			async:false,
+			url:path+"/approver/approver-handler!qryTaskApproverTreeData.action",
+			data:{
+	     		userIds:userIds  
+			}, 
+		 	success:function(data){
+				var zNodes = data;
+				if(zNodes&&zNodes.length>0){
+ 					for(var ii=0;ii<zNodes.length;ii++){
+ 						zNodes[ii].nocheck=('1'==zNodes[ii].nocheck)?true:false;
+ 					}
+ 				}
+				var setting={
+					check:{
+						enable: true,chkStyle: "radio",radioType: "all"
+					},
+					callback:{
+						onCheck:function(event, treeId, treeNode) {
+							$("#nextDealer").val(treeNode.id);
+						}
+					},
+					data: {
+		                simpleData: {
+		                    enable: true
+		                }
+		            }
+				};
+				$.fn.zTree.init($("#nextDealerTree"), setting, zNodes).expandAll(true);
+			}
+		 });
+}
 //提交审批
 function submitTask(){
 	
