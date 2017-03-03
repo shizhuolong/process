@@ -7,7 +7,7 @@ var pageSize = 15;
 $(function() {
 	/****************特殊处理按钮（李菘可以看到存过按钮）**********/
 	var userCode = $("#userCode").val();
-	if(userCode=='lisong32'||userCode=='admin'){
+	if(userCode=='lisong32'||userCode=='admin'||userCode=='chenhl95'){
 		$("#callStoredBtn").show();
 	}
 	/*************************************************/
