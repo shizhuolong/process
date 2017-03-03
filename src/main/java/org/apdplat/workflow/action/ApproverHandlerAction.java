@@ -1,5 +1,6 @@
 package org.apdplat.workflow.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,10 @@ public class ApproverHandlerAction extends BaseAction {
 	private String taskId;
 	private String taskFlag; // 0:拟稿人 1:查询省公司审批人员 2：查询分公司审批人员 3：本部门审批人员
 
+	/**
+	 * 
+	 */
+	private String userIds;
 	/*
 	 * private static final Properties properties;
 	 * 
@@ -42,9 +47,27 @@ public class ApproverHandlerAction extends BaseAction {
 	 * catch (IOException e) { logger.error(e.getMessage(),e); } } }
 	 */
 
+	public String getUserIds() {
+		return userIds;
+	}
+	public void setUserIds(String userIds) {
+		this.userIds = userIds;
+	}
+
 	@Autowired
 	private ApproverHandlerService approverHandlerService;
 
+	//获取审批人的树型结构数据
+	public void qryTaskApproverTreeData() {
+			List<Map<String, String>> list = null;
+			list = approverHandlerService.qryTaskApproverTreeData(userIds);
+			if (list.size() == 0) {
+				list = new ArrayList<Map<String,String>>();
+			}
+			this.reponseJson(list);
+			
+			
+	}
 	/** 获取任务节点的审批人员 **/
 	public void qryTaskApprover() {
 
