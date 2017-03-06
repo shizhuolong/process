@@ -29,7 +29,7 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			var dealDate=$("#dealDate").val();
-			var where=" WHERE T.DEAL_DATE='"+dealDate+"'";
+			var where=" WHERE T.DEAL_DATE='"+dealDate+"' AND T.OPERATE_TYPE='自营'";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -70,7 +70,7 @@ function downsAll() {
 	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
 	var region=$("#region").val();
-	var where=" WHERE T.DEAL_DATE='"+dealDate+"'";
+	var where=" WHERE T.DEAL_DATE='"+dealDate+"' AND T.OPERATE_TYPE='自营'";
 	if (orgLevel == 1) {//省
 	} else {//市或者其他层级
 		where += " AND T.GROUP_ID_1='"+region+"' ";
