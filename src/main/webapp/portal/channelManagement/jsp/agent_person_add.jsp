@@ -1,6 +1,7 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.model.User"%>
-<%@page import="org.apdplat.module.security.service.UserHolder"%><%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -27,7 +28,7 @@
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 <input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 <input type="hidden" id="code" value="<%=org.getCode()%>">
-<input type="hidden" id="hrId" value="<%=user.getHrId()%>"
+<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
 <div id="container" style="min-height: 150px;">
 	<div class="default-dt" style="width: 420px;">
 		<div class="sticky-wrap" style="height: 150px;">
