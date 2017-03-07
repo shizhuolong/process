@@ -17,9 +17,7 @@ import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -64,7 +62,7 @@ public class ImportIronProAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_IRON_PRO_MON_TEMP";
-		String field="DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,GROUP_ID_1_NAME,UNIT_NAME,P_ADDR_CODE,BUSI_CONF_CODE,IRON_ADDR_CODE,NEED_CONF_CODE,OWN_ADDR_NAME,ADDR_NOTE_NAME,LONGITUDE,LATITUDE,PRODUCT_TYPE,PRODUCT_SCENE,BUILD_AREA,SYS_NUM,SHARE_CLI_NUM,CELL_LONG,OIL_ELECT_TYPE,ELECT_FEE,OTHER_FEE,OTHER_FEE_DEC,OIL_STAND_FEE,SVR_FEE,PRODUCT_UNIT_NUM,PLACE_FEE,SHARE_RATIO,SVR_BEGIN_DATE,SVR_END_DATE,PRO_SVR_FEE_NO,PRO_SVR_FEE";
+		String field="CREATE_TIME,DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,GROUP_ID_1_NAME,UNIT_NAME,P_ADDR_CODE,BUSI_CONF_CODE,IRON_ADDR_CODE,NEED_CONF_CODE,OWN_ADDR_NAME,ADDR_NOTE_NAME,LONGITUDE,LATITUDE,PRODUCT_TYPE,PRODUCT_SCENE,BUILD_AREA,SYS_NUM,SHARE_CLI_NUM,CELL_LONG,OIL_ELECT_TYPE,ELECT_FEE,OTHER_FEE,OTHER_FEE_DEC,OIL_STAND_FEE,SVR_FEE,PRODUCT_UNIT_NUM,PLACE_FEE,SHARE_RATIO,SVR_BEGIN_DATE,SVR_END_DATE,PRO_SVR_FEE_NO,PRO_SVR_FEE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -96,7 +94,7 @@ public class ImportIronProAction extends BaseAction {
 					int start = sheet.getFirstRowNum() +2 ;// 去前2行标题
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('"+time+"','"+regionCode+"','','"+username+"'";
+					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(sysdate"+",'"+time+"','"+regionCode+"','','"+username+"'";
 					for(int i=0;i<29;i++){
 						sql+=",?";
 					}
