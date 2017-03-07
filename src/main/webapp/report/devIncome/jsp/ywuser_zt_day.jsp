@@ -52,9 +52,7 @@
 					<td width="8%" align="right">经营模式：</td>
 					<td width="15%">
 						<select name="operateType" id="operateType" class="default-text-input wper80">
-								<option value=''>请选择</option>
 								<option value='自营'>自营</option>
-								<option value='柜台外包'>柜台外包</option>
 						</select>
 					</td>
 					<td width="8%" align="right">渠道编码：</td>
