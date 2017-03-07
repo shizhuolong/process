@@ -1,21 +1,128 @@
-var pageSize = 15;
+var pageSize = 10;
+var curPage=0;
 $(function() {
+	$("#checkAll").change(function(){
+		var billIds="";
+		$("#dataBody").find(".isUsed").each(function(){
+			if(billIds.length>0) billIds+=",";
+			billIds+="'"+$(this).parent().attr("billId")+"'";
+		});
+		var isUsed=0;
+		if($(this).is(':checked')){
+			isUsed=1;
+		}
+		save(2,billIds,{isUsed:isUsed});
+	});
 	$("#searchBtn").click(function(){
 		search(0);
-	});
-	$("#resetBtn").click(function(){
-		$("#dealDate").val($("#nowMonth").val());
-		$("#hqChanCode").val("");
 	});
 	
 	$("#downloadExcel").click(function(){
 		downloadExcel();
 	});
-	$("#addBtn").click(function(){
-		add();
-	});
+	
 	search(0);
 });
+// oper为1是更新考核账期数 2是更新是否可以抵扣
+function save(oper,billIds,values){
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		cache:false,
+		url:$("#ctx").val()+"/channelSubsidy/channel-subsidy!updateSubsidy.action",
+		data:{
+           "params.oper":oper,
+           "params.billIds":billIds,
+           "params.dealDateNum":values.dealDateNum,
+           "params.updateMan":values.updateMan,
+           "params.isUsed":values.isUsed
+	   	}, 
+	   	success:function(data){
+	   		if(data&&data.ok){
+	   			alert("修改成功");
+	   			var win = artDialog.open.origin;
+	   			win.art.dialog({id: 'update'}).close();
+	   			win.search(curPage);
+	   		}else{
+	   			alert("修改失败");
+	   		}
+	   	}
+	});
+}
+function nextMonth(d){
+	var year=d.substr(0,4);
+	var month=d.substr(4,2);
+	var day=d.substr(6,2);
+	if(month==12){
+		month=1;
+		year++;
+	}else{
+		month++;
+	}
+	
+	return year+(month>9?'':'0')+month+day;
+}
+function initOper(){
+	var orgLevel=$("#orgLevel").val();
+	var updateMan=$("#updateMan").val();
+	//初始化考核账期修改
+	var nowMonth=$("#nowMonth").val();
+	var dealDate=$("#dealDate").val();
+	var n1=nextMonth(dealDate+'02');
+	var n2=nextMonth(n1);
+	if((orgLevel>1&&nowMonth>=n1&&nowMonth<=n2)||orgLevel==1){
+		var selectStr="";
+		selectStr+=" <select class='default-text-input wper80'>                                  ";
+    	selectStr+=" 	<option value='1'>1</option>          ";
+    	selectStr+=" 	<option value='2'>2</option>          ";
+    	selectStr+=" 	<option value='3'>3</option>          ";
+		selectStr+=" 	<option value='4'>4</option>          ";
+		selectStr+=" 	<option value='5'>5</option>          ";
+		selectStr+=" 	<option value='6'>6</option>          ";
+		selectStr+=" 	<option value='7'>7</option>          ";
+		selectStr+=" 	<option value='8'>8</option>          ";
+		selectStr+=" 	<option value='9'>9</option>          ";
+		selectStr+=" 	<option value='10'>10</option>        ";
+		selectStr+=" 	<option value='11'>11</option>        ";
+		selectStr+=" 	<option value='12'>12</option>        ";
+    	selectStr+=" </select>                                 ";
+		$("#dataBody").find(".dealDateNum").each(function(){
+			var $selectBox=$(selectStr);
+			var billIds="'"+$(this).parent().attr("billId")+"'";
+			var text=$(this).text();
+			$selectBox.val(text);
+			$selectBox.change(function(){
+				var updateMan=$("#updateMan").val();
+				var dealDateNum=$(this).val();
+				save(1,billIds,{dealDateNum:dealDateNum,updateMan:updateMan});
+			});
+			$(this).empty().append($selectBox);
+		});
+	}
+	
+	//初始化是否抵扣修改
+	if(orgLevel==1){
+		$("#dataBody").find(".isUsed").each(function(){
+			var billIds="'"+$(this).parent().attr("billId")+"'";
+			var text=$(this).text();
+			var $checkBox=$("<input type='checkbox'/>");
+			if(text=="是"){
+				$checkBox.attr("checked","checked");
+			}else{
+				$checkBox.removeAttr("checked");
+			}
+			$checkBox.change(function(){
+				var isUsed=0;
+				if($(this).is(':checked')){
+					isUsed=1;
+				}
+				save(2,billIds,{isUsed:isUsed});
+			});
+			$(this).empty().append($checkBox).append(text);
+		});
+		$("#checkAll").show();
+	}
+}
 function changeDealDate(){
 	var dealDate=$("#dealDate").val();
 	if(dealDate!=$("#nowMonth").val()){
@@ -26,73 +133,15 @@ function changeDealDate(){
 		$("#dataBody").find("TR").find("TD:last").find("A").show();
 	}
 }
-function del($tr){
-	var hqChanCode=$tr.attr("hqChanCode");
-	var dealDate=$("#dealDate").val();
-	if(confirm('确认刪除吗?')){
-		$.ajax({
-			type:"POST",
-			dataType:'json',
-			async:false,//true是异步，false是同步
-			cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
-			url:$("#ctx").val()+"/channelSubsidy/channel-subsidy!deleteSubsidy.action",
-			data:{
-		       "params.dealDate":dealDate,
-		       "params.hqChanCode":hqChanCode
-		   	}, 
-		   	success:function(data){
-		   		if(data&&data.ok){
-		   			alert("删除成功");
-		   		}else{
-		   			alert("删除失败");
-		   		}
-		   	    search(0);
-		    },
-	        error: function(XMLHttpRequest, textStatus, errorThrown) {
-	          alert("请求出错！");
-	        }
-		});
-	}
-}
-function add() {
-	var dealDate=$("#dealDate").val();
-	var url = $("#ctx").val()+"/portal/socialChannels/jsp/channel_subsidy_add.jsp";
-	art.dialog.data('dealDate',dealDate);
-	art.dialog.open(url,{
-		id:'add',
-		width:'520px',
-		padding:'0 0',
-		lock:true,
-		resize:false,
-		title:'增加'
-	});
-}
-function update($tr) {
-	var url = $("#ctx").val()+"/portal/socialChannels/jsp/channel_subsidy_update.jsp";
-	var workNo=$tr.attr("workNo");
-	var money=$tr.attr("money");
-	var dealDateNum=$tr.attr("dealDateNum");
-	var hqChanCode=$tr.attr("hqChanCode");
-	var hqChanName=$tr.attr("hqChanName");
-	var dealDate=$("#dealDate").val();
-	art.dialog.data('workNo',workNo);
-	art.dialog.data('money',money);
-	art.dialog.data('dealDateNum',dealDateNum);
-	art.dialog.data('hqChanCode',hqChanCode);
-	art.dialog.data('hqChanName',hqChanName);
-	art.dialog.data('dealDate',dealDate);
-	art.dialog.open(url,{
-		id:'update',
-		width:'520px',
-		padding:'0 0',
-		lock:true,
-		resize:false,
-		title:'修改'
-	});
-}
+
 function search(pageNumber) {
+	curPage=pageNumber;
 	pageNumber = pageNumber + 1;
+	var regionCode=$.trim($("#regionCode").val());
 	var hqChanCode=$.trim($("#hqChanCode").val());
+	var hqChanName=$.trim($("#hqChanName").val());
+	var subItemName=$.trim($("#subItemName").val());
+	var isUsed=$.trim($("#isUsed").val());
 	var dealDate=$("#dealDate").val();
 	$.ajax({
 		type:"POST",
@@ -102,7 +151,11 @@ function search(pageNumber) {
 		data:{
 		   "params.page":pageNumber,
            "params.rows":pageSize,
+           "params.regionCode":regionCode,
            "params.hqChanCode":hqChanCode,
+           "params.hqChanName":hqChanName,
+           "params.subItemName":subItemName,
+           "params.isUsed":isUsed,
            "params.dealDate":dealDate
 	   	}, 
 	   	success:function(data){
@@ -116,34 +169,33 @@ function search(pageNumber) {
 			}
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
-				content+="<tr>"
+				content+="<tr billId='"+n["BILL_ID"]+"'>"
+				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
 				+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
 				+"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 				+"<td>"+isNull(n['WORK_NO'])+"</td>"
+				//考核账期数
+				+"<td class='dealDateNum'>"+isNull(n['DEAL_DATE_NUM'])+"</td>"
+				+"<td>"+isNull(n['UPDATE_MAN'])+"</td>"
+				+"<td>"+isNull(n['UPDATE_TIME'])+"</td>"
+				//是否抵扣
+				+"<td class='isUsed'>"+isNull(n['IS_USE'])+"</td>"
+				
+				+"<td>"+isNull(n['FEE_TYPE'])+"</td>"
 				+"<td>"+isNull(n['MONEY'])+"</td>"
-				+"<td>"+isNull(n['DEAL_DATE_NUM'])+"</td>";
-				if(dealDate==$("#nowMonth").val()&&isNull(n['IS_OPEN'])=="1"){
-					content+="<td><a onclick='update($(this))' "
-						+" workNo='"+n['WORK_NO']
-						+"' money='"+isNull(n['MONEY'])
-						+"' dealDateNum='"+isNull(n['DEAL_DATE_NUM'])
-						+"' hqChanCode='"+isNull(n['HQ_CHAN_CODE'])
-						+"' hqChanName='"+isNull(n['HQ_CHAN_NAME'])
-						+"' href='javascript:void(0);'>修改</a>&nbsp;&nbsp;" 
-						
-						+"<a onclick='del($(this))'  "
-						+" hqChanCode='"+isNull(n['HQ_CHAN_CODE'])
-				 		+"' href='javascript:void(0);'>删除</a></td>";
-				}else{
-					content+="<td></td>";
-				}
+				+"<td>"+isNull(n['MONEY_YF'])+"</td>"
+				+"<td>"+isNull(n['MONEY_SY'])+"</td>"
+				+"<td>"+isNull(n['CREATOR'])+"</td>"
+				+"<td>"+isNull(n['CREATE_TIME'])+"</td>"
+				+"<td>"+isNull(n['END_DATE'])+"</td>";
 				content+="</tr>";
 			});
 	   	    
 			if(content != "") {
 				$("#dataBody").empty().html(content);
+				initOper();
 			}else {
-				$("#dataBody").empty().html("<tr><td colspan='6'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='15'>暂无数据</td></tr>");
 			}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -173,42 +225,59 @@ function isNull(obj){
 }
 
 function downloadExcel() {
-	var hqChanCode=$("#hqChanCode").val();
+	var regionCode=$.trim($("#regionCode").val());
+	var hqChanCode=$.trim($("#hqChanCode").val());
+	var hqChanName=$.trim($("#hqChanName").val());
+	var subItemName=$.trim($("#subItemName").val());
+	var isUsed=$.trim($("#isUsed").val());
 	var dealDate=$("#dealDate").val();
-	var userName=$("#userName").val();
+	
+	var orgLevel=$("#orgLevel").val();
+	var code=$("#code").val();
+	
 	var sql="";
-	if($("#level").val()>1){
-		sql+="   select                                                 ";
-		sql+="          t.deal_date,                                    ";
-		sql+="          t.hq_chan_code,                                 ";
-		sql+="          t.hq_chan_name,                                 ";
-		sql+="          t.work_no,                                      ";
-		sql+="          t.money,                                        ";
-		sql+="          t.deal_date_num                                 ";
-		sql+="   from                                                   ";
-		sql+="   			PAPP.TAB_JF_COMM_INPUT t,                   ";
-		sql+="   			PCDE.TB_CDE_CHANL_HQ_CODE hq,               ";
-		sql+="   			PORTAL.APDP_USER u,                         ";
-		sql+="   	      	PORTAL.APDP_ORG o                           ";
-		sql+="   		where t.HQ_CHAN_CODE=hq.HQ_CHAN_CODE            ";
-		sql+="   		and hq.GROUP_ID_1=o.REGION_CODE                 ";
-		sql+="   	    and o.ID=u.ORG_ID                               ";
-		sql+="   	    and u.USERNAME='"+userName+"'                   ";
-	}else{
-		sql+="   select                                                 ";
-		sql+="          t.deal_date,                                    ";
-		sql+="          t.hq_chan_code,                                 ";
-		sql+="          t.hq_chan_name,                                 ";
-		sql+="          t.work_no,                                      ";
-		sql+="          t.money,                                        ";
-		sql+="          t.deal_date_num                                 ";
-		sql+="   from                                                   ";
-		sql+="   			PAPP.TAB_JF_COMM_INPUT t,                   ";
-		sql+="   			PCDE.TB_CDE_CHANL_HQ_CODE hq                ";
-		sql+="   		where t.HQ_CHAN_CODE=hq.HQ_CHAN_CODE            ";
+	sql+="  select                                                                            ";
+	sql+="       t.DEAL_DATE       	                                                          ";
+	sql+="      ,t.GROUP_ID_1_NAME                                                            ";
+	sql+="      ,t.HQ_CHAN_CODE                                                               ";
+	sql+="      ,t.HQ_CHAN_NAME                                                               ";
+	sql+="      ,t.WORK_NO                                                                    ";
+	sql+="      ,t.DEAL_DATE_NUM                                                              ";
+	sql+="      ,t.UPDATE_MAN                                                                 ";
+	sql+="      ,to_char(t.UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS')   UPDATE_TIME                 ";
+	sql+="      ,case when  t.IS_USE=1 then '是' else '否' end    IS_USE                       ";
+	sql+="      ,t.FEE_TYPE                                                                   ";
+	sql+="      ,t.MONEY                                                                      ";
+	sql+="      ,t.MONEY_YF                                                                   ";
+	sql+="      ,t.MONEY_SY                                                                   ";
+	sql+="      ,t.CREATOR                                                                    ";
+	sql+="      ,to_char(t.CREATE_TIME,'YYYY-MM-DD HH24:MI:SS')   CREATE_TIME                 ";
+	sql+="      ,to_char(t.END_DATE,'YYYY-MM-DD HH24:MI:SS')      END_DATE                    ";
+	
+	
+	sql+="  from PAPP.TAB_JF_COMM_INPUT t    where 1=1   and t.DEAL_DATE='"+dealDate+"'      ";
+	if(orgLevel>1){
+		sql+=" and t.GRUOP_ID_1='"+code+"'";
 	}
+	
+	if(regionCode!=''){
+		sql+=" AND t.GRUOP_ID_1 = '"+regionCode+"'";
+	}
+	if(hqChanCode!=''){
+		sql+=" AND t.HQ_CHAN_CODE = '"+hqChanCode+"'";
+	}
+	if(hqChanName!=''){
+		sql+=" AND t.HQ_CHAN_NAME like '%"+hqChanName+"%'";
+	}
+	if(subItemName!=''){
+		sql+=" AND t.FEE_TYPE like '%"+subItemName+"%'";
+	}
+	if(isUsed!=''){
+		sql+=" AND t.IS_USE = '"+isUsed+"'";
+	}
+	
 	var showtext="渠道补贴录入";
-	var _head=["账期","渠道编码","渠道名称","审批工单编码","手工录入预支金额(元)","考核账期数"];
+	var _head=["账期","地市","渠道编码","渠道名称","工单编码","考核期数","期数修改人","期数修改时间","是否抵扣","补贴科目","总金额(元)","已抵扣金额(元)","未抵扣金额(元)","拟稿人","拟稿时间","结束时间"];
    //loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
