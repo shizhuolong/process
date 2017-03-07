@@ -17,9 +17,7 @@ import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -71,7 +69,7 @@ public class ImportSubAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_SUBS_MAINTAIN_MON_TEMP";
-		String field="DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,BUSINESS,ITEM,PROFESS,UNIT,FACT_MAINTAIN_NUM,PER_NO_FAX,MAINTAIN_FEE,GROUP_ID_1_NAME,UNIT_NAME,ACFIX_CODE";
+		String field="CREATE_TIME,DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,BUSINESS,ITEM,PROFESS,UNIT,FACT_MAINTAIN_NUM,PER_NO_FAX,MAINTAIN_FEE,GROUP_ID_1_NAME,UNIT_NAME,ACFIX_CODE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -104,7 +102,7 @@ public class ImportSubAction extends BaseAction {
 					int start = sheet.getFirstRowNum() +1 ;// 去前1行标题
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('"+time+"','"+regionCode+"','','"+username+"'";
+					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(sysdate"+",'"+time+"','"+regionCode+"','','"+username+"'";
 					for(int i=0;i<10;i++){
 						sql+=",?";
 					}
