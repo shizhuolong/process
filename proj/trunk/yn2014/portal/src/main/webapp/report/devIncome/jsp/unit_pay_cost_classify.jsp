@@ -69,7 +69,7 @@
 					<td width="5%" style="text-align:right;">经营模式：</td>
 					<td width="10%">
 						<select name="operType" id="operType" onchange="" class="default-text-input wper80">
-								<option value=''>请选择</option>
+								<option value='自营'>自营</option>
 						</select>
 					</td>
 					<td width="5%" style="text-align:right;">缴费方式：</td>

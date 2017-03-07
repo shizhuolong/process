@@ -74,10 +74,7 @@
 					<td width="5%" align="right">经营模式：</td>
 					<td width="13%">
 						<select name="operateType" id="operateType" class="default-text-input wper90">
-								<option value=''>请选择</option>
 								<option value='自营'>自营</option>
-								<option value='他营'>他营</option>
-								<option value='柜台外包'>柜台外包</option>
 						</select>
 					</td>
 					<td width="5%" align="right">厅类型：</td>
