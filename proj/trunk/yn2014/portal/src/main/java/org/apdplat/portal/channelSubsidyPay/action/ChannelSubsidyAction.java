@@ -74,8 +74,8 @@ public class ChannelSubsidyAction extends BaseAction{
 	 */
 	public void listSubsidy(){
 		User user = UserHolder.getCurrentLoginUser();
-		params.put("userName", user.getUsername());
-		params.put("level", user.getOrg().getOrgLevel());
+		params.put("code", user.getOrg().getRegionCode());
+		params.put("orgLevel", user.getOrg().getOrgLevel());
 		Object result=service.listSubsidy(params);
 		this.reponseJson(result);  
 	}
