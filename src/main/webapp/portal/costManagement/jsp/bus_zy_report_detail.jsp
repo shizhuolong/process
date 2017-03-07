@@ -120,10 +120,7 @@ TABLE TBODY TR TD{
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
 								<select id="devOpeType" name="devOpeType" class="Wdate default-text-input wper80">
-									<option value=''>全部</option>
-									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
-									<option value='他营'>他营</option>
 								</select>
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
@@ -174,10 +171,7 @@ TABLE TBODY TR TD{
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
 								<select id="devAfterTopOpeType" name="devAfterTopOpeType" class="Wdate default-text-input wper80">
-									<option value=''>全部</option>
-									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
-									<option value='他营'>他营</option>
 								</select>
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
@@ -227,10 +221,7 @@ TABLE TBODY TR TD{
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
 								<select id="incomeOpeType" name="incomeOpeType" class="Wdate default-text-input wper80">
-									<option value=''>全部</option>
-									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
-									<option value='他营'>他营</option>
 								</select>
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
@@ -281,10 +272,7 @@ TABLE TBODY TR TD{
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
 								<select id="incomeAfterTopOpeType" name="incomeAfterTopOpeType" class="Wdate default-text-input wper80">
-									<option value=''>全部</option>
-									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
-									<option value='他营'>他营</option>
 								</select>
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
@@ -335,10 +323,7 @@ TABLE TBODY TR TD{
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
 								<select id="salesOpeType" name="salesOpeType" class="Wdate default-text-input wper80">
-									<option value=''>全部</option>
-									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
-									<option value='他营'>他营</option>
 								</select>
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
@@ -389,10 +374,7 @@ TABLE TBODY TR TD{
 							<th style="text-align:right;border:none;">运营模式：</th>
 							<td style="text-align:right;border:none;">
 								<select id="salesAfterTopOpeType" name="salesAfterTopOpeType" class="Wdate default-text-input wper80">
-									<option value=''>全部</option>
-									<option value='柜台外包'>柜台外包</option>
 									<option value='自营'>自营</option>
-									<option value='他营'>他营</option>
 								</select>
 							</td>
 							<th style="text-align:right;border:none;">厅类型：</th>
