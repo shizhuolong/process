@@ -28,7 +28,7 @@
    <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
    <script type="text/javascript" src="<%=path%>/js/My97DatePicker/WdatePicker.js"></script>
    <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report-fix.js?v=7"></script>
-   <script type="text/javascript" src="<%=path%>/wgreport/page/javascript/costManagement/costReport_lj_rax.js?v=5"></script>
+   <script type="text/javascript" src="<%=path%>/wgreport/page/javascript/costManagement/costReport_lj_rax.js?v=6"></script>
 </head>
   <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">

@@ -9,7 +9,7 @@ var field= [           "INCOME_2G","INCOME_3G", "INCOME_4G",
                        "KVB_AMOUNT","FZF_AMOUNT",
                        "SDWYF_AMOUNT","ADS_AMOUNT","YWYPCLF_AMOUNT",
                        "XJ_YXFY",
-                       "GRIDDING_TOTAL",
+                       
            			
 	           		   "CLSYF_AMOUNT",
 	           		   "ZDF_AMOUNT",
@@ -18,7 +18,11 @@ var field= [           "INCOME_2G","INCOME_3G", "INCOME_4G",
 	           	       
 	           		   "LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT",
 	           		   "LAN_RENT_AMOUNT","LAN_JRCB_AMOUNT","LAN_JRCB_ZD_AMOUNT",
-	           		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT","PROFIT","LAN_PROFIT"
+	           		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT",
+	           		    
+	           		   "GRIDDING_TOTAL",
+	           		   
+	           		   "PROFIT","LAN_PROFIT"
            ];
 
 var title=[["组织架构","营服编码","出帐收入(扣减赠费、退费)","","","","","","","","成本费用合计","","","","","","","","","","","","","","","","","","","","","","","","","","毛利","销售毛利"],
@@ -171,7 +175,6 @@ function getDownSql() {
 	              			   "INCOME_OTHER",
 	                          "INCOME_TOTAL",
 
-	              			   "GRIDDING_TOTAL",
 
 	                          "COMM_2G","COMM_3G","COMM_4G","COMM_ZX",
 	                          "COMM_KD","COMM_HARDLINK",
@@ -191,7 +194,9 @@ function getDownSql() {
 	               	       
 	               		   "LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT",
 	               		   "LAN_RENT_AMOUNT","LAN_JRCB_AMOUNT","LAN_JRCB_ZD_AMOUNT",
-	               		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT","PROFIT","LAN_PROFIT"
+	               		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT",
+	               		   "GRIDDING_TOTAL",
+	               		   "PROFIT","LAN_PROFIT"
 	              ];
 	var s="";
 	for(var i=0;i<downField.length;i++){
