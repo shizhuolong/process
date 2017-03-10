@@ -989,7 +989,22 @@ function _list_units(regionCode){
 }
 $(function(){
 	_list_regions();
+	_init_operateType();
 });
+function _init_operateType(){
+	var $operateType=$("#operateType,#operType,operate_type");
+	if(!$operateType||$operateType.length<1)
+		return;
+	var h="<option value='自营'>自营</option>";
+	
+	//玉溪特殊处理
+	var code=$("#code").val();
+	if(code=="16005"&&$("title").text()=='营业厅收入报表'){//玉溪的营业厅收入报表
+		h="<option value=''>全部</option><option value='柜台外包'>柜台外包</option><option value='自营'>自营</option><option value='他营'>他营</option>";
+	}
+	
+	$operateType.empty().html(h);
+}
 /****************************/
 function _unit_relation(unit){
 	return " select distinct u.OLD_UNIT_ID from pcde.VIEW_UNIT_CHARGE u where u.UNIT_ID='"+unit+"' ";
