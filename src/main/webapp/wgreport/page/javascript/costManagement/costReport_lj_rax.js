@@ -25,7 +25,7 @@ var field= [           "INCOME_2G","INCOME_3G", "INCOME_4G",
 	           		    
 	           		   "GRIDDING_TOTAL",
 	           		   
-	           		   "PROFIT","LAN_PROFIT"
+	           	       "LAN_PROFIT","PROFIT"
            ];
 
 var title=[["组织架构","营服编码","出帐收入(扣减赠费、退费)","","","","","","","","成本费用合计","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","毛利","销售毛利"],
@@ -200,7 +200,7 @@ function getDownSql() {
 	               		   "LAN_RENT_AMOUNT","LAN_JRCB_AMOUNT","LAN_JRCB_ZD_AMOUNT",
 	               		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT",
 	               		   
-	               		   "PROFIT","LAN_PROFIT"
+	               		   "LAN_PROFIT","PROFIT"
 	              ];
 	var s="";
 	for(var i=0;i<downField.length;i++){
