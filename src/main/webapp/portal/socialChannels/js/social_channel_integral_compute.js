@@ -58,6 +58,7 @@ function search(pageNumber) {
 	var indicators = $.trim($("#indicators").val());
 	//渠道编码
 	var channelCode = $.trim($("#channelCode").val());
+	var index_code=$.trim($("#index_code").val());
 	
 	var sql =   "SELECT DEAL_DATE,                         "+
 				"       GROUP_ID_1_NAME,                   "+
@@ -130,6 +131,9 @@ function search(pageNumber) {
 	if(channelCode!=''){
 		sql+=" AND T.FD_CHNL_ID = '"+channelCode+"'";
 	}
+	if(index_code!=''){
+		sql+=" AND T.INDEX_CODE LIKE '%"+index_code+"%'";
+	}
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -181,6 +185,8 @@ function downsAll(){
 	var indicators = $.trim($("#indicators").val());
 	//渠道编码
 	var channelCode = $.trim($("#channelCode").val());
+	var index_code=$.trim($("#index_code").val());
+	
 	var sql =   "SELECT DEAL_DATE,                         "+
 				"       GROUP_ID_1_NAME,                   "+
 				"       UNIT_NAME,                         "+
@@ -190,13 +196,13 @@ function downsAll(){
 				"       GROUP_ID_4_NAME,                   "+
 				"       SUBSCRIPTION_ID,                   "+
 				"       SERVICE_NUM,                       "+
-				"       BRAND_TYPE_ID,BRAND_TYPE,                    "+
-				"       INDEX_CODE,INDEX_DESC,                      "+
+				"       BRAND_TYPE_ID,BRAND_TYPE,          "+
+				"       INDEX_CODE,INDEX_DESC,             "+
 				"       INDEX_VALUE,                       "+
 				"       INNET_DATE,                        "+
 				"       decode(NET_TYPE,                   "+
 				"              '-1',                       "+
-				"              '固网',                     "+
+				"              '固网',                      "+
 				"              '01',                       "+
 				"              '2G',                       "+
 				"              '02',                       "+
@@ -251,7 +257,9 @@ function downsAll(){
 	if(channelCode!=''){
 		sql+=" AND T.FD_CHNL_ID = '"+channelCode+"'";
 	}
-	
+	if(index_code!=''){
+		sql+=" AND T.INDEX_CODE LIKE '%"+index_code+"%'";
+	}
 	showtext = '计算明细月报-'+dealDate;
 	downloadExcel(sql,title,showtext);
 }
