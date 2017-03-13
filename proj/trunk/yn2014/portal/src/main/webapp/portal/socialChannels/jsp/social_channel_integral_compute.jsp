@@ -32,9 +32,9 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/socialChannels/js/social_channel_integral_compute.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/socialChannels/js/social_channel_integral_compute.js?v=1"></script>
 </head>
-<body class="" style="overflow-x:auto;">
+<body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
@@ -79,6 +79,10 @@
 					<td width="5%" style="text-align:right;">渠道编码：</td>
 					<td width="20%">
 						<input class="default-text-input wper80" name="channelCode" type="text" id="channelCode"/>
+					</td>
+					<td width="5%" style="text-align:right;">指标编码：</td>
+					<td width="20%">
+						<input class="default-text-input wper80" name="index_code" type="text" id="index_code"/>
 					</td>
 				</tr>
 			</table>
