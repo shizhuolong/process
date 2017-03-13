@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery.validationEngine-zh_CN.js"></script>
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery.validationEngine.js"></script>
-<script type="text/javascript" src="<%=path%>/taskManagement/inspection/js/add_rc_inspection.js"></script>
+<script type="text/javascript" src="<%=path%>/taskManagement/inspection/js/add_rc_inspection.js?v=1"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
 </script>

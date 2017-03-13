@@ -1,4 +1,13 @@
 var pageSize = 7;
+function getDays()  
+{  
+	var startDate=$("#start_time").val();
+	var endDate=$("#end_time").val();
+    var startTime = Date.parse(startDate.replace(/-/g,   "/"));     
+    var endTime = Date.parse(endDate.replace(/-/g,   "/"));     
+    var dates = Math.abs((startTime - endTime))/(1000*60*60*24);     
+    return  dates;    
+}
 $(function(){
 	search(0);
 	$("#searchBtn").click(function(event){
@@ -182,6 +191,16 @@ function create(ele,event) {
 			art.dialog.alert("添加的巡检次数不能为0！");
 			return;
 		} else {
+			var startDate=$("#start_time").val();
+			var endDate=$("#end_time").val();
+			if(!(startDate&&endDate)){
+				art.dialog.alert("请先选择开始日期和结束日期");
+				return ;
+			}
+			if(spenum>getDays()+1){
+				art.dialog.alert("巡检次数不能大于任务执行天数");
+				return;
+			}
 			var sdchl = $("#selected_inspection_chanl tr td#__"+schl_code+"_"+suserId).html();
 			if(sdchl) {
 				$("#selected_inspection_chanl tr td#__"+schl_code+"_"+suserId).html(spenum);
