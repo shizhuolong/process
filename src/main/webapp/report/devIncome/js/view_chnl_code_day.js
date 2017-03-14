@@ -1,5 +1,5 @@
 var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","LAST_HZT_NUM","HZT_NUM","LAST_ZYD_NUM","ZYD_NUM","LAST_DLD_NUM","DLD_NUM","THIS_NUM","QDZB","LJ_NUM","LJ_JZ_NUM"];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","LAST_HZT_NUM","HZT_NUM","LAST_ZYD_NUM","ZYD_NUM","LAST_DLD_NUM","DLD_NUM","THIS_NUM","NEW_CODE_ZB","LJ_NUM","LJ_JZ_NUM"];
 var report;
 var title;
 var downSql="";
@@ -91,64 +91,13 @@ function getSql(){
 	var code=$("#code").val();
 	var where=" WHERE 1=1";
 	if(orgLevel==1){
+		
 	}else if(orgLevel==2){
-		where+=" AND T1.GROUP_ID_1="+code;
+		where+=" AND GROUP_ID_1="+code;
 	}else{
 		where+=" AND 1=2";
 	}
-	return "SELECT "+dealDate+" DEAL_DATE                                                                      "+
-	"      ,NVL(T1.REGION_NAME_ABBR,'全省')GROUP_ID_1_NAME                                                      "+
-	"      ,SUM(NVL(T3.HZT_NUM,0)) LAST_HZT_NUM                                                                "+
-	"      ,SUM(NVL(T2.HZT_NUM,0)) HZT_NUM                                                                     "+
-	"      ,SUM(NVL(T3.ZYD_NUM,0))LAST_ZYD_NUM                                                                 "+
-	"      ,SUM(NVL(T2.ZYD_NUM,0)) ZYD_NUM                                                                     "+
-	"      ,SUM(NVL(T3.DLD_NUM,0)) LAST_DLD_NUM                                                                "+
-	"      ,SUM(NVL(T2.DLD_NUM,0)) DLD_NUM                                                                     "+
-	"      ,SUM(NVL(T2.HZT_NUM,0)+NVL(T2.ZYD_NUM,0)+NVL(T2.DLD_NUM,0)) THIS_NUM                                "+
-	"      ,TRIM('.'FROM TO_CHAR(CASE WHEN SUM(NVL(T3.LAST_ALL_NUM,0))=0 THEN 0                                "+
-	"                                 ELSE SUM(NVL(T2.HZT_NUM,0)+NVL(T2.ZYD_NUM,0)+NVL(T2.DLD_NUM,0))*100      "+
-	"                                   /SUM(NVL(T3.LAST_ALL_NUM,0)) END                                       "+
-	"                                    ,'FM999990.9'))||'%' QDZB                                                 "+
-	"      ,SUM(NVL(T4.LJ_NUM,0)) LJ_NUM                                                                       "+
-	"      ,SUM(NVL(T4.LJ_NUM,0))-SUM(NVL(T5.QS_NUM,0))LJ_JZ_NUM                                               "+
-	"FROM PCDE.TB_CDE_REGION_CODE T1                                                                           "+
-	"LEFT JOIN (SELECT T2.GROUP_ID_1                                                                           "+
-	"                 ,SUM(NVL(T2.HZT_NUM,0)) HZT_NUM                                                          "+
-	"                 ,SUM(NVL(T2.ZYD_NUM,0)) ZYD_NUM                                                          "+
-	"                 ,SUM(NVL(T2.DLD_NUM,0)) DLD_NUM                                                          "+
-	"           FROM  PMRT.VIEW_CHNL_CODE_DAY T2                                                               "+
-	"           WHERE T2.DEAL_DATE BETWEEN SUBSTR('"+dealDate+"',1,6)||'01'                                    "+
-	"           AND   "+dealDate+"                                                                             "+
-	"           GROUP BY T2.GROUP_ID_1 )T2                                                                     "+
-	"ON   (T1.GROUP_ID_1=T2.GROUP_ID_1)                                                                        "+
-	"LEFT JOIN (SELECT T2.GROUP_ID_1                                                                           "+
-	"                 ,SUM(NVL(T2.HZT_NUM,0)) HZT_NUM                                                          "+
-	"                 ,SUM(NVL(T2.ZYD_NUM,0)) ZYD_NUM                                                          "+
-	"                 ,SUM(NVL(T2.DLD_NUM,0)) DLD_NUM                                                          "+
-	"                 ,SUM(NVL(T2.HZT_NUM,0)+NVL(T2.ZYD_NUM,0)+NVL(T2.DLD_NUM,0)) LAST_ALL_NUM                 "+
-	"           FROM  PMRT.VIEW_CHNL_CODE_DAY T2                                                               "+
-	"           WHERE T2.DEAL_DATE NOT LIKE '"+getPreMonth(dealDate)+"%'                                       "+
-	"           GROUP BY T2.GROUP_ID_1)  T3                                                                    "+
-	"ON   (T1.GROUP_ID_1=T3.GROUP_ID_1 )                                                                       "+
-	"LEFT JOIN (SELECT T2.GROUP_ID_1                                                                           "+
-	"                 ,SUM(NVL(T2.HZT_NUM,0)+NVL(T2.DLD_NUM,0)+NVL(T2.ZYD_NUM,0)) LJ_NUM                       "+
-	"           FROM  PMRT.VIEW_CHNL_CODE_DAY T2                                                               "+
-	"           WHERE T2.DEAL_DATE BETWEEN 20170101 AND "+dealDate+"                                           "+
-	"           GROUP BY T2.GROUP_ID_1                                                                         "+
-	"           )  T4                                                                                          "+
-	"ON   (T1.GROUP_ID_1=T4.GROUP_ID_1 )                                                                       "+
-	"LEFT JOIN (SELECT T2.GROUP_ID_1                                                                           "+
-	"                 ,COUNT(T2.HQ_CHAN_CODE) QS_NUM                                                           "+
-	"           FROM  PCDE.TB_CDE_CHANL_HQ_CODE T2                                                             "+
-	"           WHERE TO_CHAR(T2.CREATE_TIME,'YYYYMMDD') BETWEEN 20170101 AND "+dealDate+"                     "+
-	"           AND( T2.CHN_CDE_3_NAME LIKE '%合作营业厅%'                                                        "+
-	"           OR T2.CHN_CDE_3_NAME LIKE '%专营店/专区%'                                                         "+
-	"           OR T2.CHN_CDE_3_NAME LIKE '%代理点%') AND T2.STATUS IN(11,12)                                    "+
-	"           GROUP BY T2.GROUP_ID_1                                                                         "+
-	"           )  T5                                                                                          "+
-	"ON   (T1.GROUP_ID_1=T5.GROUP_ID_1 )                                                                       "+
-	                     where+
-	" GROUP BY GROUPING SETS(T1.REGION_LVL_CODE,(T1.REGION_LVL_CODE,T1.GROUP_ID_1,T1.REGION_NAME_ABBR))         ";
+	return "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_CHNL_EXPAND_DAY "+where;
 }
 function getMonth(){
 	var dealDate=$("#dealDate").val();
