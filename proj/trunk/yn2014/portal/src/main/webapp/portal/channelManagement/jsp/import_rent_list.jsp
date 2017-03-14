@@ -28,14 +28,14 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_rent_list.js?v=1"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_rent_list.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<div class="search-div">
-				<table style="margin: 0px 0; border:none;width:60%;">
+				<table style="margin: 0px 0; border:none;width:100%;">
 					<tr>
 						<td  width="8%">账期：</td>
 						<td width="1%">
@@ -46,6 +46,14 @@
 						<td width="13%">
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
+						     </select>
+					    </td>
+					    <td width="8%" style="text-align:right;">是否入库：</td>
+						<td width="13%">
+						     <select name="is_in_unit" id="is_in_unit" class="default-text-input wper100">
+								<option value=''>请选择</option>
+								<option value='是'>是</option>
+								<option value='否'>否</option>
 						     </select>
 					    </td>
 					    <td width="1%">
