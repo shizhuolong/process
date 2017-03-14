@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市名称","站址或局房编码","基站/覆盖名称","期初预提余额","本月预提","本月支付","期末预提余额","成本中心代码","本月预提标准","月末预提起日期","增值税","铁塔公司站点","铁塔公司交纳水电费","最近的水电支付单价","本月用量或预计用量"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","ROOM_ADDR","ROOM_NAME","BEGIN_MONEY","THIS_MON_PRE","THIS_MON_PAY","END_YT_MONEY","AC_PREFIX","THIS_MON_YT","END_MON_DATE","ZZ_FAX","OIL_COMPANY","WATER_FEE","PER_WATER_FEE","THIS_NUM"];
+var title=[["账期","地市名称","是否入库","站址或局房编码","基站/覆盖名称","期初预提余额","本月预提","本月支付","期末预提余额","成本中心代码","本月预提标准","月末预提起日期","增值税","铁塔公司站点","铁塔公司交纳水电费","最近的水电支付单价","本月用量或预计用量"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","IS_IN_UNIT","ROOM_ADDR","ROOM_NAME","BEGIN_MONEY","THIS_MON_PRE","THIS_MON_PAY","END_YT_MONEY","AC_PREFIX","THIS_MON_YT","END_MON_DATE","ZZ_FAX","OIL_COMPANY","WATER_FEE","PER_WATER_FEE","THIS_NUM"];
 var report = null;
 var downSql="";
 $(function() {
@@ -11,6 +11,9 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
+		css:[
+		      {array:[2],css:LchReport.NORMAL_STYLE}
+		    ],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
@@ -56,6 +59,10 @@ function search(pageNumber) {
 		}
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
+	}
+	var is_in_unit=$("#is_in_unit").val();
+	if(is_in_unit!=""){
+		sql+=" AND IS_IN_UNIT='"+is_in_unit+"'";
 	}
 	downSql=sql;
 	var csql = sql;

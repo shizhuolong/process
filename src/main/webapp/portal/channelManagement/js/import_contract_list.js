@@ -1,7 +1,7 @@
 var nowData = [];
-var title=[["账期","地市名称","合同编号","合同名称","基站名称","预提类型","期初余额","本月预提","","本月支付","","","期末余额","成本中心代码","局站编号","铁塔公司站点(是/否)","铁塔公司交纳房租物业费(是/否)"],
-           ["","","","","","","","本月预提","月预提标准","付费金额","价款","税款","","","","","",""]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","CONTRACT_NO","CONTRACT_NAME","CELL_NAME","YT_TYPE","BEGIN_FEE","THIS_MON_YT","THIS_MON_YT_STA","PAY_FEE","PRICE","FAX","END_FEE","ACPEFIX","CELL_ID","IS_COM","IS_WY_FEE"];
+var title=[["账期","地市名称","是否入库","合同编号","合同名称","基站名称","预提类型","期初余额","本月预提","","本月支付","","","期末余额","成本中心代码","局站编号","铁塔公司站点(是/否)","铁塔公司交纳房租物业费(是/否)"],
+           ["","","","","","","","","本月预提","月预提标准","付费金额","价款","税款","","","","","",""]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","IS_IN_UNIT","CONTRACT_NO","CONTRACT_NAME","CELL_NAME","YT_TYPE","BEGIN_FEE","THIS_MON_YT","THIS_MON_YT_STA","PAY_FEE","PRICE","FAX","END_FEE","ACPEFIX","CELL_ID","IS_COM","IS_WY_FEE"];
 var report = null;
 
 var downSql="";
@@ -13,6 +13,9 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
+		css:[
+		      {array:[2],css:LchReport.NORMAL_STYLE}
+		    ],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
@@ -58,6 +61,10 @@ function search(pageNumber) {
 		}
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
+	}
+	var is_in_unit=$("#is_in_unit").val();
+	if(is_in_unit!=""){
+		sql+=" AND IS_IN_UNIT='"+is_in_unit+"'";
 	}
 	downSql=sql;
 	var csql = sql;

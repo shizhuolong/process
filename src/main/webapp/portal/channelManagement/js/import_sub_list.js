@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","营服中心","业务","项目","专业","单位","实际代维量","不含税单价","代维费计提金额","成本中心"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","BUSINESS","ITEM","PROFESS","UNIT","FACT_MAINTAIN_NUM","PER_NO_FAX","MAINTAIN_FEE","ACFIX_CODE"];
+var title=[["账期","地市","营服中心","是否入库","业务","项目","专业","单位","实际代维量","不含税单价","代维费计提金额","成本中心"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","IS_IN_UNIT","BUSINESS","ITEM","PROFESS","UNIT","FACT_MAINTAIN_NUM","PER_NO_FAX","MAINTAIN_FEE","ACFIX_CODE"];
 var report = null;
 var downSql="";
 
@@ -12,6 +12,9 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
+		css:[
+		      {array:[2],css:LchReport.NORMAL_STYLE}
+		    ],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
@@ -57,6 +60,10 @@ function search(pageNumber) {
 		}
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
+	}
+	var is_in_unit=$("#is_in_unit").val();
+	if(is_in_unit!=""){
+		sql+=" AND IS_IN_UNIT='"+is_in_unit+"'";
 	}
 	downSql=sql;
 	var csql = sql;

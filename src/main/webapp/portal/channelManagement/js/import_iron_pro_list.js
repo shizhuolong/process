@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","营服中心","配置平台站址编码","业务确认单编号","站点编码","需求确认单编号","站址名称","站点名称","经度","纬度","产品种类","产品场景","建筑面积/隧道长度（平方米/公里）","系统数量","当前共享客户总数","后备电池时长（小时）","电力保障服务费模式","包干电费（元/月）不含税","其他费用（元/月）不含税","其它费用说明","基准价格（元/月）不含税","维护费（元/月）不含税","产品单元数","场地费（元/月）不含税","共享折扣","服务起始日期","服务结束日期","产品服务费合计（元/月）不含税","产品服务费合计（元/年）含税"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","P_ADDR_CODE","BUSI_CONF_CODE","IRON_ADDR_CODE","NEED_CONF_CODE","OWN_ADDR_NAME","ADDR_NOTE_NAME","LONGITUDE","LATITUDE","PRODUCT_TYPE","PRODUCT_SCENE","BUILD_AREA","SYS_NUM","SHARE_CLI_NUM","CELL_LONG","OIL_ELECT_TYPE","ELECT_FEE","OTHER_FEE","OTHER_FEE_DEC","OIL_STAND_FEE","SVR_FEE","PRODUCT_UNIT_NUM","PLACE_FEE","SHARE_RATIO","SVR_BEGIN_DATE","SVR_END_DATE","PRO_SVR_FEE_NO","PRO_SVR_FEE"];
+var title=[["账期","地市","营服中心","是否入库","配置平台站址编码","业务确认单编号","站点编码","需求确认单编号","站址名称","站点名称","经度","纬度","产品种类","产品场景","建筑面积/隧道长度（平方米/公里）","系统数量","当前共享客户总数","后备电池时长（小时）","电力保障服务费模式","包干电费（元/月）不含税","其他费用（元/月）不含税","其它费用说明","基准价格（元/月）不含税","维护费（元/月）不含税","产品单元数","场地费（元/月）不含税","共享折扣","服务起始日期","服务结束日期","产品服务费合计（元/月）不含税","产品服务费合计（元/年）含税"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","IS_IN_UNIT","P_ADDR_CODE","BUSI_CONF_CODE","IRON_ADDR_CODE","NEED_CONF_CODE","OWN_ADDR_NAME","ADDR_NOTE_NAME","LONGITUDE","LATITUDE","PRODUCT_TYPE","PRODUCT_SCENE","BUILD_AREA","SYS_NUM","SHARE_CLI_NUM","CELL_LONG","OIL_ELECT_TYPE","ELECT_FEE","OTHER_FEE","OTHER_FEE_DEC","OIL_STAND_FEE","SVR_FEE","PRODUCT_UNIT_NUM","PLACE_FEE","SHARE_RATIO","SVR_BEGIN_DATE","SVR_END_DATE","PRO_SVR_FEE_NO","PRO_SVR_FEE"];
 var report = null;
 var downSql="";
 
@@ -12,6 +12,9 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
+		css:[
+		      {array:[3],css:LchReport.NORMAL_STYLE}
+		    ],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
@@ -57,6 +60,10 @@ function search(pageNumber) {
 		}
 	}else{
 		sql+=" AND GROUP_ID_1='"+code+"'";
+	}
+	var is_in_unit=$("#is_in_unit").val();
+	if(is_in_unit!=""){
+		sql+=" AND IS_IN_UNIT='"+is_in_unit+"'";
 	}
 	downSql=sql;
 	var csql = sql;
