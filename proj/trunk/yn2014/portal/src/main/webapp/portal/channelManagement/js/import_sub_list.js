@@ -13,7 +13,7 @@ $(function() {
 		title : title,
 		field : field,
 		css:[
-		      {array:[2],css:LchReport.NORMAL_STYLE}
+		      {array:[3],css:LchReport.NORMAL_STYLE}
 		    ],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
