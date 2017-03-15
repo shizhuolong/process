@@ -20,7 +20,7 @@ var field= [           "INCOME_2G","INCOME_3G", "INCOME_4G",
 	           	       "BGF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT",
 	           	       
 	           		   "LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT",
-	           		   "LAN_RENT_AMOUNT","LAN_JRCB_AMOUNT","LAN_JRCB_ZD_AMOUNT",
+	           		   "LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT",
 	           		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT",
 	           		    
 	           		   "GRIDDING_TOTAL",
@@ -197,7 +197,7 @@ function getDownSql() {
 	               	       "BGF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT",
 	               	       
 	               		   "LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT",
-	               		   "LAN_RENT_AMOUNT","LAN_JRCB_AMOUNT","LAN_JRCB_ZD_AMOUNT",
+	               		   "LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT",
 	               		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT",
 	               		   
 	               		   "LAN_PROFIT","PROFIT"
