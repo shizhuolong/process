@@ -153,7 +153,7 @@ function getSumSql(levelSql,dealDate,where) {
 		"      )T                                                                                           "+
 		"       LEFT JOIN (SELECT T.GROUP_ID_0,SUM(T.SR_ALL_NUM-T.SR_ICT_NUM)/10000 FEE                     "+
 		"                 FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                 "+
-		"                 WHERE T.DEAL_DATE=201702                                                          "+
+		"                 WHERE T.DEAL_DATE="+dealDate+"                                                    "+
 		"                 GROUP BY T.GROUP_ID_0                                                             "+
 		"                 )T0                                                                               "+
 		"      ON (T.GROUP_ID_0=T0.GROUP_ID_0)                                                              "+
@@ -251,7 +251,7 @@ function getSumSql(levelSql,dealDate,where) {
 		"      )T                                                                                          "+
 		"      LEFT JOIN (SELECT T.GROUP_ID_1,SUM(T.SR_ALL_NUM-T.SR_ICT_NUM)/10000 FEE                     "+
 		"                 FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                "+
-		"                 WHERE T.DEAL_dATE=201702                                                         "+
+		"                 WHERE T.DEAL_DATE="+dealDate+"                                                   "+
 		"                 GROUP BY T.GROUP_ID_1                                                            "+
 		"                 )T0                                                                              "+
 		"      ON (T.GROUP_ID_1=T0.GROUP_ID_1)                                                             "+
