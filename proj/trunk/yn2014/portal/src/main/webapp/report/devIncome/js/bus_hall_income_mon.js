@@ -97,93 +97,105 @@ $(function(){
 });
 function getSumSql(levelSql,dealDate,where) {
 	if(levelSql==1){
-		return " T.THIS_YW_SR,                                                                         "+
-	"PODS.GET_RADIX_POINT(                                                                              "+
-	"          CASE WHEN T1.THIS_YW_SR<>0 THEN (T.THIS_YW_SR-T1.THIS_YW_SR)*100/T1.THIS_YW_SR           "+
-	"               ELSE 0 END ||'%',2) HB_YW,                                                          "+
-	"       T.THIS_4G_SR,                                                                               "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T1.THIS_4G_SR<>0 THEN (T.THIS_4G_SR-T1.THIS_4G_SR)*100/T1.THIS_4G_SR           "+
-	"               ELSE 0 END ||'%',2) HB_4G,                                                          "+
-	"       T.NETW_SR,                                                                                  "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T1.NETW_SR<>0 THEN (T.NETW_SR-T1.NETW_SR)*100/T1.NETW_SR                       "+
-	"               ELSE 0 END ||'%',2) HB_NETW,                                                        "+
-	"       T.THIS_GWKD_SR,                                                                             "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T1.THIS_GWKD_SR<>0 THEN (T.THIS_GWKD_SR-T1.THIS_GWKD_SR)*100/T1.THIS_GWKD_SR   "+
-	"               ELSE 0 END ||'%',2) HB_GWKD,                                                        "+
-	"       T.THIS_ZHWJ_SR,                                                                             "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T1.THIS_ZHWJ_SR<>0 THEN (T.THIS_ZHWJ_SR-T1.THIS_ZHWJ_SR)*100/T1.THIS_ZHWJ_SR   "+
-	"               ELSE 0 END ||'%',2) HB_ZHWJ,                                                        "+
-	"       T.ALL_SR,                                                                                   "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T1.ALL_SR<>0 THEN (T.ALL_SR-T1.ALL_SR)*100/T1.ALL_SR                           "+
-	"               ELSE 0 END ||'%',2) HB_ALL,                                                         "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T2.ALL_SR<>0 THEN (T.ALL_SR-T2.ALL_SR)*100/T2.ALL_SR                           "+
-	"               ELSE 0 END ||'%',2) TB_ALL,                                                         "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T3.ALL_SR<>0 THEN (T.ALL_SR-T3.ALL_SR)*100/T3.ALL_SR                           "+
-	"               ELSE 0 END ||'%',2) DB_ALL,                                                         "+
-	"       T.All1_SR,                                                                                  "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T.ALL1_SR<>0 THEN T.ALL_SR*100/T.ALL1_SR                                       "+
-	"               ELSE 0 END ||'%',2) ALL_CHANL_SR,                                                   "+
-	"       PODS.GET_RADIX_POINT(                                                                       "+
-	"          CASE WHEN T.ALL1_SR=0 THEN 0                                                             "+
-	"               WHEN T1.ALL1_SR=0 THEN 0                                                            "+
-	"               WHEN T1.ALL_SR/T1.ALL1_SR=0 THEN 0                                                  "+
-	"               ELSE (T.ALL_SR/T.ALL1_SR-T1.ALL_SR/T1.ALL1_SR)*100/(T1.ALL_SR/T1.ALL1_SR)           "+
-	"               END ||'%',2) HB_ALL_CHANL                                                           "+
-	"FROM (                                                                                             "+
-	"     SELECT GROUP_ID_0                                                                             "+
-	"           ,SUM(THIS_2G_SR)+ SUM(THIS_3G_SR)+SUM(THIS_4G_SR) THIS_YW_SR                            "+
-	"           ,SUM(THIS_4G_SR) THIS_4G_SR                                                             "+
-	"           ,SUM(NETW_SR) NETW_SR                                                                   "+
-	"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                         "+
-	"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                         "+
-	"           ,SUM(ALL_SR) ALL_SR                                                                     "+
-	"           ,SUM(all1_sr) All1_SR                                                                   "+
-	"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
-	"      WHERE DEAL_DATE="+dealDate+"                                                                 "+
-	                               where+
-	"      GROUP BY GROUP_ID_0                                                                          "+
-	"      )T                                                                                           "+
-	"      LEFT JOIN(                                                                                   "+
-	"      SELECT GROUP_ID_0                                                                            "+
-	"           ,SUM(THIS_2G_SR)+ SUM(THIS_3G_SR)+SUM(THIS_4G_SR) THIS_YW_SR                            "+
-	"           ,SUM(THIS_4G_SR) THIS_4G_SR                                                             "+
-	"           ,SUM(NETW_SR) NETW_SR                                                                   "+
-	"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                         "+
-	"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                         "+
-	"           ,SUM(ALL_SR) ALL_SR                                                                     "+
-	"           ,SUM(all1_sr) all1_sr                                                                   "+
-	"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
-	"      WHERE DEAL_DATE="+getLastMonth(dealDate)+"                                                   "+
-	                               where+                                        
-	"      GROUP BY GROUP_ID_0                                                                          "+
-	"      ) T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                          "+
-	"      LEFT JOIN (                                                                                  "+
-	"      SELECT GROUP_ID_0                                                                            "+
-	"            ,SUM(ALL_SR) ALL_SR                                                                    "+
-	"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
-	"      WHERE DEAL_DATE="+getLastYearSameMonth(dealDate)+"                                           "+
-	                               where+
-	"      GROUP BY GROUP_ID_0                                                                          "+
-	"      )T2 ON(T.GROUP_ID_0=T2.GROUP_ID_0)                                                           "+
-	"      LEFT JOIN (                                                                                  "+
-	"      SELECT GROUP_ID_0                                                                            "+
-	"            ,SUM(ALL_SR) ALL_SR                                                                    "+
-	"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
-	"      WHERE DEAL_DATE="+getFristMonth(dealDate)+"                                                  "+
-	                               where+
-	"      GROUP BY GROUP_ID_0                                                                          "+
-	"      )T3                                                                                          "+
-	"      ON(T.GROUP_ID_0=T3.GROUP_ID_0)                                                               ";
+		return "       T.THIS_YW_SR,                                                                        "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T1.THIS_YW_SR<>0 THEN (T.THIS_YW_SR-T1.THIS_YW_SR)*100/T1.THIS_YW_SR           "+
+		"               ELSE 0 END ||'%',2) HB_YW,                                                          "+
+		"       T.THIS_4G_SR,                                                                               "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T1.THIS_4G_SR<>0 THEN (T.THIS_4G_SR-T1.THIS_4G_SR)*100/T1.THIS_4G_SR           "+
+		"               ELSE 0 END ||'%',2) HB_4G,                                                          "+
+		"       T.NETW_SR,                                                                                  "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T1.NETW_SR<>0 THEN (T.NETW_SR-T1.NETW_SR)*100/T1.NETW_SR                       "+
+		"               ELSE 0 END ||'%',2) HB_NETW,                                                        "+
+		"       T.THIS_GWKD_SR,                                                                             "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T1.THIS_GWKD_SR<>0 THEN (T.THIS_GWKD_SR-T1.THIS_GWKD_SR)*100/T1.THIS_GWKD_SR   "+
+		"               ELSE 0 END ||'%',2) HB_GWKD,                                                        "+
+		"       T.THIS_ZHWJ_SR,                                                                             "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T1.THIS_ZHWJ_SR<>0 THEN (T.THIS_ZHWJ_SR-T1.THIS_ZHWJ_SR)*100/T1.THIS_ZHWJ_SR   "+
+		"               ELSE 0 END ||'%',2) HB_ZHWJ,                                                        "+
+		"       T.ALL_SR,                                                                                   "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T1.ALL_SR<>0 THEN (T.ALL_SR-T1.ALL_SR)*100/T1.ALL_SR                           "+
+		"               ELSE 0 END ||'%',2) HB_ALL,                                                         "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T2.ALL_SR<>0 THEN (T.ALL_SR-T2.ALL_SR)*100/T2.ALL_SR                           "+
+		"               ELSE 0 END ||'%',2) TB_ALL,                                                         "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T3.ALL_SR<>0 THEN (T.ALL_SR-T3.ALL_SR)*100/T3.ALL_SR                           "+
+		"               ELSE 0 END ||'%',2) DB_ALL,                                                         "+
+		"        T0.FEE ALL1_SR,                                                                            "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T0.FEE<>0 THEN T.ALL_SR*100/T0.FEE                                             "+
+		"               ELSE 0 END ||'%',2) ALL_CHANL_SR,                                                   "+
+		"       PODS.GET_RADIX_POINT(                                                                       "+
+		"          CASE WHEN T0.FEE=0 THEN 0                                                                "+
+		"               WHEN T11.FEE=0 THEN 0                                                               "+
+		"               WHEN T1.ALL_SR/T11.FEE=0 THEN 0                                                     "+
+		"               ELSE (T.ALL_SR/T0.FEE-T1.ALL_SR/T11.FEE)*100/(T1.ALL_SR/T11.FEE)                    "+
+		"               END ||'%',2) HB_ALL_CHANL                                                           "+
+		"FROM (                                                                                             "+
+		"     SELECT GROUP_ID_0                                                                             "+
+		"           ,SUM(THIS_2G_SR)+ SUM(THIS_3G_SR)+SUM(THIS_4G_SR) THIS_YW_SR                            "+
+		"           ,SUM(THIS_4G_SR) THIS_4G_SR                                                             "+
+		"           ,SUM(NETW_SR) NETW_SR                                                                   "+
+		"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                         "+
+		"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                         "+
+		"           ,SUM(ALL_SR) ALL_SR                                                                     "+
+		"                                                                                                   "+
+		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
+		"      WHERE DEAL_DATE="+dealDate+"                                                                 "+
+		    where+
+		"      GROUP BY GROUP_ID_0                                                                          "+
+		"      )T                                                                                           "+
+		"       LEFT JOIN (SELECT T.GROUP_ID_0,SUM(T.SR_ALL_NUM-T.SR_ICT_NUM)/10000 FEE                     "+
+		"                 FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                 "+
+		"                 WHERE T.DEAL_DATE=201702                                                          "+
+		"                 GROUP BY T.GROUP_ID_0                                                             "+
+		"                 )T0                                                                               "+
+		"      ON (T.GROUP_ID_0=T0.GROUP_ID_0)                                                              "+
+		"      LEFT JOIN (SELECT T.GROUP_ID_0,SUM(T.SR_ALL_NUM-T.SR_ICT_NUM)/10000 FEE                      "+
+		"                 FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                 "+
+		"                 WHERE T.DEAL_DATE="+getLastMonth(dealDate)+"                                      "+
+		"                 GROUP BY T.GROUP_ID_0                                                             "+
+		"                 )T11                                                                              "+
+		"      ON (T.GROUP_ID_0=T11.GROUP_ID_0)                                                             "+
+		"      LEFT JOIN(                                                                                   "+
+		"      SELECT GROUP_ID_0                                                                            "+
+		"           ,SUM(THIS_2G_SR)+ SUM(THIS_3G_SR)+SUM(THIS_4G_SR) THIS_YW_SR                            "+
+		"           ,SUM(THIS_4G_SR) THIS_4G_SR                                                             "+
+		"           ,SUM(NETW_SR) NETW_SR                                                                   "+
+		"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                         "+
+		"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                         "+
+		"           ,SUM(ALL_SR) ALL_SR                                                                     "+
+		"           ,SUM(all1_sr) all1_sr                                                                   "+
+		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
+		"      WHERE DEAL_DATE="+getLastMonth(dealDate)+"                                                   "+
+		    where+
+		"      GROUP BY GROUP_ID_0                                                                          "+
+		"      ) T1 ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                                          "+
+		"      LEFT JOIN (                                                                                  "+
+		"      SELECT GROUP_ID_0                                                                            "+
+		"            ,SUM(ALL_SR) ALL_SR                                                                    "+
+		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
+		"      WHERE DEAL_DATE="+getLastYearSameMonth(dealDate)+"                                           "+
+		    where+
+		"      GROUP BY GROUP_ID_0                                                                          "+
+		"      )T2 ON(T.GROUP_ID_0=T2.GROUP_ID_0)                                                           "+
+		"      LEFT JOIN (                                                                                  "+
+		"      SELECT GROUP_ID_0                                                                            "+
+		"            ,SUM(ALL_SR) ALL_SR                                                                    "+
+		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
+		"      WHERE DEAL_DATE="+getFristMonth(dealDate)+"                                                  "+
+		    where+
+		"      GROUP BY GROUP_ID_0                                                                          "+
+		"      )T3                                                                                          "+
+		"      ON(T.GROUP_ID_0=T3.GROUP_ID_0)                                                               ";
 	}else if(levelSql==2){
-		return 	" T.THIS_YW_SR,                                                                            "+
+		return 	"       T.THIS_YW_SR,                                                                      "+
 		"       PODS.GET_RADIX_POINT(                                                                      "+
 		"          CASE WHEN T1.THIS_YW_SR<>0 THEN (T.THIS_YW_SR-T1.THIS_YW_SR)*100/T1.THIS_YW_SR          "+
 		"               ELSE 0 END ||'%',2) HB_YW,                                                         "+
@@ -203,6 +215,7 @@ function getSumSql(levelSql,dealDate,where) {
 		"       PODS.GET_RADIX_POINT(                                                                      "+
 		"          CASE WHEN T1.THIS_ZHWJ_SR<>0 THEN (T.THIS_ZHWJ_SR-T1.THIS_ZHWJ_SR)*100/T1.THIS_ZHWJ_SR  "+
 		"               ELSE 0 END ||'%',2) HB_ZHWJ,                                                       "+
+		"                                                                                                  "+
 		"       T.ALL_SR,                                                                                  "+
 		"       PODS.GET_RADIX_POINT(                                                                      "+
 		"          CASE WHEN T1.ALL_SR<>0 THEN (T.ALL_SR-T1.ALL_SR)*100/T1.ALL_SR                          "+
@@ -213,16 +226,16 @@ function getSumSql(levelSql,dealDate,where) {
 		"       PODS.GET_RADIX_POINT(                                                                      "+
 		"          CASE WHEN T3.ALL_SR<>0 THEN (T.ALL_SR-T3.ALL_SR)*100/T3.ALL_SR                          "+
 		"               ELSE 0 END ||'%',2) DB_ALL,                                                        "+
-		"       T.All1_SR,                                                                                 "+
+		"       T0.FEE ALL1_SR,                                                                            "+
 		"       PODS.GET_RADIX_POINT(                                                                      "+
-		"          CASE WHEN T.ALL1_SR<>0 THEN T.ALL_SR*100/T.ALL1_SR                                      "+
+		"          CASE WHEN T0.FEE<>0 THEN T.ALL_SR*100/T0.FEE                                            "+
 		"               ELSE 0 END ||'%',2) ALL_CHANL_SR,                                                  "+
 		"       PODS.GET_RADIX_POINT(                                                                      "+
-		"          CASE WHEN T.ALL1_SR=0 THEN 0                                                            "+
-		"               WHEN T1.ALL1_SR=0 THEN 0                                                           "+
-		"               WHEN T1.ALL_SR/T1.ALL1_SR=0 THEN 0                                                 "+
-		"               ELSE (T.ALL_SR/T.ALL1_SR-T1.ALL_SR/T1.ALL1_SR)*100/(T1.ALL_SR/T1.ALL1_SR)          "+
-		"               END ||'%',2) HB_ALL_CHANL                                                          "+
+		"          CASE WHEN T0.FEE=0 THEN 0                                                               "+
+		"               WHEN T11.FEE=0 THEN 0                                                              "+
+		"               WHEN T1.ALL_SR/T11.FEE=0 THEN 0                                                    "+
+		"               ELSE (T.ALL_SR/T0.FEE-T1.ALL_SR/T11.FEE)*100/(T1.ALL_SR/T11.FEE)                   "+
+		"               END ||'%',2) HB_ALL_CHANL                                                          "+      
 		"FROM (                                                                                            "+
 		"     SELECT GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                                                 "+
 		"           ,SUM(THIS_2G_SR)+ SUM(THIS_3G_SR)+SUM(THIS_4G_SR) THIS_YW_SR                           "+
@@ -231,12 +244,23 @@ function getSumSql(levelSql,dealDate,where) {
 		"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                        "+
 		"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                        "+
 		"           ,SUM(ALL_SR) ALL_SR                                                                    "+
-		"           ,SUM(all1_sr) All1_SR                                                                  "+
 		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
 		"      WHERE DEAL_DATE="+dealDate+"                                                                "+
-		                             where+
+		    where+
 		"      GROUP BY GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                                              "+
 		"      )T                                                                                          "+
+		"      LEFT JOIN (SELECT T.GROUP_ID_1,SUM(T.SR_ALL_NUM-T.SR_ICT_NUM)/10000 FEE                     "+
+		"                 FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                "+
+		"                 WHERE T.DEAL_dATE=201702                                                         "+
+		"                 GROUP BY T.GROUP_ID_1                                                            "+
+		"                 )T0                                                                              "+
+		"      ON (T.GROUP_ID_1=T0.GROUP_ID_1)                                                             "+
+		"      LEFT JOIN (SELECT T.GROUP_ID_1,SUM(T.SR_ALL_NUM-T.SR_ICT_NUM)/10000 FEE                     "+
+		"                 FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                "+
+		"                 WHERE T.DEAL_DATE="+getLastMonth(dealDate)+"                                     "+
+		"                 GROUP BY T.GROUP_ID_1                                                            "+
+		"                 )T11                                                                             "+
+		"      ON (T.GROUP_ID_1=T11.GROUP_ID_1)                                                            "+
 		"      LEFT JOIN(                                                                                  "+
 		"      SELECT GROUP_ID_1,GROUP_ID_1_NAME                                                           "+
 		"           ,SUM(THIS_2G_SR)+ SUM(THIS_3G_SR)+SUM(THIS_4G_SR) THIS_YW_SR                           "+
@@ -245,18 +269,18 @@ function getSumSql(levelSql,dealDate,where) {
 		"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                        "+
 		"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                        "+
 		"           ,SUM(ALL_SR) ALL_SR                                                                    "+
-		"           ,SUM(all1_sr) all1_sr                                                                  "+
 		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
 		"      WHERE DEAL_DATE="+getLastMonth(dealDate)+"                                                  "+
-		                            where+
+		    where+
 		"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
-		"      ) T1 ON(T.GROUP_ID_1=T1.GROUP_ID_1)                                                         "+
+		"      ) T1                                                                                        "+
+		"      ON(T.GROUP_ID_1=T1.GROUP_ID_1)                                                              "+
 		"      LEFT JOIN (                                                                                 "+
 		"      SELECT GROUP_ID_1,GROUP_ID_1_NAME                                                           "+
 		"            ,SUM(ALL_SR) ALL_SR                                                                   "+
 		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
 		"      WHERE DEAL_DATE="+getLastYearSameMonth(dealDate)+"                                          "+
-		                where+
+		    where+
 		"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
 		"      )T2 ON(T.GROUP_ID_1=T2.GROUP_ID_1)                                                          "+
 		"      LEFT JOIN (                                                                                 "+
@@ -264,7 +288,7 @@ function getSumSql(levelSql,dealDate,where) {
 		"            ,SUM(ALL_SR) ALL_SR                                                                   "+
 		"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
 		"      WHERE DEAL_DATE="+getFristMonth(dealDate)+"                                                 "+
-		               where+
+		    where+
 		"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
 		"      )T3                                                                                         "+
 		"      ON(T.GROUP_ID_1=T3.GROUP_ID_1)                                                              ";
@@ -429,9 +453,4 @@ function getLastYearSameMonth(dealDate){
     	return (year-1)+month;
     }
     return (year-1)+(month<10?'0'+parseInt(month):month);
-}
-
-function getLastYearLastMonth(dealDate){
-	var year=dealDate.substr(0,4);
-	return (year-1)+'12';
 }
