@@ -89,7 +89,7 @@ function getSql(){
 	var dealDate=$("#dealDate").val();
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
-	var where=" WHERE 1=1";
+	var where=" WHERE DEAL_DATE="+dealDate;
 	if(orgLevel==1){
 		
 	}else if(orgLevel==2){
