@@ -64,7 +64,7 @@ public class ExcelUtil {
 				bodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 				bodyStyle.setFillForegroundColor(HSSFColor.WHITE.index);
 				bodyStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-				bodyStyle.setBottomBorderColor(HSSFColor.WHITE.index);
+				bodyStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 				bodyStyle.setLeftBorderColor(HSSFColor.BLACK.index);
 				bodyStyle.setRightBorderColor(HSSFColor.BLACK.index);
 				bodyStyle.setTopBorderColor(HSSFColor.BLACK.index);
@@ -79,13 +79,13 @@ public class ExcelUtil {
 				bottomStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 				bottomStyle.setFillForegroundColor(HSSFColor.WHITE.index);
 				bottomStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-				bottomStyle.setBottomBorderColor(HSSFColor.WHITE.index);
+				bottomStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 				bottomStyle.setLeftBorderColor(HSSFColor.BLACK.index);
 				bottomStyle.setRightBorderColor(HSSFColor.BLACK.index);
 				bottomStyle.setTopBorderColor(HSSFColor.BLACK.index);
-				bottomStyle.setBorderBottom(HSSFCellStyle.BORDER_NONE);
-				bottomStyle.setBorderLeft(HSSFCellStyle.BORDER_NONE);
-				bottomStyle.setBorderRight(HSSFCellStyle.BORDER_NONE);
+				bottomStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+				bottomStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+				bottomStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
 				bottomStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 				
 				createHeader(sheet, titleStyle, titles);
@@ -115,7 +115,7 @@ public class ExcelUtil {
 				bodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 				bodyStyle.setFillForegroundColor(HSSFColor.WHITE.index);
 				bodyStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-				bodyStyle.setBottomBorderColor(HSSFColor.WHITE.index);
+				bodyStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 				bodyStyle.setLeftBorderColor(HSSFColor.BLACK.index);
 				bodyStyle.setRightBorderColor(HSSFColor.BLACK.index);
 				bodyStyle.setTopBorderColor(HSSFColor.BLACK.index);
@@ -123,20 +123,20 @@ public class ExcelUtil {
 				bodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
 				bodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
 				bodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-
+				
 				// 创建body样式
 				HSSFCellStyle bottomStyle = wb.createCellStyle();
 				bottomStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 				bottomStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 				bottomStyle.setFillForegroundColor(HSSFColor.WHITE.index);
 				bottomStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-				bottomStyle.setBottomBorderColor(HSSFColor.WHITE.index);
+				bottomStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 				bottomStyle.setLeftBorderColor(HSSFColor.BLACK.index);
 				bottomStyle.setRightBorderColor(HSSFColor.BLACK.index);
 				bottomStyle.setTopBorderColor(HSSFColor.BLACK.index);
-				bottomStyle.setBorderBottom(HSSFCellStyle.BORDER_NONE);
-				bottomStyle.setBorderLeft(HSSFCellStyle.BORDER_NONE);
-				bottomStyle.setBorderRight(HSSFCellStyle.BORDER_NONE);
+				bottomStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+				bottomStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+				bottomStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
 				bottomStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 				
 				createHeader(sheet, titleStyle, titles);
@@ -334,7 +334,11 @@ public class ExcelUtil {
 			HSSFRow row = sheet.createRow(y+ startRow);
 			for (int x = 0; x < tcx; x++) {
 				HSSFCell cell = row.createCell(x);
-				cell.setCellStyle(style);
+				//if(y==tcy-1){//如果是最后一行
+				//	cell.setCellStyle(bottomStyle);
+				//}else{
+					cell.setCellStyle(style);
+				//}
 				cell.setCellValue(bodyData.get(y)[x]);
 			}
 		}
@@ -345,6 +349,11 @@ public class ExcelUtil {
 				cell.setCellStyle(bottomStyle);
 			}
 		}*/
+		for (int x = 0; x < tcx; x++) {
+			sheet.autoSizeColumn(x,true);
+			sheet.setColumnWidth(x, sheet.getColumnWidth(x)+200);
+		}
+		
 
 	}
 }
