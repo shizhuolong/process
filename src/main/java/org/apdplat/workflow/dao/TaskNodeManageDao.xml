@@ -15,7 +15,7 @@
 	
 	<select id="queryApproversOfTaskNode" parameterType="String" resultType="java.util.Map">
 		SELECT 
-			B.OA_COM_ID,B.OA_DEP_ID,B.OA_JOB_ID,A.USER_ID
+			B.OA_COM_ID,B.OA_COM_ID||B.OA_DEP_ID OA_DEP_ID,B.OA_COM_ID||B.OA_DEP_ID||B.OA_JOB_ID OA_JOB_ID,A.USER_ID
 		FROM TB_ACT_TASK_APPROVER A 
 		INNER JOIN APDP_USER B ON A.USER_ID=B.ID
 		WHERE A.IS_VALID='1' AND A.TASK_ID=#{taskId}
@@ -27,16 +27,16 @@
 			WHERE OA_COM_ID IS NOT NULL AND OA_COM_NAME IS NOT NULL 
 		</if>
 		<if test="level==1">
-			SELECT DISTINCT OA_DEP_ID AS "id",OA_DEP_NAME AS "name",OA_COM_ID AS "pId",'1' AS "dLevel" FROM APDP_USER 
+			SELECT DISTINCT OA_COM_ID||OA_DEP_ID AS "id",OA_DEP_NAME AS "name",OA_COM_ID AS "pId",'1' AS "dLevel" FROM APDP_USER 
 			WHERE  OA_DEP_ID IS NOT NULL AND OA_DEP_NAME IS NOT NULL AND OA_COM_ID=#{treeId}
 		</if>
 		<if test="level==2">
-			SELECT DISTINCT OA_JOB_ID AS "id",OA_JOB_NAME AS "name",OA_DEP_ID AS "pId",'2' AS "dLevel" FROM APDP_USER
-			WHERE OA_JOB_ID IS NOT NULL AND OA_JOB_NAME IS NOT NULL AND OA_DEP_ID=#{treeId}
+			SELECT DISTINCT OA_COM_ID||OA_DEP_ID||OA_JOB_ID AS "id",OA_JOB_NAME AS "name",OA_COM_ID||OA_DEP_ID AS "pId",'2' AS "dLevel" FROM APDP_USER
+			WHERE OA_JOB_ID IS NOT NULL AND OA_JOB_NAME IS NOT NULL AND OA_COM_ID||OA_DEP_ID=#{treeId}
 		</if>
 		<if test="level==3">
-			SELECT TO_CHAR(ID) AS "id",REALNAME AS "name",OA_JOB_ID AS "pId",'3' AS "dLevel" FROM APDP_USER
-			WHERE OA_JOB_ID=#{treeId}
+			SELECT TO_CHAR(ID) AS "id",REALNAME AS "name",OA_COM_ID||OA_DEP_ID||OA_JOB_ID AS "pId",'3' AS "dLevel" FROM APDP_USER
+			WHERE OA_COM_ID||OA_DEP_ID||OA_JOB_ID=#{treeId}
 		</if>
 		
 		<if test="oaComId!=null and oaComId!=''">
