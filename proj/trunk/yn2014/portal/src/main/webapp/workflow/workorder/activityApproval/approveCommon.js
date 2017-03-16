@@ -195,7 +195,7 @@ function updateUserTree(userIds){
  			dataType:'json',
  			cache:false,
  			async:false,
- 			url:path+"/approver/approver-handler!qryTaskApproverDataTree.action",
+ 			url:path+"/approver/approver-handler!qryTaskApproverTreeData.action",
  			data:{
  	     		userIds:userIds
  			}, 
