@@ -52,8 +52,8 @@ function search(pageNumber) {
 				
 				+"<td>"+isNull(n['IS_JF'])+"</td>";
 				if(taskId&&taskId=="commissionManagerAudit"&&n['INTEGRAL_GRADE']!='D'&&n['INTEGRAL_GRADE']!='待评'&&n['STATE']!=11){//如果是佣金管理员、渠道等级不为"D"和"待评"
-					content+="<td><input type='text' value='"+isNull(n['IS_JF_CX'])+"' /><a href='#' upCx='"+n['UP_JF_CX']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateCx(this);'>保存</a>&nbsp;<font color='gray'>(最大:"+isNull(n['UP_JF_CX'])+"分)</font></td>";
-					content+="<td><input type='text' value='"+isNull(n['IS_JF_FCX'])+"' /><a href='#' upFcx='"+n['UP_JF_FCX']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateFcx(this);'>保存</a>&nbsp;<font color='gray'>(最大:"+isNull(n['UP_JF_FCX'])+"分)</font></td>";
+					content+="<td><input type='text' value='"+isNull(n['IS_JF_CX'])+"' /><a href='#' upCx='"+n['UP_JF_CX']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateCx(this);'>保存</a>&nbsp;<font color='gray'>(最大:</font><font color='"+(n['UP_JF_CX']>=0?"red":"green")+"'>"+isNull(n['UP_JF_CX'])+"</font><font color='gray'>分)</font></td>";
+					content+="<td><input type='text' value='"+isNull(n['IS_JF_FCX'])+"' /><a href='#' upFcx='"+n['UP_JF_FCX']+"' hqCode='"+isNull(n['FD_CHNL_ID'])+"' onclick='updateFcx(this);'>保存</a>&nbsp;<font color='gray'>(最大:</font><font color='"+(n['UP_JF_FCX']>=0?"red":"green")+"'>"+isNull(n['UP_JF_FCX'])+"</font><font color='gray'>分)</font></td>";
 				}else{
 					content+="<td>"+isNull(n['IS_JF_CX'])+"</td>";
 					content+="<td>"+isNull(n['IS_JF_FCX'])+"</td>";
