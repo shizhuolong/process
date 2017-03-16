@@ -36,7 +36,7 @@ var processCommon = {
 <script type="text/javascript" src="<%=path%>/js/zTree/js/jquery.ztree.core-3.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/js/zTree/js/jquery.ztree.excheck-3.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/workflow/workorder/activityApproval/graphTrace.js"></script>
-<script type="text/javascript" src="<%=path%>/workflow/workorder/activityApproval/approveCommon.js?v=1"></script>
+<script type="text/javascript" src="<%=path%>/workflow/workorder/activityApproval/approveCommon.js?v=2"></script>
 </head>
 <body>
 	<div id="defer-list">
