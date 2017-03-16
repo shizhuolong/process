@@ -449,8 +449,5 @@ function getFristMonth(dealDate){
 function getLastYearSameMonth(dealDate){
 	var year=dealDate.substr(0,4);
     var month=dealDate.substr(4,6);
-    if(month=='01'){
-    	return (year-1)+month;
-    }
-    return (year-1)+(month<10?'0'+parseInt(month):month);
+    return (year-1)+month;
 }
