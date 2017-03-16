@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/channel_subsidy_pay_approve_edit.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/channel_subsidy_pay_approve_edit.js?v=1"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
