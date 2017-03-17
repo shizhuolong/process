@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/bus_income_increase_mon.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/bus_income_increase_mon.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,15 +37,16 @@
 				name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-					<td width="8%" style="padding-left: 10px;">开始账期：</td>
+					<td width="8%" style="padding-left: 10px;">账期：</td>
 					<td width="24%">
 						<input type="text"  class="Wdate default-text-input wper40" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month%>" id="startDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=month%>" id="dealDate">
 					</td>
-					<td width="8%" style="padding-left: 10px;">结束账期：</td>
-					<td width="24%">
-						<input type="text"  class="Wdate default-text-input wper40" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',minDate:'#F{$dp.$D(\'startDate\')}',isShowClear:false})" value="<%=month%>" id="endDate">
+					<td width="5%" align="right">地市：</td>
+					<td width="15%">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
+								<option value=''>请选择</option>
+						</select>
 					</td>
 					<td width="8%">经营模式：</td>
 					<td width="15%">
