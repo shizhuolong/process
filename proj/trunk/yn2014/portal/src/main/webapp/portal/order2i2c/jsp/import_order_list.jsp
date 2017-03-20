@@ -11,7 +11,7 @@
 	Org org = user.getOrg();
 	String path = request.getContextPath();
 	Calendar ca = Calendar.getInstance();
-	ca.add(Calendar.DATE, -1);
+	ca.add(Calendar.DATE, 0);
 	String time = new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <html>
@@ -37,7 +37,7 @@
 <script type="text/javascript"
 	src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript"
-	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=1"></script>
+	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=4"></script>
 </head>
 <body style="overflow-x: auto; margin: 5px; margin-top: 0;">
 	<input type="hidden" id="ctx" value="<%=path%>">
@@ -73,10 +73,10 @@
 				<td width="1%"><a class="default-btn" href="#" id="searchBtn"
 					style="float: right; margin-right: 18px;">查询</a></td>
 				<td width="1%"><a style="cursor: pointer; margin-left: 20px;"
-					class="default-btn" onclick="orderExport()">导入</a>
+					class="default-btn" onclick="orderImport()">导入</a>
 				</td>
 				<td width="1%"><a style="cursor: pointer; margin-left: 20px;"
-					class="default-btn" id="exportBtn" onclick="exportData()">导出</a></td>
+					class="default-btn" id="exportBtn" onclick="orderExport()">导出</a></td>
 			</tr>
 		</table>
 	</div>
