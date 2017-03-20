@@ -26,7 +26,7 @@ $(function(){
 				if($tr){
 					code=$tr.attr("row_id");
 					orgLevel=parseInt($tr.attr("orgLevel"));
-					if(orgLevel==2){//点击省
+					if(orgLevel==2){//点击市
 						where+=" AND GROUP_ID_1= '"+code+"'";
 						sql=getNextSql(where);
 					}else{
@@ -173,7 +173,7 @@ function getSumSql(where) {
 	 "                          'FM9999990.99')) ZY_GREAT_20_ZB                                                             "+
 	 "  FROM PMRT.TB_MRT_BUS_BROAD_DEV_MON T                                                                                "+
 	 " WHERE T.DEAL_DATE = '"+dealDate+"'                                                                                   "+
-	             where+
+	             where+ 
 	 "  GROUP BY GROUPING SETS(T.GROUP_ID_0,(T.GROUP_ID_0, T.GROUP_ID_1_NAME, T.GROUP_ID_1))                                "+
 	 " )T                                                                                                                   "+
 	 " LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME, '合计') GROUP_ID_1_NAME,GROUP_ID_1,                                            "+

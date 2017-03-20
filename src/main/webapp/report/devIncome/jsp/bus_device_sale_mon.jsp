@@ -34,27 +34,27 @@
 	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<form id="searchForm" method="post">
 			<input type="hidden" name="resultMap.page" /> <input type="hidden" name="resultMap.rows" />
-			<table width="100%" style="margin: 10px 0; border:none;">
+			<table width="120%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="5%" align="right">账期：</td>
-					<td width="15%">
+					<td width="8%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
 					<td width="5%" align="right">地市：</td>
-					<td width="15%">
+					<td width="8%">
 						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="8%" align="right">经营模式：</td>
-					<td width="15%">
+					<td width="8%">
 						<select name="operateType" id="operateType" class="default-text-input wper80">
 								<option value='自营'>自营</option>
 						</select>
 					</td>
 					<td width="10%" align="right">营业厅类型：</td>
-					<td width="15%">
+					<td width="8%">
 						<select name="hallType" id="hallType" class="default-text-input wper80">
 								<option value=''>请选择</option>
 								<option value="旗舰厅">旗舰厅</option>
@@ -63,7 +63,7 @@
 						</select>
 					</td>
 					<td width="10%" align="right">营业厅编码：</td>
-					<td width="15%">
+					<td width="8%">
 						<input class="default-text-input wper80" name="hall_id" type="text" id="hall_id"/>
 					</td>
 					<td width="5%">
