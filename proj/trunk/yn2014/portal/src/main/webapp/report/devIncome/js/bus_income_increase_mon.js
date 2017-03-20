@@ -23,15 +23,18 @@ $(function(){
 			var level;
 			dealDate=$("#dealDate").val();
 			var where=" WHERE DEAL_DATE='"+dealDate+"'";
+			var where1=" WHERE DEAL_DATE='"+getLastMonth(dealDate)+"'";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
 					preField=' T.GROUP_ID_1 ROW_ID,T.GROUP_ID_1_NAME ROW_NAME,\'\' HQ_CHAN_CODE,\'\' OPERATE_TYPE,';
 					where+=' AND GROUP_ID_0=\''+code+'\'';
+					where1+=' AND GROUP_ID_0=\''+code+'\'';
 					level=2;
 				}else if(orgLevel==3){//点击市
 					where+=' AND GROUP_ID_1=\''+code+'\'';
+					where1+=' AND GROUP_ID_1=\''+code+'\'';
 					level=3;
 				}else{
 					return {data:[],extra:{}}
@@ -44,10 +47,12 @@ $(function(){
 				if(orgLevel==1){//省
 					preField=' \'云南省 \' ROW_NAME,\'86000\' ROW_ID,\'\' HQ_CHAN_CODE,\'\' OPERATE_TYPE,';
 					where+=" AND GROUP_ID_0='"+code+"'";
+					where1+=" AND GROUP_ID_0='"+code+"'";
 					level=1;
 				}else if(orgLevel==2||orgLevel==3){//市
 					preField=' T.GROUP_ID_1 ROW_ID,T.GROUP_ID_1_NAME ROW_NAME,\'\' HQ_CHAN_CODE,\'\' OPERATE_TYPE,';
 					where+=' AND GROUP_ID_1=\''+code+'\'';
+					where1+=' AND GROUP_ID_1=\''+code+'\'';
 					orgLevel=2;
 					level=2;
 				}else{
@@ -57,9 +62,9 @@ $(function(){
 			}
 			var sql="";
 			if(preField!=""){
-				sql='SELECT '+getSql(preField,level,where);
+				sql='SELECT '+getSql(preField,level,where,where1);
 			}else{
-				sql=getSql('',level,where);
+				sql=getSql('',level,where,where1);
 			}
 			
 			var d=query(sql);
@@ -76,14 +81,17 @@ $(function(){
 	});
 });
 
-function getSql(preField,orgLevel,where) {
+function getSql(preField,orgLevel,where,where1) {
 	var operateType=$("#operateType").val();
 	var regionCode=$("#regionCode").val();
+	dealDate=$("#dealDate").val();
 	if(operateType!=""){
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
+		where1+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
+		where1+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	
 	if(orgLevel==1){
@@ -178,7 +186,7 @@ function getSql(preField,orgLevel,where) {
 	"               SUM(NVL(THIS_FUSE_INCOME, 0)) THIS_FUSE_INCOME,                      "+
 	"               SUM(NVL(THIS_ALL_INCOME, 0)) THIS_ALL_INCOME                         "+
 	"        FROM PMRT.TB_MRT_BUS_INCOME_INCREASE_MON                                    "+
-	            where+ 
+	            where1+ 
 	"        GROUP BY GROUP_ID_0                                                         "+
 	"        )T1                                                                         "+
 	"        ON(T.GROUP_ID_0=T1.GROUP_ID_0)                                              ";
@@ -274,7 +282,7 @@ function getSql(preField,orgLevel,where) {
 		"               SUM(NVL(THIS_FUSE_INCOME, 0)) THIS_FUSE_INCOME,                "+
 		"               SUM(NVL(THIS_ALL_INCOME, 0)) THIS_ALL_INCOME                   "+
 		"        FROM PMRT.TB_MRT_BUS_INCOME_INCREASE_MON                              "+
-		                     where+                                                    
+		                     where1+                                                    
 		"        GROUP BY GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                        "+
 		"        )T1                                                                   "+
 		"        ON(T.GROUP_ID_1=T1.GROUP_ID_1)                                        ";
@@ -405,4 +413,12 @@ function downsAll() {
 	var title=[["地市","营业厅名称","渠道编码","经营模式","2G业务（万元）","","","3G业务（万元）","","","4G业务（万元）","","","固网（万元）","","","其中：宽带（万元）","","","其中：融合（万元）","","","合计（万元）","",""],
 	           ["","","","","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比","出帐收入","较上月净增","环比"]];
 	downloadExcel(sql,title,showtext);
+}
+function getLastMonth(dealDate){
+	var year=dealDate.substr(0,4);
+    var month=dealDate.substr(4,6);
+    if(month=='01'){
+    	return (year-1)+'12';
+    }
+   return dealDate-1;
 }
