@@ -12,7 +12,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
     <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/import_order.js"></script>
+	<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/import_order.js?v=1"></script>
 	<style>
 		th {
 		    background: #ffecc8 none repeat scroll 0 0;
@@ -81,7 +81,7 @@
 							</tr>
 							<tr>
 								<td colspan="4">
-								    <span style="color:red;font-size:15px;">(注意事项：上传的模板必须要与模板下载的一致，表头不能有多列或少列；单元格必须要有实线边框；模板中不能有公式，拉伸或者特殊格式；数字列长度如果超过7位，请设置为文本格式，否则会被Excel转化为科学计数法；上传出现错误时可以将数据复制到页面下载的模板中再上传。)</span>
+								    <span style="color:red;font-size:15px;">(注意事项：上传的模板必须要与模板下载的一致，表头不能有多列或少列；单元格必须要有实线边框；模板中不能有公式，拉伸或者特殊格式；数字列请设置为文本格式，否则会被Excel转化为科学计数法；上传出现错误时可以将数据复制到页面下载的模板中再上传。)</span>
 								</td>
 							</tr>
 						</table>
