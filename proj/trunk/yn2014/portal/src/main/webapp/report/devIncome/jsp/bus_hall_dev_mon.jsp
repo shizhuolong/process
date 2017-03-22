@@ -67,7 +67,7 @@
 						style="float: right; margin-right: 28px;">查询</a>
 					</td>
 					<td width="5%">
-						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+						<a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出明细</a>
 					</td>
 				</tr>
 			</table>
