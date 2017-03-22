@@ -37,7 +37,7 @@
 <script type="text/javascript"
 	src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript"
-	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=4"></script>
+	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=5"></script>
 </head>
 <body style="overflow-x: auto; margin: 5px; margin-top: 0;">
 	<input type="hidden" id="ctx" value="<%=path%>">

@@ -49,7 +49,7 @@ function search(pageNumber) {
 	var startTime=$("#startTime").val();
 	var endTime=$("#endTime").val();
 	var username=$("#username").val();
-	var sql="SELECT "+field.join(",")+" FROM PODS.TAB_ODS_2I2C_LEAD_DAY_TEMP WHERE ORDER_TIME BETWEEN '"+startTime+"' AND '"+endTime+"' AND LOGIN_NAME='"+username+"'";
+	var sql="SELECT "+field.join(",")+" FROM PODS.TAB_ODS_2I2C_LEAD_DAY WHERE ORDER_TIME BETWEEN '"+startTime+"' AND '"+endTime+"' AND LOGIN_NAME='"+username+"'";
 	var orgLevel=$("#orgLevel").val();
 	
 	var orderNo=$("#orderNo").val();
