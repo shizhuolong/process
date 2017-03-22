@@ -51,19 +51,35 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		$.each(pages.rows,function(i,n){
-				content+="<tr>"
-				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
-				+"<td>"+isNull(n['CC_DESC'])+"</td>"
-				+"<td>"+isNull(n['CC_CODE'])+"</td>"
-				+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
-				+"<td>"+isNull(n['UNIT_ID'])+"</td>"
-				+"<td style='text-align:center;'>" 
-				+	"<a href='#' groupId1='"+n['GROUP_ID_1']+"' ccCode='"+n['CC_CODE']+"' onclick='editRow(this);'>修改</a>&nbsp;&nbsp;&nbsp;" 
-				+	"<a href='#' groupId1='"+n['GROUP_ID_1']+"' ccCode='"+n['CC_CODE']+"' onclick='saveRow(this);'>保存</a>" 
-				+"</td>" 
-				+"</tr>";
-			});
+	   		var orgLevel=$("#orgLevel").val();
+	   		if(orgLevel==1){
+	   			$.each(pages.rows,function(i,n){
+					content+="<tr>"
+					+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+					+"<td>"+isNull(n['CC_DESC'])+"</td>"
+					+"<td>"+isNull(n['CC_CODE'])+"</td>"
+					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+					+"<td>"+isNull(n['UNIT_ID'])+"</td>"
+					+"<td style='text-align:center;'>" 
+					+	"<a href='#' groupId1='"+n['GROUP_ID_1']+"' ccCode='"+n['CC_CODE']+"' onclick='editRow(this);'>修改</a>&nbsp;&nbsp;&nbsp;" 
+					+	"<a href='#' groupId1='"+n['GROUP_ID_1']+"' ccCode='"+n['CC_CODE']+"' onclick='saveRow(this);'>保存</a>" 
+					+"</td>" 
+					+"</tr>";
+				});
+	   		}else{
+	   			$.each(pages.rows,function(i,n){
+					content+="<tr>"
+					+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
+					+"<td>"+isNull(n['CC_DESC'])+"</td>"
+					+"<td>"+isNull(n['CC_CODE'])+"</td>"
+					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
+					+"<td>"+isNull(n['UNIT_ID'])+"</td>"
+					+"<td style='text-align:center;'>" 
+					+"</td>" 
+					+"</tr>";
+				});
+	   		}
+	   		
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {
