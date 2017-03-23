@@ -37,7 +37,7 @@
 <script type="text/javascript"
 	src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript"
-	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=5"></script>
+	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=6"></script>
 </head>
 <body style="overflow-x: auto; margin: 5px; margin-top: 0;">
 	<input type="hidden" id="ctx" value="<%=path%>">
@@ -48,17 +48,17 @@
 		<table style="margin: 0px 0; border: none; width: 100%;font-size:100%;">
 			<tr>
 				<td width="8%">开始时间：</td>
-				<td width="1%"><input type="text" style="width: 200px;"
+				<td width="1%"><input type="text" style="width: 100px;"
 					class="Wdate default-text-input wper80" readonly
 					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})"
 					value="<%=time%>" id="startTime" name="startTime" /></td>
 				<td width="8%">结束时间：</td>
-				<td width="1%"><input type="text" style="width: 200px;"
+				<td width="1%"><input type="text" style="width: 100px;"
 					class="Wdate default-text-input wper80" readonly
 					onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})"
 					value="<%=time%>" id="endTime" name="endTime" /></td>
 				<td width="8%">订单编号：</td>
-				<td width="1%"><input type="text" style="width: 200px;"
+				<td width="1%"><input type="text" style="width: 150px;"
 					class="default-text-input wper80" id="orderNo" name="orderNo" /></td>
 				<td width="8%" style="text-align: right;">激活状态：</td>
 				<td width="13%"><select name="active_status" id="active_status"
