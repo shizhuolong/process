@@ -45,7 +45,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="username" value="<%=user.getUsername()%>">
 	<div class="search-div">
-		<table style="margin: 0px 0; border: none; width: 100%;">
+		<table style="margin: 0px 0; border: none; width: 100%;font-size:100%;">
 			<tr>
 				<td width="8%">开始时间：</td>
 				<td width="1%"><input type="text" style="width: 200px;"
