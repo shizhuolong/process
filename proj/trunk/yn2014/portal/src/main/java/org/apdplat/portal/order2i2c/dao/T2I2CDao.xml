@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.order2i2c.dao.T2I2CDao">
+
+	<select id="undistributedOrderList" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT * FROM PODS.VIEW_ODS_2I2C_NOT_ASS T 
+			WHERE T.GROUP_ID_1=#{regionCode} 
+	</select>
+	
+	<select id="taskListDetail" parameterType="java.util.Map" resultType="java.util.Map">
+			select * from PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL d where d.work_no=#{workNo}
+	</select>
+	
+	<select id="getTeamByParentId" parameterType="java.lang.String" resultType="java.util.Map">
+			SELECT
+				T.ID||'' ID,T.NAME,T.F_ID||'' F_ID,T.TEAM_TYPE
+			FROM PORTAL.TAB_PORTAL_2I2C_TEAM T WHERE T.F_ID=#{pId} 
+			<if test="regionCode!=null and regionCode!=''">
+				and t.GROUP_ID_1=#{regionCode}
+			</if>
+			AND T.IS_VALID=1
+	</select>
+	<select id="getTeamByWorkNo" parameterType="java.lang.String" resultType="java.util.Map">
+			SELECT
+				T.ID||'' ID,T.NAME,T.F_ID||'' F_ID,T.TEAM_TYPE
+			FROM PORTAL.TAB_PORTAL_2I2C_TEAM T WHERE T.F_ID=#{pId} 
+			<if test="workNo!=null and workNo!=''">
+				and t.GROUP_ID_1=(SELECT GROUP_ID_1 FROM PODS.TAB_ODS_2I2C_ASS_TASK WHERE WORK_NO=#{workNo})
+			</if>
+			AND T.IS_VALID=1
+	</select>
+	
+	<update id="updateStatus" parameterType="java.lang.String">
+		update PODS.TAB_ODS_2I2C_ASS_TASK t set t.status=#{status} where t.work_no=#{workNo}
+	</update>
+</mapper>
