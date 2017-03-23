@@ -9,12 +9,15 @@ import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.portal.costManagement.service.SalesActualTimeService;
 import org.apdplat.portal.index.model.EchartsSeries;
+import org.apdplat.report.devIncome.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class SalesActualTimeAction extends BaseAction{
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private SalesActualTimeService salesActualTimeService;
+	@Autowired
+	private ReportService service;
 	private final APDPlatLogger logger = new APDPlatLogger(getClass());
 	
 	private String groupId;
@@ -22,6 +25,7 @@ public class SalesActualTimeAction extends BaseAction{
 	private String startDate;
 	private String orgLevel;
 	private String orgCode;
+	private String hrId;
 	private String devType;
 	private String rows;//每页显示的记录数  
 	private String page;//当前第几页  
@@ -42,6 +46,9 @@ public class SalesActualTimeAction extends BaseAction{
 			}
 			if(orgLevel!=null&&!"".equals(orgLevel)){
 				paramsMap.put("orgLevel", orgLevel);
+				if(orgLevel.equals("3")){
+					paramsMap.put("hrIds", power(hrId,endDate));
+				}
 			}
 			if(orgCode!=null&&!"".equals(orgCode)){
 				paramsMap.put("orgCode", orgCode);
@@ -179,7 +186,18 @@ public class SalesActualTimeAction extends BaseAction{
 		return result;
 	}
 	
-	
+	public String power(String hrId,String month){
+		month=month.substring(0,6);
+		String sql="SELECT PORTAL.HR_PERM('"+hrId+"','"+month+"') HRIDS FROM DUAL";  
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("sql", sql);
+		List<Map<String, Object>> list=service.query(params);
+		String r="''";
+		if(list!=null&&list.size()>0){
+			r=list.get(0).get("HRIDS").toString();
+		}
+		return "("+r+")";
+	}
 	
 	public String getDevType() {
 		return devType;
@@ -259,6 +277,14 @@ public class SalesActualTimeAction extends BaseAction{
 
 	public void setNextCode(String nextCode) {
 		this.nextCode = nextCode;
+	}
+
+	public String getHrId() {
+		return hrId;
+	}
+
+	public void setHrId(String hrId) {
+		this.hrId = hrId;
 	}
 	
 	
