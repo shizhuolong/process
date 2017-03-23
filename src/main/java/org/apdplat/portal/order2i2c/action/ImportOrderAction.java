@@ -144,22 +144,30 @@ public class ImportOrderAction extends BaseAction {
 						pre.addBatch();
 					}
 					pre.executeBatch();
-					conn.commit();
-					conn.setAutoCommit(true);
+					conn.commit();//手动提交
 					String result=importToResult(dealDate,regionCode,username);
 					if(result.equals("0")){//存过执行成功
 						
+					}else if(result.equals("1")){
+						err.add("系统出现异常！");
 					}else{
 						err.add(result);
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				try {
+					conn.rollback();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 				err.add(e.getMessage());
 			}finally{
 				try {
-					if(conn!=null)
-					conn.close();
+					if(conn!=null){
+						conn.setAutoCommit(true);
+						conn.close();
+					}
 					if(wb!=null)
 					wb.close();
 				} catch (Exception e) {
