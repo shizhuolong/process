@@ -76,7 +76,7 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" AND GROUP_ID_1="+code;
 	}else{
-		 var hrIds=_jf_power(hrId,time);
+		 var hrIds=_jf_power(hrId,startDate);
 		 if(hrIds!=""){
 		   sql+=" AND HR_ID in("+hrIds+") ";
 		 }else{
