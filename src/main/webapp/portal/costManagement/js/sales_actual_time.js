@@ -28,6 +28,7 @@
 function dataShow(){
 	var dealDate = $("#dealDate").val();
 	var orgLevel = $("#orgLevel").val();
+	var hrId = $("#hrId").val();
 	var orgCode  = $("#code").val();
 	var orgName  = $("#orgName").val();
 	$('#dataGrid').treegrid({
@@ -43,7 +44,8 @@ function dataShow(){
 	    queryParams : {
 			"endDate":dealDate,
 			"orgLevel":orgLevel,
-			"orgCode" :orgCode
+			"orgCode" :orgCode,
+			"hrId":hrId
         },
         frozenColumns:[[{field:'GROUPNAME',title:'组织架构',width:284,resizable:true}]],
 	    columns:[[
