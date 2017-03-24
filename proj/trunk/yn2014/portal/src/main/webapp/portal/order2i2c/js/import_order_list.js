@@ -4,10 +4,11 @@ var field=["ORDER_NO","ORDER_TIME","CITY_NAME","SHOOP_OFF","SHOOP_RECE","ORDER_S
 var report = null;
 
 var downSql="";
+var orgLevel="";
 $(function() {
-	var orgLevel=$("#orgLevel").val();
+	orgLevel=$("#orgLevel").val();
 	if(orgLevel==1){
-		$("#reppeatBtn").remove();
+		$("#orderImportBtn").remove();
 	}
 	report = new LchReport({
 		title : title,
@@ -49,9 +50,10 @@ function search(pageNumber) {
 	var startTime=$("#startTime").val();
 	var endTime=$("#endTime").val();
 	var username=$("#username").val();
-	var sql="SELECT "+field.join(",")+" FROM PODS.TAB_ODS_2I2C_LEAD_DAY WHERE ORDER_TIME BETWEEN '"+startTime+"' AND '"+endTime+"' AND LOGIN_NAME='"+username+"'";
-	var orgLevel=$("#orgLevel").val();
-	
+	var sql="SELECT "+field.join(",")+" FROM PODS.TAB_ODS_2I2C_LEAD_DAY WHERE ORDER_TIME BETWEEN '"+startTime+"' AND '"+endTime+"'";
+	if(orgLevel==2){
+		sql+=" AND LOGIN_NAME='"+username+"'";
+	}
 	var orderNo=$("#orderNo").val();
 	var active_status=$("#active_status").val();
 	if(orderNo!=""){

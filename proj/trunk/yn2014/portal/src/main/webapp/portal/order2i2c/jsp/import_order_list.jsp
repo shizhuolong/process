@@ -37,7 +37,7 @@
 <script type="text/javascript"
 	src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript"
-	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=6"></script>
+	src="<%=path%>/portal/order2i2c/js/import_order_list.js?v=1"></script>
 </head>
 <body style="overflow-x: auto; margin: 5px; margin-top: 0;">
 	<input type="hidden" id="ctx" value="<%=path%>">
@@ -73,7 +73,7 @@
 				<td width="1%"><a class="default-btn" href="#" id="searchBtn"
 					style="float: right; margin-right: 18px;">查询</a></td>
 				<td width="1%"><a style="cursor: pointer; margin-left: 20px;"
-					class="default-btn" onclick="orderImport()">导入</a>
+					class="default-btn" id="orderImportBtn" onclick="orderImport()">导入</a>
 				</td>
 				<td width="1%"><a style="cursor: pointer; margin-left: 20px;"
 					class="default-btn" id="exportBtn" onclick="orderExport()">导出</a></td>
