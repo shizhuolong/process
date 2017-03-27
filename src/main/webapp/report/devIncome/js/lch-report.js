@@ -801,10 +801,10 @@ function _init_operateType(){
 	var h="<option value='自营'>自营</option>";
 	
 	//玉溪特殊处理
-	var code=$("#code").val();
-	if(code=="16005"&&document.title=='营业厅收入报表'){//玉溪的营业厅收入报表
-		h="<option value=''>全部</option><option value='柜台外包'>柜台外包</option><option value='自营'>自营</option><option value='他营'>他营</option>";
-	}
+	//var code=$("#code").val();
+	//if(code=="16005"&&document.title=='营业厅收入报表'){//玉溪的营业厅收入报表
+		h="<option value=''>全部</option><option value='柜台外包'>柜台外包</option><option value='自营' selected>自营</option><option value='他营'>他营</option>";
+	//}
 	
 	$operateType.empty().html(h);
 }
