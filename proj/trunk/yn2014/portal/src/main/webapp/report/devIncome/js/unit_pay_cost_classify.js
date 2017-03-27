@@ -6,8 +6,6 @@ var title=[
            ];
 var report = null;
 $(function() {
-	//获取经营模式
-	getOperType();
 	//获取缴费方式
 	getPayMode();
 	report = new LchReport({
@@ -235,40 +233,6 @@ function roundN(number,fractionDigits){
         return round(number*pow(10,fractionDigits))/pow(10,fractionDigits);   
     }   
 }  
-
-/**
- * 获取经营模式
- */
-function getOperType(){
-    var sql=" SELECT DISTINCT OPERATE_TYPE  FROM PMRT.TAB_MRT_BUS_PAYMENT_CLASS_MON WHERE 1=1  ";
-    var orgLevel=$("#orgLevel").val();
-    var code=$("#code").val();
-    var region =$("#region").val();
-    if(orgLevel==1){
-        sql+="";
-    }else{
-        sql+=" and T.GROUP_ID_1='"+region+"'";
-    }
-    var d=query(sql);
-    if (d) {
-        var h = '';
-        if (d.length == 1) {
-            h += '<option value="' + d[0].OPERATE_TYPE
-                    + '" selected >'
-                    + d[0].OPERATE_TYPE + '</option>';
-        } else {
-            h += '<option value="" selected>请选择</option>';
-            for (var i = 0; i < d.length; i++) {
-                h += '<option value="' + d[i].OPERATE_TYPE + '">' + d[i].OPERATE_TYPE + '</option>';
-            }
-        }
-        var $area = $("#operType");
-        var $h = $(h);
-        $area.empty().append($h);
-    } else {
-        alert("获取经营模式失败");
-    }
-}
 
 /**
  * 获取缴费方式
