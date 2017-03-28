@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,6 @@ import javax.sql.DataSource;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -45,7 +46,7 @@ public class ImportIronProAction extends BaseAction {
 	@Resource
 	DataSource dataSource;
 
-	public void importToResult() {
+	public void importToResult() throws SQLException {
 		  User user = UserHolder.getCurrentLoginUser();
 		  Org org=user.getOrg();
 		  String regionCode=org.getRegionCode();
@@ -53,6 +54,16 @@ public class ImportIronProAction extends BaseAction {
 		  SpringManager.getUpdateDao().update(delRepeat);
 		  String importToResult = "INSERT INTO PMRT.TAB_MRT_IRON_PRO_MON SELECT * FROM PMRT.TAB_MRT_IRON_PRO_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+ regionCode+"'";
 	      SpringManager.getUpdateDao().update(importToResult);
+	      Connection conn =null;
+		  CallableStatement stmt=null;
+			//调用存储过程
+			conn = dataSource.getConnection();
+			stmt = conn.prepareCall("{call PMRT.PRC_MRT_IRON_UNIT_REFRESH(?,?)}");
+			stmt.setString(1,time);
+			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
+			stmt.executeUpdate();
+			conn.close();
+			stmt.close();
 	}
 	
 	public String importToTemp() {
