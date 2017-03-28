@@ -59,6 +59,8 @@ public class ImportElectricAction extends BaseAction {
 		SpringManager.getUpdateDao().update(importToResult);*/
 		Connection conn =null;
 		CallableStatement stmt=null;
+		Connection conn1 =null;
+		CallableStatement stmt1=null;
 		//调用存储过程
 		try {
 			conn = dataSource.getConnection();
@@ -69,6 +71,14 @@ public class ImportElectricAction extends BaseAction {
 			stmt.setString(3,"TAB_MRT_ELECTRIC_CHARGE_MON");
 			stmt.registerOutParameter(4,java.sql.Types.DECIMAL);
 			stmt.executeUpdate();
+			//调用存储过程
+			conn1 = dataSource.getConnection();
+			stmt1 = conn1.prepareCall("{call PMRT.PRC_MRT_IRON_UNIT_REFRESH(?,?)}");
+			stmt1.setString(1,time);
+			stmt1.registerOutParameter(2,java.sql.Types.DECIMAL);
+			stmt1.executeUpdate();
+			conn1.close();
+			stmt1.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
