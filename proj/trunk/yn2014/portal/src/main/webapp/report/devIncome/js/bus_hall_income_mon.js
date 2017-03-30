@@ -286,7 +286,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"      SELECT GROUP_ID_1,GROUP_ID_1_NAME                                                           "+
 			"            ,SUM(ALL_SR) ALL_SR                                                                   "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
-			"      WHERE DEAL_DATE="+getLastYearSameMonth(startDate)+"                                          "+
+			"      WHERE DEAL_DATE="+getLastYearSameMonth(startDate)+"                                         "+
 			    where+
 			"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
 			"      )T2 ON(T.GROUP_ID_1=T2.GROUP_ID_1)                                                          "+
@@ -294,15 +294,14 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"      SELECT GROUP_ID_1,GROUP_ID_1_NAME                                                           "+
 			"            ,SUM(ALL_SR) ALL_SR                                                                   "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
-			"      WHERE DEAL_DATE="+getFristMonth(startDate)+"                                                 "+
+			"      WHERE DEAL_DATE="+getFristMonth(startDate)+"                                                "+
 			    where+
 			"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
 			"      )T3                                                                                         "+
 			"      ON(T.GROUP_ID_1=T3.GROUP_ID_1)                                                              ";
 		}else{
-			return "SELECT T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE ROW_ID,                                                              "+
-			"       T.BUS_HALL_NAME ROW_NAME,                                                           "+
-			"       T.HQ_CHAN_CODE,                                                                     "+
+			return "SELECT T.GROUP_ID_1_NAME,                                                           "+
+			"       T.BUS_HALL_NAME ROW_NAME,T.HQ_CHAN_CODE ROW_ID,                                     "+
 			"       T.T_TYPE,                                                                           "+
 			"       T.OPERATE_TYPE,                                                                     "+
 			"       T.THIS_YW_SR,                                                                       "+
