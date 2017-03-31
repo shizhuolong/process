@@ -64,16 +64,16 @@ function getsql(){
 	}
 	//权限
 	if(orgLevel==1){
-		where+=" AND GROUP_ID_0='"+code+"'";
+
 	}else if(orgLevel==2){
 		where+=" AND GROUP_ID_1 ='"+code+"' ";
 	}else{
 		where+=" AND 1=2";
 	}
 	if(sr_type!=""){
-		return "SELECT DEAL_DATE,GROUP_ID_1_NAME,"+field.join(",")+" FROM PMRT.VIEW_MRT_CHNL_INCOME_MON "+where; 
+		return "SELECT DEAL_DATE,GROUP_ID_1_NAME,"+field.join(",")+" FROM PMRT.VIEW_MRT_CHNL_INCOME_MON"+where; 
 	}
-	return "SELECT DEAL_DATE,NVL(GROUP_ID_1_NAME,'合计') GROUP_ID_1_NAME,"+getSumSql()+" FROM PMRT.VIEW_MRT_CHNL_INCOME_MON "+where+" GROUP BY DEAL_DATE, GROUP_ID_1,GROUP_ID_1_NAME ORDER BY GROUP_ID_1";
+	return "SELECT DEAL_DATE,GROUP_ID_1_NAME,"+field.join(",")+" FROM PMRT.VIEW_MRT_CHNL_INCOME_ALL_MON"+where;
 }
 
 function getSumSql(){
