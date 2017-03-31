@@ -1,5 +1,6 @@
 var report;
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_BROAD_DEV_DAY"));
 	var title=[["组织架构","渠道编码","经营模式","厅类型","自有厅新增","","","自有厅20M以上","","","","","全网新增","","","全网20M以上","","","",""],
 	           ["","","","","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比","当日发展","当月累计发展","较上月同期增减","[20M 50M)用户数","[20M 50M)占比","[50M 100M)用户数","[50M 100M)占比","20M及以上当月累计新增用户占比"]];
 	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","ZY_DEV_NUM","ZY_DEV_NUM1","ZY_INCREASE_DEV","ZY_20_50_NUM1","ZY_20_50_ZB","ZY_50_100_NUM1","ZY_50_100_ZB","ZY_GREAT_20_ZB","QW_DEV_NUM","QW_DEV_NUM1","QW_INCREASE_DEV","QW_20_50_NUM1","QW_20_50_ZB","QW_50_100_NUM1","QW_50_100_ZB","QW_GREAT_20_ZB"];

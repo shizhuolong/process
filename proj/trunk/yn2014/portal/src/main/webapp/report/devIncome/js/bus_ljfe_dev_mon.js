@@ -6,6 +6,7 @@ var report = null;
 var sql="";
 var downsql="";
 $(function() {
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_LJFE_DEV_MON"));
 	report = new LchReport({
 		title : title,
 		field : field,

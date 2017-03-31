@@ -4,6 +4,7 @@ var title=[["组织架构","渠道编码","经营模式","2G业务（万元）",
 var report=null;
 var dealDate="";
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_INCOME_INCREASE_MON"));
 	report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),

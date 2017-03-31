@@ -3,6 +3,9 @@ var field="";
 var startDate="";
 var endDate="";
 $(function(){
+	var maxDate=getMaxDate("PMRT.TB_MRT_BUS_CHNL_INCOME_DAY");
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
 	$("#searchBtn").click(function(){
 		startDate=$("#startDate").val();
 		endDate=$("#endDate").val();

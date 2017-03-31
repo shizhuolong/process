@@ -1,4 +1,5 @@
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_LEAVE_RATE_MON"));
 	var dealDate=$("#dealDate").val();
 	//省，地市
 	var title=[["组织架构","经营模式","自有厅移动网","","","","全网移动网","","","","自有厅固网","","","","全网固网","","","","自有厅小计","","","","全网小计","","",""],

@@ -4,6 +4,7 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
+	$("#month").val(getMaxDate("PMRT.TB_MRT_BUS_HALL_WARN_MON"));
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),

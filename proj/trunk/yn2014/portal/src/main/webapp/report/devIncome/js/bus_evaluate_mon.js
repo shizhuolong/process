@@ -5,6 +5,7 @@ var title=[["州市","区域 ","营业厅名称","渠道编码","收入分档","
 var report = null;
 var downSql="";
 $(function() {
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_LEVEL_EVALUATE_MON"));
 	report = new LchReport({
 		title : title,
 		field : field,
