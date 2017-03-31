@@ -101,9 +101,9 @@ TABLE TBODY TR TD{
 	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<div>
 		<div style="padding:5px;border:1px solid #c0e2ef;margin-top:10px;;border-top:none;">
-		    <div style="color:red;font-size:15px;">
+		    <!-- <div style="color:red;font-size:15px;">
 		                   备注：从20170317账期开始收入修改成主营收入
-		    </div>
+		    </div> -->
 			<div class="titleDivStyle">
 				<P align=center><FONT style="FONT-SIZE: 14pt; FILTER: shadow(color=#6495ED,strength=15); WIDTH: 100%; COLOR: #4B4B4B; 
 				LINE-HEIGHT: 100%; FONT-FAMILY: 方正舒体">自营厅实时收入日通报</FONT></P>
