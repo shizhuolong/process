@@ -4,6 +4,9 @@ var startDate="";
 var endDate="";
 var orderBy="";
 $(function(){
+	var maxDate=getMaxDate("PMRT.TB_MRT_BUS_DEV_DAY");
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
 	$("#searchBtn").click(function(){
 		startDate=$("#startDate").val();
 		endDate=$("#endDate").val();

@@ -4,6 +4,7 @@ var title=[["账期","地市名称","主厅编码","下挂厅编码","营业厅�
 var orderBy='';	
 var report = null;
 $(function() {
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_HALL_ZHWJ_SALE_MON"));
 	listRegions();
 	queryOperaterType();
 	report = new LchReport({

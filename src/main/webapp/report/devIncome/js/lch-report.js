@@ -922,3 +922,9 @@ if(!Array.indexOf)
         return -1; 
     } 
 }
+
+function getMaxDate(tableName){
+	var sql="SELECT MAX(DEAL_DATE) DEAL_DATE FROM "+tableName;
+	var r=query(sql);
+	return r[0]["DEAL_DATE"];
+}

@@ -6,6 +6,9 @@ var regionCode="";
 var operateType="";
 var sumSql="";
 $(function(){
+	var maxDate=getMaxDate("PMRT.TB_MRT_BUS_HALL_INCOME_DAY");
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
 	search();
 	$("#searchBtn").click(function(){
 		$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();

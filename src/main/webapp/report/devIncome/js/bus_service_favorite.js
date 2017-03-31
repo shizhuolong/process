@@ -6,7 +6,7 @@ var title=[["州市","厅数(自营)","服务用户数","","","","","","","","",
 var report = null;
 
 $(function() {
-
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_SERVICE_FAVORITE_HZ"));
 	report = new LchReport({
 		title : title,
 		field : field,

@@ -1,5 +1,6 @@
 var report;
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_4GNET_DEV_MON"));
 	var title=[["组织架构","渠道编码","经营模式","自有厅4G网络新增用户数","","","","","","","全网4G网络新增用户数","","","","","",""],
 	           ["","","","当月新增","当月新增同期增减量","当月新增同期增减比","其中当月发展数","其中存量用户数","新增中96及以上套餐用户数","新增中96及以上套餐用户数占比","当月新增","当月新增同期增减量","当月新增同期增减比","其中当月发展数","其中存量用户数","新增中96及以上套餐用户数","新增中96及以上套餐用户数占比"]];
 	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","THIS_4GNET_NEW","THIS_4GNET_CHANGE","THIS_4GNET_HB","THIS_NEW_ALL","THIS_CL_NUM","THIS_ALL_96NEW","THIS_4GNET_ZB","QQD_THIS_4GNET_NEW","QQD_THIS_4GNET_CHANGE","QQD_THIS_4GNET_HB","QQD_THIS_NEW_ALL","QQD_THIS_CL_NUM","QQD_THIS_ALL_96NEW","QQD_THIS_4GNET_HB"];

@@ -1,4 +1,5 @@
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_SERVICE_NUM_MON"));
 	var title=[["组织架构","渠道编码","经营模式（自营/柜台/他营)","分类(旗舰/标准/小型)","本月","累计","环比","定比1月"],
 	           ["","","","","受理量","爱理量","",""]];
     
