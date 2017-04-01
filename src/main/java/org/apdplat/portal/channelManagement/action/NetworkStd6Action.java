@@ -86,6 +86,7 @@ public class NetworkStd6Action extends BaseAction {
 			params.put("std_6_id", std_6_id);
 			params.put("login_name", login_name);
 			networkStd6Service.saveDivideStd6(params);
+			networkStd6Service.bind(params);
 			outJsonPlainString(response,"{\"msg\":\"操作成功\"}");
 		} catch (Exception e) {
 			logger.error("将小区划分营服中心操作失败",e);

@@ -6,6 +6,7 @@ import java.util.Map;
 
 
 
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface NetworkStd6Dao {
@@ -48,4 +49,6 @@ public interface NetworkStd6Dao {
 	 * @return
 	 */
 	public List<Map<String, Object>> loadById(String std_6_id);
+
+	public void bind(Map<String, String> params);
 }

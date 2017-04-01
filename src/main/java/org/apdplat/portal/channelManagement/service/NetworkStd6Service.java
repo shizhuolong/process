@@ -67,5 +67,9 @@ public class NetworkStd6Service {
 	public List<Map<String, Object>> loadById(String std_6_id) {
 		return networkStd6Dao.loadById(std_6_id);
 	}
+   /**同步更新小区代理商人员管理*/
+	public void bind(Map<String, String> params) {
+		networkStd6Dao.bind(params);
+	}
 	
 }
