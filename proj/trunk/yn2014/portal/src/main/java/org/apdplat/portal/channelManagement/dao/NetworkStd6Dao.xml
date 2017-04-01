@@ -100,4 +100,18 @@
   		FROM PCDE.TAB_CDE_6_STD T WHERE T.STD_6_ID = #{std_6_id}
 	</select>
 	
+	<update id="bind" parameterType="java.util.Map">
+	   UPDATE PCDE.TAB_CDE_STD_CHNL_PERSON   
+		SET UNIT_ID=#{unit_id}
+			,UNIT_NAME=#{unit_name}
+			,UPDATE_TIME=SYSDATE
+			,OPERATOR_ACCOUNT=#{login_name}
+		    ,HQ_CHAN_CODE=''
+		    ,HQ_CHAN_NAME=''
+		    ,USERID=''
+		    ,NAME=''
+		    ,ACCOUT=''
+		    ,PHONE=''
+		WHERE STD_6_ID=#{std_6_id} AND DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')
+	</update>
 </mapper>
