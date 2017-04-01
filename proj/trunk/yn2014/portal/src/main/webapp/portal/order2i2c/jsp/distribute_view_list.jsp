@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/distribute_view_list.js?v=5"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/distribute_view_list.js?v=6"></script>
 <script type="text/javascript">
     var paths="<%=path%>";
     var workNo="<%=workNo%>";
@@ -37,6 +37,8 @@
 			<table width="100%" style="margin: 10px 0; border:none;font-size:100%;">
 				<tr height="35px">
 					<td width="5%">
+						<a class="default-btn" href="#" onclick="exportAll()"
+						style="float: right; margin-right: 30px;">导出</a>
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 30px;">查询</a>
 					</td>
