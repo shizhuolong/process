@@ -3,6 +3,7 @@
  * 自营厅评价(旗舰、标准、小型)js
  */	
 $(function() {
+	$("#datebyType").val(getMaxDate("PMRT.TB_MRT_BUS_EVALUATE_MON_NEW"));
 		//自营厅评价(旗舰、标准、小型)
 		queryDataByType();
 		$("#byTypeSearchBtn").click(function(){

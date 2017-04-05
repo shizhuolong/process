@@ -1,4 +1,10 @@
 $(function() {
+	$("#devDealDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#devAfterTopDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#incomeDealDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#incomeAfterTopDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#salesDealDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#salesAfterTopDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
 		//发展TOP前10	
 		queryDevData(true);
 		$("#devSearchBtn").click(function(){

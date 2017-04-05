@@ -3,6 +3,8 @@
  * 发展收入终端日通报js
  */	
 $(function() {
+	$("#devStartDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#devEndDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
 		//发展日通报
 		queryDevData();
 		$("#DevSearchBtn").click(function(){

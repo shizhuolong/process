@@ -1,4 +1,6 @@
 $(function() {
+	$("#incomeStartDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#incomeEndDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
 		queryIncomData();
 		$("#incomeSearchBtn").click(function(){
 			$("#incomeDataBar").hide();

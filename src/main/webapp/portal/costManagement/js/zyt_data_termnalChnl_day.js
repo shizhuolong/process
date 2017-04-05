@@ -1,4 +1,6 @@
 $(function() {
+	$("#termnalStartDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#termnalEndDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
 		queryTerminalData();
 		$("#termnalSearchBtn").click(function(){
 			$("#termnalDataBar").hide();
