@@ -1,6 +1,8 @@
 var nowData = [];
 var report = null;
 $(function() {
+	$("#startDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#endDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
 	 $("#searchBtn").click(function(){
 		$("#exportPageBtn").parent().remove();
 		var title = getTitle();

@@ -4,6 +4,7 @@ var title=[["账期","分公司","厅数","当日发展","累计发展量","4-6�
 var orderBy='';	
 var report = null;
 $(function() {
+	$("#dealDate").val(getMaxDate("PMRT.TAB_MRT_BUS_21COMPETITION_DAY"));
 	report = new LchReport({
 		title : title,
 		field : field,
