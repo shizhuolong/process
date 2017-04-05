@@ -30,7 +30,7 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script> 
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/own_hall_appraise.js"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/own_hall_appraise.js?v=1"></script> 
 <style type="text/css">
 body {
     color: #717171;

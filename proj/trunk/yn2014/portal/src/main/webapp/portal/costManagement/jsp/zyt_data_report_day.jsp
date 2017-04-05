@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/jquery-easyui-1.4.5/echarts.min.js"></script> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script> 
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/zyt_data_report_day.js?v=1"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/zyt_data_report_day.js?v=2"></script> 
 <style type="text/css">
 body {
     color: #717171;
