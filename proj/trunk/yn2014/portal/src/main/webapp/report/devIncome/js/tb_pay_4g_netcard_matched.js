@@ -4,6 +4,7 @@ var report=null;
 var qdate="";
 var orderBy="";
 $(function(){
+	$("#month").val(getMaxDate("YNPAY.TB_PAY_4G_NETCARD_MATCHED_HZ"));
 	 report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),

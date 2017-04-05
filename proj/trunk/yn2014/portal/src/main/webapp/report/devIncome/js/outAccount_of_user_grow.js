@@ -10,6 +10,7 @@ $(function(){
 	var operateType='';
 	var region= $("#region").val();
 	var regionCode = '';
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_USER_INCREASE_MON"));
 	report=new LchReport({
 		title:title,
 		field:["ROW_NAME"].concat(field),

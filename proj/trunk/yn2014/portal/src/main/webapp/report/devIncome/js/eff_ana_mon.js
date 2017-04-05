@@ -4,6 +4,7 @@ var title=[["组织架构","厅数","营业人数","面积数","厅效","","","�
 var field=["ROW_NAME","T_NUM","YYT_NUM","AREA_STRUCTURE","T_SR_AVG","T_DEV_AVG","T_ML_AVG","R_SR_AVG","R_DEV_AVG","R_ML_AVG","P_SR_AVG","P_DEV_AVG","P_ML_AVG","T_ML_AVG_HB","T_ML_AVG_TB","T_ML_AVG_DB"];
 
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_EFF_ANA_MON"));
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();

@@ -26,7 +26,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_pay_4g_netcard_matched.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_pay_4g_netcard_matched.js?v=1"></script>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">

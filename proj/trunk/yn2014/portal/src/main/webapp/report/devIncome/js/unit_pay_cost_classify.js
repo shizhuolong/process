@@ -6,6 +6,7 @@ var title=[
            ];
 var report = null;
 $(function() {
+	$("#dealDate").val(getMaxDate("PMRT.TAB_MRT_BUS_PAYMENT_CLASS_MON"));
 	//获取缴费方式
 	getPayMode();
 	report = new LchReport({

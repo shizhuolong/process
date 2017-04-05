@@ -3,6 +3,7 @@ $(function(){
 	var title=[["组织架构","渠道编码","经营模式","自有厅当日发展三无极低用户数","自有厅当日累计发展用户","","","全网当日发展三无极低用户数","全网当日累计发展用户","","","自有厅当日发展CBSS套餐三无极低用户数","自有厅CBSS套餐当日累计发展用户","","","全网当日发展CBSS套餐三无极低用户数","全网CBSS套餐当日累计发展用户","","","自有厅当日发展2G套餐三无极低用户数","自有厅23G套餐当日累计发展用户","","","全网当日发展2G套餐三无极低用户数","全网23G套餐当日累计发展用户","",""],
 	           ["","","","","三无及极低用户数","三无及极低用户占比","其中三无用户数","","三无及极低用户数","三无及极低用户占比","其中三无用户数","","三无及极低用户数","三无及极低用户占比","其中三无用户数","","三无及极低用户数","三无及极低用户占比","其中三无用户数","","三无及极低用户数","三无及极低用户占比","其中三无用户数","","三无及极低用户数","三无及极低用户占比","其中三无用户数"]];
 	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","SWJD_ALL_NUM","SWJD_ALL_NUM1","SW_ALL_NUM1_HB","SW_ALL_NUM1","QQD_SWJD_ALL_NUM","QQD_SWJD_ALL_NUM1","QQD_SWJD_ALL_NUM1_HB","QQD_SW_ALL_NUM1","SWJD_4G_NUM","SWJD_4G_NUM1","SWJD_4G_NUM1_HB","SW_4G_NUM1","QQD_SWJD_4G_NUM","QQD_SWJD_4G_NUM1","QQD_SWJD_4G_NUM1","QQD_SW_4G_NUM1","SWJD_23G_NUM","SWJD_23G_NUM1","SWJD_23G_NUM1_HB","SW_23G_NUM1","QQD_SWJD_23G_NUM","QQD_SWJD_23G_NUM1","QQD_SWJD_23G_NUM1","QQD_SW_23G_NUM1"];
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_YWUSER_ZT_DAY"));
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		$("#lch_DataHead").find("TH").unbind();

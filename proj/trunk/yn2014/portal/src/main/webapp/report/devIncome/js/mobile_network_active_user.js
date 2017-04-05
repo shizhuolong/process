@@ -1,6 +1,7 @@
 var title="";
 var field="";
 $(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_YWACTIVE_USER_MON"));
 	search();
 	$("#searchBtn").click(function(){
 		$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();

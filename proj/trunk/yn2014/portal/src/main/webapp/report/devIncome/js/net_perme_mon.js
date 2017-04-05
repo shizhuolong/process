@@ -3,7 +3,8 @@ $(function(){
 	           ["","","","","使用4G网络出帐用户数","移网出帐用户数","当月4G渗透率 ","使用4G网络出帐用户数","移网出帐用户数","当月4G渗透率 ","","","","","",""]];
     
 	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","USER_4G_ACCT","USER_ALL_ACCT","PERMEN_4G","ALL_4G_NET","MOB_ACCT_NUM","PERME_ALL_4G","HB","TB","DB","RN","T_MANAGE_NAME","PYBS"];
-    $("#searchBtn").click(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TAB_MRT_4G_NET_PERME_MON"));
+	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
         ///////////////////////////////////////////
