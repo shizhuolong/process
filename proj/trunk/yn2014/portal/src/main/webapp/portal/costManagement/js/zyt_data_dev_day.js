@@ -1,5 +1,7 @@
 $(function() {
 		//发展日通报
+	$("#devStartDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
+	$("#devEndDate").val(getMaxDate("PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL"));
 		queryDevData();
 		$("#devSearchBtn").click(function(){
 			//$("#devDataBar").css({"dispaly":"none"});
