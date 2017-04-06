@@ -168,7 +168,7 @@ function saveRow(even){
 	//获得select选项框选中项的内容
 	var unitName = $(even).parent().prev().prev().find("select:eq(0)").find("option:selected").text();
 	//获得编辑行选项框内容改变后的营服编码
-	var unitCode = $(even).parent().prev().text();
+	var unitCode = $(even).parent().prev().prev().find("select:eq(0)").find("option:selected").val();
 	//数据库表中的唯一字段，用做修改数据的唯一条件(成本中心编码)
 	var ccCode   = $(even).attr("ccCode");
 	//修改行对应的地市编码，也用来做修改数据的条件
