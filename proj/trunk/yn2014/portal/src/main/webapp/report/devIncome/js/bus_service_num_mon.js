@@ -1,7 +1,7 @@
 $(function(){
 	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_SERVICE_NUM_MON"));
 	var title=[["组织架构","渠道编码","经营模式（自营/柜台/他营)","分类(旗舰/标准/小型)","本月","累计","环比","定比1月"],
-	           ["","","","","受理量","爱理量","",""]];
+	           ["","","","","受理量","受理量","",""]];
     
 	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","SERVICE_NUM","SERVICE_NUM1","HB_SERVICE","DB_SERVICE"];
     $("#searchBtn").click(function(){
@@ -82,7 +82,7 @@ function downsAll() {
 	var sql = getSql(3,where);
 	var showtext = '营业厅业务受理量月报表-' + dealDate;
 	var title=[["账期","州市","厅名称","渠道编码","经营模式（自营/柜台/他营)","分类(旗舰/标准/小型)","本月","累计","环比","定比1月"],
-	           ["","","","","","","受理量","爱理量","",""]];
+	           ["","","","","","","受理量","受理量","",""]];
 	downloadExcel(sql,title,showtext);
 }
 
