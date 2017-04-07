@@ -53,9 +53,9 @@ public class HrUploadAction extends BaseAction{
 			request.getAttribute("userId");
 			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE  deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
 			SpringManager.getUpdateDao().update(csql);
-			String sql="insert into PTEMP.TB_TMP_JCDY_HR_SALARY select * from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
+			String sql="INSERT INTO PTEMP.TB_TMP_JCDY_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE CREATOR='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
-			//调用存储过程
+			/*//调用存储过程
 			conn = dataSource.getConnection();
 			stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
 			stmt.setString(1,time+"08");
@@ -67,8 +67,9 @@ public class HrUploadAction extends BaseAction{
 				r=false;
 				return;
 			}
-			//////////
+			//////////*/
 			r=true;
+			Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
 		}catch(Exception e){
 			e.printStackTrace();
 			r=false;
@@ -84,7 +85,7 @@ public class HrUploadAction extends BaseAction{
 				}catch(Exception e){}
 			}
 		}
-		Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
+		
 	}
 	/**
 	 * 下载文件
@@ -135,6 +136,7 @@ public class HrUploadAction extends BaseAction{
 				HSSFWorkbook wb = new HSSFWorkbook(in);
 				int sheetNum=wb.getNumberOfSheets();//得到sheet数量
 				SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+				String fields="DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,OWN_ORG,DIS_NUM,SALARY_UNIT,SALARY_MONTH,POST_SALARY,MULTI_PAY,AREA_PAY,WARM_PAY,HOLD_SALAY,MON_SALARY_1,MON_SALARY_2,YEAR_SALARY,YEAR_SALARY_NOCOST,OVERTIME_PAY,MULTI_WY,MULTI_CB,NIGHT_PAY,FESTIVITY_PAY,SPECIAL_PAY,OTHER_TAX_PAY,UP_PAY,ADJUST_SALARY,POST_KH_PAY,JX_KH_PAY,OTHER1,OTHER2,OTHER_PLACE_PAY,GOV_SPECIAL_PAY,PETITION_POST_PAY,G3_PAY,NATIVE_LAN_PAY,HURT_PAY,CHINA_ONE_NO_TAX,CHINA_ONE_TAX,JT_NO_TAX,JT_TAX,FUNERAL_PENSION,COLLECTIVE_WELFARE,COVERALL,FAMILY_ALLOWANCE,SEVERANCE_PACKAGE,OTHER_SALA_NO_COST,OTHER_SALA_JT,TREATMENT,PROVIDE_AGE_NOTAX,PROVIDE_AGE_TAX,PROVIDE_AGE_COM,INDIVIDUAL,INDIVIDUAL_COM,PROVIDE_AGE_PER,PROVIDE_COM,TREATMENT_PER,TREATMENT_COM,UNEMPLOYE_PER,UNEMPLOYE_COM,HURT_COM,MATERNITY_COM,BIGMEDI_TAX,MON_BIGMEDI,BIGMEDI_PER,BIGMEDI_COM,PROVIDE_ADJUST_PER,PROVIDE_ADJUST_COM,TREATMENT_ADJUST_PER,TREATMENT_ADJUST_COM,UNEMPLOYE_ADJUST_PER,UNEMPLOYE_ADJUST_COM,HURT_ADJUST_COM,MATERNITY_ADJUST_COM,DIS_SOCIAL,HOUSING_PER,HOUSING_COM,HOUSING_ADUST_PER,HOUSING_ADUST_COM,BC_HOUSING_PER,BC_HOUSING_COM,LABOR_NO_TAX,LABOR_TAX,LABOUR_FEE,EDU_FEE,EDU_PAY,LABOR_ADJUST,EDU_ADJUST,INCOME_TAX_ADJUST,ADD_NO_TAX,OTHER_TAX,MANA_FEE,OTHER_ASSURANCE,SALARY_PAY_TOTAL,DEDUCTED_TOTAL,INCOME_TAX_DISS,YEAR_JJ_TAX,LEAVE_TAX,FACT_TOTAL,ALL_SALARY,SALARY_COST";
 				System.out.println("准备导入...");
 				if(sheetNum>0){
 					HSSFSheet sheet = wb.getSheetAt(0);
@@ -145,16 +147,16 @@ public class HrUploadAction extends BaseAction{
 					for(int y=start;y<=end;y++){
 						Date date=new Date();
 						String createTime=s.format(date);
-						String sql="insert into "+resultTableName+"(DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,POST_LEVEL,SALARY_LEVEL,POST_SALARY,GENERAL_SUBS,DIFFICULT_AREAS,MERIT_PAY_1,MERIT_PAY_2,OTHER_PAY_1,OTHER_PAY_2,OVERTIME_PAY,FESTIVITY_PAY,CHINA_ONE_PAY,MULTI_WY,MULTI_WC,MULTI_JT,MULTI_TX,MULTI_DSR,OTHER2,SALARY_PAY_TOTAL,PROVIDE_AGE,TREATMENT,UNEMPLOYE,HOUSING,SUPPLEMENTARY,INCOME_TAX,OTHER_COST_1,OTHER_COST_1_ITEM,DEDUCTED_TOTAL,FACT_TOTAL)";
+						String sql="insert into "+resultTableName+"("+fields+")";
 						String values=" values('"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
 						HSSFRow row =sheet.getRow(y);
 						if(row==null) continue;
 						int cstart=row.getFirstCellNum();
 						int cend=row.getLastCellNum();
 						System.out.println(cstart+"："+cend);
-						if(cstart==0&&cend==32){
-							for(int i=cstart+1;i<cend;i++){
-								if(i==1){
+						if(cstart==0&&cend==98){
+							for(int i=cstart;i<cend;i++){
+								if(i==0){
 									values+=getCellValue(row.getCell(i));
 								}else{
 									values+=","+getCellValue(row.getCell(i));
@@ -174,7 +176,7 @@ public class HrUploadAction extends BaseAction{
 					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
 					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
-						err.add("导入的excel表中有重复数据");
+						err.add("导入的excel表中有员工工号重复数据");
 					}
 				}
 				System.out.println("导入结束...");

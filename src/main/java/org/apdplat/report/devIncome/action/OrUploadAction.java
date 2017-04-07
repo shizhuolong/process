@@ -56,7 +56,7 @@ public class OrUploadAction extends BaseAction{
 			SpringManager.getUpdateDao().update(csql);
 			String sql="insert into PTEMP.TB_TMP_JCDY_OUT_HR_SALARY select * from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where creator='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
-			//调用存储过程
+			/*//调用存储过程
 			conn = dataSource.getConnection();
 			stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
 			stmt.setString(1,time+"08");
@@ -67,9 +67,10 @@ public class OrUploadAction extends BaseAction{
 			if(num!=0){
 				r=false;
 				return;
-			}
+			}*/
 			//////////
 			r=true;
+			Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
 		}catch(Exception e){
 			e.printStackTrace();
 			r=false;
@@ -85,7 +86,7 @@ public class OrUploadAction extends BaseAction{
 				}catch(Exception e){}
 			}
 		}
-		Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
+		
 	}
 	/**
 	 * 下载文件
@@ -137,6 +138,7 @@ public class OrUploadAction extends BaseAction{
 				int sheetNum=wb.getNumberOfSheets();//得到sheet数量
 				SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 				System.out.println("准备导入...");
+				String fields="DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,OWN_COMPANY,OWN_ORG,POST_SALARY,JX_SALARY,SUBSIDY,FESTIVITY_PAY,OVERTIME_PAY,OTHER_PAY,SALARY_PAY_TOTAL,OTHER_COST_1,OTHER_COST_1_ITEM,HOUSING,INCOME_TAX,FACT_TOTAL,PROVIDE_AGE,BIRTH_FEE,UNEMPLOYE,TREATMENT,HURT_FEE,GJJ_FEE,DEDUCTED_TOTAL,BEGIN_DATE,DEDUCT_DATE,UNION_DUES,MANA_FEE,FAX_FEE,OTHER_MAN_PAY,NOTE,COST_TOTAL";
 				if(sheetNum>0){
 					HSSFSheet sheet = wb.getSheetAt(0);
 					System.out.println("导入Sheet页0:"+sheet.getSheetName());
@@ -146,16 +148,16 @@ public class OrUploadAction extends BaseAction{
 					for(int y=start;y<=end;y++){
 						Date date=new Date();
 						String createTime=s.format(date);
-						String sql="insert into "+resultTableName+"(DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,POST_LEVEL,POST_SALARY,MERIT_PAY_1,MERIT_PAY_2,OTHER_PAY_1,OTHER_PAY_2,OVERTIME_PAY,FESTIVITY_PAY,CHINA_ONE_PAY,MULTI_JT,MULTI_WC,MULTI_DSR,MULTI_4,OTHER1,OTHER2,SALARY_PAY_TOTAL,PROVIDE_AGE,TREATMENT,UNEMPLOYE,INCOME_TAX,OTHER_COST_1,OTHER_COST_1_ITEM,DEDUCTED_TOTAL,FACT_TOTAL)";
-						String values=" values('"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
+						String sql="INSERT INTO "+resultTableName+"("+fields+")";
+						String values=" VALUES('"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
 						HSSFRow row =sheet.getRow(y);
 						if(row==null) continue;
 						int cstart=row.getFirstCellNum();
 						int cend=row.getLastCellNum();
 						System.out.println(cstart+"："+cend);
-						if(cstart==0&&cend==27){
-							for(int i=cstart+1;i<cend;i++){
-								if(i==1){
+						if(cstart==0&&cend==31){
+							for(int i=cstart;i<cend;i++){
+								if(i==0){
 									values+=getCellValue(row.getCell(i));
 								}else{
 									values+=","+getCellValue(row.getCell(i));
@@ -175,7 +177,7 @@ public class OrUploadAction extends BaseAction{
 					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where creator='"+userId+"'";
 					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where creator='"+userId+"'";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
-						err.add("导入的excel表中有重复数据");
+						err.add("导入的excel表中人员编号有重复数据");
 					}
 				}
 				System.out.println("导入结束...");
