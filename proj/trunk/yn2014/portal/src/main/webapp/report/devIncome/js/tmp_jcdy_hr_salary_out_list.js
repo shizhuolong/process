@@ -1,13 +1,14 @@
 var nowData = [];
-var title=[["账期","地市编码","创建者","创建时间","员工工号","姓名","岗位等级","薪档","岗位工资","综合补贴","艰苦地区补贴","绩效工资_非经常项目1","绩效工资_非经常项目2","其他奖励_非经常项目1","其他奖励_非经常项目2","加班工资","过节费","独生子女费","综合补贴(WY物业)","综合补贴(WC误餐)","综合补贴(JT交通)","综合补贴(TX通信)","低收入补贴","其他2","应发合计数","养老保险缴费_个人","医疗保险缴费_个人","失业保险缴费_个人","住房公积金缴费_个人","补充养老保险缴费_个人","个人所得税","其他扣款1","其他扣款项","应扣合计数","实发数"]];
-var field=["DEAL_DATE","GROUP_ID_1","CREATOR","CREATETIME","HR_NO","USER_NAME","POST_LEVEL","SALARY_LEVEL","POST_SALARY","GENERAL_SUBS","DIFFICULT_AREAS","MERIT_PAY_1","MERIT_PAY_2","OTHER_PAY_1","OTHER_PAY_2","OVERTIME_PAY","FESTIVITY_PAY","CHINA_ONE_PAY","MULTI_WY","MULTI_WC","MULTI_JT","MULTI_TX","MULTI_DSR","OTHER2","SALARY_PAY_TOTAL","PROVIDE_AGE","TREATMENT","UNEMPLOYE","HOUSING","SUPPLEMENTARY","INCOME_TAX","OTHER_COST_1","OTHER_COST_1_ITEM","DEDUCTED_TOTAL","FACT_TOTAL"];
+var title=[["账期","人员编号","姓名","归属外包公司名称","所在组织","固定工资","绩效工资","津贴补贴","过节费","加班工资","其他工资性支出","应发金额","税前扣款项","税后扣款项","社保公积金扣减额","个人所得税扣缴额","实发金额","养老保险","生育保险","失业保险","医疗保险","工伤保险","公积金","小计","为本企业服务开始日期","在本企业缴纳社会保险起始日期","工会会费","管理费","税金","其他人工支出项目","备注","成本合计"]];
+var field=["DEAL_DATE","HR_NO","USER_NAME","OWN_COMPANY","OWN_ORG","POST_SALARY","JX_SALARY","SUBSIDY","FESTIVITY_PAY","OVERTIME_PAY","OTHER_PAY","SALARY_PAY_TOTAL","OTHER_COST_1","OTHER_COST_1_ITEM","HOUSING","INCOME_TAX","FACT_TOTAL","PROVIDE_AGE","BIRTH_FEE","UNEMPLOYE","TREATMENT","HURT_FEE","GJJ_FEE","DEDUCTED_TOTAL","BEGIN_DATE","DEDUCT_DATE","UNION_DUES","MANA_FEE","FAX_FEE","OTHER_MAN_PAY","NOTE","COST_TOTAL"];
 var report = null;
-LchReport.prototype.isNull=function(obj){
+var downSql="";
+/*LchReport.prototype.isNull=function(obj){
 	if(obj == undefined || obj == null || obj == '') {
 		return '';
 	}
 	return obj;
-}
+}*/
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -52,7 +53,8 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
 	var userId=$("#userId").val();
-	var sql="select DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,POST_LEVEL,SALARY_LEVEL,POST_SALARY,GENERAL_SUBS,DIFFICULT_AREAS,MERIT_PAY_1,MERIT_PAY_2,OTHER_PAY_1,OTHER_PAY_2,OVERTIME_PAY,FESTIVITY_PAY,CHINA_ONE_PAY,MULTI_WY,MULTI_WC,MULTI_JT,MULTI_TX,MULTI_DSR,OTHER2,SALARY_PAY_TOTAL,PROVIDE_AGE,TREATMENT,UNEMPLOYE,HOUSING,SUPPLEMENTARY,INCOME_TAX,OTHER_COST_1,OTHER_COST_1_ITEM,DEDUCTED_TOTAL,FACT_TOTAL from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND CREATOR='"+userId+"'";
+	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND CREATOR='"+userId+"'";
+	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
 	var total = 0;
@@ -81,11 +83,8 @@ function search(pageNumber) {
 }
 function downsAll() {
 	var time=$("#time").val();
-	var userId=$("#userId").val();
-	var sql="select DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,POST_LEVEL,SALARY_LEVEL,POST_SALARY,GENERAL_SUBS,DIFFICULT_AREAS,MERIT_PAY_1,MERIT_PAY_2,OTHER_PAY_1,OTHER_PAY_2,OVERTIME_PAY,FESTIVITY_PAY,CHINA_ONE_PAY,MULTI_WY,MULTI_WC,MULTI_JT,MULTI_TX,MULTI_DSR,OTHER2,SALARY_PAY_TOTAL,PROVIDE_AGE,TREATMENT,UNEMPLOYE,HOUSING,SUPPLEMENTARY,INCOME_TAX,OTHER_COST_1,OTHER_COST_1_ITEM,DEDUCTED_TOTAL,FACT_TOTAL from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND CREATOR='"+userId+"'";
-	var showtext = "调整后外包导入";
-	showtext = '调整后外包导入';
-	downloadExcel(sql,title,showtext);
+	var showtext = "调整后外包导入-"+time;
+	downloadExcel(downSql,title,showtext);
 }
 
 function confirmImport(){

@@ -17,10 +17,10 @@ function complete(){
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
 		document.mainForm.submit(); 
-	 }else{
-		 alert("你没有导入权限！");
 	 }
-  }
+    }else{
+		alert("你没有导入权限！");
+    }
 }
 /**校验**/
 function checkOptions(){
