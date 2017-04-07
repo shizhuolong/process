@@ -17,11 +17,12 @@ function complete(){
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
 		document.mainForm.submit(); 
-	 }else{
-		 alert("你没有导入权限！");
 	 }
+  }else{
+		alert("你没有导入权限！");
   }
 }
+
 /**校验**/
 function checkOptions(){
 	var file=$(':file');
@@ -45,6 +46,7 @@ function isNotBlank(obj){
 function _execute(type,parameter,callback,msg,dom){
     $.Project.execute(type,parameter,callback,msg,dom);
 }
+
 function getRegionName(){
 	var sql="SELECT distinct t.region_name regionName,t.region_code regionCode FROM portal.apdp_org  t where t.region_code <> '86000'";
 	var orgLevel=$("#orgLevel").val();
