@@ -127,7 +127,7 @@
 		FROM PORTAL.TAB_PORTAL_MOB_PERSON T1
 		JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T2
 		ON   (T1.HQ_CHAN_CODE=T2.HQ_CHAN_CODE)
-		WHERE T2.STATUS=10 AND T1.DEAL_DATE=#{deal_date} AND T1.HQ_CHAN_CODE=#{hq_chan_code} 
+		WHERE T2.STATUS IN('10','11') AND T1.DEAL_DATE=#{deal_date} AND T1.HQ_CHAN_CODE=#{hq_chan_code} 
 		<if test="orgLevel==1"></if>
 		<if test="orgLevel==2">
 			 AND T1.GROUP_ID_1=#{code}
