@@ -103,7 +103,7 @@ function initHqChanName(deal_date){
 	"FROM PORTAL.TAB_PORTAL_MOB_PERSON t                        "+
 	"JOIN PCDE.TAB_CDE_CHANL_HQ_CODE T1                         "+
 	"ON   (T.HQ_CHAN_CODE=T1.HQ_CHAN_CODE)                      "+
-	"WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"' AND T.DEAL_DATE='"+deal_date+"' AND T1.STATUS=10";                                    
+	"WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"' AND T.DEAL_DATE='"+deal_date+"' AND T1.STATUS IN ('10','11')";                                    
 
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
