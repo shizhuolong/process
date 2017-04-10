@@ -256,7 +256,7 @@ function getTerminalSql(){
 			"               2) HB_DT,                                                                                                                 "+
 			"       0 HB_RANK                                                                                                                         "+
 			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                               "+
-			" WHERE T1.DEAL_DATE = '"+dealDate+"'                                                                                                     "+
+			" WHERE T1.DEAL_DATE = '"+termnalStartDate+"'                                                                                                     "+
 			          where+
 			" GROUP BY DEAL_DATE                                                                                                                      "+
 			"UNION ALL                                                                                                                                "+
@@ -336,7 +336,7 @@ function getTerminalSql(){
 			"                 END) ELSE 0 END || '%',                                                                                                 "+
 			"               2) HB_DT                                                                                                                  "+
 			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                               "+
-			" WHERE T1.DEAL_DATE = '"+dealDate+"'                                                                                                     "+
+			" WHERE T1.DEAL_DATE = '"+termnalStartDate+"'                                                                                                     "+
 			             where+
 			" GROUP BY T1.GROUP_ID_0, T1.GROUP_ID_1_NAME, DEAL_DATE)) T                                                                               "+
 			"  JOIN PCDE.TB_CDE_BUS_HALL_TARGET T1                                                                                                    "+
@@ -344,8 +344,8 @@ function getTerminalSql(){
 			"  LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME,'全省') GROUP_ID_1_NAME,                                                                         "+
 			"                    NVL(SUM(TYPE_ALL), 0)   YEAR_LJ_ZD                                                                                   "+
 			"             FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                       "+
-			"                 WHERE DEAL_DATE LIKE '"+getYear(dealDate)+"%'                                                                           "+
-			"                   AND DEAL_DATE <= '"+dealDate+"'                                                                                       "+
+			"                 WHERE DEAL_DATE LIKE '"+getYear(termnalStartDate)+"%'                                                                           "+
+			"                   AND DEAL_DATE <= '"+termnalStartDate+"'                                                                                       "+
 			                    where+
 			"             GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))                                                            "+
 			"  )T2  ON(T2.GROUP_ID_1_NAME=T.GROUP_ID_1_NAME)                                                                                          "+
@@ -415,3 +415,6 @@ function isNull(obj){
 	}
 }
 
+function getYear(dealDate){
+	return dealDate.substr(0,4);
+}
