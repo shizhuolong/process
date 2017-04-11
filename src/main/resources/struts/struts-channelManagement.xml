@@ -67,9 +67,17 @@
         <action name="magPerson_*" class="org.apdplat.portal.channelManagement.action.MagPersonAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/portal_mag_person_list.jsp</result>
         </action>
+       <!--  代理商人员管理 -->
+        <action name="agentPerson_*" class="org.apdplat.portal.channelManagement.action.AgentPersonAction" method="{1}">
+			<result name="success">/portal/channelManagement/jsp/agent_person_list.jsp</result>
+        </action>
          <!-- 小区代理商人员绑定-->
         <action name="chnlPerson_*" class="org.apdplat.portal.channelManagement.action.ChnlPersonAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/chnl_person_list.jsp</result>
+        </action>
+         <!-- 营业厅固话信息维护-->
+        <action name="businessHallInfo_*" class="org.apdplat.portal.channelManagement.action.BusinessHallInfoAction" method="{1}">
+			<result name="success">/portal/channelManagement/jsp/business_hall_info.jsp</result>
         </action>
          <!--SAP终端导入-->
         <action name="importTerm_*" class="org.apdplat.portal.channelManagement.action.ImportTermAction" method="{1}">
