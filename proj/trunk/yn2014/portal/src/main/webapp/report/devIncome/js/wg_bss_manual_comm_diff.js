@@ -55,7 +55,7 @@ $(function(){
 					orgLevel=2;
 				}else if(orgLevel==2){//市
 					preField=" SELECT GROUP_ID_1_NAME ROW_NAME,GROUP_ID_1 ROW_ID,";
-					groupBy =" GROUP BY T.GROUP_ID_1,T.GROUP_ID_1_NAME ";
+					groupBy =" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME ";
 					//orderBy =" ORDER BY GROUP_ID_1 ";
 					where=" AND GROUP_ID_1='"+code+"'";
 					orgLevel=3;
