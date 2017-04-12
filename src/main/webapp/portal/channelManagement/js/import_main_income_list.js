@@ -28,7 +28,7 @@ $(function() {
 	});
 });
 
-var pageSize = 20;
+var pageSize = 26;
 
 //列表信息
 function search() {
