@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>分渠道主营业务收入导入</title>
+<title>分渠道有销量的渠道数</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=path%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/income_mon_list.js?v=4"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/chnl_num_all_mon.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -53,9 +53,7 @@
 						   <a class="default-btn" href="#" id="searchBtn"
 						    style="float: right; margin-right: 18px;">查询</a>
 					    </td>
-					    <td width="1%" id="repeatImportTd">
-						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
-					    </td> 
+
 					    <td width="1%">
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="exportBtn" onclick="exportData()">导出</a>
 					    </td>
