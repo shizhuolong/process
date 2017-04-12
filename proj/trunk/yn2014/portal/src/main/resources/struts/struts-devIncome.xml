@@ -19,6 +19,14 @@
             <result name="success">/report/devIncome/jsp/tmp_jcdy_hr_salary_out_list.jsp</result>
             <result name="error">/report/devIncome/jsp/tmp_jcdy_hr_out_salary.jsp</result>            
         </action>
+        <action name="hrUploadOld_*" class="org.apdplat.report.devIncome.action.HrUploadOldAction" method="{1}">
+            <result name="success">/report/devIncome/jsp/tmp_jcdy_hr_salary_old_list.jsp</result>
+            <result name="error">/report/devIncome/jsp/tmp_jcdy_hr_old_salary.jsp</result>            
+        </action>
+        <action name="orUploadOld_*" class="org.apdplat.report.devIncome.action.OrUploadOldAction" method="{1}">
+            <result name="success">/report/devIncome/jsp/tmp_jcdy_hr_salary_out_old_list.jsp</result>
+            <result name="error">/report/devIncome/jsp/tmp_jcdy_hr_out_old_salary.jsp</result>            
+        </action>
         <action name="kpiUpload_*" class="org.apdplat.report.devIncome.action.KpiUploadAction" method="{1}">
             <result name="success">/report/devIncome/jsp/is_kpi_list.jsp</result>
             <result name="error">/report/devIncome/jsp/is_kpi.jsp</result>            
