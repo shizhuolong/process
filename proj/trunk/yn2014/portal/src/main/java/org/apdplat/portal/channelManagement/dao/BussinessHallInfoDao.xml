@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelManagement.dao.BussinessHallInfoDao">
+
+	<select id="list" parameterType="java.util.Map" resultType="java.util.LinkedHashMap">
+		SELECT * FROM PTEMP.TB_TEMP_BUS_HALL_INFO
+		<include refid="where"></include>
+	</select>
+
+	<sql id="where">
+		<where>
+			DEAL_DATE=#{deal_date}
+			<if test="is_ball != null and is_ball!=''">
+				AND IS_BALL =#{is_ball}
+			</if>
+			<if test="hall_code != null and hall_code!=''">
+				AND HALL_CODE = #{hall_code}
+			</if>
+			<if test="orgLevel==1">
+
+			</if>
+			<if test="orgLevel==2">
+				AND GROUP_ID_1=#{code}
+			</if>
+			<if test="orgLevel==3">
+				AND 1=2
+			</if>
+		</where>
+	</sql>
+
+</mapper>
