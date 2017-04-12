@@ -14,9 +14,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[
-		      {array:[3],css:LchReport.NORMAL_STYLE}
-		    ],
+		css:[{gt:1,css:LchReport.RIGHT_ALIGN}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
