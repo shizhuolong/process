@@ -11,66 +11,47 @@
      Org org = user.getOrg();
      String path = request.getContextPath();
      Calendar ca=Calendar.getInstance();
- 	ca.add(Calendar.MONTH, -1);
- 	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+ 	 ca.add(Calendar.MONTH, -1);
+ 	 String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>分渠道主营业务收入导入</title>
+<title>分渠道主营业务</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=path%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css" />
 <link type="text/css" rel="stylesheet" href="<%=path%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/income_mon_list.js?v=4"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_main_income_list1.js?v=1"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<div class="search-div">
-				<table style="margin: 0px 0; border:none;width:100%;">
+				<table style="margin: 0px 0; border:none;width:60%;font-size:60%;">
 					<tr>
-						<td  width="2%">账期：</td>
-						<td width="2%">
+						<td  width="1%">账期：</td>
+						<td width="1%">
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate" name="dealDate"/>
 						</td>
-						<td width="2%" style="text-align:right;">地市：</td>
-						<td width="2%">
-						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
-								<option value=''>请选择</option>
-						     </select>
-					    </td>
-					    
 					    <td width="1%">
 						   <a class="default-btn" href="#" id="searchBtn"
 						    style="float: right; margin-right: 18px;">查询</a>
 					    </td>
-					    <td width="1%" id="repeatImportTd">
-						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
-					    </td> 
+					
 					    <td width="1%">
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="exportBtn" onclick="exportData()">导出</a>
-					    </td>
+					    </td> 
 					</tr>
 				</table>
 	</div>
 	<div id="lchcontent" style="margin-top:5px;">
 	</div>
-	<div class="page_count">
-			<div class="page_count_left">
-				共有 <span id="totalCount"></span> 条数据
-			</div>
-			<div class="page_count_right">
-				<div id="pagination"></div>
-			</div>
-		</div>
   </body>
 </html>
