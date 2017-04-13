@@ -33,7 +33,7 @@ var pageSize = 20;
 //列表信息
 function search() {
 	var dealDate=$("#dealDate").val();
-	var sql="SELECT GROUP_ID_1_NAME"+getSql()+" FROM PMRT.TAB_MRT_MAIN_INCOME_MON_TEMP WHERE DEAL_DATE='"+dealDate+"'";
+	var sql="SELECT GROUP_ID_1_NAME"+getSql()+" FROM PMRT.TAB_MRT_MAIN_INCOME_MON WHERE DEAL_DATE='"+dealDate+"'";
 	downSql=sql;
 	nowData = query(sql);
 	report.showSubRow();

@@ -48,7 +48,7 @@
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_info.js?v=9"></script>
+	src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_info.js?v=10"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
