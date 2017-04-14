@@ -47,8 +47,9 @@
 	src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_info.js?v=10"></script>
+	src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_info.js?v=12"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -86,7 +87,7 @@
 					</tr>
 				</table>
 			</form>
-			<div class="default-dt dt-autoH">
+			<div class="default-dt dt-autoH" style="overflow: auto;">
 				<div class="sticky-wrap">
 					<table class="default-table sticky-enabled">
 						<thead>
@@ -97,12 +98,12 @@
 								<th>营业厅地址</th>
 								<th>渠道编码</th>
 								<th>是否主厅</th>
-								<!-- <th>渠道名称</th> -->
-								<!-- <th>渠道启用时间</th>
+								<th>渠道名称</th>
+								<th>渠道启用时间</th>
 								<th>营业厅类型（自有产权、租用、自有+租用）</th>
 								<th>运营模式（自营、柜台外包、他营）</th>
-								<th>厅类型（旗舰、标准、小型）</th> -->
-								<!-- <th>经营者名称（自营、代理商名称）</th>
+								<th>厅类型（旗舰、标准、小型）</th> 
+								<th>经营者名称（自营、代理商名称）</th>
 								<th>代理商进驻厅的开始时间</th>
 								<th>房屋合同起始日期</th>
 								<th>房屋合同截止日期</th>
@@ -117,7 +118,7 @@
 								<th>物业管理费用</th>
 								<th>水电费</th>
 								<th>装修费</th>
-								<th>安保费</th> -->
+								<th>安保费</th> 
 								<th>操作</th>
 						</thead>
 						<tbody id="dataBody">
