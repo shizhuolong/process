@@ -49,7 +49,7 @@
 	src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_info.js?v=12"></script>
+	src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_info.js?v=14"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
