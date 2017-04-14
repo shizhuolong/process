@@ -6,6 +6,7 @@
 	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT * FROM PTEMP.TB_TEMP_BUS_HALL_INFO
 		<include refid="where"></include>
+		ORDER BY DEAL_DATE,GROUP_ID_1,YYY_NAME,HALL_CODE,HQ_CHAN_CODE
 	</select>
 
 	<sql id="where">
