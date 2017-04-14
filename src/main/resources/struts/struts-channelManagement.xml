@@ -78,6 +78,8 @@
          <!-- 营业厅固话信息维护-->
         <action name="businessHallInfo_*" class="org.apdplat.portal.channelManagement.action.BusinessHallInfoAction" method="{1}">
 			<result name="success">/portal/channelManagement/jsp/business_hall_info.jsp</result>
+			<result name="detail">/portal/channelManagement/jsp/business_hall_detail.jsp</result>
+			<result name="update">/portal/channelManagement/jsp/business_hall_detail_update.jsp</result>
         </action>
          <!--SAP终端导入-->
         <action name="importTerm_*" class="org.apdplat.portal.channelManagement.action.ImportTermAction" method="{1}">
