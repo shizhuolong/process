@@ -51,9 +51,9 @@ public class HrUploadOldAction extends BaseAction{
 			String userId=request.getParameter("userId");
 			String regionCode=request.getParameter("regionCode");
 			request.getAttribute("userId");
-			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE  deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TMP WHERE  deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
 			SpringManager.getUpdateDao().update(csql);
-			String sql="insert into PTEMP.TB_TMP_JCDY_HR_SALARY select * from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
+			String sql="insert into PTEMP.TB_TMP_JCDY_HR_SALARY_TMP select * from PTEMP.TB_TMP_JCDY_HR_SALARY_TMP_TEMP where creator='"+userId+"'";
 			SpringManager.getUpdateDao().update(sql);
 			//调用存储过程
 			conn = dataSource.getConnection();
@@ -123,7 +123,7 @@ public class HrUploadOldAction extends BaseAction{
 	}
 	public String importTax(){
 		List<String> err=new ArrayList<String>();
-		String resultTableName="PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP";
+		String resultTableName="PTEMP.TB_TMP_JCDY_HR_SALARY_TMP_TEMP";
 		if(uploadFile==null){
 			err.add("上传文件为空");
 		}else{
@@ -171,8 +171,8 @@ public class HrUploadOldAction extends BaseAction{
 							continue;
 						}
 					}
-					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
-					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
+					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TMP_TEMP where creator='"+userId+"'";
+					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TMP_TEMP where creator='"+userId+"'";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
 						err.add("导入的excel表中有重复数据");
 					}
