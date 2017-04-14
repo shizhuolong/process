@@ -6,12 +6,33 @@ $(function(){
 		title:title,
 		field:["ROW_NAME"].concat(field),
 		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
-		rowParams:["ROW_ID"],//第一个为rowId
+		rowParams:["ROW_NAME","ROW_ID"],//第一个为rowId
 		content:"content",
 		orderCallBack:function(index,type){
 			
 		},afterShowSubRows:function(){
 			$("#lch_DataBody").find("TR").find("TD:gt(0)").css({textAlign:"right"});
+			$("#lch_DataBody").find("TR").each(function(row){
+				$(this).find("TD").each(function(col){
+					if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+						
+					}else{
+						var text=$(this).text();
+						var code=$(this).parent().attr("row_id");
+						var level=$(this).parent().attr("orgLevel");
+						var row_name=$(this).parent().attr("row_name");
+						var tbcode = field[col-1];
+						var tn = getColumnName(tbcode);
+						var tablename=row_name+"—"+tn+"明细";
+						var startDate = $("#startDate").val();
+						var endDate= $("#endDate").val();
+						var chanlName=$("#chanlName").val();
+						var channelAttrs = $("#channelBox").attr("kindids");
+						var channelLevel = $("#channelBox").attr("level");
+						$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablename="'+tablename+'" level='+(level-1)+' row_name="'+row_name+'" code="'+code+'" startDate='+startDate+' endDate='+endDate+' chanlName="'+chanlName+'" channelAttrs="'+channelAttrs+'" channelLevel="'+channelLevel+'" tbcode="'+tbcode+'" tn="'+tn+'">'+text+'</a>');
+					}
+				});
+		    });
 		},
 		getSubRowsCallBack:function($tr){
 			var preField="";
@@ -87,6 +108,27 @@ $(function(){
 		}
 	});
 	report.showSubRow();
+	$("#lch_DataBody").find("TR").each(function(row){
+		$(this).find("TD").each(function(col){
+			if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+				
+			}else{
+				var text=$(this).text();
+				var code=$(this).parent().attr("row_id");
+				var level=$(this).parent().attr("orgLevel");
+				var row_name=$(this).parent().attr("row_name");
+				var tbcode = field[col-1];
+				var tn = getColumnName(tbcode);
+				var tablename=row_name+"—"+tn+"明细";
+				var startDate = $("#startDate").val();
+				var endDate= $("#endDate").val();
+				var chanlName=$("#chanlName").val();
+				var channelAttrs = $("#channelBox").attr("kindids");
+				var channelLevel = $("#channelBox").attr("level");
+				$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablename="'+tablename+'" level='+(level-1)+' row_name="'+row_name+'" code="'+code+'" startDate='+startDate+' endDate='+endDate+' chanlName="'+chanlName+'" channelAttrs="'+channelAttrs+'" channelLevel="'+channelLevel+'" tbcode="'+tbcode+'" tn="'+tn+'">'+text+'</a>');
+			}
+		});
+    });
     ///////////////////////////////////////////
 	$("#lch_DataHead").find("TH").unbind();
 	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
@@ -95,10 +137,44 @@ $(function(){
 		sumSql=getSumSql();
 		report.showSubRow();
 		report.showAllCols(0);
-
+		$("#lch_DataBody").find("TR").each(function(row){
+			$(this).find("TD").each(function(col){
+				if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+					
+				}else{
+					var text=$(this).text();
+					var code=$(this).parent().attr("row_id");
+					var level=$(this).parent().attr("orgLevel");
+					var row_name=$(this).parent().attr("row_name");
+					var tbcode = field[col-1];
+					var tn = getColumnName(tbcode);
+					var tablename=row_name+"—"+tn+"明细";
+					var startDate = $("#startDate").val();
+					var endDate= $("#endDate").val();
+					var chanlName=$("#chanlName").val();
+					var channelAttrs = $("#channelBox").attr("kindids");
+					var channelLevel = $("#channelBox").attr("level");
+					$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tablename="'+tablename+'" level='+(level-1)+' row_name="'+row_name+'" code="'+code+'" startDate='+startDate+' endDate='+endDate+' chanlName="'+chanlName+'" channelAttrs="'+channelAttrs+'" channelLevel="'+channelLevel+'" tbcode="'+tbcode+'" tn="'+tn+'">'+text+'</a>');
+				}
+			});
+	   });
 	});
 });
 
+function openDetail(obj){
+	var tablename=$(obj).attr("tablename");
+	var level=$(obj).attr("level");
+	var code=$(obj).attr("code");
+	var chanlName=$(obj).attr("chanlName");
+	var startDate=$(obj).attr("startDate");
+	var endDate=$(obj).attr("endDate");
+	var channelAttrs=$(obj).attr("channelAttrs");
+	var channelLevel=$(obj).attr("channelLevel");
+	var tbcode=$(obj).attr("tbcode");
+	var tn=$(obj).attr("tn");
+	var url=$("#ctx").val()+"/report/devIncome/jsp/wg_bss_detail.jsp?tablename="+tablename+"&level="+level+"&code="+code+"&startDate="+startDate+"&endDate="+endDate+"&chanlName="+chanlName+"&channelAttrs="+channelAttrs+"&channelLevel="+channelLevel+"&tbcode="+tbcode+"&tn="+tn;
+	window.parent.openWindow(tablename,null,url);
+}
 
 function downsAll() {
 	var preField=" SELECT DEAL_DATE,GROUP_ID_1_NAME,UNIT_NAME,GROUP_ID_4_NAME,";
@@ -151,4 +227,19 @@ function getSumSql() {
 			"   FROM PMRT.TAB_MRT_COMM_AGENT_REPORT_CY                   "+
 			"  WHERE BILLINGCYCLID  between '"+startDate+"' and '"+endDate+"' ";
 	return s;
+}
+function getColumnName(tbcode){
+	var tn = "计算";
+	if(tbcode == 'BSS_WG') {
+		tn = "网格+BSS计算";
+	}else if(tbcode == 'ESS') {
+		tn = "网格未支撑走集中";
+	}else if(tbcode == 'BSS_WG_ESS_TOTAL') {
+		tn = "网格BSS未支撑走集中合计";
+	}else if(tbcode == 'MANUAL_ADJUST') {
+		tn = "集中人工调整(最终)";
+	}else if(tbcode == 'DIFF_AMOUNT') {
+		tn = "差异金额";
+	}
+	return tn;
 }
