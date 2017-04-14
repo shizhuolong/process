@@ -46,11 +46,11 @@ function search(pageNumber) {
 					+"<td>"+ isNull(item["YYY_ARRE_NAME"])+ "</td>"
 					+"<td>"+ isNull(item["HQ_CHAN_CODE"])+ "</td>"
 					+"<td>"+ isNull(item["IS_BALL"]=='1'?'是':'否')+ "</td>"
-					/*+"<td>"+ isNull(item["CHANNLE_NAME"])+ "</td>"
+					+"<td>"+ isNull(item["CHANNLE_NAME"])+ "</td>"
 					+"<td>"+ isNull(item["OPEN_TIME"])+ "</td>"
 					+"<td>"+ isNull(item["YYY_TYPE"])+ "</td>"
-					+"<td>"+ isNull(item["OPERATE_TYPE"])+ "</td>"*/
-					/*+"<td>"+ isNull(item["T_TYPE"])+ "</td>"
+					+"<td>"+ isNull(item["OPERATE_TYPE"])+ "</td>"
+					+"<td>"+ isNull(item["T_TYPE"])+ "</td>"
 					+"<td>"+isNull(item["MANAGE_NAME"])+"</td>"
 					+"<td>"+isNull(item["AGENT_INNER_TIME"])+"</td>"
 					+"<td>"+isNull(item["PACT_CREATE_TIME"])+"</td>"
@@ -66,8 +66,9 @@ function search(pageNumber) {
 					+"<td>"+isNull(item["PM_FEE"])+"</td>"
 					+"<td>"+isNull(item["W_AND_E"])+"</td>"
 					+"<td>"+isNull(item["FIT_FEE"])+"</td>"
-					+"<td>"+isNull(item["SEC_FEE"])+"</td>"*/
-			 	+"<td><a onclick='del($(this))' nameid='"+isNull(item['NAMEID'])+"' href='#'>查看</a></td>";
+					+"<td>"+isNull(item["SEC_FEE"])+"</td>"
+			 	+"<td><a onclick='view($(this))' hq_chan_code='"+isNull(item['HQ_CHAN_CODE'])+"' deal_date='"+isNull(item['DEAL_DATE'])+"' href='#'>查看</a>&nbsp;"
+			 	+"<a onclick='update($(this))' hq_chan_code='"+isNull(item['HQ_CHAN_CODE'])+"' deal_date='"+isNull(item['DEAL_DATE'])+"' href='#'>修改</a></td>";
 				content+="</tr>";
 			 });
 			if(content != "") {
@@ -89,30 +90,28 @@ function initPagination(totalCount) {
        items_per_page:pageSize,
        link_to:"###",
        prev_text: '上页',       //上一页按钮里text  
-   	next_text: '下页',       //下一页按钮里text  
-   	num_display_entries: 5, 
-   	num_edge_entries: 2
+	   	next_text: '下页',       //下一页按钮里text  
+	   	num_display_entries: 5, 
+	   	num_edge_entries: 2
 	 });
 }
-function update(obj) {
-	var url = $("#ctx").val()+"/portal/channelManagement/jsp/agent_person_update.jsp";
-	art.dialog.data('hq_chan_code',obj.attr("hq_chan_code"));
-	art.dialog.data('hq_chan_name',obj.attr("hq_chan_name"));
-	art.dialog.data('people_type',obj.attr("people_type"));
-	art.dialog.data('name',obj.attr("name"));
-	art.dialog.data('phone',obj.attr("phone"));
-	art.dialog.data('deal_date',initMonth);
-	art.dialog.data('nameid',obj.attr("nameid"));
-	art.dialog.open(url,{
-		id:'update',
-		width:'550px',
-		height:'130px',
-		padding:'0 0',
-		lock:true,
-		resize:false,
-		title:'修改代理商人员'
-	});
+
+//查看详情
+function view(ele) {
+	var hq_chan_code = $(ele).attr("hq_chan_code");
+	var deal_date = $(ele).attr("deal_date");
+	var url = $("#ctx").val()+"/channelManagement/businessHallInfo_toInfo.action?hq_chan_code="+hq_chan_code+"&deal_date="+deal_date;
+	window.parent.openWindow("营业厅固话详细信息",'funMenu',url);
 }
+
+//修改详细信息
+function update(ele) {
+	var hq_chan_code = $(ele).attr("hq_chan_code");
+	var deal_date = $(ele).attr("deal_date");
+	var url = $("#ctx").val()+"/channelManagement/businessHallInfo_toUpdate.action?hq_chan_code="+hq_chan_code+"&deal_date="+deal_date;
+	window.parent.openWindow("营业厅固话详细信息维护",'funMenu',url);
+}
+
 function isNull(obj){
 	if(obj == undefined || obj == null || obj == '' || obj == null) {
 		return "";

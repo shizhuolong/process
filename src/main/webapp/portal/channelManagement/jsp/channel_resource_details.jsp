@@ -4,6 +4,8 @@
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <%
 	User user = UserHolder.getCurrentLoginUser();
