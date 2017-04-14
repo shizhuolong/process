@@ -1,5 +1,8 @@
 package org.apdplat.portal.channelManagement.action;
 
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apdplat.module.security.model.Org;
@@ -34,33 +37,42 @@ public class BusinessHallInfoAction extends BaseAction {
 		this.reponseJson(result);
 	}
 	
-	/*public void update() {
-		Map<String, String> m = new HashMap<String, String>();
-		String hq_chan_code = request.getParameter("hq_chan_code").trim();
-		String hq_chan_name = request.getParameter("hq_chan_name");
-		String name = request.getParameter("name").trim();
-		String phone = request.getParameter("phone").trim();
+	public String toInfo() {
+		String hq_chan_code = request.getParameter("hq_chan_code");
 		String deal_date = request.getParameter("deal_date");
-		String people_type=request.getParameter("people_type");
-		String nameid=request.getParameter("nameid");
-		
-		m.put("nameid", nameid);
-		m.put("hq_chan_code", hq_chan_code);
-		m.put("hq_chan_name", hq_chan_name);
-		m.put("name", name);
-		m.put("phone", phone);
-		m.put("people_type", people_type);
-		m.put("deal_date", deal_date);
-		m.put("username", request.getParameter("username"));
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("hq_chan_code",hq_chan_code);
+		params.put("deal_date",deal_date);
+		List<Map<String, Object>> list = service.loadDetails(params);
+		request.setAttribute("detail",list.get(0));
+		return "detail";
+	}
+	public String toUpdate() {
+		String hq_chan_code = request.getParameter("hq_chan_code");
+		String deal_date = request.getParameter("deal_date");
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("hq_chan_code",hq_chan_code);
+		params.put("deal_date",deal_date);
+		List<Map<String, Object>> list = service.loadDetails(params);
+		request.setAttribute("detail",list.get(0));
+		return "update";
+	}
+	
+	public void save() {
 		try {
-			service.update(m);
-			this.reponseJson("修改成功");
+			for (String key : resultMap.keySet()) {  
+			    String value = resultMap.get(key);  
+			    value=URLDecoder.decode(value , "UTF-8");
+			    resultMap.put(key, value);
+			}  
+			service.update(resultMap);
+			this.reponseJson("修改成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.reponseJson("修改失败");
+			this.reponseJson("修改失败！");
 		}
 	}
-*/
+
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}
