@@ -27,7 +27,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>佣金汇总月报明细</title>
+<title>BSS、网格和手工调整佣金差异明细</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -36,7 +36,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/wg_bss_detail.js?v=18"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/wg_bss_detail.js?v=19"></script>
 <script type="text/javascript">
    var tablename="<%=tablename%>";
    var startDate="<%=startDate%>";
