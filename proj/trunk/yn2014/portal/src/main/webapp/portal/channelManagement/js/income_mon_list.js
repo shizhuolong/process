@@ -30,7 +30,7 @@ $(function() {
 	});
 });
 
-var pageSize = 15;
+var pageSize = 20;
 //分页
 function initPagination(totalCount) {
 	$("#totalCount").html(totalCount);
