@@ -53,10 +53,10 @@ $(function() {
 				return true;
 			},
 			success:function(r){
-				//var d = $.parseJSON(r);
+				var d = $.parseJSON(r);
 				art.dialog({
 		   			title: '提示',
-		   		    content: r,
+		   		    content: d.msg,
 		   		    icon: 'succeed',
 		   		    lock: true,
 		   		    ok: function () {
