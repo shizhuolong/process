@@ -16,7 +16,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/chnl_person_update.js?v=2"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/chnl_person_update.js?v=3"></script>
 </head>
 <body style="min-width: 400px;">
     <input type="hidden" id="ctx" value="<%=request.getContextPath()%>"/>
