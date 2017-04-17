@@ -151,7 +151,7 @@ table tr td {
 								<th width="240">房屋合同截止日期 :</th>
 								<td><input name="resultMap.pact_inactive_time" value="<%=m.get("PACT_INACTIVE_TIME")%>"/></td>
 								<th width="200">合同年租金（万元） :</th>
-								<td><input name="resultMap.pact_money" value="<%=m.get("PACT_MONEY")%>"/></td>
+								<td><input name="resultMap.pact_money" readonly value="<%=m.get("PACT_MONEY")%>"/></td>
 							</tr>
 
 							<tr>
