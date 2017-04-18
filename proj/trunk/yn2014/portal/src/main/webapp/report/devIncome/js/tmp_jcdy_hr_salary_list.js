@@ -53,7 +53,7 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
 	var userId=$("#userId").val();
-	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND CREATOR='"+userId+"'";
+	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"'";
 	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
@@ -90,7 +90,6 @@ function downsAll() {
 function confirmImport(){
 	var time=$("#time").val();
 	var userId=$("#userId").val();
-	var regionCode=$("#cityCode").val();
 	if(totalCount){
 		if(confirm("确认导入？")){
 			$("#confirmBtn").hide();
@@ -102,8 +101,7 @@ function confirmImport(){
 				url:paths+"/devIncome/hrUpload_confirmTax.action",
 				data:{
 		           "time":time,
-		           "userId":userId,
-		           "regionCode":regionCode
+		           "userId":userId
 			   	}, 
 			   	success:function(data){
 			   		if(data&&data.ok){

@@ -66,7 +66,6 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	
 		<div id="main" class="clearfix">
 			<div class="main-block">
@@ -100,9 +99,6 @@
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" 
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time" name="time"/>
 						         </td>
-					             <td width="">地市：
-					                <select style="width: 200px;" id="regionName" name="regionCode"></select>
-					             </td>
 							</tr>
 							<tr>
 								<th  width="100px">上传文件</th>
