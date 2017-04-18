@@ -9,7 +9,7 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca = Calendar.getInstance();
-	ca.add(Calendar.MONTH, 0);
+	ca.add(Calendar.MONTH, -1);
 	String dealDate = new SimpleDateFormat("yyyyMM").format(ca
 			.getTime());
 %>

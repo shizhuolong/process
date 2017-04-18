@@ -93,26 +93,26 @@ table tr td {
 						<table class="chanlInfoForom">
 							 <tr>
 								<th width="200">地市:</th>
-								 <td><%=m.get("GROUP_ID_1_NAME")%></td> 
+								 <td>${detail["GROUP_ID_1_NAME"]}</td> 
 								 <th width="200">营业厅名称:</th>
-								<td><%=m.get("YYY_NAME")%></td> 
+								<td>${detail["YYY_NAME"]}</td> 
 							</tr> 
 							  <tr>
 								<th width="200">主厅编码:</th>
-								<td><%=m.get("HALL_CODE")%></td>
+								<td>${detail["HALL_CODE"]}</td>
 								<th width="200">营业厅地址:</th>
-								<td><%=m.get("YYY_ARRE_NAME")%></td>
+								<td>${detail["YYY_ARRE_NAME"]}</td>
 							</tr>
 							
 							 <tr>
 								<th width="200">渠道编码:</th>
-								<td><%=m.get("HQ_CHAN_CODE")%></td>
+								<td>${detail["HQ_CHAN_CODE"]}</td>
 								<th width="200">是否主厅 :</th>
 								<td id="IS_BALL"><%=("1".equals(m.get("IS_BALL"))?'是':'否')%></td>
 							</tr>
 							<tr>
 								<th width="200">渠道名称:</th>
-								<td><%=m.get("CHANNLE_NAME")%></td>
+								<td>${detail["CHANNLE_NAME"]}</td>
 							</tr>
 						</table>
 						<div class="title" style="border-bottom: 2px solid #e7d4b3;">
@@ -121,77 +121,77 @@ table tr td {
 						<table class="chanlInfoForom">
 							<tr>
 								<th width="210">区域（市级/县级/乡镇/乡镇以下） :</th>
-								<td><input name="resultMap.channel_2_name" value="<%=null==m.get("CHANNEL_2_NAME")?"":m.get("CHANNEL_2_NAME")%>"/></td>
+								<td><input name="resultMap.channel_2_name" value="${detail["CHANNEL_2_NAME"]}"/></td>
 								<th width="200">渠道启用时间 :</th>
-								<td><input name="resultMap.open_time" value="<%=m.get("OPEN_TIME")%>"/></td>
+								<td><input name="resultMap.open_time" value="${detail["OPEN_TIME"]}"/></td>
 							</tr>
 
 							<tr>
-								<th width="240">营业厅类型（自有产权、租用、自有+租用） :</th>
-								<td><input name="resultMap.yyy_type" value="<%=m.get("YYY_TYPE")%>"/></td>
+								<th width="240">营业厅类型（自有产权、租用、租用（赠送）） :</th>
+								<td><input name="resultMap.yyy_type" value="${detail["YYY_TYPE"]}"/></td>
 								<th width="200">运营模式（自营、柜台外包、他营）:</th>
-								<td><input name="resultMap.operate_type" value="<%=m.get("OPERATE_TYPE")%>"/></td>
+								<td><input name="resultMap.operate_type" value="${detail["OPERATE_TYPE"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">厅类型（旗舰、标准、小型） :</th>
-								<td><input name="resultMap.t_type" value="<%=m.get("T_TYPE")%>"/></td>
+								<td><input name="resultMap.t_type" value="${detail["T_TYPE"]}"/></td>
 								<th width="200">经营者名称（自营、代理商名称）:</th>
-								<td><input name="resultMap.manage_name" value="<%=m.get("MANAGE_NAME")%>"/></td>
+								<td><input name="resultMap.manage_name" value="${detail["MANAGE_NAME"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">代理商进驻厅的开始时间 :</th>
-								<td><input name="resultMap.agent_inner_time" value="<%=m.get("AGENT_INNER_TIME")%>"/></td>
+								<td><input name="resultMap.agent_inner_time" value="${detail["AGENT_INNER_TIME"]}"/></td>
 								<th width="200">房屋合同起始日期:</th>
-								<td><input name="resultMap.pact_create_time" value="<%=m.get("PACT_CREATE_TIME")%>"/></td>
+								<td><input name="resultMap.pact_create_time" value="${detail["PACT_CREATE_TIME"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">房屋合同截止日期 :</th>
-								<td><input name="resultMap.pact_inactive_time" value="<%=m.get("PACT_INACTIVE_TIME")%>"/></td>
+								<td><input name="resultMap.pact_inactive_time" value="${detail["PACT_INACTIVE_TIME"]}"/></td>
 								<th width="200">合同年租金（万元） :</th>
-								<td><input name="resultMap.pact_money" readonly value="<%=m.get("PACT_MONEY")%>"/></td>
+								<td><input name="resultMap.pact_money" readonly value="${detail["PACT_MONEY"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">建筑面积（M2） :</th>
-								<td><input name="resultMap.area_structure" value="<%=m.get("AREA_STRUCTURE")%>"/></td>
+								<td><input name="resultMap.area_structure" value="${detail["AREA_STRUCTURE"]}"/></td>
 								<th width="200">营业厅人数（联通方）:</th>
-								<td><input name="resultMap.yyt_num" value="<%=m.get("YYT_NUM")%>"/></td>
+								<td><input name="resultMap.yyt_num" value="${detail["YYT_NUM"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">代理商或厂家驻店人数 :</th>
-								<td><input name="resultMap.agent_num" value="<%=m.get("AGENT_NUM")%>"/></td>
+								<td><input name="resultMap.agent_num" value="${detail["AGENT_NUM"]}"/></td>
 								<th width="200">自助终端数量（台）:</th>
-								<td><input name="resultMap.self_service_num" value="<%=m.get("SELF_SERVICE_NUM")%>"/></td>
+								<td><input name="resultMap.self_service_num" value="${detail["SELF_SERVICE_NUM"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">厅经理姓名 :</th>
-								<td><input name="resultMap.t_manage_name" value="<%=m.get("T_MANAGE_NAME")%>"/></td>
+								<td><input name="resultMap.t_manage_name" value="${detail["T_MANAGE_NAME"]}"/></td>
 								<th width="200">店长联系方式:</th>
-								<td><input name="resultMap.phone" value="<%=m.get("PHONE")%>"/></td>
+								<td><input name="resultMap.phone" value="${detail["PHONE"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">月房租:</th>
-								<td><input name="resultMap.mon_rent" value="<%=m.get("MON_RENT")%>"/></td>
+								<td><input name="resultMap.mon_rent" value="${detail["MON_RENT"]}"/></td>
 								<th width="200">物业管理费用:</th>
-								<td><input name="resultMap.pm_fee" value="<%=m.get("PM_FEE")%>"/></td>
+								<td><input name="resultMap.pm_fee" value="${detail["PM_FEE"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">水电费:</th>
-								<td><input name="resultMap.w_and_e"  value="<%=m.get("W_AND_E")%>"/></td>
+								<td><input name="resultMap.w_and_e"  value="${detail["W_AND_E"]}"/></td>
 								<th width="200">装修费:</th>
-								<td><input name="resultMap.fit_fee"  value="<%=m.get("FIT_FEE")%>"/></td>
+								<td><input name="resultMap.fit_fee"  value="${detail["FIT_FEE"]}"/></td>
 							</tr>
 
 							<tr>
 								<th width="240">安保费:</th>
-								<td><input name="resultMap.sec_fee" value="<%=m.get("SEC_FEE")%>"/></td>
+								<td><input name="resultMap.sec_fee" value="${detail["SEC_FEE"]}"/></td>
 							</tr>  
 							<tr>
 								<td colspan="4" style="text-align: center;">
@@ -199,8 +199,8 @@ table tr td {
 								</td>
 							</tr>
 						</table>
-							<input name="resultMap.hq_chan_code" type="hidden" value="<%=m.get("HQ_CHAN_CODE")%>"/>
-							<input name="resultMap.deal_date" type="hidden" value="<%=m.get("DEAL_DATE")%>"/>
+							<input name="resultMap.hq_chan_code" type="hidden" value="${detail["HQ_CHAN_CODE"]}"/>
+							<input name="resultMap.deal_date" type="hidden" value="${detail["DEAL_DATE"]}"/>
 						</form>
 					</div>
 				</div>

@@ -71,26 +71,26 @@ table tr td {
 						<table class="chanlInfoForom">
 							 <tr>
 								<th width="200">地市:</th>
-								 <td><%=m.get("GROUP_ID_1_NAME")%></td> 
+								 <td><%=null==m.get("GROUP_ID_1_NAME")?"":m.get("GROUP_ID_1_NAME")%></td> 
 								 <th width="200">营业厅名称:</th>
-								<td><%=m.get("YYY_NAME")%></td> 
+								<td><%=null==m.get("YYY_NAME")?"":m.get("YYY_NAME")%></td> 
 							</tr> 
 							  <tr>
 								<th width="200">主厅编码:</th>
-								<td><%=m.get("HALL_CODE")%></td>
+								<td><%=null==m.get("HALL_CODE")?"":m.get("HALL_CODE")%></td>
 								<th width="200">营业厅地址:</th>
-								<td><%=m.get("YYY_ARRE_NAME")%></td>
+								<td><%=null==m.get("YYY_ARRE_NAME")?"":m.get("YYY_ARRE_NAME")%></td>
 							</tr>
 							
 							 <tr>
 								<th width="200">渠道编码:</th>
-								<td><%=m.get("HQ_CHAN_CODE")%></td>
+								<td><%=null==m.get("HQ_CHAN_CODE")?"":m.get("HQ_CHAN_CODE")%></td>
 								<th width="200">是否主厅 :</th>
-								<td id="IS_BALL"><%=("1".equals(m.get("IS_BALL"))?'是':'否')%></td>
+								<td id="IS_BALL"><%="1"==m.get("IS_BALL")?"是":"否"%></td>
 							</tr>
 							<tr>
 								<th width="200">渠道名称:</th>
-								<td><%=m.get("CHANNLE_NAME")%></td>
+								<td><%=null==m.get("CHANNLE_NAME")?"":m.get("CHANNLE_NAME")%></td>
 							</tr>
 						</table>
 						<div class="title" style="border-bottom: 2px solid #e7d4b3;">
@@ -101,75 +101,75 @@ table tr td {
 								<th width="210">区域（市级/县级/乡镇/乡镇以下） :</th>
 								<td><%=null==m.get("CHANNEL_2_NAME")?"":m.get("CHANNEL_2_NAME")%></td>
 								<th width="200">渠道启用时间 :</th>
-								<td><%=m.get("OPEN_TIME")%></td>
+								<td><%=null==m.get("OPEN_TIME")?"":m.get("OPEN_TIME")%></td>
 							</tr>
 
 							<tr>
-								<th width="240">营业厅类型（自有产权、租用、自有+租用） :</th>
-								<td><%=m.get("YYY_TYPE")%></td>
+								<th width="240">营业厅类型（自有产权、租用、租用（赠送）） :</th>
+								<td><%=null==m.get("YYY_TYPE")?"":m.get("YYY_TYPE")%></td>
 								<th width="200">运营模式（自营、柜台外包、他营）:</th>
-								<td><%=m.get("OPERATE_TYPE")%></td>
+								<td><%=null==m.get("OPERATE_TYPE")?"":m.get("OPERATE_TYPE")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">厅类型（旗舰、标准、小型） :</th>
-								<td><%=m.get("T_TYPE")%></td>
+								<td><%=null==m.get("T_TYPE")?"":m.get("T_TYPE")%></td>
 								<th width="200">经营者名称（自营、代理商名称）:</th>
-								<td><%=m.get("MANAGE_NAME")%></td>
+								<td><%=null==m.get("MANAGE_NAME")?"":m.get("MANAGE_NAME")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">代理商进驻厅的开始时间 :</th>
-								<td><%=m.get("AGENT_INNER_TIME")%></td>
+								<td><%=null==m.get("AGENT_INNER_TIME")?"":m.get("AGENT_INNER_TIME")%></td>
 								<th width="200">房屋合同起始日期:</th>
-								<td><%=m.get("PACT_CREATE_TIME")%></td>
+								<td><%=null==m.get("PACT_CREATE_TIME")?"":m.get("PACT_CREATE_TIME")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">房屋合同截止日期 :</th>
-								<td><%=m.get("PACT_INACTIVE_TIME")%></td>
+								<td><%=null==m.get("PACT_INACTIVE_TIME")?"":m.get("PACT_INACTIVE_TIME")%></td>
 								<th width="200">合同年租金（万元） :</th>
-								<td><%=m.get("PACT_MONEY")%></td>
+								<td><%=null==m.get("PACT_MONEY")?"":m.get("PACT_MONEY")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">建筑面积（M2） :</th>
-								<td><%=m.get("AREA_STRUCTURE")%></td>
+								<td><%=null==m.get("AREA_STRUCTURE")?"":m.get("AREA_STRUCTURE")%></td>
 								<th width="200">营业厅人数（联通方）:</th>
-								<td><%=m.get("YYT_NUM")%></td>
+								<td><%=null==m.get("YYT_NUM")?"":m.get("YYT_NUM")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">代理商或厂家驻店人数 :</th>
-								<td><%=m.get("AGENT_NUM")%></td>
+								<td><%=null==m.get("AGENT_NUM")?"":m.get("AGENT_NUM")%></td>
 								<th width="200">自助终端数量（台）:</th>
-								<td><%=m.get("SELF_SERVICE_NUM")%></td>
+								<td><%=null==m.get("SELF_SERVICE_NUM")?"":m.get("SELF_SERVICE_NUM")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">厅经理姓名 :</th>
-								<td><%=m.get("T_MANAGE_NAME")%></td>
+								<td><%=null==m.get("T_MANAGE_NAME")?"":m.get("T_MANAGE_NAME")%></td>
 								<th width="200">店长联系方式:</th>
-								<td><%=m.get("PHONE")%></td>
+								<td><%=null==m.get("PHONE")?"":m.get("PHONE")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">月房租:</th>
-								<td><%=m.get("MON_RENT")%></td>
+								<td><%=null==m.get("MON_RENT")?"":m.get("MON_RENT")%></td>
 								<th width="200">物业管理费用:</th>
-								<td><%=m.get("PM_FEE")%></td>
+								<td><%=null==m.get("PM_FEE")?"":m.get("PM_FEE")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">水电费:</th>
-								<td><%=m.get("W_AND_E")%></td>
+								<td><%=null==m.get("W_AND_E")?"":m.get("W_AND_E")%></td>
 								<th width="200">装修费:</th>
-								<td><%=m.get("FIT_FEE")%></td>
+								<td><%=null==m.get("FIT_FEE")?"":m.get("FIT_FEE")%></td>
 							</tr>
 
 							<tr>
 								<th width="240">安保费:</th>
-								<td><%=m.get("SEC_FEE")%></td>
+								<td><%=null==m.get("SEC_FEE")?"":m.get("SEC_FEE")%></td>
 							</tr>  
 						</table>
 					</div>
