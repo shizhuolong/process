@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -48,12 +49,9 @@ public class HrUploadAction extends BaseAction{
 		CallableStatement stmt=null;
 		try{
 			String time=request.getParameter("time");
-			String userId=request.getParameter("userId");
-			String regionCode=request.getParameter("regionCode");
-			request.getAttribute("userId");
-			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE  deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
+			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE DEAL_DATE="+time;
 			SpringManager.getUpdateDao().update(csql);
-			String sql="INSERT INTO PTEMP.TB_TMP_JCDY_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE CREATOR='"+userId+"'";
+			String sql="INSERT INTO PTEMP.TB_TMP_JCDY_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"'";
 			SpringManager.getUpdateDao().update(sql);
 			/*//调用存储过程
 			conn = dataSource.getConnection();
@@ -130,7 +128,7 @@ public class HrUploadAction extends BaseAction{
 		}else{
 			try{
 				//上传时覆盖
-				String delSql="delete from "+resultTableName+" where creator='"+userId+"'";
+				String delSql="delete from "+resultTableName+" where deal_date='"+time+"'";
 				SpringManager.getUpdateDao().update(delSql);
 				FileInputStream in=new FileInputStream(uploadFile);
 				HSSFWorkbook wb = new HSSFWorkbook(in);
@@ -173,11 +171,25 @@ public class HrUploadAction extends BaseAction{
 							continue;
 						}
 					}
-					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
-					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where creator='"+userId+"'";
+					String hrNoNotExist="SELECT HR_NO FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE HR_NO NOT IN(SELECT DISTINCT HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON)";
+					List<Map<String,String>> l=SpringManager.getFindDao().find(hrNoNotExist);
+					if(l!=null&&l.size()>0){
+						for(int i=0;i<l.size();i++){
+							err.add("hr编码"+l.get(i).get("HR_NO")+"错误，请核查！");
+						}
+					}
+					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where deal_date='"+time+"'";
+					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where deal_date='"+time+"'";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
 						err.add("导入的excel表中有员工工号重复数据");
 					}
+					String updateRegionCode="MERGE INTO PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP T1   "+
+							"USING PORTAL.TAB_PORTAL_QJ_PERSON T2             "+
+							"ON    (T1.HR_NO=T2.HR_ID AND T2.DEAL_DATE="+time+")"+
+							"WHEN MATCHED THEN                                "+
+							"  UPDATE SET T1.GROUP_ID_1=T2.GROUP_ID_1         ";
+					
+					SpringManager.getUpdateDao().update(updateRegionCode);
 				}
 				System.out.println("导入结束...");
 			}catch (Exception e) {
