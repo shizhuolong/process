@@ -71,7 +71,7 @@
 		<div id="main" class="clearfix">
 			<div class="main-block">
 				<div class="title">
-					<i></i>调整后合同导入
+					<i></i>调整后合同导入(新)
 				</div>
 				<div id="chose-sender">
 					<div class="title-o">
@@ -99,10 +99,8 @@
 								<td width="6%">账期：
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" 
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time" name="time"/>
-						         </td>
-					             <td width="">地市：
-					                <select style="width: 200px;" id="regionName" name="regionCode"></select>
-					             </td>
+						        </td>
+					            
 							</tr>
 							<tr>
 								<th  width="100px">上传文件</th>

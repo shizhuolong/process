@@ -15,7 +15,7 @@ $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
-		css:[{gt:4,css:LchReport.RIGHT_ALIGN},{eq:4,css:LchReport.SUM_PART_STYLE}],
+		css:[{gt:4,css:LchReport.RIGHT_ALIGN},{eq:2,css:LchReport.SUM_PART_STYLE}],
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		orderCallBack : function(index, type) {

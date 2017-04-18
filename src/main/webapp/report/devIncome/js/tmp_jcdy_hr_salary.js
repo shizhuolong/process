@@ -1,5 +1,4 @@
 jQuery(function(){
-	getRegionName(); 
 	$("#upload").click(complete);
 });
 function downloadFile() {
@@ -46,23 +45,3 @@ function isNotBlank(obj){
 function _execute(type,parameter,callback,msg,dom){
     $.Project.execute(type,parameter,callback,msg,dom);
 }
-
-function getRegionName(){
-	var sql="SELECT distinct t.region_name regionName,t.region_code regionCode FROM portal.apdp_org  t where t.region_code <> '86000'";
-	var orgLevel=$("#orgLevel").val();
-	var code=$("#code").val();
-	//var hrId=$("#hrId").val();
-	if(orgLevel==1){
-		
-	}else if(orgLevel==2){
-		sql+=" and t.region_code='"+code+"'";
-	}else{
-		sql+=" and 1=2";
-	}
-	var result=query(sql);
-	 var html="";
-	  for(var i=0;i<result.length;i++){
-		 html+="<option value="+result[i].REGIONCODE+">"+result[i].REGIONNAME+"</option>";
-	  }
-    $("#regionName").empty().append($(html));
-}					 

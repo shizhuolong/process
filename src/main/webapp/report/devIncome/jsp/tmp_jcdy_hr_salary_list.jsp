@@ -34,10 +34,8 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
-	<input type="hidden" id="regionCode" value="<%=org.getRegionCode()%>">
 	<input type="hidden" id="time" value="<%=request.getAttribute("time")%>">
 	<input type="hidden" id="userId" value="<%=request.getAttribute("userId")%>">
-	<input type="hidden" id="cityCode" value="<%=request.getAttribute("regionCode")%>">
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width: 150px;">
 					<tr>
