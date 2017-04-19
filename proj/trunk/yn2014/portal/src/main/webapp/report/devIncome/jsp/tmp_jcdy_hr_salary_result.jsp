@@ -37,13 +37,13 @@
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width:100%;">
 					<tr>
-						<td  width="8%">账期：</td>
-						<td width="1%">
+						<td  width="2%">账期：</td>
+						<td width="4%">
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						</td>
-						<td width="8%" style="text-align:right;">地市：</td>
-						<td width="13%">
+						<td width="2%" style="text-align:right;">地市：</td>
+						<td width="4%">
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						     </select>
