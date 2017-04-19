@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>营业厅固化信息导入</title>
+<title>自营厅自设指标导入</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=path%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css" />
@@ -28,14 +28,14 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_ghUpload_list.js?v=3"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_hall_kpi_list.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<div class="search-div">
-				<table style="margin: 0px 0; border:none;width:100%;font-size:100%;">
+				<table style="margin: 0px 0; border:none;width:100%;font-size:100%">
 					<tr>
 						<td  width="2%">账期：</td>
 						<td width="4%">
@@ -43,7 +43,7 @@
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						</td>
 						<td width="2%">地市：</td>
-					    <td width="4%">
+						<td width="4%">
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						     </select>
