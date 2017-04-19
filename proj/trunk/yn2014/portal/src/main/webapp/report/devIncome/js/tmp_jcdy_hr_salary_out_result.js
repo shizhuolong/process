@@ -3,22 +3,12 @@ var title=[["账期","人员编号","姓名","归属外包公司名称","所在�
 var field=["DEAL_DATE","HR_NO","USER_NAME","OWN_COMPANY","OWN_ORG","POST_SALARY","JX_SALARY","SUBSIDY","FESTIVITY_PAY","OVERTIME_PAY","OTHER_PAY","SALARY_PAY_TOTAL","OTHER_COST_1","OTHER_COST_1_ITEM","HOUSING","INCOME_TAX","FACT_TOTAL","PROVIDE_AGE","BIRTH_FEE","UNEMPLOYE","TREATMENT","HURT_FEE","GJJ_FEE","DEDUCTED_TOTAL","BEGIN_DATE","DEDUCT_DATE","UNION_DUES","MANA_FEE","FAX_FEE","OTHER_MAN_PAY","NOTE","COST_TOTAL"];
 var report = null;
 var downSql="";
-/*LchReport.prototype.isNull=function(obj){
-	if(obj == undefined || obj == null || obj == '') {
-		return '';
-	}
-	return obj;
-}*/
 $(function() {
 	report = new LchReport({
 		title : title,
 		field : field,
 		rowParams : [],//第一个为rowId
 		content : "lchcontent",
-		orderCallBack : function(index, type) {
-//			orderBy = " order by " + field[index] + " " + type + " ";
-//			search(0);
-		},
 		getSubRowsCallBack : function($tr) {
 			return {
 				data : nowData,
@@ -46,14 +36,18 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
-//列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
+	var regionCode=$("#regionCode").val();
 	var userId=$("#userId").val();
-	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"'";
+	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE DEAL_DATE='"+time+"'";
+	if(regionCode!=""){
+		sql+=" AND GROUP_ID_1='"+regionCode+"'";
+	}
+	sql+=" ORDER BY GROUP_ID_1";
 	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
@@ -87,38 +81,6 @@ function downsAll() {
 	downloadExcel(downSql,title,showtext);
 }
 
-function confirmImport(){
-	var time=$("#time").val();
-	var userId=$("#userId").val();
-	if(totalCount){
-		if(confirm("确认导入？")){
-			$("#confirmBtn").hide();
-			$.ajax({
-				type:"POST",
-				dataType:'json',
-				async:true,
-				cache:false,
-				url:paths+"/devIncome/orUpload_confirmTax.action",
-				data:{
-		           "time":time,
-		           "userId":userId
-			   	}, 
-			   	success:function(data){
-			   		if(data&&data.ok){
-			   			alert("已经成功入库");
-			   			window.location.href=paths+"/report/devIncome/jsp/tmp_jcdy_hr_salary_out_result.jsp";
-			   		}else{
-			   			alert("入库失败,请重试");
-			   			$("#confirmBtn").show();
-			   		}
-			    }
-			});
-		}
-	}else{
-		alert("没有要入库的数据,请先导入");
-		window.location.href=$("#ctx").val()+"/report/devIncome/jsp/tmp_jcdy_hr_out_salary.jsp";
-	}
-  }
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/report/devIncome/jsp/tmp_jcdy_hr_out_salary.jsp";
  }
