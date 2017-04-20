@@ -5,6 +5,7 @@ var orderBy = " ORDER BY GROUP_ID_1";
 var report = null;
 var downSql="";
 $(function() {
+	$("#time").val(getMaxDate("PMRT.TAB_MRT_CHNL_ALL_REPORT"));
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -96,6 +97,7 @@ function search(pageNumber) {
 }
  
 function downsAll(){
+	var time=$("#time").val();
 	var showtext = '渠道全成本(新)-'+time;
 	downloadExcel(downSql,title,showtext);
 }
