@@ -95,7 +95,7 @@ public class HallKpiMonthAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_BUS_HALL_PKI_MON_TEMP";
-		String field="DEAL_DATE,GROUP_ID_1,GROUP_ID_1_NAME,LOGIN_NAME,HQ_CHAN_CODE,KPI_NAME,KPI_WAIGHT,KPI_SCORE";
+		String field="INSERT_TIME,DEAL_DATE,GROUP_ID_1,GROUP_ID_1_NAME,LOGIN_NAME,HQ_CHAN_CODE,KPI_NAME,KPI_WAIGHT,KPI_SCORE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -118,7 +118,7 @@ public class HallKpiMonthAction extends BaseAction {
 					int start = sheet.getFirstRowNum() +2 ;// 去掉2行标题
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('"+time+"','"+regionCode+"','"+regionName+"','"+username+"',?,?,?,?)";
+					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(SYSDATE,'"+time+"','"+regionCode+"','"+regionName+"','"+username+"',?,?,?,?)";
 					pre=conn.prepareStatement(sql);
 					for (int y = start; y <= end; y++) {
 						row = sheet.getRow(y);
@@ -174,25 +174,24 @@ public class HallKpiMonthAction extends BaseAction {
 	}
 	
 	public String isPass(String regionCode){
-		String sql="SELECT T.HQ_CHAN_NAME                                                                          "+
+		String sql="SELECT T.HQ_CHAN_CODE                                                                          "+
 				"FROM  PMRT.TAB_MRT_BUS_HALL_PKI_MON_TEMP T                                                        "+
 				"WHERE NOT EXISTS (SELECT 1 FROM PCDE.TB_CDE_CHANL_HQ_CODE T1 WHERE T.HQ_CHAN_CODE=T1.HQ_CHAN_CODE)"+
 				" AND T.DEAL_DATE='"+time+"' AND T.GROUP_ID_1='"+regionCode+"'";
 		List<Map<String,String>> l=SpringManager.getFindDao().find(sql);
 		if(l!=null&&l.size()>0){
 			for(int i=0;i<l.size();i++){
-				return "营业厅编码"+l.get(i)+"不存在，请检查！";
+				return "营业厅编码"+l.get(i).get("HQ_CHAN_CODE")+"不存在，请检查！";
 			}
 		}
-		sql="SELECT HQ_CHAN_NAME FROM (                                                                                    "+
-				"SELECT T.HQ_CHAN_NAME,SUM(REPLACE(T.KPI_WAIGHT,'%'))KPI_WAIGHT FROM  PMRT.TAB_MRT_BUS_HALL_PKI_MON_TEMP T "+
+		sql="SELECT HQ_CHAN_CODE FROM (                                                                                    "+
+				"SELECT T.HQ_CHAN_CODE,SUM(REPLACE(T.KPI_WAIGHT,'%'))KPI_WAIGHT FROM  PMRT.TAB_MRT_BUS_HALL_PKI_MON_TEMP T "+
 				"WHERE  T.DEAL_DATE= '"+time+"' AND T.GROUP_ID_1='"+regionCode+"'                                          "+
-				"GROUP BY T.HQ_CHAN_NAME                                                                                   "+
-				") WHERE KPI_WAIGHT>40                                                                                     "+
-				"GROUP BY HQ_CHAN_NAME HAVING COUNT(1)>1                                                                   ";
+				"GROUP BY T.HQ_CHAN_CODE                                                                                   "+
+				") WHERE KPI_WAIGHT>40 ";                                                                                   
 		List<Map<String,String>> m=SpringManager.getFindDao().find(sql);
 		if(m!=null&&m.size()>0){
-				return "权重超过40%，请检查！";
+				return m.get(0).get("HQ_CHAN_CODE")+"权重超过40%，请检查！";
 		}
 		sql="SELECT HQ_CHAN_CODE FROM  PMRT.TAB_MRT_BUS_HALL_PKI_MON_TEMP T      "+
 				"WHERE  T.DEAL_DATE= '"+time+"' AND T.GROUP_ID_1='"+regionCode+"'"+
@@ -278,5 +277,4 @@ public class HallKpiMonthAction extends BaseAction {
 		}
 		return value;
 	}
-	
 }
