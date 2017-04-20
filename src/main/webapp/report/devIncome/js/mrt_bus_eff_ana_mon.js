@@ -5,6 +5,7 @@ var orderBy = " ORDER BY GROUP_ID_1,HALL_ID";
 var report = null;
 var downSql="";
 $(function() {
+	$("#time").val(getMaxDate("PMRT.TB_MRT_BUS_EFF_ANA_MON"));
 	report = new LchReport({
 		title : title,
 		field : field,
