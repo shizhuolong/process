@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["营业厅编码","指标名称","权重","指标得分"]];
-var field=["HQ_CHAN_CODE","KPI_NAME","KPI_WAIGHT","KPI_SCORE"];
+var title=[["营业厅编码","营业厅名称","指标名称","权重","指标得分"]];
+var field=["HQ_CHAN_CODE","HQ_CHAN_NAME","KPI_NAME","KPI_WAIGHT","KPI_SCORE"];
 var report = null;
 var downSql="";
 
