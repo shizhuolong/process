@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_hall_kpi_list.js?v=2"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_hall_kpi_list.js?v=3"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
