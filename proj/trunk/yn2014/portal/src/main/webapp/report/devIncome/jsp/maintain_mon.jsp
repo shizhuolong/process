@@ -18,7 +18,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>铁塔含室分报表</title>
+<title>代维费报表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -27,7 +27,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/iron_ability_mon.js?v=3"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/maintain_mon.js?v=3"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -54,18 +54,7 @@
 								<option value="">全部</option>
 						</select>
 					</td>
-					<td width="6%">塔类型：</td>
-					<td width="15%">
-						<select name="iron_type" id="iron_type" class="default-text-input wper80">
-								<option value="">全部</option>
-								<option value="存量自有">存量自有</option>
-								<option value="既有共享">既有共享</option>
-								<option value="存量改造">存量改造</option>
-								<option value="存量自改">存量自改</option>
-								<option value="新建塔">新建塔</option>
-								<option value="室分产品">室分产品</option>
-						</select>
-					</td>
+					
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>

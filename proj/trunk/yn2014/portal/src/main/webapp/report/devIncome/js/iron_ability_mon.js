@@ -107,6 +107,6 @@ function search(pageNumber) {
  
 function downsAll(){
 	var time=$("#time").val();
-	var showtext = '网络资源效能分析-'+time;
+	var showtext = '铁塔含室分报表-'+time;
 	downloadExcel(downSql,title,showtext);
 }
