@@ -48,13 +48,13 @@
 								<option value="">全部</option>
 						</select>
 					</td>
-					<td width="4%">营服中心：</td>
+					<td width="6%">营服中心：</td>
 					<td width="15%">
 						<select name="unitCode" id="unitCode" class="default-text-input wper80">
 								<option value="">全部</option>
 						</select>
 					</td>
-					<td width="4%">塔类型：</td>
+					<td width="6%">塔类型：</td>
 					<td width="15%">
 						<select name="iron_type" id="iron_type" class="default-text-input wper80">
 								<option value="">全部</option>
