@@ -104,6 +104,7 @@ function search(pageNumber) {
 }
  
 function downsAll(){
+	var time=$("#time").val();
 	var showtext = '云南联通营业厅效能分析明细表-'+time;
 	downloadExcel(downSql,title,showtext);
 }
