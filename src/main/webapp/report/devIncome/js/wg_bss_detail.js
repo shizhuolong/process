@@ -65,7 +65,7 @@ function search(pageNumber) {
 	}
 	
 	//渠道属性过滤
-	if(typeof(channelAttrs)!="undefined"&&typeof(channelLevel)!="undefined"&&channelAttrs!=''&& channelLevel!=''){
+	if(channelAttrs!="undefined"&&channelLevel!="undefined"&&channelAttrs!=''&& channelLevel!=''){
 		sql+=" AND CHN_CDE_"+channelLevel+" IN("+channelAttrs+")";
 	}
 	
