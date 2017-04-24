@@ -10,15 +10,15 @@
 <title>地市订单任务分配</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css">
-<link rel="stylesheet" type="text/css" href="<%=path%>/portal/order2i2c/css/jquery.jOrgChart.css">
+<link rel="stylesheet" type="text/css" href="<%=path%>/portal/order2i2c/css/jquery.jOrgChart.css?v=1">
 <link href="<%=path%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=path%>/portal/order2i2c/js/json2.js"></script>
 <script type="text/javascript" src="<%=path%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=path%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/jquery.jOrgChart.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/region_distribute.js?v=5"></script>
+<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/jquery.jOrgChart.js?v=2"></script>
+<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/region_distribute.js?v=6"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
 </script>
@@ -82,11 +82,12 @@
 			                    	<label>绝对值<input   name="disType" type="radio" value="2"/></label>
 			                    </td>
 			                 </tr>
+			                 
 			                 <tr>
 			                    <th  style="text-align: right;" id="teamDesc"></th>
 			                    <td style="text-align: left;padding-left:12px;"><input
 			                    onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')};distribute();" 
-			                    onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')};distribute();"
+			                    onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')};distribute(this);"
 			                     class="default-text-input wper80" style="width:80px;" id="disValue" name="disValue" type="text"/></td>
 							 </tr>	
 						</table>
