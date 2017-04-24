@@ -58,3 +58,21 @@
   border-style			: solid !important;
   border-color 			: #E05E00 !important;
 }
+.sys-icon{
+	margin-left:12px;
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background: rgba(0, 0, 0, 0) url("../images/system.png") no-repeat; 
+}
+.man-icon{
+	margin-left:12px;
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background: rgba(0, 0, 0, 0) url("../images/man.png") no-repeat; 
+}
+.man-num{
+	width:86px;
+	text-align:center;
+}
