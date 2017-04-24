@@ -36,7 +36,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/wg_bss_detail.js?v=19"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/wg_bss_detail.js?v=1"></script>
 <script type="text/javascript">
    var tablename="<%=tablename%>";
    var startDate="<%=startDate%>";
