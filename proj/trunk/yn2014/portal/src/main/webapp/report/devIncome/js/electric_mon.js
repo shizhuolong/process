@@ -1,6 +1,6 @@
 var nowData = [];
 var title=[["州市","区县营服中心","成本中心代码","水电系统编号","基站名称","营业厅编号","期初预提余额","本月计提水电费","本月支付（不含税）","支付增值税","期末预提余额","本月预提标准","月末预提起日期","是否铁塔公司站点","是否铁塔公司交纳房租物业费"]];
-var field=["GROUP_ID_1_NAME","UNIT_NAME","AC_PREFIX","ROOM_ADDR","NOTE_ADDR","ROOM_NAME","D_LAN","BEGIN_MONEY","THIS_MON_PRE","THIS_MON_PAY","ZZ_FAX","END_YT_MONEY","THIS_MON_STAND_PRE","END_MON_DATE","OIL_COMPANY","WATER_FEE"];
+var field=["GROUP_ID_1_NAME","UNIT_NAME","AC_PREFIX","ROOM_ADDR","ROOM_NAME","D_LAN","BEGIN_MONEY","THIS_MON_PRE","THIS_MON_PAY","ZZ_FAX","END_YT_MONEY","THIS_MON_STAND_PRE","END_MON_DATE","OIL_COMPANY","WATER_FEE"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null;
 var downSql="";
