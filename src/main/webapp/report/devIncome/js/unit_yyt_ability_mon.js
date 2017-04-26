@@ -1,6 +1,6 @@
 var nowData = [];
 var title=[["州市名称","所属基层单元","营业厅编码","营业厅名称","营业厅地址","营业厅下挂渠道编码","营业厅下挂渠道名称","开厅日期","目前经营者开始合作日期","营业厅类型","运营模式","三级属性","经营者名称","租赁合同编码","营业厅人数","发展用户数","出账用户数","业务受理量","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","生命周期毛利","库存终端","","其中：三个月至1年库存终端","","其中：1年以上库存终端","","营业欠款余额","用户欠费余额","用户预存款余额","二次续费率（最近7个月入网用户（不含当月）截止目前续费情况）"],
-           ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","数量","金额","数量","金额","数量","金额","","","",""]];
+           ["","","","","","","","","","","","","","","","","","","","","","","","","数量","金额","数量","金额","数量","金额","","","",""]];
 var field=["GROUP_ID_1_NAME","UNIT_NAME","YYT_CODE","YYT_NAME","YYT_ADDR","HQ_CHAN_CODE","HQ_CHAN_NAME","YYT_CREATE_TIME","BUSI_BEGIN_TIME","YYT_TYPE","BUSI_MODE","THIRD_ATTRI","BUSI_NAME","RENT_NO","YYT_MAN_NUM","YYT_DEV_NUM","YW_CHARGE_NUM","ACCT_NUM","YYT_ML","RETAIL_ML","CHARGE_SR","COST_SUM","COST_IN_SR_RATE","BIRTH_ML","TERMINAL_NUM","TERMINAL_MONEY","THREE_MON_TERM_NUM","THREE_MON_TERM_MONEY","ONE_YEAR_TERM_NUM","ONE_YEAR_TERM_MONEY","BUSI_OWE_LEFT","SUBS_OWE_LEFT","SUBS_PAY_LEFT","SECOND_PAY_RATE"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null;
