@@ -148,8 +148,6 @@ public class ImportOrderAction extends BaseAction {
 					String result=importToResult(dealDate,regionCode,username);
 					if(result.equals("0")){//存过执行成功
 						
-					}else if(result.equals("1")){
-						err.add("系统出现异常！");
 					}else{
 						err.add(result);
 					}
