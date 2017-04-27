@@ -67,11 +67,14 @@
 								<option value="室分产品">室分产品</option>
 						</select>
 					</td>
-					<td width="5%">
+					<td width="1%">
 						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
+						style="float: right;">查询</a>
 					</td>
-					<td width="5%">
+					<td width="1%">
+						<a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
+					</td> 
+					<td width="1%" style="padding-left:10px;">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
