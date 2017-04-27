@@ -5,6 +5,10 @@ var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null;
 var downSql="";
 $(function() {
+	var orgLevel=$("#orgLevel").val();
+	if(orgLevel==1){
+		$("#reppeatBtn").remove();
+	}
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -109,4 +113,8 @@ function downsAll(){
 	var time=$("#time").val();
 	var showtext = '铁塔含室分报表-'+time;
 	downloadExcel(downSql,title,showtext);
+}
+
+function repeatImport(){
+	 window.location.href=$("#ctx").val()+"/report/devIncome/jsp/import_iron_ability_mon.jsp";
 }
