@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -60,6 +61,16 @@ public class IronAbilityAction extends BaseAction {
 			SpringManager.getUpdateDao().update(delRepeat);
 			String importToResult = "INSERT INTO PMRT.TAB_MRT_IRON_ABILITY_MON SELECT * FROM PMRT.TAB_MRT_IRON_ABILITY_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+ regionCode+"'";
 			SpringManager.getUpdateDao().update(importToResult);
+			Connection conn =null;
+			CallableStatement stmt=null;
+			//调用存储过程
+			conn = dataSource.getConnection();
+			stmt = conn.prepareCall("{CALL PMRT.PRC_MRT_IRON_UNIT_REFRESH(?,?)}");
+			stmt.setString(1,time);
+			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
+			stmt.executeUpdate();
+			conn.close();
+			stmt.close();
 	}
 	
 	public String importToTemp() {
