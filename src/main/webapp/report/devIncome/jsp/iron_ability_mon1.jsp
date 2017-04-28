@@ -71,9 +71,10 @@
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right;">查询</a>
 					</td>
-					<td width="1%">
-						<a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
-					</td> 
+					
+					<td width="1%" style="padding-left:10px;">
+						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
 				</tr>
 			</table>
 		</form>
