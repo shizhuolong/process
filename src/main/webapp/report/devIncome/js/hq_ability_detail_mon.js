@@ -12,6 +12,7 @@ $(function(){
 	});
     var report=new LchReport({
 		title:title,
+		closeHeader:true,
 		field:["ROW_NAME"].concat(field),
 		css:[{gt:7,css:LchReport.RIGHT_ALIGN}],
 		rowParams:["ROW_ID"],//第一个为rowId
