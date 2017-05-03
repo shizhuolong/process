@@ -57,6 +57,7 @@ function search(pageNumber) {
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	var iron_type=$("#iron_type").val();
+	var is_in_unit=$("#is_in_unit").val();
 //条件
 	var sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_IRON_ABILITY_MON WHERE 1=1";
 	if(time!=''){
@@ -71,7 +72,9 @@ function search(pageNumber) {
 	if(iron_type!=''){
 		sql+=" AND IRON_TYPE='"+iron_type+"'";
 	}
-	
+	if(is_in_unit!=''){
+		sql+=" AND IS_IN_UNIT='"+is_in_unit+"'";
+	}
 //权限
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
