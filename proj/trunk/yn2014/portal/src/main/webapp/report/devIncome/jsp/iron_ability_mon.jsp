@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/iron_ability_mon.js?v=5"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/iron_ability_mon.js?v=6"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -55,7 +55,27 @@
 								<option value="">全部</option>
 						</select>
 					</td>
-					<td width="6%">塔类型：</td>
+					<td width="1%">
+						<a class="default-btn" href="#" id="searchBtn"
+						style="float: right;">查询</a>
+					</td>
+					<td width="1%">
+						<a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
+					</td> 
+					<td width="1%" style="padding-left:10px;">
+						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr height="35px">
+				  <td width="6%" style="text-align:right;">是否入库：</td>
+					<td width="1%">
+						     <select name="is_in_unit" id="is_in_unit" class="default-text-input wper100">
+								<option value=''>请选择</option>
+								<option value='是'>是</option>
+								<option value='否'>否</option>
+						     </select>
+				    </td>
+				    <td width="6%">塔类型：</td>
 					<td width="15%">
 						<select name="iron_type" id="iron_type" class="default-text-input wper80">
 								<option value="">全部</option>
@@ -66,16 +86,6 @@
 								<option value="新建塔">新建塔</option>
 								<option value="室分产品">室分产品</option>
 						</select>
-					</td>
-					<td width="1%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right;">查询</a>
-					</td>
-					<td width="1%">
-						<a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
-					</td> 
-					<td width="1%" style="padding-left:10px;">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
 			</table>
