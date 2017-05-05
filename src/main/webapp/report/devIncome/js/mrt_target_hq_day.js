@@ -199,7 +199,7 @@ $(function(){
 						provinceSql+=" AND t.GROUP_ID_1='"+regionCode+"'";
 					}
 					if(chnlType!=''){
-						provinceSql+=" AND t.IS_JK='"+chnlType+"'";
+						provinceSql+=" AND t.CHANL_TYPE='"+chnlType+"'";
 					}
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
@@ -224,7 +224,7 @@ $(function(){
 				where+=" AND t.GROUP_ID_1='"+regionCode+"'";
 			}
 			if(chnlType!=''){
-				where+=" AND t.IS_JK='"+chnlType+"'";
+				where+=" AND t.CHANL_TYPE='"+chnlType+"'";
 			}
 			if(where!=''){
 				sql+=where;
@@ -306,7 +306,7 @@ function downsAll() {
 		where+=" AND t.GROUP_ID_1='"+regionCode+"'";
 	}
 	if(chnlType!=''){
-		where+=" AND t.IS_JK='"+chnlType+"'";
+		where+=" AND t.CHANL_TYPE='"+chnlType+"'";
 	}
 	if (where != '') {
 		sql += where;

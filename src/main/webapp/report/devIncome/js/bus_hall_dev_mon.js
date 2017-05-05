@@ -3,7 +3,7 @@ $(function(){
 	$("#startDate").val(maxDate);
 	$("#endDate").val(maxDate);
 	var title=[["营业厅新增发展月报表","","","","","","","","","","","","","","","","","","","",""],
-	           ["州市","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网发展","","其中4G发展","","固网发展","","其中宽带收 入","","其中智慧沃家发展","","合计","环比","同比","定比1月","全渠道发展","占全渠道份额","份额环比"],
+	           ["州市","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网发展","","其中4G发展","","固网发展","","其中宽带收 入","","其中智慧沃家发展","","合计","环比","同比","定比","全渠道发展","占全渠道份额","份额环比"],
 	           ["","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","",""]];
     
 	var field=["HQ_CHAN_CODE","T_TYPE","OPERATE_TYPE","THIS_YW_NUM","HB_YW","THIS_4G_NUM","HB_4G","NETW_NUM","HB_NETW","THIS_GWKD_NUM","HB_GWKD","ZHWJ_DEV","HB_ZHWJ","ALL_NUM","HB_ALL","TB_ALL","DB_ALL","ALL1_DEV","ALL_CHANL_NUM","HB_ALL_CHANL"];
@@ -196,7 +196,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 		" SELECT  GROUP_ID_0,                                                                                  "+
 		"         SUM(t.ALL_NUM) AS ALL_NUM                                                                    "+
 		" FROM PMRT.TB_MRT_BUS_HALL_DEV_MON T                                                                  "+
-		" WHERE DEAL_DATE = '"+getFristMonth(startDate)+"'                                                     "+
+		" WHERE DEAL_DATE =PMRT.LAST_QUAR_DEAL("+startDate+")"                                                +
 		    where+
 		" GROUP BY GROUP_ID_0                                                                                  "+
 		") T3 ON(T.GROUP_ID_0=T3.GROUP_ID_0)                                                                   "; 
@@ -296,7 +296,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 		"LEFT JOIN (SELECT  GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME,                                                           "+
 		"                   SUM(t.ALL_NUM) AS ALL_NUM                                                                        "+
 		"         FROM PMRT.TB_MRT_BUS_HALL_DEV_MON T                                                                        "+
-		"         WHERE DEAL_DATE = "+getFristMonth(startDate)+"                                                              "+
+		"         WHERE DEAL_DATE =PMRT.LAST_QUAR_DEAL("+startDate+")"                                                        +
 		    where+
 		"         GROUP BY GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                                                             "+
 		"         ) T3                                                                                                       "+
@@ -457,7 +457,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 		"                    HQ_CHAN_CODE,                                                              "+
 		"                    SUM(t.ALL_NUM) AS ALL_NUM                                                  "+
 		"               FROM PMRT.TB_MRT_BUS_HALL_DEV_MON T                                             "+
-		"              WHERE DEAL_DATE = "+getFristMonth(startDate)+"                                   "+
+		"              WHERE DEAL_DATE =PMRT.LAST_QUAR_DEAL("+startDate+")"                           +
 		             where+
 		"              GROUP BY GROUP_ID_0, GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE) T3                "+
 		"    ON (T.HQ_CHAN_CODE = T3.HQ_CHAN_CODE)                                                      ";
@@ -914,7 +914,7 @@ function downsAll() {
 	}
 	var showtext = '营业厅新增发展月报表-' + startDate;
 	var title=[["营业厅开帐发展月报表","","","","","","","","","","","","","","","","","","","","",""],
-	           ["州市","营业厅","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网发展","","其中4G发展","","固网发展","","其中宽带收 入","","其中智慧沃家发展","","合计","环比","同比","定比1月","全渠道发展","占全渠道份额","份额环比"],
+	           ["州市","营业厅","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网发展","","其中4G发展","","固网发展","","其中宽带收 入","","其中智慧沃家发展","","合计","环比","同比","定比","全渠道发展","占全渠道份额","份额环比"],
 	           ["","","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }

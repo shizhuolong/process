@@ -366,7 +366,7 @@ $(function(){
 						provinceSql+=" AND t.GROUP_ID_1='"+regionCode+"'";
 					}
 					if(chnlType!=''){
-						provinceSql+=" AND t.IS_JK='"+chnlType+"'";
+						provinceSql+=" AND t.CHANL_TYPE='"+chnlType+"'";
 					}
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
@@ -392,7 +392,7 @@ $(function(){
 				where+=" AND t.GROUP_ID_1='"+regionCode+"'";
 			}
 			if(chnlType!=''){
-				where+=" AND t.IS_JK='"+chnlType+"'";
+				where+=" AND t.CHANL_TYPE='"+chnlType+"'";
 			}
 			if(where!=''){
 				where+=' AND t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
@@ -648,7 +648,7 @@ function downsAll() {
 		where+=" AND T.GROUP_ID_1='"+regionCode+"'";
 	}
 	if(chnlType!=''){
-		where+=" AND T.IS_JK='"+chnlType+"'";
+		where+=" AND T.CHANL_TYPE='"+chnlType+"'";
 	}
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();

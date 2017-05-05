@@ -63,7 +63,7 @@ function search(pageNumber) {
 			$(this).find("TD:eq(0)").empty().text(area);
 	});
 }
-var pageSize = 15;
+var pageSize = 25;
 //分页
 function initPagination(totalCount) {
 	$("#totalCount").html(totalCount);
