@@ -3,7 +3,7 @@ $(function(){
 	$("#startDate").val(maxDate);
 	$("#endDate").val(maxDate);
 	var title=[["营业厅开帐收入月报表","","","","","","","","","","","","","","","","","","","",""],
-	           ["州市","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","合计","环比","同比","定比1月","全渠道收入","占全渠道份额","份额环比"],
+	           ["州市","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","合计","环比","同比","定比","全渠道收入","占全渠道份额","份额环比"],
 	           ["","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","",""]];
     
 	var field=["HQ_CHAN_CODE","T_TYPE","OPERATE_TYPE","THIS_YW_SR","HB_YW","THIS_4G_SR","HB_4G","NETW_SR","HB_NETW","THIS_GWKD_SR","HB_GWKD","THIS_ZHWJ_SR","HB_ZHWJ","ALL_SR","HB_ALL","TB_ALL","DB_ALL","ALL1_SR","ALL_CHANL_SR","HB_ALL_CHANL"];
@@ -199,7 +199,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"      SELECT GROUP_ID_0                                                                            "+
 			"            ,SUM(ALL_SR) ALL_SR                                                                    "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
-			"      WHERE DEAL_DATE="+getFristMonth(startDate)+"                                                  "+
+			"      WHERE DEAL_DATE=PMRT.LAST_QUAR_DEAL("+startDate+")"                                            +
 			    where+
 			"      GROUP BY GROUP_ID_0                                                                          "+
 			"      )T3                                                                                          "+
@@ -297,7 +297,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"      SELECT GROUP_ID_1,GROUP_ID_1_NAME                                                           "+
 			"            ,SUM(ALL_SR) ALL_SR                                                                   "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
-			"      WHERE DEAL_DATE="+getFristMonth(startDate)+"                                                "+
+			"      WHERE DEAL_DATE=PMRT.LAST_QUAR_DEAL("+startDate+")"                                           +
 			    where+
 			"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
 			"      )T3                                                                                         "+
@@ -449,7 +449,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"    ON (T.HQ_CHAN_CODE = T2.HQ_CHAN_CODE)                                                  "+
 			"  LEFT JOIN (SELECT GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE, SUM(ALL_SR) ALL_SR           "+
 			"               FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                        "+
-			"              WHERE DEAL_DATE = "+getFristMonth(startDate)+"                               "+
+			"              WHERE DEAL_DATE = PMRT.LAST_QUAR_DEAL("+startDate+")"                          +
 			                      where+
 			"              GROUP BY GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE) T3                        "+
 			"    ON (T.HQ_CHAN_CODE = T3.HQ_CHAN_CODE)                                                  ";
@@ -880,7 +880,7 @@ function downsAll() {
 	
 	var showtext = '营业厅开账收入月报表-' + startDate;
 	var title=[["营业厅开帐收入月报表","","","","","","","","","","","","","","","","","","","","",""],
-	           ["州市","营业厅","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","合计","环比","同比","定比1月","全渠道收入","占全渠道份额","份额环比"],
+	           ["州市","营业厅","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","合计","环比","同比","定比","全渠道收入","占全渠道份额","份额环比"],
 	           ["","","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
