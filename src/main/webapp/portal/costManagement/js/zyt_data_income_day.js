@@ -40,6 +40,7 @@ function queryIncomData(){
 				+"<td class='numberStyle'>"+isNull(n['LJ_ALL_SR_RATE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['LJ_YW_SR_RATE'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['LJ_NET_SR_RATE'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['ALL_DB'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HB_RANK'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['SXWC_RATE'])+"</td>"
 			content+="</tr>";
@@ -77,10 +78,10 @@ function downIncomeData(){
 	var day = incomeEndDate.substr(6);
 	if(incomeStartDate==incomeEndDate){
 		title = [	
-		         	["云南联通自营厅实时收入日通报","","","","","","","","","","","",""],
-		         	["单位：户","本月截止：",day+" 日","-","","","","","","","","",""],	
-		         	["分公司","厅数","日收入","","月累计收入","","收入累计","单厅","累计环比(%)","","","环比排名","年度日累计收入时序完成率"],
-		         	["","","移动网","宽带","移动网","宽带","","","小计","移动网","宽带","",""]
+		         	["云南联通自营厅实时收入日通报","","","","","","","","","","","","",""],
+		         	["单位：户","本月截止：",day+" 日","-","","","","","","","","","",""],	
+		         	["分公司","厅数","日收入","","月累计收入","","收入累计","单厅","累计环比(%)","","","定比","定比排名","年度日累计收入时序完成率"],
+		         	["","","移动网","宽带","移动网","宽带","","","小计","移动网","宽带","","",""]
 		         ];
 	}else{
 		title=[
@@ -114,7 +115,8 @@ function getIncomColumns(){
 					"<th rowspan='2'>收入累计</th>" +
 					"<th rowspan='2'>单厅</th>" +
 					"<th colspan='3'>累计环比(%)</th>" +
-					"<th rowspan='2'>环比排名</th>" +
+					"<th rowspan='2'>定比</th>" +
+					"<th rowspan='2'>定比排名</th>" +
 					"<th rowspan='2'>年度日累计收入时序完成率</th>" +
 				"</tr>" +
 				"<tr>" +
@@ -179,157 +181,207 @@ function getIncomSql(){
 		where+=" AND 1=2 ";
 	}
 	if(incomeStartDate==incomeEndDate){
-		sql="SELECT T.GROUP_ID_1_NAME,                                                                                                                        "+
-		"       BUS_COUNT,                                                                                                                                "+
-		"       T.THIS_YW_DAY_SR,                                                                                                                         "+
-		"       T.THIS_NET_DAY_SR,                                                                                                                        "+
-		"       T.THIS_YW_MON_SR,                                                                                                                         "+
-		"       T.THIS_NET_MON_SR,                                                                                                                        "+
-		"       T.THIS_ALL_MON_SR,                                                                                                                        "+
-		"       T.DT_ALL_SR,                                                                                                                              "+
-		"       T.LJ_ALL_SR_RATE,                                                                                                                         "+
-		"       T.LJ_YW_SR_RATE,                                                                                                                          "+
-		"       T.LJ_NET_SR_RATE,                                                                                                                         "+
-		"       T.HB_RANK,                                                                                                                                "+
-		"       PODS.GET_RADIX_POINT((T2.YEAR_LJ_SR /                                                                                                     "+
-		"                               (T1.SR_AVG_YEAR *                                                                                                 "+
-		"                               ((TO_DATE(T.DEAL_DATE, 'YYYYMMDD') -                                                                              "+
-		"                               TO_DATE(SUBSTR(T.DEAL_DATE, 1, 4) || '0101', 'YYYYMMDD')) + 1))                                                   "+
-		"                            ) * 100 || '%',                                                                                                      "+
-		"                            2) SXWC_RATE                                                                                                         "+
-		"  FROM (SELECT '全省' GROUP_ID_1_NAME,                                                                                                           "+
-		"               DEAL_DATE,                                                                                                                        "+
-		"               COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT,                                                                                           "+
-		"               NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                                           "+
-		"               NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                                         "+
-		"               NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                                                          "+
-		"               NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                                                        "+
-		"               NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                                                             "+
-		"               NVL(SUM(S1_LJ_SR), 0) S1_LJ_SR,                                                                                                   "+
-		"               NVL(SUM(S2_LJ_SR), 0) S2_LJ_SR,                                                                                                   "+
-		"               NVL(SUM(S3_LJ_SR), 0) S3_LJ_SR,                                                                                                   "+
-		"               NVL(SUM(S4_LJ_SR), 0) S4_LJ_SR,                                                                                                   "+
-		"               NVL(SUM(YEAR_LJ_SR),0) YEAR_LJ_SR,                                                                                                "+
-		"               CASE                                                                                                                              "+
-		"                 WHEN COUNT(DISTINCT HQ_CHAN_CODE) <> 0 THEN                                                                                     "+
-		"                  ROUND((NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0)) /                                                                 "+
-		"                        COUNT(DISTINCT HQ_CHAN_CODE),                                                                                            "+
-		"                        3)                                                                                                                       "+
-		"                 ELSE                                                                                                                            "+
-		"                  0                                                                                                                              "+
-		"               END DT_ALL_SR,                                                                                                                    "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                                                         "+
-		"                                      WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                                                                   "+
-		"                                       (NVL(SUM(THIS_ALL_SR1), 0) - NVL(SUM(LAST_ALL_SR1), 0)) * 100 /                                           "+
-		"                                       NVL(SUM(LAST_ALL_SR1), 0)                                                                                 "+
-		"                                      ELSE                                                                                                       "+
-		"                                       0                                                                                                         "+
-		"                                    END || '%',                                                                                                  "+
-		"                                    2) LJ_ALL_SR_RATE,                                                                                           "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                                                         "+
-		"                                      WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                                                                    "+
-		"                                       (NVL(SUM(THIS_YW_SR1), 0) - NVL(SUM(LAST_YW_SR1), 0)) * 100 /                                             "+
-		"                                       NVL(SUM(LAST_YW_SR1), 0)                                                                                  "+
-		"                                      ELSE                                                                                                       "+
-		"                                       0                                                                                                         "+
-		"                                    END || '%',                                                                                                  "+
-		"                                    2) LJ_YW_SR_RATE,                                                                                            "+
-		"               PODS.GET_RADIX_POINT(CASE                                                                                                         "+
-		"                                      WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                                                                   "+
-		"                                       (NVL(SUM(THIS_NET_SR1), 0) - NVL(SUM(LAST_NET_SR1), 0)) * 100 /                                           "+
-		"                                       NVL(SUM(LAST_NET_SR1), 0)                                                                                 "+
-		"                                      ELSE                                                                                                       "+
-		"                                       0                                                                                                         "+
-		"                                    END || '%',                                                                                                  "+
-		"                                    2) LJ_NET_SR_RATE,                                                                                           "+
-		"               0 HB_RANK                                                                                                                         "+
-		"          FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                                  "+
-		"         WHERE DEAL_DATE = '"+incomeStartDate+"'                                                                                                 "+
-		             where+
-		"         GROUP BY DEAL_DATE                                                                                                                      "+
-		"        UNION ALL                                                                                                                                "+
-		"        SELECT GROUP_ID_1_NAME,                                                                                                                  "+
-		"               DEAL_DATE,                                                                                                                        "+
-		"               BUS_COUNT,                                                                                                                        "+
-		"               THIS_YW_DAY_SR,                                                                                                                   "+
-		"               THIS_NET_DAY_SR,                                                                                                                  "+
-		"               THIS_YW_MON_SR,                                                                                                                   "+
-		"               THIS_NET_MON_SR,                                                                                                                  "+
-		"               THIS_ALL_MON_SR,                                                                                                                  "+
-		"               S1_LJ_SR,                                                                                                                         "+
-		"               S2_LJ_SR,                                                                                                                         "+
-		"               S3_LJ_SR,                                                                                                                         "+
-		"               S4_LJ_SR,                                                                                                                         "+
-		"               YEAR_LJ_SR,                                                                                                                       "+
-		"               DT_ALL_SR,                                                                                                                        "+
-		"               LJ_ALL_SR_RATE,                                                                                                                   "+
-		"               LJ_YW_SR_RATE,                                                                                                                    "+
-		"               LJ_NET_SR_RATE,                                                                                                                   "+
-		"               ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(LJ_ALL_SR_RATE, '%', '')) DESC, THIS_ALL_MON_SR DESC) HB_RANK"+
-		"          FROM (SELECT GROUP_ID_1_NAME,                                                                                                          "+
-		"                       DEAL_DATE,                                                                                                                "+
-		"                       GROUP_ID_0,                                                                                                               "+
-		"                       COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT,                                                                                   "+
-		"                       NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                                   "+
-		"                       NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                                 "+
-		"                       NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                                                  "+
-		"                       NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                                                "+
-		"                       NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                                                     "+
-		"                       NVL(SUM(S1_LJ_SR), 0) S1_LJ_SR,                                                                                           "+
-		"                       NVL(SUM(S2_LJ_SR), 0) S2_LJ_SR,                                                                                           "+
-		"                       NVL(SUM(S3_LJ_SR), 0) S3_LJ_SR,                                                                                           "+
-		"                       NVL(SUM(S4_LJ_SR), 0) S4_LJ_SR,                                                                                           "+
-		"                       NVL(SUM(YEAR_LJ_SR),0) YEAR_LJ_SR,                                                                                        "+
-		"                       CASE                                                                                                                      "+
-		"                         WHEN COUNT(DISTINCT HQ_CHAN_CODE) <> 0 THEN                                                                             "+
-		"                          ROUND((NVL(SUM(THIS_YW_SR1), 0) +                                                                                      "+
-		"                                NVL(SUM(THIS_NET_SR1), 0)) /                                                                                     "+
-		"                                COUNT(DISTINCT HQ_CHAN_CODE),                                                                                    "+
-		"                                3)                                                                                                               "+
-		"                         ELSE                                                                                                                    "+
-		"                          0                                                                                                                      "+
-		"                       END DT_ALL_SR,                                                                                                            "+
-		"                       PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-		"                                              WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                                                           "+
-		"                                               (NVL(SUM(THIS_ALL_SR1), 0) -                                                                      "+
-		"                                               NVL(SUM(LAST_ALL_SR1), 0)) * 100 /                                                                "+
-		"                                               NVL(SUM(LAST_ALL_SR1), 0)                                                                         "+
-		"                                              ELSE                                                                                               "+
-		"                                               0                                                                                                 "+
-		"                                            END || '%',                                                                                          "+
-		"                                            2) LJ_ALL_SR_RATE,                                                                                   "+
-		"                       PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-		"                                              WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                                                            "+
-		"                                               (NVL(SUM(THIS_YW_SR1), 0) - NVL(SUM(LAST_YW_SR1), 0)) * 100 /                                     "+
-		"                                               NVL(SUM(LAST_YW_SR1), 0)                                                                          "+
-		"                                              ELSE                                                                                               "+
-		"                                               0                                                                                                 "+
-		"                                            END || '%',                                                                                          "+
-		"                                            2) LJ_YW_SR_RATE,                                                                                    "+
-		"                       PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-		"                                              WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                                                           "+
-		"                                               (NVL(SUM(THIS_NET_SR1), 0) -                                                                      "+
-		"                                               NVL(SUM(LAST_NET_SR1), 0)) * 100 /                                                                "+
-		"                                               NVL(SUM(LAST_NET_SR1), 0)                                                                         "+
-		"                                              ELSE                                                                                               "+
-		"                                               0                                                                                                 "+
-		"                                            END || '%',                                                                                          "+
-		"                                            2) LJ_NET_SR_RATE                                                                                    "+
-		"                  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                          "+
-		"                 WHERE DEAL_DATE = '"+incomeStartDate+"'                                                                                                "+
-		                      where+
-		"                 GROUP BY GROUP_ID_0, GROUP_ID_1_NAME, DEAL_DATE)) T                                                                             "+
-		"  JOIN PCDE.TB_CDE_BUS_HALL_TARGET T1                                                                                                            "+
-		"    ON (T.GROUP_ID_1_NAME = T1.GROUP_ID_1_NAME)                                                                                                  "+
-		"  LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME,'全省') GROUP_ID_1_NAME                                                                                   "+
-		"                   ,NVL(SUM(THIS_YW_SR), 0) + NVL(SUM(THIS_NET_SR), 0)  YEAR_LJ_SR                                                               "+
-		"             FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                               "+
-		"                 WHERE DEAL_DATE LIKE '"+getYear(incomeStartDate)+"%'                                                                                   "+
-		"                   AND DEAL_DATE <= '"+incomeStartDate+"'                                                                                               "+
-		                    where+
-		"             GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))                                                                    "+
-		"  )T2  ON(T2.GROUP_ID_1_NAME=T.GROUP_ID_1_NAME)                                                                                                  "+
-		" ORDER BY HB_RANK                                                                                                                                ";  
+		sql="SELECT                                                                                                                                                "+
+		"       T.GROUP_ID_1_NAME,                                                                                                                                          "+
+		"       T.BUS_COUNT,                                                                                                                                                "+
+		"       T.THIS_YW_DAY_SR,                                                                                                                                           "+
+		"       T.THIS_NET_DAY_SR,                                                                                                                                          "+
+		"       T.THIS_YW_MON_SR,                                                                                                                                           "+
+		"       T.THIS_NET_MON_SR,                                                                                                                                          "+
+		"       T.THIS_ALL_MON_SR,                                                                                                                                          "+
+		"       T.DT_ALL_SR,                                                                                                                                                "+
+		"       T.LJ_ALL_SR_RATE,                                                                                                                                           "+
+		"       T.LJ_YW_SR_RATE,                                                                                                                                            "+
+		"       T.LJ_NET_SR_RATE,                                                                                                                                           "+
+		"       T.ALL_DB,                                                                                                                                                   "+
+		"       T.HB_RANK,                                                                                                                                                  "+
+		"       T.SXWC_RATE                                                                                                                                                 "+
+		"FROM (                                                                                                                                                             "+
+		"        SELECT T.DEAL_DATE,                                                                                                                                        "+
+		"               T.GROUP_ID_1_NAME,                                                                                                                                  "+
+		"               BUS_COUNT,                                                                                                                                          "+
+		"               T.THIS_YW_DAY_SR,                                                                                                                                   "+
+		"               T.THIS_NET_DAY_SR,                                                                                                                                  "+
+		"               T.THIS_YW_MON_SR,                                                                                                                                   "+
+		"               T.THIS_NET_MON_SR,                                                                                                                                  "+
+		"               T.THIS_ALL_MON_SR,                                                                                                                                  "+
+		"               T.DT_ALL_SR,                                                                                                                                        "+
+		"               T.LJ_ALL_SR_RATE,                                                                                                                                   "+
+		"               T.LJ_YW_SR_RATE,                                                                                                                                    "+
+		"               T.LJ_NET_SR_RATE,                                                                                                                                   "+
+		"               T.ALL_DB,                                                                                                                                           "+
+		"               CASE WHEN GROUP_ID_1_NAME='全省'                                                                                                                    "+
+		"                    THEN 0                                                                                                                                         "+
+		"                    ELSE ROW_NUMBER() OVER (PARTITION BY T.DEAL_DATE ORDER BY T.ALL_DB1 DESC) END HB_RANK ,                                                        "+
+		"              T.SXWC_RATE                                                                                                                                          "+
+		"        FROM(                                                                                                                                                      "+
+		"        SELECT T.DEAL_DATE,                                                                                                                                        "+
+		"               T.GROUP_ID_1_NAME,                                                                                                                                  "+
+		"               BUS_COUNT,                                                                                                                                          "+
+		"               T.THIS_YW_DAY_SR,                                                                                                                                   "+
+		"               T.THIS_NET_DAY_SR,                                                                                                                                  "+
+		"               T.THIS_YW_MON_SR,                                                                                                                                   "+
+		"               T.THIS_NET_MON_SR,                                                                                                                                  "+
+		"               T.THIS_ALL_MON_SR,                                                                                                                                  "+
+		"               T.DT_ALL_SR,                                                                                                                                        "+
+		"               T.LJ_ALL_SR_RATE,                                                                                                                                   "+
+		"               T.LJ_YW_SR_RATE,                                                                                                                                    "+
+		"               T.LJ_NET_SR_RATE,                                                                                                                                   "+
+		"               PODS.GET_RADIX_POINT(CASE WHEN T3.LAST_SEASON_SR<>0                                                                                                 "+
+		"                                          THEN (T.THIS_ALL_MON_SR-T3.LAST_SEASON_SR)*100/T3.LAST_SEASON_SR                                                         "+
+		"                                          ELSE 0 END ,2)  ALL_DB1,                                                                                                 "+
+		"               PODS.GET_RADIX_POINT(CASE WHEN T3.LAST_SEASON_SR<>0                                                                                                 "+
+		"                                          THEN (T.THIS_ALL_MON_SR-T3.LAST_SEASON_SR)*100/T3.LAST_SEASON_SR                                                         "+
+		"                                          ELSE 0 END ||'%',2)  ALL_DB,                                                                                             "+
+		"               T.HB_RANK,                                                                                                                                          "+
+		"               PODS.GET_RADIX_POINT((T2.YEAR_LJ_SR /                                                                                                               "+
+		"                                    (T1.SR_AVG_YEAR *                                                                                                              "+
+		"                                    ((TO_DATE(T.DEAL_DATE, 'YYYYMMDD') -                                                                                           "+
+		"                                    TO_DATE(SUBSTR(T.DEAL_DATE, 1, 4) || '0101',                                                                                   "+
+		"                                                'YYYYMMDD')) + 1))) * 100 || '%',                                                                                  "+
+		"                                    2) SXWC_RATE                                                                                                                   "+
+		"          FROM (SELECT '全省' GROUP_ID_1_NAME,                                                                                                                     "+
+		"                       DEAL_DATE,                                                                                                                                  "+
+		"                       COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT,                                                                                                     "+
+		"                       NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                                                     "+
+		"                       NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                                                   "+
+		"                       NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                                                                    "+
+		"                       NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                                                                  "+
+		"                       NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                                                                       "+
+		"                       NVL(SUM(S1_LJ_SR), 0) S1_LJ_SR,                                                                                                             "+
+		"                       NVL(SUM(S2_LJ_SR), 0) S2_LJ_SR,                                                                                                             "+
+		"                       NVL(SUM(S3_LJ_SR), 0) S3_LJ_SR,                                                                                                             "+
+		"                       NVL(SUM(S4_LJ_SR), 0) S4_LJ_SR,                                                                                                             "+
+		"                       NVL(SUM(YEAR_LJ_SR), 0) YEAR_LJ_SR,                                                                                                         "+
+		"                       CASE                                                                                                                                        "+
+		"                         WHEN COUNT(DISTINCT HQ_CHAN_CODE) <> 0 THEN                                                                                               "+
+		"                          ROUND((NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0)) /                                                                           "+
+		"                                COUNT(DISTINCT HQ_CHAN_CODE),                                                                                                      "+
+		"                                3)                                                                                                                                 "+
+		"                         ELSE                                                                                                                                      "+
+		"                          0                                                                                                                                        "+
+		"                       END DT_ALL_SR,                                                                                                                              "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                                                   "+
+		"                                              WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                                                                             "+
+		"                                               (NVL(SUM(THIS_ALL_SR1), 0) - NVL(SUM(LAST_ALL_SR1), 0)) * 100 /                                                     "+
+		"                                               NVL(SUM(LAST_ALL_SR1), 0)                                                                                           "+
+		"                                              ELSE                                                                                                                 "+
+		"                                               0                                                                                                                   "+
+		"                                            END || '%',                                                                                                            "+
+		"                                            2) LJ_ALL_SR_RATE,                                                                                                     "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                                                   "+
+		"                                              WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                                                                              "+
+		"                                               (NVL(SUM(THIS_YW_SR1), 0) - NVL(SUM(LAST_YW_SR1), 0)) * 100 /                                                       "+
+		"                                               NVL(SUM(LAST_YW_SR1), 0)                                                                                            "+
+		"                                              ELSE                                                                                                                 "+
+		"                                               0                                                                                                                   "+
+		"                                            END || '%',                                                                                                            "+
+		"                                            2) LJ_YW_SR_RATE,                                                                                                      "+
+		"                       PODS.GET_RADIX_POINT(CASE                                                                                                                   "+
+		"                                              WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                                                                             "+
+		"                                               (NVL(SUM(THIS_NET_SR1), 0) - NVL(SUM(LAST_NET_SR1), 0)) * 100 /                                                     "+
+		"                                               NVL(SUM(LAST_NET_SR1), 0)                                                                                           "+
+		"                                              ELSE                                                                                                                 "+
+		"                                               0                                                                                                                   "+
+		"                                            END || '%',                                                                                                            "+
+		"                                            2) LJ_NET_SR_RATE,                                                                                                     "+
+		"                       0 HB_RANK                                                                                                                                   "+
+		"                  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                                            "+
+		"                 WHERE DEAL_DATE = '"+incomeStartDate+"'                                                                                                           "+
+		                  where+
+		"                 GROUP BY DEAL_DATE                                                                                                                                "+
+		"                UNION ALL                                                                                                                                          "+
+		"                SELECT GROUP_ID_1_NAME,                                                                                                                            "+
+		"                       DEAL_DATE,                                                                                                                                  "+
+		"                       BUS_COUNT,                                                                                                                                  "+
+		"                       THIS_YW_DAY_SR,                                                                                                                             "+
+		"                       THIS_NET_DAY_SR,                                                                                                                            "+
+		"                       THIS_YW_MON_SR,                                                                                                                             "+
+		"                       THIS_NET_MON_SR,                                                                                                                            "+
+		"                       THIS_ALL_MON_SR,                                                                                                                            "+
+		"                       S1_LJ_SR,                                                                                                                                   "+
+		"                       S2_LJ_SR,                                                                                                                                   "+
+		"                       S3_LJ_SR,                                                                                                                                   "+
+		"                       S4_LJ_SR,                                                                                                                                   "+
+		"                       YEAR_LJ_SR,                                                                                                                                 "+
+		"                       DT_ALL_SR,                                                                                                                                  "+
+		"                       LJ_ALL_SR_RATE,                                                                                                                             "+
+		"                       LJ_YW_SR_RATE,                                                                                                                              "+
+		"                       LJ_NET_SR_RATE,                                                                                                                             "+
+		"                       ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(LJ_ALL_SR_RATE, '%', '')) DESC, THIS_ALL_MON_SR DESC) HB_RANK          "+
+		"                  FROM (SELECT GROUP_ID_1_NAME,                                                                                                                    "+
+		"                               DEAL_DATE,                                                                                                                          "+
+		"                               GROUP_ID_0,                                                                                                                         "+
+		"                               COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT,                                                                                             "+
+		"                               NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                                             "+
+		"                               NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                                           "+
+		"                               NVL(SUM(THIS_YW_SR1), 0) THIS_YW_MON_SR,                                                                                            "+
+		"                               NVL(SUM(THIS_NET_SR1), 0) THIS_NET_MON_SR,                                                                                          "+
+		"                               NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) THIS_ALL_MON_SR,                                                               "+
+		"                               NVL(SUM(S1_LJ_SR), 0) S1_LJ_SR,                                                                                                     "+
+		"                               NVL(SUM(S2_LJ_SR), 0) S2_LJ_SR,                                                                                                     "+
+		"                               NVL(SUM(S3_LJ_SR), 0) S3_LJ_SR,                                                                                                     "+
+		"                               NVL(SUM(S4_LJ_SR), 0) S4_LJ_SR,                                                                                                     "+
+		"                               NVL(SUM(YEAR_LJ_SR), 0) YEAR_LJ_SR,                                                                                                 "+
+		"                               CASE                                                                                                                                "+
+		"                                 WHEN COUNT(DISTINCT HQ_CHAN_CODE) <> 0 THEN                                                                                       "+
+		"                                  ROUND((NVL(SUM(THIS_YW_SR1), 0) +                                                                                                "+
+		"                                        NVL(SUM(THIS_NET_SR1), 0)) /                                                                                               "+
+		"                                        COUNT(DISTINCT HQ_CHAN_CODE),                                                                                              "+
+		"                                        3)                                                                                                                         "+
+		"                                 ELSE                                                                                                                              "+
+		"                                  0                                                                                                                                "+
+		"                               END DT_ALL_SR,                                                                                                                      "+
+		"                               PODS.GET_RADIX_POINT(CASE                                                                                                           "+
+		"                                                      WHEN NVL(SUM(LAST_ALL_SR1), 0) <> 0 THEN                                                                     "+
+		"                                                       (NVL(SUM(THIS_ALL_SR1), 0) -                                                                                "+
+		"                                                       NVL(SUM(LAST_ALL_SR1), 0)) * 100 /                                                                          "+
+		"                                                       NVL(SUM(LAST_ALL_SR1), 0)                                                                                   "+
+		"                                                      ELSE                                                                                                         "+
+		"                                                       0                                                                                                           "+
+		"                                                    END || '%',                                                                                                    "+
+		"                                                    2) LJ_ALL_SR_RATE,                                                                                             "+
+		"                               PODS.GET_RADIX_POINT(CASE                                                                                                           "+
+		"                                                      WHEN NVL(SUM(LAST_YW_SR1), 0) <> 0 THEN                                                                      "+
+		"                                                       (NVL(SUM(THIS_YW_SR1), 0) - NVL(SUM(LAST_YW_SR1), 0)) * 100 /                                               "+
+		"                                                       NVL(SUM(LAST_YW_SR1), 0)                                                                                    "+
+		"                                                      ELSE                                                                                                         "+
+		"                                                       0                                                                                                           "+
+		"                                                    END || '%',                                                                                                    "+
+		"                                                    2) LJ_YW_SR_RATE,                                                                                              "+
+		"                               PODS.GET_RADIX_POINT(CASE                                                                                                           "+
+		"                                                      WHEN NVL(SUM(LAST_NET_SR1), 0) <> 0 THEN                                                                     "+
+		"                                                       (NVL(SUM(THIS_NET_SR1), 0) -                                                                                "+
+		"                                                       NVL(SUM(LAST_NET_SR1), 0)) * 100 /                                                                          "+
+		"                                                       NVL(SUM(LAST_NET_SR1), 0)                                                                                   "+
+		"                                                      ELSE                                                                                                         "+
+		"                                                       0                                                                                                           "+
+		"                                                    END || '%',                                                                                                    "+
+		"                                                    2) LJ_NET_SR_RATE                                                                                              "+
+		"                          FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                                    "+
+		"                         WHERE DEAL_DATE = '"+incomeStartDate+"'                                                                                                   "+
+		                              where+
+		"                         GROUP BY GROUP_ID_0, GROUP_ID_1_NAME, DEAL_DATE)) T                                                                                       "+
+		"          JOIN PCDE.TB_CDE_BUS_HALL_TARGET T1                                                                                                                      "+
+		"            ON (T.GROUP_ID_1_NAME = T1.GROUP_ID_1_NAME)                                                                                                            "+
+		"          LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME, '全省') GROUP_ID_1_NAME,                                                                                          "+
+		"                            NVL(SUM(THIS_YW_SR), 0) + NVL(SUM(THIS_NET_SR), 0) YEAR_LJ_SR                                                                          "+
+		"                       FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                                       "+
+		"                      WHERE DEAL_DATE LIKE '"+getYear(incomeStartDate)+"%'                                                                                         "+
+		"                        AND DEAL_DATE <= '"+incomeStartDate+"'                                                                                                    "+
+		                          where+
+		"                      GROUP BY GROUPING SETS(GROUP_ID_0,(GROUP_ID_0, GROUP_ID_1_NAME))) T2                                                                         "+
+		"            ON (T2.GROUP_ID_1_NAME = T.GROUP_ID_1_NAME)                                                                                                            "+
+		"          LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME, '全省') GROUP_ID_1_NAME,                                                                                          "+
+		"                            NVL(SUM(THIS_YW_SR1), 0) + NVL(SUM(THIS_NET_SR1), 0) LAST_SEASON_SR                                                                    "+
+		"                       FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                                       "+
+		"                      WHERE DEAL_DATE =PMRT.LAST_QUAR_DEAL("+incomeStartDate+")                                                                                    "+
+		                         where+
+		"                      GROUP BY GROUPING SETS(GROUP_ID_0,(GROUP_ID_0, GROUP_ID_1_NAME))) T3                                                                         "+
+		"            ON (T3.GROUP_ID_1_NAME = T.GROUP_ID_1_NAME)                                                                                                            "+
+		"         ORDER BY HB_RANK                                                                                                                                          "+
+		"        )T                                                                                                                                                         "+
+		")T ORDER BY HB_RANK                                                                                                                                                ";
 	}else{
 		sql=	" SELECT                                                                                              "+
 				"       NVL(GROUP_ID_1_NAME,'合计') GROUP_ID_1_NAME1                                                   "+
