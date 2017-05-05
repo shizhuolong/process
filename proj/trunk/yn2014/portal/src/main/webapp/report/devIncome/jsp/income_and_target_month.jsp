@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/income_and_target_month.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/income_and_target_month.js?v=2"></script>
 </head>
 <style>
 	
@@ -61,8 +61,11 @@
 					<td width="8%">
 						<select name="chnlType" id="chnlType" class="default-text-input wper100">
 								<option value=''>全部</option>
-								<option value='0'>公众</option>
-								<option value='1'>集客</option>
+								<option value='集客'>集客</option>
+								<option value='电子'>电子</option>
+								<option value='社会实体'>社会实体</option>
+								<option value='外包'>外包</option>
+								<option value='自营'>自营</option>
 						</select>
 					</td>
 					<td width="5%" style="padding-left: 10px;display:none;">环比</td>
