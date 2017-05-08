@@ -1,7 +1,7 @@
 var nowData = [];
 var title=[["州市","营服中心","营服编码","营服状态","毛利","毛利预算完成率","出帐收入(扣减赠费、退费)","","","","","","","","成本合计","佣金","","","","","","","","渠道补贴","终端补贴","卡成本","营业厅房租","装修","水电物业安保费","广告宣传费","业务用品印制及材料费（含配送费、其他）","车辆使用费","招待费","办公费","差旅费","通信费","紧密外包费用"],
-           ["","","","","","","合计","2G","3G","4G","专租线","宽带","固话","其他","","合计","2G","3G","4G","专租线","宽带","固网","其他","","","","","","","","","","","","","",""]];
-var field=["GROUP_ID_1_NAME","UNIT_NAME","UNIT_ID","UNIT_TYPE","FACT_UNIT_AMOUNT","COM_UNIT_RATE","INCOME_TOTAL","INCOME_2G","INCOME_3G","INCOME_4G","INCOME_ZX","INCOME_KD","INCOME_GH","INCOME_OTHER","GRIDDING_TOTAL","COMM_TOTAL","COMM_2G","COMM_3G","COMM_4G","COMM_ZX","COMM_KD","COMM_HARDLINK","COMM_GY","CHANNEL","ZDBT_AMOUNT","KVB_AMOUNT","FZF_AMOUNT","ZX_AMOUNT","SDWYF_AMOUNT","ADS_AMOUNT","YWYPCLF_AMOUNT","CLSYF_AMOUNT","ZDF_AMOUNT","BGF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT","FEE_JMWB"];
+           ["","","","","","","2G","3G","4G","专租线","宽带","固话","其他","合计","","2G","3G","4G","专租线","宽带","固网","其他","合计","","","","","","","","","","","","","",""]];
+var field=["GROUP_ID_1_NAME","UNIT_NAME","UNIT_ID","UNIT_TYPE","FACT_UNIT_AMOUNT","COM_UNIT_RATE","INCOME_2G","INCOME_3G","INCOME_4G","INCOME_ZX","INCOME_KD","INCOME_GH","INCOME_OTHER","INCOME_TOTAL","GRIDDING_TOTAL","COMM_2G","COMM_3G","COMM_4G","COMM_ZX","COMM_KD","COMM_HARDLINK","COMM_GY","COMM_TOTAL","CHANNEL","ZDBT_AMOUNT","KVB_AMOUNT","FZF_AMOUNT","ZX_AMOUNT","SDWYF_AMOUNT","ADS_AMOUNT","YWYPCLF_AMOUNT","CLSYF_AMOUNT","ZDF_AMOUNT","BGF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT","FEE_JMWB"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null;
 var downSql="";
