@@ -227,7 +227,7 @@ function getIncomSql(){
 		"               T.LJ_ALL_SR_RATE,                                                                                                                                   "+
 		"               T.LJ_YW_SR_RATE,                                                                                                                                    "+
 		"               T.LJ_NET_SR_RATE,                                                                                                                                   "+
-		"               PODS.GET_RADIX_POINT(CASE WHEN T3.LAST_SEASON_SR<>0                                                                                                 "+
+		"               ROUND(CASE WHEN T3.LAST_SEASON_SR<>0                                                                                                                "+
 		"                                          THEN (T.THIS_ALL_MON_SR-T3.LAST_SEASON_SR)*100/T3.LAST_SEASON_SR                                                         "+
 		"                                          ELSE 0 END ,2)  ALL_DB1,                                                                                                 "+
 		"               PODS.GET_RADIX_POINT(CASE WHEN T3.LAST_SEASON_SR<>0                                                                                                 "+
