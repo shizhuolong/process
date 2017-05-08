@@ -12,6 +12,7 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
 	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	String day=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -34,7 +35,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/ts_r_cbss.js?v=14"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/ts_r_cbss.js?v=22"></script>
 <style type="text/css">
   a {cursor:pointer;}
 </style>
@@ -44,6 +45,7 @@
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="hrId" value="<%=user.getHrId()%>">
+	<input type="hidden" id="day" value="<%=day%>">
 		<form id="searchForm" method="post">
 			<table width="60%" style="margin: 10px 0; border:none;">
 				<tr height="35px">

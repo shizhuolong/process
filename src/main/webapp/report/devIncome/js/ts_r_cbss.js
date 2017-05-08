@@ -118,14 +118,20 @@ function getDownSql(orgLevel,code){
 }
 
 function isCanEdit(){
-	if(initDate==dealDate){
-		var hrId=$("#hrId").val();
-		var s=" SELECT HR_ID FROM PMRT.TAB_MRT_TS_R_CBSS WHERE DEAL_DATE='"+dealDate+"' AND HR_ID='"+hrId+"'";
-		var r=query(s);
-		if(s&&s.length>0){
-			return true;
+	var day=$("#day").val().substr(6,8); 
+	if(day<10){
+		day=day.substr(1,2);
+	}
+	if(day<=15){
+		if(initDate==dealDate){
+			var hrId=$("#hrId").val();
+			var s=" SELECT HR_ID FROM PMRT.TAB_MRT_TS_R_CBSS WHERE DEAL_DATE='"+dealDate+"' AND HR_ID='"+hrId+"'";
+			var r=query(s);
+			if(s&&s.length>0){
+				return true;
+			}
+			return false;
 		}
-		return false;
 	}
 	return false;
 }
