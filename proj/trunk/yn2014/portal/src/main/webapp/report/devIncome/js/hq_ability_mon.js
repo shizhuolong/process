@@ -1,5 +1,5 @@
 var field=["UNIT_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","BUSI_BEGIN_TIME","HQ_STATE","HQ_ZY","THIRD_TYPE","DEV_COUNT","CHARGE_NUM","ACC_NUM_NXS","HQ_ML","HQ_SAL_ML","HQ_CHARGE_SR","HQ_COST_ALL","COST_RATE","SUBS_OWE","SUBS_PAY","SECOND_PAY","IS_TY","IS_SOCIAL"];
-var title=[["组织架构","所属基层单元","渠道编码","渠道名称","开始合作日期","渠道状态","渠道专业","三级属性","发展用户数","出账用户数","业务受理量(笔)(不含销售和收费)","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","用户欠费","用户预存款","二次续费率","是否自建他营","是否社会化合作"]];
+var title=[["组织架构","所属基层单元","渠道编码","渠道名称","开始合作日期","渠道状态","渠道专业","三级属性","发展用户数","出账用户数","业务受理量(笔)(不含销售和收费)","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","用户欠费","用户预存款余额","二次续费率","是否自建他营","是否社会化合作"]];
 $(function(){
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
@@ -129,7 +129,7 @@ function downsAll() {
 	where+=" AND LEV=4";
 	var sql = " SELECT GROUP_ID_1_NAME,"+field.join(",")+" FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
 	var showtext = '云南联通渠道效能分析汇总表-' + dealDate;
-	var title=[["地市","所属基层单元","渠道编码","渠道名称","开始合作日期","渠道状态","渠道专业","三级属性","发展用户数","出账用户数","业务受理量(笔)(不含销售和收费)","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","用户欠费","用户预存款","二次续费率","是否自建他营","是否社会化合作"]];
+	var title=[["地市","所属基层单元","渠道编码","渠道名称","开始合作日期","渠道状态","渠道专业","三级属性","发展用户数","出账用户数","业务受理量(笔)(不含销售和收费)","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","用户欠费","用户预存款余额","二次续费率","是否自建他营","是否社会化合作"]];
 	downloadExcel(sql,title,showtext);
 }
 
