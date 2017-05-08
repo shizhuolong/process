@@ -1,7 +1,7 @@
 var nowData = [];
 var title=[["州市","营服中心","营服编码","营服状态","毛利","毛利预算完成率","出帐收入(扣减赠费、退费)","","","","","","","","网运成本合计","铁塔租费（不含水电）","","网运水电费","","代维费","","网运房租及物业费","","客户接入成本开通费","","客户接入成本终端","","网优费","","网运修理费","","网运行政费用","","网运人工成本"],
-           ["","","","","","","合计","2G","3G","4G","专租线","宽带","固话","其他","","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率",""]];
-var field=["GROUP_ID_1_NAME","UNIT_NAME","UNIT_ID","UNIT_TYPE","FACT_UNIT_AMOUNT","COM_UNIT_RATE","INCOME_TOTAL","INCOME_2G","INCOME_3G","INCOME_4G","INCOME_ZX","INCOME_KD","INCOME_GH","INCOME_OTHER","LAN_ALL_AMOUNT","LAN_IRON_AMOUNT","LAN_IRON_RATE","LAN_WARTER_ELE_AMOUNT","LAN_WARTER_ELE_RATE","LAN_MAINTAI_AMOUNT","LAN_MAINTAI_RATE","LAN_RENT_AMOUNT","LAN_RENT_RATE","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_KTF_RATE","LAN_JRCB_ZD_AMOUNT","LAN_JRCB_ZD_RATE","LAN_GOOD_AMOUNT","LAN_GOOD_RATE","LAN_XL_AMOUNT","LAN_XL_RATE","LAN_XZ_AMOUNT","LAN_XZ_RATE","LAN_MAN_AMOUNT"];
+           ["","","","","","","2G","3G","4G","专租线","宽带","固话","其他","合计","","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率","完成值","预算完成率",""]];
+var field=["GROUP_ID_1_NAME","UNIT_NAME","UNIT_ID","UNIT_TYPE","FACT_UNIT_AMOUNT","COM_UNIT_RATE","INCOME_2G","INCOME_3G","INCOME_4G","INCOME_ZX","INCOME_KD","INCOME_GH","INCOME_OTHER","INCOME_TOTAL","LAN_ALL_AMOUNT","LAN_IRON_AMOUNT","LAN_IRON_RATE","LAN_WARTER_ELE_AMOUNT","LAN_WARTER_ELE_RATE","LAN_MAINTAI_AMOUNT","LAN_MAINTAI_RATE","LAN_RENT_AMOUNT","LAN_RENT_RATE","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_KTF_RATE","LAN_JRCB_ZD_AMOUNT","LAN_JRCB_ZD_RATE","LAN_GOOD_AMOUNT","LAN_GOOD_RATE","LAN_XL_AMOUNT","LAN_XL_RATE","LAN_XZ_AMOUNT","LAN_XZ_RATE","LAN_MAN_AMOUNT"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null;
 var downSql="";
