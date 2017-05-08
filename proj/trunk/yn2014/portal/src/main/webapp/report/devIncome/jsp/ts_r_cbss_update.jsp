@@ -22,7 +22,7 @@
   form {margin-right: 20px;}
   table {margin:10px;}
   a {cursor:pointer;}
-  th {background: none repeat scroll 0 0 #ffecc8;color:#d28531;border:1px solid #d28531}
+  th {background: none repeat scroll 0 0 #ffecc8;color:#d28531;border:1px solid #d28531;height:40px;}
   td {height:30px;border:1px solid #d28531}
 </style>
 </head>
