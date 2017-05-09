@@ -35,5 +35,5 @@ function checkOptions(){
 }
 
 function toBack(){
-	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_electric_list-new.jsp";
+	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_electric_list_new.jsp";
 }
