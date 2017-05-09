@@ -20,10 +20,10 @@ function initData(){
 			tbody+="<tr>";
 			if(i==0){
 				tbody+="<td style='font-size:20px;bold;' rowspan='"+count+"'>"+area+"</td><td style='font-size:20px;bold;' rowspan='"+count+"'>"+channel_name+"</td><td style='font-size:20px;bold;' rowspan='"+count+"'>"+channel_id+"</td><td style='font-size:20px;bold;' rowspan='"+count+"'>"+zdmlfx_jf+"</td>";
-				tbody+="<td>"+r[i].NAME+"</td><td>"+isNull(r[i].USER_CODE)+"</td><td><input value='"+isNull(r[i].JF_2CFP)+"'/></td>";
+				tbody+="<td>"+r[i].NAME+"</td><td>"+isNull(r[i].USER_CODE)+"</td><td><input style='border-radius:10px;' value='"+isNull(r[i].JF_2CFP)+"'/></td>";
 				tbody+="<td><a style=\"color:blue;\" channel_id='"+channel_id+"' user_code='"+r[i].USER_CODE+"' zdmlfx_jf='"+r[i].ZDMLFX_JF+"' ry_num='"+r[i].RY_NUM+"' onclick=\"save(this);\">保存</a></td>";
 			}else{
-				tbody+="<td>"+r[i].NAME+"</td><td>"+isNull(r[i].USER_CODE)+"</td><td><input value='"+isNull(r[i].JF_2CFP)+"'/></td>";
+				tbody+="<td>"+r[i].NAME+"</td><td>"+isNull(r[i].USER_CODE)+"</td><td><input style='border-radius:10px;' value='"+isNull(r[i].JF_2CFP)+"'/></td>";
 				tbody+="<td><a style=\"color:blue;\" channel_id='"+channel_id+"' user_code='"+r[i].USER_CODE+"' zdmlfx_jf='"+r[i].ZDMLFX_JF+"' ry_num='"+r[i].RY_NUM+"' onclick=\"save(this);\">保存</a></td>";
 			}
 			tbody+="</tr>";
