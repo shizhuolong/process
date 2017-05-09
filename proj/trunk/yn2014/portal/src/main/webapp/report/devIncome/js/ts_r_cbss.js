@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["地市","营业厅名称","渠道编号","厅终端毛利","厅终端毛利分享额度（厅终端毛利*50%）","厅终端毛利可分享积分额度（厅终端毛利分享额度/10）","厅本月可用成本额度（厅终端毛利*25%）","操作"]];
+var title=[["地市","营业厅名称","渠道编号","厅终端毛利","厅终端毛利分享额度<br/>（厅终端毛利*50%）","厅终端毛利可分享积分额度<br/>（厅终端毛利分享额度/10）","厅本月可用成本额度<br/>（厅终端毛利*25%）","操作"]];
 var field=["AREA","CHANNEL_NAME","CHANNEL_ID","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE","OPERATE"];
 var orderBy = " ORDER BY GROUP_ID_1,CHANNEL_ID";
 var report = null;
@@ -9,7 +9,7 @@ var dealDate="";
 $(function() {
 	initDate=$("#dealDate").val();
 	$("#dealDate").val(getMaxDate("PMRT.TAB_MRT_TS_R_CBSS"));
-	$("#dealDate").change(function(){
+	$("#dealDate").blur(function(){
 		search(0);
 	});
 	report = new LchReport({
@@ -148,9 +148,9 @@ function toEdit(obj){
 	art.dialog.data('zdmlfx_jf',zdmlfx_jf);
 	var url = $("#ctx").val()+"/report/devIncome/jsp/ts_r_cbss_update.jsp";
 	art.dialog.open(url,{
-		id:'add',
-		width:'1800px',
-		/*height:'300px',*/
+		id:'update',
+		width:'5000px',
+		/*height:'1000px',*/
 		padding:'0 0',
 		lock:true,
 		resize:false,
