@@ -28,7 +28,7 @@
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 	<script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_electric_new.js"></script>
+	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_electric_new.js?v=1"></script>
 	
 	<style>
 		th {
