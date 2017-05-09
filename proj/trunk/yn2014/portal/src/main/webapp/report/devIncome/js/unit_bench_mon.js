@@ -5,6 +5,7 @@ var orderBy='';
 var report = null;
 var downSql="";
 $(function() {
+	$("#time").val(getMaxDate("PMRT.TAB_MRT_UNIT_BENCH_MON"));
 	report = new LchReport({
 		title : title,
 		field : field,

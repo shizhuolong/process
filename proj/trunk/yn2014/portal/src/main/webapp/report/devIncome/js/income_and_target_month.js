@@ -624,10 +624,10 @@ function getdownField(where){
 	+"               SUM(T.ON_4G) ON_4G, "
 	+"               SUM(T.ZZX_ZHTZ) ZZX_ZHTZ, "
 	+"               SUM(T.ICT_ZHTZ) ICT_ZHTZ,  "
-	+"CHNL_TYPE "
+	+"CHANL_TYPE "
 	+"          FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                                    "
 	+where
-	+"         GROUP BY T.HQ_CHAN_CODE,T.CHNL_TYPE) T                                                            "
+	+"         GROUP BY T.HQ_CHAN_CODE,T.CHANL_TYPE) T                                                            "
 	+"  LEFT JOIN (SELECT T.*,                                                                       "
 	+"                    ROW_NUMBER() OVER(PARTITION BY T.HQ_CHAN_CODE ORDER BY T.DEAL_DATE DESC) RN"
 	+"               FROM PMRT.TAB_MRT_TARGET_HQ_MON T                                               "
