@@ -3,6 +3,9 @@ var title=[["州市名称","营服中心","营服编码","营服状态","发展�
 var field=["DEV_YW_NUM","DEV_ZX_NUM","DEV_KD_NUM","DEV_GH_NUM","DEV_OTHER_NUM","DEV_ALL_NUM","CHARGE_YW_NUM","CHARGE_ZX_NUM","CHARGE_KD_NUM","CHARGE_GH_NUM","CHARGE_OTHER_NUM","CHARGE_ALL_NUM","YS_SALE_AMOUNT","FACT_SALE_AMOUNT","COM_SALE_RATE","YS_UNIT_AMOUNT","FACT_UNIT_AMOUNT","COM_UNIT_RATE","CHARGE_YEAR_YS","FACT_CHARGE_MON_YS","FACT_CHARGE_YW_NUM","FACT_CHARGE_ZX_NUM","FACT_CHARGE_KD_NUM","FACT_CHARGE_GH_NUM","FACT_CHARGE_OTHER_NUM","FACT_CHARGE_ALL_NUM","CHARGE_COM_RATE","SC_COST","SC_COM","SC_LEFT","LAN_COST","LAN_COM","LAN_LEFT","BUSI_OWE_LEFT","SUBS_OWE_LEFT","SUBS_PAY_LEFT","SECOND_PAY_RATE"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 $(function(){
+	var maxDate=getMaxDate("PMRT.TAB_MRT_UNIT_ABILITY_MON")
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();

@@ -4,6 +4,9 @@ var title=[["州市名称","营服中心","营服编码","营服状态","发展�
 var field=["YS_DEV_YW_NUM","YS_DEV_KD_NUM","YS_DEV_ZX_NUM","YS_DEV_OTHER_NUM","YS_DEV_ALL_NUM","YS_SR_AMOUNT","SC_YS_COST_AMOUNT","LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT","LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT","LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 $(function(){
+	var maxDate=getMaxDate("PMRT.TAB_MRT_UNIT_YS_MON");
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();

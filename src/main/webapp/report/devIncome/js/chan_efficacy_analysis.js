@@ -8,6 +8,9 @@ var title=[["地市名称","渠道编码","渠道名称","营服中心","开始�
 */
 var report = null;
 $(function() {
+	var maxDate=getMaxDate("PMRT.TB_MRT_UNIT_CHL_ANALYSIS");
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
 	report = new LchReport({
 		title : title,
 		closeHeader:true,

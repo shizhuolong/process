@@ -4,6 +4,8 @@ var title=[["账期 ","地市名称 ","营服名称 ","营服类型 ","收入任
 var orderBy='';	
 var report = null;
 $(function() {
+	var maxDate=getMaxDate("PMRT.TAB_MRT_UNIT_BENCHMARKING_MON");
+	$("#dealDate").val(maxDate);
 	listUnitType();
 	report = new LchReport({
 		title : title,

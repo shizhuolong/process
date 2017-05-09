@@ -5,6 +5,8 @@ var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null;
 var downSql="";
 $(function() {
+	var maxDate=getMaxDate("PMRT.TAB_MRT_IRON_ABILITY_MON");
+	$("#time").val(maxDate);
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel==1){
 		$("#reppeatBtn").remove();

@@ -4,7 +4,9 @@ var title=[["州市名称","所属基层单元","营业厅编码","营业厅名�
 var field=["YYT_MAN_NUM","YYT_DEV_NUM","YW_CHARGE_NUM","ACCT_NUM","YYT_ML","RETAIL_ML","CHARGE_SR","COST_SUM"/*,"COST_IN_SR_RATE"*/,"BIRTH_ML","TERMINAL_NUM","TERMINAL_MONEY","THREE_MON_TERM_NUM","THREE_MON_TERM_MONEY","ONE_YEAR_TERM_NUM","ONE_YEAR_TERM_MONEY","BUSI_OWE_LEFT","SUBS_OWE_LEFT","SUBS_PAY_LEFT"/*,"SECOND_PAY_RATE"*/];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 $(function(){
-
+	var maxDate=getMaxDate("PMRT.TAB_MRT_YYT_ABILITY_MON");
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
