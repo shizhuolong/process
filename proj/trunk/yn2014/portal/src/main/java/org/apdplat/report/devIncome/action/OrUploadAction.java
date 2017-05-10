@@ -187,7 +187,7 @@ public class OrUploadAction extends BaseAction{
 					}
 					String updateRegionCode="MERGE INTO PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP T1   "+
 							"USING PORTAL.TAB_PORTAL_QJ_PERSON T2             "+
-							"ON    (T1.HR_NO=T2.HR_ID AND T2.DEAL_DATE="+time+")"+
+							"ON    (T1.HR_NO=T2.HR_ID AND T1.DEAL_DATE="+time+" AND T2.DEAL_DATE="+time+")"+
 							"WHEN MATCHED THEN                                "+
 							"  UPDATE SET T1.GROUP_ID_1=T2.GROUP_ID_1         ";
 					

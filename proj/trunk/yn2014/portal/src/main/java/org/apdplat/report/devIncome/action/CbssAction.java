@@ -1,10 +1,11 @@
 package org.apdplat.report.devIncome.action;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apdplat.platform.action.BaseAction;
@@ -21,17 +22,21 @@ public class CbssAction extends BaseAction {
 	@Resource
 	DataSource dataSource;
 	
-	private String channel_id;
-    private String user_code;
-    private String jf_2cfp;
+	private String channel_id="";
+    private String dataString="";
     
 	public void save(){
 		Map<String,Object> result=new HashMap<String,Object>();
+		String sql="";
 		try {
-			String sql="UPDATE PMRT.TAB_MRT_TS_R_CBSS_2CFP SET JF_2CFP='"+jf_2cfp+
-					"' WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'YYYYMM') AND "
-					+ "CHANNEL_ID='"+channel_id+"' AND USER_CODE='"+user_code+"'";
-			SpringManager.getUpdateDao().update(sql);
+			String[] data=dataString.split(",");
+			for(int i=0;i<data.length;i++){
+				String[] s=data[i].split("-");
+				sql="UPDATE PMRT.TAB_MRT_TS_R_CBSS_2CFP SET JF_2CFP='"+s[1].trim()+
+						"' WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1),'YYYYMM') AND "
+						+ "CHANNEL_ID='"+channel_id+"' AND USER_CODE='"+s[0].trim()+"'";
+				SpringManager.getUpdateDao().update(sql);
+			}
 			result.put("ok", "true");
 			result.put("msg", "修改成功！");
 		} catch (Exception e) {
@@ -50,21 +55,17 @@ public class CbssAction extends BaseAction {
 		this.channel_id = channel_id;
 	}
 
-	public String getUser_code() {
-		return user_code;
+	public String getDataString() {
+		return dataString;
 	}
 
-	public void setUser_code(String user_code) {
-		this.user_code = user_code;
+	public void setDataString(String dataString) {
+		this.dataString = dataString;
 	}
-
-	public String getJf_2cfp() {
-		return jf_2cfp;
-	}
-
-	public void setJf_2cfp(String jf_2cfp) {
-		this.jf_2cfp = jf_2cfp;
-	}
-
 	
+	public static void main(String[] args) {
+	  String s="a,b,c";
+	  String[] ss=s.split(",");
+	  System.out.println(Arrays.toString(ss));
+	}
 }
