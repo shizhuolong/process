@@ -29,7 +29,7 @@ function initData(){
 			tbody+="</tr>";
 	 	}
 		tbody+="</tbody>";
-		var thead="<thead><tr><th>地市</th><th>营业厅名称</th><th>渠道编号</th><th>厅当月终端毛利分享积分额度</th><th>营业员姓名</th><th>营业员工号</th><th>营业员二次分配所得积分</th><th>&nbsp;操作&nbsp;</th></tr></thead>";
+		var thead="<thead><tr><th>地市</th><th>营业厅<br/>名称</th><th>渠道<br/>编号</th><th>厅当月终端毛<br/>利分享积分额度</th><th>营业员姓名</th><th>营业员工号</th><th>营业员二次<br/>分配所得积分</th><th>&nbsp;操作&nbsp;</th></tr></thead>";
 		$("#dataTable").empty().append($(thead+tbody));
 	}else{
 		alert("该营业厅没有营业员！");
