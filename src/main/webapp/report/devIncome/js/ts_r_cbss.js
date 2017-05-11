@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["地市","营业厅名称","渠道编号","厅终端毛利","厅终端毛利分享额度<br/>（厅终端毛利*50%）","厅终端毛利可分享积分额度<br/>（厅终端毛利分享额度/10）","厅本月可用成本额度<br/>（厅终端毛利*25%）","操作"]];
-var field=["AREA","CHANNEL_NAME","CHANNEL_ID","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE","OPERATE"];
+var title=[["地市","营业厅名称","渠道编号","HR编码","厅长姓名","厅终端毛利","厅终端毛利分享额度<br/>（厅终端毛利*50%）","厅终端毛利可分享积分额度<br/>（厅终端毛利分享额度/10）","厅本月可用成本额度<br/>（厅终端毛利*25%）","操作"]];
+var field=["AREA","CHANNEL_NAME","CHANNEL_ID","HR_ID","HR_ID_NAME","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE","OPERATE"];
 var orderBy = " ORDER BY GROUP_ID_1,CHANNEL_ID";
 var report = null;
 var downSql="";
@@ -87,12 +87,12 @@ function search(pageNumber) {
  
 function downsAll(){
 	var showtext = '自营厅终端顺价销售积分表-'+dealDate;
-    title=[["地市","营业厅名称","渠道编号","厅终端毛利","厅终端毛利分享额度（厅终端毛利*50%）","厅终端毛利可分享积分额度（厅终端毛利分享额度/10）","厅本月可用成本额度（厅终端毛利*25%）"]];
+    title=[["地市","营业厅名称","渠道编号","HR编码","厅长姓名","厅终端毛利","厅终端毛利分享额度（厅终端毛利*50%）","厅终端毛利可分享积分额度（厅终端毛利分享额度/10）","厅本月可用成本额度（厅终端毛利*25%）"]];
 	downloadExcel(downSql,title,showtext);
 }
 
 function getSql(orgLevel,code){
-	var field1=["AREA","CHANNEL_NAME","CHANNEL_ID","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE"];
+	var field1=["AREA","CHANNEL_NAME","CHANNEL_ID","HR_ID","HR_ID_NAME","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE"];
 	if(orgLevel==1){
 		return " SELECT "+field1.join(",")+",'' OPERATE FROM PMRT.TAB_MRT_TS_R_CBSS WHERE 1=1 AND DEAL_DATE='"+dealDate+"'";
 	}else if(orgLevel==2){
@@ -107,7 +107,7 @@ function getSql(orgLevel,code){
 }
 
 function getDownSql(orgLevel,code){
-	var field1=["AREA","CHANNEL_NAME","CHANNEL_ID","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE"];
+	var field1=["AREA","CHANNEL_NAME","CHANNEL_ID","HR_ID","HR_ID_NAME","ZDML","ZDMLFX_FEE","ZDMLFX_JF","CB_FEE"];
 	if(orgLevel==1){
 		return " SELECT "+field1.join(",")+" FROM PMRT.TAB_MRT_TS_R_CBSS WHERE 1=1 AND DEAL_DATE='"+dealDate+"'";
 	}else if(orgLevel==2){
@@ -149,7 +149,7 @@ function toEdit(obj){
 	var url = $("#ctx").val()+"/report/devIncome/jsp/ts_r_cbss_update.jsp";
 	art.dialog.open(url,{
 		id:'update',
-		width:'5000px',
+		width:'6000px',
 		/*height:'1000px',*/
 		padding:'0 0',
 		lock:true,
