@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["账期","地市","渠道编码","渠道名称","工号","操作人姓名","受理时间","串号","终端品牌名称","终端型号编码","终端型号名称","终端机型编码","-终端机型","实收金额","成本价"]];
+var title=[["账期","地市","渠道编码","渠道名称","工号","操作人姓名","受理时间","串号","终端品牌名称","终端型号编码","终端型号名称","终端机型编码","-终端机型","实收金额","成本价","终端毛利"]];
 var field=["DEAL_DATE","AREA","CHANNEL_ID","CHANNEL_NAME","TRADE_STAFF_ID","TRADE_STAFF_NAME","ACCEPT_DATE","IMEI","TERMINAL_BRAND_DESC","TERMINAL_MODEL_CODE","TERMINAL_MODEL_DESC","MACHINE_TYPE_CODE","MACHINE_TYPE_NAME","FEE","DEVICE_PRICE","ZDML"];
 var report = null;
 var downSql="";
