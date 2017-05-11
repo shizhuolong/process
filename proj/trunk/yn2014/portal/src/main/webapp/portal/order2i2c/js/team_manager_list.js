@@ -38,6 +38,9 @@ var regionCode="";
 var teamType="";
 $(function() {
 	orgLevel = $("#orgLevel").val();
+	if(orgLevel==1){
+		$("#addBtn").remove();
+	}
 	code = $("#code").val();
 	search(0);
 	$("#searchBtn").click(function(){
@@ -87,23 +90,23 @@ function search(pageNumber) {
             if(orgLevel==2){
             	$.each(pages.rows,function(i,n){
     				content+="<tr>"
-    				+"<td>"+isNull(n['ID'])+"</td>"
-    				+"<td>"+isNull(n['NAME'])+"</td>"
-    				+"<td>"+isNull(n['TEAM_NAME'])+"</td>"
-    				+"<td>"+isNull(n['ACCOUNT'])+"</td>"
-    				+"<td>"+isNull(n['PHONE'])+"</td>"
-    			 	+"<td><a onclick='del($(this))' id='"+isNull(n['ID'])+"' href='#'>删除</a></td>";
+    				+"<td align='center'>"+isNull(n['ID'])+"</td>"
+    				+"<td align='center'>"+isNull(n['NAME'])+"</td>"
+    				+"<td align='center'>"+isNull(n['TEAM_NAME'])+"</td>"
+    				+"<td align='center'>"+isNull(n['ACCOUNT'])+"</td>"
+    				+"<td align='center'>"+isNull(n['PHONE'])+"</td>"
+    			 	+"<td align='center'><a onclick='del($(this))' id='"+isNull(n['ID'])+"' href='#'>删除</a></td>";
     				content+="</tr>";
     			 });
             }else{
             	$.each(pages.rows,function(i,n){
     				content+="<tr>"
-    				+"<td>"+isNull(n['ID'])+"</td>"
-    				+"<td>"+isNull(n['NAME'])+"</td>"
-    				+"<td>"+isNull(n['TEAM_NAME'])+"</td>"
-    				+"<td>"+isNull(n['ACCOUNT'])+"</td>"
-    				+"<td>"+isNull(n['PHONE'])+"</td>"
-    			 	+"<td></td>";
+    				+"<td align='center'>"+isNull(n['ID'])+"</td>"
+    				+"<td align='center'>"+isNull(n['NAME'])+"</td>"
+    				+"<td align='center'>"+isNull(n['TEAM_NAME'])+"</td>"
+    				+"<td align='center'>"+isNull(n['ACCOUNT'])+"</td>"
+    				+"<td align='center'>"+isNull(n['PHONE'])+"</td>"
+    			 	+"<td align='center'></td>";
     				content+="</tr>";
     			 });
             }

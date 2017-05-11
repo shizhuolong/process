@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/team_manager_list.js?v=35"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/team_manager_list.js?v=37"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
