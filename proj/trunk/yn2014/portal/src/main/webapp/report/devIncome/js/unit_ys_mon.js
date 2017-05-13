@@ -1,7 +1,7 @@
 var nowData = [];
-var title=[["州市名称","营服中心","营服编码","营服状态","发展用户数预算","","","","","出账收入预算","市场成本预算总额","网运成本预算","","","","","","","",""],
-           ["","","","","移网","宽带","专线","其他","合计","","","铁塔租费（不含水电）","网运水电费","代维费","网运房租及物业费","客户接入成本开通费","客户接入成本终端","网优费","网运修理费","网运行政费用"]];
-var field=["YS_DEV_YW_NUM","YS_DEV_KD_NUM","YS_DEV_ZX_NUM","YS_DEV_OTHER_NUM","YS_DEV_ALL_NUM","YS_SR_AMOUNT","SC_YS_COST_AMOUNT","LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT","LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT","LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT"];
+var title=[["州市名称","营服中心","营服编码","营服状态","发展用户数预算","","","","","出账收入预算","市场成本预算总额","网运成本预算","","","","","","","","",""],
+           ["","","","","移网","宽带","专线","其他","合计","","","铁塔租费（不含水电）","网运水电费","代维费","网运房租及物业费","客户接入成本开通费","客户接入成本终端","网优费","网运修理费","网运行政费用","网运总成本"]];
+var field=["YS_DEV_YW_NUM","YS_DEV_KD_NUM","YS_DEV_ZX_NUM","YS_DEV_OTHER_NUM","YS_DEV_ALL_NUM","YS_SR_AMOUNT","SC_YS_COST_AMOUNT","LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT","LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT","LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_YS_COST_AMOUNT"];
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 $(function(){
 	var maxDate=getMaxDate("PMRT.TAB_MRT_UNIT_YS_MON");
