@@ -212,10 +212,11 @@ function getIncomSql(){
 		"               T.ALL_DB,                                                                                                                                           "+
 		"               CASE WHEN GROUP_ID_1_NAME='全省'                                                                                                                    "+
 		"                    THEN 0                                                                                                                                         "+
-		"                    ELSE ROW_NUMBER() OVER (PARTITION BY T.DEAL_DATE ORDER BY T.ALL_DB1 DESC) END HB_RANK ,                                                        "+
+		"                    ELSE ROW_NUMBER() OVER (PARTITION BY T.DEAL_DATE,T.GROUP_LEVEL ORDER BY T.ALL_DB1 DESC) END HB_RANK ,                                          "+
 		"              T.SXWC_RATE                                                                                                                                          "+
 		"        FROM(                                                                                                                                                      "+
-		"        SELECT T.DEAL_DATE,                                                                                                                                        "+
+		"        SELECT T.DEAL_DATE,  " +
+		"               T.GROUP_LEVEL,                                                                                                                                      "+//
 		"               T.GROUP_ID_1_NAME,                                                                                                                                  "+
 		"               BUS_COUNT,                                                                                                                                          "+
 		"               T.THIS_YW_DAY_SR,                                                                                                                                   "+
@@ -241,7 +242,8 @@ function getIncomSql(){
 		"                                                'YYYYMMDD')) + 1))) * 100 || '%',                                                                                  "+
 		"                                    2) SXWC_RATE                                                                                                                   "+
 		"          FROM (SELECT '全省' GROUP_ID_1_NAME,                                                                                                                     "+
-		"                       DEAL_DATE,                                                                                                                                  "+
+		"                       DEAL_DATE,  " +
+		"                      '' GROUP_LEVEL,"+                                                                                                                                
 		"                       COUNT(DISTINCT HQ_CHAN_CODE) BUS_COUNT,                                                                                                     "+
 		"                       NVL(SUM(THIS_YW_SR), 0) THIS_YW_DAY_SR,                                                                                                     "+
 		"                       NVL(SUM(THIS_NET_SR), 0) THIS_NET_DAY_SR,                                                                                                   "+
@@ -292,7 +294,8 @@ function getIncomSql(){
 		"                 GROUP BY DEAL_DATE                                                                                                                                "+
 		"                UNION ALL                                                                                                                                          "+
 		"                SELECT GROUP_ID_1_NAME,                                                                                                                            "+
-		"                       DEAL_DATE,                                                                                                                                  "+
+		"                       DEAL_DATE, " +
+		"                       '1' GROUP_LEVEL,                                                                                                                            "+//
 		"                       BUS_COUNT,                                                                                                                                  "+
 		"                       THIS_YW_DAY_SR,                                                                                                                             "+
 		"                       THIS_NET_DAY_SR,                                                                                                                            "+
@@ -405,7 +408,7 @@ function getIncomSql(){
 				" FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL WHERE DEAL_DATE BETWEEN  '"+incomeStartDate+"' AND '"+incomeEndDate+"'"+
 				where+
 				" GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))"+
-				" ORDER BY THIS_YW_MON_SR ";
+				" ORDER BY THIS_YW_MON_SR "; 
 	} 
 	return sql;
 }
