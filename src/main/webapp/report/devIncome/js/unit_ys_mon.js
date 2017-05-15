@@ -5,8 +5,7 @@ var field=["YS_DEV_YW_NUM","YS_DEV_KD_NUM","YS_DEV_ZX_NUM","YS_DEV_OTHER_NUM","Y
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 $(function(){
 	var maxDate=getMaxDate("PMRT.TAB_MRT_UNIT_YS_MON");
-	$("#startDate").val(maxDate);
-	$("#endDate").val(maxDate);
+	$("#dealDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -31,9 +30,8 @@ $(function(){
 			var sql='';
 			var code='';
 			var orgLevel='';
-			var startDate=$("#startDate").val();
-			var endDate=$("#endDate").val();
-			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
+			var dealDate=$("#dealDate").val();
+			var where=" WHERE DEAL_DATE = '"+dealDate+"'";
 			var level=0;
 			if($tr){
 				code=$tr.attr("row_id");
@@ -75,10 +73,9 @@ $(function(){
 
 function downsAll() {
 	var orgLevel=$("#orgLevel").val();
-	var startDate=$("#startDate").val();
-	var endDate=$("#endDate").val();
+	var dealDate=$("#dealDate").val();
 	var code=$("#code").val();
-	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
+	var where=" WHERE DEAL_DATE = '"+dealDate+"'";
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	
@@ -97,7 +94,7 @@ function downsAll() {
 		where+=" AND UNIT_ID = '"+unitCode+"'";
 	}
 	var sql = " SELECT GROUP_ID_1_NAME,UNIT_NAME,UNIT_ID,UNIT_TYPE,"+field.join(",")+" FROM PMRT.TAB_MRT_UNIT_YS_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID";
-	var showtext = '云南联通营服预算表' + startDate+"-"+endDate;
+	var showtext = '云南联通营服预算表-' + dealDate;
 	downloadExcel(sql,title,showtext);
 }
 
