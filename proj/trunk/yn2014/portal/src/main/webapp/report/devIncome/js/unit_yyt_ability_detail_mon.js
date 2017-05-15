@@ -5,7 +5,8 @@ var field=["YYT_MAN_NUM","YYT_DEV_NUM","YW_CHARGE_NUM","GW_CHARGE_NUM","ACCT_NUM
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID,YYT_CODE";
 $(function(){
 	var maxDate=getMaxDate("PMRT.TAB_MRT_YYT_ABILITY_MON");
-	$("#dealDate").val(maxDate);
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -30,8 +31,9 @@ $(function(){
 			var sql='';
 			var code='';
 			var orgLevel='';
-			var dealDate=$("#dealDate").val();
-			var where=" WHERE DEAL_DATE = '"+dealDate+"'";
+			var startDate=$("#startDate").val();
+			var endDate=$("#endDate").val();
+			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 			var level=0;
 			if($tr){
 				code=$tr.attr("row_id");
@@ -73,9 +75,10 @@ $(function(){
 
 function downsAll() {
 	var orgLevel=$("#orgLevel").val();
-	var dealDate=$("#dealDate").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var code=$("#code").val();
-	var where=" WHERE DEAL_DATE = '"+dealDate+"'";
+	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var yyt_name=$("#yyt_name").val();
 	
@@ -94,7 +97,7 @@ function downsAll() {
 		where+=" AND YYT_NAME LIKE '%"+yyt_name+"%'";
 	}
 	var sql = " SELECT GROUP_ID_1_NAME,UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,"+field.join(",")+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID,YYT_CODE";
-	var showtext = '云南联通营业厅效能分析明细表-' + dealDate;
+	var showtext = '云南联通营业厅效能分析明细表' + startDate+"-"+endDate;
 	downloadExcel(sql,title,showtext);
 }
 

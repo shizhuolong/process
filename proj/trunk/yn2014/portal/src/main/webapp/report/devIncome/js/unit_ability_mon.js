@@ -4,7 +4,8 @@ var field=["DEV_YW_NUM","DEV_ZX_NUM","DEV_KD_NUM","DEV_GH_NUM","DEV_OTHER_NUM","
 var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 $(function(){
 	var maxDate=getMaxDate("PMRT.TAB_MRT_UNIT_ABILITY_MON")
-	$("#dealDate").val(maxDate);
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -29,8 +30,9 @@ $(function(){
 			var sql='';
 			var code='';
 			var orgLevel='';
-			var dealDate=$("#dealDate").val();
-			var where=" WHERE DEAL_DATE = '"+dealDate+"'";
+			var startDate=$("#startDate").val();
+			var endDate=$("#endDate").val();
+			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 			var level=0;
 			if($tr){
 				code=$tr.attr("row_id");
@@ -72,9 +74,10 @@ $(function(){
 
 function downsAll() {
 	var orgLevel=$("#orgLevel").val();
-	var dealDate=$("#dealDate").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var code=$("#code").val();
-	var where=" WHERE DEAL_DATE = '"+dealDate+"'";
+	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	
@@ -93,7 +96,7 @@ function downsAll() {
 		where+=" AND UNIT_ID = '"+unitCode+"'";
 	}
 	var sql = " SELECT GROUP_ID_1_NAME,UNIT_NAME,UNIT_ID,UNIT_TYPE,"+field.join(",")+" FROM PMRT.TAB_MRT_UNIT_ABILITY_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID";
-	var showtext = '云南联通营服效能汇总表-' + dealDate;
+	var showtext = '云南联通营服效能汇总表' + startDate+"-"+endDate;
 	downloadExcel(sql,title,showtext);
 }
 
