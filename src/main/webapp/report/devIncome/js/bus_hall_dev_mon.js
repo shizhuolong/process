@@ -304,7 +304,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 	}else{
 		return "SELECT T.GROUP_ID_1_NAME,                                                               "+
 		"       T.BUS_HALL_NAME ROW_NAME,                                                               "+
-		"       T.HQ_CHAN_CODE ROW_ID,                                                                  "+
+		"       T.HQ_CHAN_CODE,                                                                  "+
 		"       T.T_TYPE,                                                                               "+
 		"       T.OPERATE_TYPE,                                                                         "+
 		"       T.THIS_YW_NUM,                                                                          "+
@@ -732,7 +732,7 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"    ON (T.GROUP_ID_1 = T2.GROUP_ID_1)                                                                                                                               ";
 	}else{
 		return "SELECT T.GROUP_ID_1_NAME,T.BUS_HALL_NAME ROW_NAME,                                                                                                          "+
-		"       T.HQ_CHAN_CODE ROW_ID,                                                                                                                                      "+
+		"       T.HQ_CHAN_CODE,                                                                                                                                      "+
 		"       T.T_TYPE,                                                                                                                                                   "+
 		"       T.OPERATE_TYPE,                                                                                                                                             "+
 		"       T.THIS_YW_NUM,                                                                                                                                              "+
