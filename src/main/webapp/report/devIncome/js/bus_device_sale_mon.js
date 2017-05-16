@@ -1,9 +1,9 @@
 $(function(){
 	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_DEVICE_SALE_MON"));
-	var title=[["组织架构","渠道编码","经营模式自营/柜台/他营）","厅分类(旗舰/标准/小型）","模式一","","","","","","","是否割接","模式三","","","","","","","合计","","","","","","","销量同比","定去年12月","进货量定比1月","销售量定比1月","库存量定比1月","库存周期定比1月"],
-	           ["","","","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期","进货量","环比","销售量","环比","库存量","环比","库存周期","","","","","",""]];
+	var title=[["组织架构","渠道编码","经营模式自营/柜台/他营）","厅分类(旗舰/标准/小型）","模式一","","","","","","","是否割接","模式三","","","","","","","众筹终端","合计","","","","","","","销量同比","定去年12月","进货量定比1月","销售量定比1月","库存量定比1月","库存周期定比1月"],
+	           ["","","","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期","","","","","",""]];
     
-	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","JH_NUM1","JH_SEQUE","SALE_NUM1","SALE_SEQUE","KC_NUM1","KC_SEQUE","KC_CYCLE","FLAG","JH_NUM3","JH_SEQUE1","SALE_NUM3","SALE_SEQUE1","KC_NUM3","KC_SEQUE1","KC_CYCLE1","JH_NUMALL","JHALL_SEQUE","SALE_NUMALL","SALEALL_SEQUE","KC_NUMALL","KCALL_SEQUE","KCALL_CYCLE","SALEALL_TB","SALEALL_DB","JHALL_DB","SALEALL_DB1","KCALL_DB","KCALL_CYCLE_DB"];
+	var field=["ROW_NAME","HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","JH_NUM1","JH_SEQUE","SALE_NUM1","SALE_SEQUE","KC_NUM1","KC_SEQUE","KC_CYCLE","FLAG","JH_NUM3","JH_SEQUE1","SALE_NUM3","SALE_SEQUE1","KC_NUM3","KC_SEQUE1","KC_CYCLE1","ZCZD_NUM","JH_NUMALL","JHALL_SEQUE","SALE_NUMALL","SALEALL_SEQUE","KC_NUMALL","KCALL_SEQUE","KCALL_CYCLE","SALEALL_TB","SALEALL_DB","JHALL_DB","SALEALL_DB1","KCALL_DB","KCALL_CYCLE_DB"];
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -82,8 +82,8 @@ function downsAll() {
 	
 	var sql = getSql(3,where);
 	var showtext = '自有营业厅终端进销存月报表-' + dealDate;
-	var title=[["地市","厅名称","渠道编码","经营模式自营/柜台/他营）","厅分类(旗舰/标准/小型）","模式一","","","","","","","是否割接","模式三","","","","","","","合计","","","","","","","销量同比","定去年12月","进货量定比1月","销售量定比1月","库存量定比1月","库存周期定比1月"],
-	      	           ["","","","","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期","进货量","环比","销售量","环比","库存量","环比","库存周期","","","","","",""]];
+	var title=[["地市","厅名称","渠道编码","经营模式自营/柜台/他营）","厅分类(旗舰/标准/小型）","模式一","","","","","","","是否割接","模式三","","","","","","","众筹终端","合计","","","","","","","销量同比","定去年12月","进货量定比1月","销售量定比1月","库存量定比1月","库存周期定比1月"],
+	      	           ["","","","","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期","","进货量","环比","销售量","环比","库存量","环比","库存周期","","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -205,6 +205,7 @@ function getSql(orgLevel,where){
 		"         ELSE                                                                                                                                                                                                                                                                                                                "+
 		"          0                                                                                                                                                                                                                                                                                                                  "+
 		"       END AS KC_CYCLE1,                                                                                                                                                                                                                                                                                                     "+
+		" SUM(NVL(ZCZD_NUM,0)) ZCZD_NUM,"+
 		"       SUM(NVL(T.JH_NUM1, 0)) + SUM(NVL(T.JH_NUM3, 0)) JH_NUMALL,                                                                                                                                                                                                                                                            "+
 		"       PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(T1.JH_NUM1, 0)) +                                                                                                                                                                                                                                                              "+
 		"                            SUM(NVL(T1.JH_NUM3, 0)) <> 0                                                                                                                                                                                                                                                                     "+
@@ -253,6 +254,7 @@ function getSql(orgLevel,where){
 		"                    ,SUM(JH_NUM3) JH_NUM3                                                                                                                                                                                                                                                                                  "+
 		"                    ,SUM(SALE_NUM3) SALE_NUM3                                                                                                                                                                                                                                                                              "+
 		"                    ,SUM(KC_NUM3) KC_NUM3                                                                                                                                                                                                                                                                                  "+
+		",SUM(NVL(ZCZD_NUM,0)) ZCZD_NUM"+
 		"              FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON                                                                                                                                                                                                                                                                         "+
 		"              WHERE DEAL_DATE = "+dealDate+"                                                                                                                                                                                                                                                                               "+
 		    where+
@@ -299,7 +301,7 @@ function getSql(orgLevel,where){
 		"    ON (T.GROUP_ID_0 = T3.GROUP_ID_0)                                                                                                                                                                                                                                                                                      "+
 		" LEFT JOIN （SELECT GROUP_ID_0,DEAL_DATE, SUM(JH_NUM1) JH_NUM1, SUM(SALE_NUM1) SALE_NUM1, SUM(KC_NUM1) KC_NUM1, SUM(JH_NUM3) JH_NUM3, SUM(SALE_NUM3) SALE_NUM3, SUM(KC_NUM3) KC_NUM3  "+
 		"  FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON                                                                                                                                                "+
-		" WHERE DEAL_DATE = "+getFristMonth(dealDate)+"                                                                                                                                        "+
+		" WHERE DEAL_DATE = PMRT.LAST_QUAR_DEAL("+dealDate+")"+                                                                                                                                       
 		"   AND GROUP_ID_0 = 86000                                                                                                                                                             "+
 		     where+                                                                                                                                                                           
 		" GROUP BY GROUP_ID_0,DEAL_DATE ）T4                                                                                                                                                   "+
@@ -385,6 +387,7 @@ function getSql(orgLevel,where){
 		"         ELSE                                                                                                                                                                                                                                  "+
 		"          0                                                                                                                                                                                                                                    "+
 		"       END AS KC_CYCLE1,                                                                                                                                                                                                                       "+
+        " SUM(NVL(ZCZD_NUM,0)) ZCZD_NUM,"+  
 		"       SUM(NVL(T.JH_NUM1, 0)) + SUM(NVL(T.JH_NUM3, 0)) JH_NUMALL,                                                                                                                                                                              "+
 		"       PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(T1.JH_NUM1, 0)) +                                                                                                                                                                                "+
 		"                            SUM(NVL(T1.JH_NUM3, 0)) <> 0                                                                                                                                                                                       "+
@@ -469,6 +472,7 @@ function getSql(orgLevel,where){
 		"                    ,SUM(JH_NUM3) JH_NUM3                                                                                                                                                                                                                                                                                   "+
 		"                    ,SUM(SALE_NUM3) SALE_NUM3                                                                                                                                                                                                                                                                               "+
 		"                    ,SUM(KC_NUM3) KC_NUM3                                                                                                                                                                                                                                                                                   "+
+		",SUM(NVL(ZCZD_NUM,0)) ZCZD_NUM"+
 		"              FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON                                                                                                                                                                                                                                                                          "+
 		"              WHERE DEAL_DATE = "+dealDate+"                                                                                                                                                                                                                                                                                "+
 		    where+
@@ -524,7 +528,7 @@ function getSql(orgLevel,where){
 		"         SUM(SALE_NUM3) SALE_NUM3,                                 "+
 		"         SUM(KC_NUM3) KC_NUM3                                      "+
 		"    FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON                           "+
-		" WHERE DEAL_DATE = "+getFristMonth(dealDate)+"                     "+
+		" WHERE DEAL_DATE = PMRT.LAST_QUAR_DEAL("+dealDate+")"+ 
 		      where+
 		" GROUP BY GROUP_ID_0, GROUP_ID_1, GROUP_ID_1_NAME, DEAL_DATE) T4   "+
 		" ON(T.GROUP_ID_1_NAME=T4.GROUP_ID_1_NAME)                          "+
@@ -609,6 +613,7 @@ function getSql(orgLevel,where){
 		"         ELSE                                                                                                                                          "+
 		"          0                                                                                                                                            "+
 		"       END AS KC_CYCLE1,                                                                                                                               "+
+		"SUM(NVL(T.ZCZD_NUM,0)) ZCZD_NUM,  "+
 		"       SUM(NVL(T.JH_NUM1, 0))+SUM(NVL(T.JH_NUM3, 0)) JH_NUMALL,                                                                                        "+
 		"       PODS.GET_RADIX_POINT(CASE                                                                                                                       "+
 		"                              WHEN SUM(NVL(T1.JH_NUM1, 0))+SUM(NVL(T1.JH_NUM3, 0)) <> 0 THEN                                                           "+
@@ -709,7 +714,7 @@ function getSql(orgLevel,where){
 		"  LEFT JOIN PMRT.TB_MRT_BUS_DEVICE_SALE_MON T1                                                                                                         "+
 		"    ON (T.HQ_CHAN_CODE = T1.HQ_CHAN_CODE AND T1.DEAL_DATE = "+getLastMonth(dealDate)+")                                                                "+
 		"  LEFT JOIN PMRT.TB_MRT_BUS_DEVICE_SALE_MON T2                                                                                                         "+
-		"    ON (T.HQ_CHAN_CODE = T2.HQ_CHAN_CODE AND T2.DEAL_DATE = "+getFristMonth(dealDate)+")                                                               "+
+		"    ON (T.HQ_CHAN_CODE = T2.HQ_CHAN_CODE AND T2.DEAL_DATE = PMRT.LAST_QUAR_DEAL("+dealDate+"))"+                                                         
 		                                             where+                                                                                                          
 		" GROUP BY  T.GROUP_ID_1_NAME,T.BUS_HALL_NAME,                                                                                                          "+
 		"           T.HQ_CHAN_CODE,                                                                                                                             "+
