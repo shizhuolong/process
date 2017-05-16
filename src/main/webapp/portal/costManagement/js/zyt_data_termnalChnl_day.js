@@ -35,11 +35,14 @@ function queryTerminalData(){
 				+"<td class='numberStyle'>"+isNull(n['TYPE1_DEV_MON'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE3_DEV_DAY'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE3_DEV_MON'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_ZCZD_DAY'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['THIS_ZCZD_MON'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE_ALL_DAY'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE_ALL_MON'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['TYPE_DT'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HB_ALL'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HB_DT'])+"</td>"
+				+"<td class='numberStyle'>"+isNull(n['ALL_DB'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['HB_RANK'])+"</td>"
 				+"<td class='numberStyle'>"+isNull(n['SXWC_RATE'])+"</td>"
 			content+="</tr>";
@@ -77,10 +80,10 @@ function downTermnalData(){
 	var day = termnalEndDate.substr(6);
 	if(termnalStartDate==termnalEndDate){
 		title=[
-		       	["云南联通自营厅终端销量日通报","","","","","","","","","","","",""],
-				["单位：户","本月截止：",day+" 日","-","","","","","","","","",""],	
-				["分公司","厅数","模式一","","模式三","","小计","","","累计环比（%）","","环比排名","年度日累计终端时序完成率"],
-				["","","日发展","月累计","日发展","月累计","日发展","月累计","单厅","月累计","单厅","",""]
+		       	["云南联通自营厅终端销量日通报","","","","","","","","","","","","","","",""],
+				["单位：户","本月截止：",day+" 日","-","","","","","","","","","","","",""],	
+				["分公司","厅数","模式一","","模式三","","众筹终端","","小计","","","累计环比（%）","","定比","定比排名","年度日累计终端时序完成率"],
+				["","","日发展","月累计","日发展","月累计","日发展","月累计","日发展","月累计","单厅","月累计","单厅","","",""]
 		       ];
 	}else{
 		title=[
@@ -111,9 +114,11 @@ function getTerminalColumns(){
 					"<th rowspan='2'>厅数</th>" +
 					"<th colspan='2'>模式一</th>" +
 					"<th colspan='2'>模式三</th>" +
+					"<th colspan='2'>众筹终端</th>" +
 					"<th colspan='3'>小计</th>" +
 					"<th colspan='2'>累计环比（%）</th>" +
-					"<th rowspan='2'>环比排名</th>" +
+					"<th rowspan='2'>定比</th>" +
+					"<th rowspan='2'>定比排名</th>" +
 					"<th rowspan='2'>年度日累计终端时序完成率</th>" +
 				"</tr>" +
 				"<tr>" +
@@ -123,9 +128,11 @@ function getTerminalColumns(){
 					"<th>月累计</th>" +
 					"<th>日发展</th>" +
 					"<th>月累计</th>" +
+					"<th>日发展</th>" +
+					"<th>月累计</th>" +
 					"<th>单厅</th>" +
-					"<th>月累计环比</th>" +
-					"<th>单厅环比</th>" +
+					"<th>月累计</th>" +
+					"<th>单厅</th>" +
 				"</tr>" +
 				"</thead>";
 	}else{
@@ -179,177 +186,240 @@ function getTerminalSql(){
 	}
 	if(termnalStartDate==termnalEndDate){
 		sql+=
-			"SELECT T.GROUP_ID_1_NAME,                                                                                                                "+
-			"       T.BUS_COUNT,                                                                                                                      "+
-			"       T.TYPE1_DEV_DAY,                                                                                                                  "+
-			"       T.TYPE1_DEV_MON,                                                                                                                  "+
-			"       T.TYPE3_DEV_DAY,                                                                                                                  "+
-			"       T.TYPE3_DEV_MON,                                                                                                                  "+
-			"       T.TYPE_ALL_DAY,                                                                                                                   "+
-			"       T.TYPE_ALL_MON,                                                                                                                   "+
-			"       T.TYPE_DT,                                                                                                                        "+
-			"       T.HB_ALL,                                                                                                                         "+
-			"       T.HB_DT,                                                                                                                          "+
-			"       T.HB_RANK,                                                                                                                        "+
-			"       PODS.GET_RADIX_POINT((T2.YEAR_LJ_ZD /                                                                                             "+
-			"                               (T1.ZD_AVG_YEAR *                                                                                         "+
-			"                               ((TO_DATE(T.DEAL_DATE, 'YYYYMMDD') -                                                                      "+
-			"                               TO_DATE(SUBSTR(T.DEAL_DATE, 1, 4) || '0101', 'YYYYMMDD')) + 1))                                           "+
-			"                              ) * 100 || '%',                                                                                            "+
-			"                            2) SXWC_RATE                                                                                                 "+
-			"  FROM (SELECT '全省' GROUP_ID_1_NAME,                                                                                                   "+
-			"               DEAL_DATE,                                                                                                                "+
-			"               COUNT(DISTINCT T1.HQ_CHAN_CODE) BUS_COUNT,                                                                                "+
-			"               NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                                  "+
-			"               NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                                 "+
-			"               NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                                  "+
-			"               NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                                 "+
-			"               NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                                    "+
-			"               NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                                   "+
-			"               NVL(SUM(S1_LJ_ZD), 0) S1_LJ_ZD,                                                                                           "+
-			"               NVL(SUM(S2_LJ_ZD), 0) S2_LJ_ZD,                                                                                           "+
-			"               NVL(SUM(S3_LJ_ZD), 0) S3_LJ_ZD,                                                                                           "+
-			"               NVL(SUM(S4_LJ_ZD), 0) S4_LJ_ZD,                                                                                           "+
-			"               CASE                                                                                                                      "+
-			"                 WHEN COUNT(DISTINCT T1.HQ_CHAN_CODE) <> 0 THEN                                                                          "+
-			"                  ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                                      "+
-			"                        COUNT(DISTINCT T1.HQ_CHAN_CODE),                                                                                 "+
-			"                        0)                                                                                                               "+
-			"                 ELSE                                                                                                                    "+
-			"                  0                                                                                                                      "+
-			"               END TYPE_DT,                                                                                                              "+
-			"               PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-			"                                      WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                                           "+
-			"                                       (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                                   "+
-			"                                       NVL(SUM(T1.TYPE_ALLL), 0)                                                                         "+
-			"                                      ELSE                                                                                               "+
-			"                                       0                                                                                                 "+
-			"                                    END || '%',                                                                                          "+
-			"                                    2) HB_ALL,                                                                                           "+
-			"               PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-			"                 WHEN (CASE                                                                                                              "+
-			"                        WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                               "+
-			"                         ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                               "+
-			"                               SUM(T1.HALL_COUNTL))                                                                                      "+
-			"                        ELSE                                                                                                             "+
-			"                         0                                                                                                               "+
-			"                      END) <> 0 THEN                                                                                                     "+
-			"                  （(CASE                                                                                                                "+
-			"                      WHEN SUM(T1.HALL_COUNT) <> 0 THEN                                                                                  "+
-			"                       ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                                 "+
-			"                             SUM(T1.HALL_COUNT))                                                                                         "+
-			"                      ELSE                                                                                                               "+
-			"                       0                                                                                                                 "+
-			"                    END) - (CASE                                                                                                         "+
-			"                              WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                         "+
-			"                               ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                         "+
-			"                                     SUM(T1.HALL_COUNTL))                                                                                "+
-			"                              ELSE                                                                                                       "+
-			"                               0                                                                                                         "+
-			"                            END)) * 100 / (CASE                                                                                          "+
-			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                                    "+
-			"                    ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                                    "+
-			"                          SUM(T1.HALL_COUNTL))                                                                                           "+
-			"                   ELSE                                                                                                                  "+
-			"                    0                                                                                                                    "+
-			"                 END) ELSE 0 END || '%',                                                                                                 "+
-			"               2) HB_DT,                                                                                                                 "+
-			"       0 HB_RANK                                                                                                                         "+
-			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                               "+
-			" WHERE T1.DEAL_DATE = '"+termnalStartDate+"'                                                                                                     "+
-			          where+
-			" GROUP BY DEAL_DATE                                                                                                                      "+
-			"UNION ALL                                                                                                                                "+
-			"SELECT GROUP_ID_1_NAME,                                                                                                                  "+
-			"       DEAL_DATE,                                                                                                                        "+
-			"       BUS_COUNT,                                                                                                                        "+
-			"       TYPE1_DEV_DAY,                                                                                                                    "+
-			"       TYPE1_DEV_MON,                                                                                                                    "+
-			"       TYPE3_DEV_DAY,                                                                                                                    "+
-			"       TYPE3_DEV_MON,                                                                                                                    "+
-			"       TYPE_ALL_DAY,                                                                                                                     "+
-			"       TYPE_ALL_MON,                                                                                                                     "+
-			"       S1_LJ_ZD,                                                                                                                         "+
-			"       S2_LJ_ZD,                                                                                                                         "+
-			"       S3_LJ_ZD,                                                                                                                         "+
-			"       S4_LJ_ZD,                                                                                                                         "+
-			"       TYPE_DT,                                                                                                                          "+
-			"       HB_ALL,                                                                                                                           "+
-			"       HB_DT,                                                                                                                            "+
-			"       ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(HB_ALL, '%', '')) DESC, TYPE_ALL_MON DESC) HB_RANK           "+
-			"  FROM (SELECT T1.GROUP_ID_1_NAME,                                                                                                       "+
-			"               T1.DEAL_DATE,                                                                                                             "+
-			"               T1.GROUP_ID_0,                                                                                                            "+
-			"               COUNT(DISTINCT T1.HQ_CHAN_CODE) BUS_COUNT,                                                                                "+
-			"               NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                                  "+
-			"               NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                                 "+
-			"               NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                                  "+
-			"               NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                                 "+
-			"               NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                                    "+
-			"               NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                                   "+
-			"               NVL(SUM(S1_LJ_ZD), 0) S1_LJ_ZD,                                                                                           "+
-			"               NVL(SUM(S2_LJ_ZD), 0) S2_LJ_ZD,                                                                                           "+
-			"               NVL(SUM(S3_LJ_ZD), 0) S3_LJ_ZD,                                                                                           "+
-			"               NVL(SUM(S4_LJ_ZD), 0) S4_LJ_ZD,                                                                                           "+
-			"               CASE                                                                                                                      "+
-			"                 WHEN COUNT(DISTINCT T1.HQ_CHAN_CODE) <> 0 THEN                                                                          "+
-			"                  ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                                      "+
-			"                        COUNT(DISTINCT T1.HQ_CHAN_CODE),                                                                                 "+
-			"                        0)                                                                                                               "+
-			"                 ELSE                                                                                                                    "+
-			"                  0                                                                                                                      "+
-			"               END TYPE_DT,                                                                                                              "+
-			"               PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-			"                                      WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                                           "+
-			"                                       (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                                   "+
-			"                                       NVL(SUM(T1.TYPE_ALLL), 0)                                                                         "+
-			"                                      ELSE                                                                                               "+
-			"                                       0                                                                                                 "+
-			"                                    END || '%',                                                                                          "+
-			"                                    2) HB_ALL,                                                                                           "+
-			"               PODS.GET_RADIX_POINT(CASE                                                                                                 "+
-			"                 WHEN (CASE                                                                                                              "+
-			"                        WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                               "+
-			"                         ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                               "+
-			"                               SUM(T1.HALL_COUNTL))                                                                                      "+
-			"                        ELSE                                                                                                             "+
-			"                         0                                                                                                               "+
-			"                      END) <> 0 THEN                                                                                                     "+
-			"                  （(CASE                                                                                                                "+
-			"                      WHEN SUM(T1.HALL_COUNT) <> 0 THEN                                                                                  "+
-			"                       ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                                 "+
-			"                             SUM(T1.HALL_COUNT))                                                                                         "+
-			"                      ELSE                                                                                                               "+
-			"                       0                                                                                                                 "+
-			"                    END) - (CASE                                                                                                         "+
-			"                              WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                         "+
-			"                               ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                         "+
-			"                                     SUM(T1.HALL_COUNTL))                                                                                "+
-			"                              ELSE                                                                                                       "+
-			"                               0                                                                                                         "+
-			"                            END)) * 100 / (CASE                                                                                          "+
-			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                                    "+
-			"                    ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                                    "+
-			"                          SUM(T1.HALL_COUNTL))                                                                                           "+
-			"                   ELSE                                                                                                                  "+
-			"                    0                                                                                                                    "+
-			"                 END) ELSE 0 END || '%',                                                                                                 "+
-			"               2) HB_DT                                                                                                                  "+
-			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                               "+
-			" WHERE T1.DEAL_DATE = '"+termnalStartDate+"'                                                                                                     "+
-			             where+
-			" GROUP BY T1.GROUP_ID_0, T1.GROUP_ID_1_NAME, DEAL_DATE)) T                                                                               "+
-			"  JOIN PCDE.TB_CDE_BUS_HALL_TARGET T1                                                                                                    "+
-			"    ON (T.GROUP_ID_1_NAME = T1.GROUP_ID_1_NAME)                                                                                          "+
-			"  LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME,'全省') GROUP_ID_1_NAME,                                                                         "+
-			"                    NVL(SUM(TYPE_ALL), 0)   YEAR_LJ_ZD                                                                                   "+
-			"             FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                                       "+
-			"                 WHERE DEAL_DATE LIKE '"+getYear(termnalStartDate)+"%'                                                                           "+
-			"                   AND DEAL_DATE <= '"+termnalStartDate+"'                                                                                       "+
-			                    where+
-			"             GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))                                                            "+
-			"  )T2  ON(T2.GROUP_ID_1_NAME=T.GROUP_ID_1_NAME)                                                                                          "+
-			" ORDER BY HB_RANK                                                                                                                        ";
+			"SELECT T.GROUP_ID_1_NAME,                                                                                                        "+
+			"       T.BUS_COUNT,                                                                                                              "+
+			"       T.TYPE1_DEV_DAY,                                                                                                          "+
+			"       T.TYPE1_DEV_MON,                                                                                                          "+
+			"       T.TYPE3_DEV_DAY,                                                                                                          "+
+			"       T.TYPE3_DEV_MON,                                                                                                          "+
+			"       THIS_ZCZD_DAY,                                                                                                            "+
+			"       THIS_ZCZD_MON,                                                                                                            "+
+			"       T.TYPE_ALL_DAY,                                                                                                           "+
+			"       T.TYPE_ALL_MON,                                                                                                           "+
+			"       T.TYPE_DT,                                                                                                                "+
+			"       T.HB_ALL,                                                                                                                 "+
+			"       T.HB_DT,                                                                                                                  "+
+			"       T.ALL_DB,                                                                                                                 "+
+			"       T.HB_RANK ,                                                                                                               "+
+			"       T.SXWC_RATE                                                                                                               "+
+			"FROM (                                                                                                                           "+
+			"SELECT T.GROUP_ID_1_NAME,                                                                                                        "+
+			"       T.BUS_COUNT,                                                                                                              "+
+			"       T.TYPE1_DEV_DAY,                                                                                                          "+
+			"       T.TYPE1_DEV_MON,                                                                                                          "+
+			"       T.TYPE3_DEV_DAY,                                                                                                          "+
+			"       T.TYPE3_DEV_MON,                                                                                                          "+
+			"       THIS_ZCZD_DAY,                                                                                                            "+
+			"       THIS_ZCZD_MON,                                                                                                            "+
+			"       T.TYPE_ALL_DAY,                                                                                                           "+
+			"       T.TYPE_ALL_MON,                                                                                                           "+
+			"       T.TYPE_DT,                                                                                                                "+
+			"       T.HB_ALL,                                                                                                                 "+
+			"       T.HB_DT,                                                                                                                  "+
+			"       T.ALL_DB,                                                                                                                 "+
+			"       CASE WHEN GROUP_ID_1_NAME='全省'                                                                                          "+
+			"                    THEN 0                                                                                                       "+
+			"                    ELSE ROW_NUMBER() OVER (PARTITION BY T.DEAL_DATE ,GROUP_LEVEL ORDER BY T.ALL_DB1 DESC) END HB_RANK ,         "+
+			"       T.SXWC_RATE                                                                                                               "+
+			"FROM (                                                                                                                           "+
+			"SELECT T.GROUP_ID_1_NAME,                                                                                                        "+
+			"       T.BUS_COUNT,                                                                                                              "+
+			"       T.DEAL_DATE,                                                                                                              "+
+			"       T.GROUP_LEVEL,                                                                                                            "+
+			"       T.TYPE1_DEV_DAY,                                                                                                          "+
+			"       T.TYPE1_DEV_MON,                                                                                                          "+
+			"       T.TYPE3_DEV_DAY,                                                                                                          "+
+			"       T.TYPE3_DEV_MON,                                                                                                          "+
+			"       THIS_ZCZD_DAY,                                                                                                            "+
+			"       THIS_ZCZD_MON,                                                                                                            "+
+			"       T.TYPE_ALL_DAY,                                                                                                           "+
+			"       T.TYPE_ALL_MON,                                                                                                           "+
+			"       T.TYPE_DT,                                                                                                                "+
+			"       T.HB_ALL,                                                                                                                 "+
+			"       T.HB_DT,                                                                                                                  "+
+			"       ROUND(CASE WHEN T3.LAST_SEASON_DEV<>0                                                                                     "+
+			"                  THEN (T.TYPE_ALL_MON-T3.LAST_SEASON_DEV)*100/T3.LAST_SEASON_DEV                                                "+
+			"                  ELSE 0 END ,2)  ALL_DB1,                                                                                       "+
+			"       PODS.GET_RADIX_POINT(CASE WHEN T3.LAST_SEASON_DEV<>0                                                                      "+
+			"                                 THEN (T.TYPE_ALL_MON-T3.LAST_SEASON_DEV)*100/T3.LAST_SEASON_DEV                                 "+
+			"                                 ELSE 0 END ||'%',2)  ALL_DB,                                                                    "+
+			"       T.HB_RANK,                                                                                                                "+
+			"       PODS.GET_RADIX_POINT((T2.YEAR_LJ_ZD /                                                                                     "+
+			"                            (T1.ZD_AVG_YEAR *                                                                                    "+
+			"                            ((TO_DATE(T.DEAL_DATE, 'YYYYMMDD') -                                                                 "+
+			"                            TO_DATE(SUBSTR(T.DEAL_DATE, 1, 4) || '0101',                                                         "+
+			"                                        'YYYYMMDD')) + 1))) * 100 || '%',                                                        "+
+			"                            2) SXWC_RATE                                                                                         "+
+			"  FROM (SELECT '全省' GROUP_ID_1_NAME,                                                                                           "+
+			"               DEAL_DATE,                                                                                                        "+
+			"               '' GROUP_LEVEL,                                                                                                   "+
+			"               COUNT(DISTINCT T1.HQ_CHAN_CODE) BUS_COUNT,                                                                        "+
+			"               NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                          "+
+			"               NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                         "+
+			"               NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                          "+
+			"               NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                         "+
+			"               NVL(SUM(T1.THIS_ZCZD_DEV), 0) THIS_ZCZD_DAY,                                                                      "+
+			"               NVL(SUM(T1.THIS_ZCZD_DEV1), 0) THIS_ZCZD_MON,                                                                     "+
+			"               NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                            "+
+			"               NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                           "+
+			"               NVL(SUM(S1_LJ_ZD), 0) S1_LJ_ZD,                                                                                   "+
+			"               NVL(SUM(S2_LJ_ZD), 0) S2_LJ_ZD,                                                                                   "+
+			"               NVL(SUM(S3_LJ_ZD), 0) S3_LJ_ZD,                                                                                   "+
+			"               NVL(SUM(S4_LJ_ZD), 0) S4_LJ_ZD,                                                                                   "+
+			"               CASE                                                                                                              "+
+			"                 WHEN COUNT(DISTINCT T1.HQ_CHAN_CODE) <> 0 THEN                                                                  "+
+			"                  ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                              "+
+			"                        COUNT(DISTINCT T1.HQ_CHAN_CODE),                                                                         "+
+			"                        0)                                                                                                       "+
+			"                 ELSE                                                                                                            "+
+			"                  0                                                                                                              "+
+			"               END TYPE_DT,                                                                                                      "+
+			"               PODS.GET_RADIX_POINT(CASE                                                                                         "+
+			"                                      WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                                   "+
+			"                                       (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                           "+
+			"                                       NVL(SUM(T1.TYPE_ALLL), 0)                                                                 "+
+			"                                      ELSE                                                                                       "+
+			"                                       0                                                                                         "+
+			"                                    END || '%',                                                                                  "+
+			"                                    2) HB_ALL,                                                                                   "+
+			"               PODS.GET_RADIX_POINT(CASE                                                                                         "+
+			"                 WHEN (CASE                                                                                                      "+
+			"                        WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                       "+
+			"                         ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                       "+
+			"                               SUM(T1.HALL_COUNTL))                                                                              "+
+			"                        ELSE                                                                                                     "+
+			"                         0                                                                                                       "+
+			"                      END) <> 0 THEN                                                                                             "+
+			"                  （(CASE                                                                                                        "+
+			"                      WHEN SUM(T1.HALL_COUNT) <> 0 THEN                                                                          "+
+			"                       ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                         "+
+			"                             SUM(T1.HALL_COUNT))                                                                                 "+
+			"                      ELSE                                                                                                       "+
+			"                       0                                                                                                         "+
+			"                    END) - (CASE                                                                                                 "+
+			"                              WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                 "+
+			"                               ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                 "+
+			"                                     SUM(T1.HALL_COUNTL))                                                                        "+
+			"                              ELSE                                                                                               "+
+			"                               0                                                                                                 "+
+			"                            END)) * 100 / (CASE                                                                                  "+
+			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                            "+
+			"                    ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                            "+
+			"                          SUM(T1.HALL_COUNTL))                                                                                   "+
+			"                   ELSE                                                                                                          "+
+			"                    0                                                                                                            "+
+			"                 END) ELSE 0 END || '%',                                                                                         "+
+			"               2) HB_DT,                                                                                                         "+
+			"       0 HB_RANK                                                                                                                 "+
+			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                       "+
+			" WHERE T1.DEAL_DATE = '"+termnalStartDate+"'                                                                                     "+
+			       where+
+			" GROUP BY DEAL_DATE                                                                                                              "+
+			"UNION ALL                                                                                                                        "+
+			"SELECT GROUP_ID_1_NAME,                                                                                                          "+
+			"       DEAL_DATE,                                                                                                                "+
+			"       '1' GROUP_LEVEL,                                                                                                          "+
+			"       BUS_COUNT,                                                                                                                "+
+			"       TYPE1_DEV_DAY,                                                                                                            "+
+			"       TYPE1_DEV_MON,                                                                                                            "+
+			"       TYPE3_DEV_DAY,                                                                                                            "+
+			"       TYPE3_DEV_MON,                                                                                                            "+
+			"       THIS_ZCZD_DAY,                                                                                                            "+
+			"       THIS_ZCZD_MON,                                                                                                            "+
+			"       TYPE_ALL_DAY,                                                                                                             "+
+			"       TYPE_ALL_MON,                                                                                                             "+
+			"       S1_LJ_ZD,                                                                                                                 "+
+			"       S2_LJ_ZD,                                                                                                                 "+
+			"       S3_LJ_ZD,                                                                                                                 "+
+			"       S4_LJ_ZD,                                                                                                                 "+
+			"       TYPE_DT,                                                                                                                  "+
+			"       HB_ALL,                                                                                                                   "+
+			"       HB_DT,                                                                                                                    "+
+			"       ROW_NUMBER() OVER(PARTITION BY GROUP_ID_0 ORDER BY TO_NUMBER(REPLACE(HB_ALL, '%', '')) DESC, TYPE_ALL_MON DESC) HB_RANK   "+
+			"  FROM (SELECT T1.GROUP_ID_1_NAME,                                                                                               "+
+			"               T1.DEAL_DATE,                                                                                                     "+
+			"               T1.GROUP_ID_0,                                                                                                    "+
+			"               COUNT(DISTINCT T1.HQ_CHAN_CODE) BUS_COUNT,                                                                        "+
+			"               NVL(SUM(T1.TYPE1_DEV), 0) TYPE1_DEV_DAY,                                                                          "+
+			"               NVL(SUM(T1.TYPE1_DEV1), 0) TYPE1_DEV_MON,                                                                         "+
+			"               NVL(SUM(T1.TYPE3_DEV), 0) TYPE3_DEV_DAY,                                                                          "+
+			"               NVL(SUM(T1.TYPE3_DEV1), 0) TYPE3_DEV_MON,                                                                         "+
+			"               NVL(SUM(T1.THIS_ZCZD_DEV), 0) THIS_ZCZD_DAY,                                                                      "+
+			"               NVL(SUM(T1.THIS_ZCZD_DEV1), 0) THIS_ZCZD_MON,                                                                     "+
+			"               NVL(SUM(T1.TYPE_ALL), 0) TYPE_ALL_DAY,                                                                            "+
+			"               NVL(SUM(T1.TYPE_ALL1), 0) TYPE_ALL_MON,                                                                           "+
+			"               NVL(SUM(S1_LJ_ZD), 0) S1_LJ_ZD,                                                                                   "+
+			"               NVL(SUM(S2_LJ_ZD), 0) S2_LJ_ZD,                                                                                   "+
+			"               NVL(SUM(S3_LJ_ZD), 0) S3_LJ_ZD,                                                                                   "+
+			"               NVL(SUM(S4_LJ_ZD), 0) S4_LJ_ZD,                                                                                   "+
+			"               CASE                                                                                                              "+
+			"                 WHEN COUNT(DISTINCT T1.HQ_CHAN_CODE) <> 0 THEN                                                                  "+
+			"                  ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                              "+
+			"                        COUNT(DISTINCT T1.HQ_CHAN_CODE),                                                                         "+
+			"                        0)                                                                                                       "+
+			"                 ELSE                                                                                                            "+
+			"                  0                                                                                                              "+
+			"               END TYPE_DT,                                                                                                      "+
+			"               PODS.GET_RADIX_POINT(CASE                                                                                         "+
+			"                                      WHEN NVL(SUM(T1.TYPE_ALLL), 0) <> 0 THEN                                                   "+
+			"                                       (NVL(SUM(T1.TYPE_ALL1), 0) - NVL(SUM(T1.TYPE_ALLL), 0)) * 100 /                           "+
+			"                                       NVL(SUM(T1.TYPE_ALLL), 0)                                                                 "+
+			"                                      ELSE                                                                                       "+
+			"                                       0                                                                                         "+
+			"                                    END || '%',                                                                                  "+
+			"                                    2) HB_ALL,                                                                                   "+
+			"               PODS.GET_RADIX_POINT(CASE                                                                                         "+
+			"                 WHEN (CASE                                                                                                      "+
+			"                        WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                       "+
+			"                         ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                       "+
+			"                               SUM(T1.HALL_COUNTL))                                                                              "+
+			"                        ELSE                                                                                                     "+
+			"                         0                                                                                                       "+
+			"                      END) <> 0 THEN                                                                                             "+
+			"                  （(CASE                                                                                                        "+
+			"                      WHEN SUM(T1.HALL_COUNT) <> 0 THEN                                                                          "+
+			"                       ROUND(NVL(SUM(T1.TYPE_ALL1), 0) /                                                                         "+
+			"                             SUM(T1.HALL_COUNT))                                                                                 "+
+			"                      ELSE                                                                                                       "+
+			"                       0                                                                                                         "+
+			"                    END) - (CASE                                                                                                 "+
+			"                              WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                 "+
+			"                               ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                 "+
+			"                                     SUM(T1.HALL_COUNTL))                                                                        "+
+			"                              ELSE                                                                                               "+
+			"                               0                                                                                                 "+
+			"                            END)) * 100 / (CASE                                                                                  "+
+			"                   WHEN SUM(T1.HALL_COUNTL) <> 0 THEN                                                                            "+
+			"                    ROUND(NVL(SUM(T1.TYPE_ALLL), 0) /                                                                            "+
+			"                          SUM(T1.HALL_COUNTL))                                                                                   "+
+			"                   ELSE                                                                                                          "+
+			"                    0                                                                                                            "+
+			"                 END) ELSE 0 END || '%',                                                                                         "+
+			"               2) HB_DT                                                                                                          "+
+			"  FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL T1                                                                                       "+
+			" WHERE T1.DEAL_DATE = '"+termnalStartDate+"'                                                                                     "+
+			       where+
+			" GROUP BY T1.GROUP_ID_0, T1.GROUP_ID_1_NAME, DEAL_DATE)) T                                                                       "+
+			"  JOIN PCDE.TB_CDE_BUS_HALL_TARGET T1                                                                                            "+
+			"    ON (T.GROUP_ID_1_NAME = T1.GROUP_ID_1_NAME)                                                                                  "+
+			"  LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME, '全省') GROUP_ID_1_NAME,                                                                "+
+			"                    NVL(SUM(TYPE_ALL), 0) YEAR_LJ_ZD                                                                             "+
+			"               FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                             "+
+			"              WHERE DEAL_DATE LIKE '"+getYear(termnalStartDate)+"%'                                                              "+
+			"                AND DEAL_DATE <= '"+termnalStartDate+"'                                                                          "+
+			       where+     
+			"              GROUP BY GROUPING SETS(GROUP_ID_0,(GROUP_ID_0, GROUP_ID_1_NAME))) T2                                               "+
+			"    ON (T2.GROUP_ID_1_NAME = T.GROUP_ID_1_NAME)                                                                                  "+
+			"  LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME, '全省') GROUP_ID_1_NAME,                                                                "+
+			"                            NVL(SUM(TYPE_ALL1), 0) LAST_SEASON_DEV                                                               "+
+			"                       FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                     "+
+			"                      WHERE DEAL_DATE = PMRT.LAST_QUAR_DEAL("+termnalStartDate+")                                                "+
+			      where+   
+			"                      GROUP BY GROUPING SETS(GROUP_ID_0,(GROUP_ID_0, GROUP_ID_1_NAME))) T3                                       "+
+			"            ON (T3.GROUP_ID_1_NAME = T.GROUP_ID_1_NAME)                                                                          "+
+			" ORDER BY HB_RANK                                                                                                                "+
+			" )T                                                                                                                              "+
+			")T ORDER BY HB_RANK                                                                                                              ";
 
 	}else{
 		sql+=" SELECT NVL(T1.GROUP_ID_1_NAME, '合计') GROUP_ID_1_NAME,                                             "+
