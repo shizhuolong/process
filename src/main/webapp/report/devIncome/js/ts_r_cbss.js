@@ -122,10 +122,10 @@ function isCanEdit(){
 	if(day<10){
 		day=day.substr(1,2);
 	}
-	if(day<=15){
+	if(day<=20){
 		if(initDate==dealDate){
 			var hrId=$("#hrId").val();
-			var s=" SELECT HR_ID FROM PMRT.TAB_MRT_TS_R_CBSS WHERE DEAL_DATE='"+dealDate+"' AND HR_ID='"+hrId+"'";
+			var s=" SELECT HR_ID FROM PMRT.TAB_MRT_TS_R_CBSS WHERE DEAL_DATE='"+dealDate+"' AND HR_ID='"+hrId+"'";//hrId存在才有修改权限
 			var r=query(s);
 			if(s&&s.length>0){
 				return true;
