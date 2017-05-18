@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/ts_r_cbss_2cfp.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/ts_r_cbss_2cfp.js?v=3"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -39,12 +39,15 @@
 		<form id="searchForm" method="post">
 			<table width="60%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				   <td width="1%" style="text-align:right;">账期：</td>
-					<td width="1%">
+				    <td width="1%" style="text-align:right;">账期：</td>
+					<td width="4%">
 						<input type="text" class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
-					
+					<td width="1%" style="text-align:right;">渠道编码：</td>
+					<td width="4%">
+						<input type="text" class="default-text-input wper80" id="hqChanCode">
+					</td>
 					<td width="1%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>
