@@ -2,7 +2,8 @@ var field=["UNIT_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","BUSI_BEGIN_TIME","HQ_STATE
 var title=[["组织架构","所属基层单元","渠道编码","渠道名称","开始合作日期","渠道状态","渠道专业","三级属性","发展用户数","出账用户数","业务受理量(笔)(不含销售和收费)","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","用户欠费","用户预存款余额","二次续费率","是否自建他营","是否社会化合作"]];
 $(function(){
 	var maxDate=getMaxDate("PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON");
-	$("#dealDate").val(maxDate);
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -27,10 +28,11 @@ $(function(){
 			var sql='';
 			var code='';
 			var orgLevel='';
-			var dealDate=$("#dealDate").val();
+			var startDate=$("#startDate").val();
+			var endDate=$("#endDate").val();
 			var regionCode=$("#regionCode").val();
 			var hqChanName=$("#hqChanName").val();
-			var where=" WHERE DEAL_DATE='"+dealDate+"'";
+			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 			var level=0;
 			if($tr){
 				code=$tr.attr("row_id");
@@ -107,9 +109,10 @@ $(function(){
 
 function downsAll() {
 	var orgLevel=$("#orgLevel").val();
-	var dealDate=$("#dealDate").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var code=$("#code").val();
-	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
 	
@@ -130,13 +133,12 @@ function downsAll() {
 	}
 	where+=" AND LEV=4";
 	var sql = " SELECT GROUP_ID_1_NAME,"+field.join(",")+" FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
-	var showtext = '云南联通渠道效能分析汇总表-' + dealDate;
+	var showtext = '云南联通渠道效能分析汇总表-' + startDate+"-"+endDate;
 	var title=[["地市","所属基层单元","渠道编码","渠道名称","开始合作日期","渠道状态","渠道专业","三级属性","发展用户数","出账用户数","业务受理量(笔)(不含销售和收费)","毛利","其中：零售毛利","出账收入","成本合计","成本占收比","用户欠费","用户预存款余额","二次续费率","是否自建他营","是否社会化合作"]];
 	downloadExcel(sql,title,showtext);
 }
 
 function getSql(orgLevel,where,level){
-	var dealDate=$("#dealDate").val();
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
 	if(regionCode!=''){

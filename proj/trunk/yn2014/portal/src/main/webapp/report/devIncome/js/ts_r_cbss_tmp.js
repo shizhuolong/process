@@ -48,6 +48,7 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	dealDate=$("#dealDate").val();
+	var hqChanCode=$("#hqChanCode").val();
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
 	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_TS_R_CBSS_TMP WHERE DEAL_DATE='"+dealDate+"'";
@@ -58,6 +59,11 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND 1=2";
 	}
+	
+	if(hqChanCode!=""){
+		sql+=" AND CHANNEL_ID LIKE '%"+hqChanCode+"%'";
+	}
+	
 	sql+= " ORDER BY GROUP_ID_1,CHANNEL_ID";
 	downSql=sql;
 	var csql = sql;
