@@ -1,5 +1,25 @@
 $(function() {
 	initData();
+	$("input").keyup(function(){
+		var jf_2cfp;
+		var sum=0;
+		$("#dataBody").find("tr").each(function(index){
+			if(index==0){
+				jf_2cfp=$.trim($(this).find("td:eq(6)").find("input[name='jf_2cfp']").val());
+			}else{
+				jf_2cfp=$.trim($(this).find("td:eq(2)").find("input[name='jf_2cfp']").val());
+			}
+			if(jf_2cfp==""){//录入积分为空时，默认修改成0
+				jf_2cfp="0";
+			}
+			sum+=parseFloat(jf_2cfp);
+		});
+		$("#jf_total").text(sum.toFixed(2));
+		var zdmlfx_jf=$("#save").attr("zdmlfx_jf");
+		if(sum>zdmlfx_jf){
+			alert("录入总积分不能大于所得积分！");
+		}
+	});
 });
 
 function initData(){
@@ -8,11 +28,16 @@ function initData(){
 	var channel_name=art.dialog.data('channel_name');
 	var channel_id=art.dialog.data('channel_id');
 	var zdmlfx_jf=art.dialog.data('zdmlfx_jf');
-	var csql="SELECT count(*) count FROM PMRT.TAB_MRT_TS_R_CBSS_2CFP WHERE CHANNEL_ID='"+channel_id+"' AND DEAL_DATE='"+dealDate+"'";
+	var csql="SELECT count(*) count,SUM(JF_2CFP) jf_total FROM PMRT.TAB_MRT_TS_R_CBSS_2CFP WHERE CHANNEL_ID='"+channel_id+"' AND DEAL_DATE='"+dealDate+"'";
 	var r=query(csql);
 	var count;
+	var jf_total;
 	if(r&&r[0].COUNT>0){
 		count=r[0].COUNT;
+		jf_total=r[0].JF_TOTAL;
+		if(jf_total==null||typeof(jf_total)=="undefined"){
+			jf_total=0;
+		}
 		var tbody="<tbody id='dataBody' style='text-align:center;'>";
 		var sql="SELECT * FROM PMRT.TAB_MRT_TS_R_CBSS_2CFP WHERE CHANNEL_ID='"+channel_id+"' AND DEAL_DATE='"+dealDate+"'";
 		r=query(sql);
@@ -21,15 +46,15 @@ function initData(){
 			if(i==0){
 				tbody+="<td style='font-size:20px;bold;' rowspan='"+count+"'>"+area+"</td><td style='font-size:20px;bold;' rowspan='"+count+"'>"+channel_name+"</td><td style='font-size:20px;bold;' rowspan='"+count+"'>"+channel_id+"</td><td style='font-size:20px;bold;' rowspan='"+count+"'>"+zdmlfx_jf+"</td>";
 				tbody+="<td>"+r[i].NAME+"</td><td>"+isNull(r[i].USER_CODE)+"</td><td><input style='border-radius:10px;' name='jf_2cfp' value='"+isNull(r[i].JF_2CFP)+"'/><input type='hidden' name='hr_id' value='"+isNull(r[i].HR_ID)+"'/><input type='hidden' name='f_hr_id' value='"+isNull(r[i].F_HR_ID)+"'/></td>";
-				tbody+="<td rowspan='"+count+"'><a style=\"color:red;background-color:yellow;font-size:20px;\" channel_id='"+channel_id+"' zdmlfx_jf='"+r[i].ZDMLFX_JF+"' ry_num='"+r[i].RY_NUM+"' onclick=\"save(this);\">保存</a></td>";
+				tbody+="<td style='color:red;font-size:20px;bold;' id='jf_total' rowspan='"+count+"'>"+jf_total+"</td>";
+				tbody+="<td rowspan='"+count+"'><a id=\"save\" style=\"color:red;background-color:yellow;font-size:20px;\" channel_id='"+channel_id+"' zdmlfx_jf='"+r[i].ZDMLFX_JF+"' ry_num='"+r[i].RY_NUM+"' onclick=\"save(this);\">保存</a></td>";
 			}else{
 				tbody+="<td>"+r[i].NAME+"</td><td>"+isNull(r[i].USER_CODE)+"</td><td><input style='border-radius:10px;' name='jf_2cfp' value='"+isNull(r[i].JF_2CFP)+"'/><input type='hidden' name='hr_id' value='"+isNull(r[i].HR_ID)+"'/><input type='hidden' name='f_hr_id' value='"+isNull(r[i].F_HR_ID)+"'/></td>";
-				//tbody+="<td><a style=\"color:blue;\" channel_id='"+channel_id+"' user_code='"+r[i].USER_CODE+"' zdmlfx_jf='"+r[i].ZDMLFX_JF+"' ry_num='"+r[i].RY_NUM+"' onclick=\"save(this);\">保存</a></td>";
 			}
 			tbody+="</tr>";
 	 	}
 		tbody+="</tbody>";
-		var thead="<thead><tr><th>地市</th><th>营业厅<br/>名称</th><th>渠道<br/>编号</th><th>厅当月终端毛<br/>利分享积分额度</th><th>营业员姓名</th><th>营业员工号</th><th>营业员二次<br/>分配所得积分</th><th>&nbsp;操作&nbsp;</th></tr></thead>";
+		var thead="<thead><tr><th>地市</th><th>营业厅<br/>名称</th><th>渠道<br/>编号</th><th>厅当月终端毛<br/>利分享积分额度</th><th>营业员姓名</th><th>营业员工号</th><th>营业员二次<br/>分配所得积分</th><th>录入总和</th><th>&nbsp;操作&nbsp;</th></tr></thead>";
 		$("#dataTable").empty().append($(thead+tbody));
 	}else{
 		alert("该营业厅没有营业员！");
@@ -60,7 +85,7 @@ function save(obj){
 			hr_id=$(this).find("td:eq(2)").find("input[name='hr_id']").val();
 			f_hr_id=$.trim($(this).find("td:eq(2)").find("input[name='f_hr_id']").val());
 		}
-		if(jf_2cfp==""){
+		if(jf_2cfp==""){//录入积分为空时，默认修改成0
 			jf_2cfp="0";
 		}
 		if(user_code!=""){
