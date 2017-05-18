@@ -1,6 +1,6 @@
 var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1","GROUP_ID_2_NAME","UNIT_ID","UNIT_NAME","SR_YS","SR_WC","SR_RATE","OWE_RATE","LAST_SR","COST_YS","SR_UP","ML_YS","ML_WC","ML_RATE","LAN_YS","LAN_WC","LAN_RATE"];
-var title=[["账期","地市编码","地市名称","营服ID","区县营服","收入预算","收入完成","收入完成率","欠费率","去年同期收入","预算成本","收入增长率","毛利预算","毛利完成","毛利完成率","网运成本预算","网运成本实际","网运成本完成率"]];
+var field=["DEAL_DATE","GROUP_ID_1","GROUP_ID_2_NAME","UNIT_ID","UNIT_NAME","SR_YS","SR_WC","SR_RATE","OWE_RATE","LAST_SR","COST_YS","SC_COST_LAST","SR_UP","ML_YS","ML_WC","ML_RATE","LAN_YS","LAN_WC","LAN_RATE"];
+var title=[["账期","地市编码","地市名称","营服ID","区县营服","收入预算","收入完成","收入完成率","欠费率","去年同期收入","预算成本","去年同期市场成本","收入增长率","毛利预算","毛利完成","毛利完成率","网运成本预算","网运成本实际","网运成本完成率"]];
 var orderBy='';	
 var report = null;
 var downSql="";
