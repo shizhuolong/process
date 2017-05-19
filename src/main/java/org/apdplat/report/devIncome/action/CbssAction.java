@@ -35,7 +35,7 @@ public class CbssAction extends BaseAction {
 					 "CHANNEL_ID='"+channel_id+"' AND USER_CODE=?";
 			pre=conn.prepareStatement(sql);
 			for(int i=0;i<data.length;i++){
-				String[] s=data[i].split("-");
+				String[] s=data[i].split("\\|");
 				pre.setString(1,s[1].trim());
 				pre.setString(2,s[0].trim());
 				pre.addBatch();
