@@ -17,7 +17,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/ts_r_cbss_update.js?v=3"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/ts_r_cbss_update.js?v=4"></script>
 <style type="text/css">
   form {margin-right: 20px;}
   table {margin:10px;width:880px;}

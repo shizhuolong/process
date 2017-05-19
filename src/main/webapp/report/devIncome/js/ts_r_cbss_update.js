@@ -108,9 +108,9 @@ function save(obj){
 			}
 			sum+=parseFloat(jf_2cfp);
 			if(index==0){
-				dataString+=user_code+"-"+jf_2cfp
+				dataString+=user_code+"|"+jf_2cfp
 			}else{
-				dataString+=","+user_code+"-"+jf_2cfp
+				dataString+=","+user_code+"|"+jf_2cfp
 			}
 		}
 	});
