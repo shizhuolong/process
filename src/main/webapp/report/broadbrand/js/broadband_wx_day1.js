@@ -5,7 +5,7 @@ var report = null;
 var downSql="";
 var dealDate="";
 $(function() {
-	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BROADBAND_WX_DAY"));
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BROADBAND_WX_DAY").substr(0,6));
 	report = new LchReport({
 		title : title,
 		field : field,

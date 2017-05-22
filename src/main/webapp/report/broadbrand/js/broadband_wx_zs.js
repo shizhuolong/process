@@ -63,7 +63,7 @@ function search(pageNumber) {
 		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	
-	sql+= " ORDER BY GROUP_ID_1";
+	sql+= " ORDER BY XF_RANK_MON";
 	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from(" + csql+")");

@@ -69,7 +69,7 @@ function search(pageNumber) {
 	if(hr_id!=""){
 		sql+=" AND HQ_HR_ID LIKE '%"+hr_id+"%'";
 	}
-	sql+= " ORDER BY GROUP_ID_1";
+	sql+= " ORDER BY XF_RANK_MON";
 	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from(" + csql+")");
