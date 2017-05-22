@@ -99,7 +99,7 @@ function getSql(orgLevel,code){
 		return " SELECT "+field1.join(",")+",'' OPERATE FROM PMRT.TAB_MRT_TS_R_CBSS WHERE 1=1 AND DEAL_DATE='"+dealDate+"' AND GROUP_ID_1='"+code+"'";
 	}else{
 		if(isCanEdit()){
-			return " SELECT "+field1.join(",")+",'<a style=\"color:blue;\" channel_id='"+"|| CHANNEL_ID ||"+"' area='"+"|| AREA || "+"' channel_name='"+"|| CHANNEL_NAME || "+"' zdmlfx_jf='"+"|| ZDMLFX_JF || ' onclick=\"toEdit(this);\">分配</a>' OPERATE FROM PMRT.TAB_MRT_TS_R_CBSS WHERE 1=1 AND DEAL_DATE='"+dealDate+"' AND UNIT_ID IN("+_unit_relation(code)+")";
+			return " SELECT "+field1.join(",")+",'<a style=\"color:blue;\" channel_id='"+"|| CHANNEL_ID ||"+"' area='"+"|| AREA || "+"' channel_name='"+"|| CHANNEL_NAME || "+"' zdmlfx_jf='"+"|| TO_CHAR(ZDMLFX_JF,'FM99990.99999') || ' onclick=\"toEdit(this);\">分配</a>' OPERATE FROM PMRT.TAB_MRT_TS_R_CBSS WHERE 1=1 AND DEAL_DATE='"+dealDate+"' AND UNIT_ID IN("+_unit_relation(code)+")";
 		}else{
 			return " SELECT "+field1.join(",")+",'' OPERATE FROM PMRT.TAB_MRT_TS_R_CBSS WHERE 1=1 AND DEAL_DATE='"+dealDate+"' AND UNIT_ID IN("+_unit_relation(code)+")";
 		}
@@ -119,10 +119,7 @@ function getDownSql(orgLevel,code){
 
 function isCanEdit(){
 	var day=$("#day").val().substr(6,8); 
-	if(day<10){
-		day=day.substr(1,2);
-	}
-	if(day<=20){
+	if(parseInt(day)<=31){
 		if(initDate==dealDate){
 			var hrId=$("#hrId").val();
 			var s=" SELECT HR_ID FROM PMRT.TAB_MRT_TS_R_CBSS WHERE DEAL_DATE='"+dealDate+"' AND HR_ID='"+hrId+"'";//hrId存在才有修改权限
