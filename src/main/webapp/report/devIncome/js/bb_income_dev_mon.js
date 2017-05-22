@@ -218,8 +218,8 @@ function downsAll() {
 		where+=" and t.STD_6_NAME like '%"+stdName+"%'";
 	}
 	
-	var sql = 'select ' + preField + ',' + fieldSql
-			+ ' from PMRT.TAB_MRT_BB_INCOME_DEV_MON t';
+	var sql = 'SELECT ' + preField + ',' + fieldSql
+			+ ',HR_ID FROM PMRT.TAB_MRT_BB_INCOME_DEV_MON t';
 	if (where != '') {
 		sql += where;
 	}
@@ -229,15 +229,14 @@ function downsAll() {
 	
 	showtext = '固网宽带发展收入月报-' + qdate;
 	var title=[["营销架构","","","","","帐期",
-	            "宽带收入","","","","","宽带发展量","","","","","宽带在网用户数","","","","","宽带出账用户数","","","",""
-	            
+	            "宽带收入","","","","","宽带发展量","","","","","宽带在网用户数","","","","","宽带出账用户数","","","","","HR编码"
 	            ],
 	           ["地市","营服中心","小区经理","小区名称","小区编码","",
 	            
 	            "合计","ADSL收入","LAN收入","EOC收入","FTTH收入",
 		        "合计","ADSL发展量","LAN发展量","EOC发展量","FTTH发展量",
 		        "合计","ADSL在网用户数","LAN在网用户数","EOC在网用户数","FTTH在网用户数",
-		        "合计","ADSL出账用户数","LAN出账用户数","EOC出账用户数","FTTH出账用户数"
+		        "合计","ADSL出账用户数","LAN出账用户数","EOC出账用户数","FTTH出账用户数",""
 	            ]];
 
 	downloadExcel(sql,title,showtext);

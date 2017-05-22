@@ -197,9 +197,9 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"      )T2 ON(T.GROUP_ID_0=T2.GROUP_ID_0)                                                           "+
 			"      LEFT JOIN (                                                                                  "+
 			"      SELECT GROUP_ID_0                                                                            "+
-			"            ,SUM(ALL_SR) ALL_SR                                                                    "+
+			"            ,ROUND(SUM(ALL_SR)/3,3) ALL_SR                                                                    "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
-			"      WHERE DEAL_DATE=PMRT.LAST_QUAR_DEAL("+startDate+")"                                            +
+			"      WHERE DEAL_DATE IN (SELECT * FROM TABLE (PMRT.LAST_QUAR_DEAL1("+startDate+")))"               +
 			    where+
 			"      GROUP BY GROUP_ID_0                                                                          "+
 			"      )T3                                                                                          "+
@@ -295,9 +295,9 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"      )T2 ON(T.GROUP_ID_1=T2.GROUP_ID_1)                                                          "+
 			"      LEFT JOIN (                                                                                 "+
 			"      SELECT GROUP_ID_1,GROUP_ID_1_NAME                                                           "+
-			"            ,SUM(ALL_SR) ALL_SR                                                                   "+
+			"            ,ROUND(SUM(ALL_SR)/3,3) ALL_SR                                                                    "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
-			"      WHERE DEAL_DATE=PMRT.LAST_QUAR_DEAL("+startDate+")"                                           +
+			"      WHERE DEAL_DATE IN (SELECT * FROM TABLE (PMRT.LAST_QUAR_DEAL1("+startDate+")))"              +
 			    where+
 			"      GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                         "+
 			"      )T3                                                                                         "+
@@ -447,9 +447,9 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			                 where+
 			"              GROUP BY GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE) T2                        "+
 			"    ON (T.HQ_CHAN_CODE = T2.HQ_CHAN_CODE)                                                  "+
-			"  LEFT JOIN (SELECT GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE, SUM(ALL_SR) ALL_SR           "+
+			"  LEFT JOIN (SELECT GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE, ROUND(SUM(ALL_SR)/3,3) ALL_SR           "+
 			"               FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                        "+
-			"              WHERE DEAL_DATE = PMRT.LAST_QUAR_DEAL("+startDate+")"                          +
+			"      WHERE DEAL_DATE IN (SELECT * FROM TABLE (PMRT.LAST_QUAR_DEAL1("+startDate+")))"       +
 			                      where+
 			"              GROUP BY GROUP_ID_1, GROUP_ID_1_NAME,HQ_CHAN_CODE) T3                        "+
 			"    ON (T.HQ_CHAN_CODE = T3.HQ_CHAN_CODE)                                                  ";
