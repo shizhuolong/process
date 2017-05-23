@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/dw_num_day.js?v=3"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/dw_num_day.js?v=4"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -41,13 +41,13 @@
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
-					<td width="4%">地市：</td>
+					<td width="8%">地市：</td>
 					<td width="15%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="4%">是否营厅：</td>
+					<td width="8%">是否营厅：</td>
 					<td width="15%">
 						<select name="is_yyt" id="is_yyt" class="default-text-input wper80">
 								<option value=''>请选择</option>
@@ -55,9 +55,9 @@
 								<option value='否'>否</option>
 						</select>
 					</td>
-					<td width="4%">经营模式：</td>
+					<td width="8%">经营模式：</td>
 					<td width="15%">
-						<select name="operateType" id="operateType" class="default-text-input wper80">
+						<select name="opeType" id="opeType" class="default-text-input wper80">
 								<option value=''>请选择</option>
 								<option value='自营'>自营</option>
 								<option value='他营'>他营</option>

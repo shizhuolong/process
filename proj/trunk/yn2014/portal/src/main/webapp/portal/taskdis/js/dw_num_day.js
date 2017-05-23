@@ -78,7 +78,7 @@ function downsAll() {
 	var where=" WHERE T1.DEAL_DATE = '"+dealDate+"'";
 	var regionCode=$("#regionCode").val();
 	var is_yyt=$("#is_yyt").val();
-	var operateType=$("#operateType").val();
+	var opeType=$("#opeType").val();
 	var hqChanCode=$.trim($("#hqChanCode").val());
 	if (orgLevel == 1) {//省
 		
@@ -93,8 +93,8 @@ function downsAll() {
 	if(is_yyt!=''){
 		where+=" AND T1.IS_YYT = '"+is_yyt+"'";
 	}
-	if(operateType!=''){
-		where+=" AND T1.OPERATE_TYPE = '"+operateType+"'";
+	if(opeType!=''){
+		where+=" AND T1.OPERATE_TYPE = '"+opeType+"'";
 	}
 	if(hqChanCode!=''){
 		where+=" AND T1.HQ_CHAN_CODE LIKE '%"+hqChanCode+"%'";
@@ -107,7 +107,7 @@ function downsAll() {
 function getSql(orgLevel,where){
 	var regionCode=$("#regionCode").val();
 	var is_yyt=$("#is_yyt").val();
-	var operateType=$("#operateType").val();
+	var opeType=$("#opeType").val();
 	var hqChanCode=$.trim($("#hqChanCode").val());
 	
 	if(regionCode!=''){
@@ -116,8 +116,8 @@ function getSql(orgLevel,where){
 	if(is_yyt!=''){
 		where+=" AND T1.IS_YYT = '"+is_yyt+"'";
 	}
-	if(operateType!=''){
-		where+=" AND T1.OPERATE_TYPE = '"+operateType+"'";
+	if(opeType!=''){
+		where+=" AND T1.OPERATE_TYPE = '"+opeType+"'";
 	}
 	if(hqChanCode!=''){
 		where+=" AND T1.HQ_CHAN_CODE LIKE '%"+hqChanCode+"%'";
