@@ -41,7 +41,7 @@ $(function() {
 	if(orgLevel==1){
 		$("#addBtn").remove();
 	}
-	code = $("#code").val();
+	code = $("#region").val();
 	search(0);
 	$("#searchBtn").click(function(){
 		search(0);
