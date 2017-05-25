@@ -215,11 +215,11 @@ function initHqChanName(deal_date,teamType){
 function initInnerByHrId(hrId){
 	var region=$("#region").val();
 	var sql="SELECT u.ID,u.REALNAME,u.PHONE FROM PORTAL.APDP_USER u,portal.apdp_org org WHERE u.org_id=org.id and HR_ID='"+hrId+"'";
-	var r=query(sql);
 	var orgLevel=$("#orgLevel").val();
 	if(orgLevel!=1){
 		sql+=" AND org.REGION_CODE='"+region+"'";
 	}
+	var r=query(sql);
 	if(r!=null&&r.length>0){
 		$("#userId_inner").val(r[0].ID);
 		$("#name_inner").val(r[0].REALNAME);
