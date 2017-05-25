@@ -12,8 +12,10 @@ $(function() {
 	orgId = $("#orgId").val();
 	var initOrgName = $("#orgName").val();
 	initMonth = $("#time").val();
-	var addBtn=$("#addBtn");
-	addBtn.click(function(){
+	if(orgLevel==1){
+		$("#addBtn").remove();
+	}
+	$("#addBtn").click(function(){
 	   add();
 	});
 	$("#time").blur(function(){
