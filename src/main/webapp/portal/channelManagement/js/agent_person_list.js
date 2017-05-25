@@ -175,7 +175,7 @@ function add() {
 	art.dialog.open(url,{
 		id:'add',
 		width:'550px',
-		height:'130px',
+		height:'400px',
 		padding:'0 0',
 		lock:true,
 		resize:false,
