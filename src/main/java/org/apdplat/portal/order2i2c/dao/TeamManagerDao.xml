@@ -22,10 +22,10 @@
 			<if test="orgLevel==1">
 			    
 			</if>
-		    <if test="orgLevel==2">
+		    <if test="orgLevel==2 or orgLevel==3">
 			   AND GROUP_ID_1=#{code}
 		    </if>
-		    <if test="orgLevel>2">
+		    <if test="orgLevel>3">
 			   AND 1=2
 		    </if>
 	</select>

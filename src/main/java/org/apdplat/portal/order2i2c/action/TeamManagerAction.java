@@ -34,7 +34,7 @@ public class TeamManagerAction extends BaseAction {
 	public void query() {
 		User user = UserHolder.getCurrentLoginUser();
 		Org org=user.getOrg();
-		resultMap.put("code", org.getCode());
+		resultMap.put("code", org.getRegionCode());
 		resultMap.put("orgLevel", org.getOrgLevel());
 		if(resultMap.containsKey("NAME")&&!resultMap.get("NAME").equals("")){
 			resultMap.put("name", "%"+resultMap.get("NAME")+"%");
@@ -47,7 +47,7 @@ public class TeamManagerAction extends BaseAction {
 		try {
 			User user = UserHolder.getCurrentLoginUser();
 			Org org=user.getOrg();
-			resultMap.put("code", org.getCode());
+			resultMap.put("code", org.getRegionCode());
 			teamManagerService.del(resultMap);
 			teamManagerService.delDetail(resultMap);
 		} catch (Exception e) {
@@ -62,7 +62,7 @@ public class TeamManagerAction extends BaseAction {
 			User user = UserHolder.getCurrentLoginUser();
 			Org org=user.getOrg();
 			resultMap.put("username", user.getUsername());
-			resultMap.put("code", org.getCode());
+			resultMap.put("code", org.getRegionCode());
 			teamManagerService.innerInsert(resultMap);
 			result.put("state","1");
 			result.put("msg", "新增成功！");
@@ -80,7 +80,7 @@ public class TeamManagerAction extends BaseAction {
 			User user = UserHolder.getCurrentLoginUser();
 			Org org=user.getOrg();
 			resultMap.put("username", user.getUsername());
-			resultMap.put("code", org.getCode());
+			resultMap.put("code", org.getRegionCode());
 			teamManagerService.outInsert(resultMap);
 			result.put("state","1");
 			result.put("msg", "新增成功！");
