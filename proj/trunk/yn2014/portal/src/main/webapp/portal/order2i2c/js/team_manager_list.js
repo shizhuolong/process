@@ -87,7 +87,7 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
             var content="";
-            if(orgLevel==2){
+            if(orgLevel==2||orgLevel==3){
             	$.each(pages.rows,function(i,n){
     				content+="<tr>"
     				+"<td align='center'>"+isNull(n['ID'])+"</td>"
@@ -240,7 +240,7 @@ function downsAll() {
 	if(name!="") {
 		downSql+=" AND NAME LIKE '%"+name+"%' ";
 	}
-	if(orgLevel==2){
+	if(orgLevel==2||orgLevel==3){
 		downSql+=" AND GROUP_ID_1='"+code+"'";
 	}else{
 		downSql+=" AND 1=2";
