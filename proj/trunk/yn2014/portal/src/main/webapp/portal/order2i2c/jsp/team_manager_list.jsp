@@ -25,13 +25,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/team_manager_list.js?v=37"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/team_manager_list.js?v=38"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
-	
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<div data-options="region:'center',title:'2I2C人员管理'">
 		<div id="container">
 		<form id="searchForm">
