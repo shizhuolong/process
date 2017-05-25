@@ -146,8 +146,13 @@ public class AgentPersonAction extends BaseAction {
 		String phone = request.getParameter("phone").trim();
 		String deal_date = request.getParameter("deal_date");
 		String people_type=request.getParameter("people_type");
-		String nameid=hq_chan_code+phone;
-		
+		String team_type=request.getParameter("team_type");
+		String nameid="";
+		if(team_type.equals("1")){
+			nameid=request.getParameter("userId");
+		}else{
+			nameid=hq_chan_code+phone;
+		}
 		m.put("nameid", nameid);
 		m.put("hq_chan_code", hq_chan_code);
 		m.put("hq_chan_name", hq_chan_name);
@@ -156,16 +161,17 @@ public class AgentPersonAction extends BaseAction {
 		m.put("deal_date", deal_date);
 		m.put("username", request.getParameter("username"));
 		m.put("people_type", people_type);
+		
 		try {
 			agentPersonService.insert(m);
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.reponseJson("新增失败");
+			this.reponseJson("新增失败！");
 		}
-		this.reponseJson("新增成功");
+		this.reponseJson("新增成功！");
 	}
 
-	public void update() {
+	public void update() {//未用
 		Map<String, String> m = new HashMap<String, String>();
 		String hq_chan_code = request.getParameter("hq_chan_code").trim();
 		String hq_chan_name = request.getParameter("hq_chan_name");
@@ -185,10 +191,10 @@ public class AgentPersonAction extends BaseAction {
 		m.put("username", request.getParameter("username"));
 		try {
 			agentPersonService.update(m);
-			this.reponseJson("修改成功");
+			this.reponseJson("修改成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.reponseJson("修改失败");
+			this.reponseJson("修改失败！");
 		}
 	}
 
