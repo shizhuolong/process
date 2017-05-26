@@ -100,6 +100,7 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 					</tr>
 	            </table>
 	        </form>
+			<div class="default-dt dt-autoH">
 				<div class="sticky-wrap">
 					<table id="dataTale" class="default-table sticky-enabled">
 						<thead>
@@ -118,12 +119,12 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 						<tbody id="dataBody">
 						</tbody>
 						<tr>
-							<td colspan="8">
+							<td colspan="10">
 									<div class="page_count">
 										<div class="page_count_left">
 											共有 <span id="totalCount"></span> 条数据
 										</div>
-		
+										
 										<div class="page_count_right">
 											<div id="pagination"></div>
 										</div>
@@ -134,5 +135,7 @@ String month=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 				</div>
 			</div>
 		</div>
+	</div>
 </body>
+
 </html>
