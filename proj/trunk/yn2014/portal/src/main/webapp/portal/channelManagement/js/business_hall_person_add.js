@@ -60,12 +60,12 @@ $(function() {
 		"                  AND  T2.UNIT_ID !=(SELECT T4.UNIT_ID                 "+
 		"                                     FROM PCDE.TAB_CDE_CHANL_HQ_CODE T4"+
 		"                                     WHERE T4.HQ_CHAN_CODE='"+hq_chan_code+"'"+
-		"                                     )                                 "+
+		"                                     ))                                "+
 		" AND EXISTS (SELECT 1                                                  "+
 		"            FROM PORTAL.APDP_ORG T3                                    "+
 		"            WHERE T1.ORG_ID=T3.ID                                      "+
 		"            AND  T3.REGION_CODE='"+region+"'                           "+
-		"            ))                                                         "+
+		"            )                                                          "+
 		"AND T1.ENABLED=1 AND T1.HR_ID='11'                                     ";
 		var r=query(sql);
         if(r&&r.length>=1){
@@ -75,6 +75,7 @@ $(function() {
         	alert("HR编码错误！");
         }
 	});
+	
 	$("#f_hr_id").blur(function(){
 		var f_hr_id=$.trim($("#f_hr_id").val());
 		var user_code=$("#user_code").val();
