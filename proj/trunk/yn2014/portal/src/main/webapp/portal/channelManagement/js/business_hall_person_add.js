@@ -49,43 +49,24 @@ $(function() {
 	$("#hr_id").blur(function(){
 		var hq_chan_code=$("#hq_chan_code").val();
 		var hr_id=$.trim($(this).val());
-		if(orgLevel==1){
-			sql="SELECT REALNAME FROM PORTAL.APDP_USER T                                 "+
-			"WHERE T.ORG_ID  IN (                                                        "+
-			"                   SELECT T.PARENT_ID FROM PORTAL.APDP_ORG T                "+
-			"                    WHERE T.CODE IN                                         "+
-			"                       (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T"+ 
-			"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
-			"                        )                                                   "+
-			"AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     "+
-			"UNION ALL                                                                   "+
-			"SELECT REALNAME FROM PORTAL.APDP_USER T                                     "+
-			"WHERE T.ORG_ID  IN(                                                         "+
-			"SELECT ID FROM PORTAL.APDP_ORG T                                            "+
-			"WHERE ORGLEVEL=1                                                            "+
-			"START WITH T.CODE IN (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T  "+
-			"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
-			"CONNECT BY PRIOR T.PARENT_ID=T.ID)                                          "+
-			"AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     ";
-		}else{
-			sql="SELECT REALNAME FROM PORTAL.APDP_USER T                                 "+
-			"WHERE T.ORG_ID  IN (                                                        "+
-			"                   SELECT T.PARENT_ID FROM PORTAL.APDP_ORG T                "+
-			"                    WHERE T.CODE IN                                         "+
-			"                       (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T"+ 
-			"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
-			"                        )                                                   "+
-			"AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     "+
-			"UNION ALL                                                                   "+
-			"SELECT REALNAME FROM PORTAL.APDP_USER T                                     "+
-			"WHERE T.ORG_ID  IN(                                                         "+
-			"SELECT ID FROM PORTAL.APDP_ORG T                                            "+
-			"WHERE ORGLEVEL=2                                                            "+
-			"START WITH T.CODE IN (SELECT T.GROUP_iD_4 FROM PCDE.TB_CDE_CHANL_HQ_CODE T  "+
-			"                        WHERE T.HQ_CHAN_CODE='"+hq_chan_code+"')            "+
-			"CONNECT BY PRIOR T.PARENT_ID=T.ID)                                          "+
-			"AND T.ENABLED=1 AND T.HR_ID='"+hr_id+"'                                     ";
-		}
+		var region=$("#region").val();
+		sql="SELECT T1.REALNAME                                                 "+
+		"FROM  PORTAL.APDP_USER T1                                              "+
+		"WHERE NOT EXISTS (SELECT 1                                             "+
+		"                  FROM PORTAL.VIEW_U_PORTAL_PERSON T2                  "+
+		"                  WHERE T2.DEAL_dATE=TO_CHAR(SYSDATE,'YYYYMM')         "+
+		"                  AND  T1.ID=T2.USERID                                 "+
+		"                  AND  T2.GROUP_ID_1='"+region+"'                      "+
+		"                  AND  T2.UNIT_ID !=(SELECT T4.UNIT_ID                 "+
+		"                                     FROM PCDE.TAB_CDE_CHANL_HQ_CODE T4"+
+		"                                     WHERE T4.HQ_CHAN_CODE='"+hq_chan_code+"'"+
+		"                                     )                                 "+
+		" AND EXISTS (SELECT 1                                                  "+
+		"            FROM PORTAL.APDP_ORG T3                                    "+
+		"            WHERE T1.ORG_ID=T3.ID                                      "+
+		"            AND  T3.REGION_CODE='"+region+"'                           "+
+		"            ))                                                         "+
+		"AND T1.ENABLED=1 AND T1.HR_ID='11'                                     ";
 		var r=query(sql);
         if(r&&r.length>=1){
         	$("#realname").val(r[0].REALNAME);

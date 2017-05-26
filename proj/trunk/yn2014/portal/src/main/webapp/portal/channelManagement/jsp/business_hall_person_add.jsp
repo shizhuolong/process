@@ -21,12 +21,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_person_add.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/business_hall_person_add.js?v=1"></script>
 </head>
 <body style="min-width: 400px;">
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 <input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 <input type="hidden" id="code" value="<%=org.getCode()%>">
+<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 <div id="container" style="min-height: 150px;">
 	<div class="default-dt" style="width: 420px;">
