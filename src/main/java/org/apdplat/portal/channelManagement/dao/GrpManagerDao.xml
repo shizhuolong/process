@@ -203,43 +203,24 @@
 	<!--查询HR编码 -->
 	<select id="searchHrNum" parameterType="java.util.Map"
 		resultType="java.util.Map">
-		SELECT *
-				FROM (SELECT T.HR_ID, T.USERNAME, T.REALNAME, T1.CODE
-				          FROM PORTAL.APDP_USER T
-				          JOIN PORTAL.APDP_ORG T1
-				            ON T.ORG_ID = T1.ID
-				         WHERE T1.CODE = #{unit_id}
-				           AND T1.ORGLEVEL = 3
-				        UNION ALL
-				        SELECT T.HR_ID, T.USERNAME, T.REALNAME, T1.CODE
-				          FROM PORTAL.APDP_USER T
-				          JOIN PORTAL.APDP_ORG T1
-				            ON T.ORG_ID = T1.ID
-				         WHERE T1.CODE = #{regionCode}
-				         AND T1.ORGLEVEL = 2) T
-			<where>
-				<if test="grpType==0">
-					AND T.HR_ID IN(SELECT HR_ID FROM PORTAL.TAB_PORTAL_MAG_PERSON WHERE
-					DEAL_DATE =#{dealDate})
-				</if>
-				<if test="hr_id!=null">
-					AND T.HR_ID LIKE #{hr_id}
-				</if>
-			</where>		           
-		
-		
-		<!-- SELECT T.HR_ID,T.USERNAME,T.REALNAME,T1.CODE FROM PORTAL.APDP_USER T
-		JOIN PORTAL.APDP_ORG T1
-		ON T.ORG_ID=T1.ID
-		WHERE T1.CODE=#{unit_id}
-		AND T1.ORGLEVEL=3
-		<if test="grpType==0">
-			AND T.HR_ID IN(SELECT HR_ID FROM PORTAL.TAB_PORTAL_MAG_PERSON WHERE
-			DEAL_DATE =#{dealDate})
-		</if>
-		<if test="hr_id!=null">
-			AND T.HR_ID LIKE #{hr_id}
-		</if> -->
+		SELECT T1.REALNAME, T1.USERNAME,T1.HR_ID,T.CODE
+			FROM PORTAL.APDP_USER T1 JOIN PORTAL.APDP_ORG T
+							            ON T1.ORG_ID = T.ID
+			WHERE NOT EXISTS (SELECT 1 
+			                  FROM PORTAL.VIEW_U_PORTAL_PERSON T2
+			                  WHERE T2.DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')
+			                  AND  T1.ID=T2.USERID
+			                  AND  T2.GROUP_ID_1=#{regionCode}
+			                  AND  T2.UNIT_ID &lt;&gt;#{unit_id})
+			AND EXISTS (SELECT 1
+			            FROM PORTAL.APDP_ORG T3
+			            WHERE T1.ORG_ID=T3.ID
+			            AND T3.REGION_CODE=#{regionCode}
+			            )
+			AND T1.ENABLED=1 
+			<if test="hr_id!=null">
+				AND T1.HR_ID LIKE #{hr_id}
+			</if>
 	</select>
 
 
