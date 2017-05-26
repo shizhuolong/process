@@ -66,7 +66,7 @@ $(function() {
 		"            WHERE T1.ORG_ID=T3.ID                                      "+
 		"            AND  T3.REGION_CODE='"+region+"'                           "+
 		"            )                                                          "+
-		"AND T1.ENABLED=1 AND T1.HR_ID='11'                                     ";
+		"AND T1.ENABLED=1 AND T1.HR_ID='"+hr_id+"'                              ";
 		var r=query(sql);
         if(r&&r.length>=1){
         	$("#realname").val(r[0].REALNAME);
