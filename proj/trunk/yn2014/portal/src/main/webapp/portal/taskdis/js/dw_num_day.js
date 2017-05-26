@@ -52,6 +52,7 @@ $(function(){
 					where+=" AND GROUP_ID_1='"+region+"'";
 					level=2;
 				}else if(orgLevel==3){//营服
+					orgLevel=2;
 					where+=" AND GROUP_ID_1='"+region+"'";
 					level=2;
 				}else {
