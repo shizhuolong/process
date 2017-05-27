@@ -32,6 +32,7 @@ $(function(){
 			var endDate=$("#endDate").val();
 			var regionCode=$("#regionCode").val();
 			var hqChanName=$("#hqChanName").val();
+			var hq_zy=$("#hq_zy").val();
 			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 			var level=0;
 			if($tr){
@@ -91,7 +92,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 				sql=getSql(orgLevel,where,level);
-				if(hqChanName!=''){//渠道查询条件不为空，展示渠道，不能下钻
+				if(hqChanName!=''||hq_zy!=''){//渠道或渠道专业查询条件不为空，展示渠道，不能下钻
 					sql=getSql(4,where,0);
 			    }
 				orgLevel++;
@@ -115,6 +116,7 @@ function downsAll() {
 	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
+	var hq_zy=$("#hq_zy").val();
 	
 	if (orgLevel == 1) {//省
 		where += " AND GROUP_ID_0=86000";
@@ -131,6 +133,9 @@ function downsAll() {
 	if(hqChanName!=''){
 		where+=" AND HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
 	}
+	if(hq_zy!=''){
+		where+=" AND HQ_ZY = '"+hq_zy+"'";
+	}
 	where+=" AND LEV=4";
 	var sql = " SELECT GROUP_ID_1_NAME,"+field.join(",")+" FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
 	var showtext = '云南联通渠道效能分析汇总表-' + startDate+"-"+endDate;
@@ -141,14 +146,19 @@ function downsAll() {
 function getSql(orgLevel,where,level){
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
+	var hq_zy=$("#hq_zy").val();
 	if(regionCode!=''){
 		if(level!=0){
 			orgLevel=level;
 		}
 		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
+	
 	if(hqChanName!=''){
 		where+=" AND HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
+	}
+	if(hq_zy!=''){
+		where+=" AND HQ_ZY = '"+hq_zy+"'";
 	}
 	where+=" AND LEV="+orgLevel;
 	if(orgLevel==1){

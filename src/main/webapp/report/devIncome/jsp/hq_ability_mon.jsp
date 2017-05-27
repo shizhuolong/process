@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/hq_ability_mon.js?v=2"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/hq_ability_mon.js?v=3"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -48,13 +48,24 @@
 					</td>
 					<td width="4%">地市：</td>
 					<td width="15%">
-						<select name="regionCode" id="regionCode" onchange="" class="default-text-input wper80">
+						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
 					<td width="6%">渠道：</td>
 					<td width="15%">
 						<input name="hqChanName" id="hqChanName" class="default-text-input wper80"/>
+					</td>
+					<td width="4%">渠道专业：</td>
+					<td width="15%">
+						<select name="hq_zy" id="hq_zy" class="default-text-input wper80">
+								<option value=''>请选择</option>
+								<option value='电子'>电子</option>
+								<option value='集客'>集客</option>
+								<option value='社会实体'>社会实体</option>
+								<option value='外包'>外包</option>
+								<option value='自营'>自营</option>
+						</select>
 					</td>
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
