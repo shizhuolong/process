@@ -36,12 +36,12 @@
 	<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				     <td width="6%" style="text-align:right;">开始账期：</td>
+				     <td width="8%" style="text-align:right;">开始账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="startDate">
 					</td>
-					 <td width="6%" style="text-align:right;">结束账期：</td>
+					 <td width="8%" style="text-align:right;">结束账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="endDate">
@@ -56,7 +56,7 @@
 					<td width="15%">
 						<input name="hqChanName" id="hqChanName" class="default-text-input wper80"/>
 					</td>
-					<td width="4%">渠道专业：</td>
+					<td width="8%">渠道专业：</td>
 					<td width="15%">
 						<select name="hq_zy" id="hq_zy" class="default-text-input wper80">
 								<option value=''>请选择</option>
