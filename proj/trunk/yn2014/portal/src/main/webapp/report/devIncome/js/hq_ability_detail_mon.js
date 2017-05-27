@@ -33,6 +33,7 @@ $(function(){
 			var endDate=$("#endDate").val();
 			var regionCode=$("#regionCode").val();
 			var hqChanName=$("#hqChanName").val();
+			var hq_zy=$("#hq_zy").val();
 			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 			var level=0;
 			if($tr){
@@ -92,7 +93,7 @@ $(function(){
 					return {data:[],extra:{}};
 				}
 				sql=getSql(orgLevel,where,level);
-				if(hqChanName!=''){//渠道查询条件不为空，展示渠道，不能下钻
+				if(hqChanName!=''||hq_zy!=''){//渠道查询条件不为空，展示渠道，不能下钻
 					sql=getSql(4,where,0);
 			    }
 				orgLevel++;
@@ -116,6 +117,7 @@ function downsAll() {
 	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
+	var hq_zy=$("#hq_zy").val();
 	
 	if (orgLevel == 1) {//省
 		where += " AND GROUP_ID_0=86000";
@@ -132,6 +134,9 @@ function downsAll() {
 	if(hqChanName!=''){
 		where+=" AND HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
 	}
+	if(hq_zy!=''){
+		where+=" AND HQ_ZY = '"+hq_zy+"'";
+	}
 	where+=" AND LEV=4";
 	var field1=["UNIT_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","BUSI_BEGIN_TIME","HQ_STATE","HQ_ZY","THIRD_TYPE","MAN_COUNT","DEV_COUNT","CHARGE_YW","CHARGE_GW"];
 	var field2=["ACC_NUM","DS_MONEY","DS_SVR_RATE","HQ_ML","HQ_SAL_ML","HQ_CHARGE_SR","HQ_COST_ALL","MAN_COST_CONT","MAN_COST_JM","MAN_COST_FINACE","MAN_COST_ALL","YJ_ALL","HQ_QDBT","TERM_BT","GT_PLACE_RENT","HQ_RENT","HQ_ZX_FEE","KHJR_AMOUNT","KCB_COST","WART_NUM","ADV_FEE","YWYP_FEE","CH_PRO_PRE","SALE_DETAIL_SR","SALE_DETAIL_COST","BG_FEE","CAR_FEE","ZD_FEE","CL_FEE","TX_FEE","COST_RATE","SR_DETAIL_YW","SR_DETAIL_ZX","SR_DETAIL_KD","SR_DETAIL_GH","SR_DETAIL_OTHER","SR_DETAIL_SUM","YF_MON_YW","YF_MON_ZX","YF_MON_KD","YF_MON_GH","YF_MON_OTHER","YF_MON_SUM","YJ_DEV","YJ_ACC","YJ_BOT","COMMFEE_ZSHB","COMMFEE_MOB_ZSHB","COMMFEE_ZZX_ZSHB","COMMFEE_KD_ZSHB","COMMFEE_NET_ZSHB","COMMFEE_DEV_ZSHB","COMMFEE_ACC_ZSHB","COMMFEE_BOT_ZSHB","SUBS_OWE","SUBS_PAY","SECOND_PAY","IS_TY","IS_SOCIAL"];
@@ -145,6 +150,7 @@ function downsAll() {
 function getSql(orgLevel,where,level){
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
+	var hq_zy=$("#hq_zy").val();
 	if(regionCode!=''){
 		if(level!=0){
 			orgLevel=level;
@@ -153,6 +159,9 @@ function getSql(orgLevel,where,level){
 	}
 	if(hqChanName!=''){
 		where+=" AND HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
+	}
+	if(hq_zy!=''){
+		where+=" AND HQ_ZY = '"+hq_zy+"'";
 	}
 	where+=" AND LEV="+orgLevel;
 	var field1=["UNIT_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","BUSI_BEGIN_TIME","HQ_STATE","HQ_ZY","THIRD_TYPE","MAN_COUNT","DEV_COUNT","CHARGE_YW","CHARGE_GW"];
