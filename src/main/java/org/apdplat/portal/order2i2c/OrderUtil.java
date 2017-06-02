@@ -11,6 +11,7 @@ public class OrderUtil {
 	private static int seq=0;
 	
 	public static synchronized String randomTaskNo(){
+		seq++;
 		if(seq>=100000){
 			seq=0;
 		}

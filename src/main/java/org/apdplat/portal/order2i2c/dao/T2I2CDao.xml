@@ -4,8 +4,17 @@
 <mapper namespace="org.apdplat.portal.order2i2c.dao.T2I2CDao">
 
 	<select id="undistributedOrderList" parameterType="java.util.Map" resultType="java.util.Map">
-			SELECT * FROM PODS.VIEW_ODS_2I2C_NOT_ASS T 
+			SELECT ${cols} FROM PODS.VIEW_ODS_2I2C_NOT_ASS T 
 			WHERE T.GROUP_ID_1=#{regionCode} 
+			<if test="activeStatus!=null and activeStatus!=''">
+				and t.ACTIVE_STATUS=#{activeStatus}
+			</if>
+			<if test="isFirst!=null and isFirst!=''">
+				and t.IS_FIRST=#{isFirst}
+			</if>
+			<if test="serviceName!=null and serviceName!=''">
+				and t.SERVICE_NAME=#{serviceName}
+			</if>
 	</select>
 	
 	<select id="taskListDetail" parameterType="java.util.Map" resultType="java.util.Map">
@@ -31,7 +40,4 @@
 			AND T.IS_VALID=1
 	</select>
 	
-	<update id="updateStatus" parameterType="java.lang.String">
-		update PODS.TAB_ODS_2I2C_ASS_TASK t set t.status=#{status} where t.work_no=#{workNo}
-	</update>
 </mapper>
