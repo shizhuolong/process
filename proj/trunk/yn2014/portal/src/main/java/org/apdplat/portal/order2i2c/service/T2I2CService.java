@@ -54,21 +54,4 @@ public class T2I2CService {
 		}
 		return roots;
 	}
-	
-	public boolean provinceAgree(String workNo){
-		try{
-			t2I2CDao.updateStatus("2", workNo);
-			return true;
-		}catch(Exception e){
-			return false;
-		}
-	}
-	public boolean provinceCancel(String workNo){
-		try{
-			t2I2CDao.updateStatus("0", workNo);
-			return true;
-		}catch(Exception e){
-			return false;
-		}
-	}
 }

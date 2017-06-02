@@ -102,7 +102,7 @@ public class T2i2cAction extends BaseAction{
 		try {
 			conn = this.getCon();
 			conn.setAutoCommit(false);
-			String workSql="insert into PODS.TAB_ODS_2I2C_ASS_TASK select sysdate,?,?,?,?,1,0,?,?,? from dual";
+			String workSql="insert into PODS.TAB_ODS_2I2C_ASS_TASK select sysdate,?,?,?,?,?,?,? from dual";
  			pre=conn.prepareStatement(workSql);
 			pre.setString(1, dto.getTaskNo());
 			pre.setString(2, dto.getTaskTitle());
@@ -111,75 +111,6 @@ public class T2i2cAction extends BaseAction{
 			pre.setString(5,org.getRegionName());
 			pre.setString(6,org.getRegionCode());
 			pre.setString(7,user.getUsername());
-			pre.addBatch();
-			pre.executeBatch();
-			
-			String 	detailSql=" insert into PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL  ";
-					detailSql+=" select sys_guid(),?,?,te.f_id,(select tee.name from TAB_PORTAL_2I2C_TEAM tee where tee.id = te.f_id),te.id,te.name ";
-					detailSql+=" from TAB_PORTAL_2I2C_TEAM te where te.id = ? ";
-			
-			pre=conn.prepareStatement(detailSql);
-			
-			for(TeamOrderRalation dis:dto.getDis()){
-				pre.setString(1, dto.getTaskNo());
-				pre.setString(2, dis.getOrderNo());
-				pre.setString(3, dis.getTeamId());
-				pre.addBatch();
-			}
-			pre.executeBatch();
-			
-			conn.commit();
-			r.put("ok", true);
-			r.put("msg", "分配成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			try{conn.rollback();}catch(Exception ee){}
-			
-			r.put("ok", false);
-			r.put("msg", "分配失败");
-		}finally{
-			try {
-				if(conn!=null)
-				conn.setAutoCommit(true);
-				conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		this.reponseJson(r);
-	}
-	/**
-	 * 省级重新分配任务
-	 */
-	public void provinceDistribute(){
-		User user = UserHolder.getCurrentLoginUser();
-		Org org = user.getOrg();
-		
-		Map<String,Object> r=new HashMap<String,Object>();
-		logger.info(jsonStr);
-		DisDto dto=JsonUtil.jsonToBean(jsonStr, DisDto.class);
-		if(dto==null||dto.getDis()==null||dto.getDis().size()==0){
-			r.put("ok", false);
-			r.put("msg", "分配数据为空！");
-			this.reponseJson(r);
-			return ;
-		}
-		
-		Connection conn = null;
-		PreparedStatement pre = null;
-		try {
-			conn = this.getCon();
-			conn.setAutoCommit(false);
-			String workSql="update PODS.TAB_ODS_2I2C_ASS_TASK t set t.status=? where t.work_no=?";
- 			pre=conn.prepareStatement(workSql);
- 			pre.setString(1, "3");
-			pre.setString(2, dto.getTaskNo());
-			pre.addBatch();
-			pre.executeBatch();
-			
-			String delSql="delete from PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL t where t.work_no=?";
-			pre=conn.prepareStatement(delSql);
-			pre.setString(1, dto.getTaskNo());
 			pre.addBatch();
 			pre.executeBatch();
 			
@@ -234,33 +165,5 @@ public class T2i2cAction extends BaseAction{
 	 */
 	public void getTeamByWorkNo(){
 		this.reponseJson(t2I2CService.getTeamByWorkNo(workNo));
-	}
-	/**
-	 * 省级同意
-	 */
-	public void provinceAgree(){
-		Map<String,Object> r=new HashMap<String,Object>();
-		if(t2I2CService.provinceAgree(workNo)){
-			r.put("ok", true);
-			r.put("msg", "审批成功");
-		}else{
-			r.put("ok", false);
-			r.put("msg", "审批出错");
-		}
-		this.reponseJson(r);
-	}
-	/**
-	 * 省级作废
-	 */
-	public void provinceCancel(){
-		Map<String,Object> r=new HashMap<String,Object>();
-		if(t2I2CService.provinceCancel(workNo)){
-			r.put("ok", true);
-			r.put("msg", "作废成功");
-		}else{
-			r.put("ok", false);
-			r.put("msg", "作废出错");
-		}
-		this.reponseJson(r);
 	}
 }

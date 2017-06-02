@@ -36,10 +36,4 @@ public interface T2I2CDao {
 	 */
 	public List<Map<String, Object>> getTeamByWorkNo(@Param("pId") String pId,@Param("workNo") String workNo);
 	
-	/**
-	 * 变更状态
-	 * @param params
-	 * @return
-	 */
-	public void updateStatus(@Param("status") String status,@Param("workNo") String workNo);
 }
