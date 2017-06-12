@@ -136,7 +136,7 @@ function getsql(){
 		"      ,NVL(TOTAL_SCORE,0) TOTAL_SCORE                           "+
 		"      ,TOTAL_EVA                                                "+
 		"      ,T_RANK                                                   "+
-		"FROM PMRT.TB_MRT_BUS_LEVEL_EVALUATE_MON                         "+
+		"FROM PMRT.TB_MRT_BUS_LEVEL_EVALUATE                             "+
 		where+
 		" ORDER BY T_RANK";
 }
