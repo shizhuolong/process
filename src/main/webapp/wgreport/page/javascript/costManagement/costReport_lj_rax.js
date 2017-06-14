@@ -167,41 +167,41 @@ function downsAll() {
 		"GROUP BY UNIT_ID";
 	}
 	var showtext = '成本费用展现报表-' + startdate+"-"+enddate;
-	var title=[["州市","营服中心","营服编码","出帐收入(扣减赠费、退费)","","","","","","","","成本费用合计","佣金","","","","","","","","营销费用","","","","","","","","","行政费用","","行政费用（共同）","","","网运成本","","","","","","","","","","","毛利润","销售毛利润"],
-	           ["","","","2G","3G","4G","专租线","宽带","固话","其他","合计","","2G","3G","4G","专租线","宽带","固话","其他","合计","紧密外包费用","渠道补贴","终端补贴","卡成本","营业厅房租(装修)","水电物业费","广告宣传费","业务用品印制及材料费","营销费用小计","车辆使用费","招待费","办公费","差旅费","通信费","铁塔租费（不含水电）","网运水电费","代维费","网运房租及物业费","客户接入成本开通费","客户接入成本终端","网优费","网运修理费","网运行政费用（拨测费、财产保险、车辆使用费）","网运人工成本","网运成本合计","",""]];
-	
+	var title=[["州市","营服中心","营服编码","出帐收入(扣减赠费、退费)","","","","","","","","成本费用合计","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","毛利","销售毛利"],
+	           ["","","","2G","3G","4G","专租线","宽带","固话","其他"," 合计","佣金","","","","","","","","营销费用","","","","","","","","","行政费用","","行政费用（共同）","","","网运成本","","","","","","","","","","","合计","",""],
+	           ["","","","","","","","","","","","2G","3G","4G","专租线","宽带","固话","其他","合计","紧密外包费用","渠道补贴","终端补贴","卡成本","营业厅房租(装修)","水电物业费","广告宣传费","业务用品印制及材料费","营销费用小计","车辆使用费","招待费","办公费","差旅费","通信费","铁塔租费（不含水电）","网运水电费","代维费","网运房租及物业费","客户接入成本开通费","客户接入成本终端","网优费","网运修理费","网运行政费用（拨测费、财产保险、车辆使用费）","网运人工成本","网运成本合计","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 function getDownSql() {
 	var downField= [           "INCOME_2G","INCOME_3G", "INCOME_4G",
 	                           "INCOME_ZX","INCOME_KD","INCOME_GH",
-	              			   "INCOME_OTHER",
-	                          "INCOME_TOTAL",
-
-	                          "GRIDDING_TOTAL",
-	                          
-	                          "COMM_2G","COMM_3G","COMM_4G","COMM_ZX",
-	                          "COMM_KD","COMM_HARDLINK",
-	                          "COMM_GY","COMM_TOTAL",
-
-	              			   "FEE_JMWB",
-	                          "CHANNEL","ZDBT_AMOUNT",
-	                          "KVB_AMOUNT","FZF_AMOUNT",
-	                          "SDWYF_AMOUNT","ADS_AMOUNT","YWYPCLF_AMOUNT",
-	                          "XJ_YXFY",
-	                          
-	              			
-	               		   "CLSYF_AMOUNT",
-	               		   "ZDF_AMOUNT",
-	               		   
-	               	       "BGF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT",
-	               	       
-	               		   "LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT",
-	               		   "LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT",
-	               		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_ALL_AMOUNT","LAN_MAN_AMOUNT",
-	               		   
-	               		   "LAN_PROFIT","PROFIT"
-	              ];
+	               			   "INCOME_OTHER",
+	                           "INCOME_TOTAL",
+	               			
+	                           "COMM_2G","COMM_3G","COMM_4G","COMM_ZX",
+	                           "COMM_KD","COMM_HARDLINK",
+	                           "COMM_GY","COMM_TOTAL",
+	                           
+	               			   "FEE_JMWB",
+	                           "CHANNEL","ZDBT_AMOUNT",
+	                           "KVB_AMOUNT","FZF_AMOUNT",
+	                           "SDWYF_AMOUNT","ADS_AMOUNT","YWYPCLF_AMOUNT",
+	                           "XJ_YXFY",
+	                           
+	               			
+	    	           		   "CLSYF_AMOUNT",
+	    	           		   "ZDF_AMOUNT",
+	    	           		   
+	    	           	       "BGF_AMOUNT","CLF_AMOUNT","TXF_AMOUNT",
+	    	           	       
+	    	           		   "LAN_IRON_AMOUNT","LAN_WARTER_ELE_AMOUNT","LAN_MAINTAI_AMOUNT",
+	    	           		   "LAN_RENT_AMOUNT","LAN_JRCB_KTF_AMOUNT","LAN_JRCB_ZD_AMOUNT",
+	    	           		   "LAN_GOOD_AMOUNT","LAN_XL_AMOUNT","LAN_XZ_AMOUNT","LAN_MAN_AMOUNT","LAN_ALL_AMOUNT",
+	    	           		    
+	    	           		   "GRIDDING_TOTAL",
+	    	           		   
+	    	           	       "LAN_PROFIT","PROFIT"
+	               ];
 	var s="";
 	for(var i=0;i<downField.length;i++){
 		if(s.length>0){
