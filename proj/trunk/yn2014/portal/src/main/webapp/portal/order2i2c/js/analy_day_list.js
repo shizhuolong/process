@@ -56,20 +56,13 @@ function search(pageNumber) {
 	var where=" WHERE DEAL_DATE BETWEEN '"+startTime+"' AND '"+endTime+"'";
 	var sql=getSql();
 	var orgLevel=$("#orgLevel").val();
-	var username=$("#username").val();
 	var region=$("#region").val();
-	var s="SELECT USERID FROM PODS.VIEW_ODS_2I2C_ANALY_DAY WHERE USERID=(SELECT ID FROM PORTAL.APDP_USER WHERE USERNAME='"+username+"') AND DEAL_DATE='"+startTime+"'";
-	var r=query(s);
-	if(r!=null&&r.length>0){
-		where+=" AND USERID ='"+r[0].USERID+"'";
+	if(orgLevel==1){
+		
+	}else if(orgLevel==2||orgLevel==3){
+		where+=" AND GROUP_ID_1='"+region+"'";
 	}else{
-		if(orgLevel==1){
-			
-		}else if(orgLevel==2||orgLevel==3){
-			where+=" AND GROUP_ID_1='"+region+"'";
-		}else{
-			where+=" AND 1=2";
-		}
+		where+=" AND 1=2";
 	}
 	var name=$.trim($("#name").val());
 	var team_name=$("#team_name").val();
