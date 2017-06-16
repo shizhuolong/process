@@ -54,10 +54,26 @@ Array.prototype.shuffle = function() {
 };
 $(function() {
 	initTeam();
-	getAllOrders();
-	search(0);
+	listServiceNames();
+	$("input:radio[name='disType']").change(function (){
+		var disType=$(this).val();
+		if(1==disType){
+			$("#teamDesc").text("内部团队订单量百分比[0-100]（%）:");
+		}else{
+			$("#teamDesc").text("内部团队订单绝对值量[0-"+orders.length+"]:");
+		}
+		$("#disValue").val(0);
+		distribute();
+	});
+	$("#searchBtn").click(function(){
+		search(0);
+	});
+	$("#searchBtn").trigger("click");
 });
 function getAllOrders(){
+	var activeStatus=$("#activeStatus").val();
+	var isFirst=$("#isFirst").val();
+	var serviceName=$("#serviceName").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -65,12 +81,17 @@ function getAllOrders(){
 		cache:false,
 		url:$("#ctx").val()+"/t2i2c/t2i2c!undistributedOrderList.action",
 		data:{
-		   "resultMap.page":1,
-           "resultMap.rows":1000000
+			"resultMap.activeStatus":activeStatus,
+			"resultMap.isFirst":isFirst,
+			"resultMap.serviceName":serviceName,
+			"resultMap.cols":"ORDER_NO",
+		    "resultMap.page":1,
+            "resultMap.rows":1000000
 	   	}, 
 	   	success:function(data){
 	   		if(data&&data.rows){
 	   			orders=data.rows;
+	   			distribute();
 	   		}
 	   	}
 	});
@@ -142,14 +163,26 @@ function changeType(o){
 function search(pageNumber) {
 	curPage=pageNumber;
 	pageNumber = pageNumber + 1;
+	if(pageNumber==1){
+		getAllOrders();
+		$("input:radio[name='disType']").eq(0).trigger("click");
+	}
+	var activeStatus=$("#activeStatus").val();
+	var isFirst=$("#isFirst").val();
+	var serviceName=$("#serviceName").val();
+	
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		cache:false,
 		url:$("#ctx").val()+"/t2i2c/t2i2c!undistributedOrderList.action",
 		data:{
-		   "resultMap.page":pageNumber,
-           "resultMap.rows":pageSize
+			"resultMap.activeStatus":activeStatus,
+			"resultMap.isFirst":isFirst,
+			"resultMap.serviceName":serviceName,
+			"resultMap.cols":"ORDER_NO,ORDER_TIME,GROUP_ID_1_NAME,CITY_NAME,ORDER_STATUS,CUST_NAME,BOOK_NUM,PRODUCT_NAME,SHOOP_NAME,SERVICE_NUMBER,ACTIVE_STATUS",
+			"resultMap.page":pageNumber,
+			"resultMap.rows":pageSize
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -200,19 +233,6 @@ function initPagination(totalCount) {
 		   num_display_entries: 5, 
 		   num_edge_entries: 2
 	 });
-	 
-	 $("input:radio[name='disType']").change(function (){
-			var disType=$(this).val();
-			if(1==disType){
-				$("#teamDesc").text("内部团队订单量百分比[0-100]（%）:");
-			}else{
-				$("#teamDesc").text("内部团队订单绝对值量[0-"+orders.length+"]:");
-			}
-			$("#disValue").val(0);
-			distribute();
-	});
-	
-	$("input:radio[name='disType']").eq(0).trigger("click");
 }
 function distribute(o){
 	$("#distributeBtn").hide();
@@ -384,11 +404,54 @@ function submitDistribute(){
 	   	}, 
 	   	success:function(data){
 	   		alert(data.msg);
-	   		window.location.href=path+"/portal/order2i2c/jsp/my_order_list.jsp";
+	   		window.location.href=window.location.href;
 	   	},
 	   	error:function(){
 	   		alert("出现错误，请重新分配");
 	   		window.location.href=window.location.href;
 	   	}
 	});
+}
+function listServiceNames(){
+	var $serviceName = $("#serviceName");
+	var sql = " SELECT distinct T.SERVICE_NAME FROM PODS.VIEW_ODS_2I2C_NOT_ASS T where T.SERVICE_NAME is not null ";
+	
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].SERVICE_NAME
+					+ '" selected >'
+					+ d[0].SERVICE_NAME + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].SERVICE_NAME + '">' + d[i].SERVICE_NAME + '</option>';
+			}
+		}
+		var $h = $(h);
+		$serviceName.empty().append($h);
+	} else {
+		alert("获取人员状态失败");
+	}
+}
+//获取数据
+function query(sql){
+	var ls=[];
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,
+		cache:false,
+		url:$("#ctx").val()+"/devIncome/devIncome_query.action",
+		data:{
+           "sql":sql
+	   	}, 
+	   	success:function(data){
+	   		if(data&&data.length>0){
+	   			ls=data;
+	   		}
+	    }
+	});
+	return ls;
 }

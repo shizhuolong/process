@@ -1,4 +1,5 @@
 var nowData = [];
+
 var title=[["任务编号","所在团队","接收人","正式订单号","订单时间","省份","地市",
             "配送区县","商城实收","商城应收","订单状态","客户姓名",
             "证件号码","预约号码","性别","年龄","商品名称","订购号码",
@@ -7,7 +8,6 @@ var field=["WORK_NO","TEAM_NAME","NAME","ORDER_NO","ORDER_TIME","GROUP_ID_0_NAME
            "CITY_NAME","SHOOP_OFF","SHOOP_RECE","ORDER_STATUS","CUST_NAME",
            "CARD_ID","BOOK_NUM","SEX","AGE","SHOOP_NAME","SERVICE_NUMBER",
            "ADDR_NAME","ACTIVE_STATUS","IS_FIRST","SERVICE_NAME","ADD_PAYMENT_FEE","NOT_ACTIVE_DAY","NOT_FIRST_TIME"];
-
 
 var orderBy="";
 var report = null;
@@ -22,7 +22,7 @@ $(function() {
 	report = new LchReport({
 		title : [["外呼记录"].concat(title[0])],
 		field : [""].concat(field),
-		rowParams : ["ORDER_NO"],//第一个为rowId
+		rowParams : [],//第一个为rowId
 		content : "lchcontent",
 		getSubRowsCallBack : function($tr) {
 			return {
@@ -55,6 +55,11 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
+function showVisit(a){
+	$row=$(a).parent().parent();
+	var orderNo=$row.attr("ORDER_NO");
+	alert(orderNo);
+}
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
@@ -65,15 +70,17 @@ function search(pageNumber) {
 	var isFirst=$("#isFirst").val();
 	var serviceName=$("#serviceName").val();
 	var userName=$("#userName").val();
+	
 	var orderNo=$("#orderNo").val();
 	var serviceNumber=$("#serviceNumber").val();
 	var bookNum=$("#bookNum").val();
+	
 	var sql="";
 	sql+=" select t1.work_no,t1.team_name,t1.name,t2.* from  						";
 	sql+=" PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL T1,PODS.TAB_ODS_2I2C_ASS_TASK T,		";
-	sql+=" 	PODS.TAB_ODS_2I2C_LEAD_DAY t2,PORTAL.TAB_PORTAL_2I2C_TEAM ti                    						";
-	sql+=" 	where t1.order_no=t2.order_no  and t.work_No=t1.work_No and t1.name_id=ti.id       ";
-	sql+=" and ti.userid='"+userName+"'                       						";
+	sql+=" 	PODS.TAB_ODS_2I2C_LEAD_DAY t2                    						";
+	sql+=" 	where t1.order_no=t2.order_no  and t.work_No=t1.work_No                 ";
+	sql+=" and t.operator='"+userName+"'                       						";
 	if(activeStatus){
 		sql+=" and t2.ACTIVE_STATUS='"+activeStatus+"'                       		";
 	}
@@ -83,6 +90,7 @@ function search(pageNumber) {
 	if(serviceName){
 		sql+=" and t2.SERVICE_NAME='"+serviceName+"'                       		    ";
 	}
+	
 	if(orderNo){
 		sql+=" and t2.ORDER_NO='"+orderNo+"'                       		            ";
 	}
@@ -92,6 +100,7 @@ function search(pageNumber) {
 	if(bookNum){
 		sql+=" and t2.BOOK_NUM='"+bookNum+"'                       		            ";
 	}
+	
 	//排序
 	if (orderBy != '') {
 		sql ="select * from ("+sql+")"+ orderBy;
@@ -127,25 +136,6 @@ function search(pageNumber) {
 		$oper.empty().html($a);
 	});
 }
-function addVisit(orderNo){
-	var outbound=$("#outbound").val();
-	var remark=$("#remark").val();
-	var sql="insert into PODS.TAB_ODS_2I2C_REMARK select sysdate,'"+orderNo+"','"+outbound+"','"+remark+"' from dual";
-	var d=query(sql);
-	art.dialog({id:'d'+orderNo}).close();
-	showVisit(orderNo);
-}
-function listOutBounds(){
-	var sql = " SELECT distinct T.OUT_NAME FROM PODS.TAB_ODS_2I2C_OUTBOUND T where T.OUT_NAME is not null ";
-	var h = '';
-	var d=query(sql);
-	if (d) {
-		for (var i = 0; i < d.length; i++) {
-			h += '<option value="' + d[i].OUT_NAME + '">' + d[i].OUT_NAME + '</option>';
-		}
-	} 
-	return h;
-}
 function showVisit(orderNo){
 	var d=query("select * from PODS.TAB_ODS_2I2C_REMARK where order_no='"+orderNo+"' order by insert_time desc");
 	
@@ -153,16 +143,14 @@ function showVisit(orderNo){
 	
 	var h="";
 	
-	h+="<table style='margin-top:12px;' class='lch_DataBody'><tr>";
-	h+="<td>外呼状态<select class='default-text-input wper80' id='outbound'>"+listOutBounds()+"</select></td></tr>";
-	h+="<tr><td>外呼描述<textarea cols=20 rows=4 id='remark'></textarea></td>";
-	h+="<tr><td><a class='default-btn  mr10' href='#' onclick='addVisit(\""+orderNo+"\")' id='addBtn'>添加</a></td>";
-	h+="</tr></table>";
+	
 	
 	h+="<div style='padding:12px;max-height:400px;overflow-y:auto;overflow-x:hidden;'>"
 	+"<table><thead class='lch_DataHead'><tr><th>外呼时间</th><th>外呼状态</th><th>外呼描述</th></tr></thead><tbody class='lch_DataBody'>";
 	for(var i=0;i<d.length;i++){
-		h=h+"<tr><td>"+isNull(d[i]["INSERT_TIME"])+"</td><td>"+isNull(d[i]["OUTBOUND"])+"</td><td>"+isNull(d[i]["REMARK"])+"</td></tr>";
+		h+="<tr><td>"+isNull(d[i]["INSERT_TIME"])
+		+"</td><td>"+isNull(d[i]["OUTBOUND"])
+		+"</td><td>"+isNull(d[i]["REMARK"])+"</td></tr>";
 	}
 	if(d.length==0){
 		h+="<tr><td colspan=3>暂无记录</td></tr>";
@@ -183,15 +171,17 @@ function exportAll(){
 	var isFirst=$("#isFirst").val();
 	var serviceName=$("#serviceName").val();
 	var userName=$("#userName").val();
+	
 	var orderNo=$("#orderNo").val();
 	var serviceNumber=$("#serviceNumber").val();
 	var bookNum=$("#bookNum").val();
+	
 	var sql="select "+field.join(",")+" from( ";
 	sql+=" select t1.work_no,t1.team_name,t1.name,t2.* from  						";
 	sql+=" PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL T1,PODS.TAB_ODS_2I2C_ASS_TASK T,		";
-	sql+=" 	PODS.TAB_ODS_2I2C_LEAD_DAY t2,PORTAL.TAB_PORTAL_2I2C_TEAM ti            ";
-	sql+=" 	where t1.order_no=t2.order_no  and t.work_No=t1.work_No and t1.name_id=ti.id       ";
-	sql+=" and ti.userid='"+userName+"'                       						";
+	sql+=" 	PODS.TAB_ODS_2I2C_LEAD_DAY t2                    						";
+	sql+=" 	where t1.order_no=t2.order_no  and t.work_No=t1.work_No                 ";
+	sql+=" and t.operator='"+userName+"'                       						";
 	if(activeStatus){
 		sql+=" and t2.ACTIVE_STATUS='"+activeStatus+"'                       		";
 	}
@@ -201,6 +191,7 @@ function exportAll(){
 	if(serviceName){
 		sql+=" and t2.SERVICE_NAME='"+serviceName+"'                       		    ";
 	}
+	
 	if(orderNo){
 		sql+=" and t2.ORDER_NO='"+orderNo+"'                       		            ";
 	}
@@ -210,6 +201,7 @@ function exportAll(){
 	if(bookNum){
 		sql+=" and t2.BOOK_NUM='"+bookNum+"'                       		            ";
 	}
+	
 	sql+=" )"
 	downloadExcel(sql,title,"分配明细");
 }
