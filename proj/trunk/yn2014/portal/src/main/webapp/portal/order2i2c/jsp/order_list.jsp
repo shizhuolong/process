@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>我的订单</title>
+<title>分配明细</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -20,14 +20,14 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/my_order_list.js?v=12"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_list.js?v=12"></script>
 <script type="text/javascript">
     var paths="<%=path%>";
 </script>
 </head>
 <body  style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
-	<input type="hidden" id="userName" value="<%=user.getId()%>">
+	<input type="hidden" id="userName" value="<%=user.getUsername()%>">
 	<form id="searchForm" method="post">
 		<table width="100%"
 			style="margin: 10px 0; border: none; font-size: 100%;">

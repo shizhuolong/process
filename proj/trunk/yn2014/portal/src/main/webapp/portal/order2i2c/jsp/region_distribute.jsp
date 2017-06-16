@@ -7,10 +7,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>地市订单任务分配</title>
+<title>任务分配</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css">
-<link rel="stylesheet" type="text/css" href="<%=path%>/portal/order2i2c/css/jquery.jOrgChart.css?v=1">
+<link rel="stylesheet" type="text/css" href="<%=path%>/portal/order2i2c/css/jquery.jOrgChart.css?v=2">
 <link href="<%=path%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=path%>/portal/order2i2c/js/json2.js"></script>
@@ -18,7 +18,7 @@
 <script type="text/javascript" src="<%=path%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/portal/order2i2c/js/jquery.jOrgChart.js?v=2"></script>
-<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/region_distribute.js?v=6"></script>
+<script type="text/javascript" src="<%=path%>/portal/order2i2c/js/region_distribute.js?v=11"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
 </script>
@@ -37,6 +37,36 @@
 					<div class="main-block">
 						<div class="title-o"><i>未分配订单列表</i></div>
 						<div class="default-dt dt-autoH">
+							<div class="sticky-wrap">
+								<table>
+		                       		<tr>
+					                	<td align="right">激活状态：</td>
+					                    <td>
+					                    	<select class="default-text-input wper80" name="activeStatus" id="activeStatus">
+					                    		<option value="">全部</option> 
+					                    		<option value="已激活">已激活</option>
+					                    		<option value="未激活" selected>未激活</option>
+					                    	</select>
+					                    </td>
+					                    <td align="right">是否首充：</td>
+					                    <td>
+					                    	<select class="default-text-input wper80"  name="isFirst" id="isFirst">
+					                    		<option value="">全部</option>
+					                    		<option value="已首充">已首充</option>
+					                    		<option value="未首充" selected>未首充</option>
+					                    	</select>	
+					                    </td>
+					                    <td align="right">用户状态：</td>
+					                    <td>
+					                    	<select class="default-text-input wper80"  name="serviceName" id="serviceName">
+					                    	</select>	
+					                    </td>
+					                    <td>
+					                    	<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+					                    </td>
+					                </tr>
+				                </table>
+				            </div>
 							<div class="sticky-wrap">
 								<table id="dataTale" class="default-table sticky-enabled">
 									<thead>
