@@ -1,5 +1,21 @@
 var title=[["组织架构","渠道编码","渠道名称","经营模式","厅类型","总任务数","分配任务数","任务查看率","登网完成率","当日登网用户数","累计登网用户数"]];
 var field=["TOTAL_TASK_NUM","ALLOT_TASK_NUM","TASK_RATIO","DW_RATIO","DW_NUM","DW_NUM1"];
+function listProTypes(){
+	var $proType = $("#proType");
+	var sql = " SELECT distinct T.PRO_TYPE FROM PODS.VIEW_23T04_NOT_ASSORT_LIST T  WHERE T.PRO_TYPE is not null ";
+	
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		for (var i = 0; i < d.length; i++) {
+			h += '<option value="' + d[i].PRO_TYPE + '">' + d[i].PRO_TYPE + '</option>';
+		}
+		var $h = $(h);
+		$proType.empty().append($h);
+	} else {
+		alert("获取任务类型失败");
+	}
+}
 $(function(){
 	var maxDate=getMaxDate("PODS.TAB_ODS_2TO4_DW_NUM_DAY")
 	$("#dealDate").val(maxDate);
@@ -11,6 +27,7 @@ $(function(){
 		//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 		///////////////////////////////////////////
 	});
+    listProTypes();
     var report=new LchReport({
 		title:title,
 		closeHeader:true,
@@ -29,7 +46,8 @@ $(function(){
 			var region='';
 			var orgLevel='';
 			var dealDate=$("#dealDate").val();
-			var where=" WHERE T1.DEAL_DATE = '"+dealDate+"'";
+			var proType=$("#proType").val();
+			var where=" WHERE T1.DEAL_DATE = '"+dealDate+"' and T1.PRO_TYPE='"+proType+"' ";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -76,7 +94,8 @@ function downsAll() {
 	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
 	var region=$("#region").val();
-	var where=" WHERE T1.DEAL_DATE = '"+dealDate+"'";
+	var proType=$("#proType").val();
+	var where=" WHERE T1.DEAL_DATE = '"+dealDate+"' and T1.PRO_TYPE='"+proType+"' ";
 	var regionCode=$("#regionCode").val();
 	var is_yyt=$("#is_yyt").val();
 	var opeType=$("#opeType").val();
