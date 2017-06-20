@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/23to4_send_list.js?v=9"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/23to4_send_list.js?v=10"></script>
 <script type="text/javascript">
     var path="<%=path%>";
 </script>
@@ -34,6 +34,12 @@
 	<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;font-size:100%;">
 				<tr height="35px">
+					<td align="right">任务类型：</td>
+					<td>
+					   	<select class="default-text-input wper80" name="proType" id="proType">
+					     	<option value="23升4" selected>23升4</option>
+					    </select>
+					</td>
 					<td width="8%" align="right">用户号码：</td>
 					<td width="13%">
 						<input class="default-text-input wper80" name="deviceNumber" type="text" id="deviceNumber"/>

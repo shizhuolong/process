@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/dw_num_day.js?v=5"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/dw_num_day.js?v=6"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -36,6 +36,12 @@
 	<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
+					<td align="right">任务类型：</td>
+					<td>
+					   	<select class="default-text-input wper80" name="proType" id="proType">
+					     	<option value="23升4" selected>23升4</option>
+					    </select>
+					</td>
 				    <td width="6%" style="text-align:right;">账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"

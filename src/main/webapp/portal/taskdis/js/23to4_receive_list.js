@@ -3,6 +3,22 @@ var curPage=0;
 var title=[["操作","分配批次","营服名称","用户号码","用户编码","前三月平均缴费","终端类型","终端品牌","终端型号","发展渠道","渠道编码","入网时间","套餐ID","套餐名称"]];
 var field=["STATE","BATCH_NO","UNIT_NAME","DEVICE_NUMBER","SUBSCRIPTION_ID","LAST_3_PAY","TERMINAL_TPYE","TERMINAL_DOM","TERMINAL_MOD","DEV_CHNL","DEV_CHNL_NAME","INNET_DATE","PRODUCT_ID","PRODUCT_NAME"];
 var report = null;
+function listProTypes(){
+	var $proType = $("#proType");
+	var sql = " SELECT distinct T.PRO_TYPE FROM PODS.VIEW_23T04_NOT_ASSORT_LIST T  WHERE T.PRO_TYPE is not null ";
+	
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		for (var i = 0; i < d.length; i++) {
+			h += '<option value="' + d[i].PRO_TYPE + '">' + d[i].PRO_TYPE + '</option>';
+		}
+		var $h = $(h);
+		$proType.empty().append($h);
+	} else {
+		alert("获取任务类型失败");
+	}
+}
 LchReport.prototype.isNull=function(obj){
 	if(obj == undefined || obj == null || obj == '') {
 		return '';
@@ -15,6 +31,7 @@ function changeState(a){
 	search(curPage);
 }
 $(function() {
+	listProTypes();
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -58,7 +75,7 @@ function search(pageNumber) {
 	var deviceNumber=$("#deviceNumber").val();
 	var subscriptionId=$("#subscriptionId").val();
 	var state=$("#state").val();
-	
+	var proType=$("#proType").val();
 	var sql="";
 	sql+="  SELECT D.BATCH_NO                                    ";
 	sql+="        ,T.UNIT_NAME                                   ";
@@ -77,7 +94,7 @@ function search(pageNumber) {
 	sql+="  FROM PODS.TB_2G_ZD_TO_4G_LIST T                      ";
 	sql+="  ,PODS.TAB_ODS_23TO4_TRAD_LIST D                      ";
 	sql+="  where T.SUBSCRIPTION_ID=D.SUBSCRIPTION_ID            ";
-	sql+="  AND D.PRO_TYPE='2G升4G活动'                           ";
+	sql+="  AND D.PRO_TYPE='"+proType+"'                         ";
 	sql+="  AND D.USERID='"+userId+"'                            ";                                                                                         
 	if(deviceNumber!=''){
 		sql+=" and T.DEVICE_NUMBER ='"+deviceNumber+"'           ";
@@ -124,7 +141,7 @@ function exportAll(){
 	var deviceNumber=$("#deviceNumber").val();
 	var subscriptionId=$("#subscriptionId").val();
 	var state=$("#state").val();
-	
+	var proType=$("#proType").val();
 	var sql="";
 	sql+="  SELECT D.BATCH_NO                                    ";
 	sql+="        ,T.UNIT_NAME                                   ";
@@ -143,7 +160,7 @@ function exportAll(){
 	sql+="  FROM PODS.TB_2G_ZD_TO_4G_LIST T                      ";
 	sql+="  ,PODS.TAB_ODS_23TO4_TRAD_LIST D                      ";
 	sql+="  where T.SUBSCRIPTION_ID=D.SUBSCRIPTION_ID            ";
-	sql+="  AND D.PRO_TYPE='2G升4G活动'                           ";
+	sql+="  AND D.PRO_TYPE='"+proType+"'                         ";
 	sql+="  AND D.USERID='"+userId+"'                            ";                                                                                         
 	if(deviceNumber!=''){
 		sql+=" and T.DEVICE_NUMBER ='"+deviceNumber+"'           ";
