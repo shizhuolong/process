@@ -49,8 +49,7 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	
-	var time=$("#time").val();
+
 	var month=$("#month").val();
 	var regionName=$("#regionName").val();
 	var unitName=$("#unitName").val();
@@ -79,57 +78,12 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		sql+=" and t.GROUP_ID_1="+code;
 	}else {
-		//1-营服中心责任人、6-营业厅主人、7-行业总监
-		var rsql="SELECT DISTINCT T.USER_CODE FROM PORTAL.TAB_PORTAL_QJ_PERSON T WHERE t.deal_date='"+month+"' and T.HR_ID='"+hrId+"'";///---
-		var rd=query(rsql);
-		if(rd&&rd.length){
-			var hrsql="";
-			for(var i=0;i<rd.length;i++){
-				var v=rd[i]["USER_CODE"];
-				var tsql="";
-				if(v==1){
-					tsql+=" select tt.hr_no                                                      ";
-					tsql+="   from pmrt.TB_JCDY_JF_ALL_MON tt                                    ";
-					tsql+=" where tt.unit_id = '"+code+"'                                        ";
-					tsql+="   and tt.deal_date = '"+month+"'                                     ";
-					tsql+=" union                                                                ";
-					tsql+=" select '"+hrId+"' from dual  ";
-				}else if(v==6){
-					tsql+=" SELECT distinct hr_id                                                ";
-					tsql+="   FROM portal.tab_portal_mag_person                                  ";
-					tsql+=" where hq_chan_code in (                                              ";
-					tsql+="   SELECT distinct hq_chan_code                                       ";
-					tsql+="     FROM portal.tab_portal_mag_person                                ";
-					tsql+="   where hr_id = '"+hrId+"'   and deal_date='"+month+"'                ";///---
-					tsql+="     and hq_chan_code is not null                                     ";
-					tsql+=" )  and deal_date='"+month+"'                                          ";///---      
-				}else if(v==7){
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a                                ";
-					tsql+=" where a.f_hr_id in (                                                 ";
-					tsql+="       select hr_id                                                   ";
-					tsql+="         from portal.tab_portal_grp_person t                          ";
-					tsql+="       where t.user_type = 1   and t.deal_date='"+month+"'             ";///---
-					tsql+=" )  and a.deal_date='"+month+"'                                        ";///---
-					tsql+=" and a.f_hr_id='"+hrId+"'                                             ";
-					tsql+=" union                                                                ";
-					tsql+=" select distinct a.hr_id                                              ";
-					tsql+="   from portal.tab_portal_grp_person a where a.hr_id='"+hrId+"' and t.deal_date='"+month+"'      ";///---
-				}
-				if(tsql!=""&&hrsql!=""){
-					hrsql+=" union "+tsql;
-				}else{
-					hrsql+=tsql;
-				}
-			}
-			if(hrsql!=""){
-				sql+=" and t.HR_ID in("+hrsql+")";
-			}else{
-				sql+=" and t.HR_ID='"+hrId+"'";
-			}
-		}else{
-			sql+=" and t.HR_ID='"+hrId+"'";
-		}
+		var hrIds=_jf_power(hrId,month);
+		 if(hrIds!=""){
+		   sql+=" AND t.HR_ID in("+hrIds+") ";
+		 }else{
+		   sql+=" and 1=2 "; 
+		 }
 	}
  	var csql = sql;
 	var cdata = query("select count(*) total" + csql);
