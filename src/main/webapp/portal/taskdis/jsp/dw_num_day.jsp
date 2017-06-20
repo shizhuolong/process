@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/dw_num_day.js?v=6"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/dw_num_day.js?v=7"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -61,6 +61,8 @@
 								<option value='否'>否</option>
 						</select>
 					</td>
+				</tr>
+				<tr>
 					<td width="8%">经营模式：</td>
 					<td width="15%">
 						<select name="opeType" id="opeType" class="default-text-input wper80">

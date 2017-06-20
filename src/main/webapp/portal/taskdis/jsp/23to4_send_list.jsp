@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/23to4_send_list.js?v=10"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/23to4_send_list.js?v=11"></script>
 <script type="text/javascript">
     var path="<%=path%>";
 </script>
@@ -52,6 +52,8 @@
 					<td width="13%">
 						<input class="default-text-input wper80" name="receiver" type="text" id="receiver"/>
 					</td>
+				</tr>
+				<tr>
 					<td align="right">激活状态：</td>
 					<td>
 						<select class="default-text-input wper80" name="state" id="state">
