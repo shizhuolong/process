@@ -135,99 +135,160 @@ function getSql(orgLevel,where){
   }
 
 function getSumSql(){
-	return "       SUM(MAN_COUNT)MAN_COUNT,                                                                                 "+
-	"       SUM(DEV_COUNT)DEV_COUNT,                                                                                        "+
-	"       SUM(CHARGE_YW)CHARGE_YW,                                                                                        "+
-	"       SUM(CHARGE_GW)CHARGE_GW,                                                                                        "+
-	"       SUM(CHARGE_YW + CHARGE_GW) CHARGE_TOTAL,                                                                        "+
-	"       SUM(ACC_NUM)ACC_NUM,                                                                                            "+
-	"       SUM(DS_MONEY)DS_MONEY ,                                                                                         "+
-	"       CASE WHEN  SUM(NVL(DS_MONEY,0))=0 THEN '0.00'                                                                   "+
-	"          ELSE  TRIM('.' FROM TO_CHAR(SUM(NVL(DS_FEE,0))*100/SUM(NVL(DS_MONEY,0))                                      "+
-	"                    ,'FM999990.99')) END || '%'DS_SVR_RATE,                                                            "+
-	"       SUM(HQ_ML)HQ_ML,                                                                                                "+
-	"       SUM(HQ_SAL_ML)HQ_SAL_ML,                                                                                        "+
-	"       SUM(HQ_CHARGE_SR)HQ_CHARGE_SR,                                                                                  "+
-	"       SUM(HQ_COST_ALL)HQ_COST_ALL,                                                                                    "+
-	"       SUM(MAN_COST_CONT)MAN_COST_CONT,                                                                                "+
-	"       SUM(MAN_COST_JM)MAN_COST_JM,                                                                                    "+
-	"       SUM(MAN_COST_FINACE)MAN_COST_FINACE,                                                                            "+
-	"       SUM(MAN_COST_ALL)MAN_COST_ALL,                                                                                  "+
-	"       SUM(YJ_ALL)YJ_ALL,                                                                                              "+
-	"       SUM(HQ_QDBT)HQ_QDBT,                                                                                            "+
-	"       SUM(TERM_BT)TERM_BT,                                                                                            "+
-	"       SUM(GT_PLACE_RENT)GT_PLACE_RENT,                                                                                "+
-	"       SUM(HQ_RENT)HQ_RENT,                                                                                            "+
-	"       SUM(HQ_ZX_FEE)HQ_ZX_FEE,                                                                                        "+
-	"       SUM(KHJR_AMOUNT)KHJR_AMOUNT,                                                                                    "+
-	"       SUM(KCB_COST)KCB_COST,                                                                                          "+
-	"       SUM(WART_NUM)WART_NUM,                                                                                          "+
-	"       SUM(ADV_FEE)ADV_FEE,                                                                                            "+
-	"       SUM(YWYP_FEE)YWYP_FEE,                                                                                          "+
-	"       SUM(CH_PRO_PRE)CH_PRO_PRE,                                                                                      "+
-	"       SUM(SALE_DETAIL_SR)SALE_DETAIL_SR,                                                                              "+
-	"       SUM(SALE_DETAIL_COST)SALE_DETAIL_COST,                                                                          "+
-	"       SUM(BG_FEE)BG_FEE,                                                                                              "+
-	"       SUM(CAR_FEE)CAR_FEE,                                                                                            "+
-	"       SUM(ZD_FEE)ZD_FEE,                                                                                              "+
-	"       SUM(CL_FEE)CL_FEE,                                                                                              "+
-	"       SUM(TX_FEE)TX_FEE,                                                                                              "+
-	"       CASE WHEN SUM(NVL(HQ_CHARGE_SR,0))=0 THEN '0.00'                                                                "+
-	"          ELSE TRIM('.' FROM                                                                                           "+
-	"                TO_CHAR(SUM((MAN_COST_ALL+YJ_ALL+HQ_QDBT+TERM_BT+GT_PLACE_RENT+HQ_RENT+HQ_ZX_FEE                       "+
-	"                         +KHJR_AMOUNT+KCB_COST+WART_NUM+ADV_FEE+YWYP_FEE+CH_PRO_PRE+SALE_DETAIL_SR+SALE_DETAIL_COST    "+
-	"                         +BG_FEE+CAR_FEE+ZD_FEE+CL_FEE+TX_FEE))*100/SUM(NVL(HQ_CHARGE_SR,0))                           "+
-	"                          ,'FM9999990.99')) END || '%' COST_RATE,                                                      "+
-	"       SUM(SR_DETAIL_YW)SR_DETAIL_YW,                                                                                  "+
-	"       SUM(SR_DETAIL_ZX)SR_DETAIL_ZX,                                                                                  "+
-	"       SUM(SR_DETAIL_KD)SR_DETAIL_KD,                                                                                  "+
-	"       SUM(SR_DETAIL_GH)SR_DETAIL_GH,                                                                                  "+
-	"       SUM(SR_DETAIL_OTHER)SR_DETAIL_OTHER,                                                                            "+
-	"       SUM(SR_DETAIL_SUM)SR_DETAIL_SUM,                                                                                "+
-	"       SUM(YF_MON_YW)YF_MON_YW,                                                                                        "+
-	"       SUM(YF_MON_ZX)YF_MON_ZX,                                                                                        "+
-	"       SUM(YF_MON_KD)YF_MON_KD,                                                                                        "+
-	"       SUM(YF_MON_GH)YF_MON_GH,                                                                                        "+
-	"       SUM(YF_MON_OTHER)YF_MON_OTHER,                                                                                  "+
-	"       SUM(YF_MON_SUM)YF_MON_SUM,                                                                                      "+
-	"       SUM(YJ_DEV)YJ_DEV,                                                                                              "+
-	"       SUM(YJ_ACC)YJ_ACC,                                                                                              "+
-	"       SUM(YJ_BOT)YJ_BOT,                                                                                              "+
-	"       SUM(YJ_TWO_ALL)YJ_TWO_ALL,                                                                                      "+
-	
-	"        CASE WHEN SUM(NVL(SR_DETAIL_YW,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YF_MON_YW,0))*100/SUM(NVL(SR_DETAIL_YW,0))                           "+
-	"                               ,'FM999990.99')) END || '%' COMMFEE_MOB_ZSHB,                                           "+
-	"        CASE WHEN SUM(NVL(SR_DETAIL_ZX,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YF_MON_ZX,0))*100/SUM(NVL(SR_DETAIL_ZX,0))                           "+
-	"                                ,'FM999990.99')) END || '%' COMMFEE_ZZX_ZSHB,                                          "+
-	"        CASE WHEN SUM(NVL(SR_DETAIL_KD,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YF_MON_KD,0))*100/SUM(NVL(SR_DETAIL_KD,0))                           "+
-	"                               ,'FM999990.99')) END || '%' COMMFEE_KD_ZSHB,                                            "+
-	"        CASE WHEN SUM(NVL(SR_DETAIL_GH,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YF_MON_GH,0))*100/SUM(NVL(SR_DETAIL_GH,0))                           "+
-	"                               ,'FM999990.99')) END || '%' COMMFEE_NET_ZSHB,                                           "+
-	"       CASE WHEN SUM(NVL(SR_DETAIL_SUM,0))=0 THEN '0.00'                                                               "+
-	"          ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YF_MON_SUM,0))*100/SUM(NVL(SR_DETAIL_SUM,0))                             "+
-	"                           ,'FM999990.99')) END || '%' COMMFEE_ZSHB,                                                   "+
-	"        CASE WHEN SUM(NVL(HQ_CHARGE_SR,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YJ_DEV,0))*100/SUM(NVL(HQ_CHARGE_SR,0))                              "+
-	"                               ,'FM999990.99')) END || '%' COMMFEE_DEV_ZSHB,                                           "+
-	"        CASE WHEN SUM(NVL(HQ_CHARGE_SR,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YJ_ACC,0))*100/SUM(NVL(HQ_CHARGE_SR,0))                              "+
-	"                               ,'FM999990.99')) END || '%' COMMFEE_ACC_ZSHB,                                           "+
-	"        CASE WHEN SUM(NVL(HQ_CHARGE_SR,0))=0 THEN '0.00'                                                               "+
-	"              ELSE TRIM('.' FROM  TO_CHAR(SUM(NVL(YJ_BOT,0))*100/SUM(NVL(HQ_CHARGE_SR,0))                              "+
-	"                               ,'FM999990.99')) END || '%' COMMFEE_BOT_ZSHB	,                                       "+
-	
-	"       CASE WHEN SUM(NVL(HQ_CHARGE_SR,0))=0 THEN '0.00'                                                                "+
-	"          ELSE TRIM('.' FROM TO_CHAR(SUM(NVL(YJ_TWO_ALL,0))*100/SUM(NVL(HQ_CHARGE_SR,0))                         "+
-	"                           ,'FM999990.99')) END || '%' COMMFEE_ALL_ZSB,                                                "+
-	
-	"       SUM(SUBS_OWE)SUBS_OWE,                                                                                          "+
-	"       SUM(SUBS_PAY)SUBS_PAY,                                                                                          "+
-	"       CASE WHEN SUM(NVL(INNET_7_NUM,0))=0 THEN '0.00'                                                                 "+
-	"          ELSE TRIM('.' FROM TO_CHAR(SUM(NVL(XF_7_NUM,0))*100/SUM(NVL(INNET_7_NUM,0))                                  "+
-	"                            ,'FM999990.99')) END || '%' SECOND_PAY                                                     "+
-	"  FROM PMRT.VIEW_MRT_HQ_ABILITY_DETAIL_MON                                                                             ";
+	var endDate=$("#endDate").val();
+	return "SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN MAN_COUNT END ) MAN_COUNT,                              "+
+	"       SUM(DEV_COUNT) DEV_COUNT,                                                                   "+
+	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN CHARGE_YW END) CHARGE_YW,                        "+
+	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN CHARGE_GW END) CHARGE_GW,                        "+
+	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN CHARGE_YW + CHARGE_GW END) CHARGE_TOTAL,         "+
+	"       SUM(ACC_NUM) ACC_NUM,                                                                       "+
+	"       SUM(DS_MONEY) DS_MONEY,                                                                     "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(DS_MONEY, 0)) = 0 THEN                                                       "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM                                                                            "+
+	"               TO_CHAR(SUM(NVL(DS_FEE, 0)) * 100 / SUM(NVL(DS_MONEY, 0)),                          "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' DS_SVR_RATE,                                                                     "+
+	"       SUM(HQ_ML) HQ_ML,                                                                           "+
+	"       SUM(HQ_SAL_ML) HQ_SAL_ML,                                                                   "+
+	"       SUM(HQ_CHARGE_SR) HQ_CHARGE_SR,                                                             "+
+	"       SUM(HQ_COST_ALL) HQ_COST_ALL,                                                               "+
+	"       SUM(MAN_COST_CONT) MAN_COST_CONT,                                                           "+
+	"       SUM(MAN_COST_JM) MAN_COST_JM,                                                               "+
+	"       SUM(MAN_COST_FINACE) MAN_COST_FINACE,                                                       "+
+	"       SUM(MAN_COST_ALL) MAN_COST_ALL,                                                             "+
+	"       SUM(YJ_ALL) YJ_ALL,                                                                         "+
+	"       SUM(HQ_QDBT) HQ_QDBT,                                                                       "+
+	"       SUM(TERM_BT) TERM_BT,                                                                       "+
+	"       SUM(GT_PLACE_RENT) GT_PLACE_RENT,                                                           "+
+	"       SUM(HQ_RENT) HQ_RENT,                                                                       "+
+	"       SUM(HQ_ZX_FEE) HQ_ZX_FEE,                                                                   "+
+	"       SUM(KHJR_AMOUNT) KHJR_AMOUNT,                                                               "+
+	"       SUM(KCB_COST) KCB_COST,                                                                     "+
+	"       SUM(WART_NUM) WART_NUM,                                                                     "+
+	"       SUM(ADV_FEE) ADV_FEE,                                                                       "+
+	"       SUM(YWYP_FEE) YWYP_FEE,                                                                     "+
+	"       SUM(CH_PRO_PRE) CH_PRO_PRE,                                                                 "+
+	"       SUM(SALE_DETAIL_SR) SALE_DETAIL_SR,                                                         "+
+	"       SUM(SALE_DETAIL_COST) SALE_DETAIL_COST,                                                     "+
+	"       SUM(BG_FEE) BG_FEE,                                                                         "+
+	"       SUM(CAR_FEE) CAR_FEE,                                                                       "+
+	"       SUM(ZD_FEE) ZD_FEE,                                                                         "+
+	"       SUM(CL_FEE) CL_FEE,                                                                         "+
+	"       SUM(TX_FEE) TX_FEE,                                                                         "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM                                                                            "+
+	"               TO_CHAR(SUM((MAN_COST_ALL + YJ_ALL + HQ_QDBT + TERM_BT +                            "+
+	"                           GT_PLACE_RENT + HQ_RENT + HQ_ZX_FEE +                                   "+
+	"                           KHJR_AMOUNT + KCB_COST + WART_NUM + ADV_FEE +                           "+
+	"                           YWYP_FEE + CH_PRO_PRE + SALE_DETAIL_SR +                                "+
+	"                           SALE_DETAIL_COST + BG_FEE + CAR_FEE + ZD_FEE +                          "+
+	"                           CL_FEE + TX_FEE)) * 100 /                                               "+
+	"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                  "+
+	"                       'FM9999990.99'))                                                            "+
+	"       END || '%' COST_RATE,                                                                       "+
+	"       SUM(SR_DETAIL_YW) SR_DETAIL_YW,                                                             "+
+	"       SUM(SR_DETAIL_ZX) SR_DETAIL_ZX,                                                             "+
+	"       SUM(SR_DETAIL_KD) SR_DETAIL_KD,                                                             "+
+	"       SUM(SR_DETAIL_GH) SR_DETAIL_GH,                                                             "+
+	"       SUM(SR_DETAIL_OTHER) SR_DETAIL_OTHER,                                                       "+
+	"       SUM(SR_DETAIL_SUM) SR_DETAIL_SUM,                                                           "+
+	"       SUM(YF_MON_YW) YF_MON_YW,                                                                   "+
+	"       SUM(YF_MON_ZX) YF_MON_ZX,                                                                   "+
+	"       SUM(YF_MON_KD) YF_MON_KD,                                                                   "+
+	"       SUM(YF_MON_GH) YF_MON_GH,                                                                   "+
+	"       SUM(YF_MON_OTHER) YF_MON_OTHER,                                                             "+
+	"       SUM(YF_MON_SUM) YF_MON_SUM,                                                                 "+
+	"       SUM(YJ_DEV) YJ_DEV,                                                                         "+
+	"       SUM(YJ_ACC) YJ_ACC,                                                                         "+
+	"       SUM(YJ_BOT) YJ_BOT,                                                                         "+
+	"       SUM(YJ_TWO_ALL) YJ_TWO_ALL,                                                                 "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(SR_DETAIL_YW, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(YF_MON_YW, 0)) * 100 /                                     "+
+	"                       SUM(NVL(SR_DETAIL_YW, 0)),                                                  "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_MOB_ZSHB,                                                                "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(SR_DETAIL_ZX, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(YF_MON_ZX, 0)) * 100 /                                     "+
+	"                       SUM(NVL(SR_DETAIL_ZX, 0)),                                                  "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_ZZX_ZSHB,                                                                "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(SR_DETAIL_KD, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(YF_MON_KD, 0)) * 100 /                                     "+
+	"                       SUM(NVL(SR_DETAIL_KD, 0)),                                                  "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_KD_ZSHB,                                                                 "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(SR_DETAIL_GH, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(YF_MON_GH, 0)) * 100 /                                     "+
+	"                       SUM(NVL(SR_DETAIL_GH, 0)),                                                  "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_NET_ZSHB,                                                                "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(SR_DETAIL_SUM, 0)) = 0 THEN                                                  "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(YF_MON_SUM, 0)) * 100 /                                    "+
+	"                       SUM(NVL(SR_DETAIL_SUM, 0)),                                                 "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_ZSHB,                                                                    "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM                                                                            "+
+	"               TO_CHAR(SUM(NVL(YJ_DEV, 0)) * 100 / SUM(NVL(HQ_CHARGE_SR, 0)),                      "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_DEV_ZSHB,                                                                "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM                                                                            "+
+	"               TO_CHAR(SUM(NVL(YJ_ACC, 0)) * 100 / SUM(NVL(HQ_CHARGE_SR, 0)),                      "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_ACC_ZSHB,                                                                "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM                                                                            "+
+	"               TO_CHAR(SUM(NVL(YJ_BOT, 0)) * 100 / SUM(NVL(HQ_CHARGE_SR, 0)),                      "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_BOT_ZSHB,                                                                "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) = 0 THEN                                                   "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(YJ_TWO_ALL, 0)) * 100 /                                    "+
+	"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                  "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' COMMFEE_ALL_ZSB,                                                                 "+
+	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN SUBS_OWE END) SUBS_OWE,                          "+
+	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN SUBS_PAY END) SUBS_PAY,                          "+
+	"       CASE                                                                                        "+
+	"         WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END) = 0 THEN          "+
+	"          '0.00'                                                                                   "+
+	"         ELSE                                                                                      "+
+	"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(XF_7_NUM, 0) END ) * 100 / "+
+	"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),                "+
+	"                       'FM999990.99'))                                                             "+
+	"       END || '%' SECOND_PAY                                                                       "+
+	"  FROM PMRT.VIEW_MRT_HQ_ABILITY_DETAIL_MON                                                         ";
 }
