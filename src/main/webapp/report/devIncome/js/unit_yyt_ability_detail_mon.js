@@ -33,6 +33,8 @@ $(function(){
 			var orgLevel='';
 			var startDate=$("#startDate").val();
 			var endDate=$("#endDate").val();
+			var regionCode=$("#regionCode").val();
+			var yyt_name=$("#yyt_name").val();
 			var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 			var level=0;
 			if($tr){
@@ -42,6 +44,8 @@ $(function(){
 					
 				}else if(orgLevel==3){//点击市
 					where+=" AND GROUP_ID_1='"+code+"'";
+				}else if(orgLevel==4){//点击营服
+					where+=" AND UNIT_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -58,6 +62,12 @@ $(function(){
 					where+=" AND UNIT_ID IN("+_unit_relation(code)+")";
 				}else {
 					return {data:[],extra:{}};
+				}
+				if(regionCode!=''){
+					orgLevel=2;
+				}
+				if(yyt_name!=''){
+					orgLevel=3;
 				}
 				sql=getSql(orgLevel,where,level);
 				orgLevel++;
@@ -96,7 +106,7 @@ function downsAll() {
 	if(yyt_name!=''){
 		where+=" AND YYT_NAME LIKE '%"+yyt_name+"%'";
 	}
-	var sql = " SELECT GROUP_ID_1_NAME,UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,"+field.join(",")+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID,YYT_CODE";
+	var sql = " SELECT GROUP_ID_1_NAME,UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,"+getSumSql()+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO ORDER BY GROUP_ID_1,UNIT_ID,YYT_CODE";
 	var showtext = '云南联通营业厅效能分析明细表' + startDate+"-"+endDate;
 	downloadExcel(sql,title,showtext);
 }
@@ -109,6 +119,7 @@ function getSql(orgLevel,where,level){
 		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(yyt_name!=''){
+		orgLevel=4;
 		where+=" AND YYT_NAME LIKE '%"+yyt_name+"%'";
 	}
 	if(orgLevel==1){
@@ -116,18 +127,72 @@ function getSql(orgLevel,where,level){
 	}else if(orgLevel==2){
 		return " SELECT GROUP_ID_1_NAME ROW_NAME,GROUP_ID_1 ROW_ID,'--' UNIT_NAME,'--' YYT_CODE,'--' YYT_NAME,'--' YYT_ADDR,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' YYT_CREATE_TIME,'--' BUSI_BEGIN_TIME,'--' YYT_TYPE,'--' BUSI_MODE,'--' THIRD_ATTRI,'--' BUSI_NAME,'--' RENT_NO,"+getSumSql()+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME ORDER BY GROUP_ID_1";
 	}else if(orgLevel==3){
-		return " SELECT UNIT_NAME ROW_NAME,UNIT_NAME,UNIT_ID ROW_ID,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,"+field.join(",")+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" ORDER BY GROUP_ID_1,UNIT_ID";
+		return " SELECT UNIT_NAME ROW_NAME,UNIT_NAME,UNIT_ID ROW_ID,'--' YYT_CODE,'--' YYT_NAME,'--' YYT_ADDR,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' YYT_CREATE_TIME,'--' BUSI_BEGIN_TIME,'--' YYT_TYPE,'--' BUSI_MODE,'--' THIRD_ATTRI,'--' BUSI_NAME,'--' RENT_NO,"+getSumSql()+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME ORDER BY GROUP_ID_1,UNIT_ID";
+	}else if(orgLevel==4){
+		return " SELECT YYT_NAME ROW_NAME,UNIT_NAME,YYT_CODE ROW_ID,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,"+getSumSql()+" FROM PMRT.TAB_MRT_YYT_ABILITY_MON "+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO ORDER BY GROUP_ID_1,UNIT_ID,YYT_CODE";
 	}
   }
 
 function getSumSql(){
-	var s="";
-	for(var i=0;i<field.length;i++){
-		if(i==0){
-			s+="SUM("+field[i]+") "+field[i];
-		}else{
-			s+=","+"SUM("+field[i]+") "+field[i];
-		}
-	}
-	return s;
+	var endDate=$("#endDate").val();
+	return "SUM(CASE WHEN DEAL_DATE ='"+endDate+"' THEN YYT_MAN_NUM END) YYT_MAN_NUM,                                  "+
+	"       SUM(YYT_DEV_NUM) YYT_DEV_NUM,                                                                       "+
+	"       SUM(CASE WHEN DEAL_DATE ='"+endDate+"' THEN YW_CHARGE_NUM END) YW_CHARGE_NUM,                       "+
+	"       SUM(CASE WHEN DEAL_DATE ='"+endDate+"' THEN GW_CHARGE_NUM END) GW_CHARGE_NUM,                       "+
+	"       SUM(ACCT_NUM) ACCT_NUM,                                                                             "+
+	"       SUM(YYT_ML) YYT_ML,                                                                                 "+
+	"       SUM(RETAIL_ML) RETAIL_ML,                                                                           "+
+	"       SUM(CHARGE_SR) CHARGE_SR,                                                                           "+
+	"       SUM(COST_SUM) COST_SUM,                                                                             "+
+	"       SUM(MAN_COST_CONTRACT) MAN_COST_CONTRACT,                                                           "+
+	"       SUM(MAN_COST_NOCONT) MAN_COST_NOCONT,                                                               "+
+	"       SUM(MAN_COST_FINACE) MAN_COST_FINACE,                                                               "+
+	"       SUM(MAN_COST_SUM) MAN_COST_SUM,                                                                     "+
+	"       SUM(YJ_AMOUNT) YJ_AMOUNT,                                                                           "+
+	"       SUM(HQ_SUBSIDY) HQ_SUBSIDY,                                                                         "+
+	"       SUM(TERMINAL_AMOUNT) TERMINAL_AMOUNT,                                                               "+
+	"       SUM(PLACE_RENT_AMOUNT) PLACE_RENT_AMOUNT,                                                           "+
+	"       SUM(RENT_AMOUNT) RENT_AMOUNT,                                                                       "+
+	"       SUM(DECORATION_AMOUNT) DECORATION_AMOUNT,                                                           "+
+	"       SUM(JRCB_AMOUNT) JRCB_AMOUNT,                                                                       "+
+	"       SUM(KCB_AMOUNT) KCB_AMOUNT,                                                                         "+
+	"       SUM(SDWY_AMOUNT) SDWY_AMOUNT,                                                                       "+
+	"       SUM(ADVERTISE_AMOUNT) ADVERTISE_AMOUNT,                                                             "+
+	"       SUM(YWYP_AMOUNT) YWYP_AMOUNT,                                                                       "+
+	"       SUM(PRODUCT_DOWN_PRE) PRODUCT_DOWN_PRE,                                                             "+
+	"       SUM(RETAIL_SR) RETAIL_SR,                                                                           "+
+	"       SUM(RETAIL_COST) RETAIL_COST,                                                                       "+
+	"       SUM(OFFICE_AMOUNT) OFFICE_AMOUNT,                                                                   "+
+	"       SUM(CAR_AMOUNT) CAR_AMOUNT,                                                                         "+
+	"       SUM(ZDF_AMOUNT) ZDF_AMOUNT,                                                                         "+
+	"       SUM(TRAVEL_AMOUNT) TRAVEL_AMOUNT,                                                                   "+
+	"       SUM(TXF_AMOUNT) TXF_AMOUNT,                                                                         "+
+	"       SUM(BIRTH_YW) BIRTH_YW,                                                                             "+
+	"       SUM(BIRTH_KD) BIRTH_KD,                                                                             "+
+	"       SUM(BIRTH_OTHER) BIRTH_OTHER,                                                                       "+
+	"       TRIM('.' FROM TO_CHAR(CASE WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN LAST_ACCT_YW END)=0      "+
+	"                THEN 0 ELSE SUM(BIRTH_YW)/SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN LAST_ACCT_YW END) END "+
+	"                  ,'FM999990.99')) ARPU_YW,                                                                "+
+	"       TRIM('.' FROM TO_CHAR(CASE WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN LAST_ACCT_KD END)=0      "+
+	"                THEN 0 ELSE SUM(BIRTH_KD)/SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN LAST_ACCT_KD END) END "+
+	"                  ,'FM999990.99')) ARPU_KD,                                                                "+
+	"       TRIM('.' FROM TO_CHAR(CASE WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN LAST_ACCT_OTHER END)=0          "+
+	"                THEN 0 ELSE SUM(BIRTH_OTHER)/SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN LAST_ACCT_OTHER END) END  "+
+	"                  ,'FM999990.99')) ARPU_OTHER,                                                             "+
+	"       SUM(BIRTH_SR_YW) BIRTH_SR_YW,                                                                       "+
+	"       SUM(BIRTH_SR_KD) BIRTH_SR_KD,                                                                       "+
+	"       SUM(BIRTH_SR_OTHER) BIRTH_SR_OTHER,                                                                 "+
+	"       SUM(BIRTH_COST_YW) BIRTH_COST_YW,                                                                   "+
+	"       SUM(BIRTH_COST_KD) BIRTH_COST_KD,                                                                   "+
+	"       SUM(BIRTH_COST_OTHER) BIRTH_COST_OTHER,                                                             "+
+	"       SUM(BIRTH_ML) BIRTH_ML,                                                                             "+
+	"       SUM(TERMINAL_NUM) TERMINAL_NUM,                                                                     "+
+	"       SUM(TERMINAL_MONEY) TERMINAL_MONEY,                                                                 "+
+	"       SUM(THREE_MON_TERM_NUM) THREE_MON_TERM_NUM,                                                         "+
+	"       SUM(THREE_MON_TERM_MONEY) THREE_MON_TERM_MONEY,                                                     "+
+	"       SUM(ONE_YEAR_TERM_NUM) ONE_YEAR_TERM_NUM,                                                           "+
+	"       SUM(ONE_YEAR_TERM_MONEY) ONE_YEAR_TERM_MONEY,                                                       "+
+	"       SUM(CASE WHEN DEAL_DATE ='"+endDate+"' THEN BUSI_OWE_LEFT END) BUSI_OWE_LEFT,                       "+
+	"       SUM(CASE WHEN DEAL_DATE ='"+endDate+"' THEN SUBS_OWE_LEFT END) SUBS_OWE_LEFT,                       "+
+	"       SUM(CASE WHEN DEAL_DATE ='"+endDate+"' THEN SUBS_PAY_LEFT END) SUBS_PAY_LEFT                        ";
 }
