@@ -10,8 +10,8 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.MONTH, -1);
-	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	ca.add(Calendar.DATE, -1);
+	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/bus_zy_sr_mon.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/bus_zy_sr_mon.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -41,7 +41,7 @@
 				    <td width="1%" style="text-align:right;">账期：</td>
 					<td width="1%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
 					<td width="1%">
 						<a class="default-btn" href="#" id="searchBtn"

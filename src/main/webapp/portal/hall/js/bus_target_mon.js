@@ -142,7 +142,10 @@ function getSql(dealDate){
 	"      ,SXWC_RATE   DEV_RATE                                                                                            "+
 	"FROM PMRT.VIEW_MRT_ZY_DEV_REPORT                                                                                       "+
 	"WHERE DEAL_DATE=TO_CHAR(LAST_DAY(TO_DATE('"+dealDate+"','YYYYMM')),'YYYYMMDD')                                         "+
-	")T6 ON (T.GROUP_ID_1_NAME=T6.GROUP_ID_1_NAME)                                                                          ";
+	")T6 ON (T.GROUP_ID_1_NAME=T6.GROUP_ID_1_NAME)                                                                          "+
+	"  ORDER BY PAIXU_FLAG DESC ，CASE WHEN T2.SR_ALL<>0           "+
+	"                                 THEN T1.SR_ALL/T2.SR_ALL*100"+
+	"                                 ELSE 0 END DESC             ";
 }
 
 function getSameYearFristMon(dealDate){

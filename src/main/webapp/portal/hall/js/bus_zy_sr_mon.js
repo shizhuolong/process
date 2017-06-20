@@ -5,7 +5,7 @@ var report = null;
 var downSql="";
 var dealDate="";
 $(function() {
-	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_HALL_DEV_DAY"));
+	$("#dealDate").val(getMaxDate("PMRT.VIEW_MRT_ZY_DEV_REPORT"));
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -116,7 +116,7 @@ function getSql(dealDate){
 	"                            THEN HQ_CHAN_CODE                                       "+
 	"                            END)  EQU_0_NUM                                         "+
 	"          FROM PMRT.TB_MRT_BUS_HALL_DEV_DAY                                         "+
-	"          WHERE DEAL_DATE=20170605                                                  "+
+	"          WHERE DEAL_DATE="+dealDate+"                                              "+
 	"            AND OPERATE_TYPE='自营'                                                  "+
 	"          GROUP BY GROUPING SETS (GROUP_ID_0,(GROUP_ID_0,GROUP_ID_1_NAME))          "+
 	") T2 ON(T.GROUP_ID_1_NAME=T2.GROUP_ID_1_NAME)                                       "+
