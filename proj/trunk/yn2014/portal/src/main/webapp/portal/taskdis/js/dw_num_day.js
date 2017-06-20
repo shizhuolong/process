@@ -2,7 +2,7 @@ var title=[["组织架构","渠道编码","渠道名称","经营模式","厅类�
 var field=["TOTAL_TASK_NUM","ALLOT_TASK_NUM","TASK_RATIO","DW_RATIO","DW_NUM","DW_NUM1"];
 function listProTypes(){
 	var $proType = $("#proType");
-	var sql = " SELECT distinct T.PRO_TYPE FROM PODS.VIEW_23T04_NOT_ASSORT_LIST T  WHERE T.PRO_TYPE is not null ";
+	var sql = " SELECT distinct T.PRO_TYPE FROM PODS.TB_2G_ZD_TO_4G_LIST T  WHERE T.PRO_TYPE is not null ";
 	
 	var d=query(sql);
 	if (d) {

@@ -18,7 +18,7 @@
 <script type="text/javascript" src="<%=path%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/portal/taskdis/js/jquery.jOrgChart.js?v=2"></script>
-<script type="text/javascript" src="<%=path%>/portal/taskdis/js/distribute.js?v=10"></script>
+<script type="text/javascript" src="<%=path%>/portal/taskdis/js/distribute.js?v=11"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
 </script>

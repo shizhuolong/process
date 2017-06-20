@@ -16,7 +16,7 @@ Array.prototype.shuffle = function() {
 };
 function listProTypes(){
 	var $proType = $("#proType");
-	var sql = " SELECT distinct T.PRO_TYPE FROM PODS.VIEW_23T04_NOT_ASSORT_LIST T  WHERE T.PRO_TYPE is not null ";
+	var sql = " SELECT distinct T.PRO_TYPE FROM PODS.TB_2G_ZD_TO_4G_LIST T  WHERE T.PRO_TYPE is not null ";
 	
 	var d=query(sql);
 	if (d) {
