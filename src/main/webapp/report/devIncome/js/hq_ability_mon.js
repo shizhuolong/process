@@ -40,25 +40,25 @@ $(function(){
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
 					if(regionCode!=''){//有查询条件时等于点击市
-						where+=" AND GROUP_ID_1='"+regionCode+"'";
+						where+=" AND T0.GROUP_ID_1='"+regionCode+"'";
 						level=3;
 					}else{
-						where+=" AND GROUP_ID_0='"+code+"'";
+						where+=" AND T0.GROUP_ID_0='"+code+"'";
 						level=0;
 					}
 				}else if(orgLevel==3){//点击市
 					if($("#orgLevel").val()==1&&regionCode!=''){//省级有地市查询条件时点击营服
-						where+=" AND UNIT_ID='"+code+"'";
+						where+=" AND T1.UNIT_ID='"+code+"'";
 						level=4;
 					}else{
-						where+=" AND GROUP_ID_1='"+code+"'";
+						where+=" AND T1.GROUP_ID_1='"+code+"'";
 						level=0;
 					}
 				}else if(orgLevel==4){//点击营服
 					if($("#orgLevel").val()==1&&regionCode!=''){//有地市查询条件时渠道
 						return {data:[],extra:{}}
 					}else{
-						where+=" AND UNIT_ID='"+code+"'";
+						where+=" AND T1.UNIT_ID='"+code+"'";
 						level=0;
 					}
 				}else{
@@ -76,17 +76,17 @@ $(function(){
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
 					if(regionCode!=''){//有查询条件时等于点击市
-						where+=" AND GROUP_ID_1='"+regionCode+"'";
+						where+=" AND T0.GROUP_ID_1='"+regionCode+"'";
 						level=2;
 					}else{
-						where+=" AND GROUP_ID_0=86000";
+						where+=" AND T0.GROUP_ID_0=86000";
 						level=0;
 					}
 				}else if(orgLevel==2){//市
-					where+=" AND GROUP_ID_1='"+code+"'";
+					where+=" AND T0.GROUP_ID_1='"+code+"'";
 					level=0;
 				}else if(orgLevel==3){//营服
-					where+=" AND UNIT_ID IN("+_unit_relation(code)+")";
+					where+=" AND T1.UNIT_ID IN("+_unit_relation(code)+")";
 					level=0;
 				}else {
 					return {data:[],extra:{}};
@@ -94,6 +94,7 @@ $(function(){
 				sql=getSql(orgLevel,where,level);
 				if(hqChanName!=''||hq_zy!=''){//渠道或渠道专业查询条件不为空，展示渠道，不能下钻
 					sql=getSql(4,where,0);
+					orgLevel=4;
 			    }
 				orgLevel++;
 			}
@@ -119,22 +120,22 @@ function downsAll() {
 	var hq_zy=$("#hq_zy").val();
 	
 	if (orgLevel == 1) {//省
-		where += " AND GROUP_ID_0=86000";
+		
 	} else if(orgLevel == 2){//市
-		where += " AND GROUP_ID_1='"+code+"'";
+		where += " AND T1.GROUP_ID_1='"+code+"'";
 	} else if(orgLevel == 3){//营服
-		where += " AND UNIT_ID='"+code+"'";
+		where += " AND T1.UNIT_ID='"+code+"'";
 	} else{
 		where+=" AND 1=2";
 	}
 	if(regionCode!=''){
-		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
+		where+=" AND T1.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(hqChanName!=''){
-		where+=" AND HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
+		where+=" AND T1.HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
 	}
 	if(hq_zy!=''){
-		where+=" AND HQ_ZY = '"+hq_zy+"'";
+		where+=" AND T1.HQ_ZY = '"+hq_zy+"'";
 	}
 	where+=" AND LEV=4";
 	var sql = getDownSql(where);
@@ -151,14 +152,14 @@ function getSql(orgLevel,where,level){//level区分是下钻还是查询
 		if(level!=0){
 			orgLevel=level;
 		}
-		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
+		where+=" AND T0.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	
 	if(hqChanName!=''){
-		where+=" AND HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
+		where+=" AND T0.HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
 	}
 	if(hq_zy!=''){
-		where+=" AND HQ_ZY = '"+hq_zy+"'";
+		where+=" AND T0.HQ_ZY = '"+hq_zy+"'";
 	}
 	return getSumSql(orgLevel,where);
   }
@@ -177,32 +178,32 @@ function getSumSql(level,where){
 		"       '--' HQ_STATE,                                                                "+
 		"       '--' HQ_ZY,                                                                   "+
 		"       '--' THIRD_TYPE,                                                              "+
-		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,            "+
-		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                    "+
-		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                "+
-		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                        "+
-		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                  "+
-		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                    "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                               "+
-		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                "+
-		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                               "+
-		"                       'FM9999990.99'))                                                         "+
-		"       END || '%' COST_RATE,                                                                    "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,               "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END) = 0 THEN       "+
-		"          '0.00'                                                                                "+
-		"         ELSE                                                                                   "+
-		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(XF_7_NUM, 0)END) * 100 / "+
-		"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),              "+
-		"                       'FM999990.99'))                                                          "+
-		"       END || '%' SECOND_PAY,                                                                   "+
-		"       '--' IS_TY,                                                                   "+
-		"       '--' IS_SOCIAL                                                                "+
-		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON                                              "+
+		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                                "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,               "+
+		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                     "+
+		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                 "+
+		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                         "+
+		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                   "+
+		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                     "+
+		"       CASE                                                                                      "+
+		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                                "+
+		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                 "+
+		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                "+
+		"                       'FM9999990.99'))                                                          "+
+		"       END || '%' COST_RATE,                                                                     "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,                  "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,                  "+
+		"       CASE                                                                                      "+
+		"         WHEN SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END) = 0 THEN          "+
+		"          '0.00'                                                                                 "+
+		"         ELSE                                                                                    "+
+		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(XF_7_NUM, 0)END) * 100 / "+
+		"                       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END),              "+
+		"                       'FM999990.99'))                                                           "+
+		"       END || '%' SECOND_PAY,                                                                    "+
+		"       '--' IS_TY,                                                                               "+
+		"       '--' IS_SOCIAL                                                                            "+
+		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON T0                                                       "+
 		      where+
 		"   AND LEV=4                                                                       ";
 	}else if(level==2){
@@ -216,39 +217,39 @@ function getSumSql(level,where){
 		"       '--' HQ_STATE,                                                                "+
 		"       '--' HQ_ZY,                                                                   "+
 		"       '--' THIRD_TYPE,                                                              "+
-		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,            "+
-		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                    "+
-		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                "+
-		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                        "+
-		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                  "+
-		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                    "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                               "+
-		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                "+
-		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                               "+
-		"                       'FM9999990.99'))                                                         "+
-		"       END || '%' COST_RATE,                                                                    "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,               "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END) = 0 THEN       "+
-		"          '0.00'                                                                                "+
-		"         ELSE                                                                                   "+
-		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(XF_7_NUM, 0)END) * 100 / "+
-		"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),              "+
-		"                       'FM999990.99'))                                                          "+
-		"       END || '%' SECOND_PAY,                                                                   "+
-		"       '--' IS_TY,                                                                   "+
-		"       '--' IS_SOCIAL                                                                "+
-		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON                                              "+
+		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                                "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,               "+
+		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                     "+
+		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                 "+
+		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                         "+
+		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                   "+
+		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                     "+
+		"       CASE                                                                                      "+
+		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                                "+
+		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                 "+
+		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                "+
+		"                       'FM9999990.99'))                                                          "+
+		"       END || '%' COST_RATE,                                                                     "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,                  "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,                  "+
+		"       CASE                                                                                      "+
+		"         WHEN SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END) = 0 THEN          "+
+		"          '0.00'                                                                                 "+
+		"         ELSE                                                                                    "+
+		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(XF_7_NUM, 0)END) * 100 / "+
+		"                       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END),              "+
+		"                       'FM999990.99'))                                                           "+
+		"       END || '%' SECOND_PAY,                                                                    "+
+		"       '--' IS_TY,                                                                               "+
+		"       '--' IS_SOCIAL                                                                            "+
+		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON T0                                                       "+
 		     where+
 		"   AND LEV = 4                                                                       "+
 		" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME                                                 ";
 	}else if(level==3){
 		return "SELECT                                                                         "+
-		"       UNIT_NAME ROW_NAME,                                                            "+
-		"       UNIT_ID ROW_ID,                                                                "+
+		"       T1.UNIT_NAME ROW_NAME,                                                            "+
+		"       T1.UNIT_ID ROW_ID,                                                                "+
 		"       '--' UNIT_NAME,                                                                "+
 		"       '--' HQ_CHAN_CODE,                                                             "+
 		"       '--' HQ_CHAN_NAME,                                                             "+
@@ -256,139 +257,178 @@ function getSumSql(level,where){
 		"       '--' HQ_STATE,                                                                 "+
 		"       '--' HQ_ZY,                                                                    "+
 		"       '--' THIRD_TYPE,                                                               "+
-		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,            "+
-		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                    "+
-		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                "+
-		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                        "+
-		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                  "+
-		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                    "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                               "+
-		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                "+
-		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                               "+
-		"                       'FM9999990.99'))                                                         "+
-		"       END || '%' COST_RATE,                                                                    "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,               "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END) = 0 THEN       "+
-		"          '0.00'                                                                                "+
-		"         ELSE                                                                                   "+
-		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(XF_7_NUM, 0)END) * 100 / "+
-		"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),              "+
-		"                       'FM999990.99'))                                                          "+
-		"       END || '%' SECOND_PAY,                                                                   "+
-		"       '--' IS_TY,                                                                    "+
-		"       '--' IS_SOCIAL                                                                 "+
-		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON                                               "+
+		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                                 "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,                "+
+		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                      "+
+		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                  "+
+		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                          "+
+		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                    "+
+		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                      "+
+		"       CASE                                                                                       "+
+		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                                 "+
+		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                  "+
+		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                 "+
+		"                       'FM9999990.99'))                                                           "+
+		"       END || '%' COST_RATE,                                                                      "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,                   "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,                   "+
+		"       CASE                                                                                       "+
+		"         WHEN SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END) = 0 THEN           "+
+		"          '0.00'                                                                                  "+
+		"         ELSE                                                                                     "+
+		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(XF_7_NUM, 0)END) * 100 /  "+
+		"                       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END),               "+
+		"                       'FM999990.99'))                                                            "+
+		"       END || '%' SECOND_PAY,                                                                     "+
+		"       '--' IS_TY,                                                                                "+
+		"       '--' IS_SOCIAL                                                                             "+
+		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON T0                                                        "+
+		"  LEFT JOIN  (SELECT  GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME                                                                   "+
+		"                     ,HQ_CHAN_CODE                                                                "+
+		"                     ,HQ_CHAN_NAME                                                                "+
+		"                     ,BUSI_BEGIN_TIME                                                             "+
+		"                     ,HQ_STATE                                                                    "+
+		"                     ,HQ_ZY                                                                       "+
+		"                     ,THIRD_TYPE                                                                  "+
+		"                     ,IS_TY                                                                       "+
+		"                     ,IS_SOCIAL                                                                   "+
+		"              FROM PMRT.TAB_MRT_HQ_ABILITY_MON T                                                  "+
+		"              WHERE T.DEAL_DATE='"+endDate+"'                                                     "+
+		"              )T1                                                                                 "+
+		"   ON   (T0.HQ_CHAN_CODE=T1.HQ_CHAN_CODE)                                                         "+ 
 		         where+
 		"   AND LEV = 4                                                                        "+
-		" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME                                "+
-		" ORDER BY GROUP_ID_1,UNIT_ID                                                          ";
+		" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME                                "+
+		" ORDER BY T1.GROUP_ID_1,T1.UNIT_ID                                                          ";
 	}else{
 		return "SELECT                                                                        "+
-		"       HQ_CHAN_CODE ROW_ID,                                                          "+
-		"       HQ_CHAN_NAME ROW_NAME,                                                        "+
-		"       UNIT_NAME,                                                                    "+
-		"       HQ_CHAN_CODE,                                                                 "+
-		"       HQ_CHAN_NAME,                                                                 "+
-		"       BUSI_BEGIN_TIME,                                                              "+
-		"       HQ_STATE,                                                                     "+
-		"       HQ_ZY,                                                                        "+
-		"       THIRD_TYPE,                                                                   "+
-		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,            "+
-		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                    "+
-		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                "+
-		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                        "+
-		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                  "+
-		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                    "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                               "+
-		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                "+
-		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                               "+
-		"                       'FM9999990.99'))                                                         "+
-		"       END || '%' COST_RATE,                                                                    "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,               "+
-		"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,               "+
-		"       CASE                                                                                     "+
-		"         WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END) = 0 THEN       "+
-		"          '0.00'                                                                                "+
-		"         ELSE                                                                                   "+
-		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(XF_7_NUM, 0)END) * 100 / "+
-		"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),              "+
-		"                       'FM999990.99'))                                                          "+
-		"       END || '%' SECOND_PAY,                                                                   "+
-		"       IS_TY,                                                                        "+
-		"       IS_SOCIAL                                                                     "+
-		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON                                              "+
+		"       T1.HQ_CHAN_CODE ROW_ID,                                                          "+
+		"       T1.HQ_CHAN_NAME ROW_NAME,                                                        "+
+		"       T1.UNIT_NAME,                                                                    "+
+		"       T1.HQ_CHAN_CODE,                                                                 "+
+		"       T1.HQ_CHAN_NAME,                                                                 "+
+		"       T1.BUSI_BEGIN_TIME,                                                              "+
+		"       T1.HQ_STATE,                                                                     "+
+		"       T1.HQ_ZY,                                                                        "+
+		"       T1.THIRD_TYPE,                                                                   "+
+		"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                                 "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,                "+
+		"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                      "+
+		"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                  "+
+		"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                          "+
+		"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                    "+
+		"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                      "+
+		"       CASE                                                                                       "+
+		"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                                 "+
+		"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                  "+
+		"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                 "+
+		"                       'FM9999990.99'))                                                           "+
+		"       END || '%' COST_RATE,                                                                      "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,                   "+
+		"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,                   "+
+		"       CASE                                                                                       "+
+		"         WHEN SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END) = 0 THEN           "+
+		"          '0.00'                                                                                  "+
+		"         ELSE                                                                                     "+
+		"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(XF_7_NUM, 0)END) * 100 /  "+
+		"                       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END),               "+
+		"                       'FM999990.99'))                                                            "+
+		"       END || '%' SECOND_PAY,                                                                     "+
+		"        T1.IS_TY,                                                                                    "+
+		"        T1.IS_SOCIAL                                                                                 "+
+		"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON T0                                                        "+
+		"  LEFT JOIN  (SELECT  GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME                                                                   "+
+		"                     ,HQ_CHAN_CODE                                                                "+
+		"                     ,HQ_CHAN_NAME                                                                "+
+		"                     ,BUSI_BEGIN_TIME                                                             "+
+		"                     ,HQ_STATE                                                                    "+
+		"                     ,HQ_ZY                                                                       "+
+		"                     ,THIRD_TYPE                                                                  "+
+		"                     ,IS_TY                                                                       "+
+		"                     ,IS_SOCIAL                                                                   "+
+		"              FROM PMRT.TAB_MRT_HQ_ABILITY_MON T                                                  "+
+		"              WHERE T.DEAL_DATE='"+endDate+"'                                                     "+
+		"              )T1                                                                                 "+
+		"   ON   (T0.HQ_CHAN_CODE=T1.HQ_CHAN_CODE)                                                         "+ 
 		       where+
 		" AND LEV=4"+
-		"   GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,                                              "+
-		"       UNIT_ID,                                                                      "+
-		"       UNIT_NAME,                                                                    "+
-		"       HQ_CHAN_CODE,                                                                 "+
-		"       HQ_CHAN_NAME,                                                                 "+
-		"       BUSI_BEGIN_TIME,                                                              "+
-		"       HQ_STATE,                                                                     "+
-		"       HQ_ZY,                                                                        "+
-		"       THIRD_TYPE,                                                                   "+
-		"       IS_TY,                                                                        "+
-		"       IS_SOCIAL                                                                     "+
-		"       ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE                                      ";
+		"   GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,                                              "+
+		"       T1.UNIT_ID,                                                                      "+
+		"       T1.UNIT_NAME,                                                                    "+
+		"       T1.HQ_CHAN_CODE,                                                                 "+
+		"       T1.HQ_CHAN_NAME,                                                                 "+
+		"       T1.BUSI_BEGIN_TIME,                                                              "+
+		"       T1.HQ_STATE,                                                                     "+
+		"       T1.HQ_ZY,                                                                        "+
+		"       T1.THIRD_TYPE,                                                                   "+
+		"       T1.IS_TY,                                                                        "+
+		"       T1.IS_SOCIAL                                                                     "+
+		"       ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HQ_CHAN_CODE                                      ";
 	}
 }
 
 function getDownSql(where){
 	var startDate=$("#startDate").val();
 	var endDate=$("#endDate").val();
-	return "SELECT GROUP_ID_1_NAME,                                                       "+
-	"       UNIT_NAME,                                                                    "+
-	"       HQ_CHAN_CODE,                                                                 "+
-	"       HQ_CHAN_NAME,                                                                 "+
-	"       BUSI_BEGIN_TIME,                                                              "+
-	"       HQ_STATE,                                                                     "+
-	"       HQ_ZY,                                                                        "+
-	"       THIRD_TYPE,                                                                   "+
-	"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                               "+
-	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,            "+
-	"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                    "+
-	"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                "+
-	"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                        "+
-	"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                  "+
-	"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                    "+
-	"       CASE                                                                                     "+
-	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                               "+
-	"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                "+
-	"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                               "+
-	"                       'FM9999990.99'))                                                         "+
-	"       END || '%' COST_RATE,                                                                    "+
-	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,               "+
-	"       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,               "+
-	"       CASE                                                                                     "+
-	"         WHEN SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END) = 0 THEN       "+
-	"          '0.00'                                                                                "+
-	"         ELSE                                                                                   "+
-	"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(XF_7_NUM, 0)END) * 100 / "+
-	"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),              "+
-	"                       'FM999990.99'))                                                          "+
-	"       END || '%' SECOND_PAY,                                                                   "+
-	"       IS_TY,                                                                        "+
-	"       IS_SOCIAL                                                                     "+
-	"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON                                              "+
+	return "SELECT T1.GROUP_ID_1_NAME,                                                       "+
+	"       T1.UNIT_NAME,                                                                    "+
+	"       T1.HQ_CHAN_CODE,                                                                 "+
+	"       T1.HQ_CHAN_NAME,                                                                 "+
+	"       T1.BUSI_BEGIN_TIME,                                                              "+
+	"       T1.HQ_STATE,                                                                     "+
+	"       T1.HQ_ZY,                                                                        "+
+	"       T1.THIRD_TYPE,                                                                   "+
+	"SUM(NVL(DEV_COUNT, 0)) DEV_COUNT,                                                                 "+
+	"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(CHARGE_NUM, 0)END) CHARGE_NUM,                "+
+	"       SUM(NVL(ACC_NUM_NXS, 0)) ACC_NUM_NXS,                                                      "+
+	"       SUM(NVL(HQ_ML, 0)) HQ_ML,                                                                  "+
+	"       SUM(NVL(HQ_SAL_ML, 0)) HQ_SAL_ML,                                                          "+
+	"       SUM(NVL(HQ_CHARGE_SR, 0)) HQ_CHARGE_SR,                                                    "+
+	"       SUM(NVL(HQ_COST_ALL, 0)) HQ_COST_ALL,                                                      "+
+	"       CASE                                                                                       "+
+	"         WHEN SUM(NVL(HQ_CHARGE_SR, 0)) <> 0 THEN                                                 "+
+	"          TRIM('.' FROM TO_CHAR(SUM(NVL(HQ_COST_ALL, 0)) * 100 /                                  "+
+	"                       SUM(NVL(HQ_CHARGE_SR, 0)),                                                 "+
+	"                       'FM9999990.99'))                                                           "+
+	"       END || '%' COST_RATE,                                                                      "+
+	"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_OWE, 0) END) SUBS_OWE,                   "+
+	"       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(SUBS_PAY, 0) END) SUBS_PAY,                   "+
+	"       CASE                                                                                       "+
+	"         WHEN SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END) = 0 THEN           "+
+	"          '0.00'                                                                                  "+
+	"         ELSE                                                                                     "+
+	"          TRIM('.' FROM TO_CHAR(SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(XF_7_NUM, 0)END) * 100 /  "+
+	"                       SUM(CASE WHEN DEAL_DATE="+endDate+" THEN NVL(INNET_7_NUM, 0)END),               "+
+	"                       'FM999990.99'))                                                            "+
+	"       END || '%' SECOND_PAY,                                                                     "+
+	"        T1.IS_TY,                                                                                "+
+	"        T1.IS_SOCIAL                                                                             "+
+	"  FROM PMRT.VIEW_MRT_HQ_ABILITY_ALL_MON T0                                                        "+
+	"  LEFT JOIN  (SELECT  GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME                                        "+
+	"                     ,HQ_CHAN_CODE                                                                "+
+	"                     ,HQ_CHAN_NAME                                                                "+
+	"                     ,BUSI_BEGIN_TIME                                                             "+
+	"                     ,HQ_STATE                                                                    "+
+	"                     ,HQ_ZY                                                                       "+
+	"                     ,THIRD_TYPE                                                                  "+
+	"                     ,IS_TY                                                                       "+
+	"                     ,IS_SOCIAL                                                                   "+
+	"              FROM PMRT.TAB_MRT_HQ_ABILITY_MON T                                                  "+
+	"              WHERE T.DEAL_DATE='"+endDate+"'                                                     "+
+	"              )T1                                                                                 "+
+	"   ON   (T0.HQ_CHAN_CODE=T1.HQ_CHAN_CODE)                                                         "+ 
 	       where+
 	" AND LEV=4"+
-	"   GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,                                                 "+
-	"       UNIT_ID,                                                                      "+
-	"       UNIT_NAME,                                                                    "+
-	"       HQ_CHAN_CODE,                                                                 "+
-	"       HQ_CHAN_NAME,                                                                 "+
-	"       BUSI_BEGIN_TIME,                                                              "+
-	"       HQ_STATE,                                                                     "+
-	"       HQ_ZY,                                                                        "+
-	"       THIRD_TYPE,                                                                   "+
-	"       IS_TY,                                                                        "+
-	"       IS_SOCIAL                                                                     "+
-	"       ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE                                      ";
+	"   GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,                                              "+
+	"       T1.UNIT_ID,                                                                      "+
+	"       T1.UNIT_NAME,                                                                    "+
+	"       T1.HQ_CHAN_CODE,                                                                 "+
+	"       T1.HQ_CHAN_NAME,                                                                 "+
+	"       T1.BUSI_BEGIN_TIME,                                                              "+
+	"       T1.HQ_STATE,                                                                     "+
+	"       T1.HQ_ZY,                                                                        "+
+	"       T1.THIRD_TYPE,                                                                   "+
+	"       T1.IS_TY,                                                                        "+
+	"       T1.IS_SOCIAL                                                                     "+
+	"       ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HQ_CHAN_CODE                                      ";
 }
