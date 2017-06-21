@@ -455,7 +455,7 @@ function getSql(orgLevel,where){
 		"         SUM(KC_NUM3) KC_NUM3                                      "+
 		",SUM(NVL(ZCZD_NUM,0)) ZCZD_NUM"+
 		"    FROM PMRT.TB_MRT_BUS_DEVICE_SALE_MON                           "+
-		" WHERE DEAL_DATE IN (SELECT * FROM TABLE (PMRT.LAST_QUAR_DEAL1("+dealDate+")))"+ 
+		" WHERE DEAL_DATE = PMRT.LAST_QUAR_DEAL("+dealDate+")"               + 
 		      where+
 		" GROUP BY GROUP_ID_0, GROUP_ID_1, GROUP_ID_1_NAME, DEAL_DATE) T4   "+
 		" ON(T.GROUP_ID_1_NAME=T4.GROUP_ID_1_NAME)                          ";
