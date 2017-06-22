@@ -39,7 +39,7 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
-					where+=" AND T0.GROUP_ID_0='"+code+"'";
+					
 				}else if(orgLevel==3){//点击市
 					where+=" AND T1.GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==4){//点击营服
@@ -53,9 +53,9 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					where+=" AND T0.GROUP_ID_0=86000";
+					
 				}else if(orgLevel==2){//市
-					where+=" AND T0.GROUP_ID_1='"+code+"'";
+					where+=" AND T1.GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服
 					where+=" AND T1.UNIT_ID IN("+_unit_relation(code)+")";
 				}else {
@@ -86,7 +86,7 @@ function downsAll() {
 	var hq_zy=$("#hq_zy").val();
 	
 	if (orgLevel == 1) {//省
-		where += " AND T0.GROUP_ID_0=86000";
+		
 	} else if(orgLevel == 2){//市
 		where += " AND T1.GROUP_ID_1='"+code+"'";
 	} else if(orgLevel == 3){//营服
@@ -115,18 +115,18 @@ function getSql(orgLevel,where){
 	var hqChanName=$("#hqChanName").val();
 	var hq_zy=$("#hq_zy").val();
 	if(regionCode!=''){
-		where+=" AND T0.GROUP_ID_1 = '"+regionCode+"'";
+		where+=" AND T1.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(hqChanName!=''){
-		where+=" AND T0.HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
+		where+=" AND T1.HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
 	}
 	if(hq_zy!=''){
-		where+=" AND T0.HQ_ZY = '"+hq_zy+"'";
+		where+=" AND T1.HQ_ZY = '"+hq_zy+"'";
 	}
 	if(orgLevel==1){
-		return " SELECT '云南省' ROW_NAME,'86000' ROW_ID,'--' UNIT_NAME,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' BUSI_BEGIN_TIME,'--' HQ_STATE,'--' HQ_ZY,'--' THIRD_TYPE,'--' IS_TY,'--' IS_SOCIAL,"+getSumSql(orgLevel)+where+" GROUP BY GROUP_ID_0";
+		return " SELECT '云南省' ROW_NAME,'86000' ROW_ID,'--' UNIT_NAME,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' BUSI_BEGIN_TIME,'--' HQ_STATE,'--' HQ_ZY,'--' THIRD_TYPE,'--' IS_TY,'--' IS_SOCIAL,"+getSumSql(orgLevel)+where;
 	}else if(orgLevel==2){
-		return " SELECT GROUP_ID_1_NAME ROW_NAME,GROUP_ID_1 ROW_ID,'--' UNIT_NAME,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' BUSI_BEGIN_TIME,'--' HQ_STATE,'--' HQ_ZY,'--' THIRD_TYPE,'--' IS_TY,'--' IS_SOCIAL,"+getSumSql(orgLevel)+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME ORDER BY GROUP_ID_1";
+		return " SELECT T1.GROUP_ID_1_NAME ROW_NAME,T1.GROUP_ID_1 ROW_ID,'--' UNIT_NAME,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' BUSI_BEGIN_TIME,'--' HQ_STATE,'--' HQ_ZY,'--' THIRD_TYPE,'--' IS_TY,'--' IS_SOCIAL,"+getSumSql(orgLevel)+where+" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME ORDER BY T1.GROUP_ID_1";
 	}else if(orgLevel==3){
 		return " SELECT T1.UNIT_NAME ROW_NAME,T1.UNIT_ID ROW_ID,'--' UNIT_NAME,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' BUSI_BEGIN_TIME,'--' HQ_STATE,'--' HQ_ZY,'--' THIRD_TYPE,'--' IS_TY,'--' IS_SOCIAL,"+getSumSql(orgLevel)+where+" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME ORDER BY T1.GROUP_ID_1,T1.UNIT_ID";
 	}else if(orgLevel==4){
@@ -292,8 +292,7 @@ function getSumSql(level){
 	"       END || '%' SECOND_PAY                                                                       "+
 	"  FROM PMRT.VIEW_MRT_HQ_ABILITY_DETAIL_MON T0                                                        ";
 	
-	if(level>=3){
-		sql+="LEFT JOIN (SELECT GROUP_ID_1,GROUP_ID_1_NAME," +
+	sql+="LEFT JOIN (SELECT GROUP_ID_1,GROUP_ID_1_NAME," +
 		"                      UNIT_ID,UNIT_NAME        "+
 		"                     ,HQ_CHAN_CODE              "+
 		"                     ,HQ_CHAN_NAME              "+
@@ -307,6 +306,5 @@ function getSumSql(level){
 		"              WHERE T.DEAL_DATE='"+endDate+"'   "+
 		"              )T1                               "+
 		"   ON   (T0.HQ_CHAN_CODE=T1.HQ_CHAN_CODE)       ";
-	}
 	return sql;
 }
