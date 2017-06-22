@@ -156,10 +156,10 @@ function getSql(orgLevel,where){
 		"                               0                                                              "+
 		"                            END || '%',                                                       "+
 		"                            2) ML_RATE,                                                       "+
-		"       SUM(NVL(T.ML_SR_ACC1, 0)) ML_SR_ACC1,                                                  "+
+		"       SUM(NVL(T4.ML_SR_ACC, 0)) ML_SR_ACC1,                                                  "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
-		"                              WHEN SUM(NVL(T.SR_ACC1, 0)) <> 0 THEN                           "+
-		"                               SUM(NVL(T.ML_SR_ACC1, 0)) * 100 / SUM(NVL(T.SR_ACC1, 0))       "+
+		"                              WHEN SUM(NVL(T4.SR_ACC, 0)) <> 0 THEN                           "+
+		"                               SUM(NVL(T4.ML_SR_ACC, 0)) * 100 / SUM(NVL(T4.SR_ACC, 0))       "+
 		"                              ELSE                                                            "+
 		"                               0                                                              "+
 		"                            END || '%',                                                       "+
@@ -245,9 +245,18 @@ function getSql(orgLevel,where){
 		"        GROUP BY GROUP_ID_0                                                                   "+
 		")T3                                                                                           "+
 		"ON(T.GROUP_ID_0=T3.GROUP_ID_0)                                                                "+
+		"LEFT JOIN (SELECT GROUP_ID_0,                                                                 "+
+		"                  SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC                                            "+
+		"                 ,SUM(NVL(SR_ACC, 0)) SR_ACC                                            "+
+		"        FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                      "+
+		"        WHERE DEAL_DATE BETWEEN "+getFristMonth(dealDate)+" AND "+dealDate                     +  
+		    where+
+		"        GROUP BY GROUP_ID_0                                                                   "+
+		")T4                                                                                           "+
+		"ON(T.GROUP_ID_0=T4.GROUP_ID_0)  "+
 		"GROUP BY T.GROUP_ID_0                                                                         ";
 	}else if(orgLevel==2){
-		return "SELECT T.GROUP_ID_1 ROW_ID,                                                                   "+
+		return "SELECT T.GROUP_ID_1 ROW_ID,                                                            "+
 		"       T.GROUP_ID_1_NAME ROW_NAME,                                                            "+
 		"       '--' HALL_ID,                                                                          "+
 		"       '--' YYY_TYPE,                                                                         "+
@@ -277,14 +286,22 @@ function getSql(orgLevel,where){
 		"                               0                                                              "+
 		"                            END || '%',                                                       "+
 		"                            2) ML_RATE,                                                       "+
-		"       SUM(NVL(T.ML_SR_ACC1, 0)) ML_SR_ACC1,                                                  "+
+		"       SUM(NVL(T4.ML_SR_ACC, 0)) ML_SR_ACC1,                                                  "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
-		"                              WHEN SUM(NVL(T.SR_ACC1, 0)) <> 0 THEN                           "+
-		"                               SUM(NVL(T.ML_SR_ACC1, 0)) * 100 / SUM(NVL(T.SR_ACC1, 0))       "+
+		"                              WHEN SUM(NVL(T4.SR_ACC, 0)) <> 0 THEN                           "+
+		"                               SUM(NVL(T4.ML_SR_ACC, 0)) * 100 / SUM(NVL(T4.SR_ACC, 0))       "+
 		"                              ELSE                                                            "+
 		"                               0                                                              "+
 		"                            END || '%',                                                       "+
 		"                            2) ML_RATE1,                                                      "+
+		"       PODS.GET_RADIX_POINT(CASE                                                              "+
+		"                              WHEN SUM(NVL(T1.ML_SR_ACC, 0)) <> 0 THEN                        "+
+		"                               (SUM(NVL(T.ML_SR_ACC, 0)) - SUM(NVL(T1.ML_SR_ACC, 0))) * 100 / "+
+		"                               SUM(NVL(T1.ML_SR_ACC, 0))                                      "+
+		"                              ELSE                                                            "+
+		"                               0                                                              "+
+		"                            END || '%',                                                       "+
+		"                            2) ML_RATEL,                                                      "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T1.ML_SR_ACC, 0)) <> 0 THEN                        "+
 		"                               (SUM(NVL(T.ML_SR_ACC, 0)) - SUM(NVL(T1.ML_SR_ACC, 0))) * 100 / "+
@@ -366,6 +383,15 @@ function getSql(orgLevel,where){
 		"        GROUP BY GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                                        "+
 		")T3                                                                                           "+
 		"ON(T.GROUP_ID_1=T3.GROUP_ID_1)                                                                "+
+		"LEFT JOIN (SELECT GROUP_ID_0,                                                                 "+
+		"                  SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC                                            "+
+		"                 ,SUM(NVL(SR_ACC, 0)) SR_ACC                                                  "+
+		"        FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                      "+
+		"        WHERE DEAL_DATE BETWEEN "+getFristMonth(dealDate)+" AND "+dealDate                     +  
+		    where+
+		"        GROUP BY GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                                                                  "+
+		")T4                                                                                           "+
+		"ON(T.GROUP_ID_0=T4.GROUP_ID_0)"+
 		"GROUP BY T.GROUP_ID_1,                                                                        "+
 		"         T.GROUP_ID_1_NAME                                                                    ";
 	}else{
