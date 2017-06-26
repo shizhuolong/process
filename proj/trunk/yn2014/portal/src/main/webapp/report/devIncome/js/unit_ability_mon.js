@@ -166,7 +166,12 @@ function getAllSql(where,level){
 	  "       SUM(PMRT.SUM_RATIO((SELECT CHARGE_COM_RATE FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+"))||'%' CHARGE_COM_RATE,            "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT MAN_COST FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+")) MAN_COST,              "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SR_LAST_YEAR FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+")) SR_LAST_YEAR,          "+
-	  "       SUM(PMRT.SUM_RATIO(TO_NUMBER(T.HR_COUNTS),"+startDate+","+endDate+")) HR_COUNTS,                                                                                             "+
+	  "SUM(PMRT.SUM_RATIO((SELECT HR_COUNTS                         "+
+	  "                           FROM PMRT.TAB_MRT_UNIT_ABILITY_MON"+
+	  "                          WHERE DEAL_DATE = "+endDate+"      "+
+	  "                            AND GROUP_LEVEL = 0),            "+
+	  "                         "+startDate+",                      "+
+	  "                         "+endDate+")) HR_COUNTS,            "+                                                                                            
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_COST FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+")) SC_COST,               "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_LEFT FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+")) SC_LEFT,               "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_COM FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+")) SC_COM,                "+
@@ -215,7 +220,12 @@ function getAllSql(where,level){
 	  "       SUM(PMRT.SUM_RATIO((SELECT CHARGE_COM_RATE FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=1 AND GROUP_ID_1=T.GROUP_ID_1),"+startDate+","+endDate+"))||'%' CHARGE_COM_RATE,            "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT MAN_COST FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=0),"+startDate+","+endDate+")) MAN_COST,              "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SR_LAST_YEAR FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=1 AND GROUP_ID_1=T.GROUP_ID_1),"+startDate+","+endDate+")) SR_LAST_YEAR,          "+
-	  "       SUM(PMRT.SUM_RATIO(TO_NUMBER(T.HR_COUNTS),"+startDate+","+endDate+")) HR_COUNTS,                                                                                             "+
+	  "SUM(PMRT.SUM_RATIO((SELECT HR_COUNTS                         "+
+	  "                           FROM PMRT.TAB_MRT_UNIT_ABILITY_MON"+
+	  "                          WHERE DEAL_DATE = "+endDate+"      "+
+	  "                            AND GROUP_LEVEL = 1 AND GROUP_ID_1=T.GROUP_ID_1),            "+
+	  "                         "+startDate+",                      "+
+	  "                         "+endDate+")) HR_COUNTS,            "+                                                                                          
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_COST FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=1 AND GROUP_ID_1=T.GROUP_ID_1),"+startDate+","+endDate+")) SC_COST,               "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_LEFT FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=1 AND GROUP_ID_1=T.GROUP_ID_1),"+startDate+","+endDate+")) SC_LEFT,               "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_COM FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=1 AND GROUP_ID_1=T.GROUP_ID_1),"+startDate+","+endDate+")) SC_COM,                "+
@@ -264,7 +274,12 @@ function getAllSql(where,level){
 	  "       SUM(PMRT.SUM_RATIO((SELECT CHARGE_COM_RATE FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=2 AND UNIT_ID=T.UNIT_ID),"+startDate+","+endDate+"))||'%' CHARGE_COM_RATE,            "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT MAN_COST FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=2 AND UNIT_ID=T.UNIT_ID),"+startDate+","+endDate+")) MAN_COST,              "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SR_LAST_YEAR FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=2 AND UNIT_ID=T.UNIT_ID),"+startDate+","+endDate+")) SR_LAST_YEAR,          "+
-	  "       SUM(PMRT.SUM_RATIO(TO_NUMBER(T.HR_COUNTS),"+startDate+","+endDate+")) HR_COUNTS,                                                                                             "+
+	  "SUM(PMRT.SUM_RATIO((SELECT HR_COUNTS                         "+
+	  "                           FROM PMRT.TAB_MRT_UNIT_ABILITY_MON"+
+	  "                          WHERE DEAL_DATE = "+endDate+"      "+
+	  "                            AND GROUP_LEVEL = 2 AND UNIT_ID=T.UNIT_ID),"+
+	  "                         "+startDate+",                      "+
+	  "                         "+endDate+")) HR_COUNTS,            "+                                                                                            
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_COST FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=2 AND UNIT_ID=T.UNIT_ID),"+startDate+","+endDate+")) SC_COST,               "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_LEFT FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=2 AND UNIT_ID=T.UNIT_ID),"+startDate+","+endDate+")) SC_LEFT,               "+
 	  "       SUM(PMRT.SUM_RATIO((SELECT SC_COM FROM PMRT.TAB_MRT_UNIT_ABILITY_MON WHERE DEAL_DATE="+endDate+" AND GROUP_LEVEL=2 AND UNIT_ID=T.UNIT_ID),"+startDate+","+endDate+")) SC_COM,                "+
