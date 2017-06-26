@@ -37,12 +37,21 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
+					where+=" AND GROUP_LEVEL=1";
 					level=2;
 				}else if(orgLevel==3){//点击市
-					where+=" AND GROUP_ID_1='"+code+"'";
+					where+=" AND GROUP_LEVEL=2 AND GROUP_ID_1='"+code+"'";
 					level=3;
 				}else{
 					return {data:[],extra:{}}
+				}
+				if(regionCode!=''){
+					  where=" WHERE DEAL_DATE = "+dealDate+" AND GROUP_LEVEL=2 AND GROUP_ID_1 = '"+regionCode+"'";
+					  orgLevel=3;
+					  level=3;
+				}
+				if(unitCode!=''){
+					return {data:[],extra:{}};
 				}
 				sql=getSql(where,level);
 				orgLevel++;
@@ -52,14 +61,24 @@ $(function(){
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
 					level=1;
+					where+=" AND GROUP_LEVEL=0";
 				}else if(orgLevel==2){//市
-					where+=" AND GROUP_ID_1='"+code+"'";
+					where+=" AND GROUP_LEVEL=1 AND GROUP_ID_1='"+code+"'";
 					level=2;
 				}else if(orgLevel==3){//营服
 					level=3;
-					where+=" AND UNIT_ID IN("+_unit_relation(code)+")";
+					where+=" AND GROUP_LEVEL=2 AND UNIT_ID IN("+_unit_relation(code)+")";
 				}else {
 					return {data:[],extra:{}};
+				}
+				if(regionCode!=''){
+					  where=" WHERE DEAL_DATE = "+dealDate+" AND GROUP_LEVEL=1 AND GROUP_ID_1 = '"+regionCode+"'";
+					  level=2;
+				}
+				if(unitCode!=''){
+					  where=" WHERE DEAL_DATE = "+dealDate+" AND GROUP_LEVEL=2 AND UNIT_ID = '"+unitCode+"'";
+					  where+=" AND GROUP_LEVEL=2";
+					  level=3;
 				}
 				sql=getSql(where,level);
 				orgLevel++;
@@ -107,52 +126,14 @@ function getSql(where,level){
   var regionCode=$("#regionCode").val();
   var unitCode=$("#unitCode").val();
   var dealDate=$("#dealDate").val();
-  if(regionCode!=''){
-		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
-	}
-	if(unitCode!=''){
-		where+=" AND UNIT_ID = '"+unitCode+"'";
-	}
   if(level==1){
-	  return "SELECT                                                                                                                                                                                 "+
+	  return "SELECT                                                                                                                                                                          "+
 	  "                       '86000' ROW_ID,                                                                                                                                                 "+
-	  "                       '云南省' ROW_NAME,                                                                                                                                              "+
+	  "                       '云南省' ROW_NAME,                                                                                                                                                "+
 	  "                       '--' UNIT_NAME,                                                                                                                                                 "+
 	  "                       '--' UNIT_ID,                                                                                                                                                   "+
 	  "                       '--' UNIT_TYPE,                                                                                                                                                 "+
-	  "                       SUM(NVL(FACT_UNIT_AMOUNT,0)) FACT_UNIT_AMOUNT,                                                                                                                  "+
-	  "                       CASE WHEN SUM(NVL(YS_UNIT_AMOUNT,0))=0 THEN '-' ELSE PODS.GET_RADIX_POINT(SUM(NVL(FACT_UNIT_AMOUNT,0))*100/SUM(NVL(YS_UNIT_AMOUNT,0))||'%',2) END COM_UNIT_RATE,"+
-	  "                       SUM(NVL(INCOME_2G,0)) INCOME_2G,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_3G,0)) INCOME_3G,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_4G,0)) INCOME_4G,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_ZX,0)) INCOME_ZX,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_KD,0)) INCOME_KD,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_GH,0)) INCOME_GH,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_OTHER,0)) INCOME_OTHER,                                                                                                                          "+
-	  "                       SUM(NVL(INCOME_TOTAL,0)) INCOME_TOTAL,                                                                                                                          "+
-	  "                       SUM(NVL(GRIDDING_TOTAL,0)) GRIDDING_TOTAL,                                                                                                                      "+
-	  "                       SUM(NVL(COMM_2G,0)) COMM_2G,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_3G,0)) COMM_3G,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_4G,0)) COMM_4G,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_ZX,0)) COMM_ZX,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_KD,0)) COMM_KD,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_HARDLINK,0)) COMM_HARDLINK,                                                                                                                        "+
-	  "                       SUM(NVL(COMM_GY,0)) COMM_GY,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_TOTAL,0)) COMM_TOTAL,                                                                                                                              "+
-	  "                       SUM(NVL(CHANNEL,0)) CHANNEL,                                                                                                                                    "+
-	  "                       SUM(NVL(ZDBT_AMOUNT,0)) ZDBT_AMOUNT,                                                                                                                            "+
-	  "                       SUM(NVL(KVB_AMOUNT,0)) KVB_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(FZF_AMOUNT,0)) FZF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(ZX_AMOUNT,0)) ZX_AMOUNT,                                                                                                                                "+
-	  "                       SUM(NVL(SDWYF_AMOUNT,0)) SDWYF_AMOUNT,                                                                                                                          "+
-	  "                       SUM(NVL(ADS_AMOUNT,0)) ADS_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(YWYPCLF_AMOUNT,0)) YWYPCLF_AMOUNT,                                                                                                                      "+
-	  "                       SUM(NVL(CLSYF_AMOUNT,0)) CLSYF_AMOUNT,                                                                                                                          "+
-	  "                       SUM(NVL(ZDF_AMOUNT,0)) ZDF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(BGF_AMOUNT,0)) BGF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(CLF_AMOUNT,0)) CLF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(TXF_AMOUNT,0)) TXF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(FEE_JMWB,0)) FEE_JMWB                                                                                                                                   "+
+	  field.join(",")+
 	  "                  FROM PMRT.TAB_MRT_UNIT_ABILITY_MON                                                                                                                                   "+
 	     where;     
   }else if(level==2){
@@ -162,88 +143,18 @@ function getSql(where,level){
 	  "                       '--' UNIT_NAME,                                                                                                                                                 "+
 	  "                       '--' UNIT_ID,                                                                                                                                                   "+
 	  "                       '--' UNIT_TYPE,                                                                                                                                                 "+
-	  "                       SUM(NVL(FACT_UNIT_AMOUNT,0)) FACT_UNIT_AMOUNT,                                                                                                                  "+
-	  "                       CASE WHEN SUM(NVL(YS_UNIT_AMOUNT,0))=0 THEN '-' ELSE PODS.GET_RADIX_POINT(SUM(NVL(FACT_UNIT_AMOUNT,0))*100/SUM(NVL(YS_UNIT_AMOUNT,0))||'%',2) END COM_UNIT_RATE,"+
-	  "                       SUM(NVL(INCOME_2G,0)) INCOME_2G,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_3G,0)) INCOME_3G,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_4G,0)) INCOME_4G,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_ZX,0)) INCOME_ZX,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_KD,0)) INCOME_KD,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_GH,0)) INCOME_GH,                                                                                                                                "+
-	  "                       SUM(NVL(INCOME_OTHER,0)) INCOME_OTHER,                                                                                                                          "+
-	  "                       SUM(NVL(INCOME_TOTAL,0)) INCOME_TOTAL,                                                                                                                          "+
-	  "                       SUM(NVL(GRIDDING_TOTAL,0)) GRIDDING_TOTAL,                                                                                                                      "+
-	  "                       SUM(NVL(COMM_2G,0)) COMM_2G,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_3G,0)) COMM_3G,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_4G,0)) COMM_4G,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_ZX,0)) COMM_ZX,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_KD,0)) COMM_KD,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_HARDLINK,0)) COMM_HARDLINK,                                                                                                                        "+
-	  "                       SUM(NVL(COMM_GY,0)) COMM_GY,                                                                                                                                    "+
-	  "                       SUM(NVL(COMM_TOTAL,0)) COMM_TOTAL,                                                                                                                              "+
-	  "                       SUM(NVL(CHANNEL,0)) CHANNEL,                                                                                                                                    "+
-	  "                       SUM(NVL(ZDBT_AMOUNT,0)) ZDBT_AMOUNT,                                                                                                                            "+
-	  "                       SUM(NVL(KVB_AMOUNT,0)) KVB_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(FZF_AMOUNT,0)) FZF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(ZX_AMOUNT,0)) ZX_AMOUNT,                                                                                                                                "+
-	  "                       SUM(NVL(SDWYF_AMOUNT,0)) SDWYF_AMOUNT,                                                                                                                          "+
-	  "                       SUM(NVL(ADS_AMOUNT,0)) ADS_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(YWYPCLF_AMOUNT,0)) YWYPCLF_AMOUNT,                                                                                                                      "+
-	  "                       SUM(NVL(CLSYF_AMOUNT,0)) CLSYF_AMOUNT,                                                                                                                          "+
-	  "                       SUM(NVL(ZDF_AMOUNT,0)) ZDF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(BGF_AMOUNT,0)) BGF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(CLF_AMOUNT,0)) CLF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(TXF_AMOUNT,0)) TXF_AMOUNT,                                                                                                                              "+
-	  "                       SUM(NVL(FEE_JMWB,0)) FEE_JMWB                                                                                                                                   "+
+	      field.join(",")+
 	  "                  FROM PMRT.TAB_MRT_UNIT_ABILITY_MON                                                                                                                                   "+
-	                     where+
-	  "                 GROUP BY GROUP_ID_1, GROUP_ID_1_NAME                                                                                                                                  "+
-	  "                 ORDER BY GROUP_ID_1                                                                                                                                                   ";
+	                     where;
   }else if(level==3){
 	  return "SELECT          GROUP_ID_1_NAME,                                                                                                                                                 "+
-	  "                       UNIT_NAME ROW_NAME,                                                                                                                                                       "+
+	  "                       UNIT_NAME ROW_NAME,                                                                                                                                              "+
 	  "                       UNIT_ID,                                                                                                                                                         "+
 	  "                       UNIT_TYPE,                                                                                                                                                       "+
-	  "                       SUM(NVL(FACT_UNIT_AMOUNT,0)) FACT_UNIT_AMOUNT,                                                                                                                   "+
-	  "                       CASE WHEN SUM(NVL(YS_UNIT_AMOUNT,0))=0 THEN '-' ELSE PODS.GET_RADIX_POINT(SUM(NVL(FACT_UNIT_AMOUNT,0))*100/SUM(NVL(YS_UNIT_AMOUNT,0))||'%',2) END COM_UNIT_RATE, "+
-	  "                       SUM(NVL(INCOME_2G,0)) INCOME_2G,                                                                                                                                 "+
-	  "                       SUM(NVL(INCOME_3G,0)) INCOME_3G,                                                                                                                                 "+
-	  "                       SUM(NVL(INCOME_4G,0)) INCOME_4G,                                                                                                                                 "+
-	  "                       SUM(NVL(INCOME_ZX,0)) INCOME_ZX,                                                                                                                                 "+
-	  "                       SUM(NVL(INCOME_KD,0)) INCOME_KD,                                                                                                                                 "+
-	  "                       SUM(NVL(INCOME_GH,0)) INCOME_GH,                                                                                                                                 "+
-	  "                       SUM(NVL(INCOME_OTHER,0)) INCOME_OTHER,                                                                                                                           "+
-	  "                       SUM(NVL(INCOME_TOTAL,0)) INCOME_TOTAL,                                                                                                                           "+
-	  "                       SUM(NVL(GRIDDING_TOTAL,0)) GRIDDING_TOTAL,                                                                                                                       "+
-	  "                       SUM(NVL(COMM_2G,0)) COMM_2G,                                                                                                                                     "+
-	  "                       SUM(NVL(COMM_3G,0)) COMM_3G,                                                                                                                                     "+
-	  "                       SUM(NVL(COMM_4G,0)) COMM_4G,                                                                                                                                     "+
-	  "                       SUM(NVL(COMM_ZX,0)) COMM_ZX,                                                                                                                                     "+
-	  "                       SUM(NVL(COMM_KD,0)) COMM_KD,                                                                                                                                     "+
-	  "                       SUM(NVL(COMM_HARDLINK,0)) COMM_HARDLINK,                                                                                                                         "+
-	  "                       SUM(NVL(COMM_GY,0)) COMM_GY,                                                                                                                                     "+
-	  "                       SUM(NVL(COMM_TOTAL,0)) COMM_TOTAL,                                                                                                                               "+
-	  "                       SUM(NVL(CHANNEL,0)) CHANNEL,                                                                                                                                     "+
-	  "                       SUM(NVL(ZDBT_AMOUNT,0)) ZDBT_AMOUNT,                                                                                                                             "+
-	  "                       SUM(NVL(KVB_AMOUNT,0)) KVB_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(FZF_AMOUNT,0)) FZF_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(ZX_AMOUNT,0)) ZX_AMOUNT,                                                                                                                                 "+
-	  "                       SUM(NVL(SDWYF_AMOUNT,0)) SDWYF_AMOUNT,                                                                                                                           "+
-	  "                       SUM(NVL(ADS_AMOUNT,0)) ADS_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(YWYPCLF_AMOUNT,0)) YWYPCLF_AMOUNT,                                                                                                                       "+
-	  "                       SUM(NVL(CLSYF_AMOUNT,0)) CLSYF_AMOUNT,                                                                                                                           "+
-	  "                       SUM(NVL(ZDF_AMOUNT,0)) ZDF_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(BGF_AMOUNT,0)) BGF_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(CLF_AMOUNT,0)) CLF_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(TXF_AMOUNT,0)) TXF_AMOUNT,                                                                                                                               "+
-	  "                       SUM(NVL(FEE_JMWB,0)) FEE_JMWB                                                                                                                                    "+
+	       field.join(",")+
 	  "                  FROM PMRT.TAB_MRT_UNIT_ABILITY_MON                                                                                                                                    "+
-	                    where+
-	  "                 GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,                                                                                                                                   "+
-	  "                       UNIT_NAME,                                                                                                                                                       "+
-	  "                       UNIT_ID,                                                                                                                                                         "+
-	  "                       UNIT_TYPE                                                                                                                                                        "+
-	  "ORDER BY GROUP_ID_1,UNIT_ID";                                            
+	                    where;
+	                                          
   }
 }
 
