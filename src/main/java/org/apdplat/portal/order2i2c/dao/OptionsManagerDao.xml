@@ -11,6 +11,6 @@
 	<update id="save" parameterType="java.util.Map">
 	    UPDATE PMRT.TAB_MRT_YYT_ZD_BASE SET CHECK_USER=#{username},
 	    CHECK_TIME=SYSDATE,IS_YES=#{isAgree}
-	    WHERE GROUP_ID_1=#{regionCode}
+	    WHERE GROUP_ID_1=#{regionCode} AND WORK_FLOW_CODE=#{workNo}
 	</update>
 </mapper>
