@@ -3,7 +3,8 @@
 <%@page import="java.util.Calendar"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%
-String path=request.getContextPath();
+  String path=request.getContextPath();
+  String paySession=session.getId();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,9 +31,10 @@ String path=request.getContextPath();
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_unsupported_edit.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_unsupported_edit.js?v=1"></script>
 <script type="text/javascript">
    var path="<%=path%>";
+   var paySession="<%=paySession%>";
 </script>
 </head>
 <body>
