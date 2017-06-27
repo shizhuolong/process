@@ -281,7 +281,7 @@ function initUpload() {
 	/*  注：上传路径 tomcat用jsessionid, weblogic 用portalSession [2013-05-09 H]*/
 	$("#uploadify").uploadify({//url:$("#ctx").val()+"/twoSupported/two-supported!list.action",
 		   'uploader'       : path+'/js/jqueryUpload/uploadify.swf',
-		   'script'         : path+'/subsidyUpload/subsidy-upload!upload.action',//servlet的路径或者.jsp 这是访问servlet 'scripts/uploadif' 
+		   'script'         : path+'/subsidyUpload/subsidy-upload!upload.action?paySession='+paySession,//servlet的路径或者.jsp 这是访问servlet 'scripts/uploadif' 
 		   'method'         :'GET',  //如果要传参数，就必须改为GET
 		   'cancelImg'      : path+'/images/cancel.png',
 		   'folder'         : 'upload', //要上传到的服务器路径，
