@@ -1,7 +1,10 @@
 package org.apdplat.portal.order2i2c.action;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -11,24 +14,24 @@ import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.portal.order2i2c.service.OptionsManagerService;
+import org.apdplat.portal.order2i2c.service.SalesManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@Namespace("/optionsManager")
+@Namespace("/salesManager")
 @Scope("prototype")
 @Results({
-	@Result(name="success", location="/portal/channelManagement/jsp/import_base_list.jsp")
+	@Result(name="success", location="/portal/channelManagement/jsp/sales_manager_list.jsp")
 })
 @SuppressWarnings("serial")
-public class OptionsManagerAction extends BaseAction {
+public class SalesManagerAction extends BaseAction {
 	 @SuppressWarnings("unused")
 	private final APDPlatLogger logger = new APDPlatLogger(getClass());
 
 	@Autowired
-	private OptionsManagerService service;
+	private SalesManagerService service;
 	private Map<String, String> resultMap;
 
 	
@@ -40,32 +43,32 @@ public class OptionsManagerAction extends BaseAction {
 			resultMap.put("regionCode", org.getRegionCode());
 			resultMap.put("username", user.getUsername());
 			resultMap.put("code", org.getCode());
-			service.save(resultMap);
-			service.insert(resultMap);
-			if(resultMap.get("isAgree").equals("0")){
-				if(!resultMap.get("startPhone").equals("")){
-					sendSMSCode();
+			String order_code=resultMap.get("order_code");
+			if(order_code!=null&&!order_code.equals("")){//换机或退货修改原来数据状态，再增加一条并保留工单编号
+				service.update(resultMap);
+				if(resultMap.get("is_back").equals("1")){//换机
+					
+				}else{//2退货,不新增记录
+					result.put("state","1");
+					result.put("msg", "退货成功！");
+					this.reponseJson(result); 
+					return;
 				}
+			}else{
+				resultMap.put("order_code", UUID.randomUUID().toString());
 			}
+			SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm");
+			resultMap.put("create_time", s.format(new Date()));
+			resultMap.put("is_back", "0");
+			service.insert(resultMap);
 			result.put("state","1");
-			result.put("msg", "审批成功！");
+			result.put("msg", "操作成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("state","0");
-			result.put("msg", "审批失败！");
+			result.put("msg", "新增失败！");
 		}
 		this.reponseJson(result);
-	}
-	
-	public void sendSMSCode() {
-		try{
-			User user = UserHolder.getCurrentLoginUser();
-			String username=user.getUsername();//审批人
-			String content="您在基层的工单由"+username+"审批未通过，请核查处理！";
-			HttpSendMessageUtil.sendMessage(resultMap.get("startPhone"), content);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
 	}
 
 	public Map<String, String> getResultMap() {
@@ -75,6 +78,5 @@ public class OptionsManagerAction extends BaseAction {
 	public void setResultMap(Map<String, String> resultMap) {
 		this.resultMap = resultMap;
 	}
-	
 	
 }
