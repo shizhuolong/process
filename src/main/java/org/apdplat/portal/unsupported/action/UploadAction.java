@@ -65,7 +65,8 @@ public class UploadAction extends BaseAction {
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		
+		FileOutputStream fos=null;
+		FileInputStream fis=null;
 		try {
 			 List<File> files=getUploadify();  
 			 for(int i=0;i<files.size();i++){  
@@ -73,10 +74,10 @@ public class UploadAction extends BaseAction {
 				 //String formatName = firstFileName.substring(firstFileName.lastIndexOf("."));//获取文件后缀名
 				 fileRealPath = savePath +"/"+newfileName+"-"+firstFileName;//文件存放真实地址
 				 //FileOutputStream fos=new FileOutputStream(savePath+"//"+newfileName+ formatName);  
-				 FileOutputStream fos=new FileOutputStream(fileRealPath);
+				 fos=new FileOutputStream(fileRealPath);
 				 System.out.println("-----------------------");
 				 System.out.println(fileRealPath);
-				 FileInputStream fis=new FileInputStream(getUploadify().get(i));  
+				 fis=new FileInputStream(getUploadify().get(i));  
 				 byte []buffers=new byte[1024];  
 				 int len=0;  
 				 while((len=fis.read(buffers))!=-1){  
@@ -98,6 +99,15 @@ public class UploadAction extends BaseAction {
 		}catch (IOException e) {
 			e.printStackTrace();
 			this.outJsonPlainString(response, "error");
+		} finally{
+			try {
+			    if(fis!=null)
+					fis.close();
+			    if(fos!=null)
+				    fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} 
 	}
 	
