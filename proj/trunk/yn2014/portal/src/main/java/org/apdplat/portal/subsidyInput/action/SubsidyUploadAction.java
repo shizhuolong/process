@@ -65,7 +65,8 @@ public class SubsidyUploadAction extends BaseAction {
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		
+		FileInputStream fis=null;
+		FileOutputStream fos=null;
 		try {
 			 List<File> files=getUploadify();  
 			 for(int i=0;i<files.size();i++){  
@@ -73,10 +74,10 @@ public class SubsidyUploadAction extends BaseAction {
 				 //String formatName = firstFileName.substring(firstFileName.lastIndexOf("."));//获取文件后缀名
 				 fileRealPath = savePath +"/"+newfileName+"-"+firstFileName;//文件存放真实地址
 				 //FileOutputStream fos=new FileOutputStream(savePath+"//"+newfileName+ formatName);  
-				 FileOutputStream fos=new FileOutputStream(fileRealPath);
+				 fos=new FileOutputStream(fileRealPath);
 				 System.out.println("-----------------------");
-				 System.out.println(fileRealPath);
-				 FileInputStream fis=new FileInputStream(getUploadify().get(i));  
+				 logger.info (fileRealPath);
+				 fis=new FileInputStream(getUploadify().get(i));  
 				 byte []buffers=new byte[1024];  
 				 int len=0;  
 				 while((len=fis.read(buffers))!=-1){  
@@ -87,7 +88,7 @@ public class SubsidyUploadAction extends BaseAction {
 					//虚拟路径赋值
 					fileRealResistPath +=newfileName+"-"+firstFileName;
 					//保存到数据库
-					System.out.println("保存到数据库:");
+					logger.info ("保存到数据库:");
 					//System.out.println("虚拟路径:"+fileRealResistPath);
 					String uuid=UUID.randomUUID().toString();
 					String addSql = "INSERT INTO PORTAL.TAB_INIT_FILE_MSG_TEMP(file_id,init_id,file_path,file_name,username) values('"+uuid+"','"+initId+"','"+fileRealResistPath+"','"+firstFileName+"','"+username+"')";
@@ -96,8 +97,18 @@ public class SubsidyUploadAction extends BaseAction {
 			 } 
 			 this.outJsonPlainString(response,fileRealResistPath);
 		}catch (IOException e) {
+			logger.error(e.getMessage());
 			e.printStackTrace();
 			this.outJsonPlainString(response, "error");
+		}finally{
+			try {
+			    if(fis!=null)
+					fis.close();
+			    if(fos!=null)
+				    fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} 
 	}
 	
@@ -110,6 +121,7 @@ public class SubsidyUploadAction extends BaseAction {
 		SpringManager.getUpdateDao().update(delSql);
 		this.outJsonPlainString(response, "{\"success\":true}");
 		}catch(Exception e) {
+			logger.error(e.getMessage());
 			e.printStackTrace();
 			this.outJsonPlainString(response, "{\"error\":true}");
 		}
@@ -130,6 +142,7 @@ public class SubsidyUploadAction extends BaseAction {
 				}
 				this.outJsonPlainString(response, "{\"success\":true}");
 			}catch(Exception e) {
+				logger.error(e.getMessage());
 				e.printStackTrace();
 				this.outJsonPlainString(response, "{\"error\":true}");
 			}
