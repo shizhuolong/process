@@ -1,6 +1,6 @@
 var nowData = [];
 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","审批意见"]];
-var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","USER_NAME","OPTIONS"];
+var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","OPTIONS"];
 var report = null;
 var downSql="";
 var startMan="";
@@ -58,8 +58,8 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var field1=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","USER_NAME"];
-	var sql="SELECT "+field1.join(",")+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE 1=1";
+	var field1=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE"];
+	var sql="SELECT "+field1.join(",")+",T2.REALNAME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_USER=T2.USERNAME";
 	var orgLevel=$("#orgLevel").val();
 	var regionCode=$("#regionCode").val();
 	
@@ -126,15 +126,15 @@ function search(pageNumber) {
  
  function buinessDetail(obj){
 	workNo=obj.attr("workNo");
-	var sql=" SELECT CHECK_MAN,CHECK_IDEA FROM PMRT.TAB_MRT_YYT_ZD_CHECK WHERE WORK_FLOW_CODE='"+workNo+"'";
+	var sql=" SELECT CHECK_MAN,CHECK_IDEA,T2.REALNAME FROM PMRT.TAB_MRT_YYT_ZD_CHECK T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_MAN = T2.USERNAME AND WORK_FLOW_CODE='"+workNo+"'";
 	var r=query(sql);
 	var content="";
 	var check_man="";
 	if(r!=null&&r.length>0){
 		content=r[0].CHECK_IDEA;
-		check_man=r[0].CHECK_MAN;
+		check_man=r[0].REALNAME;
 	}
-	if(content!=""){
+	if(content!=null&&content!=undefined&&content!=""){
 		$("#optionsDetail").empty().append("审批人"+check_man+"回复:</br>"+content);
 	}else{
 		$("#optionsDetail").empty().text("没有审批意见！");
@@ -160,7 +160,7 @@ function search(pageNumber) {
  
  function exportData(){
 	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人"]];
-	var showtext = '商品导出';
+	var showtext = '终端导出';
 	downloadExcel(downSql,title,showtext);
  }
  

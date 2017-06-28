@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_rent_list_new.js?v=3"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_rent_list_new.js?v=4"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -64,7 +64,7 @@
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="reppeatBtn" onclick="repeatImport()">导入</a>
 					    </td> 
 					    <td width="1%">
-						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="exportBtn" onclick="exportData()">导出</a>
+						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="exportBtn" onclick="downsAll()">导出</a>
 					    </td>
 					</tr>
 				</table>
