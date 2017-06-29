@@ -29,6 +29,10 @@ $(function() {
 	$("#out_price").change(function(){
 		 var in_price=$("#in_price").val();
 		 var out_price=$("#out_price").val();
+		 if(out_price<in_price){
+			 $("#out_price").val("");
+			 return;
+		 }
 	   	 var sale_ml=out_price-in_price;
 	   	 $("#sale_ml").val(sale_ml);
 	   	 $("#yyt_ml").val(sale_ml*0.5);
