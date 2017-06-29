@@ -59,11 +59,17 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var field1=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE"];
-	var sql="SELECT "+field1.join(",")+",T2.REALNAME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_USER=T2.USERNAME";
+	var sql="";
+	var check_result=$("#check_result").val();
+	if(check_result==''){
+		sql="SELECT "+field1.join(",")+",T2.REALNAME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
+	}else{
+		sql="SELECT "+field1.join(",")+",T2.REALNAME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_USER=T2.USERNAME";
+	}
+	
 	var orgLevel=$("#orgLevel").val();
 	var regionCode=$("#regionCode").val();
 	
-	var check_result=$("#check_result").val();
 	if(regionCode!=''){
 		sql+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
