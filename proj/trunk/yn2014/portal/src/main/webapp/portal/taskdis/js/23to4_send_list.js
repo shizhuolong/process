@@ -98,6 +98,7 @@ function search(pageNumber) {
 	sql+="  ,PODS.TAB_ODS_23TO4_TRAD_LIST D                      ";
 	sql+="  where T.SUBSCRIPTION_ID=D.SUBSCRIPTION_ID            ";
 	sql+="  AND D.PRO_TYPE='"+proType+"'                         ";
+	sql+="  AND T.PRO_TYPE='"+proType+"'                         ";
 	sql+="  AND D.F_USERID='"+userId+"'                          ";                                                                                         
 	if(deviceNumber!=''){
 		sql+=" and T.DEVICE_NUMBER ='"+deviceNumber+"'           ";
@@ -169,6 +170,7 @@ function exportAll(){
 	sql+="  ,PODS.TAB_ODS_23TO4_TRAD_LIST D                      ";
 	sql+="  where T.SUBSCRIPTION_ID=D.SUBSCRIPTION_ID            ";
 	sql+="  AND D.PRO_TYPE='"+proType+"'                         ";
+	sql+="  AND T.PRO_TYPE='"+proType+"'                         ";
 	sql+="  AND D.F_USERID='"+userId+"'                          ";                                                                                         
 	if(deviceNumber!=''){
 		sql+=" and T.DEVICE_NUMBER ='"+deviceNumber+"'           ";
