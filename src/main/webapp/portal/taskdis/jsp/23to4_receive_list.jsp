@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/23to4_receive_list.js?v=11"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/taskdis/js/23to4_receive_list.js?v=12"></script>
 <script type="text/javascript">
     var path="<%=path%>";
 </script>
