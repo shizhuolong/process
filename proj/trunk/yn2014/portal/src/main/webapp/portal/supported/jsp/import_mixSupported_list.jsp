@@ -1,8 +1,12 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@page import="org.apdplat.module.security.model.Org"%>
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@page import="org.apdplat.module.security.model.User"%>
+<%
+	User user = UserHolder.getCurrentLoginUser();
+	Org org = user.getOrg();
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,10 +31,13 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/supported/js/import_mixSupported_list.js"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<div id="smartForm">
 		<input type="hidden" name="resultMap.page" />
         <input type="hidden" name="resultMap.rows" />
@@ -59,8 +66,8 @@
 										</td> 
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
-											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
-											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空导入</a>
+	                                        <a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll()">导出</a>
+											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsDetail()">导出明细</a>
 										</td>
 									</tr>
 								</table>
@@ -70,23 +77,18 @@
 												<thead>
 													<tr>
 														<th>结算账期</th>
-														<th>渠道名称</th>
-														<th>渠道编码</th>
-														<!-- <th>渠道类型</th> -->
-														<th>佣金大类</th>
+														<th>结算渠道编码</th>
+														<th>结算渠道名称</th>
+														<th>发展渠道编码</th>
+														<th>发展渠道名称</th>
 														<th>佣金科目</th>
-														<th>业务类型</th>
 														<th>佣金金额</th>
-												        <th>佣金总额</th>
-												        <th>净额</th>
-														<th>备注</th>
-														<th colspan='2'>操作</th>
 													</tr>
 												</thead>
 												<tbody id="dataBody">
 												</tbody>
 												<tr>
-												<td colspan="14">
+												<td colspan="7">
 													<div class="page_count">
 														<div class="page_count_left">
 															共有 <span id="totalCount"></span> 条数据
@@ -129,23 +131,5 @@
 		</div>
 	</div>
 	
-	<div class="sticky-wrap" id="updateFormDiv" style="display:none;">
-		<form id="updateForm" method="POST">
-		  <input type="hidden" id="bill_id" name="bill_id"/>
-			<table class="default-table sticky-enabled">
-				<tr>
-					<td style="padding-left: 60px;">佣金金额:</td>
-					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="佣金金额不能为空" name="fee" id="fee"></td>
-				</tr>
-				<tr></tr>
-				<tr>
-	                <td colspan="2" style="padding-left: 120px;">
-		                <a href="#" class="default-btn fLeft mr10" id="saveBtn" onclick="save();">保存</a>
-		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel();">取消</a>
-	                </td>
-				</tr>
-			</table>
-		</form>
-    </div>		
 </body>
 </html>
