@@ -12,7 +12,7 @@ function complete(){
 	var flag=checkOptions();
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
-		var action=$("#ctx").val()+"/base/import-base!importToTemp.action";
+		var action=$("#ctx").val()+"/base/import-base!importToTemp.action?businessKey="+$("#businessKey").val();
 		$("#uploadForm").attr("action",action);
 		document.mainForm.submit(); 
   }

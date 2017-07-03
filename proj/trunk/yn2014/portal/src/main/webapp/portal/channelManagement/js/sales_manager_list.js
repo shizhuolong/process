@@ -34,10 +34,10 @@ $(function() {
 			 return;
 		 }
 	   	 var sale_ml=out_price-in_price;
-	   	 $("#sale_ml").val(sale_ml);
-	   	 $("#yyt_ml").val(sale_ml*0.5);
-	   	 $("#yx_cost").val(sale_ml*0.25);
-	   	 $("#yyt_profit").val(sale_ml*0.25);
+    	 $('#sale_ml').val(sale_ml);
+    	 $('#yyt_ml').val(sale_ml*0.5);
+    	 $('#yx_cost').val(sale_ml*0.25);
+    	 $('#yyt_profit').val(sale_ml*0.25);
 	});
 	report = new LchReport({
 		title : title,
@@ -79,18 +79,26 @@ function search(pageNumber) {
 	var orgLevel=$("#orgLevel").val();
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
+	var yyt_code=$("#yyt_code").val();
+	var zd_brands=$("#zd_brands").val();
 	var sql="";
 	var field1=["GROUP_ID_1_NAME","ORDER_CODE","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","OPERATOR_ID","DEVELOPER_ID","ZD_BRAND","ZD_TYPES","SERVICE_NUM","ZD_IEMI","IN_PRICE","OUT_PRICE","SALE_ML","YYT_ML","YX_COST","YYT_PROFIT","IS_CHANGE_PRICE","ACC_TIME"];
 	if(orgLevel==1||!isGrantedNew(role)||order_type!='0'){
 		sql="SELECT '' OPERATOR,"+field1.join(",")+",CASE WHEN IS_BACK='0' THEN '销售单' WHEN IS_BACK='1' THEN '换机单' WHEN IS_BACK='2' THEN '退货单' ELSE '销售单' END IS_BACK FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE 1=1";
 	}else{//销售订单
-		var sql="SELECT '<a style=\"color:blue;cursor:hand;\" order_code='|| ORDER_CODE ||' onclick=\"changeMobile($(this));\">换机</a>&nbsp;<a style=\"color:blue;cursor:hand;\" order_code='|| ORDER_CODE ||' onclick=\"back($(this));\">退货</a>' OPERATOR,"+field1.join(",")+",CASE WHEN IS_BACK='0' THEN '销售单' WHEN IS_BACK='1' THEN '换机单' WHEN IS_BACK='2' THEN '退货单' ELSE '销售单' END IS_BACK FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE 1=1";
+		sql="SELECT '<a style=\"color:blue;cursor:hand;\" order_code='|| ORDER_CODE ||' onclick=\"changeMobile($(this));\">换机</a>&nbsp;<a style=\"color:blue;cursor:hand;\" order_code='|| ORDER_CODE ||' onclick=\"back($(this));\">退货</a>' OPERATOR,"+field1.join(",")+",CASE WHEN IS_BACK='0' THEN '销售单' WHEN IS_BACK='1' THEN '换机单' WHEN IS_BACK='2' THEN '退货单' ELSE '销售单' END IS_BACK FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE 1=1";
 	}
 	if(regionCode!=''){
 		sql+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(order_type!=''){
 		sql+=" AND IS_BACK='"+order_type+"'";
+	}
+	if(yyt_code!=''){
+		sql+=" AND YYT_CHAN_CODE LIKE '%"+yyt_code+"%'";
+	}
+	if(zd_brands!=''){
+		sql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
 	}
 	sql+=" ORDER BY CREATE_TIME DESC";
 	var csql = sql;
@@ -126,11 +134,19 @@ function search(pageNumber) {
 	downSql="SELECT "+field1.join(",")+",CASE WHEN IS_BACK='0' THEN '销售单' WHEN IS_BACK='1' THEN '换机单' WHEN IS_BACK='2' THEN '退货单' ELSE '销售单' END IS_BACK FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE 1=1";
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
+	var yyt_code=$("#yyt_code").val();
+	var zd_brands=$("#zd_brands").val();
 	if(regionCode!=''){
 		downSql+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(order_type!=''){
 		downSql+=" AND IS_BACK='"+order_type+"'";
+	}
+	if(yyt_code!=''){
+		downSql+=" AND YYT_CHAN_CODE LIKE '%"+yyt_code+"%'";
+	}
+	if(zd_brands!=''){
+		downSql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
 	}
 	var title=[["分公司","订单号","营业厅","营业厅编码","供应商","供应商编码","操作工号","发展人信息","终端品牌","终端型号","用户号码","终端串号","终端价格","","毛利分配","","","","是否调价销售","受理时间","订单类型"],
 	           ["","","","","","","","","","","","","进货价","零售价","销售毛利合计","营业厅毛利","营销成本","营业厅利润","","",""]];
@@ -150,17 +166,18 @@ function search(pageNumber) {
     	 $("#yyt_hq_name").val(isNull(r[0].YYT_HQ_NAME));
     	 $("#yyt_chan_code").val(isNull(r[0].YYT_CHAN_CODE));
     	 $("#sup_hq_name").val(isNull(r[0].SUP_HQ_NAME));
+    	 $("#sup_hq_code").val(isNull(r[0].SUP_HQ_CODE));
     	 $("#zd_brand").val(isNull(r[0].ZD_BRAND));
     	 $("#zd_types").val(isNull(r[0].ZD_TYPES));
-    	 $("#sale_ml").val(isNull(r[0].SALE_ML));
-    	 $("#yyt_ml").val(isNull(r[0].YYT_ML));
-    	 $("#yx_cost").val(isNull(r[0].YX_COST));
-    	 $("#yyt_profit").val(isNull(r[0].YYT_PROFIT));
     	 $("#is_change_price").val(isNull(r[0].IS_CHANGE_PRICE));
-         $("#service_num").val(r[0].SERVICE_NUM);
-       	 $("#developer_id").val(r[0].DEVELOPER_ID);
-         $("#in_price").val(r[0].IN_PRICE);
-      	 $("#out_price").val(r[0].OUT_PRICE);
+         $("#service_num").val(isNull(r[0].SERVICE_NUM));
+       	 $("#developer_id").val(isNull(r[0].DEVELOPER_ID));
+       	 $('#sale_ml').val(isNull(r[0].SALE_ML));
+    	 $('#yyt_ml').val(isNull(r[0].YYT_ML));
+    	 $('#yx_cost').val(isNull(r[0].YX_COST));
+    	 $('#yyt_profit').val(isNull(r[0].YYT_PROFIT));
+    	 $('#in_price').val(isNull(r[0].IN_PRICE));
+    	 $('#out_price').val(isNull(r[0].OUT_PRICE));
       	 $("#operator_id").val(r[0].OPERATOR_ID);
      var date = new Date();
    	 $("#acc_time").val(date.pattern("yyyyMMdd HH:mm"));
@@ -188,6 +205,7 @@ function search(pageNumber) {
 		 $("#order_code").val(isNull(order_code));
 		 $("#is_back").val("1");
 		 $("#zd_iemi").val(isNull(r[0].ZD_IEMI));
+		 $("#old_zd_iemi").val(isNull(r[0].ZD_IEMI));
 		 $("#group_id_1").val(isNull(r[0].GROUP_ID_1));
     	 $("#group_id_1_name").val(isNull(r[0].GROUP_ID_1_NAME));
     	 $("#yyt_hq_name").val(isNull(r[0].YYT_HQ_NAME));
@@ -224,7 +242,13 @@ function search(pageNumber) {
  }
  
  function initOthersByZd(zd_iemi){
-	 var sql=" SELECT GROUP_ID_1,GROUP_ID_1_NAME,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,ZD_BRAND,ZD_TYPES,IN_PRICE,OUT_PRICE FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE ZD_IEMI='"+zd_iemi+"' AND IS_YES=1";
+	 var s="SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE ZD_IEMI = '"+zd_iemi+"' AND IS_BACK='0'";//IS_BACK=0代表已销售
+	 var d=query(s);
+	 if(d!=null&&d.length>0){
+		 alert("该终端串码已销售！");
+		 return;
+	 }
+	 var sql=" SELECT GROUP_ID_1,GROUP_ID_1_NAME,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,ZD_BRAND,ZD_TYPES,IN_PRICE,OUT_PRICE,SUP_HQ_CODE FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE ZD_IEMI='"+zd_iemi+"' AND STATUS=2 AND IS_BACK=0";//STATUS审核通过的，IS_BACK=1代表退货 0可销售、1已销售 2已退库
      var r=query(sql);
      if(r!=null&&r.length>0){
     	 $("#group_id_1").val(isNull(r[0].GROUP_ID_1));
@@ -232,17 +256,19 @@ function search(pageNumber) {
     	 $("#yyt_hq_name").val(isNull(r[0].YYT_HQ_NAME));
     	 $("#yyt_chan_code").val(isNull(r[0].YYT_CHAN_CODE));
     	 $("#sup_hq_name").val(isNull(r[0].SUP_HQ_NAME));
+    	 $("#sup_hq_code").val(isNull(r[0].SUP_HQ_CODE));
     	 $("#zd_brand").val(isNull(r[0].ZD_BRAND));
+    	 var zd_types=r[0].ZD_TYPES;
     	 $("#zd_types").val(isNull(r[0].ZD_TYPES));
     	 var in_price=isNull(r[0].IN_PRICE);
     	 var out_price=isNull(r[0].OUT_PRICE);
     	 var sale_ml=out_price-in_price;
-    	 $("#in_price").val(in_price);
-    	 $("#out_price").val(out_price);
-    	 $("#sale_ml").val(sale_ml);
-    	 $("#yyt_ml").val(sale_ml*0.5);
-    	 $("#yx_cost").val(sale_ml*0.25);
-    	 $("#yyt_profit").val(sale_ml*0.25);
+    	 $('#in_price').val(in_price);
+    	 $('#out_price').val(out_price);
+    	 $('#sale_ml').val(sale_ml);
+    	 $('#yyt_ml').val(sale_ml*0.5);
+    	 $('#yx_cost').val(sale_ml*0.25);
+    	 $('#yyt_profit').val(sale_ml*0.25);
      }else{
     	/* $("#zd_iemi").val("");*/
     	 $("#group_id_1").val("");
@@ -250,6 +276,7 @@ function search(pageNumber) {
        	 $("#yyt_hq_name").val("");
        	 $("#yyt_chan_code").val("");
        	 $("#sup_hq_name").val("");
+       	 $("#sup_hq_code").val("");
        	 $("#zd_brand").val("");
        	 $("#zd_types").val("");
        	 $("#in_price").val("");
@@ -274,6 +301,7 @@ function search(pageNumber) {
    	 $("#yyt_hq_name").val("");
    	 $("#yyt_chan_code").val("");
    	 $("#sup_hq_name").val("");
+   	 $("#sup_hq_code").val("");
    	 $("#zd_brand").val("");
    	 $("#zd_types").val("");
    	 $("#in_price").val("");

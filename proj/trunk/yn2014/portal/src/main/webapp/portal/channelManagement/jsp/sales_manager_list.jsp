@@ -34,7 +34,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=48"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=57"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
@@ -53,13 +53,21 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<div class="search-div">
-				<table style="margin: 0px 0; border:none;width:60%;font-size:100%">
+				<table style="margin: 0px 0; border:none;width:95%;font-size:100%">
 					<tr>
 						<td style="text-align:right;">地市：</td>
 						<td>
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						     </select>
+					    </td>
+					    <td style="text-align:right;">营业厅编码：</td>
+						<td>
+						     <input name="yyt_code" id="yyt_code" class="default-text-input wper100"/>
+					    </td>
+					     <td style="text-align:right;">品牌：</td>
+						<td>
+						     <input name="zd_brands" id="zd_brands" class="default-text-input wper100"/>
 					    </td>
 					    <td style="text-align:right;">订单类型：</td>
 						<td>
@@ -99,6 +107,7 @@
 	       <form id="addForm" method="post">
 	         <input type="hidden" id="group_id_1" name="resultMap.group_id_1"/>
 	         <input type="hidden" id="order_code" name="resultMap.order_code"/>
+	         <input type="hidden" id="old_zd_iemi" name="resultMap.old_zd_iemi"/>
 	         <input type="hidden" id="is_back" name="resultMap.is_back"/>
  		       <tr>
  		          <td>终端串号</td>
@@ -157,31 +166,31 @@
 		       <tr>
  		          <td>进货价</td>
 		          <td>
-			          <input id="in_price" readonly="true" name="resultMap.in_price" required="true" class="easyui-validatebox" missingMessage="进货价不能为空"/>
+			          <input id="in_price" readonly="true" precision="2" name="resultMap.in_price" required="true" "easyui-validatebox" missingMessage="进货价不能为空"/>
 		          </td>
 		          <td>零售价</td>
 		          <td>
-			          <input id="out_price" readonly="true" name="resultMap.out_price" required="true" class="easyui-validatebox" missingMessage="零售价不能为空"/>
+			          <input id="out_price" readonly="true" precision="2" name="resultMap.out_price" required="true" "easyui-validatebox" missingMessage="零售价不能为空"/>
 		          </td>
 		       </tr>
 		       <tr>
  		          <td>销售毛利</td>
 		          <td>
-			          <input id="sale_ml" readonly="true" name="resultMap.sale_ml" />
+			          <input id="sale_ml" readonly="true" precision="2" name="resultMap.sale_ml" "easyui-validatebox"/>
 		          </td>
 		          <td>营业厅毛利</td>
 		          <td>
-			          <input id="yyt_ml" readonly="true" name="resultMap.yyt_ml"/>
+			          <input id="yyt_ml" readonly="true" precision="2" name="resultMap.yyt_ml" "easyui-validatebox"/>
 		          </td>
 		       </tr>
 		       <tr>
  		          <td>营销成本</td>
 		          <td>
-			          <input id="yx_cost" readonly="true" name="resultMap.yx_cost" />
+			          <input id="yx_cost" readonly="true" precision="2" name="resultMap.yx_cost" "easyui-validatebox"/>
 		          </td>
 		          <td>营业厅利润</td>
 		          <td>
-			          <input id="yyt_profit" readonly="true" name="resultMap.yyt_profit"/>
+			          <input id="yyt_profit" readonly="true" precision="2" name="resultMap.yyt_profit" "easyui-validatebox"/>
 		          </td>
 		       </tr>
 		       <tr>
