@@ -21,5 +21,9 @@ public class SalesManagerService {
 	public void update(Map<String, String> resultMap) {
 		dao.update(resultMap);
 	}
+
+	public void updateSalesStatus(Map<String, String> resultMap) {
+		dao.updateSalesStatus(resultMap);
+	}
 	
 }

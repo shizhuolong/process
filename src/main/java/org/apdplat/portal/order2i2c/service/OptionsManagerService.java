@@ -21,5 +21,13 @@ public class OptionsManagerService {
 	public void save(Map<String, String> resultMap) {
 		dao.save(resultMap);
 	}
+
+	public void updateStatus(Map<String, String> resultMap) {
+		dao.updateStatus(resultMap);
+	}
+
+	public void backZd(Map<String, String> resultMap) {
+		dao.backZd(resultMap);
+	}
 	
 }

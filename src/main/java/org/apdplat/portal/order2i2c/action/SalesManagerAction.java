@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -48,19 +47,30 @@ public class SalesManagerAction extends BaseAction {
 				service.update(resultMap);
 				if(resultMap.get("is_back").equals("1")){//换机
 					
-				}else{//2退货,不新增记录
+				}else{//2退货,不新增记录 库存恢复为可销售状态0
 					result.put("state","1");
 					result.put("msg", "退货成功！");
 					this.reponseJson(result); 
+					resultMap.put("is_back", "0");
+					service.updateSalesStatus(resultMap);
 					return;
 				}
 			}else{
-				resultMap.put("order_code", UUID.randomUUID().toString());
+				SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHssSSS");
+				String time = format.format(new Date());
+				String businessKey = "YN-"+time; //订单编号
+				resultMap.put("order_code", businessKey);
 			}
 			SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm");
 			resultMap.put("create_time", s.format(new Date()));
-			resultMap.put("is_back", "0");
 			service.insert(resultMap);
+			if(resultMap.get("is_back").equals("0")){//正常销售完,更改库存为已销售1
+				resultMap.put("is_back", "1");
+			}else if(resultMap.get("is_back").equals("1")){//换机，库存恢复为可销售状态0
+				resultMap.put("is_back", "0");
+				resultMap.put("zd_iemi", resultMap.get("old_zd_iemi"));
+			}
+			service.updateSalesStatus(resultMap);
 			result.put("state","1");
 			result.put("msg", "操作成功！");
 		} catch (Exception e) {

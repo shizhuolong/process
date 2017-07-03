@@ -7,5 +7,7 @@ public interface SalesManagerDao {
 	public void insert(Map<String, String> resultMap);
 
 	public void update(Map<String, String> resultMap);
+
+	public void updateSalesStatus(Map<String, String> resultMap);
 	
 }
