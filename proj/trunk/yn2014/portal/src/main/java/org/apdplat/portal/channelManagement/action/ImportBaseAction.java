@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -35,6 +34,7 @@ import org.apdplat.module.security.model.Org;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.Struts2Utils;
 import org.apdplat.wgreport.common.SpringManager;
 import org.springframework.context.annotation.Scope;
@@ -50,7 +50,7 @@ import org.springframework.stereotype.Controller;
 })
 public class ImportBaseAction extends BaseAction {
 	private File uploadFile;
-
+	private final APDPlatLogger logger = new APDPlatLogger(getClass());
 	@Resource
 	DataSource dataSource;
 
@@ -58,11 +58,22 @@ public class ImportBaseAction extends BaseAction {
 		    User user = UserHolder.getCurrentLoginUser();
 		    Org org=user.getOrg();
 		    String regionCode=org.getRegionCode();
-			String delRepeat = "DELETE PMRT.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND IS_YES=0";
-			SpringManager.getUpdateDao().update(delRepeat);
-			String importToResult = "INSERT INTO PMRT.TAB_MRT_YYT_ZD_BASE SELECT * FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+ regionCode+"' AND IS_YES IS NULL";
+		    String businessKey=request.getParameter("businessKey");
+		    String delRepeatSql="";
+		    String uSql="";
+		    if(businessKey==null||businessKey.equals("")){//未发送的工单重导
+		    	SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHssSSS");
+				businessKey = "YN-"+format.format(new Date()); //订单编号
+		    	delRepeatSql = "DELETE PMRT.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
+		    }else{//退回来的工单重导，保留工单编号
+		    	delRepeatSql = "DELETE PMRT.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND WORK_FLOW_CODE='"+businessKey+"' AND STATUS IN('0','3')";
+		    }
+		    uSql="UPDATE PMRT.TAB_MRT_YYT_ZD_BASE_TEMP SET WORK_FLOW_CODE='"+businessKey+"' WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
+			SpringManager.getUpdateDao().update(uSql);
+			SpringManager.getUpdateDao().update(delRepeatSql);
+			String importToResult = "INSERT INTO PMRT.TAB_MRT_YYT_ZD_BASE SELECT * FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
 			SpringManager.getUpdateDao().update(importToResult);
-			Connection conn =null;
+			/*Connection conn =null;
 			CallableStatement stmt=null;
 			//调用存储过程
 			conn = dataSource.getConnection();
@@ -75,7 +86,7 @@ public class ImportBaseAction extends BaseAction {
 			stmt.registerOutParameter(3,java.sql.Types.DECIMAL);
 			stmt.executeUpdate();
 			conn.close();
-			stmt.close();
+			stmt.close();*/
 	}
 	
 	public String importToTemp() {
@@ -86,7 +97,7 @@ public class ImportBaseAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_YYT_ZD_BASE_TEMP";
-		String field="CREATE_TIME,GROUP_ID_1,GROUP_ID_1_NAME,USER_NAME,ZD_BRAND,ZD_TYPES,ZD_MEMORY,ZD_COLOR,ZD_IEMI,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,IN_PRICE,OUT_PRICE";
+		String field="IS_BACK,STATUS,CREATE_TIME,GROUP_ID_1,GROUP_ID_1_NAME,USER_NAME,ZD_BRAND,ZD_TYPES,ZD_MEMORY,ZD_COLOR,ZD_IEMI,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,IN_PRICE,OUT_PRICE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 			Struts2Utils.getRequest().setAttribute("err", err);
@@ -108,14 +119,14 @@ public class ImportBaseAction extends BaseAction {
 				in = new FileInputStream(uploadFile);
 				wb = WorkbookFactory.create(in);  
 				int sheetNum = wb.getNumberOfSheets();// 得到sheet数量
-				System.out.println("准备导入...");
+				logger.info("准备导入...");
 				if (sheetNum > 0) {
 					Sheet sheet = wb.getSheetAt(0);
-					System.out.println("导入Sheet页0:" + sheet.getSheetName());
+					logger.info("导入Sheet页0:" + sheet.getSheetName());
 					int start = sheet.getFirstRowNum() +1 ;// 去前1行标题
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(sysdate"+",'"+regionCode+"','"+regionName+"','"+username+"'";
+					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('0','0',sysdate"+",'"+regionCode+"','"+regionName+"','"+username+"'";
 					for(int i=0;i<11;i++){
 						sql+=",?";
 					}
@@ -129,6 +140,13 @@ public class ImportBaseAction extends BaseAction {
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
 						for (int i = cstart; i < cend; i++) {
+							    if(i>8){
+							    	if(getCellValue(row.getCell(i)).equals("")){
+							    		err.add("进货价与零售价不能为空，请检查！");
+							    		Struts2Utils.getRequest().setAttribute("err", err);
+										return "error";
+							    	}
+							    }
 								pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
 						pre.addBatch();
@@ -136,8 +154,30 @@ public class ImportBaseAction extends BaseAction {
 					pre.executeBatch();
 					conn.commit();
 					conn.setAutoCommit(true);
-					String isRepeatSql="SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE ZD_IEMI IN(SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE IS_YES=1)";
-					List<Map<String,String>> l=SpringManager.getFindDao().find(isRepeatSql);
+					String isNullSql="SELECT ZD_BRAND,                                                      "+
+							"       ZD_TYPES,                                                      "+
+							"       ZD_COLOR,                                                      "+
+							"       ZD_IEMI,                                                       "+
+							"       YYT_HQ_NAME,                                                   "+
+							"       YYT_CHAN_CODE,                                                 "+
+							"       SUP_HQ_NAME,                                                   "+
+							"       SUP_HQ_CODE,                                                   "+
+							"       IN_PRICE,                                                      "+
+							"       OUT_PRICE                                                      "+
+							"  FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP                                  "+
+							" WHERE GROUP_ID_1='"+regionCode+"' AND (ZD_BRAND IS NULL OR ZD_TYPES IS NULL OR ZD_COLOR IS NULL OR   "+
+							"       ZD_IEMI IS NULL OR YYT_HQ_NAME IS NULL OR YYT_CHAN_CODE IS NULL"+
+							"       OR SUP_HQ_NAME IS NULL OR SUP_HQ_CODE IS NULL                  "+
+							"       OR IN_PRICE IS NULL OR OUT_PRICE IS NULL                       "+
+							"     )                                                                ";
+					List<Map<String,String>> l=SpringManager.getFindDao().find(isNullSql);
+					if(l!=null&&l.size()>0){
+						err.add("模板中有空的字段，请检查！");
+						Struts2Utils.getRequest().setAttribute("err", err);
+						return "error";
+					}
+					String isRepeatSql="SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' AND ZD_IEMI IN(SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE IS_YES=1)";
+					l=SpringManager.getFindDao().find(isRepeatSql);
 					String repeatMsg="";
 					if(l!=null&&l.size()>0){
 						for(int i=0;i<l.size();i++){
@@ -154,6 +194,7 @@ public class ImportBaseAction extends BaseAction {
 					importToResult();
 				}
 			} catch (Exception e) {
+				logger.info(e.getMessage());
 				e.printStackTrace();
 				err.add(e.getMessage());
 			}finally{
