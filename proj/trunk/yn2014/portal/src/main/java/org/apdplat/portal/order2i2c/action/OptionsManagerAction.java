@@ -29,7 +29,7 @@ public class OptionsManagerAction extends BaseAction {
 
 	@Autowired
 	private OptionsManagerService service;
-	private Map<String, String> resultMap;
+	private Map<String, String> resultMap=new HashMap<String,String>();
 
 	
 	public void save() {
@@ -39,10 +39,9 @@ public class OptionsManagerAction extends BaseAction {
 		try {
 			resultMap.put("regionCode", org.getRegionCode());
 			resultMap.put("username", user.getUsername());
-			resultMap.put("code", org.getCode());
 			service.save(resultMap);
 			service.insert(resultMap);
-			if(resultMap.get("isAgree").equals("0")){
+			if(resultMap.get("status").equals("3")){//不同意发送短信提醒
 				if(!resultMap.get("startPhone").equals("")){
 					sendSMSCode();
 				}
@@ -56,6 +55,32 @@ public class OptionsManagerAction extends BaseAction {
 		}
 		this.reponseJson(result);
 	}
+	
+	public String send(){
+		User user = UserHolder.getCurrentLoginUser();
+		Org org=user.getOrg();	
+		try {
+			resultMap.put("regionCode", org.getRegionCode());
+			resultMap.put("username", user.getUsername());
+			service.updateStatus(resultMap);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	}
+	
+	public String backZd(){
+		User user = UserHolder.getCurrentLoginUser();
+		Org org=user.getOrg();	
+		try {
+			service.backZd(resultMap);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	} 
 	
 	public void sendSMSCode() {
 		try{
