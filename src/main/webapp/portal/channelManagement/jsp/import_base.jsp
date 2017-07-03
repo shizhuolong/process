@@ -28,7 +28,7 @@
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 	<script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base.js?v=1"></script>
+	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base.js?v=3"></script>
 	
 	<style>
 		th {
@@ -61,6 +61,7 @@
   </head>
   <body class="taskPage">
     <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+     <input type="hidden" id="businessKey" name="businessKey" value="<%=request.getParameter("businessKey")%>">
 		<div id="main" class="clearfix">
 			<div class="main-block">
 				<div class="title">
@@ -72,8 +73,7 @@
 					</div>
 					<form id="uploadForm" name="mainForm"
 						method="post" enctype="multipart/form-data">
-                        <input type="hidden" id="fileType" name="fileType">
-						<table cellspacing="0" width="100%">
+                         <table cellspacing="0" width="100%">
 							<tr>
 								<th width="100px">第一步</th>
 								<td colspan='2'><span style="display:inline-block;">点击<b>模板下载</b>，导出对应的EXCEL数据模板。 </span><a class="default-btn" style="display:inline-block;"
