@@ -77,6 +77,8 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var orgLevel=$("#orgLevel").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
 	var yyt_code=$("#yyt_code").val();
@@ -93,6 +95,9 @@ function search(pageNumber) {
 	}
 	if(order_type!=''){
 		sql+=" AND IS_BACK='"+order_type+"'";
+		if(order_type=='0'){//销售单
+			sql+=" AND SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate;
+		}
 	}
 	if(yyt_code!=''){
 		sql+=" AND YYT_CHAN_CODE LIKE '%"+yyt_code+"%'";
@@ -132,6 +137,8 @@ function search(pageNumber) {
 	var showtext = '销售终端';
 	var field1=["GROUP_ID_1_NAME","ORDER_CODE","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","OPERATOR_ID","DEVELOPER_ID","ZD_BRAND","ZD_TYPES","SERVICE_NUM","ZD_IEMI","IN_PRICE","OUT_PRICE","SALE_ML","YYT_ML","YX_COST","YYT_PROFIT","IS_CHANGE_PRICE","ACC_TIME"];
 	downSql="SELECT "+field1.join(",")+",CASE WHEN IS_BACK='0' THEN '销售单' WHEN IS_BACK='1' THEN '换机单' WHEN IS_BACK='2' THEN '退货单' ELSE '销售单' END IS_BACK FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE 1=1";
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
 	var yyt_code=$("#yyt_code").val();
@@ -141,6 +148,9 @@ function search(pageNumber) {
 	}
 	if(order_type!=''){
 		downSql+=" AND IS_BACK='"+order_type+"'";
+		if(order_type=='0'){//销售单
+			downSql+=" AND SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate;
+		}
 	}
 	if(yyt_code!=''){
 		downSql+=" AND YYT_CHAN_CODE LIKE '%"+yyt_code+"%'";

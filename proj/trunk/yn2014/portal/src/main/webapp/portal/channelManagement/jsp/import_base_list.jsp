@@ -42,7 +42,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base_list.js?v=40"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base_list.js?v=44"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	var isShopper=<%=isShopper%>; 
@@ -70,6 +70,10 @@
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						     </select>
+					    </td>
+					    <td width="4%" style="text-align:right;">营业厅：</td>
+						<td width="8%">
+						     <input name="hallName" id="hallName" class="default-text-input wper100"/>
 					    </td>
 					    <td style="text-align:right;" width="4%">品牌：</td>
 						<td width="4%">
