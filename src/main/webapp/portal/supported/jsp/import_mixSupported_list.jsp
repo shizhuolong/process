@@ -32,7 +32,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/supported/js/import_mixSupported_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/supported/js/import_mixSupported_list.js?v=2"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
