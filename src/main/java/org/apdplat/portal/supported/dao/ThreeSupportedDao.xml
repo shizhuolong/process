@@ -4,125 +4,77 @@
 <mapper namespace="org.apdplat.portal.supported.dao.ThreeSupportedDao">
 
 	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
-			SELECT
-			BILL_ID,
-			BILLINGCYCLID,
-			CHANNEL_NAME,
-			AGENTID,
-			DEPT_PTYPE,
-			COMM_TYPE,
-			SUBJECTID,
-			SVCTP,
-			FEE,
-			TOTALFEE,
-			NETFEE,
-			REMARK
-			FROM PAPP.TAB_TD_COMM_IMPORT
-			WHERE INIT_ID IS NULL 
-			AND ACCOUNT_ID=#{username}
+		SELECT DEAL_DATE,
+              CHANNEL_NAME,
+              CHANNEL_ID,
+              FD_CHNL_CODE,
+              NVL(BAK_1, RULE_NAME) RULE_NAME,
+              SUM(COMM) AS COMM,
+              SUM(MOD_COMM) AS MOD_COMM,
+              COMM_SUB
+         FROM PMRT.TAB_MRT_COMM_01_HH
+         WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID IS NULL
 		<if test="orgLevel == 1">
 			AND 1=2
 		</if> 
 		<if test="orgLevel == 2">
-			AND GROUP_ID = #{code}
+			AND GROUP_ID_1 = #{code}
 		</if>
+		 GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB 
 	</select>
 	
 	<select id="queryTotalFee" parameterType="java.util.Map" resultType="double">
 			SELECT
-			NVL(SUM(FEE),0) FEE
-			FROM PAPP.TAB_TD_COMM_IMPORT
-			WHERE INIT_ID IS NULL 
-			AND ACCOUNT_ID=#{username}
+			NVL(SUM(COMM),0) COMM
+			FROM PMRT.TAB_MRT_COMM_01_HH
+			WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(sysdate,-1), 'yyyymm') AND INIT_ID IS NULL 
 		<if test="orgLevel == 1">
 			AND 1=2
 		</if>
 		<if test="orgLevel == 2">
-			AND GROUP_ID = #{code}
+			AND GROUP_ID_1 = #{code}
 		</if>
 	</select>
 	
 	<select id="queryTotalFeeByInitId" parameterType="java.util.Map" resultType="double">
 			SELECT
-			NVL(SUM(FEE),0) FEE
-			FROM PAPP.TAB_TD_COMM_IMPORT
+			NVL(SUM(COMM),0) COMM
+			FROM PMRT.TAB_MRT_COMM_01_HH
 			WHERE INIT_ID=#{workNo}
-		  <if test="channel_name != null">
-	 	    AND CHANNEL_NAME LIKE '%' || #{channel_name} || '%'
-	      </if>
 	</select>
-	
-	<insert id="importData" parameterType="java.util.Map">
-		INSERT INTO PAPP.TAB_TD_COMM_IMPORT
-  		SELECT * FROM PAPP.TAB_TD_COMM_IMPORT_TEMP T1
-    	WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code}
-	</insert>
-	
-	<update id="updateInitId" parameterType="java.util.Map">
-		UPDATE PAPP.TAB_TD_COMM_IMPORT SET INIT_ID=#{businessKey} WHERE
-		ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NULL
-	</update>
-	
-	<delete id="delete" parameterType="java.util.Map">
-		DELETE FROM PAPP.TAB_TD_COMM_IMPORT WHERE BILL_ID=#{bill_id}
-	</delete>
-	
-	<delete id="deleteTemp" parameterType="java.util.Map">
-		DELETE FROM PAPP.TAB_TD_COMM_IMPORT_TEMP WHERE 
-		ACCOUNT_ID=#{username}
-		AND GROUP_ID=#{code} 
-	</delete>
-	
-	<delete id="deleteResult" parameterType="java.util.Map">
-		DELETE FROM PAPP.TAB_TD_COMM_IMPORT WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID IS NULL
-	</delete>
-	
-	<delete id="deleteResultByEdit" parameterType="java.util.Map">
-		DELETE FROM PAPP.TAB_TD_COMM_IMPORT WHERE ACCOUNT_ID=#{username} AND GROUP_ID=#{code} AND INIT_ID=#{businessKey}
-	</delete>
-	
-	<update id="update" parameterType="java.util.Map">
-		UPDATE PAPP.TAB_TD_COMM_IMPORT SET FEE = #{fee} WHERE BILL_ID = #{bill_id}
-	</update>
 	
 	<select id="getDataListCount" parameterType="java.util.Map" resultType="int">
 		SELECT 
 			COUNT(*) AS TOTALCOUNT
-  		FROM PAPP.TAB_TD_COMM_IMPORT 
- 		WHERE INIT_ID IS NULL
- 		AND GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
+  		FROM PMRT.TAB_MRT_COMM_01_HH 
+ 		WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(sysdate,-1), 'yyyymm') AND INIT_ID IS NULL
+ 		AND GROUP_ID_1 = #{code} 
+ 		GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID
 	</select>
 	
-	<update id="updateDataWorkNo" parameterType="java.util.Map">
-		UPDATE PAPP.TAB_TD_COMM_IMPORT 
+   <update id="updateDataWorkNo" parameterType="java.util.Map">
+		UPDATE PMRT.TAB_MRT_COMM_01_HH 
    			SET INIT_ID = #{workNo}
- 		WHERE GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
-   		AND INIT_ID IS NULL
-	</update>
+ 		WHERE GROUP_ID_1 = #{code} 
+   		AND DEAL_DATE=to_char(add_months(sysdate,-1), 'yyyymm') AND INIT_ID IS NULL
+	</update> 
 	
 	<select id="listByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT
-			BILL_ID,
-			BILLINGCYCLID,
-			CHANNEL_NAME,
-			AGENTID,
-			DEPT_PTYPE,
-			COMM_TYPE,
-			SUBJECTID,
-			SVCTP,
-			FEE,
-			TOTALFEE,
-			NETFEE,
-			REMARK
-			FROM PAPP.TAB_TD_COMM_IMPORT
+		SELECT DEAL_DATE,
+              CHANNEL_NAME,
+              CHANNEL_ID,
+              FD_CHNL_CODE,
+              NVL(BAK_1, RULE_NAME) RULE_NAME,
+              SUM(COMM) AS COMM,
+              SUM(MOD_COMM) AS MOD_COMM,
+              COMM_SUB
+        FROM PMRT.TAB_MRT_COMM_01_HH
 	    WHERE INIT_ID = #{businessKey}
-	 <if test="channel_name != null">
-	 	 AND CHANNEL_NAME LIKE '%' || #{channel_name} || '%'
-	 </if>
+	    GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB
 	</select>
 	
 	<update id="updateStatus" parameterType="String">
-		UPDATE PAPP.TAB_TD_COMM_IMPORT T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
+		UPDATE PMRT.TAB_MRT_COMM_01_HH T SET T.STATUS=#{status} WHERE T.INIT_ID = #{workNo}
 	</update>
 	
 </mapper>
