@@ -195,3 +195,51 @@ function validate(){
 function isNotBlank(obj){
     return !(obj == undefined || obj == null || obj =='' || obj=='null');
 }
+
+function downsDetail(){
+	var title=[["结算账期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","渠道编码","渠道名称","佣金科目","用户编码","电话号码","套餐名称","业务类型","创建时间","生效时间","失效时间","佣金"]];
+	var downSql=getDetailSql();
+	var showtext = '系统支撑融合明细';
+	downloadExcel(downSql,title,showtext);
+}
+
+function getDetailSql(){
+	var orgLevel=$("#orgLevel").val();
+	var region=$("#region").val();
+	var where="";
+	if(orgLevel==1){
+		
+	}else{
+		where+=" AND GROUP_ID_1='"+region+"'";
+	}
+	
+	return "select billingcyclid,pay_chnl_id,pay_chnl_name,dev_chnl_code,dev_chnl_name,agentid,group_id_4_name,remark,subscription_id,svcnum,"
+	  +"product_name,net_type,to_char(create_time,'yyyy-mm-dd hh24:mi:ss') as create_time,to_char(active_time,'yyyy-mm-dd hh24:mi:ss') as active_time,"
+	  +"to_char(inactive_time,'yyyy-mm-dd') as inactive_time,fee from PMRT.TAB_MRT_COMM_FLOW_MON"
+	  +"              WHERE billingcyclid=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID IS NULL"+
+	  where;
+}
+
+function downsAll(){
+	var title=[["结算帐期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","佣金科目","佣金"]];
+	var downSql=getDownSql();
+	var showtext = '系统支撑融合汇总';
+	downloadExcel(downSql,title,showtext);
+}
+
+function getDownSql(){//汇总导出
+	var orgLevel=$("#orgLevel").val();
+	var region=$("#region").val();
+	var where="";
+	if(orgLevel==1){
+		
+	}else{
+		where+=" AND GROUP_ID_1='"+region+"'";
+	}
+	return "SELECT BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE," +
+			"DEV_CHNL_NAME,REMARK,SUM(FEE) COMM"+
+			" FROM PMRT.TAB_MRT_COMM_FLOW_MON "                                             +
+	        "WHERE billingcyclid=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID IS NULL"+
+	   where+
+	   " GROUP BY BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE,DEV_CHNL_NAME,REMARK";
+}
