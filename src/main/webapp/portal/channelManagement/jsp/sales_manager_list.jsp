@@ -13,6 +13,9 @@
      Calendar ca=Calendar.getInstance();
  	 ca.add(Calendar.DATE, 0);
  	 String time=new SimpleDateFormat("yyyyMMdd HH:mm").format(ca.getTime());
+ 	 String endDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+ 	 ca.add(Calendar.DATE, -7);
+ 	 String startDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <html>
 <head>
@@ -34,7 +37,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=58"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=61"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
@@ -53,24 +56,34 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<div class="search-div">
-				<table style="margin: 0px 0; border:none;width:95%;font-size:100%">
+				<table style="margin: 0px 0; border:none;width:100%;font-size:100%">
 					<tr>
-						<td style="text-align:right;">地市：</td>
+						<td style="text-align:right;width:50px;">开始：</td>
+						<td>
+							<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
+							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=startDate%>" id="startDate">
+						</td>
+						<td style="text-align:right;width:50px;">结束：</td>
+						<td>
+							<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
+							onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=endDate%>" id="endDate">
+						</td>
+						<td style="text-align:right;width:50px;">地市：</td>
 						<td>
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
 								<option value=''>请选择</option>
 						     </select>
 					    </td>
-					    <td style="text-align:right;">营业厅编码：</td>
+					    <td style="text-align:right;width:50px;">厅编码：</td>
 						<td>
 						     <input name="yyt_code" id="yyt_code" class="default-text-input wper100"/>
 					    </td>
-					     <td style="text-align:right;">品牌：</td>
+					     <td style="text-align:right;width:50px;">品牌：</td>
 						<td>
 						     <input name="zd_brands" id="zd_brands" class="default-text-input wper100"/>
 					    </td>
-					    <td style="text-align:right;">订单类型：</td>
-						<td>
+					    <td style="text-align:right;width:60px;">订单类型：</td>
+						<td style="width:80px;">
 						     <select name="order_type" id="order_type" class="default-text-input wper100">
 								<option value=''>全部</option>
 								<option value='0' selected>销售单</option>

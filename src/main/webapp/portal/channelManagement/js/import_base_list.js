@@ -121,6 +121,7 @@ function search(pageNumber) {
 	var zd_brands=$("#zd_brands").val();
 	var is_back=$("#is_back").val();
 	var business=$("#business").val();
+	var hallName=$("#hallName").val();
 	if(isShopper=="1"&&status=="2"&&is_back=="0"){
 		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
 	}else{
@@ -130,11 +131,14 @@ function search(pageNumber) {
 	if(regionCode!=''){
 		sql+=" AND T1.GROUP_ID_1='"+regionCode+"'";
 	}
+	if(hallName!=''){
+		sql+=" AND T1.YYT_HQ_NAME LIKE '%"+hallName+"%'";
+	}
 	if(zd_brands!=''){
-		sql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
+		sql+=" AND T1.ZD_BRAND LIKE '%"+zd_brands+"%'";
 	}
 	if(is_back!=''){
-		sql+=" AND IS_BACK = '"+is_back+"'";
+		sql+=" AND T1.IS_BACK = '"+is_back+"'";
 	}
 	sql+=" AND T1.STATUS='"+status+"'";
 	if(business!=""){
@@ -247,7 +251,7 @@ function initBusiness(status){
  }
  
  function approval(){
-	    workNo=getWorkNo();
+	    workNo=$("#business").val();
 	    if(workNo==""){
 	    	alert("当前无需要审批工单！");
 	    	return;
