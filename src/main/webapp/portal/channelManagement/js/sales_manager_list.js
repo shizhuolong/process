@@ -319,6 +319,7 @@ function search(pageNumber) {
      var date = new Date();
 	 $("#acc_time").val(date.pattern("yyyyMMdd HH:mm"));
 	 $("#addDiv").show();
+	 $("#saveBtn").show();
 	 $('#addDiv').dialog({
 			title : '新增销售终端',
 			width : 700,
@@ -335,6 +336,7 @@ function search(pageNumber) {
  
  function save(){
 		var url = $("#ctx").val()+'/salesManager/sales-manager!save.action';
+		$("#saveBtn").hide();
 		$('#addForm').form('submit',{
 			url:url,
 			dataType:"json",
