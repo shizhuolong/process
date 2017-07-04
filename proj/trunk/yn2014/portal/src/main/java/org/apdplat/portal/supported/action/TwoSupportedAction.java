@@ -1,22 +1,11 @@
 package org.apdplat.portal.supported.action;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLDecoder;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
@@ -88,12 +77,8 @@ public class TwoSupportedAction extends BaseAction{
 	
 	public void queryTotalFeeByInitId() {
 		String workNo=request.getParameter("workNo");
-		String channel_name=request.getParameter("channel_name");
 		if(workNo != null && !"".equals(workNo.trim())) {
 			resultMap.put("workNo", workNo);
-		}
-		if(channel_name != null && !"".equals(channel_name.trim())) {
-			resultMap.put("channel_name", channel_name);
 		}
 		double result = twoSupportedService.queryTotalFeeByInitId(resultMap);
 		this.reponseJson(result);
@@ -101,7 +86,7 @@ public class TwoSupportedAction extends BaseAction{
 	
 	/**
 	 * excel数据导入
-	 */
+	 *//*
 	public void importExcel() {
 		User user = UserHolder.getCurrentLoginUser();
 		Org org = user.getOrg();
@@ -231,9 +216,9 @@ public class TwoSupportedAction extends BaseAction{
 		} else {
 			this.reponseJson("文件不能为空");
 		}
-	}
+	}*/
 
-	public String checkByRex(String[] input){
+	/*public String checkByRex(String[] input){
 		for(int i=8;i<input.length;i++){
 			if(input[i]!=null&&input[i].equals("")){
 				return "第"+(i+1)+"列数据为空,请编辑！";
@@ -280,9 +265,9 @@ public class TwoSupportedAction extends BaseAction{
 		}
 	}
 	
-	/**
+	*//**
 	 * 模板下载
-	 */
+	 *//*
 	public void downloadTemplate() {
 		String path = "portal/supported/template/twoSupportedImport.xls";
 		String fileName = "twoSupported.xls";
@@ -293,12 +278,12 @@ public class TwoSupportedAction extends BaseAction{
 		}
 	}
 	
-	/**
+	*//**
 	 * 文件下载
 	 * @param filePath
 	 * @param fileName
 	 * @throws IOException
-	 */
+	 *//*
 	public void download(String filePath, String fileName) throws IOException{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		OutputStream outStream = null;
@@ -342,7 +327,7 @@ public class TwoSupportedAction extends BaseAction{
 			} 
 		}
     }
-	
+	*/
 	/**
 	 * 提交审批 
 	 */
@@ -378,14 +363,9 @@ public class TwoSupportedAction extends BaseAction{
 	public void listByWorkNo() {
 		try {
 			String businessKey = request.getParameter("businessKey");
-			String channel_name = request.getParameter("channel_name");
 			if(businessKey == null || "".equals(businessKey)) {
-				throw new BusiException("工单编号不空，查询数据失败！");
+				throw new BusiException("工单编号为空，查询数据失败！");
 			}
-			if(channel_name != null && !"".equals(channel_name)) {
-				resultMap.put("channel_name", channel_name);
-			}
-			
 			resultMap.put("businessKey", businessKey);
 			Object result = twoSupportedService.listByWorkNo(resultMap);
 			this.reponseJson(result);

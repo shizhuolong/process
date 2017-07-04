@@ -46,7 +46,7 @@ public class TwoSupportedService {
 	
 		
 	
-	@Transactional
+	/*@Transactional
 	public void importData(Map<String, String> params) throws Exception {
 		twoSupportedDao.importData(params);
 	}
@@ -55,7 +55,7 @@ public class TwoSupportedService {
 	@Transactional
 	public void update(Map<String, String> params) throws Exception {
 		twoSupportedDao.update(params);
-	}
+	}*/
 	
 	/**
 	 * 提交工单审批
@@ -116,16 +116,16 @@ public class TwoSupportedService {
 		return result;
 	}
 	
-	@Transactional
+	/*@Transactional
 	public void delete(Map<String, String> params) {
 		twoSupportedDao.delete(params);
-	}
+	}*/
 
 	public double queryTotalFee(Map<String, String> params) {
 		return twoSupportedDao.queryTotalFee(params);
 	}
 	
-	@Transactional
+	/*@Transactional
 	public void deleteTemp(Map<String, String> params) {
 		twoSupportedDao.deleteTemp(params);
 	}
@@ -133,17 +133,17 @@ public class TwoSupportedService {
 	@Transactional
 	public void deleteResult(Map<String, String> params) {
 		twoSupportedDao.deleteResult(params);
-	}
+	}*/
 	
-	@Transactional
+	/*@Transactional
 	public void updateInitId(Map<String, String> params) {
 		twoSupportedDao.updateInitId(params);
-	}
+	}*/
 
-	@Transactional
+	/*@Transactional
 	public void deleteResultByEdit(Map<String, String> params) {
 		twoSupportedDao.deleteResultByEdit(params);
-	}
+	}*/
 
 	public double queryTotalFeeByInitId(Map<String, String> params) {
 		return twoSupportedDao.queryTotalFeeByInitId(params);

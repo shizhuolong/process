@@ -44,19 +44,6 @@ public class ThreeSupportedService {
 		return result;
 	}
 	
-		
-	
-	@Transactional
-	public void importData(Map<String, String> params) throws Exception {
-		threeSupportedDao.importData(params);
-	}
-	
-	
-	@Transactional
-	public void update(Map<String, String> params) throws Exception {
-		threeSupportedDao.update(params);
-	}
-	
 	/**
 	 * 提交工单审批
 	 * @param map
@@ -116,33 +103,13 @@ public class ThreeSupportedService {
 		return result;
 	}
 	
-	@Transactional
-	public void delete(Map<String, String> params) {
-		threeSupportedDao.delete(params);
-	}
-
 	public double queryTotalFee(Map<String, String> params) {
 		return threeSupportedDao.queryTotalFee(params);
 	}
 	
 	@Transactional
-	public void deleteTemp(Map<String, String> params) {
-		threeSupportedDao.deleteTemp(params);
-	}
-	
-	@Transactional
-	public void deleteResult(Map<String, String> params) {
-		threeSupportedDao.deleteResult(params);
-	}
-	
-	@Transactional
 	public void updateInitId(Map<String, String> params) {
 		threeSupportedDao.updateInitId(params);
-	}
-
-	@Transactional
-	public void deleteResultByEdit(Map<String, String> params) {
-		threeSupportedDao.deleteResultByEdit(params);
 	}
 
 	public double queryTotalFeeByInitId(Map<String, String> params) {
