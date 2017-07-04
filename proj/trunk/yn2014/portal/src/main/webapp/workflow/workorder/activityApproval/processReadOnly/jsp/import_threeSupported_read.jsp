@@ -41,16 +41,13 @@
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
-										<th style="width: 80px;">渠道名称：</th>
-										<td style="width: 80px;">
-											<input type="text" id="channel_name" name="channel_name"/>
-										</td>
 										<th style="width: 70px;">佣金总额：</th>
 									    <td id="totalFee" style="color:red;width: 70px;">
 										
 										</td>
 										<td>
-											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+	                                        <a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll()">导出</a>
+											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsDetail()">导出明细</a>
 										</td>
 									</tr>
 								</table>
@@ -59,23 +56,18 @@
 										<table class="overflow-y">
 											<thead>
 													<tr>
-														<th>结算账期</th>
+														<th>账期</th>
 														<th>渠道名称</th>
-														<th>渠道编码</th>
-														<!-- <th>渠道类型</th> -->
-														<th>佣金大类</th>
+														<th>BSS渠道编码</th>
+														<th>总部渠道编码</th>
 														<th>佣金科目</th>
-														<th>业务类型</th>
 														<th>佣金金额</th>
-														<th>佣金总额</th>
-														<th>净额</th>
-														<th>备注</th>
-													</tr>
+											</tr>
 											</thead>
 											<tbody id="dataBody">
 											</tbody>
 											<tr>
-												<td colspan="14">
+												<td colspan="6">
 													</div>
 													<div class="page_count">
 														<div class="page_count_left">

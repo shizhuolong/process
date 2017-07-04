@@ -22,7 +22,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_mixSupported_read.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_mixSupported_read.js?v=3"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,20 +38,18 @@
 							<div class="main-block">
 						<form id="taskReadForm" method="post">
 								<div class="title">
-									<i></i>未支撑补贴融合审批导入
+									<i></i>融合审批导入
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
-										<th style="width: 80px;">渠道名称：</th>
-										<td style="width: 80px;">
-											<input type="text" id="channel_name" name="channel_name"/>
-										</td>
 										<th style="width: 70px;">佣金总额：</th>
 									    <td id="totalFee" style="color:red;width: 70px;">
 										
 										</td>
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+	                                        <a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll()">导出</a>
+											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsDetail()">导出明细</a>
 										</td>
 									</tr>
 								</table>
@@ -60,22 +59,18 @@
 											<thead>
 													<tr>
 														<th>结算账期</th>
-														<th>渠道名称</th>
-														<th>渠道编码</th>
-														<!-- <th>渠道类型</th> -->
-														<th>佣金大类</th>
+														<th>结算渠道编码</th>
+														<th>结算渠道名称</th>
+														<th>发展渠道编码</th>
+														<th>发展渠道名称</th>
 														<th>佣金科目</th>
-														<th>业务类型</th>
 														<th>佣金金额</th>
-														<th>佣金总额</th>
-														<th>净额</th>
-														<th>备注</th>
-													</tr>
+													 </tr>
 											</thead>
 											<tbody id="dataBody">
 											</tbody>
 											<tr>
-												<td colspan="14">
+												<td colspan="7">
 													</div>
 													<div class="page_count">
 														<div class="page_count_left">
