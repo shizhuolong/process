@@ -42,7 +42,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base_list.js?v=33"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base_list.js?v=40"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	var isShopper=<%=isShopper%>; 
@@ -78,9 +78,10 @@
 					    <td width="4%" style="text-align:right;">销售状态：</td>
 						<td width="6%">
 						     <select name="is_back" id="is_back" class="default-text-input wper100">
+								<option value=''>全部</option>
 								<option value='0'>未销售</option>
 								<option value='1'>已销售</option>
-								<option value='2'>已退货</option>
+								<option value='2'>已退库</option>
 						     </select>
 					    </td>
 					    <td width="4%" style="text-align:right;">审批结果：</td>

@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","审批意见"]];
-var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","OPTIONS"];
+var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","审批意见"]];
+var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","OPTIONS"];
 var report = null;
 var downSql="";
 var startMan="";
@@ -122,9 +122,9 @@ function search(pageNumber) {
 	var is_back=$("#is_back").val();
 	var business=$("#business").val();
 	if(isShopper=="1"&&status=="2"&&is_back=="0"){
-		sql="SELECT "+field1.join(",")+",T2.REALNAME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME AND T1.STATUS='"+status+"'";
+		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
 	}else{
-		sql="SELECT "+field1.join(",")+",T2.REALNAME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME AND T1.STATUS='"+status+"'";
+		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
 	}
 	
 	if(regionCode!=''){
@@ -136,6 +136,7 @@ function search(pageNumber) {
 	if(is_back!=''){
 		sql+=" AND IS_BACK = '"+is_back+"'";
 	}
+	sql+=" AND T1.STATUS='"+status+"'";
 	if(business!=""){
 		sql+=" AND T1.WORK_FLOW_CODE='"+business+"'";
 	}
@@ -152,7 +153,7 @@ function search(pageNumber) {
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	nowData = query(sql);
 	if(nowData!=null&&nowData.length>1){
-		startMan=nowData[0].USER_NAME;
+		startMan=nowData[0].REALNAME;
 	}
 	if (pageNumber == 1) {
 		initPagination(total);
@@ -197,7 +198,7 @@ function initBusiness(status){
  
  function buinessDetail(obj){//查看审批意见
 	workNo=obj.attr("workNo");
-	var sql=" SELECT CHECK_MAN,CHECK_IDEA,T2.REALNAME FROM PMRT.TAB_MRT_YYT_ZD_CHECK T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_MAN = T2.USERNAME AND WORK_FLOW_CODE='"+workNo+"'";
+	var sql=" SELECT CHECK_MAN,CHECK_IDEA,T2.REALNAME FROM PMRT.TAB_MRT_YYT_ZD_CHECK T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_MAN = T2.USERNAME AND WORK_FLOW_CODE='"+workNo+"' ORDER BY CHECK_TIME DESC";
 	var r=query(sql);
 	var content="";
 	var check_man="";
@@ -240,7 +241,7 @@ function initBusiness(status){
  }
  
  function exportData(){
-	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人"]];
+	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态"]];
 	var showtext = '终端导出';
 	downloadExcel(downSql,title,showtext);
  }
@@ -301,7 +302,7 @@ function initBusiness(status){
 	}
  
  function getStartPhone(){
-	 var sql=" SELECT PHONE FROM PORTAL.APDP_USER WHERE USERNAME='"+startMan+"' AND ENABLED=1";
+	 var sql="SELECT PHONE FROM PORTAL.APDP_USER WHERE REALNAME='"+startMan+"' AND ENABLED=1";
 	 var r=query(sql);
 	 if(r!=null&&r.length>0){
 		 return r[0].PHONE;
