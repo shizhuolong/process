@@ -2,21 +2,17 @@ var isNeedApprover = true;
 var pageSize = 10;
 $(function(){
 	search(0);
-	$("#searchBtn").click(function(){
-		search(0);
-	});
-	$("#downExcelTemp").click(function(){
+	/*$("#downExcelTemp").click(function(){
 		downExcelTemp();
 	});
 	$("#importExcel").click(function(){
 		importExcel();
-	});
+	});*/
 	
 });
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
-	var channel_name=$.trim($("#channel_name").val());
 	var businessKey = $("#businessKey").val();
 	$.ajax({
 		type:"POST",
@@ -27,7 +23,6 @@ function search(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           "channel_name":channel_name,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -41,20 +36,14 @@ function search(pageNumber) {
 			}
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
-				content+="<tr>"
+	   			content+="<tr>"
 					+"<td>"+isNull(n['BILLINGCYCLID'])+"</td>"
-	                +"<td>"+isNull(n['CHANNEL_NAME'])+"</td>"
-	                +"<td>"+isNull(n['AGENTID'])+"</td>"
-	                /*+"<td>"+isNull(n['DEPT_PTYPE'])+"</td>"*/
-	                +"<td>"+isNull(n['COMM_TYPE'])+"</td>"
-	                +"<td>"+isNull(n['SUBJECTID'])+"</td>"
-	                +"<td>"+isNull(n['SVCTP'])+"</td>"
-	                +"<td>"+isNull(n['FEE'])+"</td>"
-	                +"<td>"+isNull(n['TOTALFEE'])+"</td>"
-	                +"<td>"+isNull(n['NETFEE'])+"</td>"
-	                +"<td>"+isNull(n['REMARK'])+"</td>"
-	                +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' fee='"+isNull(n['FEE'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
-	                +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' onclick='del($(this));' style='color:#BA0C0C;'>删除</a></td>"
+	                +"<td>"+isNull(n['PAY_CHNL_ID'])+"</td>"
+	                +"<td>"+isNull(n['PAY_CHNL_NAME'])+"</td>"
+	                +"<td>"+isNull(n['DEV_CHNL_ID'])+"</td>"
+	                +"<td>"+isNull(n['DEV_CHNL_NAME'])+"</td>"
+	                +"<td>"+isNull(n['REMARK1'])+"</td>"
+	                +"<td>"+isNull(n['COMM'])+"</td>"
 	                +"</tr>";
 			});
 			if(content != "") {
@@ -62,7 +51,7 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",false);
 			}else {
 				$("#submitTask").attr("disabled",true);
-				$("#dataBody").empty().html("<tr><td colspan='13'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='7'>暂无数据</td></tr>");
 			}
 			initTotalFee();
 	   	},
@@ -95,7 +84,6 @@ function isNull(obj){
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
-	var channel_name=$.trim($("#channel_name").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -103,8 +91,7 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/twoSupported/two-supported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo,
-           "channel_name":channel_name
+           "workNo":workNo
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
@@ -115,7 +102,56 @@ function initTotalFee(){
 	});
 }
 
-function edit(obj){
+function downsDetail(){
+	var title=[["结算账期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","渠道编码","渠道名称","用户编码","电话号码","佣金科目","佣金类别","业务类别","佣金金额(元)","操作员工编码","员工名称","第一个月发展量","第二个月发展量","第三个月发展量","执行月发展量","前三个月发展平均量"]];
+	var downSql=getDetailSql();
+	var showtext = '系统支撑2G明细';
+	downloadExcel(downSql,title,showtext);
+}
+
+function getDetailSql(){
+	var workNo = $("#businessKey").val();
+	return "SELECT BILLINGCYCLID,                           "+
+	"       PAY_CHNL_ID,                                    "+
+	"       PAY_CHNL_NAME,                                  "+
+	"       DEV_CHNL_ID,                                    "+
+	"       DEV_CHNL_NAME,                                  "+
+	"       AGENTID,                                        "+
+	"       GROUP_ID_4_NAME,                                "+
+	"       SUBSCRBID,                                      "+
+	"       SVCNUM,                                         "+
+	"       REMARK,                                         "+
+	"       REMARK1,                                        "+
+	"       NET_TYPE,                                       "+
+	"       FEE,                                            "+
+	"       NVL(OPERATOR_ID, '') OPERATOR_ID,               "+
+	"       NVL(USER_NAME, '') USER_NAME,                   "+
+	"       DECODE(COUNT1, NULL, '', COUNT1) COUNT1,        "+
+	"       DECODE(COUNT2, NULL, '', COUNT2) COUNT2,        "+
+	"       DECODE(COUNT3, NULL, '', COUNT3) COUNT3,        "+
+	"       DECODE(COUNT4, NULL, '', COUNT4) COUNT4,        "+
+	"       DECODE(AVG_COUNT, NULL, '', AVG_COUNT) AVG_COUNT"+
+	"  FROM PMRT.TAB_MRT_COMM_2G_AUDIT WHERE BILLINGCYCLID= "+
+	"TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID = '"+workNo+"'";
+}
+
+function downsAll(){
+	var title=[["结算账期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","佣金类别","佣金金额"]];
+	var downSql=getDownSql();
+	var showtext = '系统支撑2G汇总';
+	downloadExcel(downSql,title,showtext);
+}
+
+function getDownSql(){//汇总导出
+	var workNo = $("#businessKey").val();
+	return "SELECT BILLINGCYCLID,                                                     "+
+	"PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_ID,                                           "+
+	"DEV_CHNL_NAME,REMARK1,SUM(FEE) COMM                                              "+
+	"FROM PMRT.TAB_MRT_COMM_2G_AUDIT                                                  "+
+	"WHERE BILLINGCYCLID=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID ='"+workNo+"'"+
+	" GROUP BY PAY_CHNL_ID,BILLINGCYCLID,PAY_CHNL_NAME,DEV_CHNL_ID,DEV_CHNL_NAME,REMARK1";
+}
+/*function edit(obj){
 	var bill_id=$(obj).attr("bill_id");
     art.dialog.data('bill_id',bill_id);
 	var fee=$(obj).attr("fee")
@@ -199,3 +235,4 @@ function importExcel() {
 function downExcelTemp() {
 	location.href = $("#ctx").val()+"/twoSupported/two-supported!downloadTemplate.action";
 }
+*/

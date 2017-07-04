@@ -5,18 +5,10 @@ $(function(){
 	$("#searchBtn").click(function(){
 		search(0);
 	});
-	$("#downExcelTemp").click(function(){
-		downExcelTemp();
-	});
-	$("#importExcel").click(function(){
-		importExcel();
-	});
-	
 });
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
-	var channel_name=$.trim($("#channel_name").val());
 	var businessKey = $("#businessKey").val();
 	$.ajax({
 		type:"POST",
@@ -27,7 +19,6 @@ function search(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
-           "channel_name":channel_name,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -41,20 +32,14 @@ function search(pageNumber) {
 			}
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
-				content+="<tr>"
+	   			content+="<tr>"
 					+"<td>"+isNull(n['BILLINGCYCLID'])+"</td>"
-	                +"<td>"+isNull(n['CHANNEL_NAME'])+"</td>"
-	                +"<td>"+isNull(n['AGENTID'])+"</td>"
-	                /*+"<td>"+isNull(n['DEPT_PTYPE'])+"</td>"*/
-	                +"<td>"+isNull(n['COMM_TYPE'])+"</td>"
-	                +"<td>"+isNull(n['SUBJECTID'])+"</td>"
-	                +"<td>"+isNull(n['SVCTP'])+"</td>"
-	                +"<td>"+isNull(n['FEE'])+"</td>"
-	                +"<td>"+isNull(n['TOTALFEE'])+"</td>"
-	                +"<td>"+isNull(n['NETFEE'])+"</td>"
+	                +"<td>"+isNull(n['PAY_CHNL_ID'])+"</td>"
+	                +"<td>"+isNull(n['PAY_CHNL_NAME'])+"</td>"
+	                +"<td>"+isNull(n['DEV_CHNL_CODE'])+"</td>"
+	                +"<td>"+isNull(n['DEV_CHNL_NAME'])+"</td>"
 	                +"<td>"+isNull(n['REMARK'])+"</td>"
-	                +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' fee='"+isNull(n['FEE'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
-	                +"<td><a href='#' bill_id='"+isNull(n['BILL_ID'])+"' onclick='del($(this));' style='color:#BA0C0C;'>删除</a></td>"
+	                +"<td>"+isNull(n['COMM'])+"</td>"
 	                +"</tr>";
 			});
 			if(content != "") {
@@ -62,7 +47,7 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",false);
 			}else {
 				$("#submitTask").attr("disabled",true);
-				$("#dataBody").empty().html("<tr><td colspan='13'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='7'>暂无数据</td></tr>");
 			}
 			initTotalFee();
 	   	},
@@ -95,7 +80,6 @@ function isNull(obj){
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
-	var channel_name=$.trim($("#channel_name").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -103,8 +87,7 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/mixSupported/mix-supported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo,
-           "channel_name":channel_name
+           "workNo":workNo
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
@@ -114,88 +97,33 @@ function initTotalFee(){
 	    }
 	});
 }
-
-function edit(obj){
-	var bill_id=$(obj).attr("bill_id");
-    art.dialog.data('bill_id',bill_id);
-	var fee=$(obj).attr("fee")
-	$("#fee").val(fee);
-	var formdiv=$('#updateFormDiv');
-	formdiv.show();
-	formdiv.dialog({
-		title : '修改',
-		width : 400,
-		height : 100,
-		closed : false,
-		cache : false,
-		modal : false,
-		maximizable : true
-	});
+function downsDetail(){
+	var title=[["结算账期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","渠道编码","渠道名称","佣金科目","用户编码","电话号码","套餐名称","业务类型","创建时间","生效时间","失效时间","佣金"]];
+	var downSql=getDetailSql();
+	var showtext = '系统支撑融合明细';
+	downloadExcel(downSql,title,showtext);
 }
 
-function del(obj){
-	var bill_id=obj.attr("bill_id");
-	if(confirm('确认刪除吗?')){
-	  $.ajax({
-			type:"POST",
-			dataType:'json',
-			cache:false,
-			async: false,
-			url:$("#ctx").val()+"/mixSupported/mix-supported!delEdit.action",
-			data:{
-	           "bill_id":bill_id
-		   	}, 
-		   	success:function(data){
-		   		search(0);
-		   	},
-		   	error:function(XMLHttpRequest, textStatus, errorThrown){
-			   alert("出现异常，删除失败！");
-		    }
-	  });
-	}
+function getDetailSql(){
+	var workNo = $("#businessKey").val();
+	return "select billingcyclid,pay_chnl_id,pay_chnl_name,dev_chnl_code,dev_chnl_name,agentid,group_id_4_name,remark,subscription_id,svcnum,"
+	  +"product_name,net_type,to_char(create_time,'yyyy-mm-dd hh24:mi:ss') as create_time,to_char(active_time,'yyyy-mm-dd hh24:mi:ss') as active_time,"
+	  +"to_char(inactive_time,'yyyy-mm-dd') as inactive_time,fee from PMRT.TAB_MRT_COMM_FLOW_MON"
+	  +"              WHERE billingcyclid=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID ='"+workNo+"'";
 }
 
-function save(){
-	var bill_id=art.dialog.data('bill_id');
-	$("#bill_id").val(bill_id);
-	var url = $("#ctx").val()+'/mixSupported/mix-supported!update.action';
-	var updateForm=$('#updateForm');
-	updateForm.form('submit',{
-		url:url,
-		dataType:"json",
-		async: false,
-		type: "POST", 
-		onSubmit:function(){
-			if($(this).form('validate')==false){
-				return false;
-			}
-		},
-		success:function(data){
-			var d = $.parseJSON(data);
-			alert(d.msg);
-			$('#updateFormDiv').dialog('close');
-			search(0);
-		}
-	});
-
-}
-//导入excel
-function importExcel() {
-	var businessKey = $("#businessKey").val();
-	var url = $("#ctx").val()+"/portal/supported/jsp/importExcelMix.jsp";
-	art.dialog.data('businessKey',businessKey);
-	art.dialog.open(url,{
-		id:'importExcelDailog',
-		width:'530px',
-		height:'300px',
-		padding:'0 0',
-		title:'未支撑补贴融合审批导入',
-		lock:true,
-		resize:false
-	});
+function downsAll(){
+	var title=[["结算帐期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","佣金科目","佣金"]];
+	var downSql=getDownSql();
+	var showtext = '系统支撑融合汇总';
+	downloadExcel(downSql,title,showtext);
 }
 
-//下载模板
-function downExcelTemp() {
-	location.href = $("#ctx").val()+"/mixSupported/mix-supported!downloadTemplate.action";
+function getDownSql(){//汇总导出
+	var workNo = $("#businessKey").val();
+	return "SELECT BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE," +
+			"DEV_CHNL_NAME,REMARK,SUM(FEE) COMM"+
+			" FROM PMRT.TAB_MRT_COMM_FLOW_MON "                                                +
+	        "WHERE billingcyclid=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID = '"+workNo+"'"+
+	   " GROUP BY BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE,DEV_CHNL_NAME,REMARK";
 }

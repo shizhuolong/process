@@ -25,7 +25,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_fourSupported_edit.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_fourSupported_edit.js?v=1"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -44,18 +45,14 @@
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
-										<th style="width: 80px;">渠道名称：</th>
-										<td style="width: 80px;">
-											<input type="text" id="channel_name" name="channel_name"/>
-										</td>
 										<th style="width: 70px;">佣金总额：</th>
 										<td id="totalFee" style="color:red;width: 70px;">
 										
 										</td>
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
-											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
-											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空重导</a>
+	                                        <a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll()">导出</a>
+											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsDetail()">导出明细</a>
 										</td>
 									</tr>
 								</table>
@@ -64,18 +61,12 @@
 										<table class="overflow-y">
 										  <thead>
 											<tr>
-												<th>结算账期</th>
-												<th>渠道名称</th>
-												<th>渠道编码</th>
-												<!-- <th>渠道类型</th> -->
-												<th>佣金大类</th>
-												<th>佣金科目</th>
-												<th>业务类型</th>
-												<th>佣金金额</th>
-												<th>佣金总额</th>
-												<th>净额</th>
-												<th>备注</th>
-												<th colspan='2'>操作</th>
+														<th>账期</th>
+														<th>渠道名称</th>
+														<th>BSS渠道编码</th>
+														<th>总部渠道编码</th>
+														<th>佣金科目</th>
+														<th>佣金金额</th>
 											</tr>
 										  </thead>
 											<tbody id="dataBody">
@@ -105,23 +96,5 @@
 				</div>
 		</div>
 	</div>
-	<div class="sticky-wrap" id="updateFormDiv" style="display:none;">
-		<form id="updateForm" method="POST">
-		  <input type="hidden" id="bill_id" name="bill_id"/>
-			<table class="default-table sticky-enabled">
-				<tr>
-					<td style="padding-left: 60px;">佣金金额:</td>
-					<td><input type="text" required="true" class="easyui-validatebox" missingMessage="佣金金额不能为空" name="fee" id="fee"></td>
-				</tr>
-				<tr></tr>
-				<tr>
-	                <td colspan="2" style="padding-left: 120px;">
-		                <a href="#" class="default-btn fLeft mr10" id="saveBtn" onclick="save();">保存</a>
-		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel();">取消</a>
-	                </td>
-				</tr>
-			</table>
-		</form>
-    </div>		
 </body>
 </html>
