@@ -37,7 +37,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=62"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=64"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
@@ -180,31 +180,31 @@
 		       <tr>
  		          <td>进货价</td>
 		          <td>
-			          <input id="in_price" readonly="true" precision="2" name="resultMap.in_price" required="true" "easyui-validatebox" missingMessage="进货价不能为空"/>
+			          <input id="in_price" readonly="true" precision="2" name="resultMap.in_price" required="true" class="easyui-validatebox" missingMessage="进货价不能为空"/>
 		          </td>
 		          <td>零售价</td>
 		          <td>
-			          <input id="out_price" readonly="true" precision="2" name="resultMap.out_price" required="true" "easyui-validatebox" missingMessage="零售价不能为空"/>
+			          <input id="out_price" readonly="true" precision="2" name="resultMap.out_price" required="true" class="easyui-validatebox" missingMessage="零售价不能为空"/>
 		          </td>
 		       </tr>
 		       <tr>
  		          <td>销售毛利</td>
 		          <td>
-			          <input id="sale_ml" readonly="true" precision="2" name="resultMap.sale_ml" "easyui-validatebox"/>
+			          <input id="sale_ml" readonly="true" precision="2" name="resultMap.sale_ml" required="true" class="easyui-validatebox"/>
 		          </td>
 		          <td>营业厅毛利</td>
 		          <td>
-			          <input id="yyt_ml" readonly="true" precision="2" name="resultMap.yyt_ml" "easyui-validatebox"/>
+			          <input id="yyt_ml" readonly="true" precision="2" name="resultMap.yyt_ml" required="true" class="easyui-validatebox"/>
 		          </td>
 		       </tr>
 		       <tr>
  		          <td>营销成本</td>
 		          <td>
-			          <input id="yx_cost" readonly="true" precision="2" name="resultMap.yx_cost" "easyui-validatebox"/>
+			          <input id="yx_cost" readonly="true" precision="2" name="resultMap.yx_cost" required="true" class="easyui-validatebox"/>
 		          </td>
 		          <td>营业厅利润</td>
 		          <td>
-			          <input id="yyt_profit" readonly="true" precision="2" name="resultMap.yyt_profit" "easyui-validatebox"/>
+			          <input id="yyt_profit" readonly="true" precision="2" name="resultMap.yyt_profit" required="true" class="easyui-validatebox"/>
 		          </td>
 		       </tr>
 		       <tr>
