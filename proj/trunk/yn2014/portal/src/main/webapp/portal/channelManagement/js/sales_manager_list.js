@@ -372,6 +372,10 @@ function search(pageNumber) {
 					alert("终端编号不能为空！");
 					return false;
 				}
+				if($("#sale_ml").val()==""){
+					alert("销售毛利不能为空！");
+					return false;
+				}
 				if($("#yyt_hq_name").val()==""){
 					alert("营业厅不能为空！");
 					return false;
