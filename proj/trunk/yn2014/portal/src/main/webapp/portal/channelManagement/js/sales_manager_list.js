@@ -328,6 +328,7 @@ function search(pageNumber) {
    	 $("#operator_id").val("");
      var date = new Date();
 	 $("#acc_time").val(date.pattern("yyyyMMdd HH:mm"));
+	 initDevelopInfo();
 	 $("#addDiv").show();
 	 $("#saveBtn").show();
 	 $('#addDiv').dialog({
@@ -342,6 +343,16 @@ function search(pageNumber) {
 				$("#addDiv").hide();
 			}
 	});
+ }
+ 
+ function initDevelopInfo(){
+	 var username=$("#username").val();
+	 var s="SELECT USER_CODE,DEVELOPER FROM portal.tab_portal_grp_mag_mon WHERE username ='"+username+"' AND DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')";
+	 var d=query(s);
+	 if(d!=null&&d.length>0){
+		 $("#developer_id").val(d[0].DEVELOPER);
+		 $("#operator_id").val(d[0].USER_CODE);
+	 }
  }
  
  function save(){
