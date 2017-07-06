@@ -59,6 +59,7 @@ function search(pageNumber) {
 	}else{
 		sql+=" AND 1=2";
 	}
+	sql+=" ORDER BY DEV_2I2C_DZ DESC";
 	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from(" + csql+")");
