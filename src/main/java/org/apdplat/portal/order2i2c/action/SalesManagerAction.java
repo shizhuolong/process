@@ -43,7 +43,9 @@ public class SalesManagerAction extends BaseAction {
 			resultMap.put("username", user.getUsername());
 			resultMap.put("code", org.getCode());
 			String order_code=resultMap.get("order_code");
-			if(order_code!=null&&!order_code.equals("")){//换机或退货修改原来数据状态，再增加一条并保留工单编号
+			SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm");
+			resultMap.put("create_time", s.format(new Date()));
+			if(order_code!=null&&!order_code.equals("")){//换机或退货修改原来数据状态，换机再增加一条并保留工单编号
 				service.update(resultMap);
 				if(resultMap.get("is_back").equals("1")){//换机
 					
@@ -53,6 +55,8 @@ public class SalesManagerAction extends BaseAction {
 					this.reponseJson(result); 
 					resultMap.put("is_back", "0");
 					service.updateSalesStatus(resultMap);
+					resultMap.put("bakStatus", "01");
+					service.updateBackBak(resultMap);//记录到新老对应表
 					return;
 				}
 			}else{
@@ -61,12 +65,12 @@ public class SalesManagerAction extends BaseAction {
 				String businessKey = "YN-"+time; //订单编号
 				resultMap.put("order_code", businessKey);
 			}
-			SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm");
-			resultMap.put("create_time", s.format(new Date()));
 			service.insert(resultMap);
 			if(resultMap.get("is_back").equals("0")){//正常销售完,更改库存为已销售1
 				resultMap.put("is_back", "1");
 			}else if(resultMap.get("is_back").equals("1")){//换机，库存恢复为可销售状态0
+				resultMap.put("bakStatus", "02");
+				service.updateBackBak(resultMap);//记录到新老对应表
 				resultMap.put("is_back", "0");
 				resultMap.put("zd_iemi", resultMap.get("old_zd_iemi"));
 			}
@@ -76,7 +80,7 @@ public class SalesManagerAction extends BaseAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("state","0");
-			result.put("msg", "新增失败！");
+			result.put("msg", "操作失败！");
 		}
 		this.reponseJson(result);
 	}
