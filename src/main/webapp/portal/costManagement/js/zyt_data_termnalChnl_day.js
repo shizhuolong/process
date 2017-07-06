@@ -411,7 +411,7 @@ function getTerminalSql(){
 			"              GROUP BY GROUPING SETS(GROUP_ID_0,(GROUP_ID_0, GROUP_ID_1_NAME))) T2                                               "+
 			"    ON (T2.GROUP_ID_1_NAME = T.GROUP_ID_1_NAME)                                                                                  "+
 			"  LEFT JOIN (SELECT NVL(GROUP_ID_1_NAME, '全省') GROUP_ID_1_NAME,                                                                "+
-			"                            ROUND(NVL(SUM(TYPE_ALL1), 0)/3,3) LAST_SEASON_DEV                                                               "+
+			"                            ROUND(NVL(SUM(TYPE_ALL1), 0)/3,0) LAST_SEASON_DEV                                                               "+
 			"                       FROM PMRT.TB_MRT_BUS_ZY_REPORT_DETAIL                                                                     "+
 			"      WHERE DEAL_DATE IN (SELECT * FROM TABLE (PMRT.LAST_QUAR_DEAL1("+termnalStartDate+")))"               +
 			      where+   
