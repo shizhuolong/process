@@ -29,7 +29,7 @@ $(function() {
 	$("#out_price").change(function(){
 		 var in_price=$("#in_price").val();
 		 var out_price=$("#out_price").val();
-		 if(out_price<in_price){
+		 if(parseInt(out_price)<parseInt(in_price)){
 			 $("#out_price").val("");
 			 return;
 		 }
@@ -206,7 +206,7 @@ function search(pageNumber) {
    	});
    }
  }
- 
+ var old_zd_iemi="";
  function changeMobile(obj){
 	 var order_code=obj.attr("order_code");
 	 var sql="SELECT * FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE ORDER_CODE='"+order_code+"' AND IS_BACK=0";
@@ -215,6 +215,7 @@ function search(pageNumber) {
 		 $("#order_code").val(isNull(order_code));
 		 $("#is_back").val("1");
 		 $("#zd_iemi").val(isNull(r[0].ZD_IEMI));
+		 old_zd_iemi=isNull(r[0].ZD_IEMI);
 		 $("#old_zd_iemi").val(isNull(r[0].ZD_IEMI));
 		 $("#group_id_1").val(isNull(r[0].GROUP_ID_1));
     	 $("#group_id_1_name").val(isNull(r[0].GROUP_ID_1_NAME));
@@ -237,7 +238,7 @@ function search(pageNumber) {
    	 $("#acc_time").val(date.pattern("yyyyMMdd HH:mm"));
    	 $("#addDiv").show();
    	 $('#addDiv').dialog({
-   			title : '修改销售终端',
+   			title : '换机',
    			width : 700,
    			height : 500,
    			closed : false,
@@ -347,7 +348,7 @@ function search(pageNumber) {
  
  function initDevelopInfo(){
 	 var username=$("#username").val();
-	 var s="SELECT USER_CODE,DEVELOPER FROM portal.tab_portal_grp_mag_mon WHERE username ='"+username+"' AND DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')";
+	 var s="SELECT USER_CODE,DEVELOPER FROM PORTAL.TAB_PORTAL_GRP_MAG_MON WHERE username ='"+username+"' AND DEAL_DATE=TO_CHAR(SYSDATE,'YYYYMM')";
 	 var d=query(s);
 	 if(d!=null&&d.length>0){
 		 $("#developer_id").val(d[0].DEVELOPER);
@@ -384,12 +385,22 @@ function search(pageNumber) {
 					alert("营业员工位不能为空！");
 					return false;
 				}
+				if(isNaN($("#developer_id").val())){
+					alert("发展人编码必须是数字！");
+					return false;
+				}
 				if($("#is_change_price").val()=="1"){
 					if($("#service_num").val()==""){
 						alert("用户号码不能为空！");
 						return false;
 					}
 				}
+				if($("#is_back").val()=="1"){//换机
+					if($("#zd_iemi").val()==old_zd_iemi){//防止换机,未修改直接保存
+						return false;
+					}
+				}
+				
 			},
 			success:function(data){
 				var d = $.parseJSON(data);
