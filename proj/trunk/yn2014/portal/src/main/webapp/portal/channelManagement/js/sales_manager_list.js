@@ -164,6 +164,7 @@ function search(pageNumber) {
  }
  
  function back(obj){
+	 $("#saveBtn").show();
 	 var order_code=obj.attr("order_code");
 	 var sql="SELECT * FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE ORDER_CODE='"+order_code+"' AND IS_BACK=0";
 	 var r=query(sql);
@@ -208,6 +209,7 @@ function search(pageNumber) {
  }
  var old_zd_iemi="";
  function changeMobile(obj){
+	 $("#saveBtn").show();
 	 var order_code=obj.attr("order_code");
 	 var sql="SELECT * FROM PMRT.TAB_MRT_YYT_ZD_ORDER WHERE ORDER_CODE='"+order_code+"' AND IS_BACK=0";
 	 var r=query(sql);
