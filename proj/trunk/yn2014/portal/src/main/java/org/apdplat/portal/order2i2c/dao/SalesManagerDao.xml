@@ -22,4 +22,14 @@
 	    UPDATE PMRT.TAB_MRT_YYT_ZD_BASE SET IS_BACK=#{is_back} WHERE ZD_IEMI=#{zd_iemi}
 	</update>
 	
+	<update id="updateBackBak" parameterType="java.util.Map">
+	   <if test="bakStatus=='01'">
+	      INSERT INTO PMRT.TAB_MRT_YYT_BACK_BAK(NEW_IMEI_CODE,ZD_TYPE,ACC_TIME,ACC_USER,CREATE_USER,CREATE_TIME)
+          VALUES(#{zd_iemi},'01',#{acc_time},#{operator_id},#{username},#{create_time})
+	   </if>
+	   <if test="bakStatus=='02'">
+	      INSERT INTO PMRT.TAB_MRT_YYT_BACK_BAK(NEW_IMEI_CODE,OLD_IMEI_CODE,ZD_TYPE,ACC_TIME,ACC_USER,CREATE_USER,CREATE_TIME)
+          VALUES(#{zd_iemi},#{old_zd_iemi},'02',#{acc_time},#{operator_id},#{username},#{create_time})
+	   </if>
+	</update>
 </mapper>

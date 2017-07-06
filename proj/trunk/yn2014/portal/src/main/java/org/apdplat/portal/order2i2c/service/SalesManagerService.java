@@ -25,5 +25,9 @@ public class SalesManagerService {
 	public void updateSalesStatus(Map<String, String> resultMap) {
 		dao.updateSalesStatus(resultMap);
 	}
+
+	public void updateBackBak(Map<String, String> resultMap) {
+		dao.updateBackBak(resultMap);
+	}
 	
 }

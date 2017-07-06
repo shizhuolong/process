@@ -9,5 +9,7 @@ public interface SalesManagerDao {
 	public void update(Map<String, String> resultMap);
 
 	public void updateSalesStatus(Map<String, String> resultMap);
+
+	public void updateBackBak(Map<String, String> resultMap);
 	
 }
