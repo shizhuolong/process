@@ -309,9 +309,20 @@ function initBusiness(status){
 	 var sql="SELECT PHONE FROM PORTAL.APDP_USER WHERE REALNAME='"+startMan+"' AND ENABLED=1";
 	 var r=query(sql);
 	 if(r!=null&&r.length>0){
-		 if(r[0].PHONE!=null&&r[0].PHONE!=""){
-			 return r[0].PHONE;
+		 var d=r[0];
+		 if(d){
+			 var phone=isNull(r[0].PHONE);
+			 if(phone!=""){
+				 return phone;
+			 }
 		 }
 	 }
 	 return "";
+ }
+ 
+ function isNull(obj){
+		if(obj == undefined || obj == null || obj == '') {
+			return "";
+		}
+		return obj;
  }
