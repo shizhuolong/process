@@ -1,9 +1,14 @@
 package org.apdplat.portal.order2i2c.action;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -32,7 +37,9 @@ public class SalesManagerAction extends BaseAction {
 	@Autowired
 	private SalesManagerService service;
 	private Map<String, String> resultMap;
-
+	
+	@Resource
+	DataSource dataSource;
 	
 	public void save() {
 		Map<String,String> result=new HashMap<String,String>();
@@ -57,6 +64,7 @@ public class SalesManagerAction extends BaseAction {
 					service.updateSalesStatus(resultMap);
 					resultMap.put("bakStatus", "01");
 					service.updateBackBak(resultMap);//记录到新老对应表
+					callPre();
 					return;
 				}
 			}else{
@@ -77,6 +85,7 @@ public class SalesManagerAction extends BaseAction {
 			service.updateSalesStatus(resultMap);
 			result.put("state","1");
 			result.put("msg", "操作成功！");
+			callPre();
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("state","0");
@@ -85,6 +94,17 @@ public class SalesManagerAction extends BaseAction {
 		this.reponseJson(result);
 	}
 
+	public void callPre() throws Exception{
+		Connection conn =null;
+		CallableStatement stmt=null;
+		conn = dataSource.getConnection();
+		stmt = conn.prepareCall("{CALL PMRT.PRC_MRT_YYT_ZD_REPORT(?,?)}");
+		SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd");
+		stmt.setString(1,s.format(new Date()));
+		stmt.registerOutParameter(2,java.sql.Types.VARCHAR);
+		stmt.executeUpdate();
+		String r=stmt.getString(2);
+	}
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}

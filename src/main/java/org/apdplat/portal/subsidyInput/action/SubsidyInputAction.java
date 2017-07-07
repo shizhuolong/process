@@ -78,6 +78,48 @@ public class SubsidyInputAction extends BaseAction{
 			this.reponseJson(result);
 	}
 	
+	public void queryTotalFee() {
+		User user = UserHolder.getCurrentLoginUser();
+		Org org = user.getOrg();
+		String username=user.getUsername();
+		String code = org.getCode();
+		resultMap.put("code", code);
+		resultMap.put("orgLevel", org.getOrgLevel());
+		resultMap.put("username", username);
+		double result = subsidyInputService.queryTotalFee(resultMap);
+		this.reponseJson(result);
+   }
+	
+	public void queryTotalFeeByInitId() {
+		String workNo=request.getParameter("workNo");
+		if(workNo != null && !"".equals(workNo.trim())) {
+			resultMap.put("workNo", workNo);
+		}
+		double result = subsidyInputService.queryTotalFeeByInitId(resultMap);
+		this.reponseJson(result);
+   }
+	
+	public void queryTotalChnl() {
+		User user = UserHolder.getCurrentLoginUser();
+		Org org = user.getOrg();
+		String username=user.getUsername();
+		String code = org.getCode();
+		resultMap.put("code", code);
+		resultMap.put("orgLevel", org.getOrgLevel());
+		resultMap.put("username", username);
+		double result = subsidyInputService.queryTotalChnl(resultMap);
+		this.reponseJson(result);
+   }
+	
+	public void queryTotalChnlByInitId() {
+		String workNo=request.getParameter("workNo");
+		if(workNo != null && !"".equals(workNo.trim())) {
+			resultMap.put("workNo", workNo);
+		}
+		double result = subsidyInputService.queryTotalChnlByInitId(resultMap);
+		this.reponseJson(result);
+   }
+	
 	/**
 	 * excel数据导入
 	 */

@@ -45,13 +45,26 @@ public class SubsidyInputService {
 		return result;
 	}
 	
-		
+	public double queryTotalFee(Map<String, String> params) {
+		return subsidyInputDao.queryTotalFee(params);
+	}
+	
+	public double queryTotalFeeByInitId(Map<String, String> params) {
+		return subsidyInputDao.queryTotalFeeByInitId(params);
+	}	
+	
+	public double queryTotalChnl(Map<String, String> params) {
+		return subsidyInputDao.queryTotalChnl(params);
+	}
+	
+	public double queryTotalChnlByInitId(Map<String, String> params) {
+		return subsidyInputDao.queryTotalChnlByInitId(params);
+	}	
 	
 	@Transactional
 	public void importData(Map<String, String> params) throws Exception {
 		subsidyInputDao.importData(params);
 	}
-	
 	
 	@Transactional
 	public void update(Map<String, String> params) throws Exception {
