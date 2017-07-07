@@ -31,7 +31,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_subsidyInput_edit.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_subsidyInput_edit.js?v=3"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -54,7 +55,16 @@
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
+									<th style="width: 70px;">渠道数：</th>
+										<td id="totalChnl" style="color:red;width: 70px;">
+											
+										</td> 
+									    <th style="width: 70px;">补贴总额：</th>
+										<td id="totalFee" style="color:red;width: 70px;">
+											
+										</td> 
 										<td>
+									     	<a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll();">导出</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空重导</a>
 										</td>

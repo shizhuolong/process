@@ -22,7 +22,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_subsidyInput_read.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_subsidyInput_read.js?v=1"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -39,7 +40,19 @@
 								<div class="title">
 									<i></i>渠道补贴导入
 								</div>
-								
+								<table>
+								        <th style="width: 70px;">渠道数：</th>
+										<td id="totalChnl" style="color:red;width: 70px;">
+											
+										</td> 
+									    <th style="width: 70px;">补贴总额：</th>
+										<td id="totalFee" style="color:red;width: 70px;">
+											
+										</td> 
+										<td>
+									     	<a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll();">导出</a>
+										</td>
+								</table>
 								<div class="default-dt dt-autoH">
 									<div class="no-js-table">
 										<table class="overflow-y">
