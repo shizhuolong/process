@@ -10,6 +10,26 @@
 			WHERE INIT_ID IS NULL AND OPERATOR=#{username}
 	</select>
 	
+	<select id="queryTotalFee" parameterType="java.util.Map" resultType="double">
+	    SELECT NVL(SUM(SUBSIDY_FEE),0) SUBSIDY_FEE FROM PAPP.TAB_COMMI_SUBSIDY_INFO
+	    WHERE INIT_ID IS NULL AND OPERATOR=#{username}
+	</select>
+	
+	<select id="queryTotalFeeByInitId" parameterType="java.util.Map" resultType="double">
+		SELECT NVL(SUM(SUBSIDY_FEE),0) SUBSIDY_FEE FROM PAPP.TAB_COMMI_SUBSIDY_INFO
+		WHERE INIT_ID=#{workNo}
+	</select>
+	
+	<select id="queryTotalChnl" parameterType="java.util.Map" resultType="double">
+	    SELECT count(*) CHNLCOUNT FROM PAPP.TAB_COMMI_SUBSIDY_INFO
+	    WHERE INIT_ID IS NULL AND OPERATOR=#{username}
+	</select>
+	
+	<select id="queryTotalChnlByInitId" parameterType="java.util.Map" resultType="double">
+		 SELECT count(*) CHNLCOUNT FROM PAPP.TAB_COMMI_SUBSIDY_INFO
+		 WHERE INIT_ID=#{workNo}
+	</select>
+	
 	<insert id="importData" parameterType="java.util.Map">
 		INSERT INTO PAPP.TAB_COMMI_SUBSIDY_INFO
   		SELECT * FROM PAPP.TAB_COMMI_SUBSIDY_INFO_TEMP T1

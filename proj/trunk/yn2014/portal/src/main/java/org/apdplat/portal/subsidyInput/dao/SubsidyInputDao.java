@@ -53,4 +53,12 @@ public interface SubsidyInputDao {
 	public void deleteFilesByWorkNo(Map<String, String> params);
 	
 	public List<Map<String, Object>> queryFiles(String initId);
+	
+	public double queryTotalFee(Map<String, String> params);
+	
+	public double queryTotalFeeByInitId(Map<String, String> params);
+	
+    public double queryTotalChnl(Map<String, String> params);
+	
+	public double queryTotalChnlByInitId(Map<String, String> params);
 }
