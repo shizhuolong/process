@@ -231,9 +231,11 @@ function initBusiness(status){
  }
  
  function backZd(obj){
-	 var zd_iemi=obj.attr("zd_iemi");
-	 var url = $("#ctx").val()+'/optionsManager/options-manager!backZd.action?resultMap.zd_iemi='+zd_iemi;
-	 window.location.href=url;
+	 if(confirm('确认退库吗?')){
+		 var zd_iemi=obj.attr("zd_iemi");
+		 var url = $("#ctx").val()+'/optionsManager/options-manager!backZd.action?resultMap.zd_iemi='+zd_iemi;
+		 window.location.href=url;
+	 }
  }
  
  function repeatImport(){
