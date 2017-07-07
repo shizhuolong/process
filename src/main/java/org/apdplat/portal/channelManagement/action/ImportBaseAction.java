@@ -146,6 +146,11 @@ public class ImportBaseAction extends BaseAction {
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
+							    	if(Integer.parseInt(getCellValue(row.getCell(10)))<Integer.parseInt(getCellValue(row.getCell(9)))){
+							    		err.add("零售价不能低于进货价，请检查！");
+							    		Struts2Utils.getRequest().setAttribute("err", err);
+										return "error";
+							    	}
 							    }
 								pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
@@ -173,6 +178,28 @@ public class ImportBaseAction extends BaseAction {
 					List<Map<String,String>> l=SpringManager.getFindDao().find(isNullSql);
 					if(l!=null&&l.size()>0){
 						err.add("模板中有空的字段，请检查！");
+						Struts2Utils.getRequest().setAttribute("err", err);
+						return "error";
+					}
+					String checkYytCode="SELECT YYT_CHAN_CODE                            "+
+							"    FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP                      "+
+							"   WHERE GROUP_ID_1 = '"+regionCode+"'                      "+
+							"     AND YYT_CHAN_CODE NOT IN (SELECT hq_chan_code          "+
+							"                             FROM PCDE.TB_CDE_OPERATE_TYPE T"+
+							"                            WHERE DEAL_DATE = TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm')"+
+							"                              AND OPERATE_TYPE = '自营')    ";
+					l=SpringManager.getFindDao().find(checkYytCode);
+					if(l!=null&&l.size()>0){
+						l.get(0).get("YYT_CHAN_CODE");
+						err.add("营业厅编码："+l.get(0).get("YYT_CHAN_CODE")+"不存在于库中,请检查！");
+						Struts2Utils.getRequest().setAttribute("err", err);
+						return "error";
+					}
+					String checkSupCode="SELECT SUP_HQ_CODE FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1 = '"+regionCode+"' AND SUP_HQ_CODE NOT IN(select HQ_CHAN_CODE from PCDE.TAB_CDE_CHANL_HQ_CODE)";
+					l=SpringManager.getFindDao().find(checkSupCode);
+					if(l!=null&&l.size()>0){
+						l.get(0).get("SUP_HQ_CODE");
+						err.add("供应商编码："+l.get(0).get("SUP_HQ_CODE")+"不存在于库中,请检查！");
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}

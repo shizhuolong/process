@@ -74,7 +74,7 @@ public class ImportElectricNewAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_ELECTRIC_MON_TEMP";
-		String field="DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,GROUP_ID_1_NAME,UNIT_NAME,AC_PREFIX,ROOM_ADDR,ROOM_NAME,D_LAN,BEGIN_MONEY,THIS_MON_PRE,THIS_MON_PAY,ZZ_FAX,END_YT_MONEY,THIS_MON_STAND_PRE,END_MON_DATE,OIL_COMPANY,WATER_FEE";
+		String field="CREATE_TIME,DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,GROUP_ID_1_NAME,UNIT_NAME,AC_PREFIX,ROOM_ADDR,ROOM_NAME,D_LAN,BEGIN_MONEY,THIS_MON_PRE,THIS_MON_PAY,ZZ_FAX,END_YT_MONEY,THIS_MON_STAND_PRE,END_MON_DATE,OIL_COMPANY,WATER_FEE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -99,7 +99,7 @@ public class ImportElectricNewAction extends BaseAction {
 					int start = sheet.getFirstRowNum() +1 ;
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO PMRT.TAB_MRT_ELECTRIC_MON_TEMP("+field+") values('"+time+"','','','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String sql = "INSERT INTO PMRT.TAB_MRT_ELECTRIC_MON_TEMP("+field+") values(SYSDATE,'"+time+"','','','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					pre=conn.prepareStatement(sql);
 					for (int y = start; y <= end; y++) {
 						row = sheet.getRow(y);
