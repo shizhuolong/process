@@ -1,9 +1,12 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.apdplat.module.security.model.Org"%>
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@page import="org.apdplat.module.security.model.User"%>
 <%
-   String paySession=session.getId();
+	User user = UserHolder.getCurrentLoginUser();
+	Org org = user.getOrg();
+	String paySession=session.getId();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,10 +39,12 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/subsidyInput/js/import_subsidyInput_list.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/subsidyInput/js/import_subsidyInput_list.js?v=2"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+	<input type="hidden" id="username" value="<%=user.getUsername()%>">
 	<div id="smartForm">
 		<input type="hidden" name="resultMap.page" />
         <input type="hidden" name="resultMap.rows" />
@@ -63,7 +68,16 @@
 										</td>
                                    </tr>
 									<tr>
+									    <th style="width: 70px;">渠道数：</th>
+										<td id="totalChnl" style="color:red;width: 70px;">
+											
+										</td> 
+									    <th style="width: 70px;">补贴总额：</th>
+										<td id="totalFee" style="color:red;width: 70px;">
+											
+										</td> 
 										<td colspan="2">
+										    <a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll();">导出</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空导入</a>
 										</td>

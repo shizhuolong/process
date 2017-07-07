@@ -65,6 +65,8 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",true);
 				$("#dataBody").empty().html("<tr><td colspan='13'>暂无数据</td></tr>");
 			}
+			initTotalFee(); 
+			initTotalChnl();
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
 		   alert("加载数据失败！");
@@ -131,8 +133,40 @@ function save(){
 			search(0);
 		}
 	});
-
 }
+
+function initTotalFee(){
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,//true是异步，false是同步
+		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
+		url:$("#ctx").val()+"/subsidyInput/subsidy-input!queryTotalFee.action",
+	   	success:function(data){
+	   		$("#totalFee").text(data+"元");
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        	alert("加载数据失败！");
+        }
+	});
+}
+
+function initTotalChnl(){
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,//true是异步，false是同步
+		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
+		url:$("#ctx").val()+"/subsidyInput/subsidy-input!queryTotalChnl.action",
+	   	success:function(data){
+	   		$("#totalChnl").text(data+"个");
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        	alert("加载数据失败！");
+        }
+	});
+}
+
 //导入excel
 function importExcel() {
 	var url = $("#ctx").val()+"/portal/subsidyInput/jsp/importExcel.jsp";
@@ -384,4 +418,15 @@ function downloadFile(element) {
 	fileName = encodeURI(encodeURI(fileName));
 	//alert(filepath);
 	window.location.href=path+"/subsidyUpload/subsidy-upload!download.action?fileName="+fileName+"&filePath="+filePath;
+}
+
+function downsAll(){
+	var username=$("#username").val();
+	var downSql="SELECT DEVELOP_CHNL_CODE,DEVELOP_CHNL_NAME,PAY_CHNL_CODE,     "+
+	"			PAY_CHNL_NAME,BILLINGCYCLID,CUST_TYPE,SUBSIDY_TYPE,SUBSIDY_WAY,"+
+	"			SUBSIDY_FEE FROM PAPP.TAB_COMMI_SUBSIDY_INFO                   "+
+	"			WHERE INIT_ID IS NULL AND OPERATOR='"+username+"'               ";
+	var showtext = '渠道补贴';
+	var title=[["发展渠道编码","发展渠道名称","结算渠道编码","结算渠道名称","帐期","客户类型","补贴用途","补贴方式","补贴金额"]];
+	downloadExcel(downSql,title,showtext);
 }
