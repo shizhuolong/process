@@ -74,7 +74,7 @@ public class ImportRentNewAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_RENT_MON_TEMP";//表里面比模板多了配置平台编码和是否入库字段
-		String field="DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,GROUP_ID_1_NAME,UNIT_NAME,ACPEFIX,CELL_ID,CELL_NAME,D_LAN,CONTRACT_NO,CONTRACT_NAME,MAIN_CONTRACT_NO,START_FEE,THIS_MON_ONE_JT,THIS_MON_WY_JT,PAY_FEE,PAY_FAX,END_FEE";
+		String field="CREATE_TIME,DEAL_DATE,GROUP_ID_1,UNIT_ID,USERNAME,GROUP_ID_1_NAME,UNIT_NAME,ACPEFIX,CELL_ID,CELL_NAME,D_LAN,CONTRACT_NO,CONTRACT_NAME,MAIN_CONTRACT_NO,START_FEE,THIS_MON_ONE_JT,THIS_MON_WY_JT,PAY_FEE,PAY_FAX,END_FEE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -99,7 +99,7 @@ public class ImportRentNewAction extends BaseAction {
 					int start = sheet.getFirstRowNum()+1 ;// 去标题
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO PMRT.TAB_MRT_RENT_MON_TEMP("+field+") values('"+time+"','','','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String sql = "INSERT INTO PMRT.TAB_MRT_RENT_MON_TEMP("+field+") values(SYSDATE,'"+time+"','','','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					pre=conn.prepareStatement(sql);
 					for (int y = start; y <= end; y++) {
 						row = sheet.getRow(y);
