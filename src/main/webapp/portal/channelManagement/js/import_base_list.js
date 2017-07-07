@@ -309,7 +309,9 @@ function initBusiness(status){
 	 var sql="SELECT PHONE FROM PORTAL.APDP_USER WHERE REALNAME='"+startMan+"' AND ENABLED=1";
 	 var r=query(sql);
 	 if(r!=null&&r.length>0){
-		 return r[0].PHONE;
+		 if(r[0].PHONE!=null&&r[0].PHONE!=""){
+			 return r[0].PHONE;
+		 }
 	 }
 	 return "";
  }
