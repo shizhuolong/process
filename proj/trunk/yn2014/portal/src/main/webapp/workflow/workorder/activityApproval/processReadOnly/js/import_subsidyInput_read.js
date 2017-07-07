@@ -52,10 +52,52 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",true);
 				$("#dataBody").empty().html("<tr><td colspan='9'>暂无数据</td></tr>");
 			}
+			initTotalFee(); 
+			initTotalChnl();
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
 		   alert("加载数据失败！");
 	    }
+	});
+}
+
+function initTotalFee(){
+	var workNo = $("#businessKey").val();
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,//true是异步，false是同步
+		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
+		url:$("#ctx").val()+"/subsidyInput/subsidy-input!queryTotalFeeByInitId.action",
+		data:{
+	           "workNo":workNo
+		},
+		success:function(data){
+	   		$("#totalFee").text(data+"元");
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        	alert("加载数据失败！");
+        }
+	});
+}
+
+function initTotalChnl(){
+	var workNo = $("#businessKey").val();
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		async:false,//true是异步，false是同步
+		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
+		url:$("#ctx").val()+"/subsidyInput/subsidy-input!queryTotalChnlByInitId.action",
+		data:{
+	           "workNo":workNo
+		},
+		success:function(data){
+	   		$("#totalChnl").text(data+"个");
+	    },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        	alert("加载数据失败！");
+        }
 	});
 }
 
@@ -108,4 +150,15 @@ function downFile(fileName,filePath){
 	fileName=fileName.replace(/%/g,"%25");
     filePath=filePath.replace(/%/g,"%25");
 	location.href = $("#ctx").val()+"/subsidyInput/subsidy-input!downloadFile.action?filePath="+encodeURI(encodeURI(filePath))+"&fileName="+encodeURI(encodeURI(fileName));
+}
+
+function downsAll(){
+	var businessKey = $("#businessKey").val();
+	var downSql="SELECT DEVELOP_CHNL_CODE,DEVELOP_CHNL_NAME,PAY_CHNL_CODE,     "+
+	"			PAY_CHNL_NAME,BILLINGCYCLID,CUST_TYPE,SUBSIDY_TYPE,SUBSIDY_WAY,"+
+	"			SUBSIDY_FEE FROM PAPP.TAB_COMMI_SUBSIDY_INFO                   "+
+	"			WHERE INIT_ID ='"+businessKey+"'";
+	var showtext = '渠道补贴';
+	var title=[["发展渠道编码","发展渠道名称","结算渠道编码","结算渠道名称","帐期","客户类型","补贴用途","补贴方式","补贴金额"]];
+	downloadExcel(downSql,title,showtext);
 }
