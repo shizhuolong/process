@@ -20,6 +20,7 @@ $(function() {
 			$("#businessTd").hide();
 			$("#bussinessSelectTd").hide();
 			$("#sendTd").hide();
+			$("#business").empty().append("<option value=''>全部</option>");
 		}else if($(this).val()=="3"){//未通过,生成工单列表,可以导入，保留工单编号覆盖
 			initBusiness(3);
 			if($("#business").val()!=""){//没有未通过单，隐藏按钮
@@ -247,7 +248,7 @@ function initBusiness(status){
  }
  
  function exportData(){
-	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态"]];
+	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态"]];
 	var showtext = '终端导出';
 	downloadExcel(downSql,title,showtext);
  }

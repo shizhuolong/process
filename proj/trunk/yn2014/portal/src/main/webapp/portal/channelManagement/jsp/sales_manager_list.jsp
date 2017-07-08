@@ -37,7 +37,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=71"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=72"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
@@ -75,9 +75,9 @@
 								<option value=''>请选择</option>
 						     </select>
 					    </td>
-					    <td style="text-align:right;width:50px;">厅编码：</td>
+					    <td style="text-align:right;width:50px;">营业厅：</td>
 						<td>
-						     <input name="yyt_code" id="yyt_code" class="default-text-input wper100"/>
+						     <input name="hallName" id="hallName" class="default-text-input wper100"/>
 					    </td>
 					     <td style="text-align:right;width:50px;">品牌：</td>
 						<td>

@@ -81,7 +81,7 @@ function search(pageNumber) {
 	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
-	var yyt_code=$("#yyt_code").val();
+	var hallName=$("#hallName").val();
 	var zd_brands=$("#zd_brands").val();
 	var sql="";
 	var field1=["GROUP_ID_1_NAME","ORDER_CODE","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","OPERATOR_ID","DEVELOPER_ID","ZD_BRAND","ZD_TYPES","SERVICE_NUM","ZD_IEMI","IN_PRICE","OUT_PRICE","SALE_ML","YYT_ML","YX_COST","YYT_PROFIT","IS_CHANGE_PRICE","ACC_TIME"];
@@ -99,8 +99,8 @@ function search(pageNumber) {
 			sql+=" AND SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate;
 		}
 	}
-	if(yyt_code!=''){
-		sql+=" AND YYT_CHAN_CODE LIKE '%"+yyt_code+"%'";
+	if(hallName!=''){
+		sql+=" AND YYT_HQ_NAME LIKE '%"+hallName+"%'";
 	}
 	if(zd_brands!=''){
 		sql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
@@ -141,7 +141,7 @@ function search(pageNumber) {
 	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
-	var yyt_code=$("#yyt_code").val();
+	var hallName=$("#hallName").val();
 	var zd_brands=$("#zd_brands").val();
 	if(regionCode!=''){
 		downSql+=" AND GROUP_ID_1='"+regionCode+"'";
@@ -152,8 +152,8 @@ function search(pageNumber) {
 			downSql+=" AND SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate;
 		}
 	}
-	if(yyt_code!=''){
-		downSql+=" AND YYT_CHAN_CODE LIKE '%"+yyt_code+"%'";
+	if(hallName!=''){
+		sql+=" AND YYT_HQ_NAME LIKE '%"+hallName+"%'";
 	}
 	if(zd_brands!=''){
 		downSql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
