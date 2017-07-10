@@ -1,92 +1,132 @@
-var nowData = [];
-var title=[["帐期","地市名称","营业厅编码","营业厅名称","日-裸机销售（顺价销售）","日-裸机销售（带卡销售）","日-合计","月-裸机销售（顺价销售）","月-裸机销售（带卡销售）","月-合计","毛利合计","毛利分享","营销成本","营业厅利润"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","YYT_HQ_CODE","YYT_HQ_NAME","NO_CHANGENUM_DAY","CHANGENUM_DAY","DAY_NUM","NO_CHANGENUM_MON","CHANGENUM_MON","MON_NUM","PROFIT_ALL","PROFIT_SHARE","ZD_COST","YYT_PROFIT"];
+var title=[["组织架构","营业厅编码","营业厅名称","日-裸机销售（顺价销售）","日-裸机销售（带卡销售）","日-合计","月-裸机销售（顺价销售）","月-裸机销售（带卡销售）","月-合计","毛利合计","毛利分享","营销成本","营业厅利润"]];
+var field=["NO_CHANGENUM_DAY","CHANGENUM_DAY","DAY_NUM","NO_CHANGENUM_MON","CHANGENUM_MON","MON_NUM","PROFIT_ALL","PROFIT_SHARE","ZD_COST","YYT_PROFIT"];
 var report = null;
-var downSql="";
-var dealDate="";
-$(function() {
-	report = new LchReport({
-		title : title,
-		field : field,
-		rowParams : [],
-		content : "lchcontent",
-		orderCallBack : function(index, type) {
+$(function(){
+    $("#searchBtn").click(function(){
+		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
+		report.showSubRow();
+        ///////////////////////////////////////////
+		$("#lch_DataHead").find("TH").unbind();
+		$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+		///////////////////////////////////////////
+	});
+    report=new LchReport({
+		title:title,
+		field:["ROW_NAME","YYT_HQ_CODE","YYT_HQ_NAME"].concat(field),
+		css:[{gt:5,css:LchReport.RIGHT_ALIGN}],
+		rowParams:["ROW_ID"],//第一个为rowId
+		content:"content",
+		orderCallBack:function(index,type){
+			
+		},afterShowSubRows:function(){
 			
 		},
-		getSubRowsCallBack : function($tr) {
-			return {
-				data : nowData,
-				extra : {}
-			};
+		getSubRowsCallBack:function($tr){
+			var sql='';
+			var code='';
+			var orgLevel='';
+			var dealDate=$("#dealDate").val();
+			var where=" WHERE DEAL_DATE='"+dealDate+"'";
+			if($tr){
+				code=$tr.attr("row_id");
+				orgLevel=parseInt($tr.attr("orgLevel"));
+				if(orgLevel==2){//点击省，显示市
+					
+				}else if(orgLevel==3){//点击市，展示营业厅
+					where+=" AND GROUP_ID_1='"+code+"'";
+				}else{
+					return {data:[],extra:{}}
+				}
+				sql=getSql(orgLevel,where);
+				orgLevel++;
+			}else{
+				//先根据用户信息得到前几个字段
+				code=$("#region").val();
+				orgLevel=$("#orgLevel").val();
+				if(orgLevel==1){//省
+					
+				}else if(orgLevel==2||orgLevel==3){//市
+					where+=" AND GROUP_ID_1='"+code+"'";
+				}else{
+					return {data:[],extra:{}};
+				}
+				sql=getSql(orgLevel,where);
+				orgLevel++;
+			}
+			var d=query(sql);
+			return {data:d,extra:{orgLevel:orgLevel}};
 		}
 	});
-	search(0);
-	$("#searchBtn").click(function(){
-		search(0);
-	});
+	report.showSubRow();
+	///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
 });
 
-var pageSize = 25;
-//分页
-function initPagination(totalCount) {
-	$("#totalCount").html(totalCount);
-	$("#pagination").pagination(totalCount, {
-		callback : search,
-		items_per_page : pageSize,
-		link_to : "###",
-		prev_text : '上页', //上一页按钮里text  
-		next_text : '下页', //下一页按钮里text  
-		num_display_entries : 5,
-		num_edge_entries : 2
-	});
-}
-
-//列表信息
-function search(pageNumber) {
-	pageNumber = pageNumber + 1;
-	var start = pageSize * (pageNumber - 1);
-	var end = pageSize * pageNumber;
-	var sql=getSql();
-	downSql=sql;
-	var csql = sql;
-	var cdata = query("select count(*) total from(" + csql+")");
-	var total = 0;
-	if(cdata && cdata.length) {
-		total = cdata[0].TOTAL;
-	}else{
-		return;
-	}
-	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
-	var d = query(sql);
-	if (pageNumber == 1) {
-		initPagination(total);
-	}
-	nowData = d;
-	report.showSubRow();
-	$(".page_count").width($("#lch_DataHead").width());
-	$("#lch_DataBody").find("TR").each(function(){
-		var area=$(this).find("TD:eq(0)").find("A").text();
-		if(area)
-			$(this).find("TD:eq(0)").empty().text(area);
-	});
-}
- 
-function downsAll(){
-	var showtext = '营业厅终端销售统计-'+dealDate;
-	downloadExcel(downSql,title,showtext);
-}
-
-function getSql(dealDate){
-	dealDate=$("#dealDate").val();
+function downsAll() {
+	//先根据用户信息得到前几个字段
+	var orgLevel=$("#orgLevel").val();
+	var dealDate=$("#dealDate").val();
+	var code=$("#region").val();
 	var regionCode=$("#regionCode").val();
-	var yyt_hq_code=$("#yyt_hq_code").val(); 
+	var yyt_hq_code = $("#yyt_hq_code").val();
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	if (orgLevel == 1) {//省
+		
+	} else if(orgLevel==2||orgLevel==3){//市
+		where += " AND GROUP_ID_1='"+code+"'";
+		
+	} else{
+		where += " AND 1=2";
+	}
+	
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(yyt_hq_code!=""){
 		where+=" AND YYT_HQ_CODE LIKE '%"+yyt_hq_code+"%'";
 	}
-	return "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_YYT_ZD_REPORT"+where+" ORDER BY GROUP_ID_1";                                          
+	var sql = getDownSql(where);
+	var showtext = '营业厅终端销售统计-' + dealDate;
+	var title=[["地市","账期","营业厅编码","营业厅名称","日-裸机销售（顺价销售）","日-裸机销售（带卡销售）","日-合计","月-裸机销售（顺价销售）","月-裸机销售（带卡销售）","月-合计","毛利合计","毛利分享","营销成本","营业厅利润"]];
+	downloadExcel(sql,title,showtext);
+}
+
+function getSql(level,where){
+	var dealDate=$("#dealDate").val();
+	var regionCode=$("#regionCode").val();
+	var yyt_hq_code = $("#yyt_hq_code").val();
+	var sql="";
+	if(regionCode!=""){
+		where+=" AND GROUP_ID_1='"+regionCode+"'";
+		
+	}
+	if(yyt_hq_code!=""){
+		where+=" AND YYT_HQ_CODE LIKE '%"+yyt_hq_code+"%'";
+	}
+	if(level==1){//省级
+		sql="SELECT '云南省' ROW_NAME,'86000' ROW_ID,'--' YYT_HQ_CODE,'--' YYT_HQ_NAME,"+getSumSql()+" FROM PMRT.TAB_MRT_YYT_ZD_REPORT"+where;
+	}else if(level==2){//地市级
+		sql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,'--' YYT_HQ_CODE,'--' YYT_HQ_NAME,"+getSumSql()+" FROM PMRT.TAB_MRT_YYT_ZD_REPORT"+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
+	}else{//厅级
+		sql="SELECT YYT_HQ_CODE ROW_ID,YYT_HQ_NAME ROW_NAME,YYT_HQ_CODE,YYT_HQ_NAME,"+field.join(",")+" FROM PMRT.TAB_MRT_YYT_ZD_REPORT"+where;
+	}
+	return sql;
+  }
+
+function getDownSql(where){
+    return sql="SELECT GROUP_ID_1_NAME,DEAL_DATE,YYT_HQ_CODE,YYT_HQ_NAME,"+field.join(",")+" FROM PMRT.TAB_MRT_YYT_ZD_REPORT"+where;
+}
+	
+function getSumSql(){
+	var s="";
+	for(var i=0;i<field.length;i++){
+		if(i==0){
+			s+="SUM("+field[i]+") "+field[i];
+		}else{
+			s+=",SUM("+field[i]+") "+field[i];
+		}
+	}
+	return s;
 }
