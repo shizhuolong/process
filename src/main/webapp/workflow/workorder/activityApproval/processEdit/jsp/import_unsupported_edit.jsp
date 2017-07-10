@@ -31,7 +31,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_unsupported_edit.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_unsupported_edit.js?v=2"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -64,6 +65,7 @@
 										</td>
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll();">导出</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空重导</a>
 										</td>

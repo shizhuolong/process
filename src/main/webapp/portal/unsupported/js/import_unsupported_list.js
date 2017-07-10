@@ -393,3 +393,24 @@ function downloadFile(element) {
 	//alert(filepath);
 	window.location.href=path+"/upload/upload!download.action?fileName="+fileName+"&filePath="+filePath;
 }
+
+function downsAll(){
+	var username=$("#username").val();
+	var downSql="SELECT       "+
+	"BILLINGCYCLID,           "+
+	"CHANNEL_NAME,            "+
+	"AGENTID,                 "+
+	"DEPT_PTYPE,              "+
+	"COMM_TYPE,               "+
+	"SUBJECTID,               "+
+	"SVCTP,                   "+
+	"FEE,                     "+
+	"TOTALFEE,                "+
+	"NETFEE,                  "+
+	"REMARK                   "+
+	"FROM PAPP.TAB_COMM_IMPORT"+
+	" WHERE INIT_ID IS NULL AND ACCOUNT_ID='"+username+"'";
+	var showtext = '系统未支撑补贴';
+	var title=[["结算账期","渠道名称","渠道编码","佣金大类","佣金科目","业务类型","佣金金额","总额","净额","数据去向","备注"]];
+	downloadExcel(downSql,title,showtext);
+}

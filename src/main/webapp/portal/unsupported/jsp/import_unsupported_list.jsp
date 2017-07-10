@@ -1,11 +1,14 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.apdplat.module.security.model.Org"%>
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@page import="org.apdplat.module.security.model.User"%>
 <%
     String path=request.getContextPath();
-    String paySession=session.getId();
-%>	
+	User user = UserHolder.getCurrentLoginUser();
+	Org org = user.getOrg();
+	String paySession=session.getId();
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,9 +35,10 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.stickyheader.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=path%>/js/jqueryUpload/swfobject.js"></script>
-<script type="text/javascript" src="<%=path%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/unsupported/js/import_unsupported_list.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/unsupported/js/import_unsupported_list.js?v=2"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -42,6 +46,7 @@
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+	<input type="hidden" id="username" value="<%=user.getUsername()%>">
 	<div id="smartForm">
 		<input type="hidden" name="resultMap.page" />
         <input type="hidden" name="resultMap.rows" />
@@ -71,6 +76,7 @@
 										</td> 
 										<td>
 											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll();">导出</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空导入</a>
 										</td>
@@ -84,7 +90,6 @@
 														<th>结算账期</th>
 														<th>渠道名称</th>
 														<th>渠道编码</th>
-														<!-- <th>渠道类型</th> -->
 														<th>佣金大类</th>
 														<th>佣金科目</th>
 														<th>业务类型</th>
