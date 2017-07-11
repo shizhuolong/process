@@ -203,7 +203,7 @@ public class ImportBaseAction extends BaseAction {
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}
-					String isRepeatSql="SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' AND ZD_IEMI IN(SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE STATUS = 2 OR STATUS=1)";
+					String isRepeatSql="SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' AND ZD_IEMI IN(SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE (STATUS = 2 OR STATUS=1) AND IS_BACK<>2)";
 					l=SpringManager.getFindDao().find(isRepeatSql);
 					String repeatMsg="";
 					if(l!=null&&l.size()>0){
