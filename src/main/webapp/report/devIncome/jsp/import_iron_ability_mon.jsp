@@ -89,8 +89,8 @@
 							<tr>
 								<th  width="100px">第三步</th>
 								<td width="6%">账期：
-								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
-						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
+								    <input type="text" style="width: 200px;" class="default-text-input wper80" readonly
+						             value="<%=time%>" id="time" name="time"/>
 						         </td>
 							</tr>
 							<tr>
