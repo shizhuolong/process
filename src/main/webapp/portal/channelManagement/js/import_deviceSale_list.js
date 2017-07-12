@@ -4,7 +4,7 @@ var field=["DEAL_DATE","MODEL_TYPE","HQ_CHAN_CODE","SALE_NUM"];
 var report = null;
 var downSql="";
 $(function() {
-	var now=new Date();
+	/*var now=new Date();
 	var hh = now.getHours(); //截取小时 
 	var mm = now.getMinutes(); //截取分钟
 	if(hh==10){
@@ -13,7 +13,7 @@ $(function() {
 		}
 	}else if(hh>10){
 		$("#reppeatBtn").remove();
-	}
+	}*/
 	report = new LchReport({
 		title : title,
 		field : field,
