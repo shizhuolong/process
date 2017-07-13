@@ -11,7 +11,7 @@
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
-	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>自营厅收入发展日通报(厅维度)</title>
+<title>渠道发展用户月报汇总表</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/bus_rank_report.js?v=3"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/dev_all_mon.js?v=1"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -41,21 +41,12 @@
 				    <td width="1%" style="text-align:right;">账期：</td>
 					<td width="2%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
 					<td width="1%">地市：</td>
 					<td width="3%">
 						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value="">全部</option>
-						</select>
-					</td>
-					<td width="1%">厅类型：</td>
-					<td width="3%">
-						<select name="chnlType" id="chnlType" class="default-text-input wper80">
-								<option value="">全部</option>
-								<option value="小型厅">小型厅</option>
-								<option value="标准厅">标准厅</option>
-								<option value="自营厅">自营厅</option>
 						</select>
 					</td>
 					<td width="1%">
