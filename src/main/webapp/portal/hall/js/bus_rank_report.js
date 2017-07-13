@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["州市","营业厅名称","渠道编码","厅类型","发展（权重50%）","","收入（权重50%）","","综合得分（100%）","州市排名","全省排名"],
+var title=[["州市","营业厅名称","渠道编码","厅类型","发展（权重50%）","","收入（权重50%）","","综合得分（100%）","厅类型排名","全省排名"],
            ["","","","","本月累计（户）","得分（分）","本月累计（万元）","得分（分）","","",""]];
 var field=["GROUP_ID_1_NAME","BUS_HALL_NAME","HQ_CHAN_CODE","CHNL_TYPE","ALL_SR","ALL_DEV","SR_SCORE","DEV_SCORE","TOTAL_SCORE","STATE_RANK","PRO_RANK"];
 var report = null;
