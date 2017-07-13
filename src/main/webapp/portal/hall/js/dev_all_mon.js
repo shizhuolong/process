@@ -1,12 +1,11 @@
 var nowData = [];
-var title=[["州市","营业厅名称","渠道编码","厅类型","发展（权重50%）","","收入（权重50%）","","综合得分（100%）","州市排名","全省排名"],
-           ["","","","","本月累计（户）","得分（分）","本月累计（万元）","得分（分）","","",""]];
-var field=["GROUP_ID_1_NAME","BUS_HALL_NAME","HQ_CHAN_CODE","CHNL_TYPE","ALL_SR","ALL_DEV","SR_SCORE","DEV_SCORE","TOTAL_SCORE","STATE_RANK","PRO_RANK"];
+var title=[["套餐名称","发展用户数","当月新发展三无极低用户数","使用过4G网络用户数"]];
+var field=["PRODUCT_NAME","ALL_DEV","IS_SW_JD","IS_4G_NET"];
 var report = null;
 var downSql="";
 var dealDate="";
 $(function() {
-	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_DEV_SR_RANK_REPORT"));
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON"));
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -75,20 +74,39 @@ function search(pageNumber) {
 }
  
 function downsAll(){
-	var showtext = '自营厅收入发展日通报(厅维度)-'+dealDate;
+	var showtext = '渠道发展用户月报汇总表-'+dealDate;
 	downloadExcel(downSql,title,showtext);
 }
 
 function getSql(dealDate){
 	dealDate=$("#dealDate").val();
 	var regionCode=$("#regionCode").val();
-	var chnlType=$("#chnlType").val();
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
-	if(chnlType!=""){
-		where+=" AND CHNL_TYPE='"+chnlType+"'";
-	}
-	return "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_BUS_DEV_SR_RANK_REPORT"+where+" ORDER BY PRO_RANK";                                            
+	return "SELECT '合计' PRODUCT_NAME                           "+
+	"      ,COUNT(SUBSCRIPTION_ID)  ALL_DEV                     "+
+	"      ,COUNT(CASE WHEN NVL(IS_SW,0)=1 AND NVL(IS_JD,0)=1   "+
+	"             THEN SUBSCRIPTION_ID                          "+
+	"             END                                           "+
+	"             )            IS_SW_JD                         "+
+	"      ,COUNT(CASE WHEN NVL(IS_4G_NET,0)=1                  "+
+	"             THEN SUBSCRIPTION_ID                          "+
+	"             END )  IS_4G_NET                              "+
+	"FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON                        "+
+	     where+
+	"UNION ALL                                                  "+
+	"SELECT NVL(PRODUCT_NAME,'无套餐')                            "+
+	"      ,COUNT(SUBSCRIPTION_ID)  ALL_DEV                     "+
+	"      ,COUNT(CASE WHEN NVL(IS_SW,0)=1 AND NVL(IS_JD,0)=1   "+
+	"             THEN SUBSCRIPTION_ID                          "+
+	"             END                                           "+
+	"             )            IS_SW_JD                         "+
+	"      ,COUNT(CASE WHEN NVL(IS_4G_NET,0)=1                  "+
+	"             THEN SUBSCRIPTION_ID                          "+
+	"             END )  IS_4G_NET                              "+
+	"FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON                        "+
+	    where+
+	"GROUP BY GROUPING SETS (DEAL_DATE,(DEAL_DATE,PRODUCT_NAME))";                                            
 }
