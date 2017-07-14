@@ -59,12 +59,12 @@ public class SalesManagerAction extends BaseAction {
 				}else{//2退货,不新增记录 库存恢复为可销售状态0
 					result.put("state","1");
 					result.put("msg", "退货成功！");
-					this.reponseJson(result); 
 					resultMap.put("is_back", "0");
 					service.updateSalesStatus(resultMap);
 					resultMap.put("bakStatus", "01");
 					service.updateBackBak(resultMap);//记录到新老对应表
-					callPre();
+					this.reponseJson(result); 
+					//callPre();
 					return;
 				}
 			}else{
@@ -85,7 +85,7 @@ public class SalesManagerAction extends BaseAction {
 			service.updateSalesStatus(resultMap);
 			result.put("state","1");
 			result.put("msg", "操作成功！");
-			callPre();
+			//callPre();
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put("state","0");
@@ -94,7 +94,7 @@ public class SalesManagerAction extends BaseAction {
 		this.reponseJson(result);
 	}
 
-	public void callPre() throws Exception{
+	public String callPre() throws Exception{
 		Connection conn =null;
 		CallableStatement stmt=null;
 		conn = dataSource.getConnection();
@@ -104,6 +104,7 @@ public class SalesManagerAction extends BaseAction {
 		stmt.registerOutParameter(2,java.sql.Types.VARCHAR);
 		stmt.executeUpdate();
 		String r=stmt.getString(2);
+		return "success";
 	}
 	public Map<String, String> getResultMap() {
 		return resultMap;
