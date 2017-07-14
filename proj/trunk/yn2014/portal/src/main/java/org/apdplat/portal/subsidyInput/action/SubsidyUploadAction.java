@@ -197,6 +197,10 @@ public class SubsidyUploadAction extends BaseAction {
 		}
     }
 	
+	public String getInitId() {
+		return initId;
+	}
+
 	public void setInitId(String initId) {
 		this.initId = initId;
 	}
