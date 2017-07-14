@@ -262,7 +262,7 @@ function initUpload() {
 	/*  注：上传路径 tomcat用jsessionid, weblogic 用portalSession [2013-05-09 H]*/
 	$("#uploadify").uploadify({
 		   'uploader'       : path+'/js/jqueryUpload/uploadify.swf',
-		   'script'         : path+'/upload/upload!upload.action?paySession='+paySession,//servlet的路径或者.jsp 这是访问servlet 'scripts/uploadif' 
+		   'script'         : path+'/upload/upload!upload.action',//servlet的路径或者.jsp 这是访问servlet 'scripts/uploadif' 
 		   'method'         :'GET',  //如果要传参数，就必须改为GET
 		   'cancelImg'      : path+'/images/cancel.png',
 		   'folder'         : 'upload', //要上传到的服务器路径，
@@ -278,7 +278,7 @@ function initUpload() {
 		   'fileDesc'       : '', //如果配置了以下的'fileExt'属性，那么这个属性是必须的  
 		   //'fileExt'        : '*.jpg;*.gif;*.docx;*.doc;*.xls;*.txt;*.pdf;*.zip',//允许的格式
 		   'fileExt'        : '',//允许的格式
-		   'scriptData'     :{'initId':initId},
+		   'scriptData'     :{'paySession':paySession,'initId':initId},
 		   'fileDataName'	:'uploadify',  
 		   'width'			:82,
 		   'height'			:28,
