@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","审批意见"]];
-var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","OPTIONS"];
+var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","操作时间","审批意见"]];
+var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","CHECK_TIME","OPTIONS"];
 var report = null;
 var downSql="";
 var startMan="";
@@ -124,9 +124,9 @@ function search(pageNumber) {
 	var business=$("#business").val();
 	var hallName=$("#hallName").val();
 	if(isShopper=="1"&&status=="2"&&is_back=="0"){
-		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
+		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
 	}else{
-		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
+		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
 	}
 	
 	if(regionCode!=''){
