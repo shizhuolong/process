@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/dev_all_mon.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/dev_all_mon.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -38,17 +38,32 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="1%" style="text-align:right;">账期：</td>
-					<td width="2%">
+				    <td width="4%" style="text-align:right;">账期：</td>
+					<td width="6%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
-					<td width="1%">地市：</td>
-					<td width="3%">
+					<td width="4%">地市：</td>
+					<td width="6%">
 						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value="">全部</option>
 						</select>
 					</td>
+					<td width="4%" align="right">营服：</td>
+					<td width="6%">
+						<select name="unitCode" id="unitCode" class="default-text-input wper80">
+								<option value=''>请选择</option>
+						</select>
+					</td>
+					<td width="4%" align="right">渠道编码：</td>
+					<td width="6%">
+						<input name="hq_chan_code" id="hq_chan_code" class="default-text-input wper80">
+					</td>
+					<td width="4%" align="right">套餐名称：</td>
+					<td width="6%">
+						<input name="product_name" id="product_name" class="default-text-input wper80">
+					</td>
+					
 					<td width="1%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right;">查询</a>
