@@ -410,7 +410,8 @@ function search(pageNumber) {
 					alert(d.msg);
 					$('#addDiv').dialog('close');
 					$("#addDiv").hide();
-					search(0);
+					window.location.href=$("#ctx").val()+'/salesManager/sales-manager!callPre.action'
+					//search(0);
 				}else{
 					alert(d.msg);
 				}
