@@ -91,6 +91,9 @@ function downsAll() {
 	if(name!=""){
 		where+=" AND T.AGENT_M_NAME LIKE '%"+name+"%'";
 	}
+	if(hq_chan_name!=""){
+		where+=" AND T.GROUP_ID_4_NAME LIKE '%"+hq_chan_name+"%'";
+	}
 	if(state!=""){
 		where+=" AND T.STATE LIKE '%"+state+"%'";
 	}
@@ -121,6 +124,9 @@ function getSql(orgLevel,where){
 	}
 	if(name!=""){
 		where+=" AND T.AGENT_M_NAME LIKE '%"+name+"%'";
+	}
+	if(hq_chan_name!=""){
+		where+=" AND T.GROUP_ID_4_NAME LIKE '%"+hq_chan_name+"%'";
 	}
 	if(state!=""){
 		where+=" AND T.STATE LIKE '%"+state+"%'";

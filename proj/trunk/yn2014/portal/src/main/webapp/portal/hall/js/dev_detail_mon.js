@@ -81,9 +81,21 @@ function downsAll(){
 function getSql(dealDate){
 	dealDate=$("#dealDate").val();
 	var regionCode=$("#regionCode").val();
+	var unitCode=$("#unitCode").val();
+	var product_name=$("#product_name").val();
+	var hq_chan_code=$("#hq_chan_code").val();
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
+	}
+	if(unitCode!=""){
+		where+=" AND UNIT_ID='"+unitCode+"'";
+	}
+	if(product_name!=""){
+		where+=" AND PRODUCT_NAME LIKE '%"+product_name+"%'";
+	}
+	if(hq_chan_code!=""){
+		where+=" AND HQ_CHAN_CODE LIKE '%"+hq_chan_code+"%'";
 	}
 	return "SELECT DEAL_DATE                           "+
 	"      ,DEVICE_NUMBER                              "+
