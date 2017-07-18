@@ -26,7 +26,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_unsupported_read.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processReadOnly/js/import_unsupported_read.js?v=2"></script>
 <script type="text/javascript">
   var path="<%=path%>";
 </script>
@@ -70,7 +70,7 @@
 														<th>结算账期</th>
 														<th>渠道名称</th>
 														<th>渠道编码</th>
-														<!-- <th>渠道类型</th> -->
+														<th>电话号码</th>
 														<th>佣金大类</th>
 														<th>佣金科目</th>
 														<th>业务类型</th>
