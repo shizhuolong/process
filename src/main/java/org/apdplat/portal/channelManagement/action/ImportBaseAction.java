@@ -140,9 +140,21 @@ public class ImportBaseAction extends BaseAction {
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
 						for (int i = cstart; i < cend; i++) {
+							    if(i==4){
+							    	if(getCellValue(row.getCell(i)).contains("E")){
+							    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
+							    		Struts2Utils.getRequest().setAttribute("err", err);
+										return "error";
+							    	}
+							    }
 							    if(i>8){
 							    	if(getCellValue(row.getCell(i)).equals("")){
 							    		err.add("进货价与零售价不能为空，请检查！");
+							    		Struts2Utils.getRequest().setAttribute("err", err);
+										return "error";
+							    	}
+							    	if(getCellValue(row.getCell(i)).contains(".0")){
+							    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
