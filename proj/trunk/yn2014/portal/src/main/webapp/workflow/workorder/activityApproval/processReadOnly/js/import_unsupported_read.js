@@ -42,7 +42,7 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['BILLINGCYCLID'])+"</td>"
 	                +"<td>"+isNull(n['CHANNEL_NAME'])+"</td>"
 	                +"<td>"+isNull(n['AGENTID'])+"</td>"
-	               /* +"<td>"+isNull(n['DEPT_PTYPE'])+"</td>"*/
+	                +"<td>"+isNull(n['SVCNUM'])+"</td>"
 	                +"<td>"+isNull(n['COMM_TYPE'])+"</td>"
 	                +"<td>"+isNull(n['SUBJECTID'])+"</td>"
 	                +"<td>"+isNull(n['SVCTP'])+"</td>"
@@ -58,7 +58,7 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",false);
 			}else {
 				$("#submitTask").attr("disabled",true);
-				$("#dataBody").empty().html("<tr><td colspan='13'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='12'>暂无数据</td></tr>");
 			}
 			initTotalFee();
 	   	},
