@@ -5,7 +5,7 @@ var report = null;
 var downSql="";
 $(function() {
 	var orgLevel=$("#orgLevel").val();
-	if(orgLevel!=2){
+	if(orgLevel==1){
 		$("#reppeatBtn").remove();
 	}
 	report = new LchReport({
