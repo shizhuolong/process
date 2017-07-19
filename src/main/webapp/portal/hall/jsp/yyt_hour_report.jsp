@@ -10,7 +10,7 @@
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.DATE, -1);
-	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	String dealDate=new SimpleDateFormat("yyyyMMddhh").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -18,14 +18,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>营业厅终端销售统计</title>
+<title>产品实时销量</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/page/js/date/skin/WdatePicker.css"> 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/yyt_zd_report.js?v=3"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/yyt_hour_report.js?v=2"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,10 +37,10 @@
 			<input type="hidden" name="resultMap.rows" />
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="1%" style="text-align:right;">账期：</td>
-					<td width="2%">
+				    <td width="2%" style="text-align:right;">账期：</td>
+					<td width="4%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMddHH',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
 					<td width="1%">地市：</td>
 					<td width="3%">
@@ -48,9 +48,19 @@
 								<option value="">全部</option>
 						</select>
 					</td>
-					<td width="2%">营业厅编码：</td>
+					<td width="1%">营服：</td>
 					<td width="3%">
-						<input name="yyt_hq_code" id="yyt_hq_code" class="default-text-input wper80"/>
+						<select name="unitCode" id="unitCode" class="default-text-input wper80">
+								<option value="">全部</option>
+						</select>
+					</td>
+					<td width="2%">渠道名称：</td>
+					<td width="3%">
+						<input name="hq_chan_name" id="hq_chan_name" class="default-text-input wper80"/>
+					</td>
+					<td width="2%">姓名：</td>
+					<td width="3%">
+						<input name="name" id="name" class="default-text-input wper80"/>
 					</td>
 					<td width="1%">
 						<a class="default-btn" href="#" id="searchBtn"
