@@ -198,8 +198,8 @@ public class ImportBaseAction extends BaseAction {
 							"   WHERE GROUP_ID_1 = '"+regionCode+"'                      "+
 							"     AND YYT_CHAN_CODE NOT IN (SELECT hq_chan_code          "+
 							"                             FROM PCDE.TB_CDE_OPERATE_TYPE T"+
-							"                            WHERE DEAL_DATE = TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm')"+
-							"                            )    ";
+							"                            WHERE T.DEAL_DATE = TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm')"+
+							"                            AND T.OPERATE_TYPE='自营')    ";
 					l=SpringManager.getFindDao().find(checkYytCode);
 					if(l!=null&&l.size()>0){
 						l.get(0).get("YYT_CHAN_CODE");
