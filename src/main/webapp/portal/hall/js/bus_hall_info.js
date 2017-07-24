@@ -1,6 +1,6 @@
 var nowData = [];
 var field=["GROUP_ID_1_NAME","HALL_NUM","HALL_NUM_OLD","HALL_NUM_NEW","ML_ALL","ML_OLD","ML_NEW","QX_NUM","QX_NUM1","QX_NUM2"];
-var title=[["州市","厅规模（个）","其中原有厅（个）","其中新增厅（个）","总毛利","原有厅毛利（万元）","新增厅毛利（万元）","覆盖区县数（个）","未覆盖区县数（个）","覆盖率（万元）"]];
+var title=[["州市","厅规模（个）","其中原有厅（个）","其中新增厅（个）","总毛利","原有厅毛利（万元）","新增厅毛利（万元）","覆盖区县数（个）","未覆盖区县数（个）","覆盖率"]];
 var report = null;
 var downSql="";
 var dealDate="";
