@@ -130,7 +130,7 @@ table tr td {
 								<th width="240">营业厅类型（自有产权、租用、租用（赠送）） :</th>
 								<td><input name="resultMap.yyy_type" value="${detail["YYY_TYPE"]}"/></td>
 								<th width="200">运营模式（自营、柜台外包、他营）:</th>
-								<td><input name="resultMap.operate_type" value="${detail["OPERATE_TYPE"]}"/></td>
+								<td><input readonly name="resultMap.operate_type" value="${detail["OPERATE_TYPE"]}"/></td>
 							</tr>
 
 							<tr>
