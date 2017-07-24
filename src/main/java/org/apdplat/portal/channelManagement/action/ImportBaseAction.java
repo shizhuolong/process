@@ -141,7 +141,7 @@ public class ImportBaseAction extends BaseAction {
 						System.out.println(cstart + "：" + cend);
 						for (int i = cstart; i < cend; i++) {
 							    if(i==4){
-							    	if(getCellValue(row.getCell(i)).contains("E")){
+							    	if(getCellValue(row.getCell(i)).contains("E14")){
 							    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
