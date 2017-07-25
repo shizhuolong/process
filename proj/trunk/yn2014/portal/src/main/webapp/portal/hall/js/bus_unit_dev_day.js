@@ -1,6 +1,6 @@
 $(function(){
 	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_UNIT_DEV_DAY"));
-	var title=[["组织架构","营服ID","区县营服","渠道编码","渠道名称","本月移动网累计发展数","上月同期移动网累计发展数","移动网发展数累计同比","本月移动网发展数","上月同期当月移动网发展数","移动网发展数同比","本月2I2C累计发展数","上月同期2I2C累计发展数","2I2C发展数累计同比","本月2I2C发展数","上月同期当月2I2C发展数","2I2C发展数同比","本月行业应用卡累计发展数","上月同期行业应用卡累计发展数","行业应用卡发展数累计同比","本月行业应用卡发展数","上月同期当月行业应用卡发展数","行业应用卡发展数同比","本月宽带累计发展数","上月同期宽带累计发展数","宽带发展数累计同比","本月宽带发展数","上月同期当月宽带发展数","宽带发展数同比","本月专租线累计发展数","上月同期专租线累计发展数","专租线发展数累计同比","本月专租线发展数","上月同期当月专租线发展数","专租线发展数同比"]];
+	var title=[["组织架构","营服ID","区县营服","渠道编码","渠道名称","本月移动网累计发展数","上月同期移动网累计发展数","移动网发展数累计环比","本月移动网发展数","上月同期当月移动网发展数","移动网发展数环比","本月2I2C累计发展数","上月同期2I2C累计发展数","2I2C发展数累计环比","本月2I2C发展数","上月同期当月2I2C发展数","2I2C发展数环比","本月行业应用卡累计发展数","上月同期行业应用卡累计发展数","行业应用卡发展数累计环比","本月行业应用卡发展数","上月同期当月行业应用卡发展数","行业应用卡发展数环比","本月宽带累计发展数","上月同期宽带累计发展数","宽带发展数累计环比","本月宽带发展数","上月同期当月宽带发展数","宽带发展数环比","本月专租线累计发展数","上月同期专租线累计发展数","专租线发展数累计环比","本月专租线发展数","上月同期当月专租线发展数","专租线发展数环比"]];
 	var field=["ROW_NAME","UNIT_ID","UNIT_NAME","HQ_CHAN_CODE","GROUP_ID_4_NAME","THIS_YW_NUM1","THIS_YW_NUML1","THIS_YW_NUM_HB1","THIS_YW_NUM","THIS_YW_NUML","THIS_YW_NUM_HB","THIS_2I2C_NUM1","THIS_2I2C_NUML1","THIS_2I2C_NUM_HB1","THIS_2I2C_NUM","THIS_2I2C_NUML","THIS_2I2C_NUM_HB","THIS_HYYYK_NUM1","THIS_HYYYK_NUML1","THIS_HYYYK_NUM_HB1","THIS_HYYYK_NUM","THIS_HYYYK_NUML","THIS_HYYYK_NUM_HB","THIS_KD_NUM1","THIS_KD_NUML1","THIS_KD_NUM_HB1","THIS_KD_NUM","THIS_KD_NUML","THIS_KD_NUM_HB","THIS_ZZX_NUM1","THIS_ZZX_NUML1","THIS_ZZX_NUM_HB1","THIS_ZZX_NUM","THIS_ZZX_NUML","THIS_ZZX_NUM_HB"];
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
@@ -27,7 +27,7 @@ $(function(){
 			var orgLevel='';
 			var dealDate=$("#dealDate").val();
 			var where="WHERE DEAL_DATE='"+dealDate+"'";
-			var where1="WHERE DEAL_DATE= TO_CHAR(ADD_MONTHS(TO_DATE('"+dealDate+"','YYYYMMDD'),-1),'YYYYMM')";
+			var where1="WHERE DEAL_DATE= TO_CHAR(ADD_MONTHS(TO_DATE('"+dealDate+"','YYYYMMDD'),-1),'YYYYMMDD')";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -80,7 +80,7 @@ function downsAll() {
 	var regionCode=$("#regionCode").val();
 	var unitCode = $("#unitCode").val();
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
-	var where1="WHERE DEAL_DATE= TO_CHAR(ADD_MONTHS(TO_DATE('"+dealDate+"','YYYYMMDD'),-1),'YYYYMM')";
+	var where1="WHERE DEAL_DATE= TO_CHAR(ADD_MONTHS(TO_DATE('"+dealDate+"','YYYYMMDD'),-1),'YYYYMMDD')";
 	if (orgLevel == 1) {//省
 		
 	} else if(orgLevel==2){//市
@@ -103,7 +103,7 @@ function downsAll() {
 	}
 	var sql = getDownSql(where,where1);
 	var showtext = '营服数发展日报-' + dealDate;
-	var title=[["地市","营服ID","区县营服","渠道编码","渠道名称","本月移动网累计发展数","上月同期移动网累计发展数","移动网发展数累计同比","本月移动网发展数","上月同期当月移动网发展数","移动网发展数同比","本月2I2C累计发展数","上月同期2I2C累计发展数","2I2C发展数累计同比","本月2I2C发展数","上月同期当月2I2C发展数","2I2C发展数同比","本月行业应用卡累计发展数","上月同期行业应用卡累计发展数","行业应用卡发展数累计同比","本月行业应用卡发展数","上月同期当月行业应用卡发展数","行业应用卡发展数同比","本月宽带累计发展数","上月同期宽带累计发展数","宽带发展数累计同比","本月宽带发展数","上月同期当月宽带发展数","宽带发展数同比","本月专租线累计发展数","上月同期专租线累计发展数","专租线发展数累计同比","本月专租线发展数","上月同期当月专租线发展数","专租线发展数同比"]];
+	var title=[["地市","营服ID","区县营服","渠道编码","渠道名称","本月移动网累计发展数","上月同期移动网累计发展数","移动网发展数累计环比","本月移动网发展数","上月同期当月移动网发展数","移动网发展数环比","本月2I2C累计发展数","上月同期2I2C累计发展数","2I2C发展数累计环比","本月2I2C发展数","上月同期当月2I2C发展数","2I2C发展数环比","本月行业应用卡累计发展数","上月同期行业应用卡累计发展数","行业应用卡发展数累计环比","本月行业应用卡发展数","上月同期当月行业应用卡发展数","行业应用卡发展数环比","本月宽带累计发展数","上月同期宽带累计发展数","宽带发展数累计环比","本月宽带发展数","上月同期当月宽带发展数","宽带发展数环比","本月专租线累计发展数","上月同期专租线累计发展数","专租线发展数累计环比","本月专租线发展数","上月同期当月专租线发展数","专租线发展数环比"]];
 	downloadExcel(sql,title,showtext);
 }
 
