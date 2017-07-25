@@ -320,7 +320,7 @@ public class ImportBaseAction extends BaseAction {
 			}
 			System.out.print("\t" + value);
 		}
-		return value;
+		return value.replaceAll("\\s*", "");
 	}
 	
 }
