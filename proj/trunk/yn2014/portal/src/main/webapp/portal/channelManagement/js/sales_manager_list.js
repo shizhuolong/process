@@ -15,7 +15,7 @@ $(function() {
 		}
 	}
 	$("#zd_iemi").change(function(){
-		initOthersByZd($(this).val());
+		initOthersByZd($.trim($(this).val()));
 	});
 	$("#is_change_price").change(function(){
 		if($(this).val()=="是"){
@@ -28,7 +28,7 @@ $(function() {
 	});
 	$("#out_price").change(function(){
 		 var in_price=$("#in_price").val();
-		 var out_price=$("#out_price").val();
+		 var out_price=$.trim($("#out_price").val());
 		 if(parseInt(out_price)<parseInt(in_price)){
 			 $("#out_price").val("");
 			 return;
@@ -402,7 +402,11 @@ function search(pageNumber) {
 						return false;
 					}
 				}
-				
+				 //去除可编辑元素文本的空格
+				 $("#service_num").val($.trim($("#service_num").val()));
+				 $("#developer_id").val($.trim($("#developer_id").val()));
+				 $("#operator_id").val($.trim($("#operator_id").val()));
+				 $("#out_price").val($.trim($("#out_price").val()));
 			},
 			success:function(data){
 				var d = $.parseJSON(data);
