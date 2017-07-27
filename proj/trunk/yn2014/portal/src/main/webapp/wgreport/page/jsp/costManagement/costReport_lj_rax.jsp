@@ -28,7 +28,7 @@
    <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
    <script type="text/javascript" src="<%=path%>/js/My97DatePicker/WdatePicker.js"></script>
    <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report-fix.js?v=7"></script>
-   <script type="text/javascript" src="<%=path%>/wgreport/page/javascript/costManagement/costReport_lj_rax.js?v=4"></script>
+   <script type="text/javascript" src="<%=path%>/wgreport/page/javascript/costManagement/costReport_lj_rax.js?v=5"></script>
 </head>
   <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -38,6 +38,7 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
+				    <td width="6%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
 					<td width="6%" style="padding-left: 10px;">开始账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" 

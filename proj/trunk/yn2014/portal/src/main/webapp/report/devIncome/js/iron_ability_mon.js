@@ -35,6 +35,11 @@ $(function() {
 	});
 });
 
+function toRules(){
+	var url = $("#ctx").val()+"/report/devIncome/jsp/rules.jsp?type=5";
+	window.parent.openWindow("取数规则",null,url);
+}
+
 var pageSize = 15;
 //分页
 function initPagination(totalCount) {

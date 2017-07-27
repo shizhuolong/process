@@ -112,6 +112,12 @@ $(function(){
 		///////////////////////////////////////////
 	});
 });
+
+function toRules(){
+	var url = $("#ctx").val()+"/report/devIncome/jsp/rules.jsp?type=1";
+	window.parent.openWindow("取数规则",null,url);
+}
+
 function isNull(obj){
 	if(obj==0||obj=='0'){
 		return 0;
