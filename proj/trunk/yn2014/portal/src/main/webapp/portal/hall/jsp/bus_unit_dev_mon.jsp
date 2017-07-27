@@ -10,7 +10,7 @@
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
-	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -39,7 +39,7 @@
 					<td width="5%" align="right">账期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
 					<td width="5%" align="right">地市：</td>
 					<td width="10%">
