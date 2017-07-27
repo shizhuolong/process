@@ -123,7 +123,7 @@ function search(pageNumber) {
 	var is_back=$("#is_back").val();
 	var business=$("#business").val();
 	var hallName=$("#hallName").val();
-	if(isShopper=="1"&&status=="2"&&is_back=="0"){
+	if(isShopper=="1"&&status=="2"&&is_back=="0"){//店长才有退库权限
 		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
 	}else{
 		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
@@ -248,7 +248,7 @@ function initBusiness(status){
  }
  
  function exportData(){
-	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态"]];
+	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","操作时间"]];
 	var showtext = '终端导出';
 	downloadExcel(downSql,title,showtext);
  }

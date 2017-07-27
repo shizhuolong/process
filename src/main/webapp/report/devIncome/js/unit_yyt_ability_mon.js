@@ -111,6 +111,12 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 
+function toRules(){
+	var url = $("#ctx").val()+"/report/devIncome/jsp/rules.jsp?type=4";
+	window.parent.openWindow("取数规则",null,url);
+}
+
+
 function getSql(where,level){
 	var startDate=$("#startDate").val();
 	var endDate=$("#endDate").val();
@@ -463,5 +469,4 @@ function getDownSql(where){
 	"       T1.BUSI_NAME,                                                                                                "+
 	"       T1.RENT_NO,                                                                                                  "+
 	"       T1.GROUP_ID_1_NAME                                                                                           ";
-
 }

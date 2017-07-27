@@ -1,5 +1,5 @@
 $(function(){
-	$("#dealDate").val(getMaxDate("PMRT.TAB_MRT_TARGET_CH_MON"));
+	$("#dealDate").val(getMaxDate("PMRT.TAB_MRT_TARGET_CH_MON")); 
 	var title=[["组织架构","区县/营服","营服编码","营服属性","渠道状态","出账收入（剔除赠费退费）","","","","","","","同比","","","","","","","环比","","","","","",""],
 	           ["","","","","","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他"]];
 	var field=["ROW_NAME","UNIT_NAME","UNIT_ID","UNIT_TYPE","STATE","SR_ALL_NUM","SR_YW_NUM","SR_2I2C_NUM","SR_ZZX_NUM","SR_BB_NUM","SR_NET_NUM","SR_OTHER_NUM","SR_ALL_ZB","SR_YW_ZB","SR_2I2C_ZB","SR_ZZX_ZB","SR_BB_ZB","SR_NET_ZB","SR_OTHER_ZB","SR_ALL_TB","SR_YW_TB","SR_2I2C_TB","SR_ZZX_TB","SR_BB_TB","SR_NET_TB","SR_OTHER_TB"];

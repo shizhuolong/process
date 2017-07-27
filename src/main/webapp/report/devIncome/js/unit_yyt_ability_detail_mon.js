@@ -81,6 +81,11 @@ $(function(){
 	///////////////////////////////////////////
 });
 
+function toRules(){
+	var url = $("#ctx").val()+"/report/devIncome/jsp/rules.jsp?type=4";
+	window.parent.openWindow("取数规则",null,url);
+}
+
 function downsAll() {
 	var orgLevel=$("#orgLevel").val();
 	var startDate=$("#startDate").val();
