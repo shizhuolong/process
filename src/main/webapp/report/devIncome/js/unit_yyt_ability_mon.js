@@ -89,7 +89,7 @@ function downsAll() {
 	var where=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var yyt_name=$("#yyt_name").val();
-	
+	var hqChanCode=$("#hqChanCode").val();
 	if (orgLevel == 1) {//省
 	} else if(orgLevel == 2){//市
 		where += " AND T1.GROUP_ID_1='"+code+"'";
@@ -103,6 +103,9 @@ function downsAll() {
 	}
 	if(yyt_name!=''){
 		where+=" AND T1.YYT_NAME LIKE '%"+yyt_name+"%'";
+	}
+	if(hqChanCode!=''){
+		where+=" AND T1.HQ_CHAN_CODE LIKE '%"+hqChanCode+"%'";
 	}
 	var title=[["地市","所属基层单元","营业厅编码","营业厅名称","营业厅地址","营业厅下挂渠道编码","营业厅下挂渠道名称","开厅日期","目前经营者开始合作日期","营业厅类型","运营模式","三级属性","经营者名称","租赁合同编码","营业厅人数","发展用户数","出账用户数","业务受理量","毛利","其中：零售毛利","出账收入","成本合计"/*,"成本占收比"*/,"生命周期毛利","库存终端","","其中：三个月至1年库存终端","","其中：1年以上库存终端","","营业欠款余额","用户欠费余额","用户预存款余额"/*,"二次续费率（最近7个月入网用户（不含当月）截止目前续费情况）"*/],
 	           ["","","","","","","","","","","","","","","","","","","","","","","","数量","金额","数量","金额","数量","金额","","",""/*,""*/]];
@@ -123,12 +126,16 @@ function getSql(where,level){
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	var yyt_name=$("#yyt_name").val();
+	var hqChanCode=$("#hqChanCode").val();
 	var where1=" WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	if(regionCode!=''){
 		where+=" AND T1.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(yyt_name!=''){
 		where+=" AND T1.YYT_NAME LIKE '%"+yyt_name+"%'";
+	}
+	if(hqChanCode!=''){
+		where+=" AND T1.HQ_CHAN_CODE LIKE '%"+hqChanCode+"%'";
 	}
 	if(level==1){
 		return "SELECT '云南省' ROW_NAME,                                                                                    "+

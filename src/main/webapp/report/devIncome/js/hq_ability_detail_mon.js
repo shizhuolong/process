@@ -88,6 +88,7 @@ function downsAll() {
 	var where=" WHERE LEV=4 AND DEAL_DATE BETWEEN "+startDate+" AND "+endDate;
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
+	var hqChanCode=$("#hqChanCode").val();
 	var hq_zy=$("#hq_zy").val();
 	
 	if (orgLevel == 1) {//省
@@ -105,6 +106,9 @@ function downsAll() {
 	if(hqChanName!=''){
 		where+=" AND T1.HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
 	}
+	if(hqChanCode!=''){
+		where+=" AND T1.HQ_CHAN_CODE LIKE '%"+hqChanCode+"%'";
+	}
 	if(hq_zy!=''){
 		where+=" AND T1.HQ_ZY = '"+hq_zy+"'";
 	}
@@ -118,12 +122,16 @@ function downsAll() {
 function getSql(orgLevel,where){
 	var regionCode=$("#regionCode").val();
 	var hqChanName=$("#hqChanName").val();
+	var hqChanCode=$("#hqChanCode").val();
 	var hq_zy=$("#hq_zy").val();
 	if(regionCode!=''){
 		where+=" AND T1.GROUP_ID_1 = '"+regionCode+"'";
 	}
 	if(hqChanName!=''){
 		where+=" AND T1.HQ_CHAN_NAME LIKE '%"+hqChanName+"%'";
+	}
+	if(hqChanCode!=''){
+		where+=" AND T1.HQ_CHAN_CODE LIKE '%"+hqChanCode+"%'";
 	}
 	if(hq_zy!=''){
 		where+=" AND T1.HQ_ZY = '"+hq_zy+"'";

@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/hq_ability_mon.js?v=10"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/hq_ability_mon.js?v=12"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -36,7 +36,6 @@
 	<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="8%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
 				    <td width="8%" style="text-align:right;">开始账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
@@ -53,7 +52,20 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="6%">渠道：</td>
+					<td width="5%">
+						<a class="default-btn" href="#" id="searchBtn"
+						style="float: right; margin-right: 48px;">查询</a>
+					</td>
+					<td width="5%">
+						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
+					</td>
+				</tr>
+				<tr>
+				    <td width="6%" style="text-align:right;">渠道编码：</td>
+					<td width="15%">
+						<input name="hqChanCode" id="hqChanCode" class="default-text-input wper80"/>
+					</td>
+					<td width="6%">渠道名称：</td>
 					<td width="15%">
 						<input name="hqChanName" id="hqChanName" class="default-text-input wper80"/>
 					</td>
@@ -68,13 +80,7 @@
 								<option value='自营'>自营</option>
 						</select>
 					</td>
-					<td width="5%">
-						<a class="default-btn" href="#" id="searchBtn"
-						style="float: right; margin-right: 48px;">查询</a>
-					</td>
-					<td width="5%">
-						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
-					</td>
+					<td width="8%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
 				</tr>
 			</table>
 		</form>
