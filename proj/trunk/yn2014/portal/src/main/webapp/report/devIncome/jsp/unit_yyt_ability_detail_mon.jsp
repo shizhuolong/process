@@ -26,7 +26,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/unit_yyt_ability_detail_mon.js?v=20"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/unit_yyt_ability_detail_mon.js?v=21"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -37,13 +37,13 @@
 	<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="6%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
-				    <td width="6%" style="text-align:right;">开始账期：</td>
+				    <td width="8%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
+				    <td width="8%" style="text-align:right;">开始账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="startDate">
 					</td>
-					 <td width="6%" style="text-align:right;">结束账期：</td>
+					 <td width="8%" style="text-align:right;">结束账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="endDate">
@@ -53,6 +53,10 @@
 						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
+					</td>
+					<td width="6%">厅编码：</td>
+					<td width="15%">
+						<input name="hqChanCode" id="hqChanCode" class="default-text-input wper80"/>
 					</td>
 					<td width="6%">营业厅：</td>
 					<td width="15%">

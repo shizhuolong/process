@@ -36,13 +36,13 @@
 	<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="6%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
-				    <td width="6%" style="text-align:right;">开始账期：</td>
+				    <td width="8%" style="text-align:right;margin-left:10px;"><a id="rule" style="color:blue;cursor:pointer;" onclick="toRules();">取数规则</a></td>
+				    <td width="8%" style="text-align:right;">开始账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="startDate">
 					</td>
-					 <td width="6%" style="text-align:right;">结束账期：</td>
+					 <td width="8%" style="text-align:right;">结束账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="endDate">
@@ -53,10 +53,15 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="6%">营业厅：</td>
+					<td width="6%">厅编码：</td>
+					<td width="15%">
+						<input name="hqChanCode" id="hqChanCode" class="default-text-input wper80"/>
+					</td>
+					<td width="6%">厅名称：</td>
 					<td width="15%">
 						<input name="yyt_name" id="yyt_name" class="default-text-input wper80"/>
 					</td>
+					
 					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>
