@@ -14,7 +14,7 @@
 	String path = request.getContextPath();
     List<String> err=(List<String>) request.getAttribute("err");
     Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.MONTH, -1);
+	ca.add(Calendar.MONTH, 0);
 	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <html>
