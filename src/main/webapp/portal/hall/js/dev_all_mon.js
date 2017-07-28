@@ -1,95 +1,106 @@
-var nowData = [];
-var title=[["套餐名称","发展用户数","当月新发展三无极低用户数","使用过4G网络用户数"]];
-var field=["PRODUCT_NAME","ALL_DEV","IS_SW_JD","IS_4G_NET"];
-var report = null;
-var downSql="";
-var dealDate="";
-$(function() {
-	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON"));
-	report = new LchReport({
-		title : title,
-		field : field,
-		rowParams : [],
-		content : "lchcontent",
-		orderCallBack : function(index, type) {
+$(function(){
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"));
+	var title=[["组织架构","发展用户数","三无极低"]];
+	var field=["ROW_NAME","DEV_NUM","SWJD_NUM"];
+	$("#searchBtn").click(function(){
+		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
+		report.showSubRow();
+        ///////////////////////////////////////////
+		$("#lch_DataHead").find("TH").unbind();
+		$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+		///////////////////////////////////////////
+	});
+    var report=new LchReport({
+		title:title,
+		field:field,
+		css:[{gt:1,css:LchReport.RIGHT_ALIGN}],
+		rowParams:["ROW_ID"],//第一个为rowId
+		content:"content",
+		orderCallBack:function(index,type){
+			
+		},afterShowSubRows:function(){
 			
 		},
-		getSubRowsCallBack : function($tr) {
-			return {
-				data : nowData,
-				extra : {}
-			};
+		getSubRowsCallBack:function($tr){
+			var code='';
+			var orgLevel='';
+			var dealDate=$("#dealDate").val();
+			var where="WHERE DEAL_DATE='"+dealDate+"'";
+			if($tr){
+				code=$tr.attr("row_id");
+				orgLevel=parseInt($tr.attr("orgLevel"));
+				if(orgLevel==2){//点击省，显示市
+					where+=" AND GROUP_ID_0='"+code+"'";
+				}else if(orgLevel==3){//点击市，展示营服
+					where+=" AND GROUP_ID_1='"+code+"'";
+				}else if(orgLevel==4){//点击营服，展示渠道经理
+					where+=" AND UNIT_ID='"+code+"'";
+				}else if(orgLevel==5){//点击渠道经理，展示渠道
+					where+=" AND HQ_HR_ID='"+code+"'";
+				}else if(orgLevel==6){//点击渠道，展示套餐
+					where+=" AND HQ_CHAN_CODE='"+code+"'";
+				}else{
+					return {data:[],extra:{}}
+				}
+				sql=getSql(orgLevel,where);
+				orgLevel++;
+			}else{
+				//先根据用户信息得到前几个字段
+				code=$("#code").val();
+				orgLevel=$("#orgLevel").val();
+				if(orgLevel==1){//省
+					where+=" AND GROUP_ID_0='"+code+"'";
+				}else if(orgLevel==2){//市
+					where+=" AND GROUP_ID_1='"+code+"'";
+				}else if(orgLevel==3){
+					where+=" AND UNIT_ID='"+code+"'";
+				}else{
+					return {data:[],extra:{}};
+				}
+				sql=getSql(orgLevel,where);
+				orgLevel++;
+			}
+			var d=query(sql);
+			return {data:d,extra:{orgLevel:orgLevel}};
 		}
 	});
-	search(0);
-	$("#searchBtn").click(function(){
-		search(0);
-	});
+	report.showSubRow();
+	///////////////////////////////////////////
+	$("#lch_DataHead").find("TH").unbind();
+	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	///////////////////////////////////////////
 });
 
-var pageSize = 25;
-//分页
-function initPagination(totalCount) {
-	$("#totalCount").html(totalCount);
-	$("#pagination").pagination(totalCount, {
-		callback : search,
-		items_per_page : pageSize,
-		link_to : "###",
-		prev_text : '上页', //上一页按钮里text  
-		next_text : '下页', //下一页按钮里text  
-		num_display_entries : 5,
-		num_edge_entries : 2
-	});
-}
-
-//列表信息
-function search(pageNumber) {
-	pageNumber = pageNumber + 1;
-	var start = pageSize * (pageNumber - 1);
-	var end = pageSize * pageNumber;
-	var sql=getSql();
-	downSql=sql;
-	var csql = sql;
-	var cdata = query("select count(*) total from(" + csql+")");
-	var total = 0;
-	if(cdata && cdata.length) {
-		total = cdata[0].TOTAL;
-	}else{
-		return;
-	}
-	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
-	var d = query(sql);
-	if (pageNumber == 1) {
-		initPagination(total);
-	}
-	nowData = d;
-	report.showSubRow();
-	$(".page_count").width($("#lch_DataHead").width());
-	$("#lch_DataBody").find("TR").each(function(){
-		var area=$(this).find("TD:eq(0)").find("A").text();
-		if(area)
-			$(this).find("TD:eq(0)").empty().text(area);
-	});
-}
- 
-function downsAll(){
-	var showtext = '渠道发展用户月报汇总表-'+dealDate;
-	downloadExcel(downSql,title,showtext);
-}
-
-function getSql(dealDate){
-	dealDate=$("#dealDate").val();
+function downsAll() {
+	//先根据用户信息得到前几个字段
+	var orgLevel=$("#orgLevel").val();
+	var dealDate=$("#dealDate").val();
+	var code=$("code").val();
 	var regionCode=$("#regionCode").val();
-	var unitCode=$("#unitCode").val();
+	var unitCode = $("#unitCode").val();
 	var product_name=$("#product_name").val();
 	var hq_chan_code=$("#hq_chan_code").val();
+	var product_type=$("#product_type").val();
+	var hq_hr_id=$("#hq_hr_id").val();
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	if (orgLevel == 1) {//省
+		
+	} else if(orgLevel==2){//市
+		where += " AND GROUP_ID_1='"+code+"'";
+	} else if(orgLevel==3){//营服
+		where += " AND UNIT_ID='"+code+"'";
+	} else{
+		where += " AND 1=2";
+	}
+	
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(unitCode!=""){
 		where+=" AND UNIT_ID='"+unitCode+"'";
+	}
+	if(product_type!=""){
+		where+=" AND PRODUCT_TYPE LIKE '%"+product_type+"%'";
 	}
 	if(product_name!=""){
 		where+=" AND PRODUCT_NAME LIKE '%"+product_name+"%'";
@@ -97,28 +108,73 @@ function getSql(dealDate){
 	if(hq_chan_code!=""){
 		where+=" AND HQ_CHAN_CODE LIKE '%"+hq_chan_code+"%'";
 	}
-	return "SELECT '合计' PRODUCT_NAME                           "+
-	"      ,COUNT(SUBSCRIPTION_ID)  ALL_DEV                     "+
-	"      ,COUNT(CASE WHEN NVL(IS_SW,0)=1 AND NVL(IS_JD,0)=1   "+
-	"             THEN SUBSCRIPTION_ID                          "+
-	"             END                                           "+
-	"             )            IS_SW_JD                         "+
-	"      ,COUNT(CASE WHEN NVL(IS_4G_NET,0)=1                  "+
-	"             THEN SUBSCRIPTION_ID                          "+
-	"             END )  IS_4G_NET                              "+
-	"FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON                        "+
-	     where+
-	"UNION ALL                                                  "+
-	"SELECT NVL(PRODUCT_NAME,'无套餐')                            "+
-	"      ,COUNT(SUBSCRIPTION_ID)  ALL_DEV                     "+
-	"      ,COUNT(CASE WHEN NVL(IS_SW,0)=1 AND NVL(IS_JD,0)=1   "+
-	"             THEN SUBSCRIPTION_ID                          "+
-	"             END                                           "+
-	"             )            IS_SW_JD                         "+
-	"      ,COUNT(CASE WHEN NVL(IS_4G_NET,0)=1                  "+
-	"             THEN SUBSCRIPTION_ID                          "+
-	"             END )  IS_4G_NET                              "+
-	"FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON                        "+
-	    where+
-	"GROUP BY GROUPING SETS (DEAL_DATE,(DEAL_DATE,PRODUCT_NAME))";                                            
+	if(hq_hr_id!=""){
+		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
+	}
+	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","DEV_NUM","SWJD_NUM"];
+	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
+	var showtext = '用户发展月汇总-' + dealDate;
+	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","发展用户数","三无极低"]];;
+	downloadExcel(sql,title,showtext);
+}
+
+function getSql(orgLevel,where){
+	var regionCode=$("#regionCode").val();
+	var unitCode = $("#unitCode").val();
+	var product_name=$("#product_name").val();
+	var hq_chan_code=$("#hq_chan_code").val();
+	var product_type=$("#product_type").val();
+	var hq_hr_id=$("#hq_hr_id").val();
+	var preSql="";
+	var groupBy="";
+	var orderBy="";
+	if(regionCode!=""){
+		where+=" AND GROUP_ID_1='"+regionCode+"'";
+	}
+	if(unitCode!=""){
+		where+=" AND UNIT_ID='"+unitCode+"'";
+	}
+	if(product_type!=""){
+		where+=" AND PRODUCT_TYPE LIKE '%"+product_type+"%'";
+	}
+	if(product_name!=""){
+		where+=" AND PRODUCT_NAME LIKE '%"+product_name+"%'";
+	}
+	if(hq_chan_code!=""){
+		where+=" AND HQ_CHAN_CODE LIKE '%"+hq_chan_code+"%'";
+	}
+	if(hq_hr_id!=""){
+		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
+	}
+	if(orgLevel==1){
+		preSql="SELECT GROUP_ID_0 ROW_ID,'云南省' ROW_NAME";
+		groupBy=" GROUP BY GROUP_ID_0";
+	}else if(orgLevel==2){
+		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME";
+		groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
+		orderBy=" ORDER BY GROUP_ID_1";
+	}else if(orgLevel==3){
+		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME";
+		groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
+		orderBy=" ORDER BY UNIT_ID";
+	}else if(orgLevel==4){
+		preSql="SELECT HQ_HR_ID ROW_ID,HQ_NAME ROW_NAME";
+		groupBy=" GROUP BY HQ_HR_ID,HQ_NAME";
+		orderBy=" ORDER BY HQ_HR_ID";
+	}else if(orgLevel==5){
+		preSql="SELECT HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME";
+		groupBy=" GROUP BY HQ_CHAN_CODE,HQ_CHAN_NAME";
+		orderBy=" ORDER BY HQ_CHAN_CODE";
+	}else{
+		preSql="SELECT PRODUCT_ID ROW_ID,PRODUCT_NAME ROW_NAME";
+		groupBy=" GROUP BY PRODUCT_ID,PRODUCT_NAME";
+		orderBy=" ORDER BY PRODUCT_ID";
+	}
+	return preSql+getSumSql()+where+groupBy+orderBy;
+  }
+
+function getSumSql(){
+	return ",NVL(SUM(DEV_NUM),0) DEV_NUM    "+
+	"       ,NVL(SUM(SWJD_NUM),0) SWJD_NUM  "+
+	" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ ";
 }
