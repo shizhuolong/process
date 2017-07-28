@@ -25,8 +25,9 @@ $(function(){
 			var sql='';
 			var code='';
 			var orgLevel='';
-			var dealDate=$("#dealDate").val();
-			var where=" WHERE DEAL_DATE='"+dealDate+"'";
+			var startDate=$("#startDate").val();
+			var endDate=$("#endDate").val();
+			var where=" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -67,11 +68,12 @@ $(function(){
 function downsAll() {
 	//先根据用户信息得到前几个字段
 	var orgLevel=$("#orgLevel").val();
-	var dealDate=$("#dealDate").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var code=$("#region").val();
 	var regionCode=$("#regionCode").val();
 	var yyt_hq_code = $("#yyt_hq_code").val();
-	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	var where=" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'";
 	if (orgLevel == 1) {//省
 		
 	} else if(orgLevel==2||orgLevel==3){//市
@@ -88,19 +90,17 @@ function downsAll() {
 		where+=" AND YYT_HQ_CODE LIKE '%"+yyt_hq_code+"%'";
 	}
 	var sql = getDownSql(where);
-	var showtext = '营业厅终端销售统计-' + dealDate;
+	var showtext = '营业厅终端销售统计-' + startDate+"-"+endDate;
 	var title=[["地市","账期","营业厅编码","营业厅名称","日-裸机销售（顺价销售）","日-裸机销售（带卡销售）","日-合计","月-裸机销售（顺价销售）","月-裸机销售（带卡销售）","月-合计","毛利合计","毛利分享","营销成本","营业厅利润"]];
 	downloadExcel(sql,title,showtext);
 }
 
 function getSql(level,where){
-	var dealDate=$("#dealDate").val();
 	var regionCode=$("#regionCode").val();
 	var yyt_hq_code = $("#yyt_hq_code").val();
 	var sql="";
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
-		
 	}
 	if(yyt_hq_code!=""){
 		where+=" AND YYT_HQ_CODE LIKE '%"+yyt_hq_code+"%'";
