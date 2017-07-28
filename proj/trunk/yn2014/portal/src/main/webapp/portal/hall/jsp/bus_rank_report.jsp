@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/bus_rank_report.js?v=6"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/hall/js/bus_rank_report.js?v=8"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -55,7 +55,7 @@
 								<option value="">全部</option>
 								<option value="小型厅">小型厅</option>
 								<option value="标准厅">标准厅</option>
-								<option value="自营厅">自营厅</option>
+								<option value="旗舰厅">旗舰厅</option>
 						</select>
 					</td>
 					<td width="1%">

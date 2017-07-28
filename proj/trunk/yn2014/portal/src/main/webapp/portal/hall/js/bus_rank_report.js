@@ -105,5 +105,5 @@ function getSql(dealDate){
 	"      ,STATE_RANK                                    "+
 	"      ,PRO_RANK                                      "+
 	" FROM PMRT.TB_MRT_BUS_DEV_SR_RANK_REPORT             "+
-    +where+" ORDER BY PRO_RANK";                                            
+    where+" ORDER BY PRO_RANK";                                            
 }
