@@ -1,7 +1,8 @@
 var nowData = [];
-var title=[["州市","营业厅名称","渠道编码","厅类型","发展（权重50%）","","收入（权重50%）","","综合得分（100%）","厅类型排名","全省排名"],
-           ["","","","","本月累计（户）","得分（分）","本月累计（万元）","得分（分）","","",""]];
-var field=["GROUP_ID_1_NAME","BUS_HALL_NAME","HQ_CHAN_CODE","CHNL_TYPE","ALL_DEV","DEV_SCORE","ALL_SR","SR_SCORE","TOTAL_SCORE","STATE_RANK","PRO_RANK"];
+var title=[["账期","州市","营业厅名称","渠道编码","厅类型","收入（权重50%）","","","发展（权重50%）","","","厅类型排名","全省排名"],
+           ["","","","","","本月累计收入","环比","定比上季度月均","本月累计发展","环比","定比上季度月均","",""],
+           ["","","","","","权重10%","权重15%","权重25%","权重10%","权重15%","权重25%","",""]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","BUS_HALL_NAME","HQ_CHAN_CODE","CHNL_TYPE","ALL_SR","SR_HB","SR_DB","ALL_DEV","DEV_HB","DEV_DB","STATE_RANK","PRO_RANK"];
 var report = null;
 var downSql="";
 var dealDate="";
@@ -90,5 +91,19 @@ function getSql(dealDate){
 	if(chnlType!=""){
 		where+=" AND CHNL_TYPE='"+chnlType+"'";
 	}
-	return "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_BUS_DEV_SR_RANK_REPORT"+where+" ORDER BY PRO_RANK";                                            
+	return "SELECT DEAL_DATE                              "+
+	"      ,GROUP_ID_1_NAME                               "+
+	"      ,BUS_HALL_NAME                                 "+
+	"      ,HQ_CHAN_CODE                                  "+
+	"      ,CHNL_TYPE                                     "+
+	"      ,ALL_SR                                        "+
+	"      ,PODS.GET_RADIX_POINT(SR_HB||'%',2)    SR_HB   "+    
+	"      ,PODS.GET_RADIX_POINT(SR_DB||'%',2)    SR_DB   "+ 
+	"      ,ALL_DEV                                       "+
+	"      ,PODS.GET_RADIX_POINT(DEV_HB||'%',2)   DEV_HB  "+     
+	"      ,PODS.GET_RADIX_POINT(DEV_DB||'%',2)   DEV_DB  "+      
+	"      ,STATE_RANK                                    "+
+	"      ,PRO_RANK                                      "+
+	" FROM PMRT.TB_MRT_BUS_DEV_SR_RANK_REPORT             "+
+    +where+" ORDER BY PRO_RANK";                                            
 }
