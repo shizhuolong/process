@@ -1,5 +1,8 @@
 $(function(){
-	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"));
+	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ");
+	if(maxDate!=null){
+		$("#dealDate").val(maxDate);
+	}
 	var title=[["组织架构","发展用户数","三无极低"]];
 	var field=["ROW_NAME","DEV_NUM","SWJD_NUM"];
 	$("#searchBtn").click(function(){
