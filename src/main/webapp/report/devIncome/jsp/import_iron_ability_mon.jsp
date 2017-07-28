@@ -15,7 +15,10 @@
     List<String> err=(List<String>) request.getAttribute("err");
     Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, 0);
-	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	String maxDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+	Calendar ca1=Calendar.getInstance();
+	ca1.add(Calendar.MONTH, -1);
+	String minDate=new SimpleDateFormat("yyyyMM").format(ca1.getTime());
 %>
 <html>
   <head>
@@ -28,7 +31,7 @@
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 	<script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/report/devIncome/js/import_iron_ability_mon.js"></script>
+	<script type="text/javascript" src="<%=path%>/report/devIncome/js/import_iron_ability_mon.js?v=1"></script>
 	
 	<style>
 		th {
@@ -61,6 +64,8 @@
   </head>
   <body class="taskPage">
     <input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
+    <input type="hidden" id="minDate" value="<%=minDate%>">
+    <input type="hidden" id="maxDate" value="<%=maxDate%>">
 		<div id="main" class="clearfix">
 			<div class="main-block">
 				<div class="title">
@@ -89,8 +94,8 @@
 							<tr>
 								<th  width="100px">第三步</th>
 								<td width="6%">账期：
-								    <input type="text" style="width: 200px;" class="default-text-input wper80" readonly
-						             value="<%=time%>" id="time" name="time"/>
+								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
+						             onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',minDate:'#F{$dp.$D(\'minDate\')}',maxDate:'#F{$dp.$D(\'maxDate\')}'})" value="<%=maxDate%>" id="time" name="time"/>
 						         </td>
 							</tr>
 							<tr>
