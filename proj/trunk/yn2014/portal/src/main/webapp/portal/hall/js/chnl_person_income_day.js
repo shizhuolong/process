@@ -82,6 +82,7 @@ function downsAll() {
 	var hq_chan_name = $.trim($("#hq_chan_name").val());
 	var unitType = $.trim($("#unitType").val());
 	var where=" PARTITION(P"+dealDate+")T WHERE 1=1";
+	where+=" AND T.IS_LOOK=1";
 	if(regionCode!=""){
 		where+=" AND T.GROUP_ID_1='"+regionCode+"'";
 	}
@@ -147,7 +148,7 @@ function getSql(orgLevel,where){
 		"      ,'--' STATE                                                 "+
 		"      ,'--' UNIT_TYPE";    
 		
-		groupBy="GROUP BY T.GROUP_ID_0";
+		groupBy=" GROUP BY T.GROUP_ID_0";
 	}else if(orgLevel==2){
 		preSql="SELECT T.GROUP_ID_1_NAME ROW_NAME                          "+
 		"      ,T.GROUP_ID_1 ROW_ID                                        "+
@@ -159,7 +160,7 @@ function getSql(orgLevel,where){
 		"      ,'--' STATE                                                 "+
 		"      ,'--' UNIT_TYPE";    
 		
-		groupBy="GROUP BY T.GROUP_ID_1,"+
+		groupBy=" GROUP BY T.GROUP_ID_1,"+
 	    "         T.GROUP_ID_1_NAME    ";
 	}else if(orgLevel==3){
 		preSql="SELECT T.UNIT_NAME ROW_NAME                                "+
@@ -172,7 +173,7 @@ function getSql(orgLevel,where){
 		"      ,'--' STATE                                                 "+
 		"      ,T.UNIT_TYPE";    
 		
-		groupBy="GROUP BY          "+
+		groupBy=" GROUP BY          "+
 	    "         T.GROUP_ID_1_NAME"+
 	    "        ,T.UNIT_ID        "+
 	    "        ,T.UNIT_NAME      "+
@@ -187,8 +188,10 @@ function getSql(orgLevel,where){
 		"      ,T.AGENT_M_NAME||'('||T.HR_ID||')' AGENT_M_NAME             "+
 		"      ,'--' STATE                                                 "+
 		"      ,T.UNIT_TYPE                                                ";
-	
-		groupBy="GROUP BY          "+
+	   
+		where+=" AND T.IS_LOOK=1";
+		
+		groupBy=" GROUP BY          "+
 	    "         T.GROUP_ID_1_NAME"+
 	    "        ,T.UNIT_ID        "+
 	    "        ,T.UNIT_NAME      "+
@@ -207,7 +210,9 @@ function getSql(orgLevel,where){
 		"      ,T.STATE                                                    "+
 		"      ,T.UNIT_TYPE                                                ";
 	   
-		groupBy="GROUP BY          "+
+		where+=" AND T.IS_LOOK=1";
+		
+		groupBy=" GROUP BY          "+
 	    "         T.GROUP_ID_1_NAME"+
 	    "        ,T.UNIT_ID        "+
 	    "        ,T.UNIT_NAME      "+
@@ -229,7 +234,7 @@ function getDownSql(where){
 	"      ,T.STATE                                                    "+
 	"      ,T.UNIT_TYPE                                                ";
    
-	var groupBy="GROUP BY      "+
+	var groupBy=" GROUP BY      "+
     "         T.GROUP_ID_1_NAME"+
     "        ,T.UNIT_ID        "+
     "        ,T.UNIT_NAME      "+
