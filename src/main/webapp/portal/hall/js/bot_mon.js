@@ -5,7 +5,10 @@ var report = null;
 var downSql="";
 var dealDate="";
 $(function() {
-	$("#dealDate").val(getMaxDate("PODS.TAB_ODS_NEW_EOC_BOT_MON"));
+	var maxDate=getMaxDate("PODS.TAB_ODS_NEW_EOC_BOT_MON");
+	if(maxDate!=null){
+		$("#dealDate").val(maxDate);
+	}
 	report = new LchReport({
 		title : title,
 		field : field,
