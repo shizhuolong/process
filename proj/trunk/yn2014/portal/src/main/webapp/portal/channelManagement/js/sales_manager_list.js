@@ -82,7 +82,7 @@ function search(pageNumber) {
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
 	var hallName=$("#hallName").val();
-	var zd_brands=$("#zd_brands").val();
+	var s_zd_iemi=$("#s_zd_iemi").val();
 	var sql="";
 	var field1=["GROUP_ID_1_NAME","ORDER_CODE","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","OPERATOR_ID","DEVELOPER_ID","ZD_BRAND","ZD_TYPES","SERVICE_NUM","ZD_IEMI","IN_PRICE","OUT_PRICE","SALE_ML","YYT_ML","YX_COST","YYT_PROFIT","IS_CHANGE_PRICE","ACC_TIME"];
 	if(orgLevel==1||!isGrantedNew(role)||order_type!='0'){
@@ -102,8 +102,8 @@ function search(pageNumber) {
 	if(hallName!=''){
 		sql+=" AND YYT_HQ_NAME LIKE '%"+hallName+"%'";
 	}
-	if(zd_brands!=''){
-		sql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
+	if(s_zd_iemi!=''){
+		sql+=" AND ZD_IEMI LIKE '%"+s_zd_iemi+"%'";
 	}
 	sql+=" ORDER BY CREATE_TIME DESC";
 	var csql = sql;
@@ -142,7 +142,7 @@ function search(pageNumber) {
 	var regionCode=$("#regionCode").val();
 	var order_type=$("#order_type").val();
 	var hallName=$("#hallName").val();
-	var zd_brands=$("#zd_brands").val();
+	var s_zd_iemi=$("#s_zd_iemi").val();
 	if(regionCode!=''){
 		downSql+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
@@ -155,8 +155,8 @@ function search(pageNumber) {
 	if(hallName!=''){
 		sql+=" AND YYT_HQ_NAME LIKE '%"+hallName+"%'";
 	}
-	if(zd_brands!=''){
-		downSql+=" AND ZD_BRAND LIKE '%"+zd_brands+"%'";
+	if(s_zd_iemi!=''){
+		downSql+=" AND ZD_IEMI LIKE '%"+s_zd_iemi+"%'";
 	}
 	var title=[["分公司","订单号","营业厅","营业厅编码","供应商","供应商编码","操作工号","发展人信息","终端品牌","终端型号","用户号码","终端串号","终端价格","","毛利分配","","","","是否调价销售","受理时间","订单类型"],
 	           ["","","","","","","","","","","","","进货价","零售价","销售毛利合计","营业厅毛利","营销成本","营业厅利润","","",""]];
@@ -373,6 +373,10 @@ function search(pageNumber) {
 				}
 				if($("#zd_iemi").val()==""){
 					alert("终端编号不能为空！");
+					return false;
+				}
+				if($("#out_price").val()==""){
+					alert("零售价不能为空！");
 					return false;
 				}
 				if($("#sale_ml").val()==""){
