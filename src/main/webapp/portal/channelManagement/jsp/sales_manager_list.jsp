@@ -37,7 +37,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=73"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=75"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
@@ -79,9 +79,9 @@
 						<td>
 						     <input name="hallName" id="hallName" class="default-text-input wper100"/>
 					    </td>
-					     <td style="text-align:right;width:50px;">品牌：</td>
+					     <td style="text-align:right;width:50px;">串号：</td>
 						<td>
-						     <input name="zd_brands" id="zd_brands" class="default-text-input wper100"/>
+						     <input name="s_zd_iemi" id="s_zd_iemi" class="default-text-input wper100"/>
 					    </td>
 					    <td style="text-align:right;width:60px;">订单类型：</td>
 						<td style="width:80px;">
