@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市名称","营服名称","用户编码","用户号码","局站名称","套餐名称","宽带速率","竣工时间","用户名称","业务类型"]];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","SUBSCRIPTION_ID","DEVICE_NUMBER","EXCH_NAME","MU_DESC","COLUMN_DESC","INNET_DATE","USER_NAME","SERVICE_TYPE"];
+var title=[["账期","地市名称","营服名称","用户编码","用户号码","渠道编码","渠道名称","局站名称","套餐名称","宽带速率","竣工时间","用户名称","业务类型","渠道类型"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","SUBSCRIPTION_ID","DEVICE_NUMBER","HQ_CHAN_CODE","GROUP_ID_4_NAME","EXCH_NAME","MU_DESC","COLUMN_DESC","INNET_DATE","USER_NAME","SERVICE_TYPE","CHNL_TYPE"];
 var report = null;
 var downSql="";
 var dealDate="";
