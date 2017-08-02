@@ -63,6 +63,7 @@ public class ThreeSupportedService {
 			map.put("userId", String.valueOf(user.getId()));
 			map.put("username", user.getUsername());
 			map.put("code", org.getCode());
+			map.put("orgLevel", org.getOrgLevel());
 			int count = threeSupportedDao.getDataListCount(map);
 			if(count <= 0) {
 				throw new BusiException("审核数据为空！");
