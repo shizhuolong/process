@@ -77,6 +77,7 @@ public class UnsupportedService {
 			map.put("userId", String.valueOf(user.getId()));
 			map.put("username", user.getUsername());
 			map.put("code", org.getCode());
+			map.put("orgLevel", org.getOrgLevel());
 			map.put("initId",businessKey);
 			int count = unsupportedDao.getDataListCount(map);
 			if(count <= 0) {

@@ -22,7 +22,7 @@
 			FROM PAPP.TAB_COMM_IMPORT
 			WHERE INIT_ID IS NULL 
 			AND ACCOUNT_ID=#{username}
-		<if test="orgLevel == 1">
+		<if test="orgLevel != 2">
 			AND 1=2
 		</if> 
 		<if test="orgLevel == 2">
@@ -36,7 +36,7 @@
 			FROM PAPP.TAB_COMM_IMPORT
 			WHERE INIT_ID IS NULL 
 			AND ACCOUNT_ID=#{username}
-		<if test="orgLevel == 1">
+		<if test="orgLevel != 2">
 			AND 1=2
 		</if>
 		<if test="orgLevel == 2">
@@ -93,6 +93,9 @@
   		FROM PAPP.TAB_COMM_IMPORT 
  		WHERE INIT_ID IS NULL
  		AND GROUP_ID = #{code} AND ACCOUNT_ID=#{username}
+ 		<if test="orgLevel != 2">
+			AND 1=2
+		</if> 
 	</select>
 	
 	<update id="updateDataWorkNo" parameterType="java.util.Map">
