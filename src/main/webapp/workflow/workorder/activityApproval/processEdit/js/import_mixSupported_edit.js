@@ -10,6 +10,7 @@ $(function(){
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var businessKey = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -19,6 +20,7 @@ function search(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
+           "resultMap.remark":remark,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -80,6 +82,7 @@ function isNull(obj){
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -87,7 +90,8 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/mixSupported/mix-supported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo
+           "workNo":workNo,
+           "resultMap.remark":remark
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
@@ -106,10 +110,15 @@ function downsDetail(){
 
 function getDetailSql(){
 	var workNo = $("#businessKey").val();
-	return "select billingcyclid,pay_chnl_id,pay_chnl_name,dev_chnl_code,dev_chnl_name,agentid,group_id_4_name,remark,subscription_id,svcnum,"
+	var remark=$.trim($("#remark").val());
+	var sql= "select billingcyclid,pay_chnl_id,pay_chnl_name,dev_chnl_code,dev_chnl_name,agentid,group_id_4_name,remark,subscription_id,svcnum,"
 	  +"product_name,net_type,to_char(create_time,'yyyy-mm-dd hh24:mi:ss') as create_time,to_char(active_time,'yyyy-mm-dd hh24:mi:ss') as active_time,"
 	  +"to_char(inactive_time,'yyyy-mm-dd') as inactive_time,fee from PMRT.TAB_MRT_COMM_FLOW_MON"
-	  +"              WHERE billingcyclid=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID ='"+workNo+"'";
+	  +"              WHERE INIT_ID ='"+workNo+"'";
+	if(remark!=""){
+		sql+=" AND REMARK LIKE '%"+remark+"%'";
+	}
+	return sql;
 }
 
 function downsAll(){
@@ -121,9 +130,14 @@ function downsAll(){
 
 function getDownSql(){//汇总导出
 	var workNo = $("#businessKey").val();
-	return "SELECT BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE," +
+	var remark=$.trim($("#remark").val());
+	var sql="SELECT BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE," +
 			"DEV_CHNL_NAME,REMARK,SUM(FEE) COMM"+
-			" FROM PMRT.TAB_MRT_COMM_FLOW_MON "                                                +
-	        "WHERE billingcyclid=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID = '"+workNo+"'"+
-	   " GROUP BY BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE,DEV_CHNL_NAME,REMARK";
+			" FROM PMRT.TAB_MRT_COMM_FLOW_MON " +
+	        "WHERE INIT_ID = '"+workNo+"'";
+	if(remark!=""){
+		sql+=" AND REMARK LIKE '%"+remark+"%'";
+	}
+	sql+=" GROUP BY BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE,DEV_CHNL_NAME,REMARK";
+	return sql;
 }

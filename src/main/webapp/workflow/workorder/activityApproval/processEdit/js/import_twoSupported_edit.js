@@ -2,6 +2,9 @@ var isNeedApprover = true;
 var pageSize = 10;
 $(function(){
 	search(0);
+	$("#searchBtn").click(function(){
+		search(0);
+	});
 	/*$("#downExcelTemp").click(function(){
 		downExcelTemp();
 	});
@@ -14,6 +17,7 @@ $(function(){
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var businessKey = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -23,6 +27,7 @@ function search(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
+           "resultMap.remark":remark,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -61,7 +66,6 @@ function search(pageNumber) {
 	});
 }
 
-
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
 	 $("#pagination").pagination(totalCount, {
@@ -84,6 +88,7 @@ function isNull(obj){
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -91,7 +96,8 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/twoSupported/two-supported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo
+           "workNo":workNo,
+           "resultMap.remark":remark
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
@@ -111,7 +117,8 @@ function downsDetail(){
 
 function getDetailSql(){
 	var workNo = $("#businessKey").val();
-	return "SELECT BILLINGCYCLID,                           "+
+	var remark=$.trim($("#remark").val());
+	var sql= "SELECT BILLINGCYCLID,                         "+
 	"       PAY_CHNL_ID,                                    "+
 	"       PAY_CHNL_NAME,                                  "+
 	"       DEV_CHNL_ID,                                    "+
@@ -131,8 +138,11 @@ function getDetailSql(){
 	"       DECODE(COUNT3, NULL, '', COUNT3) COUNT3,        "+
 	"       DECODE(COUNT4, NULL, '', COUNT4) COUNT4,        "+
 	"       DECODE(AVG_COUNT, NULL, '', AVG_COUNT) AVG_COUNT"+
-	"  FROM PMRT.TAB_MRT_COMM_2G_AUDIT WHERE BILLINGCYCLID= "+
-	"TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID = '"+workNo+"'";
+	"  FROM PMRT.TAB_MRT_COMM_2G_AUDIT WHERE INIT_ID = '"+workNo+"'";
+	if(remark!=""){
+		sql+=" AND REMARK1 LIKE '%"+remark+"%'";
+	}
+	return sql;
 }
 
 function downsAll(){
@@ -144,12 +154,17 @@ function downsAll(){
 
 function getDownSql(){//汇总导出
 	var workNo = $("#businessKey").val();
-	return "SELECT BILLINGCYCLID,                                                     "+
+	var remark=$.trim($("#remark").val());
+	var sql="SELECT BILLINGCYCLID,                                                     "+
 	"PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_ID,                                           "+
 	"DEV_CHNL_NAME,REMARK1,SUM(FEE) COMM                                              "+
 	"FROM PMRT.TAB_MRT_COMM_2G_AUDIT                                                  "+
-	"WHERE BILLINGCYCLID=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID ='"+workNo+"'"+
-	" GROUP BY PAY_CHNL_ID,BILLINGCYCLID,PAY_CHNL_NAME,DEV_CHNL_ID,DEV_CHNL_NAME,REMARK1";
+	"WHERE INIT_ID ='"+workNo+"'";
+	if(remark!=""){
+		sql+=" AND REMARK1 LIKE '%"+remark+"%'";
+	}
+	sql+=" GROUP BY PAY_CHNL_ID,BILLINGCYCLID,PAY_CHNL_NAME,DEV_CHNL_ID,DEV_CHNL_NAME,REMARK1";
+	return sql;
 }
 /*function edit(obj){
 	var bill_id=$(obj).attr("bill_id");

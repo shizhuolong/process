@@ -42,12 +42,17 @@
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
+									    <th style="width: 80px;">佣金科目：</th>
+										<td style="width: 80px;">
+											<input type="text" id="remark" name="remark"/>
+										</td>
 										<th style="width: 70px;">佣金总额：</th>
 									    <td id="totalFee" style="color:red;width: 70px;">
 										
 										</td>
 										<td>
 										<td>
+									     	<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 	                                        <a class="default-gree-btn fLeft mr10" href="#" onclick="downsAll()">导出</a>
 											<a class="default-gree-btn fLeft mr10" href="#" onclick="downsDetail()">导出明细</a>
 										</td>

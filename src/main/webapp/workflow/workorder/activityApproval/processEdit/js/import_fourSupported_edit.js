@@ -10,6 +10,7 @@ $(function(){
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var businessKey = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -19,6 +20,7 @@ function search(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
+           "resultMap.remark":remark,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -79,6 +81,7 @@ function isNull(obj){
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -86,7 +89,8 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/fourSupported/four-supported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo
+           "workNo":workNo,
+           "resultMap.remark":remark
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
@@ -105,13 +109,18 @@ function downsDetail(){
 
 function getDetailSql(){
 	var workNo = $("#businessKey").val();
-	return "SELECT DISTINCT NVL(T1.BAK_1, T1.REMARK) AS BAK_1,T2.RULE_DESC,T2.COMMITEM,                                       "+
+	var remark=$.trim($("#remark").val());
+	var sql= "SELECT DISTINCT NVL(T1.BAK_1, T1.REMARK) AS BAK_1,T2.RULE_DESC,T2.COMMITEM,                                       "+
 	"							T2.COMM,T2.SUBSCRIPTION_ID,T2.SERVICE_NUM,T2.CHANNEL_NAME,T2.CHANNEL_ID,                      "+
 	"							T2.PRODUCT_NAME_OLD,T2.PRODUCT_NAME,T2.PRODUCT_ID_OLD,                                        "+
 	"							T2.PRODUCT_ID,T2.PRODUCT_FEE_OLD,T2.PRODUCT_FEE,T2.PRODUCT_END_DATE,T2.PRODUCT_START_DATE     "+
 	"							FROM PMRT.TAB_MRT_COMM_4G_HH T1 LEFT JOIN PMRT.TAB_MRT_4G_USER_COMM_HH T2                     "+
 	"							ON (T1.DEAL_DATE = T2.DEAL_DATE AND T1.FD_CHNL_ID = T2.FD_CHNL_ID AND t1.bak_1 = t2.rule_name)"+
-	"              WHERE T1.DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND T1.INIT_ID ='"+workNo+"'"; 
+	"              WHERE T1.INIT_ID ='"+workNo+"'"; 
+	if(remark!=""){
+		sql+=" AND REMARK LIKE '%"+remark+"%'";
+	}
+	return sql;
 }
 
 function downsAll(){
@@ -123,7 +132,8 @@ function downsAll(){
 
 function getDownSql(){//汇总导出
 	var workNo = $("#businessKey").val();
-	return "SELECT DEAL_DATE,         "+
+	var remark=$.trim($("#remark").val());
+	var sql="SELECT DEAL_DATE,         "+
 	"       CHANNEL_NAME,             "+
 	"       CHANNEL_ID,               "+
 	"       FD_CHNL_ID,               "+
@@ -131,7 +141,11 @@ function getDownSql(){//汇总导出
 	"       SUM(COMM) AS COMM,        "+
 	"       SUM(MOD_COMM) AS MOD_COMM,"+
 	"       COMM_SUB                  "+
-	"         FROM PMRT.TAB_MRT_COMM_4G_HH                                                       "+
-	"         WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID ='"+workNo+"'"+
-	"GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_ID,NVL(BAK_1, REMARK),COMM_SUB ORDER BY COMM_SUB";
+	"         FROM PMRT.TAB_MRT_COMM_4G_HH"+
+	"         WHERE INIT_ID ='"+workNo+"'";
+	if(remark!=""){
+		sql+=" AND REMARK LIKE '%"+remark+"%'";
+	}
+	sql+=" GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_ID,NVL(BAK_1, REMARK),COMM_SUB ORDER BY COMM_SUB";
+	return sql;
 }
