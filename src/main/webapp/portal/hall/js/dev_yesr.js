@@ -98,7 +98,7 @@ function downsAll() {
 	}
 	var sql = "SELECT GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME"+getSumSql()+where+" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME"+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_CHAN_CODE";
 	var showtext = '小微渠道-' + dealDate;
-	var title=[["地市","营服编码","营服名称","渠道编码","渠道名称","套餐类型","套餐名称","出账收入","实收ARPU"]];;
+	var title=[["地市","营服编码","营服名称","渠道编码","渠道名称","当月累计拓展网点数","当年累计网点数","当月有销量网点占比","所有网点当日销量","所有网点当月累计销量","所有网点当月店均产能","当年累计销量"]];;
 	downloadExcel(sql,title,showtext);
 }
 
