@@ -10,6 +10,7 @@ $(function(){
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var businessKey = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -19,6 +20,7 @@ function search(pageNumber) {
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize,
+           "resultMap.remark":remark,
            "businessKey":businessKey
 	   	}, 
 	   	success:function(data){
@@ -79,6 +81,7 @@ function isNull(obj){
 
 function initTotalFee(){
 	var workNo = $("#businessKey").val();
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -86,7 +89,8 @@ function initTotalFee(){
 		async:false,
 		url:$("#ctx").val()+"/threeSupported/three-supported!queryTotalFeeByInitId.action",
 		data:{
-           "workNo":workNo
+           "workNo":workNo,
+           "resultMap.remark":remark,
 	   	}, 
 	   	success:function(data){
 	   		$("#totalFee").text(data+"元");
@@ -105,7 +109,8 @@ function downsDetail(){
 
 function getDetailSql(){
 	var workNo = $("#businessKey").val();
-	return "select nvl(t1.bak_1,t1.rule_name) rule_name,t2.rule_desc,t2.commitem,t2.comm,t2.subscription_id,t2.service_num,t2.active_date,                   "+
+	var remark=$.trim($("#remark").val());
+	var sql="select nvl(t1.bak_1,t1.rule_name) rule_name,t2.rule_desc,t2.commitem,t2.comm,t2.subscription_id,t2.service_num,t2.active_date,                   "+
 	"t2.inactive_date,t2.join_date,t2.subs_status,t2.service_status,t2.region_id,t2.county_id,t2.office_id,t2.operation_id,t2.scheme_id,              "+
 	"t2.scheme_name,t2.product_id,t2.product_name,t2.card_fee,t2.final_prepayment,t2.product_fee,t2.developer,t2.dept_ptype,t2.bss_channel_id,        "+
 	"t2.fd_chnl_id,t2.dev_chnl_name,t2.fd_chnl_code,t2.pay_chnl_name,t2.customer_name,t2.contact_man,t2.contact_phone,t2.cert_type,t2.cert_num,       "+
@@ -126,8 +131,12 @@ function getDetailSql(){
 	"                NVL(T1.COMMITEM, 'x') = NVL(T2.COMMITEM,'x') AND NVL(T1.RULE_NAME, 'x') = NVL(T2.RULE_NAME,'x') AND                              "+
 	"                NVL(T1.RULE_DESC, 'x') = NVL(T2.RULE_DESC,'x') AND NVL(T1.REMARK, 'x') = NVL(T2.REMARK,'x')) and                                 "+
 	"                NVL(T1.group_id_4, 'x') = NVL(T2.group_id_4,'x') AND NVL(T1.group_id_4_name, 'x') = NVL(T2.group_id_4_name,'x')                  "+
-	"                WHERE T1.DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND T1.INIT_ID='"+workNo+"'                                         "+  
-	"               ORDER BY RULE_NAME                                                                                                                ";
+	"                WHERE T1.INIT_ID='"+workNo+"'                                         ";
+	if(remark!=""){
+		sql+=" AND REMARK LIKE '%"+remark+"%'";
+	}
+	sql+=" ORDER BY RULE_NAME";
+	return sql;
 }
 
 function downsAll(){
@@ -139,7 +148,8 @@ function downsAll(){
 
 function getDownSql(){//汇总导出
 	var workNo = $("#businessKey").val();
-	return "SELECT DEAL_DATE,                                                              "+
+	var remark=$.trim($("#remark").val());
+	var sql= "SELECT DEAL_DATE,                                                              "+
 	"              CHANNEL_NAME,                                                           "+
 	"              CHANNEL_ID,                                                             "+
 	"              FD_CHNL_CODE,                                                           "+
@@ -148,7 +158,11 @@ function getDownSql(){//汇总导出
 	"              SUM(MOD_COMM) AS MOD_COMM,                                              "+
 	"              COMM_SUB                                                                "+
 	"         FROM PMRT.TAB_MRT_COMM_01_HH                                                 "+
-	"         WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID ='"+workNo+"'"+
-	"GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB";
+	"         WHERE INIT_ID ='"+workNo+"'";
+	if(remark!=""){
+		sql+=" AND REMARK LIKE '%"+remark+"%'";
+	}
+	sql+=" GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB";
+	return sql;
 }
 

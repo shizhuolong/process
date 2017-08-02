@@ -26,7 +26,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_fourSupported_edit.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/workflow/workorder/activityApproval/processEdit/js/import_fourSupported_edit.js?v=2"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -45,6 +45,10 @@
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
+									    <th style="width: 80px;">佣金科目：</th>
+										<td style="width: 80px;">
+											<input type="text" id="remark" name="remark"/>
+										</td>
 										<th style="width: 70px;">佣金总额：</th>
 										<td id="totalFee" style="color:red;width: 70px;">
 										
