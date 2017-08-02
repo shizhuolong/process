@@ -232,7 +232,7 @@ public class ImportBaseAction extends BaseAction {
 								repeatMsg+=","+l.get(i).get("ZD_IEMI");
 							}
 						}
-						err.add("终端串码为："+repeatMsg+"已存在于库中,请检查！");
+						err.add("终端串码为："+repeatMsg+"已存在于库中或正在审批中，请检查！");
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}
