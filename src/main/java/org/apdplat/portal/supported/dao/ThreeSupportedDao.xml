@@ -20,6 +20,9 @@
 		<if test="orgLevel == 2">
 			AND GROUP_ID_1 = #{code}
 		</if>
+		<if test="remark!=''">
+			AND REMARK LIKE CONCAT(CONCAT('%', #{remark}), '%')
+		</if> 
 		 GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB 
 	</select>
 	
@@ -34,6 +37,9 @@
 		<if test="orgLevel == 2">
 			AND GROUP_ID_1 = #{code}
 		</if>
+		<if test="remark!=''">
+			AND REMARK LIKE CONCAT(CONCAT('%', #{remark}), '%')
+		</if> 
 	</select>
 	
 	<select id="queryTotalFeeByInitId" parameterType="java.util.Map" resultType="double">
@@ -41,6 +47,9 @@
 			NVL(SUM(COMM),0) COMM
 			FROM PMRT.TAB_MRT_COMM_01_HH
 			WHERE INIT_ID=#{workNo}
+			<if test="remark!=''">
+			   AND REMARK LIKE CONCAT(CONCAT('%', #{remark}), '%')
+		    </if> 
 	</select>
 	
 	<select id="getDataListCount" parameterType="java.util.Map" resultType="int">
@@ -49,6 +58,9 @@
   		FROM PMRT.TAB_MRT_COMM_01_HH 
  		WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(sysdate,-1), 'yyyymm') AND INIT_ID IS NULL
  		AND GROUP_ID_1 = #{code} 
+ 		<if test="remark!=''">
+			AND REMARK LIKE CONCAT(CONCAT('%', #{remark}), '%')
+		</if> 
  		GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID
 	</select>
 	
@@ -70,6 +82,9 @@
               COMM_SUB
         FROM PMRT.TAB_MRT_COMM_01_HH
 	    WHERE INIT_ID = #{businessKey}
+	    <if test="remark!=''">
+			AND REMARK LIKE CONCAT(CONCAT('%', #{remark}), '%')
+		</if> 
 	    GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB
 	</select>
 	
