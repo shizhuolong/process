@@ -153,7 +153,7 @@ function search(pageNumber) {
 		}
 	}
 	if(hallName!=''){
-		sql+=" AND YYT_HQ_NAME LIKE '%"+hallName+"%'";
+		downSql+=" AND YYT_HQ_NAME LIKE '%"+hallName+"%'";
 	}
 	if(s_zd_iemi!=''){
 		downSql+=" AND ZD_IEMI LIKE '%"+s_zd_iemi+"%'";
