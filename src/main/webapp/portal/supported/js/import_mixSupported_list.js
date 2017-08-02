@@ -16,6 +16,7 @@ $(function(){
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -24,7 +25,8 @@ function search(pageNumber) {
 		url:$("#ctx").val()+"/mixSupported/mix-supported!list.action",
 		data:{
 		   "resultMap.page":pageNumber,
-           "resultMap.rows":pageSize
+           "resultMap.rows":pageSize,
+           "resultMap.remark":remark
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -63,13 +65,17 @@ function search(pageNumber) {
 }
 
 function initTotalFee(){
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		async:false,//true是异步，false是同步
 		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
 		url:$("#ctx").val()+"/mixSupported/mix-supported!queryTotalFee.action",
-	   	success:function(data){
+		data:{
+	         "resultMap.remark":remark
+		},
+		success:function(data){
 	   		$("#totalFee").text(data+"元");
 	    },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -100,7 +106,6 @@ function isNull(obj){
 
 //下一步审批人
 function findNextDealer(taskId,taskFlag) {
-	
 	var url = "";
 	if(taskFlag == '4') {	//查本部门领导
 		url = $("#ctx").val()+"/approver/approver-handler!DepartmentManager.action";
@@ -206,11 +211,15 @@ function downsDetail(){
 function getDetailSql(){
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
+	var remark=$.trim($("#remark").val());
 	var where="";
 	if(orgLevel==1){
 		
 	}else{
 		where+=" AND GROUP_ID_1='"+region+"'";
+	}
+	if(remark!=""){
+		where+=" AND REMARK LIKE '%"+remark+"%'";
 	}
 	
 	return "select billingcyclid,pay_chnl_id,pay_chnl_name,dev_chnl_code,dev_chnl_name,agentid,group_id_4_name,remark,subscription_id,svcnum,"
@@ -230,11 +239,15 @@ function downsAll(){
 function getDownSql(){//汇总导出
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
+	var remark=$.trim($("#remark").val());
 	var where="";
 	if(orgLevel==1){
 		
 	}else{
 		where+=" AND GROUP_ID_1='"+region+"'";
+	}
+	if(remark!=""){
+		where+=" AND REMARK LIKE '%"+remark+"%'";
 	}
 	return "SELECT BILLINGCYCLID,PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_CODE," +
 			"DEV_CHNL_NAME,REMARK,SUM(FEE) COMM"+

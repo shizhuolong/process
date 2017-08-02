@@ -15,6 +15,7 @@ $(function(){
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -23,7 +24,8 @@ function search(pageNumber) {
 		url:$("#ctx").val()+"/twoSupported/two-supported!list.action",
 		data:{
 		   "resultMap.page":pageNumber,
-           "resultMap.rows":pageSize
+           "resultMap.rows":pageSize,
+           "resultMap.remark":remark
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -62,13 +64,17 @@ function search(pageNumber) {
 }
 
 function initTotalFee(){
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		async:false,//true是异步，false是同步
 		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
 		url:$("#ctx").val()+"/twoSupported/two-supported!queryTotalFee.action",
-	   	success:function(data){
+		data:{
+	           "resultMap.remark":remark
+		}, 
+		success:function(data){
 	   		$("#totalFee").text(data+"元");
 	    },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -87,11 +93,15 @@ function downsDetail(){
 function getDetailSql(){
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
+	var remark=$.trim($("#remark").val());
 	var where="";
 	if(orgLevel==1){
 		
 	}else{
 		where+=" AND GROUP_ID_1='"+region+"'";
+	}
+	if(remark!=""){
+		where+=" AND REMARK1 LIKE '%"+remark+"%'";
 	}
 	return "SELECT BILLINGCYCLID,                           "+
 	"       PAY_CHNL_ID,                                    "+
@@ -128,19 +138,24 @@ function downsAll(){
 function getDownSql(){//汇总导出
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
+	var remark=$.trim($("#remark").val());
 	var where="";
 	if(orgLevel==1){
 		
 	}else{
 		where+=" AND GROUP_ID_1='"+region+"'";
 	}
+	if(remark!=""){
+		where+=" AND REMARK1 LIKE '%"+remark+"%'";
+	}
+	
 	return "SELECT BILLINGCYCLID,                                                     "+
 	"PAY_CHNL_ID,PAY_CHNL_NAME,DEV_CHNL_ID,                                           "+
 	"DEV_CHNL_NAME,REMARK1,SUM(FEE) COMM                                              "+
 	"FROM PMRT.TAB_MRT_COMM_2G_AUDIT                                                  "+
 	"WHERE BILLINGCYCLID=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID IS NULL"+
 	   where+
-	"GROUP BY PAY_CHNL_ID,BILLINGCYCLID,PAY_CHNL_NAME,DEV_CHNL_ID,DEV_CHNL_NAME,REMARK1";
+	" GROUP BY PAY_CHNL_ID,BILLINGCYCLID,PAY_CHNL_NAME,DEV_CHNL_ID,DEV_CHNL_NAME,REMARK1";
 }
 
 function initPagination(totalCount) {

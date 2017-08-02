@@ -16,6 +16,7 @@ $(function(){
 
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -24,7 +25,8 @@ function search(pageNumber) {
 		url:$("#ctx").val()+"/threeSupported/three-supported!list.action",
 		data:{
 		   "resultMap.page":pageNumber,
-           "resultMap.rows":pageSize
+           "resultMap.rows":pageSize,
+           "resultMap.remark":remark
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -62,13 +64,17 @@ function search(pageNumber) {
 }
 
 function initTotalFee(){
+	var remark=$.trim($("#remark").val());
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		async:false,//true是异步，false是同步
 		cache:false,//设置为 false 将不会从浏览器缓存中加载请求信息。
 		url:$("#ctx").val()+"/threeSupported/three-supported!queryTotalFee.action",
-	   	success:function(data){
+		data:{
+	           "resultMap.remark":remark
+		}, 
+		success:function(data){
 	   		$("#totalFee").text(data+"元");
 	    },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -209,11 +215,15 @@ function downsDetail(){
 function getDetailSql(){
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
+	var remark=$.trim($("#remark").val());
 	var where="";
 	if(orgLevel==1){
 		
 	}else{
 		where+=" AND T1.GROUP_ID_1='"+region+"'";
+	}
+	if(remark!=""){
+		where+=" AND T1.REMARK LIKE '%"+remark+"%'";
 	}
 	return "select nvl(t1.bak_1,t1.rule_name) rule_name,t2.rule_desc,t2.commitem,t2.comm,t2.subscription_id,t2.service_num,t2.active_date,                   "+
 	"t2.inactive_date,t2.join_date,t2.subs_status,t2.service_status,t2.region_id,t2.county_id,t2.office_id,t2.operation_id,t2.scheme_id,              "+
@@ -251,11 +261,15 @@ function downsAll(){
 function getDownSql(){//汇总导出
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
+	var remark=$.trim($("#remark").val());
 	var where="";
 	if(orgLevel==1){
 		
 	}else{
 		where+=" AND GROUP_ID_1='"+region+"'";
+	}
+	if(remark!=""){
+		where+=" AND REMARK LIKE '%"+remark+"%'";
 	}
 	return "SELECT DEAL_DATE,                                                              "+
 	"              CHANNEL_NAME,                                                           "+
@@ -268,5 +282,5 @@ function getDownSql(){//汇总导出
 	"         FROM PMRT.TAB_MRT_COMM_01_HH                                                 "+
 	"         WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID IS NULL"+
 	   where+
-	"GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB";
+	" GROUP BY DEAL_DATE,CHANNEL_NAME,CHANNEL_ID,FD_CHNL_CODE, NVL(BAK_1,RULE_NAME),COMM_SUB ORDER BY COMM_SUB";
 }
