@@ -1,8 +1,8 @@
 $(function(){
 	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_BJL_DEV_DAY"));
-	var title=[["组织架构","营业厅编码","经营模式","厅类型","冰激凌套餐发展量（户）","","","其中398元档","","其中198元档","","其中本地199元档","","其中本地99元档",""],
-	           ["","","","","日发展","本月累计","月环比","日发展","本月累计","日发展","本月累计","日发展","本月累计","日发展","本月累计"]];
-    var field=["HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","ALL_BJL_NUM","ALL_BJL_NUM1","HB_ALL","BJL_398_NUM","BJL_398_NUM1","BJL_198_NUM","BJL_198_NUM1","BJL_199_NUM","BJL_199_NUM1","BJL_99_NUM","BJL_99_NUM1"];
+	var title=[["组织架构","营业厅编码","经营模式","厅类型","冰激凌套餐发展量（含金惠）","","","其中398元档","","其中198元档","","其中本地199元档","","其中本地99元档","","其中金惠",""],
+	           ["","","","","日发展","本月累计","月环比","日发展","本月累计","日发展","本月累计","日发展","本月累计","日发展","本月累计","日发展","本月累计"]];
+    var field=["HQ_CHAN_CODE","OPERATE_TYPE","CHNL_TYPE","ALL_NUM","ALL_NUM1","HB_ALL","BJL_398_NUM","BJL_398_NUM1","BJL_198_NUM","BJL_198_NUM1","BJL_199_NUM","BJL_199_NUM1","BJL_99_NUM","BJL_99_NUM1","BJL_JH_NUM","BJL_JH_NUM1"];
     $("#searchBtn").click(function(){
 		report.showSubRow();
         ///////////////////////////////////////////
@@ -105,10 +105,10 @@ function getSumSql(preField,where,groupBy,level) {
 	}else{
 		preLevel+="SELECT T.GROUP_ID_1,T.GROUP_ID_1_NAME,T.HQ_CHAN_CODE,T.BUS_HALL_NAME,T.OPERATE_TYPE,T.CHNL_TYPE";
 	}
-	var sql= preField+"     T.ALL_BJL_NUM                                                                                              "+
-	"       ,T.ALL_BJL_NUM1                                                                                                            "+
-	"       ,PODS.GET_RADIX_POINT(CASE WHEN T1.ALL_BJL_NUM1<>0                                                                         "+
-	"                                  THEN T.ALL_BJL_NUM1/T1.ALL_BJL_NUM1*100-1                                                       "+
+	var sql= preField+"     T.ALL_NUM                                                                                              "+
+	"       ,T.ALL_NUM1                                                                                                            "+
+	"       ,PODS.GET_RADIX_POINT(CASE WHEN T1.ALL_NUM1<>0                                                                         "+
+	"                                  THEN T.ALL_NUM1/T1.ALL_NUM1*100-1                                                       "+
 	"                                  ELSE 0                                                                                          "+
 	"                                  END || '%' ,2)    HB_ALL                                                                        "+
 	"       ,T.BJL_398_NUM                                                                                                             "+
@@ -119,10 +119,12 @@ function getSumSql(preField,where,groupBy,level) {
 	"       ,T.BJL_199_NUM1                                                                                                            "+
 	"       ,T.BJL_99_NUM                                                                                                              "+
 	"       ,T.BJL_99_NUM1                                                                                                             "+
+	",T.BJL_JH_NUM"+
+    ",T.BJL_JH_NUM1 "+
 	"FROM (                                                                                                                            "+
 	        preLevel+
-	"            ,SUM(ALL_BJL_NUM)   ALL_BJL_NUM                                                                                       "+
-	"            ,SUM(ALL_BJL_NUM1)  ALL_BJL_NUM1                                                                                      "+
+	"            ,SUM(ALL_NUM)   ALL_NUM                                                                                       "+
+	"            ,SUM(ALL_NUM1)  ALL_NUM1                                                                                      "+
 	"            ,SUM(BJL_398_NUM)   BJL_398_NUM                                                                                       "+
 	"            ,SUM(BJL_398_NUM1)  BJL_398_NUM1                                                                                      "+
 	"            ,SUM(BJL_199_NUM)   BJL_199_NUM                                                                                       "+
@@ -131,6 +133,8 @@ function getSumSql(preField,where,groupBy,level) {
 	"            ,SUM(BJL_198_NUM1)  BJL_198_NUM1                                                                                      "+
 	"            ,SUM(BJL_99_NUM)    BJL_99_NUM                                                                                        "+
 	"            ,SUM(BJL_99_NUM1)   BJL_99_NUM1                                                                                       "+
+	",SUM(BJL_JH_NUM) BJL_JH_NUM"+
+	",SUM(BJL_JH_NUM1) BJL_JH_NUM1 "+
 	"      FROM PMRT.TB_MRT_BUS_BJL_DEV_DAY T                                                                                          "+
 	"      WHERE T.DEAL_DATE='"+dealDate+"'                                                                                            "+
 	             where+
@@ -138,8 +142,8 @@ function getSumSql(preField,where,groupBy,level) {
 	")T                                                                                                                                "+
 	"LEFT JOIN (                                                                                                                       "+
 	       preLevel+
-	"                  ,SUM(ALL_BJL_NUM)   ALL_BJL_NUM                                                                                 "+
-	"                  ,SUM(ALL_BJL_NUM1)  ALL_BJL_NUM1                                                                                "+
+	"                  ,SUM(ALL_NUM)   ALL_NUM                                                                                 "+
+	"                  ,SUM(ALL_NUM1)  ALL_NUM1                                                                                "+
 	"                  ,SUM(BJL_398_NUM)   BJL_398_NUM                                                                                 "+
 	"                  ,SUM(BJL_398_NUM1)  BJL_398_NUM1                                                                                "+
 	"                  ,SUM(BJL_199_NUM)   BJL_199_NUM                                                                                 "+
@@ -195,8 +199,8 @@ function downsAll() {
 	
 	var sql = getSumSql(preField,where,groupBy,3);
 	var showtext = '冰激凌套餐发展日通报-' + dealDate;
-	var title=[["地市","营业厅名称","营业厅编码","经营模式","厅类型","冰激凌套餐发展量（户）","","","其中398元档","","其中198元档","","其中本地199元档","","其中本地99元档",""],
-	           ["","","","","","日发展","本月累计","月环比","日发展","本月累计","日发展","本月累计","日发展","本月累计","日发展","本月累计"]];
+	var title=[["地市","营业厅名称","营业厅编码","经营模式","厅类型","冰激凌套餐发展量（含金惠）","","","其中398元档","","其中198元档","","其中本地199元档","","其中本地99元档","","其中含金惠",""],
+	           ["","","","","","日发展","本月累计","月环比","日发展","本月累计","日发展","本月累计","日发展","本月累计","日发展","本月累计","日发展","本月累计"]];
 	downloadExcel(sql,title,showtext);
 }
 
