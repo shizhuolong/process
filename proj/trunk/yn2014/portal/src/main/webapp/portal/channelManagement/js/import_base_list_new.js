@@ -104,9 +104,9 @@ function search(pageNumber) {
 	var business=$("#business").val();
 	var hallName=$("#hallName").val();
 	if(isShopper=="1"&&status=="2"&&is_back=="0"){//店长才有退库权限
-		sql="SELECT "+field1.join(",")+",T1.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM AGENTS.TAB_MRT_YYT_ZD_BASE T1 WHERE 1=1";
+		sql="SELECT "+field1.join(",")+",T1.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CREATE_TIME,'YYYYMMdd hh24:mi') CREATE_TIME,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME,SALE_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM AGENTS.TAB_MRT_YYT_ZD_BASE T1 WHERE 1=1";
 	}else{
-		sql="SELECT "+field1.join(",")+",T1.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM AGENTS.TAB_MRT_YYT_ZD_BASE T1 WHERE 1=1";
+		sql="SELECT "+field1.join(",")+",T1.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CREATE_TIME,'YYYYMMdd hh24:mi') CREATE_TIME,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME,SALE_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM AGENTS.TAB_MRT_YYT_ZD_BASE T1 WHERE 1=1";
 	}
 	
 	if(regionCode!=''){
