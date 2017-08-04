@@ -39,13 +39,9 @@ public class OptionsManagerAction extends BaseAction {
 		try {
 			resultMap.put("regionCode", org.getRegionCode());
 			resultMap.put("username", user.getUsername());
+			resultMap.put("realname", user.getRealName());
 			service.save(resultMap);
 			service.insert(resultMap);
-			if(resultMap.get("status").equals("3")){//不同意发送短信提醒
-				if(!resultMap.get("startPhone").equals("")){
-					sendSMSCode();
-				}
-			}
 			result.put("state","1");
 			result.put("msg", "审批成功！");
 		} catch (Exception e) {
@@ -54,20 +50,6 @@ public class OptionsManagerAction extends BaseAction {
 			result.put("msg", "审批失败！");
 		}
 		this.reponseJson(result);
-	}
-	
-	public String send(){
-		User user = UserHolder.getCurrentLoginUser();
-		Org org=user.getOrg();	
-		try {
-			resultMap.put("regionCode", org.getRegionCode());
-			resultMap.put("username", user.getUsername());
-			service.updateStatus(resultMap);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "success";
 	}
 	
 	public String backZd(){
@@ -82,17 +64,6 @@ public class OptionsManagerAction extends BaseAction {
 		return "success";
 	} 
 	
-	public void sendSMSCode() {
-		try{
-			User user = UserHolder.getCurrentLoginUser();
-			String username=user.getUsername();//审批人
-			String content="您在基层的工单由"+username+"审批未通过，请核查处理！";
-			HttpSendMessageUtil.sendMessage(resultMap.get("startPhone"), content);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-
 	public Map<String, String> getResultMap() {
 		return resultMap;
 	}

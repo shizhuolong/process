@@ -15,17 +15,14 @@ public class OptionsManagerService {
 	
 	@Transactional
 	public void insert(Map<String, String> params) {
-		dao.insert(params);
+		dao.insertToAgents(params);
 	}
-
+	
+	@Transactional
 	public void save(Map<String, String> resultMap) {
-		dao.save(resultMap);
+		dao.saveToAgents(resultMap);
 	}
-
-	public void updateStatus(Map<String, String> resultMap) {
-		dao.updateStatus(resultMap);
-	}
-
+	
 	public void backZd(Map<String, String> resultMap) {
 		dao.backZd(resultMap);
 	}
