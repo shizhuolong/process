@@ -64,14 +64,14 @@ public class ImportBaseAction extends BaseAction {
 		    if(businessKey==null||businessKey.equals("")){//未发送的工单重导
 		    	SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHssSSS");
 				businessKey = "YN-"+format.format(new Date()); //订单编号
-		    	delRepeatSql = "DELETE PMRT.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
+		    	delRepeatSql = "DELETE AGENTS.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
 		    }else{//退回来的工单重导，保留工单编号
-		    	delRepeatSql = "DELETE PMRT.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND WORK_FLOW_CODE='"+businessKey+"' AND STATUS IN('0','3')";
+		    	delRepeatSql = "DELETE AGENTS.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+ regionCode+"' AND WORK_FLOW_CODE='"+businessKey+"' AND STATUS IN('0','3')";
 		    }
-		    uSql="UPDATE PMRT.TAB_MRT_YYT_ZD_BASE_TEMP SET WORK_FLOW_CODE='"+businessKey+"' WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
+		    uSql="UPDATE AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP SET WORK_FLOW_CODE='"+businessKey+"' WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
 			SpringManager.getUpdateDao().update(uSql);
 			SpringManager.getUpdateDao().update(delRepeatSql);
-			String importToResult = "INSERT INTO PMRT.TAB_MRT_YYT_ZD_BASE SELECT * FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
+			String importToResult = "INSERT INTO AGENTS.TAB_MRT_YYT_ZD_BASE SELECT * FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+ regionCode+"' AND STATUS='0'";
 			SpringManager.getUpdateDao().update(importToResult);
 			/*Connection conn =null;
 			CallableStatement stmt=null;
@@ -95,9 +95,10 @@ public class ImportBaseAction extends BaseAction {
 		String regionCode=org.getRegionCode();
 		String regionName=org.getRegionName();
 		String username=user.getUsername();
+		String realname=user.getRealName();
 		List<String> err = new ArrayList<String>();
-		String resultTableName = "PMRT.TAB_MRT_YYT_ZD_BASE_TEMP";
-		String field="IS_BACK,STATUS,CREATE_TIME,GROUP_ID_1,GROUP_ID_1_NAME,USER_NAME,ZD_BRAND,ZD_TYPES,ZD_MEMORY,ZD_COLOR,ZD_IEMI,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,IN_PRICE,OUT_PRICE";
+		String resultTableName = "AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP";
+		String field="IS_BACK,STATUS,CREATE_TIME,GROUP_ID_1,GROUP_ID_1_NAME,USER_NAME,REALNAME,ZD_BRAND,ZD_TYPES,ZD_MEMORY,ZD_COLOR,ZD_IEMI,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,IN_PRICE,OUT_PRICE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 			Struts2Utils.getRequest().setAttribute("err", err);
@@ -126,7 +127,7 @@ public class ImportBaseAction extends BaseAction {
 					int start = sheet.getFirstRowNum() +1 ;// 去前1行标题
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('0','0',sysdate"+",'"+regionCode+"','"+regionName+"','"+username+"'";
+					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('0','0',sysdate"+",'"+regionCode+"','"+regionName+"','"+username+"','"+realname+"'";
 					for(int i=0;i<11;i++){
 						sql+=",?";
 					}
@@ -181,7 +182,7 @@ public class ImportBaseAction extends BaseAction {
 							"       SUP_HQ_CODE,                                                   "+
 							"       IN_PRICE,                                                      "+
 							"       OUT_PRICE                                                      "+
-							"  FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP                                  "+
+							"  FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP                                  "+
 							" WHERE GROUP_ID_1='"+regionCode+"' AND (ZD_BRAND IS NULL OR ZD_TYPES IS NULL OR ZD_COLOR IS NULL OR   "+
 							"       ZD_IEMI IS NULL OR YYT_HQ_NAME IS NULL OR YYT_CHAN_CODE IS NULL"+
 							"       OR SUP_HQ_NAME IS NULL OR SUP_HQ_CODE IS NULL                  "+
@@ -194,7 +195,7 @@ public class ImportBaseAction extends BaseAction {
 						return "error";
 					}
 					
-					String isRepeatTemp="SELECT ZD_IEMI FROM(SELECT ZD_IEMI,count(*) c FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' GROUP BY ZD_IEMI) WHERE c>1";
+					String isRepeatTemp="SELECT ZD_IEMI FROM(SELECT ZD_IEMI,count(*) c FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' GROUP BY ZD_IEMI) WHERE c>1";
 					l=SpringManager.getFindDao().find(isRepeatTemp);
 					if(l!=null&&l.size()>0){
 						err.add("终端串号："+l.get(0).get("ZD_IEMI")+"在模板中重复，请检查！");
@@ -202,10 +203,10 @@ public class ImportBaseAction extends BaseAction {
 						return "error";
 					}
 					String checkYytCode="SELECT YYT_CHAN_CODE                            "+
-							"    FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP                      "+
+							"    FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP                      "+
 							"   WHERE GROUP_ID_1 = '"+regionCode+"'                      "+
 							"     AND YYT_CHAN_CODE NOT IN (SELECT hq_chan_code          "+
-							"                             FROM PCDE.TB_CDE_OPERATE_TYPE T"+
+							"                             FROM AGENTS.TB_CDE_OPERATE_TYPE T"+
 							"                            WHERE T.DEAL_DATE = TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm')"+
 							"                            AND T.OPERATE_TYPE='自营')    ";
 					l=SpringManager.getFindDao().find(checkYytCode);
@@ -214,14 +215,14 @@ public class ImportBaseAction extends BaseAction {
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}
-					String checkSupCode="SELECT SUP_HQ_CODE FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1 = '"+regionCode+"' AND SUP_HQ_CODE NOT IN(select HQ_CHAN_CODE from PCDE.TAB_CDE_CHANL_HQ_CODE)";
+					String checkSupCode="SELECT SUP_HQ_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1 = '"+regionCode+"' AND SUP_HQ_CODE NOT IN(select HQ_CHAN_CODE FROM AGENTS.TAB_CDE_CHANL_HQ_CODE)";
 					l=SpringManager.getFindDao().find(checkSupCode);
 					if(l!=null&&l.size()>0){
      					err.add("供应商编码："+l.get(0).get("SUP_HQ_CODE")+"不存在于库中,请检查！");
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}
-					String isRepeatSql="SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' AND ZD_IEMI IN(SELECT ZD_IEMI FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE (STATUS = 2 OR STATUS=1) AND IS_BACK<>2)";
+					String isRepeatSql="SELECT ZD_IEMI FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' AND ZD_IEMI IN(SELECT ZD_IEMI FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE (STATUS = 2 OR STATUS=1) AND IS_BACK<>2)";
 					l=SpringManager.getFindDao().find(isRepeatSql);
 					String repeatMsg="";
 					if(l!=null&&l.size()>0){
