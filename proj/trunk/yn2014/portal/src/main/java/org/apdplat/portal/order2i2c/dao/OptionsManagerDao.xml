@@ -14,6 +14,10 @@
 	    WHERE GROUP_ID_1=#{regionCode} AND WORK_FLOW_CODE=#{workNo}
 	</update>
 
+    <update id="updateStatus" parameterType="java.util.Map">
+	   UPDATE AGENTS.TAB_MRT_YYT_ZD_BASE SET STATUS='1' WHERE WORK_FLOW_CODE=#{workNo} AND GROUP_ID_1=#{regionCode}
+	</update>
+	
 	<update id="backZd" parameterType="java.util.Map">
 	  UPDATE AGENTS.TAB_MRT_YYT_ZD_BASE SET IS_BACK='2' WHERE ZD_IEMI=#{zd_iemi} AND IS_BACK=0 AND STATUS='2'
 	</update>

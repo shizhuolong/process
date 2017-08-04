@@ -26,5 +26,9 @@ public class OptionsManagerService {
 	public void backZd(Map<String, String> resultMap) {
 		dao.backZd(resultMap);
 	}
+
+	public void updateStatus(Map<String, String> resultMap) {
+		dao.updateStatus(resultMap);
+	}
 	
 }

@@ -52,6 +52,20 @@ public class OptionsManagerAction extends BaseAction {
 		this.reponseJson(result);
 	}
 	
+	public String send(){
+		User user = UserHolder.getCurrentLoginUser();
+		Org org=user.getOrg();	
+		try {
+			resultMap.put("regionCode", org.getRegionCode());
+			resultMap.put("username", user.getUsername());
+			service.updateStatus(resultMap);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	}
+	
 	public String backZd(){
 		User user = UserHolder.getCurrentLoginUser();
 		Org org=user.getOrg();	
