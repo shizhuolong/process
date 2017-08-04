@@ -9,5 +9,7 @@ public interface OptionsManagerDao {
 	public void saveToAgents(Map<String, String> resultMap);
 
 	public void backZd(Map<String, String> resultMap);
+
+	public void updateStatus(Map<String, String> resultMap);
 	
 }
