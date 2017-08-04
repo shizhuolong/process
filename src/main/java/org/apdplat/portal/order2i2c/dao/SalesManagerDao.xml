@@ -19,7 +19,7 @@
 	</update>
 	
 	<update id="updateSalesStatus" parameterType="java.util.Map">
-	    UPDATE PMRT.TAB_MRT_YYT_ZD_BASE SET IS_BACK=#{is_back} WHERE ZD_IEMI=#{zd_iemi}
+	    UPDATE AGENTS.TAB_MRT_YYT_ZD_BASE SET IS_BACK=#{is_back},SALE_TIME=#{acc_time} WHERE ZD_IEMI=#{zd_iemi}
 	</update>
 	
 	<update id="updateBackBak" parameterType="java.util.Map">
