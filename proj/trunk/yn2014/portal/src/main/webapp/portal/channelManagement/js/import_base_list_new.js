@@ -5,7 +5,7 @@ var report = null;
 var downSql="";
 var startMan="";
 var workNo="";
-var role="ROLE_MANAGER_RESOURCEMANAGER_ZDZY_ZDXS_BASE_MANAGER_UPDATEPART";
+var role="ROLE_MANAGER_RESOURCEMANAGER_ZDZY_ZDXS_BASE_MANAGER1_UPDATEPART";
 $(function() {
 	var orgLevel=$("#orgLevel").val();
 	$("#status").change(function(){
