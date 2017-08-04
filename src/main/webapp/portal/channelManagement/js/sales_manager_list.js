@@ -262,7 +262,7 @@ function search(pageNumber) {
 		 alert("该终端串码已销售！");
 		 return;
 	 }
-	 var sql=" SELECT GROUP_ID_1,GROUP_ID_1_NAME,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,ZD_BRAND,ZD_TYPES,IN_PRICE,OUT_PRICE,SUP_HQ_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE ZD_IEMI='"+zd_iemi+"' AND STATUS=2 AND IS_BACK=0";//STATUS审核通过的，IS_BACK=1代表退货 0可销售、1已销售 2已退库
+	 var sql="SELECT GROUP_ID_1,GROUP_ID_1_NAME,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,ZD_BRAND,ZD_TYPES,IN_PRICE,OUT_PRICE,SUP_HQ_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE ZD_IEMI='"+zd_iemi+"' AND STATUS=2 AND IS_BACK=0";//STATUS审核通过的，IS_BACK=1代表退货 0可销售、1已销售 2已退库
      var r=query(sql);
      if(r!=null&&r.length>0){
     	 $("#group_id_1").val(isNull(r[0].GROUP_ID_1));

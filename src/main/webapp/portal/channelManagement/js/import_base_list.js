@@ -1,9 +1,8 @@
 var nowData = [];
-var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","操作时间","审批意见"]];
-var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","CHECK_TIME","OPTIONS"];
+var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","导入时间","审批时间","销售时间","审批意见"]];
+var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","CREATE_TIME","CHECK_TIME","SALE_TIME","OPTIONS"];
 var report = null;
 var downSql="";
-var startMan="";
 var workNo="";
 var role="ROLE_MANAGER_RESOURCEMANAGER_ZDZY_ZDXS_BASE_MANAGER_UPDATEPART";
 $(function() {
@@ -124,9 +123,9 @@ function search(pageNumber) {
 	var business=$("#business").val();
 	var hallName=$("#hallName").val();
 	if(isShopper=="1"&&status=="2"&&is_back=="0"){//店长才有退库权限
-		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
+		sql="SELECT "+field1.join(",")+",T1.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CREATE_TIME,'YYYYMMdd hh24:mi') CREATE_TIME,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME,SALE_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>&nbsp;&nbsp;<a style=\"color:blue;cursor:hand;\" onclick=\"backZd($(this));\" zd_iemi='||ZD_IEMI||'>退库<a/>' OPTIONS FROM AGENTS.TAB_MRT_YYT_ZD_BASE T1 WHERE 1=1";
 	}else{
-		sql="SELECT "+field1.join(",")+",T2.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM PMRT.TAB_MRT_YYT_ZD_BASE T1,PORTAL.APDP_USER T2 WHERE T1.USER_NAME=T2.USERNAME";
+		sql="SELECT "+field1.join(",")+",T1.REALNAME,CASE WHEN T1.IS_BACK='0' THEN '未销售' WHEN T1.IS_BACK='1' THEN '已销售' ELSE '已退库' END IS_BACK,TO_CHAR(CREATE_TIME,'YYYYMMdd hh24:mi') CREATE_TIME,TO_CHAR(CHECK_TIME,'YYYYMMdd hh24:mi') CHECK_TIME,SALE_TIME"+",'<a style=\"color:blue;cursor:hand;\" onclick=\"buinessDetail($(this));\" workNo='||WORK_FLOW_CODE||'>查看意见<a/>' OPTIONS FROM AGENTS.TAB_MRT_YYT_ZD_BASE T1 WHERE 1=1";
 	}
 	
 	if(regionCode!=''){
@@ -157,9 +156,6 @@ function search(pageNumber) {
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
 			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
 	nowData = query(sql);
-	if(nowData!=null&&nowData.length>1){
-		startMan=nowData[0].REALNAME;
-	}
 	if (pageNumber == 1) {
 		initPagination(total);
 	}
@@ -178,7 +174,7 @@ function search(pageNumber) {
 
 function initBusiness(status){
 	var regionCode=$("#regionCode").val();
-	var s="SELECT DISTINCT WORK_FLOW_CODE FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE STATUS='"+status+"' AND GROUP_ID_1='"+regionCode+"'";
+	var s="SELECT DISTINCT WORK_FLOW_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE STATUS='"+status+"' AND GROUP_ID_1='"+regionCode+"'";
     var r=query(s);
     var h="";
     if(r!=null&&r.length>0){
@@ -193,7 +189,7 @@ function initBusiness(status){
 
  function getWorkNo(){
 		var regionCode=$("#regionCode").val();
-	    var sql="SELECT WORK_FLOW_CODE FROM PMRT.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+regionCode+"' AND STATUS='1'";
+	    var sql="SELECT WORK_FLOW_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+regionCode+"' AND STATUS='1'";
 	    var d=query(sql);
 	    if(d!=null&&d.length>0){
 	    	return d[0].WORK_FLOW_CODE
@@ -203,7 +199,7 @@ function initBusiness(status){
  
  function buinessDetail(obj){//查看审批意见
 	workNo=obj.attr("workNo");
-	var sql=" SELECT CHECK_MAN,CHECK_IDEA,T2.REALNAME FROM PMRT.TAB_MRT_YYT_ZD_CHECK T1,PORTAL.APDP_USER T2 WHERE T1.CHECK_MAN = T2.USERNAME AND WORK_FLOW_CODE='"+workNo+"' ORDER BY CHECK_TIME DESC";
+	var sql=" SELECT CHECK_MAN,CHECK_IDEA,REALNAME FROM AGENTS.TAB_MRT_YYT_ZD_CHECK WHERE WORK_FLOW_CODE='"+workNo+"' ORDER BY CHECK_TIME DESC";
 	var r=query(sql);
 	var content="";
 	var check_man="";
@@ -248,7 +244,7 @@ function initBusiness(status){
  }
  
  function exportData(){
-	 var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","操作时间"]];
+	var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","导入时间","审批时间","销售时间"]];
 	var showtext = '终端导出';
 	downloadExcel(downSql,title,showtext);
  }
@@ -291,7 +287,6 @@ function initBusiness(status){
 			async: false,
 			type: "POST", 
 			onSubmit:function(){
-				$("#startPhone").val(getStartPhone());
 				$("#workNo").val($("#business").val());
 			},
 			success:function(data){
@@ -307,21 +302,6 @@ function initBusiness(status){
 			}
 		});
 	}
- 
- function getStartPhone(){
-	 var sql="SELECT PHONE FROM PORTAL.APDP_USER WHERE REALNAME='"+startMan+"' AND ENABLED=1";
-	 var r=query(sql);
-	 if(r!=null&&r.length>0){
-		 var d=r[0];
-		 if(d){
-			 var phone=isNull(r[0].PHONE);
-			 if(phone!=""){
-				 return phone;
-			 }
-		 }
-	 }
-	 return "";
- }
  
  function isNull(obj){
 		if(obj == undefined || obj == null || obj == '') {
