@@ -42,7 +42,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base_list.js?v=51"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base_list.js?v=53"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	var isShopper=<%=isShopper%>; 
@@ -135,7 +135,6 @@
 	<div style="display:none;" id="optionsDiv">
 	   <table class="default-table sticky-enabled" style="width:100%;border-collapse:separate; border-spacing:0px 20px;">
 	       <form id="optionsForm" method="post">
-	         <input type="hidden" id="startPhone" name="resultMap.startPhone"/>
 	         <input type="hidden" id="workNo" name="resultMap.workNo"/>
 		       <tr>
 		          <td clospan="2">
