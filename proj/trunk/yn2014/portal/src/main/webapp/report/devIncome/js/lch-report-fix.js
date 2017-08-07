@@ -1123,5 +1123,8 @@ if(!Array.indexOf)
 function getMaxDate(tableName){
 	var sql="SELECT MAX(DEAL_DATE) DEAL_DATE FROM "+tableName;
 	var r=query(sql);
-	return r[0]["DEAL_DATE"];
+	if(r!=null&&r[0]!=null&&r.length>0){
+		return r[0]["DEAL_DATE"];
+	}
+	return "";
 }
