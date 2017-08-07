@@ -1,10 +1,10 @@
 $(function(){
-	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR");
-	if(maxDate!=null){
+	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_ACCT");
+	if(maxDate!=""){
 		$("#dealDate").val(maxDate);
 	}
-	var title=[["组织架构","出账收入","实收ARPU"]]; 
-	var field=["ROW_NAME","SR_NUM","ARPU"];
+	var title=[["组织架构","出账用户数","三无极低"]];
+	var field=["ROW_NAME","DEV_NUM","SWJD_NUM"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -28,7 +28,7 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			var dealDate=$("#dealDate").val();
-			var where=" WHERE DEAL_DATE='"+dealDate+"'";
+			var where="WHERE DEAL_DATE='"+dealDate+"'";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
@@ -114,10 +114,10 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","SR_NUM","ARPU"];
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
-	var showtext = '用户出账收入月汇总-' + dealDate;
-	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","出账收入","实收ARPU"]];
+	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","DEV_NUM","SWJD_NUM"];
+	var sql = "SELECT "+field.join(",")+" FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON_ACCT"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
+	var showtext = '出账用户月汇总-' + dealDate;
+	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","出账用户数","三无极低"]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -177,8 +177,7 @@ function getSql(orgLevel,where){
   }
 
 function getSumSql(){
-	return ",NVL(SUM(SR_NUM),0) SR_NUM         "+
-	",CASE WHEN NVL(SUM(ACCT_NUM), 0)<>0 THEN " +
-	"ROUND(NVL(SUM(SR_NUM), 0) / NVL(SUM(ACCT_NUM), 0), 3) ELSE 0 END ARPU"+
-	" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR";
+	return ",NVL(SUM(ACCT_NUM), 0) ACCT_NUM, "+
+	"       , NVL(SUM(LOSE_NUM), 0) LOSE_NUM "+
+	" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_ACCT";
 }
