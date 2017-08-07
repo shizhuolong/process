@@ -206,7 +206,7 @@ public class ImportBaseAction extends BaseAction {
 							"    FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP                      "+
 							"   WHERE GROUP_ID_1 = '"+regionCode+"'                      "+
 							"     AND YYT_CHAN_CODE NOT IN (SELECT hq_chan_code          "+
-							"                             FROM AGENTS.TB_CDE_OPERATE_TYPE T"+
+							"                             FROM AGENTS.TB_CDE_OPERATE_TYPE_VIEW T"+
 							"                            WHERE T.DEAL_DATE = TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm')"+
 							"                            AND T.OPERATE_TYPE='自营')    ";
 					l=SpringManager.getFindDao().find(checkYytCode);
@@ -215,7 +215,7 @@ public class ImportBaseAction extends BaseAction {
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}
-					String checkSupCode="SELECT SUP_HQ_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1 = '"+regionCode+"' AND SUP_HQ_CODE NOT IN(select HQ_CHAN_CODE FROM AGENTS.TAB_CDE_CHANL_HQ_CODE)";
+					String checkSupCode="SELECT SUP_HQ_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1 = '"+regionCode+"' AND SUP_HQ_CODE NOT IN(select HQ_CHAN_CODE FROM AGENTS.TAB_CDE_CHANL_HQ_CODE_VIEW)";
 					l=SpringManager.getFindDao().find(checkSupCode);
 					if(l!=null&&l.size()>0){
      					err.add("供应商编码："+l.get(0).get("SUP_HQ_CODE")+"不存在于库中,请检查！");
