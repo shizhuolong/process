@@ -1,10 +1,10 @@
 $(function(){
-	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR");
-	if(maxDate!=null){
+	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_LOSE ");
+	if(maxDate!=""){
 		$("#dealDate").val(maxDate);
 	}
-	var title=[["组织架构","出账收入","实收ARPU"]]; 
-	var field=["ROW_NAME","SR_NUM","ARPU"];
+	var title=[["组织架构","套餐名称","入网时间","网龄","流失用户数","当月收入","三个月的收入"]];
+	var field=["ROW_NAME","PRODUCT_NAME","INNET_DATE","WL","LOST_NUMBER","SR","SR3"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -114,10 +114,10 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","SR_NUM","ARPU"];
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
-	var showtext = '用户出账收入月汇总-' + dealDate;
-	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","出账收入","实收ARPU"]];
+	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","INNET_DATE","WL","SUBSCRIPTION_ID","SR","SR3"];
+	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_LOSE "+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
+	var showtext = '流失用户月汇总-' + dealDate;
+	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","入网时间","网龄","流失用户数","当月收入","三个月的收入"]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -150,35 +150,42 @@ function getSql(orgLevel,where){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
 	if(orgLevel==1){
-		preSql="SELECT GROUP_ID_0 ROW_ID,'云南省' ROW_NAME";
+		preSql="SELECT GROUP_ID_0 ROW_ID,'云南省' ROW_NAME,'--' PRODUCT_NAME,'--' INNET_DATE,'--' WL";
 		groupBy=" GROUP BY GROUP_ID_0";
 	}else if(orgLevel==2){
-		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME";
+		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,'--' PRODUCT_NAME,'--' INNET_DATE,'--' WL";
 		groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
 		orderBy=" ORDER BY GROUP_ID_1";
 	}else if(orgLevel==3){
-		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME";
+		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,'--' PRODUCT_NAME,'--' INNET_DATE,'--' WL";
 		groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
 		orderBy=" ORDER BY UNIT_ID";
 	}else if(orgLevel==4){
-		preSql="SELECT HQ_HR_ID ROW_ID,HQ_NAME ROW_NAME";
+		preSql="SELECT HQ_HR_ID ROW_ID,HQ_NAME ROW_NAME,'--' PRODUCT_NAME,'--' INNET_DATE,'--' WL";
 		groupBy=" GROUP BY HQ_HR_ID,HQ_NAME";
 		orderBy=" ORDER BY HQ_HR_ID";
 	}else if(orgLevel==5){
-		preSql="SELECT HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME";
+		preSql="SELECT HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME,'--' PRODUCT_NAME,'--' INNET_DATE,'--' WL";
 		groupBy=" GROUP BY HQ_CHAN_CODE,HQ_CHAN_NAME";
 		orderBy=" ORDER BY HQ_CHAN_CODE";
 	}else{
-		preSql="SELECT PRODUCT_ID ROW_ID,PRODUCT_NAME ROW_NAME";
-		groupBy=" GROUP BY PRODUCT_ID,PRODUCT_NAME";
-		orderBy=" ORDER BY PRODUCT_ID";
+		preSql="SELECT SUBSCRIPTION_ID ROW_ID,DEVICE_NUMBER ROW_NAME,PRODUCT_NAME,INNET_DATE,TO_DATE(INACTIVE_DATE,'YYYYMM')-TO_DATE(INNET_DATE,'YYYYMM') WL";
+		groupBy=" GROUP BY SUBSCRIPTION_ID,DEVICE_NUMBER";
+		orderBy=" ORDER BY SUBSCRIPTION_ID";
 	}
-	return preSql+getSumSql()+where+groupBy+orderBy;
+	return preSql+getSumSql(orgLevel)+where+groupBy+orderBy;
   }
 
-function getSumSql(){
-	return ",NVL(SUM(SR_NUM),0) SR_NUM         "+
-	",CASE WHEN NVL(SUM(ACCT_NUM), 0)<>0 THEN " +
-	"ROUND(NVL(SUM(SR_NUM), 0) / NVL(SUM(ACCT_NUM), 0), 3) ELSE 0 END ARPU"+
-	" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR";
+function getSumSql(orgLevel){
+	if(orgLevel<=5){
+		return ",NVL(COUNT(SUBSCRIPTION_ID),0) LOST_NUMBER    "+
+		"      ,NVL(SUM(SR),0) SR                             "+
+		"      ,NVL(SUM(SR3),0) SR3                           "+
+		" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_LOSE";
+	}else{
+		return ",'--' LOST_NUMBER                             "+
+		"      ,SR                                            "+
+		"      ,SR3                                           "+
+		" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_LOSE";
+	}
 }

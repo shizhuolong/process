@@ -1,10 +1,10 @@
 $(function(){
-	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR");
+	var maxDate=getMaxDate("PMRT.TB_MRT_HQ_ACCT_USER_ZL_MON");
 	if(maxDate!=null){
 		$("#dealDate").val(maxDate);
 	}
-	var title=[["组织架构","出账收入","实收ARPU"]]; 
-	var field=["ROW_NAME","SR_NUM","ARPU"];
+	var title=[["组织架构","移动网实收ARPU","其中2I2C实收ARPU","宽带实收ARPU","固话实收ARPU","本月三无极低用户数","近三个月三无极低用户数"]];
+	var field=["ROW_NAME","ARPU_YW","ARPU_2I2C","ARPU_KD","ARPU_GH","SWJD_NUM","SWJD_NUML"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -40,8 +40,6 @@ $(function(){
 					where+=" AND UNIT_ID='"+code+"'";
 				}else if(orgLevel==5){//点击渠道经理，展示渠道
 					where+=" AND HQ_HR_ID='"+code+"'";
-				}else if(orgLevel==6){//点击渠道，展示套餐
-					where+=" AND HQ_CHAN_CODE='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -81,10 +79,10 @@ function downsAll() {
 	var code=$("code").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode = $("#unitCode").val();
-	var product_name=$("#product_name").val();
+	var status=$("#status").val();
 	var hq_chan_code=$("#hq_chan_code").val();
-	var product_type=$("#product_type").val();
 	var hq_hr_id=$("#hq_hr_id").val();
+	var unit_type=$("#unit_type").val();
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
 	if (orgLevel == 1) {//省
 		
@@ -102,11 +100,8 @@ function downsAll() {
 	if(unitCode!=""){
 		where+=" AND UNIT_ID='"+unitCode+"'";
 	}
-	if(product_type!=""){
-		where+=" AND PRODUCT_TYPE LIKE '%"+product_type+"%'";
-	}
-	if(product_name!=""){
-		where+=" AND PRODUCT_NAME LIKE '%"+product_name+"%'";
+	if(status!=""){
+		where+=" AND STATUS ='"+status+"'";
 	}
 	if(hq_chan_code!=""){
 		where+=" AND HQ_CHAN_CODE LIKE '%"+hq_chan_code+"%'";
@@ -114,20 +109,26 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","SR_NUM","ARPU"];
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
-	var showtext = '用户出账收入月汇总-' + dealDate;
-	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","出账收入","实收ARPU"]];
+	if(unit_type!=""){
+		where+=" AND UNIT_TYPE = '"+unit_type+"'";
+	}
+	var field=["GROUP_ID_1_NAME","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","STATUS","ARPU_YW","ARPU_2I2C","ARPU_KD","ARPU_GH","SWJD_NUM","SWJD_NUML"];
+	var preSql="SELECT GROUP_ID_1_NAME,UNIT_NAME,HQ_HR_ID,HQ_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME,STATUS";
+	var groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,HQ_HR_ID,HQ_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME,STATUS";
+	var orderBy=" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE";
+	var sql = preSql+getSumSql()+where+groupBy+orderBy;
+	var showtext = '出账用户质量月报-' + dealDate;
+	var title=[["地市","营服","渠道经理HR","渠道经理","渠道编码","渠道名称","渠道状态","移动网实收ARPU","其中2I2C实收ARPU","宽带实收ARPU","固话实收ARPU","本月三无极低用户数","近三个月三无极低用户数"]];
 	downloadExcel(sql,title,showtext);
 }
 
 function getSql(orgLevel,where){
 	var regionCode=$("#regionCode").val();
 	var unitCode = $("#unitCode").val();
-	var product_name=$("#product_name").val();
+	var status=$("#status").val();
 	var hq_chan_code=$("#hq_chan_code").val();
-	var product_type=$("#product_type").val();
 	var hq_hr_id=$("#hq_hr_id").val();
+	var unit_type=$("#unit_type").val();
 	var preSql="";
 	var groupBy="";
 	var orderBy="";
@@ -137,17 +138,17 @@ function getSql(orgLevel,where){
 	if(unitCode!=""){
 		where+=" AND UNIT_ID='"+unitCode+"'";
 	}
-	if(product_type!=""){
-		where+=" AND PRODUCT_TYPE LIKE '%"+product_type+"%'";
-	}
-	if(product_name!=""){
-		where+=" AND PRODUCT_NAME LIKE '%"+product_name+"%'";
+	if(status!=""){
+		where+=" AND STATUS LIKE '%"+status+"%'";
 	}
 	if(hq_chan_code!=""){
 		where+=" AND HQ_CHAN_CODE LIKE '%"+hq_chan_code+"%'";
 	}
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
+	}
+	if(unit_type!=""){
+		where+=" AND UNIT_TYPE = '"+unit_type+"'";
 	}
 	if(orgLevel==1){
 		preSql="SELECT GROUP_ID_0 ROW_ID,'云南省' ROW_NAME";
@@ -164,21 +165,20 @@ function getSql(orgLevel,where){
 		preSql="SELECT HQ_HR_ID ROW_ID,HQ_NAME ROW_NAME";
 		groupBy=" GROUP BY HQ_HR_ID,HQ_NAME";
 		orderBy=" ORDER BY HQ_HR_ID";
-	}else if(orgLevel==5){
+	}else{
 		preSql="SELECT HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME";
 		groupBy=" GROUP BY HQ_CHAN_CODE,HQ_CHAN_NAME";
 		orderBy=" ORDER BY HQ_CHAN_CODE";
-	}else{
-		preSql="SELECT PRODUCT_ID ROW_ID,PRODUCT_NAME ROW_NAME";
-		groupBy=" GROUP BY PRODUCT_ID,PRODUCT_NAME";
-		orderBy=" ORDER BY PRODUCT_ID";
 	}
 	return preSql+getSumSql()+where+groupBy+orderBy;
   }
 
 function getSumSql(){
-	return ",NVL(SUM(SR_NUM),0) SR_NUM         "+
-	",CASE WHEN NVL(SUM(ACCT_NUM), 0)<>0 THEN " +
-	"ROUND(NVL(SUM(SR_NUM), 0) / NVL(SUM(ACCT_NUM), 0), 3) ELSE 0 END ARPU"+
-	" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR";
+	return ",PMRT.LINK_RATIO_RATE(NVL(SUM(YW_SR_NUM),0),NVL(SUM(YW_ACCT_NUM),0),2) ARPU_YW     "+
+	"      ,PMRT.LINK_RATIO_RATE(NVL(SUM(SR_2I2C_NUM),0),NVL(SUM(ACCT_2I2C_NUM),0),2) ARPU_2I2C"+
+	"      ,PMRT.LINK_RATIO_RATE(NVL(SUM(KD_SR_NUM),0),NVL(SUM(KD_ACCT_NUM),0),2) ARPU_KD      "+
+	"      ,PMRT.LINK_RATIO_RATE(NVL(SUM(GH_SR_NUM),0),NVL(SUM(GH_ACCT_NUM),0),2) ARPU_GH      "+
+	"      ,NVL(SUM(SWJD_NUM),0) SWJD_NUM                                                      "+
+	"      ,NVL(SUM(SWJD_NUM)+SUM(SWJD_NUML1)+SUM(SWJD_NUML2),0)  SWJD_NUML                    "+
+	"FROM PMRT.TB_MRT_HQ_ACCT_USER_ZL_MON                                                      ";    
 }
