@@ -144,7 +144,7 @@ function getSumSql(){
 	"      ,SUM(NVL(T.THIS_YEAR_YSB,0))THIS_YEAR_YSB                                            "+
 	"      ,SUM(NVL(T.THIS_YEAR_WYX,0))THIS_YEAR_WYX                                            "+
 	"      ,ROUND(CASE WHEN SUM(NVL(T.THIS_YEAR_CHNL,0))=0 THEN 0                                 "+
-	"            ELSE COUNT(CASE WHEN NVL(T.THIS_DEV_NUM,0)<>0 THEN T.HQ_CHAN_CODE END)           "+
+	"            ELSE COUNT(CASE WHEN NVL(T.THIS_DEV_NUM1,0)<>0 THEN T.HQ_CHAN_CODE END)           "+
 	"              /SUM(NVL(T.THIS_YEAR_CHNL,0)) END ,2)DEV_NUM_ZB                                "+
 	"      ,SUM(NVL(T.THIS_DEV_NUM,0))THIS_DEV_NUM                                                "+
 	"      ,SUM(NVL(T.THIS_DEV_NUM1,0))THIS_DEV_NUM1                                              "+
@@ -160,7 +160,7 @@ function getDownSql(){
 	"      ,SUM(NVL(T.THIS_YEAR_YSB,0))THIS_YEAR_YSB                                            "+
 	"      ,SUM(NVL(T.THIS_YEAR_WYX,0))THIS_YEAR_WYX                                            "+
 	"      ,ROUND(CASE WHEN SUM(NVL(T.THIS_YEAR_CHNL,0))=0 THEN 0                                 "+
-	"            ELSE COUNT(CASE WHEN NVL(T.THIS_DEV_NUM,0)<>0 THEN T.HQ_CHAN_CODE END)           "+
+	"            ELSE COUNT(CASE WHEN NVL(T.THIS_DEV_NUM1,0)<>0 THEN T.HQ_CHAN_CODE END)           "+
 	"              /SUM(NVL(T.THIS_YEAR_CHNL,0)) END ,2)DEV_NUM_ZB                                "+
 	"      ,SUM(NVL(T.THIS_DEV_NUM,0))THIS_DEV_NUM                                                "+
 	"      ,SUM(NVL(T.THIS_DEV_NUM1,0))THIS_DEV_NUM1                                              "+
