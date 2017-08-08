@@ -28,7 +28,7 @@ $(function(){
 			var code='';
 			var orgLevel='';
 			var dealDate=$("#dealDate").val();
-			var where="WHERE DEAL_DATE='"+dealDate+"'";
+			var where=" WHERE DEAL_DATE='"+dealDate+"'";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));

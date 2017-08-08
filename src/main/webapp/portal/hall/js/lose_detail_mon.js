@@ -114,10 +114,10 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","INNET_DATE","WL","SUBSCRIPTION_ID","SR","SR3"];
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_LOSE "+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
+	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","SUBSCRIPTION_ID","SR","SR3"];
+	var sql = "SELECT "+field.join(",")+",TO_DATE(INACTIVE_DATE,'YYYYMM')-TO_DATE(SUBSTR(INNET_DATE,1,6),'YYYYMM') WL FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_LOSE "+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
 	var showtext = '流失用户月汇总-' + dealDate;
-	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","入网时间","网龄","流失用户数","当月收入","三个月的收入"]];
+	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","入网时间","当月收入","三个月的收入","网龄"]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -169,9 +169,7 @@ function getSql(orgLevel,where){
 		groupBy=" GROUP BY HQ_CHAN_CODE,HQ_CHAN_NAME";
 		orderBy=" ORDER BY HQ_CHAN_CODE";
 	}else{
-		preSql="SELECT SUBSCRIPTION_ID ROW_ID,DEVICE_NUMBER ROW_NAME,PRODUCT_NAME,INNET_DATE,TO_DATE(INACTIVE_DATE,'YYYYMM')-TO_DATE(INNET_DATE,'YYYYMM') WL";
-		groupBy=" GROUP BY SUBSCRIPTION_ID,DEVICE_NUMBER";
-		orderBy=" ORDER BY SUBSCRIPTION_ID";
+		preSql="SELECT SUBSCRIPTION_ID ROW_ID,DEVICE_NUMBER ROW_NAME,PRODUCT_NAME,INNET_DATE,TO_DATE(INACTIVE_DATE,'YYYYMM')-TO_DATE(SUBSTR(INNET_DATE,1,6),'YYYYMM') WL";
 	}
 	return preSql+getSumSql(orgLevel)+where+groupBy+orderBy;
   }
