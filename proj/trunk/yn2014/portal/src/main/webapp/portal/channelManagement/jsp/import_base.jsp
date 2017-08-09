@@ -28,7 +28,7 @@
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 	<script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
-	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base.js?v=3"></script>
+	<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/import_base.js?v=4"></script>
 	
 	<style>
 		th {
@@ -86,6 +86,10 @@
 								<th  width="100px">第二步</th>
 								<td colspan='2'>点击<b>浏览</b>,选择编辑好的EXCEL数据文件，提交即可。
 								</td>
+							</tr> 
+							<tr>
+								<th  width="100px">问题解决</th>
+								<td colspan='2'><a style="display:inline-block;" class="default-btn"  style="cursor: pointer" onclick="answer();">问题解答</a><span style="display:inline-block;"></td>
 							</tr> 
 							<tr>
 								<th  width="100px">上传文件</th>
