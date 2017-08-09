@@ -6,6 +6,10 @@ function downloadFile() {
 	window.location.href=$("#ctx").val()+"/base/import-base!downfile.action";
 }
 
+function answer(){
+	window.location.href=$("#ctx").val()+"/portal/channelManagement/down/answer.doc";
+}
+
 //完成
 function complete(){
 	$("#upload").hide();
