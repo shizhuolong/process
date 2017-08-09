@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","渠道编码","渠道名称","工号","操作人姓名","受理时间","串号","终端品牌名称","终端型号编码","终端型号名称","终端机型编码","-终端机型","实收金额","成本价","终端毛利"]];
-var field=["DEAL_DATE","AREA","CHANNEL_ID","CHANNEL_NAME","TRADE_STAFF_ID","TRADE_STAFF_NAME","ACCEPT_DATE","IMEI","TERMINAL_BRAND_DESC","TERMINAL_MODEL_CODE","TERMINAL_MODEL_DESC","MACHINE_TYPE_CODE","MACHINE_TYPE_NAME","FEE","DEVICE_PRICE","ZDML"];
+var title=[["账期","地市","渠道编码","渠道名称","工号","操作人姓名","受理时间","串号","终端品牌名称","终端型号编码","终端型号名称","终端机型编码","终端机型","来源","实收金额","成本价","终端毛利"]];
+var field=["DEAL_DATE","AREA","CHANNEL_ID","CHANNEL_NAME","TRADE_STAFF_ID","TRADE_STAFF_NAME","ACCEPT_DATE","IMEI","TERMINAL_BRAND_DESC","TERMINAL_MODEL_CODE","TERMINAL_MODEL_DESC","MACHINE_TYPE_CODE","MACHINE_TYPE_NAME","SOURCE","FEE","DEVICE_PRICE","ZDML"];
 var report = null;
 var downSql="";
 var dealDate="";
@@ -49,6 +49,7 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	dealDate=$("#dealDate").val();
 	var hqChanCode=$("#hqChanCode").val();
+	var source=$("#source").val();
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
 	var sql="SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_TS_R_CBSS_TMP WHERE DEAL_DATE='"+dealDate+"'";
@@ -57,11 +58,14 @@ function search(pageNumber) {
 	}else if(orgLevel==2||orgLevel==3){
 		sql+=" AND GROUP_ID_1='"+region+"'";
 	}else{
-		sql+=" AND 1=2";
+		sql+=" AND 1=2";  
 	}
-	
+	 
 	if(hqChanCode!=""){
 		sql+=" AND CHANNEL_ID LIKE '%"+hqChanCode+"%'";
+	}
+	if(source!=""){
+		sql+=" AND SOURCE LIKE '%"+source+"%'";
 	}
 	
 	sql+= " ORDER BY GROUP_ID_1,CHANNEL_ID";
