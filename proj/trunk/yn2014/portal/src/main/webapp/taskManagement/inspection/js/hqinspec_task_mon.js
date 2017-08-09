@@ -17,22 +17,30 @@ var report=new LchReport({
 			report.showSubRow();
 		},
 		getSubRowsCallBack:function($tr){
-			var where='';
 			var code='';
 			var orgLevel='';
 			var dealDate = $("#dealDate").val();
 			var regionCode=$("#regionCode").val();
 			var unitCode=$("#unitCode").val();
+			var name=$.trim($("#name").val());
+			var groupBy="";
+			var where=" WHERE DEAL_DATE = '"+dealDate+"'";
 			var sql="";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				
 				if(orgLevel==2){//点击省
-					sql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=2";
+					sql="SELECT REGION_CODE ROW_ID,REGION_NAME ROW_NAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
+					groupBy=" GROUP BY REGION_CODE,REGION_NAME";
 				}else if(orgLevel==3){//点击市
-					sql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=3";
-					where+=" AND GROUP_ID_1='"+code+"' ";
+					sql="SELECT CODE ROW_ID,ORGNAME ROW_NAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
+					where+=" AND REGION_CODE='"+code+"' ";
+					groupBy=" GROUP BY CODE,ORGNAME";
+				}else if(orgLevel==4){//点击营服
+					sql="SELECT REALNAME ROW_NAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
+					where+=" AND CODE='"+code+"' ";
+					groupBy=" GROUP BY REALNAME";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -42,34 +50,31 @@ var report=new LchReport({
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					sql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=1";
+					sql="SELECT '86000' ROW_ID,'云南省' ROW_NAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
 				}else if(orgLevel==2){//市
-					sql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=2";
-					where+=" AND GROUP_ID_1='"+code+"' ";
+					sql="SELECT REGION_CODE ROW_ID,REGION_NAME ROW_NAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
+					groupBy=" GROUP BY REGION_CODE,REGION_NAME";
+					where+=" AND REGION_CODE='"+code+"' ";
 				}else if(orgLevel==3){//营服中心
-					sql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=3";
-					where+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
+					sql="SELECT CODE ROW_ID,ORGNAME ROW_NAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
+					groupBy=" GROUP BY CODE,ORGNAME";
+					where+=" AND CODE IN("+_unit_relation(code)+") ";
 				}else{
 					return {data:[],extra:{}};
 				}
 				orgLevel++;
 			}	
 			
-						
-			where+=" AND DEAL_DATE = '"+dealDate+"'";
 			if(regionCode!=''){
-				if(orgLevel==2){
-					sql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=2";
-					where+=" AND GROUP_ID_1 = '"+regionCode+"'";
-					orgLevel=3;
-				}
+				where+=" AND REGION_CODE = '"+regionCode+"'";
 			}
 			if(unitCode!=''){
-				sql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=3";
-				where+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
-				orgLevel=4;
+				where+=" AND CODE IN("+_unit_relation(unitCode)+") ";
 			}
-			sql+=where;
+			if(name!=''){
+				where+=" AND REALNAME LIKE '%"+name+"%'";
+			}
+			sql+=where+groupBy;
 			var d=query(sql);
 			return {data:d,extra:{orgLevel:orgLevel}};
 		}
@@ -92,30 +97,46 @@ function downsAll() {
 	var dealDate = $("#dealDate").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
-	var where="";
-
-	var sql="SELECT DEAL_DATE,GROUP_ID_1_NAME,UNIT_NAME,"+field.join(",")+ " FROM PMRT.TAB_MRT_HQINSPEC_TASK_MON WHERE GROUP_TYPE=3";
+	var name=$.trim($("#name").val());
+	var where=" WHERE DEAL_DATE = '"+dealDate+"'";
+	var sql="SELECT DEAL_DATE,REGION_NAME,ORGNAME,REALNAME,"+getSumSql()+ " FROM PMRT.VIEW_MRT_INSPEC_TASK T";
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
 		
 	} else if (orgLevel == 2) {//市
-		where += " AND GROUP_ID_1='" + code + "' ";
+		where += " AND REGION_CODE='" + code + "' ";
 	} else if (orgLevel == 3) {//营服中心
-		where+=" AND UNIT_ID IN("+_unit_relation(code)+") ";
+		where+=" AND CODE IN("+_unit_relation(code)+") ";
 	} else{
 		where += " AND 1=2";
 	}
-	where+=" AND DEAL_DATE='"+dealDate+"'" ;
 	if(regionCode!=''){
-		where+=" AND GROUP_ID_1 = '"+regionCode+"'";
+		where+=" AND REGION_CODE = '"+regionCode+"'";
 	}
 	if(unitCode!=''){
-		where+=" AND UNIT_ID IN("+_unit_relation(unitCode)+") ";
+		where+=" AND CODE IN("+_unit_relation(unitCode)+") ";
 	}
-
-	sql+=where;
+	if(name!=''){
+		where+=" AND REALNAME LIKE '%"+name+"%'";
+	}
+	var groupBy=" GROUP BY DEAL_DATE,REGION_CODE,REGION_NAME,CODE,ORGNAME,REALNAME";
+	sql+=where+groupBy;
 	showtext = '渠道巡检统计-' + dealDate;
-	var title=[["账期","地市名称","营服名称","派发次数","巡店次数","完成率","社会实体数","派发店数","巡店数","完成率"]];
+	var title=[["账期","地市名称","营服名称","姓名","派发次数","巡店次数","完成率","社会实体数","派发店数","巡店数","完成率"]];
 	downloadExcel(sql,title,showtext);
+}
+
+function getSumSql(){
+	return "SUM(NVL(T.INSPEC_SUM,0)) INSPEC_SUM                                                          "+
+	"      ,SUM(NVL(T.REG_SUM,0)) REG_SUM                                                          "+
+	"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.INSPEC_SUM,0))=0 THEN 0                      "+
+	"                                  ELSE SUM(NVL(T.REG_SUM,0))*100/SUM(NVL(T.INSPEC_SUM,0)) END "+
+	"                ,'FM99990.99')) ||'%' SUM_RATIO                                               "+
+	"      ,SUM(NVL(T.CHN_COUNTS,0)) CHN_COUNTS                                                    "+
+	"      ,SUM(NVL(T.HQ_COUNT,0)) HQ_COUNT                                                        "+
+	"      ,SUM(NVL(T.REG_COUNT,0)) REG_COUNT                                                      "+
+	"      ,TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.HQ_COUNT,0))=0 THEN 0                        "+
+	"                                  ELSE SUM(NVL(T.REG_COUNT,0))*100/SUM(NVL(T.HQ_COUNT,0)) END "+
+	"                ,'FM99990.99')) ||'%' HQ_RATIO                                                ";
 }

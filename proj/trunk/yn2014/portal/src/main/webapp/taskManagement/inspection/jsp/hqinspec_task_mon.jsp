@@ -9,8 +9,8 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.DATE, 0);
-	String day=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	ca.add(Calendar.MONTH, 0);
+	String mon=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/taskManagement/inspection/js/hqinspec_task_mon.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/taskManagement/inspection/js/hqinspec_task_mon.js?v=1"></script>
 </head>
 
 <body style="overflow-x:auto;">
@@ -44,7 +44,7 @@
 					<td width="7%" style="text-align:right;">账期：</td>
 					<td width="10%">
 						<input type="text"  class="Wdate default-text-input wper90" readonly
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=day %>" id="dealDate">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=mon%>" id="dealDate">
 					</td>
 					<td width="4%" style="text-align:right;">地市：</td>
 					<td width="10%">
@@ -57,6 +57,10 @@
 						<select name="unitCode" id="unitCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
+					</td>
+					<td width="8%" style="text-align:right;">姓名：</td>
+					<td width="10%">
+						<input name="name" id="name" class="default-text-input wper80"/>
 					</td>
 					<td width="2%">
 						<a class="default-btn" href="#" id="searchBtn"
