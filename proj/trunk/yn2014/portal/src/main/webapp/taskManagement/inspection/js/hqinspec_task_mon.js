@@ -1,5 +1,5 @@
 var title=[["组织架构","派发次数","巡店次数","完成率","社会实体数","派发店数","巡店数","完成率"]];
-var field=["INSPEC_SUM","REG_SUM","SUM_RATIO","CHN_SH_COUNTS","HQ_COUNT","REG_COUNT","HQ_RATIO"];
+var field=["INSPEC_SUM","REG_SUM","SUM_RATIO","CHN_COUNTS","HQ_COUNT","REG_COUNT","HQ_RATIO"];
 var orderBy='';	
 $(function(){
 var report=new LchReport({
