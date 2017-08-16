@@ -102,8 +102,8 @@ function downsAll() {
 	}
 	var sql = getDownSql(where);
 	var showtext = '用户收入月报-' + dealDate;
-	var title=[["地市","区县/营服","营服编码","营服属性","渠道状态","出账收入（剔除赠费退费）","","","","","","","同比","","","","","","","环比","","","","","",""],
-     ["","","","","","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他"]];
+	var title=[["地市","区县/营服","营服编码","营服属性","渠道状态","渠道经理HR","渠道经理","渠道编码","渠道名称","出账收入（剔除赠费退费）","","","","","","","同比","","","","","","","环比","","","","","",""],
+     ["","","","","","","","","","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他"]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -555,11 +555,12 @@ function getSql(orgLevel,where){
 function getDownSql(where){
 	var dealDate=$("#dealDate").val();
 	return "SELECT                                                                                                                 "+
-	"       T.GROUP_ID_1_NAME                                                                                                             "+
+	"       T.GROUP_ID_1_NAME                                                                                                      "+
 	"      ,T.UNIT_NAME                                                                                                            "+
 	"      ,T.UNIT_ID                                                                                                              "+
 	"      ,T.UNIT_TYPE                                                                                                            "+
 	"      ,T.STATE                                                                                                                "+
+	"      ,T.HR_ID,T.AGENT_M_NAME,T.ROW_ID,T.ROW_NAME"+
 	"      ,T.SR_ALL_NUM                                                                                                          "+
 	"      ,T.SR_YW_NUM                                                                                                           "+
 	"      ,T.SR_2I2C_NUM                                                                                                         "+
