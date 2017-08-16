@@ -114,8 +114,8 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","SR_NUM","ARPU"];
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
+	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","SR_NUM"];
+	var sql = "SELECT "+field.join(",")+",CASE WHEN NVL(ACCT_NUM, 0) <> 0 THEN ROUND(SR_NUM / ACCT_NUM, 3) ELSE 0 END ARPU"+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_SR"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
 	var showtext = '用户出账收入月汇总-' + dealDate;
 	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","出账收入","实收ARPU"]];
 	downloadExcel(sql,title,showtext);

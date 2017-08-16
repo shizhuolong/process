@@ -4,7 +4,7 @@ $(function(){
 		$("#dealDate").val(maxDate);
 	}
 	var title=[["组织架构","出账用户数","三无极低"]];
-	var field=["ROW_NAME","DEV_NUM","SWJD_NUM"];
+	var field=["ROW_NAME","ACCT_NUM","LOSE_NUM"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -114,8 +114,8 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","DEV_NUM","SWJD_NUM"];
-	var sql = "SELECT "+field.join(",")+" FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON_ACCT"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
+	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","ACCT_NUM","LOSE_NUM"];
+	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_ACCT"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
 	var showtext = '出账用户月汇总-' + dealDate;
 	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","出账用户数","三无极低"]];
 	downloadExcel(sql,title,showtext);
@@ -177,7 +177,7 @@ function getSql(orgLevel,where){
   }
 
 function getSumSql(){
-	return ",NVL(SUM(ACCT_NUM), 0) ACCT_NUM, "+
+	return ",NVL(SUM(ACCT_NUM), 0) ACCT_NUM  "+
 	"       , NVL(SUM(LOSE_NUM), 0) LOSE_NUM "+
 	" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_ACCT";
 }
