@@ -6,6 +6,10 @@ function downloadFile() {
 	window.location.href=$("#ctx").val()+"/tencentDay/import-tencent!downfile.action";
 }
 
+function getOperator(){
+	window.location.href=$("#ctx").val()+"/report/devIncome/down/operator.doc";
+}
+
 //完成
 function complete(){
 	$("#upload").hide();

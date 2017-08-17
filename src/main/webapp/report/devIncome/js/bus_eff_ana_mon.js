@@ -384,6 +384,7 @@ function getSql(orgLevel,where){
 		")T3                                                                                           "+
 		"ON(T.GROUP_ID_1=T3.GROUP_ID_1)                                                                "+
 		"LEFT JOIN (SELECT GROUP_ID_0,                                                                 "+
+		" 				   GROUP_ID_1,GROUP_ID_1_NAME,"+
 		"                  SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC                                            "+
 		"                 ,SUM(NVL(SR_ACC, 0)) SR_ACC                                                  "+
 		"        FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                      "+
@@ -391,7 +392,7 @@ function getSql(orgLevel,where){
 		    where+
 		"        GROUP BY GROUP_ID_0,GROUP_ID_1,GROUP_ID_1_NAME                                                                  "+
 		")T4                                                                                           "+
-		"ON(T.GROUP_ID_0=T4.GROUP_ID_0)"+
+		"ON(T.GROUP_ID_1=T4.GROUP_ID_1)"+
 		"GROUP BY T.GROUP_ID_1,                                                                        "+
 		"         T.GROUP_ID_1_NAME                                                                    ";
 	}else{
