@@ -77,6 +77,7 @@ public class ImportTencentAction extends BaseAction {
 		String field="INSERT_TIME,DEAL_DATE,USER_NAME,GROUP_ID_0_NAME,GROUP_ID_1_NAME,FORMAL_ORDER_ID,ICCID,ORDER_DATE,ORDER_NUMBER,CUSTOMER_NAME,CERT_NUM,CONTACT_NUMBER,CUSTOMER_SEX,CUSTOMER_AGE,ORDER_STATUS,PACKAGE_NAME,COMMODITY_NAME,CANCELLATION_DATE,CANCELLATION_REASON,OPEN_TIME,ACTIVATION_STATUS,ACTIVATION_DATE,HQ_CHAN_CODE,GROUP_ID_4_NAME,DEVELOPER_ID,DEVELOPER_NAME,HOLDER_NAME,HOLDER_NUMBER,ACTIVATION_NAME,ACTIVATION_NUMBER,PAY_TYPE,RECOMMENDER";
 		SimpleDateFormat s=new SimpleDateFormat("yyyymmdd");
 		time=s.format(new Date());
+		int count=0;
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -100,6 +101,7 @@ public class ImportTencentAction extends BaseAction {
 					System.out.println("导入Sheet页0:" + sheet.getSheetName());
 					int start = sheet.getFirstRowNum() +1 ;// 去前1行标题
 					int end = sheet.getLastRowNum();
+					count=end;
 					Row row;
 					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(sysdate,'"+time+"','"+username+"'";
 					for(int i=0;i<29;i++){
@@ -112,16 +114,15 @@ public class ImportTencentAction extends BaseAction {
 						if (row == null)
 							continue;
 						int cstart = row.getFirstCellNum();
-						int cend = row.getLastCellNum();
-						System.out.println(cstart + ":" + cend);
+						int cend = sheet.getRow(0).getLastCellNum();
 						for (int i = cstart; i < cend; i++) {
-							 if(i==2||i==3||i==5){
+							 if(i==2||i==3||i==5||i==21||i==24||i==26||i==28){
 							    	if(getCellValue(row.getCell(i)).contains("E")){
-							    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
+							    		err.add("模板不是文本格式，请将第"+(i+1)+"列转换为文本格式再导入！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
-							    }
+							 }
 						   pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
 						pre.addBatch();
@@ -149,13 +150,16 @@ public class ImportTencentAction extends BaseAction {
 					
 					int r=importToResult();
 					if(r!=1){
-						err.add("程序执行异常！");
+						err.add("程序存过PODS.PRC_ODS_AUG_TENCENT_DAY执行异常！");
 						Struts2Utils.getRequest().setAttribute("err", err);
 						return "error";
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				if(e.getMessage().equals("无效的列索引")){
+					err.add("请检查模板表头总列数是否与界面提供的模板一致！");
+				}
 				err.add(e.getMessage());
 			}finally{
 				try {
@@ -174,7 +178,7 @@ public class ImportTencentAction extends BaseAction {
 		   Struts2Utils.getRequest().setAttribute("err", err);
 		   return "error";
 		}
-		Struts2Utils.getRequest().setAttribute("success", "导入成功！");
+		Struts2Utils.getRequest().setAttribute("success", "成功导入"+count+"条数据！");
 		return "success";
 	}
 
@@ -186,7 +190,7 @@ public class ImportTencentAction extends BaseAction {
 		try{
 			os=resp.getOutputStream();
 			is=new FileInputStream(f);
-			resp.addHeader("content-disposition", "attachment;filename=import_iron_ability_mon.xls");
+			resp.addHeader("content-disposition", "attachment;filename=import_tencent_day.xls");
 			byte[] b=new byte[1024];
 			int size=is.read(b);
 			while(size>0){
