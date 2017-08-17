@@ -18,7 +18,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
     <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/report/devIncome/js/import_tencent_day.js?v=1"></script>
+	<script type="text/javascript" src="<%=path%>/report/devIncome/js/import_tencent_day.js?v=3"></script>
 	
 	<style>
 		th {
@@ -69,6 +69,12 @@
 									  style="cursor: pointer"
 									onclick="downloadFile();">模板下载</a>
 									<span style="color:red;font-size:15px;">(必须下载模板)</span>
+								</td>
+							</tr>
+							<tr>
+								<th  width="100px">问题解决</th>
+								<td colspan='2'><a class="default-btn" style="display:inline-block;" style="cursor: pointer"
+									onclick="getOperator();">获得文档</a>
 								</td>
 							</tr>
 							<tr>
