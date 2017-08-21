@@ -76,7 +76,7 @@ function downsAll() {
 	//先根据用户信息得到前几个字段
 	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
-	var code=$("code").val();
+	var code=$("#code").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode = $("#unitCode").val();
 	var status=$("#status").val();
