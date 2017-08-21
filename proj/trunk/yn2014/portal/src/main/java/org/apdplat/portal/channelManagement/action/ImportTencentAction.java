@@ -26,7 +26,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -75,7 +74,7 @@ public class ImportTencentAction extends BaseAction {
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PODS.TAB_ODS_TENCENT_DAY_TEMP";
 		String field="INSERT_TIME,DEAL_DATE,USER_NAME,PROVINCE,AREA_NAME,ORDER_ID,ICCID,ORDER_DATE,DEVICE_NUMBER,CUST_NAME,CERT_NUMBER,POST_ADDR,ORDER_CODE,SEX,AGE,ORDER_STATUS,PRODUCT_NAME,ORDER_NAME,CHANNEL_DATE,FILE_DURATION,CHARGEBACK_DATE,CHARGEBACK_REASON,USER_START,ACTIVE_STATUS,ACTIVE_DATE,CHANNEL_NAME,CHANNEL_ID,CHANNEL_AREA,OPEN_NAME,OPEN_DEVICE_NUMBER,OPEN_DEV_CODE,OPEN_CHANNEL_ID,OPEN_CHANNEL_NAME,ACTIVE_NAME,ACTIVE_DEVICE_NUMBER,ACTIVE_DEV_CODE,PAY_MODEL,IS_OVERTIME,REFEREE";
-		SimpleDateFormat s=new SimpleDateFormat("yyyymmdd");
+		SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd");
 		time=s.format(new Date());
 		long totalTime=0;
 		int count=0;
