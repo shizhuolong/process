@@ -100,7 +100,7 @@ function search(pageNumber) {
 	"   AND T2.ORDER_NO=T3.ORDER_NO(+)                                        "+
 	"   AND NVL(T3.IS_TYPE,1)=1                                               ";
 
-	//sql+=" AND TI.USERID='"+userId+"'"; 
+	sql+=" AND TI.USERID='"+userId+"'"; 
 	if(activeStatus){
 		sql+=" AND T2.ACTIVE_STATUS='"+activeStatus+"'                       		";
 	}
