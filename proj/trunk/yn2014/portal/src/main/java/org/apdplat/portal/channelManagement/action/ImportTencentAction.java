@@ -68,15 +68,16 @@ public class ImportTencentAction extends BaseAction {
 			return r;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unused", "resource", "unchecked" })
 	public String importToTemp() {
 		User user = UserHolder.getCurrentLoginUser();
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PODS.TAB_ODS_TENCENT_DAY_TEMP";
-		String field="INSERT_TIME,DEAL_DATE,USER_NAME,GROUP_ID_0_NAME,GROUP_ID_1_NAME,FORMAL_ORDER_ID,ICCID,ORDER_DATE,ORDER_NUMBER,CUSTOMER_NAME,CERT_NUM,CONTACT_NUMBER,CUSTOMER_SEX,CUSTOMER_AGE,ORDER_STATUS,PACKAGE_NAME,COMMODITY_NAME,CANCELLATION_DATE,CANCELLATION_REASON,OPEN_TIME,ACTIVATION_STATUS,ACTIVATION_DATE,HQ_CHAN_CODE,GROUP_ID_4_NAME,DEVELOPER_ID,DEVELOPER_NAME,HOLDER_NAME,HOLDER_NUMBER,ACTIVATION_NAME,ACTIVATION_NUMBER,PAY_TYPE,RECOMMENDER";
+		String field="INSERT_TIME,DEAL_DATE,USER_NAME,PROVINCE,AREA_NAME,ORDER_ID,ICCID,ORDER_DATE,DEVICE_NUMBER,CUST_NAME,CERT_NUMBER,POST_ADDR,ORDER_CODE,SEX,AGE,ORDER_STATUS,PRODUCT_NAME,ORDER_NAME,CHANNEL_DATE,FILE_DURATION,CHARGEBACK_DATE,CHARGEBACK_REASON,USER_START,ACTIVE_STATUS,ACTIVE_DATE,CHANNEL_NAME,CHANNEL_ID,CHANNEL_AREA,OPEN_NAME,OPEN_DEVICE_NUMBER,OPEN_DEV_CODE,OPEN_CHANNEL_ID,OPEN_CHANNEL_NAME,ACTIVE_NAME,ACTIVE_DEVICE_NUMBER,ACTIVE_DEV_CODE,PAY_MODEL,IS_OVERTIME,REFEREE";
 		SimpleDateFormat s=new SimpleDateFormat("yyyymmdd");
 		time=s.format(new Date());
+		long totalTime=0;
 		int count=0;
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
@@ -102,23 +103,28 @@ public class ImportTencentAction extends BaseAction {
 					int start = sheet.getFirstRowNum() +1 ;// 去前1行标题
 					int end = sheet.getLastRowNum();
 					count=end;
-					Row row;
+					Row row=null;
 					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(sysdate,'"+time+"','"+username+"'";
-					for(int i=0;i<29;i++){
+					for(int i=0;i<36;i++){
 						sql+=",?";
 					}
 					sql+=")";
 					pre=conn.prepareStatement(sql);
+					int preCount=500;//每500条执行插入
+					int maxCount=end/preCount;//最大执行次数，每500条执行一次
+					int cend = sheet.getRow(0).getLastCellNum();
+					long startTime=System.currentTimeMillis();
+					Cell c=null;
 					for (int y = start; y <= end; y++) {
+						System.out.println((y+1)+"条");
 						row = sheet.getRow(y);
 						if (row == null)
 							continue;
-						int cstart = row.getFirstCellNum();
-						int cend = sheet.getRow(0).getLastCellNum();
-						for (int i = cstart; i < cend; i++) {
-							 if(i==2||i==3||i==5||i==21||i==24||i==26||i==28){
-							    	if(getCellValue(row.getCell(i)).contains("E")){
-							    		err.add("模板不是文本格式，请将第"+(i+1)+"列转换为文本格式再导入！");
+						for (int i = 0; i < cend; i++) {
+							 if(i==2||i==3||i==5||i==7||i==26||i==27||i==28||i==31||i==32||i==35){
+							       c=row.getCell(i);	
+								   if(getCellValue(c).contains("E")){
+							    		err.add("模板不是文本格式，请将第"+(i+1)+"列转换为文本格式再导入,具体转换方法请看问题解决文档！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
@@ -126,20 +132,27 @@ public class ImportTencentAction extends BaseAction {
 						   pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
 						pre.addBatch();
+                        if(y%preCount==0){
+                        	pre.executeBatch();
+                        	conn.commit();
+						}
 					}
-					pre.executeBatch();
+					pre.executeBatch();//余数部分提交，至此所有数据插入完毕
 					conn.commit();
 					conn.setAutoCommit(true);
-					String checkRepeat="SELECT FORMAL_ORDER_ID FROM PODS.TAB_ODS_TENCENT_DAY_TEMP GROUP BY FORMAL_ORDER_ID HAVING COUNT(*) > 1";
+					long endTime=System.currentTimeMillis();
+					totalTime=(endTime-startTime)/1000;
+				    System.out.println(totalTime+"秒");
+					String checkRepeat="SELECT ORDER_ID FROM PODS.TAB_ODS_TENCENT_DAY_TEMP GROUP BY ORDER_ID HAVING COUNT(*) > 1";
 					
 					List<Map<String,String>> l=SpringManager.getFindDao().find(checkRepeat);
 					String msg="订单编号：";
 					if(l!=null&&l.size()>0){
 						for(int i=0;i<l.size();i++){
 							if(i==0){
-								msg+=l.get(i).get("FORMAL_ORDER_ID");
+								msg+=l.get(i).get("ORDER_ID");
 							}else{
-								msg+="、"+l.get(i).get("FORMAL_ORDER_ID");
+								msg+="、"+l.get(i).get("ORDER_ID");
 							}
 						}
 						msg+="在excel中重复，请检查！";
@@ -161,14 +174,19 @@ public class ImportTencentAction extends BaseAction {
 					err.add("请检查模板表头总列数是否与界面提供的模板一致！");
 				}
 				err.add(e.getMessage());
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 			}finally{
 				try {
-					conn.close();
-					if(wb instanceof XSSFWorkbook){
+					    if(conn!=null)
+					    conn.close();
+					    if(wb!=null)
+					    wb.close();
+					    if(in!=null)
 						in.close();
-					}else{
-						 wb.close();
-					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -178,10 +196,11 @@ public class ImportTencentAction extends BaseAction {
 		   Struts2Utils.getRequest().setAttribute("err", err);
 		   return "error";
 		}
-		Struts2Utils.getRequest().setAttribute("success", "成功导入"+count+"条数据！");
+		Struts2Utils.getRequest().setAttribute("success", "成功导入"+count+"条数据，用时"+totalTime+"秒！");
 		return "success";
 	}
 
+	@SuppressWarnings("deprecation")
 	public void downfile() {
 		File f=new File(this.request.getRealPath("/report/devIncome/down/import_tencent_day.xls"));
 		HttpServletResponse resp=ServletActionContext.getResponse();
