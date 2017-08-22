@@ -164,7 +164,7 @@ function addVisit(orderNo){
 }
 
 function listOutBounds(){
-	var sql = "SELECT DISTINCT T.OUT_NAME FROM PODS.TAB_ODS_2I2C_OUTBOUND T where T.OUT_NAME IS NOT NULL";
+	var sql = "SELECT DISTINCT T.OUT_NAME FROM PODS.TAB_ODS_2I2C_OUTBOUND T WHERE T.IS_TYPE=1 AND T.OUT_NAME IS NOT NULL";
 	var h = '';
 	var d=query(sql);
 	if (d) {
