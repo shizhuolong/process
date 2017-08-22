@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -88,6 +89,7 @@ public class ImportTencentAction extends BaseAction {
 			try {
 				conn = this.getCon();
 				conn.setAutoCommit(false);
+				long startTime=System.currentTimeMillis();
 				//Sheet hssfSheet = wb.getSheetAt(0);  //示意访问sheet  
 				// 上传时覆盖
 				String delSql = "DELETE FROM " + resultTableName;
@@ -112,10 +114,8 @@ public class ImportTencentAction extends BaseAction {
 					int preCount=500;//每500条执行插入
 					int maxCount=end/preCount;//最大执行次数，每500条执行一次
 					int cend = sheet.getRow(0).getLastCellNum();
-					long startTime=System.currentTimeMillis();
 					Cell c=null;
 					for (int y = start; y <= end; y++) {
-						System.out.println((y+1)+"条");
 						row = sheet.getRow(y);
 						if (row == null)
 							continue;
@@ -182,10 +182,11 @@ public class ImportTencentAction extends BaseAction {
 				try {
 					    if(conn!=null)
 					    conn.close();
-					    if(wb!=null)
-					    wb.close();
-					    if(in!=null)
-						in.close();
+					    if(wb instanceof XSSFWorkbook){
+							in.close();
+						}else{
+							 wb.close();
+						}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
