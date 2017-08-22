@@ -1,6 +1,6 @@
 var nowData = [];
 var title=[["正式订单号","订单时间","省份","地市","配送区县","商城实收","商城应收","订单状态","客户姓名","证件号码","预约号码","性别","年龄","套餐","订购号码","配送地址","物流跟踪","激活状态","激活待人工审单","回访人","回访时间","回访失败","回访成功","其他原因","备注","激活时间","是否回访成功"]];
-var field=["ORDER_NO","ORDER_TIME","GROUP_ID_0_NAME","GROUP_ID_1_NAME","CITY_NAME","SHOOP_OFF","SHOOP_RECE","ORDER_STATUS","CUST_NAME","CARD_ID","BOOK_NUM","SEX","AGE","PRODUCT_NAME","SERVICE_NUMBER","ADDR_NAME","LOG_TRACK","ACTIVE_STATUS","ACTIVE_RG","NAME","INSERT_TIME","FAIL_CAUSE","SUCC_CAUSE","OTHET_CAUSE","REMARK","ACTIVE_TIME","IS_SUCC"];
+var field=["ORDER_NO","ORDER_TIME","GROUP_ID_0_NAME","GROUP_ID_1_NAME","CITY_NAME","SHOOP_OFF","SHOOP_RECE","ORDER_STATUS","CUST_NAME","CARD_ID","BOOK_NUM","SEX","AGE","PRODUCT_NAME","SERVICE_NUMBER","ADDR_NAME","LOG_TRACK","ACTIVE_STATUS","ACTIVE_RG","NAME","INSERT_TIME","FAIL_CAUSE","SUCC_CAUSE","OTHER_CAUSE","REMARK","ACTIVE_TIME","IS_SUCC"];
 
 var orderBy="";
 var report = null;
