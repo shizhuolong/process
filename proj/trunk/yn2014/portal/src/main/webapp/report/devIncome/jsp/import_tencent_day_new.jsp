@@ -18,7 +18,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
     <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="<%=path%>/report/devIncome/js/import_tencent_day.js?v=3"></script>
+	<script type="text/javascript" src="<%=path%>/report/devIncome/js/import_tencent_day_new.js?v=3"></script>
 	
 	<style>
 		th {
@@ -54,7 +54,7 @@
 		<div id="main" class="clearfix">
 			<div class="main-block">
 				<div class="title">
-					<i></i>校园实时销量导入-老
+					<i></i>校园实时销量导入-新
 				</div>
 				<div id="chose-sender">
 					<div class="title-o">
