@@ -3,7 +3,7 @@ $(function(){
 	if(maxDate!=null){
 		$("#dealDate").val(maxDate);
 	}
-	var title=[["组织架构","发展用户数","三无极低"]];
+	var title=[["组织架构","发展用户数","流失用户数"]];
 	var field=["ROW_NAME","DEV_NUM","SWJD_NUM"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
@@ -117,7 +117,7 @@ function downsAll() {
 	var field=["GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","PRODUCT_TYPE","PRODUCT_NAME","DEV_NUM","SWJD_NUM"];
 	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_DEV_DETAIL_MON_HZ"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE,PRODUCT_TYPE";
 	var showtext = '用户发展月汇总-' + dealDate;
-	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","发展用户数","三无极低"]];;
+	var title=[["地市","营服编码","营服名称","渠道经理HR","渠道经理","渠道编码","渠道名称","套餐类型","套餐名称","发展用户数","流失用户数"]];;
 	downloadExcel(sql,title,showtext);
 }
 
