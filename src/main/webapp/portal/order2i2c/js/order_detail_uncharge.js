@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["正式订单号","订单时间","省份","地市","配送区县","商城实收","商城应收","订单状态","客户姓名","证件号码","预约号码","性别","年龄","套餐","订购号码","配送地址","物流跟踪","激活状态","激活待人工审单","回访人","回访时间","回访失败","回访成功","其他原因","备注","激活时间","是否回访成功"]];
-var field=["ORDER_NO","ORDER_TIME","GROUP_ID_0_NAME","GROUP_ID_1_NAME","CITY_NAME","SHOOP_OFF","SHOOP_RECE","ORDER_STATUS","CUST_NAME","CARD_ID","BOOK_NUM","SEX","AGE","PRODUCT_NAME","SERVICE_NUMBER","ADDR_NAME","LOG_TRACK","ACTIVE_STATUS","ACTIVE_RG","NAME","INSERT_TIME","FAIL_CAUSE","SUCC_CAUSE","OTHER_CAUSE","REMARK","ACTIVE_TIME","IS_SUCC"];
+var title=[["账期","地市","商品名称","子商品名称","用户状态","用户状态变更时间","销户标识","证件类型","证件号码","用户ID","用户号码","是否本期新发展","是否在网","是否异网","是否二次充值","入网时间","销户时间","是否累计现金缴费","最后一次缴费方式ID","最后一次缴费方式名称","首次缴费时间","首次缴费金额","累计缴费金额","累计缴费次数","实时余额","回访人","回访时间","回访失败","回访成功","其他原因"]];
+var field=["ACCT_DATE","AREA_DESC","PRODUCT_MAIN","PRODUCT_NAME","USER_STATUS_DESC","UPDATE_TIME","REMOVE_FLAG","CERT_TYPE_DESC","CERT_NUMBER","USER_ID","DEVICE_NUMBER","IS_THIS_DEV","IS_INNET","IS_ECT","IS_TWO_PAY","INNET_DATE","CLOSE_DATE","IS_CASH_CHARGE","PAYMENT_ID","PAYMENT_NAME","PAYMENT_TIME_FIRST","PAYMENT_FEE_FIRST","PAYMENT_FEE_LJ","PAYMENT_NUM","BALANCE","VISIT_NAME","VISIT_TIME","FAIL_VISIT","SUCC_VISIT","OTHER_CAUSE"];
 
 var orderBy="";
 var report = null;
@@ -49,85 +49,59 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
+
+function initCombobox(){
+	$("#outbound").combobox({  
+        valueField: 'id',  
+        textField: 'name',  
+       /* editable:false,*/
+        url:path+"/combobox/combobox!listCombobox.action",  
+        mode: 'remote',  
+        hasDownArrow: false,  
+        /*queryParams: {name:'11'},*/
+        onBeforeLoad: function (parm) {  
+            var value = $(this).combobox('getValue');  
+            if (value) {  
+                parm.name = value;  
+                return true;  
+            }  
+            return false;  
+        }  
+    }); 
+}
+
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
-	var activeStatus=$("#activeStatus").val();
-	var isFirst=$("#isFirst").val();
+	var dealDate=$("#dealDate").val();
+   	var isFirst=$("#isFirst").val();
 	var serviceName=$("#serviceName").val();
 	var userId=$("#userId").val();
-	var orderNo=$("#orderNo").val();
 	var serviceNumber=$("#serviceNumber").val();
-	var bookNum=$("#bookNum").val();
-	var sql="SELECT T2.ORDER_NO                                               "+
-	"      ,T2.ORDER_TIME                                                     "+
-	"      ,T2.GROUP_ID_0_NAME                                                "+
-	"      ,T2.GROUP_ID_1_NAME                                                "+
-	"      ,T2.CITY_NAME                                                      "+
-	"      ,T2.SHOOP_OFF                                                      "+
-	"      ,T2.SHOOP_RECE                                                     "+
-	"      ,T2.ORDER_STATUS                                                   "+
-	"      ,T2.CUST_NAME                                                      "+
-	"      ,T2.CARD_ID                                                        "+
-	"      ,T2.BOOK_NUM                                                       "+
-	"      ,T2.SEX                                                            "+
-	"      ,T2.AGE                                                            "+
-	"      ,T2.PRODUCT_NAME                                                   "+
-	"      ,T2.SERVICE_NUMBER                                                 "+
-	"      ,T2.ADDR_NAME                                                      "+
-	"      ,T2.LOG_TRACK                                                      "+
-	"      ,T2.ACTIVE_STATUS                                                  "+
-	"      ,T2.ACTIVE_RG                                                      "+
-	"      ,TI.NAME                                                           "+
-	"      ,T3.INSERT_TIME                                                    "+
-	"      ,CASE WHEN T3.OUTBOUND LIKE'%失败%' THEN T3.OUTBOUND END FAIL_CAUSE "+
-	"      ,CASE WHEN T3.OUTBOUND LIKE'%成功%' THEN T3.OUTBOUND END SUCC_CAUSE "+
-	"      ,T3.OTHER_CAUSE                                                    "+
-	"      ,T3.REMARK                                                         "+
-	"      ,T2.ACTIVE_TIME                                                    "+
-	"      ,CASE WHEN T3.OUTBOUND LIKE'%成功%' THEN '是'ELSE '否' END IS_SUCC    "+
-	"  FROM PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL T1,                             "+
-	"       PODS.TAB_ODS_2I2C_ASS_TASK        T,                              "+
-	"       PODS.TAB_ODS_2I2C_LEAD_DAY        t2,                             "+
-	"       PORTAL.TAB_PORTAL_2I2C_TEAM       ti,                             "+
-	"       PODS.VIEW_ODS_2I2C_REMARK         T3                              "+
-	" WHERE T1.ORDER_NO = T2.ORDER_NO                                         "+
-	"   AND T.WORK_NO = T1.WORK_NO                                            "+
-	"   AND T1.NAME_ID = TI.ID                                                "+
-	"   AND T2.ORDER_NO=T3.ORDER_NO(+)                                        "+
-	"   AND NVL(T3.IS_TYPE,1)=1                                               ";
+	var sql="SELECT ORDER_NO,"+field.join(",")+" FROM PODS.TAB_ODS_DWDDK_USER PARTITION(P"+dealDate+") WHERE 1=1";
 	var s;
     if(orgLevel!=1){
 		s=query("SELECT userid FROM PORTAL.TAB_PORTAL_2I2C_TEAM WHERE userid="+userId);
 	    if(s!=null&&s.length>0){
-			 sql+=" AND ti.USERID='"+userId+"'"; 
+			 sql+=" AND USERID='"+userId+"'"; 
 	    }else{
-	    	 sql+=" AND T2.GROUP_ID_1='"+region+"'";    	
+	    	 sql+=" AND GROUP_ID_1='"+region+"'";    	
 	    }
 	}
-	if(activeStatus){
-		sql+=" AND T2.ACTIVE_STATUS='"+activeStatus+"'                       		";
-	}
 	if(isFirst){
-		sql+=" AND T2.IS_FIRST='"+isFirst+"'                       		            ";
+		sql+=" AND IS_PAY_LJ='"+isFirst+"'";
 	}
 	if(serviceName){
-		sql+=" AND T2.SERVICE_NAME='"+serviceName+"'                       		    ";
-	}
-	if(orderNo){
-		sql+=" AND T2.ORDER_NO='"+orderNo+"'                       		            ";
+		sql+=" AND USER_STATUS_CBSS='"+serviceName+"'";
 	}
 	if(serviceNumber){
-		sql+=" AND T2.SERVICE_NUMBER='"+serviceNumber+"'                       		";
+		sql+=" AND DEVICE_NUMBER='"+serviceNumber+"'";
 	}
-	if(bookNum){
-		sql+=" AND T2.BOOK_NUM='"+bookNum+"'                       		            ";
-	}
+	
 	//排序
 	if (orderBy != '') {
 		sql ="SELECT * FROM ("+sql+")"+ orderBy;
@@ -177,17 +151,22 @@ function search(pageNumber) {
 }
 
 function addVisit(orderNo){
-	var outbound=$("#outbound").val();
+	var outbound=$("#outbound").combobox('getText');
+	var outid=$("#outbound").combobox('getValue');
 	var remark=$("#remark").val();
 	var other_cause=$("#other_cause").val();
-	var sql="INSERT INTO PODS.TAB_ODS_2I2C_REMARK SELECT SYSDATE,'"+orderNo+"','"+outbound+"','"+remark+"','"+other_cause+"','1' FROM DUAL";
+	if(isNaN(outid)){
+		alert("输入不正确,需从下拉列表中选择！");
+		return;
+	}
+	var sql="INSERT INTO PODS.TAB_ODS_2I2C_REMARK SELECT SYSDATE,'"+orderNo+"','"+outbound+"','"+remark+"','"+other_cause+"','2' FROM DUAL";
 	var d=query(sql);
 	art.dialog({id:'d'+orderNo}).close();
 	showVisit(orderNo);
 }
 
 function listOutBounds(){
-	var sql = "SELECT DISTINCT T.OUT_NAME FROM PODS.TAB_ODS_2I2C_OUTBOUND T WHERE T.IS_TYPE=1 AND T.OUT_NAME IS NOT NULL";
+	var sql = "SELECT DISTINCT T.OUT_NAME FROM PODS.TAB_ODS_2I2C_OUTBOUND T WHERE T.IS_TYPE=2 AND T.OUT_NAME IS NOT NULL";
 	var h = '';
 	var d=query(sql);
 	if (d) {
@@ -206,7 +185,7 @@ function showVisit(orderNo){
 	var h="";
 	
 	h+="<table style='margin-top:12px;' class='lch_DataBody'><tr>";
-	h+="<td>外呼状态<select class='default-text-input wper80' id='outbound'>"+listOutBounds()+"</select></td></tr>";
+	h+="<td>外呼状态<input class='easyui-combobox' id='outbound'/></td></tr>";
 	h+="<tr><td>其他原因<textarea cols=20 rows=2 id='other_cause'></textarea></td>";
 	h+="<tr><td>外呼描述<textarea cols=20 rows=2 id='remark'></textarea></td>";
 	h+="<tr><td><a class='default-btn  mr10' href='#' onclick='addVisit(\""+orderNo+"\")' id='addBtn'>添加</a></td>";
@@ -230,12 +209,13 @@ function showVisit(orderNo){
 		padding: 0,
 		lock:true
 	});
+	initCombobox();
 }
 
 function exportAll(){
-	downloadExcel(downSql,title,"订单明细-未激活");
+	var title=[["订单编码","账期","地市","商品名称","子商品名称","用户状态","用户状态变更时间","销户标识","证件类型","证件号码","用户ID","用户号码","是否本期新发展","是否在网","是否异网","是否二次充值","入网时间","销户时间","是否累计现金缴费","最后一次缴费方式ID","最后一次缴费方式名称","首次缴费时间","首次缴费金额","累计缴费金额","累计缴费次数","实时余额","回访人","回访时间","回访失败","回访成功","其他原因"]];
+	downloadExcel(downSql,title,"订单明细-未首充");
 }
-
 function listServiceNames(){
 	var $serviceName = $("#serviceName");
 	var sql = "SELECT DISTINCT T.SERVICE_NAME FROM PODS.TAB_ODS_2I2C_LEAD_DAY T WHERE T.SERVICE_NAME IS NOT NULL ";
@@ -258,7 +238,6 @@ function listServiceNames(){
 		alert("获取人员状态失败");
 	}
 }
-
 function isNull(obj){
 	if(obj == undefined || obj == null) {
 		return "";
