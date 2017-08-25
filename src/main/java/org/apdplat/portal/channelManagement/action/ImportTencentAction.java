@@ -45,7 +45,9 @@ import org.springframework.stereotype.Controller;
 @Scope("prototype")
 @Results({
 	@Result(name="success", location="/report/devIncome/jsp/import_tencent_day.jsp"),
-	@Result(name="error", location="/report/devIncome/jsp/import_tencent_day.jsp")
+	@Result(name="error", location="/report/devIncome/jsp/import_tencent_day.jsp"),
+	@Result(name="successNew", location="/report/devIncome/jsp/import_tencent_day_new.jsp"),
+	@Result(name="errorNew", location="/report/devIncome/jsp/import_tencent_day_new.jsp")
 })
 public class ImportTencentAction extends BaseAction {
 	private File uploadFile;
@@ -128,7 +130,7 @@ public class ImportTencentAction extends BaseAction {
 										return "error";
 							    	}
 							 }
-						   pre.setString(i+1,getCellValue(row.getCell(i)));
+						   pre.setString(i+1,getCellValue(c));
 						}
 						pre.addBatch();
                         if(y%preCount==0){
@@ -171,6 +173,8 @@ public class ImportTencentAction extends BaseAction {
 				e.printStackTrace();
 				if(e.getMessage().equals("无效的列索引")){
 					err.add("请检查模板表头总列数是否与界面提供的模板一致！");
+					Struts2Utils.getRequest().setAttribute("err", err);
+				    return "error";
 				}
 				err.add(e.getMessage());
 				try {
@@ -200,6 +204,144 @@ public class ImportTencentAction extends BaseAction {
 		return "success";
 	}
 
+	@SuppressWarnings({ "unused", "resource", "unchecked" })
+	public String importToTempNew() {
+		User user = UserHolder.getCurrentLoginUser();
+		String username=user.getUsername();
+		List<String> err = new ArrayList<String>();
+		String resultTableName = "PODS.TAB_ODS_TENCENT_DAY_TEMP";
+		String field="INSERT_TIME,DEAL_DATE,USER_NAME,ORDER_ID,ORDER_DATE,DEVICE_NUMBER,OPEN_CHANNEL_ID,OPEN_DEV_CODE";
+		SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd");
+		time=s.format(new Date());
+		long totalTime=0;
+		int count=0;
+		if (uploadFile == null) {
+			err.add("上传文件为空！");
+		} else {
+			FileInputStream in =null;
+		    Workbook wb = null;
+			Connection conn = null;
+			PreparedStatement pre = null;
+			try {
+				conn = this.getCon();
+				conn.setAutoCommit(false);
+				long startTime=System.currentTimeMillis();
+				//Sheet hssfSheet = wb.getSheetAt(0);  //示意访问sheet  
+				// 上传时覆盖
+				String delSql = "DELETE FROM " + resultTableName;
+				SpringManager.getUpdateDao().update(delSql);
+				in = new FileInputStream(uploadFile);
+				wb = WorkbookFactory.create(in);  
+				int sheetNum = wb.getNumberOfSheets();// 得到sheet数量
+				System.out.println("准备导入...");
+				if (sheetNum > 0) {
+					Sheet sheet = wb.getSheetAt(0);
+					System.out.println("导入Sheet页0:" + sheet.getSheetName());
+					int start = sheet.getFirstRowNum() +1 ;// 去前1行标题
+					int end = sheet.getLastRowNum();
+					count=end;
+					Row row=null;
+					String sql = "INSERT INTO "+ resultTableName+"("+field+") values(sysdate,'"+time+"','"+username+"'";
+					for(int i=0;i<5;i++){
+						sql+=",?";
+					}
+					sql+=")";
+					pre=conn.prepareStatement(sql);
+					int preCount=500;//每500条执行插入
+					int maxCount=end/preCount;//最大执行次数，每500条执行一次
+					int cend = sheet.getRow(0).getLastCellNum();
+					Cell c=null;
+					int index=0;
+					for (int y = start; y <= end; y++) {
+						index=0;
+						row = sheet.getRow(y);
+						if (row == null)
+							continue;
+						
+						for (int i = 0; i < cend; i++) {
+							 if(i==2||i==4||i==5||i==19||i==25){
+								   index++;
+							       c=row.getCell(i);	
+								   if(getCellValue(c).contains("E")){
+							    		err.add("模板不是文本格式，请将第"+(i+1)+"列转换为文本格式再导入,具体转换方法请看问题解决文档！");
+							    		Struts2Utils.getRequest().setAttribute("err", err);
+										return "errorNew";
+							    	}
+								   pre.setString(index,getCellValue(c));
+							 }
+						}
+						pre.addBatch();
+                        if(y%preCount==0){
+                        	pre.executeBatch();
+                        	conn.commit();
+						}
+					}
+					pre.executeBatch();//余数部分提交，至此所有数据插入完毕
+					conn.commit();
+					conn.setAutoCommit(true);
+					long endTime=System.currentTimeMillis();
+					totalTime=(endTime-startTime)/1000;
+				    System.out.println(totalTime+"秒");
+					String checkRepeat="SELECT ORDER_ID FROM PODS.TAB_ODS_TENCENT_DAY_TEMP GROUP BY ORDER_ID HAVING COUNT(*) > 1";
+					
+					List<Map<String,String>> l=SpringManager.getFindDao().find(checkRepeat);
+					String msg="订单编号：";
+					if(l!=null&&l.size()>0){
+						for(int i=0;i<l.size();i++){
+							if(i==0){
+								msg+=l.get(i).get("ORDER_ID");
+							}else{
+								msg+="、"+l.get(i).get("ORDER_ID");
+							}
+						}
+						msg+="在excel中重复，请检查！";
+						err.add(msg);
+						Struts2Utils.getRequest().setAttribute("err", err);
+						return "errorNew";
+					}
+					
+					int r=importToResult();
+					if(r!=1){
+						err.add("程序存过PODS.PRC_ODS_AUG_TENCENT_DAY执行异常！");
+						Struts2Utils.getRequest().setAttribute("err", err);
+						return "errorNew";
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				if(e.getMessage().equals("无效的列索引")){
+					 err.add("请检查模板表头总列数是否与界面提供的模板一致！");
+					 Struts2Utils.getRequest().setAttribute("err", err);
+					 return "errorNew";
+				}
+				err.add(e.getMessage());
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}finally{
+				try {
+					    if(conn!=null)
+					    conn.close();
+					    if(wb instanceof XSSFWorkbook){
+							in.close();
+						}else{
+							 wb.close();
+						}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if(err.size()>0){
+		   Struts2Utils.getRequest().setAttribute("err", err);
+		   return "errorNew";
+		}
+		Struts2Utils.getRequest().setAttribute("success", "成功导入"+count+"条数据，用时"+totalTime+"秒！");
+		return "successNew";
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void downfile() {
 		File f=new File(this.request.getRealPath("/report/devIncome/down/import_tencent_day.xls"));
@@ -210,6 +352,39 @@ public class ImportTencentAction extends BaseAction {
 			os=resp.getOutputStream();
 			is=new FileInputStream(f);
 			resp.addHeader("content-disposition", "attachment;filename=import_tencent_day.xls");
+			byte[] b=new byte[1024];
+			int size=is.read(b);
+			while(size>0){
+				os.write(b,0,size);
+				size=is.read(b);
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+			if(null==os){
+				try {
+					os=resp.getOutputStream();
+				} catch (IOException e1) {}
+			}
+		}finally{
+			if(is!=null){
+				try{ is.close();}catch(Exception e1){}
+			}
+			if(os!=null){
+				try{ os.close();}catch(Exception e2){}
+			}
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void downfileNew() {
+		File f=new File(this.request.getRealPath("/report/devIncome/down/import_tencent_day_new.xls"));
+		HttpServletResponse resp=ServletActionContext.getResponse();
+		OutputStream os=null;
+		InputStream is=null;
+		try{
+			os=resp.getOutputStream();
+			is=new FileInputStream(f);
+			resp.addHeader("content-disposition", "attachment;filename=import_tencent_day_new.xls");
 			byte[] b=new byte[1024];
 			int size=is.read(b);
 			while(size>0){
