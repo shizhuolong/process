@@ -6,7 +6,8 @@ var report = null;
 var downSql="";
 $(function() {
 	var maxDate=getMaxDate("PMRT.TAB_MRT_RENT_MON");
-	$("#time").val(maxDate);
+	$("#startDate").val(maxDate);
+	$("#endDate").val(maxDate);
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -48,14 +49,13 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var time=$("#time").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 //条件
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_RENT_MON WHERE 1=1";
-	if(time!=''){
-		sql+=" AND DEAL_DATE="+time;
-	}
+	var sql = "SELECT "+field.join(",")+" FROM PMRT.TAB_MRT_RENT_MON WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'";
+	
 	if(regionCode!=''){
 		sql+=" AND GROUP_ID_1 = '"+regionCode+"'";
 	}
@@ -105,7 +105,8 @@ function search(pageNumber) {
 }
  
 function downsAll(){
-	var time=$("#time").val();
-	var showtext = '自有房租及物业费报表-'+time;
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
+	var showtext = '自有房租及物业费报表-'+startDate+"-"+endDate;
 	downloadExcel(downSql,title,showtext);
 }
