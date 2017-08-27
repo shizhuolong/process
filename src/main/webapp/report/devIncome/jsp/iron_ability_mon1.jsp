@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/iron_ability_mon1.js?v=4"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/iron_ability_mon1.js?v=5"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -38,10 +38,15 @@
 		<form id="searchForm" method="post">
 			<table width="100%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="4%" style="text-align:right;">账期：</td>
+				    <td width="8%" style="text-align:right;">开始账期：</td>
 					<td width="15%">
 						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="time">
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="startDate">
+					</td>
+					<td width="8%" style="text-align:right;">结束账期：</td>
+					<td width="15%">
+						<input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
+						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM'})" value="<%=time%>" id="endDate">
 					</td>
 					<td width="4%">地市：</td>
 					<td width="15%">
@@ -49,7 +54,7 @@
 								<option value="">全部</option>
 						</select>
 					</td>
-					<td width="6%">营服中心：</td>
+					<td width="8%">营服中心：</td>
 					<td width="15%">
 						<select name="unitCode" id="unitCode" class="default-text-input wper80">
 								<option value="">全部</option>
