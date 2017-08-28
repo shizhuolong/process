@@ -116,21 +116,20 @@ public class ImportTencentAction extends BaseAction {
 					int preCount=500;//每500条执行插入
 					int maxCount=end/preCount;//最大执行次数，每500条执行一次
 					int cend = sheet.getRow(0).getLastCellNum();
-					Cell c=null;
 					for (int y = start; y <= end; y++) {
 						row = sheet.getRow(y);
 						if (row == null)
 							continue;
 						for (int i = 0; i < cend; i++) {
 							 if(i==2||i==3||i==5||i==7||i==26||i==27||i==28||i==31||i==32||i==35){
-							       c=row.getCell(i);	
-								   if(getCellValue(c).contains("E")){
+							      // c=row.getCell(i);	
+								   if(getCellValue(row.getCell(i)).contains("E")){
 							    		err.add("模板不是文本格式，请将第"+(i+1)+"列转换为文本格式再导入,具体转换方法请看问题解决文档！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
 							 }
-						   pre.setString(i+1,getCellValue(c));
+						   pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
 						pre.addBatch();
                         if(y%preCount==0){
@@ -250,7 +249,6 @@ public class ImportTencentAction extends BaseAction {
 					int preCount=500;//每500条执行插入
 					int maxCount=end/preCount;//最大执行次数，每500条执行一次
 					int cend = sheet.getRow(0).getLastCellNum();
-					Cell c=null;
 					int index=0;
 					for (int y = start; y <= end; y++) {
 						index=0;
@@ -261,13 +259,12 @@ public class ImportTencentAction extends BaseAction {
 						for (int i = 0; i < cend; i++) {
 							 if(i==2||i==4||i==5||i==19||i==25){
 								   index++;
-							       c=row.getCell(i);	
-								   if(getCellValue(c).contains("E")){
+								   if(getCellValue(row.getCell(i)).contains("E")){
 							    		err.add("模板不是文本格式，请将第"+(i+1)+"列转换为文本格式再导入,具体转换方法请看问题解决文档！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "errorNew";
 							    	}
-								   pre.setString(index,getCellValue(c));
+								   pre.setString(index,getCellValue(row.getCell(i)));
 							 }
 						}
 						pre.addBatch();
