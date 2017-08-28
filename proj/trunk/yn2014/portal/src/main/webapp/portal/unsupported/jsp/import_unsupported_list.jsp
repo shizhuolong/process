@@ -38,7 +38,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/unsupported/js/import_unsupported_list.js?v=3"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/unsupported/js/import_unsupported_list.js?v=4"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -47,6 +47,7 @@
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="username" value="<%=user.getUsername()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<div id="smartForm">
 		<input type="hidden" name="resultMap.page" />
         <input type="hidden" name="resultMap.rows" />

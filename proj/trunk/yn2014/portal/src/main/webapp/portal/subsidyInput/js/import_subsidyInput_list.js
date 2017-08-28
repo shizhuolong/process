@@ -2,6 +2,9 @@ var isNeedApprover = true;
 var pageSize = 10;
 var isHavingFile="notWithFile";
 $(function(){
+	if($("#orgLevel").val()!=2){
+		$("#importExcel").remove();
+	}
 	search(0);
 	initUpload();
 	$("#searchBtn").click(function(){

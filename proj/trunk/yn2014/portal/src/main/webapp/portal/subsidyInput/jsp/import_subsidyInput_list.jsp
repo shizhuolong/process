@@ -40,11 +40,12 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/subsidyInput/js/import_subsidyInput_list.js?v=2"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/subsidyInput/js/import_subsidyInput_list.js?v=3"></script>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="username" value="<%=user.getUsername()%>">
+	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<div id="smartForm">
 		<input type="hidden" name="resultMap.page" />
         <input type="hidden" name="resultMap.rows" />
