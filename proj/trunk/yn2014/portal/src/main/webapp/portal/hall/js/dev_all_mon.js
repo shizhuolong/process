@@ -3,7 +3,7 @@ $(function(){
 	if(maxDate!=null){
 		$("#dealDate").val(maxDate);
 	}
-	var title=[["组织架构","发展用户数","流失用户数"]];
+	var title=[["组织架构","发展用户数","三无极低用户数"]];
 	var field=["ROW_NAME","DEV_NUM","SWJD_NUM"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
