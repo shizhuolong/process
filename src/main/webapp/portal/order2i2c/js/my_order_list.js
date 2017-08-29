@@ -109,7 +109,7 @@ function search(pageNumber) {
 	    }else{
 	    	 sql+=" AND T2.GROUP_ID_1='"+region+"'";    	
 	    }
-	}
+	} 
 	if(activeStatus){
 		sql+=" AND T2.ACTIVE_STATUS='"+activeStatus+"'                       		";
 	}
