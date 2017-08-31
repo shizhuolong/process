@@ -1,6 +1,6 @@
 var nowData;
-var title = [["地市","基层单元","HR编码","人员姓名","角色类型","发展任务","发展完成","发展任务完成率","积分任务","积分完成","积分任务完成率","收入任务","收入完成","收入任务完成率"]];
-var field = ["GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","TASK_DEV","DEV_COUNT","DEV_COMPLETE","TASK_JF","JF_COUNT","JF_COMPLETE","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE"];
+var title = [["地市","基层单元","HR编码","人员姓名","角色类型","发展任务","发展完成","发展任务完成率","积分任务","积分完成","积分任务完成率","收入任务","收入完成","收入任务完成率","月度发展任务","月度发展完成","月度发展任务完成率"]];
+var field = ["GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","TASK_DEV","DEV_COUNT","DEV_COMPLETE","TASK_JF","JF_COUNT","JF_COMPLETE","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","TASK_DEV_MON","DEV_COUNT_MON","DEV_COMPLETE_MON"];
 var report = null;
 var dealDate = "";
 var downSql="";
@@ -115,7 +115,10 @@ function getsql() {
 		",TASK_INCOME                              "+
 		",TOTAL_FEE                                "+
 		",INCOME_COMPLETE                          "+
-		"FROM PMRT.TB_MRT_KPI_COMPLETE_MON WHERE DEAL_DATE="+dealDate;
+		",TASK_DEV_MON"+
+		",DEV_COUNT_MON"+
+		",DEV_COMPLETE_MON"+
+		" FROM PMRT.TB_MRT_KPI_COMPLETE_MON WHERE DEAL_DATE="+dealDate;
 	
 
 	if (regionCode != '') {
