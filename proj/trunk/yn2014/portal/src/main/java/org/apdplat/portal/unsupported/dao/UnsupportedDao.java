@@ -10,6 +10,8 @@ import java.util.Map;
 
 
 
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 
@@ -65,5 +67,7 @@ public interface UnsupportedDao {
 			Map<String, String> params);
 
 	public void deleteFilesByWorkNo(Map<String, String> params);
+
+	public List<Map<String, String>> isHqCodePass(Map<String, String> resultMap);
 	
 }

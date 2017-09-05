@@ -156,4 +156,9 @@
 	    DELETE FROM TAB_INIT_FILE_MSG WHERE INIT_ID=#{workNo}
 	</delete>
 	
+	<select id="isHqCodePass" parameterType="java.util.Map" resultType="java.util.Map">
+	   SELECT * FROM PAPP.TAB_COMM_IMPORT_TEMP WHERE AGENTID NOT IN (SELECT A.BSS_CHNL_CODE FROM PCDE.TB_CDE_CHANL_CODE A)
+	     AND ACCOUNT_ID=#{username}
+		AND GROUP_ID=#{code}
+	</select>
 </mapper>
