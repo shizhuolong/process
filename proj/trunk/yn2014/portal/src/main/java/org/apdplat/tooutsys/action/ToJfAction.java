@@ -40,6 +40,20 @@ public class ToJfAction  extends BaseAction{
 			e.printStackTrace();
 		}
 	}
+	
+	public void redirectToReport(){
+		ServletContext  app= ServletActionContext.getServletContext();
+		User u=UserHolder.getCurrentLoginUser();
+		String userName=u.getUsername();
+		try {
+			String loginUrl="http://130.86.11.242:8888/dss3/noLand.do?staffId="+userName+"&pageNo=1000020354";
+			ServletActionContext.getResponse().sendRedirect(loginUrl);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void valid(){
 		ServletContext  app= ServletActionContext.getServletContext();
 		
