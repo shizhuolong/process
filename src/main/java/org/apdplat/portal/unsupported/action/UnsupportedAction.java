@@ -193,7 +193,17 @@ public class UnsupportedAction extends BaseAction{
 						conn.setAutoCommit(true);
 						conn.close();
 					}
-					
+					if(pay_address.equals("BSS系统")){
+						List<Map<String,String>> l=unsupportedService.isHqCodePass(resultMap);
+						if(l!=null&&l.size()>0){
+							resultMsg="渠道编码";
+							for(int i=0;i<l.size();i++){
+								resultMsg+=l.get(i).get("AGENTID")+" ";
+							}
+							resultMsg+="不存在于系统,请检查！";
+							this.reponseJson(resultMsg);
+						}
+					}
 					if("".equals(resultMsg)) {
 						//将临时表数据关联出地市和营服中心信息导入到结果表中
 						Map<String, String> map = new HashMap<String, String>();
@@ -241,6 +251,9 @@ public class UnsupportedAction extends BaseAction{
 		}
 		if(input[9].equals("")&&input[10].equals("")){
 			return "第10、11列总额与净额数据不能都为空,请编辑！";
+		}
+		if(input[11].equals("")){
+			return "第12列电话号码不能为空,请编辑！";
 		}
 		return null;
 	}

@@ -160,5 +160,9 @@ public class UnsupportedService {
 		return unsupportedDao.queryFiles(initId);
 	}
 
+	public List<Map<String, String>> isHqCodePass(Map<String, String> resultMap) {
+		return unsupportedDao.isHqCodePass(resultMap);
+	}
+
 
 }

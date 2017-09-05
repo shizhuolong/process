@@ -63,6 +63,7 @@
 		UPDATE PMRT.TAB_MRT_COMM_FLOW_MON 
    			SET INIT_ID = #{workNo}
  		WHERE BILLINGCYCLID=TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'yyyymm') AND INIT_ID IS NULL
+ 	    AND GROUP_ID_1=#{code}
 	</update>
 	
 	<select id="listByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">

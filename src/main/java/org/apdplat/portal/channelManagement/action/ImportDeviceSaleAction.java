@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -101,6 +102,13 @@ public class ImportDeviceSaleAction extends BaseAction {
 					}
 					pre.executeBatch();
 					conn.commit();//手动提交
+					String csql="SELECT * FROM PMRT.TB_MRT_BUS_DEVICE_SALE_TEMP3 WHERE MODEL_TYPE IS NULL";
+					List<Map<String,Object>> l=SpringManager.getFindDao().find(csql);
+					if(l!=null&&l.size()>0){
+						err.add("模式不能为空，请检查！");
+						Struts2Utils.getRequest().setAttribute("err", err);
+						return "error";
+					}
 					importToResult();
 				}
 			} catch (Exception e) {
