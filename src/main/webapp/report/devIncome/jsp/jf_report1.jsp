@@ -30,7 +30,7 @@
 </body>
 <script>
   var username=$("#username").val();
-  var jfUrl="http://130.86.11.242:8888/dss3/report.show.top.do?paramsNoUse="+username+"&reportId=1000020360&frameType=inFrame";
+  var jfUrl="http://130.86.11.242:8888/dss3/noLand.do?staffId="+username+"&pageNo=1000020360";
   window.location.href=jfUrl;
 </script>
 </html>
