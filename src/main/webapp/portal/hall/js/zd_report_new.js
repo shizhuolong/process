@@ -81,7 +81,7 @@ function downsAll(){
 }
 
 function getSql(dealDate){
-	return "SELECT "+field.join(",")+" FROM PMRT.MRT_BUS_ZY_ZD_REPORT_NEW WHERE DEAL_DATE='"+dealDate+"'";
+	return "SELECT "+field.join(",")+" FROM PMRT.MRT_BUS_ZY_ZD_REPORT_NEW WHERE DEAL_DATE='"+dealDate+"' ORDER BY DB_RANK";
 }
 
 
