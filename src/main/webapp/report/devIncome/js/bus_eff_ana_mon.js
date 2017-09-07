@@ -132,8 +132,8 @@ function getSql(orgLevel,where){
 		"       '--' YYY_TYPE,                                                                         "+
 		"       '--' CHNL_TYPE,                                                                        "+
 		"       '--' OPERATE_TYPE,                                                                     "+
-		"       SUM(NVL(T.SR_ACC, 0)) SR_ACC,                                                          "+
-		"       SUM(NVL(T.SR_NEW, 0)) SR_NEW,                                                          "+
+		"       SUM(NVL(ROUND(T.SR_ACC/10000,3), 0)) SR_ACC,                                                          "+
+		"       SUM(NVL(ROUND(T.SR_NEW/10000,3), 0)) SR_NEW,                                                          "+
 		"       SUM(NVL(T.DEV_NEW, 0)) DEV_NEW,                                                        "+
 		"       SUM(NVL(T.ACCEPT, 0)) ACCEPT,                                                          "+
 		"       SUM(NVL(T.MON_RENT, 0)) MON_RENT,                                                      "+
@@ -148,7 +148,7 @@ function getSql(orgLevel,where){
 		"       SUM(NVL(T.PER_COST, 0)) PER_COST,                                                      "+
 		"       SUM(NVL(T.JMWB, 0)) JMWB,                                                              "+
 		"       SUM(NVL(T.GT_RENT, 0)) GT_RENT,                                                        "+
-		"       SUM(NVL(T.ML_SR_ACC, 0)) ML_SR_ACC,                                                    "+
+		"       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T.SR_ACC, 0)) <> 0 THEN                            "+
 		"                               SUM(NVL(T.ML_SR_ACC, 0)) * 100 / SUM(NVL(T.SR_ACC, 0))         "+
@@ -156,7 +156,7 @@ function getSql(orgLevel,where){
 		"                               0                                                              "+
 		"                            END || '%',                                                       "+
 		"                            2) ML_RATE,                                                       "+
-		"       SUM(NVL(T4.ML_SR_ACC, 0)) ML_SR_ACC1,                                                  "+
+		"       SUM(NVL(ROUND(T4.ML_SR_ACC/10000,3), 0)) ML_SR_ACC1,                                                  "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T4.SR_ACC, 0)) <> 0 THEN                           "+
 		"                               SUM(NVL(T4.ML_SR_ACC, 0)) * 100 / SUM(NVL(T4.SR_ACC, 0))       "+
@@ -262,8 +262,8 @@ function getSql(orgLevel,where){
 		"       '--' YYY_TYPE,                                                                         "+
 		"       '--' CHNL_TYPE,                                                                        "+
 		"       '--' OPERATE_TYPE,                                                                     "+
-		"       SUM(NVL(T.SR_ACC, 0)) SR_ACC,                                                          "+
-		"       SUM(NVL(T.SR_NEW, 0)) SR_NEW,                                                          "+
+		"       SUM(NVL(ROUND(T.SR_ACC/10000,3), 0)) SR_ACC,                                                  "+
+		"       SUM(NVL(ROUND(T.SR_NEW/10000,3), 0)) SR_NEW,                                                  "+
 		"       SUM(NVL(T.DEV_NEW, 0)) DEV_NEW,                                                        "+
 		"       SUM(NVL(T.ACCEPT, 0)) ACCEPT,                                                          "+
 		"       SUM(NVL(T.MON_RENT, 0)) MON_RENT,                                                      "+
@@ -278,7 +278,7 @@ function getSql(orgLevel,where){
 		"       SUM(NVL(T.PER_COST, 0)) PER_COST,                                                      "+
 		"       SUM(NVL(T.JMWB, 0)) JMWB,                                                              "+
 		"       SUM(NVL(T.GT_RENT, 0)) GT_RENT,                                                        "+
-		"       SUM(NVL(T.ML_SR_ACC, 0)) ML_SR_ACC,                                                    "+
+		"       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T.SR_ACC, 0)) <> 0 THEN                            "+
 		"                               SUM(NVL(T.ML_SR_ACC, 0)) * 100 / SUM(NVL(T.SR_ACC, 0))         "+
@@ -286,7 +286,7 @@ function getSql(orgLevel,where){
 		"                               0                                                              "+
 		"                            END || '%',                                                       "+
 		"                            2) ML_RATE,                                                       "+
-		"       SUM(NVL(T4.ML_SR_ACC, 0)) ML_SR_ACC1,                                                  "+
+		"       SUM(NVL(ROUND(T4.ML_SR_ACC/10000,3), 0)) ML_SR_ACC1, "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T4.SR_ACC, 0)) <> 0 THEN                           "+
 		"                               SUM(NVL(T4.ML_SR_ACC, 0)) * 100 / SUM(NVL(T4.SR_ACC, 0))       "+
@@ -401,8 +401,8 @@ function getSql(orgLevel,where){
 		"      ,YYY_TYPE                                                                                                "+
 		"      ,CHNL_TYPE                                                                                               "+
 		"      ,OPERATE_TYPE                                                                                            "+
-		"      ,SR_ACC                                                                                                  "+
-		"      ,SR_NEW                                                                                                  "+
+		"      ,ROUND(SR_ACC/10000,3) SR_ACC                                                                                                  "+
+		"      ,ROUND(SR_NEW/10000,3) SR_NEW                                                                                                  "+
 		"      ,DEV_NEW                                                                                                 "+
 		"      ,ACCEPT                                                                                                  "+
 		"      ,MON_RENT                                                                                                "+
@@ -417,9 +417,9 @@ function getSql(orgLevel,where){
 		"      ,PER_COST                                                                                                "+
 		"      ,JMWB                                                                                                    "+
 		"      ,GT_RENT                                                                                                 "+
-		"      ,ML_SR_ACC                                                                                               "+
+		"      ,ROUND(ML_SR_ACC/10000,3) ML_SR_ACC                                                                                               "+
 		"      ,ML_RATE                                                                                                 "+
-		"      ,ML_SR_ACC1                                                                                              "+
+		"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                              "+
 		"      ,ML_RATE1                                                                                                "+
 		"      ,ML_RATEL                                                                                                "+
 		"      ,ML_RATE_LTMN                                                                                            "+
