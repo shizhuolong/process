@@ -136,18 +136,18 @@ function getSql(orgLevel,where){
 		"       SUM(NVL(ROUND(T.SR_NEW/10000,3), 0)) SR_NEW,                                                          "+
 		"       SUM(NVL(T.DEV_NEW, 0)) DEV_NEW,                                                        "+
 		"       SUM(NVL(T.ACCEPT, 0)) ACCEPT,                                                          "+
-		"       SUM(NVL(T.MON_RENT, 0)) MON_RENT,                                                      "+
-		"       SUM(T.MON_RENT_ZY) MON_RENT_ZY,                                                        "+
-		"       SUM(NVL(T.WE_FEE, 0)) WE_FEE,                                                          "+
-		"       SUM(NVL(T.RENT_MAN_MON, 0)) RENT_MAN_MON,                                              "+
-		"       SUM(NVL(T.SECURITY, 0)) SECURITY,                                                      "+
-		"       SUM(NVL(T.FIT_FEE, 0)) FIT_FEE,                                                        "+
-		"       SUM(NVL(T.COMM_ACC_JZ, 0)) COMM_ACC_JZ,                                                "+
-		"       SUM(NVL(T.COMM_ACC_QDBT, 0)) COMM_ACC_QDBT,                                            "+
-		"       SUM(NVL(T.ZDBT1, 0)) ZDBT1,                                                            "+
-		"       SUM(NVL(T.PER_COST, 0)) PER_COST,                                                      "+
-		"       SUM(NVL(T.JMWB, 0)) JMWB,                                                              "+
-		"       SUM(NVL(T.GT_RENT, 0)) GT_RENT,                                                        "+
+		"       SUM(NVL(ROUND(T.MON_RENT/10000,3), 0)) MON_RENT,                                                      "+
+		"       SUM(ROUND(T.MON_RENT_ZY/10000,3)) MON_RENT_ZY,                                                        "+
+		"       SUM(NVL(ROUND(T.WE_FEE/10000,3), 0)) WE_FEE,                                                          "+
+		"       SUM(NVL(ROUND(T.RENT_MAN_MON/10000,3), 0)) RENT_MAN_MON,                                              "+
+		"       SUM(NVL(ROUND(T.SECURITY/10000,3), 0)) SECURITY,                                                      "+
+		"       SUM(NVL(ROUND(T.FIT_FEE/10000,3), 0)) FIT_FEE,                                                        "+
+		"       SUM(NVL(ROUND(T.COMM_ACC_JZ/10000,3), 0)) COMM_ACC_JZ,                                                "+
+		"       SUM(NVL(ROUND(T.COMM_ACC_QDBT/10000,3), 0)) COMM_ACC_QDBT,                                            "+
+		"       SUM(NVL(ROUND(T.ZDBT1/10000,3）, 0)) ZDBT1,                                                            "+
+		"       SUM(NVL(ROUND(T.PER_COST/10000,3), 0)) PER_COST,                                                      "+
+		"       SUM(NVL(ROUND(T.JMWB/10000,3), 0)) JMWB,                                                              "+
+		"       SUM(NVL(ROUND(T.GT_RENT/10000,3), 0)) GT_RENT,                                                        "+
 		"       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T.SR_ACC, 0)) <> 0 THEN                            "+
@@ -266,18 +266,18 @@ function getSql(orgLevel,where){
 		"       SUM(NVL(ROUND(T.SR_NEW/10000,3), 0)) SR_NEW,                                                  "+
 		"       SUM(NVL(T.DEV_NEW, 0)) DEV_NEW,                                                        "+
 		"       SUM(NVL(T.ACCEPT, 0)) ACCEPT,                                                          "+
-		"       SUM(NVL(T.MON_RENT, 0)) MON_RENT,                                                      "+
-		"       SUM(T.MON_RENT_ZY) MON_RENT_ZY,                                                        "+
-		"       SUM(NVL(T.WE_FEE, 0)) WE_FEE,                                                          "+
-		"       SUM(NVL(T.RENT_MAN_MON, 0)) RENT_MAN_MON,                                              "+
-		"       SUM(NVL(T.SECURITY, 0)) SECURITY,                                                      "+
-		"       SUM(NVL(T.FIT_FEE, 0)) FIT_FEE,                                                        "+
-		"       SUM(NVL(T.COMM_ACC_JZ, 0)) COMM_ACC_JZ,                                                "+
-		"       SUM(NVL(T.COMM_ACC_QDBT, 0)) COMM_ACC_QDBT,                                            "+
-		"       SUM(NVL(T.ZDBT1, 0)) ZDBT1,                                                            "+
-		"       SUM(NVL(T.PER_COST, 0)) PER_COST,                                                      "+
-		"       SUM(NVL(T.JMWB, 0)) JMWB,                                                              "+
-		"       SUM(NVL(T.GT_RENT, 0)) GT_RENT,                                                        "+
+	    "       SUM(NVL(ROUND(T.MON_RENT/10000,3), 0)) MON_RENT,                                                      "+
+		"       SUM(ROUND(T.MON_RENT_ZY/10000,3)) MON_RENT_ZY,                                                        "+
+		"       SUM(NVL(ROUND(T.WE_FEE/10000,3), 0)) WE_FEE,                                                          "+
+		"       SUM(NVL(ROUND(T.RENT_MAN_MON/10000,3), 0)) RENT_MAN_MON,                                              "+
+		"       SUM(NVL(ROUND(T.SECURITY/10000,3), 0)) SECURITY,                                                      "+
+		"       SUM(NVL(ROUND(T.FIT_FEE/10000,3), 0)) FIT_FEE,                                                        "+
+		"       SUM(NVL(ROUND(T.COMM_ACC_JZ/10000,3), 0)) COMM_ACC_JZ,                                                "+
+		"       SUM(NVL(ROUND(T.COMM_ACC_QDBT/10000,3), 0)) COMM_ACC_QDBT,                                            "+
+		"       SUM(NVL(ROUND(T.ZDBT1/10000,3）, 0)) ZDBT1,                                                            "+
+		"       SUM(NVL(ROUND(T.PER_COST/10000,3), 0)) PER_COST,                                                      "+
+		"       SUM(NVL(ROUND(T.JMWB/10000,3), 0)) JMWB,                                                              "+
+		"       SUM(NVL(ROUND(T.GT_RENT/10000,3), 0)) GT_RENT,                                                        "+
 		"       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T.SR_ACC, 0)) <> 0 THEN                            "+
@@ -405,18 +405,18 @@ function getSql(orgLevel,where){
 		"      ,ROUND(SR_NEW/10000,3) SR_NEW                                                                                                  "+
 		"      ,DEV_NEW                                                                                                 "+
 		"      ,ACCEPT                                                                                                  "+
-		"      ,MON_RENT                                                                                                "+
-		"      ,MON_RENT_ZY                                                                                             "+
-		"      ,WE_FEE                                                                                                  "+
-		"      ,RENT_MAN_MON                                                                                            "+
-		"      ,SECURITY                                                                                                "+
-		"      ,FIT_FEE                                                                                                 "+
-		"      ,COMM_ACC_JZ                                                                                             "+
-		"      ,COMM_ACC_QDBT                                                                                           "+
-		"      ,ZDBT1                                                                                                   "+
-		"      ,PER_COST                                                                                                "+
-		"      ,JMWB                                                                                                    "+
-		"      ,GT_RENT                                                                                                 "+
+		"     ,ROUND(MON_RENT/10000,3) MON_RENT                                                                                     "+
+		"     ,ROUND(MON_RENT_ZY/10000,3) MON_RENT_ZY                                                                                    "+
+		"     ,ROUND(WE_FEE/10000,3)    WE_FEE                                                                                      "+
+		"     ,ROUND(RENT_MAN_MON/10000,3) RENT_MAN_MON                                                                                   "+
+		"     ,ROUND(SECURITY/10000,3) SECURITY                                                                                   "+
+		"     ,ROUND(FIT_FEE/10000,3) FIT_FEE                                                                                    "+
+		"     ,ROUND(COMM_ACC_JZ/10000,3)  COMM_ACC_JZ                                                                                   "+
+		"     ,ROUND(COMM_ACC_QDBT/10000,3) COMM_ACC_QDBT                                                                                  "+
+		"     ,ROUND(ZDBT1/10000,3) ZDBT1                                                                                          "+
+		"     ,ROUND(PER_COST/10000,3) PER_COST                                                                                       "+
+		"     ,ROUND(JMWB/10000,3) JMWB                                                                                       "+
+		"     ,ROUND(GT_RENT/10000,3) GT_RENT                                                                                         "+
 		"      ,ROUND(ML_SR_ACC/10000,3) ML_SR_ACC                                                                                               "+
 		"      ,ML_RATE                                                                                                 "+
 		"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                              "+
@@ -581,25 +581,25 @@ function getSql(orgLevel,where){
 		"      ,YYY_TYPE                                                                                                "+
 		"      ,CHNL_TYPE                                                                                               "+
 		"      ,OPERATE_TYPE                                                                                            "+
-		"      ,SR_ACC                                                                                                  "+
-		"      ,SR_NEW                                                                                                  "+
+		"      ,ROUND(SR_ACC/10000,3) SR_ACC                                                                                                  "+
+		"      ,ROUND(SR_NEW/10000,3) SR_NEW                                                                                                 "+
 		"      ,DEV_NEW                                                                                                 "+
 		"      ,ACCEPT                                                                                                  "+
-		"      ,MON_RENT                                                                                                "+
-		"      ,MON_RENT_ZY                                                                                             "+
-		"      ,WE_FEE                                                                                                  "+
-		"      ,RENT_MAN_MON                                                                                            "+
-		"      ,SECURITY                                                                                                "+
-		"      ,FIT_FEE                                                                                                 "+
-		"      ,COMM_ACC_JZ                                                                                             "+
-		"      ,COMM_ACC_QDBT                                                                                           "+
-		"      ,ZDBT1                                                                                                   "+
-		"      ,PER_COST                                                                                                "+
-		"      ,JMWB                                                                                                    "+
-		"      ,GT_RENT                                                                                                 "+
-		"      ,ML_SR_ACC                                                                                               "+
+		"      ,ROUND(MON_RENT/10000,3) MON_RENT                                                                                         "+
+		"      ,ROUND(MON_RENT_ZY/10000,3) MON_RENT_ZY                                                                                          "+
+		"      ,ROUND(WE_FEE/10000,3)     WE_FEE                                                                                          "+
+		"      ,ROUND(RENT_MAN_MON/10000,3)    RENT_MAN_MON                                                                                     "+
+		"      ,ROUND(SECURITY/10000,3)   SECURITY                                                                                      "+
+		"      ,ROUND(FIT_FEE/10000,3) FIT_FEE                                                                                         "+
+		"      ,ROUND(COMM_ACC_JZ/10000,3)     COMM_ACC_JZ                                                                                     "+
+		"      ,ROUND(COMM_ACC_QDBT/10000,3)   COMM_ACC_QDBT                                                                                     "+
+		"      ,ROUND(ZDBT1/10000,3)    ZDBT1                                                                                           "+
+		"      ,ROUND(PER_COST/10000,3)  PER_COST                                                                                           "+
+		"      ,ROUND(JMWB/10000,3)   JMWB                                                                                          "+
+		"      ,ROUND(GT_RENT/10000,3)        GT_RENT                                                                                      "+
+		"      ,ROUND(ML_SR_ACC/10000,3)  ML_SR_ACC                                                                                             "+
 		"      ,ML_RATE                                                                                                 "+
-		"      ,ML_SR_ACC1                                                                                              "+
+		"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                             "+
 		"      ,ML_RATE1                                                                                                "+
 		"      ,ML_RATEL                                                                                                "+
 		"      ,ML_RATE_LTMN                                                                                            "+
