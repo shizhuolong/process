@@ -9,6 +9,7 @@
 <%
 response.addHeader("login_success","true");  
 User loginUser=UserHolder.getCurrentLoginUser();
+String path=request.getContextPath();
 String username="匿名用户";
 String realName="";
 long userId=0;
@@ -124,6 +125,11 @@ if(loginUser!=null){
             		showConfigDialog();
             	}
             }
+            
+            function toHelp(){
+            	window.location.href="<%=path%>/portalHtml/index.html";
+            }
+            
             function showConfigDialog(){
             	$("#center-panel").find("#indexPage:visible").find("IFRAME")[0].contentWindow.showConfigDialog(); 
             }
@@ -155,6 +161,7 @@ if(loginUser!=null){
                     <ul class="head-info-user clearfix mt5">
                         <li><a href="javascript:void(0);" onclick="logout();"><i id="logout-icon"></i>退出</a></li>
                         <li><a href="javascript:void(0);" onclick='configDesk();'><i id="editPsw-icon"></i>工作台配置</a></li>
+                        <li><a href="javascript:void(0);" onclick='toHelp();'><i id="editPsw-icon"></i>激发助手</a></li>
                         <li><a href="javascript:void(0);" onclick='ModifyWindow.show();'><i id="editPsw-icon"></i>修改密码</a></li>
                     	<li><span>服务热线：186-6927-9970&nbsp;&nbsp;&nbsp;QQ交流群：146461273</span></li>
                     </ul>
