@@ -154,18 +154,20 @@ public class ImportBaseAction extends BaseAction {
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
-							    	if(getCellValue(row.getCell(i)).contains(".0")){
-							    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
-							    		Struts2Utils.getRequest().setAttribute("err", err);
-										return "error";
+							    	if(i==10){
+							    		if(getCellValue(row.getCell(i)).contains(".0")){
+								    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
+								    		Struts2Utils.getRequest().setAttribute("err", err);
+											return "error";
+								    	}
 							    	}
-							    	if(Integer.parseInt(getCellValue(row.getCell(10)))<Integer.parseInt(getCellValue(row.getCell(9)))){
+							    	if(Double.valueOf(getCellValue(row.getCell(10)))<Double.valueOf(getCellValue(row.getCell(9)))){
 							    		err.add("零售价不能低于进货价，请检查！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
 							    }
-								pre.setString(i+1,getCellValue(row.getCell(i)));
+							    pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
 						pre.addBatch();
 					}
