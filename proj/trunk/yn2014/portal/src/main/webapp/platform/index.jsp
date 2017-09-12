@@ -127,7 +127,7 @@ if(loginUser!=null){
             }
             
             function toHelp(){
-            	window.location.href="<%=path%>/portalHtml/index.html";
+            	window.open("<%=path%>/portalHtml/index.html");
             }
             
             function showConfigDialog(){
