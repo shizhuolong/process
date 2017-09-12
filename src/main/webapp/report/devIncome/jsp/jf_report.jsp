@@ -31,7 +31,6 @@
 <script>
   var username=$("#username").val();
   var jfUrl="http://130.86.11.242:8888/dss3/noLand.do?staffId="+username+"&pageNo=1000020354";
-  //jfUrl="http://www.baidu.com";
-  window.location.href=jfUrl;
+  window.open(jfUrl);
 </script>
 </html>
