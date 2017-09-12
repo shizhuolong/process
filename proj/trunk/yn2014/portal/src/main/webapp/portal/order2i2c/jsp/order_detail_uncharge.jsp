@@ -65,7 +65,7 @@
 				<td width="4%">
 					<input class="default-text-input wper80" name="serviceNumber" type="text" id="serviceNumber"/>
 				</td>
-				<td width="6%">
+				<td width="10%">
 				  <a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 				  <a class="default-btn" href="#" style="float: right;" onclick="exportAll()">导出</a>
 			    </td>
