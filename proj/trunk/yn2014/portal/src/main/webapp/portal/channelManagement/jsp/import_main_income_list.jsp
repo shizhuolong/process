@@ -10,9 +10,7 @@
      User user = UserHolder.getCurrentLoginUser();
      Org org = user.getOrg();
      String path = request.getContextPath();
-     Calendar ca=Calendar.getInstance();
- 	 ca.add(Calendar.MONTH, -1);
- 	 String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
+     String dealDate=request.getParameter("dealDate");
 %>
 <html>
 <head>
@@ -35,7 +33,7 @@
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width:60%;font-size:60%;">
 					<tr>
-						<td  width="1%">账期：</td>
+						<td  width="2%">账期：</td>
 						<td width="1%">
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate" name="dealDate"/>
