@@ -138,6 +138,7 @@ public class ImportMainIncomeAction extends BaseAction {
 		   Struts2Utils.getRequest().setAttribute("err", err);
 		   return "error";
 		}
+		Struts2Utils.getRequest().setAttribute("dealDate", dealDate);
 		return "success";
 	}
 
