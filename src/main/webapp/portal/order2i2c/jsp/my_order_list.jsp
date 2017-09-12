@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>订单明细-未首充</title>
+<title>订单明细-未激活</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/my_order_list.js?v=8"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/my_order_list.js?v=9"></script>
 <script type="text/javascript">
     var paths="<%=path%>";
 </script>
@@ -55,7 +55,7 @@
 				<td width="15%"><select class="default-text-input wper80"
 					name="serviceName" id="serviceName">
 				</select></td>
-				<td><a class="default-btn fLeft mr10" style="float: right;" href="#" id="searchBtn">查询</a>
+				<td><a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 				<a class="default-btn" href="#" onclick="exportAll()"
 						style="float: right; margin-right: 30px;">导出</a>
 				</td>

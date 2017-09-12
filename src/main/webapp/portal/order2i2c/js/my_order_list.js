@@ -64,69 +64,61 @@ function search(pageNumber) {
 	var orderNo=$("#orderNo").val();
 	var serviceNumber=$("#serviceNumber").val();
 	var bookNum=$("#bookNum").val();
-	var sql="SELECT T2.ORDER_NO                                               "+
-	"      ,T2.ORDER_TIME                                                     "+
-	"      ,T2.GROUP_ID_0_NAME                                                "+
-	"      ,T2.GROUP_ID_1_NAME                                                "+
-	"      ,T2.CITY_NAME                                                      "+
-	"      ,T2.SHOOP_OFF                                                      "+
-	"      ,T2.SHOOP_RECE                                                     "+
-	"      ,T2.ORDER_STATUS                                                   "+
-	"      ,T2.CUST_NAME                                                      "+
-	"      ,T2.CARD_ID                                                        "+
-	"      ,T2.BOOK_NUM                                                       "+
-	"      ,T2.SEX                                                            "+
-	"      ,T2.AGE                                                            "+
-	"      ,T2.PRODUCT_NAME                                                   "+
-	"      ,T2.SERVICE_NUMBER                                                 "+
-	"      ,T2.ADDR_NAME                                                      "+
-	"      ,T2.LOG_TRACK                                                      "+
-	"      ,T2.ACTIVE_STATUS                                                  "+
-	"      ,T2.ACTIVE_RG                                                      "+
-	"      ,TI.NAME                                                           "+
-	"      ,T3.INSERT_TIME                                                    "+
-	"      ,CASE WHEN T3.OUTBOUND LIKE'%失败%' THEN T3.OUTBOUND END FAIL_CAUSE "+
-	"      ,CASE WHEN T3.OUTBOUND LIKE'%成功%' THEN T3.OUTBOUND END SUCC_CAUSE "+
-	"      ,T3.OTHER_CAUSE                                                    "+
-	"      ,T3.REMARK                                                         "+
-	"      ,T2.ACTIVE_TIME                                                    "+
-	"      ,CASE WHEN T3.OUTBOUND LIKE'%成功%' THEN '是'ELSE '否' END IS_SUCC    "+
-	"  FROM PODS.TAB_ODS_2I2C_ASS_TASK_DETAIL T1,                             "+
-	"       PODS.TAB_ODS_2I2C_ASS_TASK        T,                              "+
-	"       PODS.TAB_ODS_2I2C_LEAD_DAY        t2,                             "+
-	"       PORTAL.TAB_PORTAL_2I2C_TEAM       ti,                             "+
-	"       PODS.VIEW_ODS_2I2C_REMARK         T3                              "+
-	" WHERE T1.ORDER_NO = T2.ORDER_NO                                         "+
-	"   AND T.WORK_NO = T1.WORK_NO                                            "+
-	"   AND T1.NAME_ID = TI.ID                                                "+
-	"   AND T2.ORDER_NO=T3.ORDER_NO(+)                                        "+
-	"   AND NVL(T3.IS_TYPE,1)=1                                               ";
+	var sql="SELECT ORDER_NO                                               "+
+	"      ,ORDER_TIME                                                     "+
+	"      ,GROUP_ID_0_NAME                                                "+
+	"      ,GROUP_ID_1_NAME                                                "+
+	"      ,CITY_NAME                                                      "+
+	"      ,SHOOP_OFF                                                      "+
+	"      ,SHOOP_RECE                                                     "+
+	"      ,ORDER_STATUS                                                   "+
+	"      ,CUST_NAME                                                      "+
+	"      ,CARD_ID                                                        "+
+	"      ,BOOK_NUM                                                       "+
+	"      ,SEX                                                            "+
+	"      ,AGE                                                            "+
+	"      ,PRODUCT_NAME                                                   "+
+	"      ,SERVICE_NUMBER                                                 "+
+	"      ,ADDR_NAME                                                      "+
+	"      ,LOG_TRACK                                                      "+
+	"      ,ACTIVE_STATUS                                                  "+
+	"      ,ACTIVE_RG                                                      "+
+	"      ,NAME                                                           "+
+	"      ,INSERT_TIME                                                    "+
+	"      ,FAIL_CAUSE "+
+	"      ,SUCC_CAUSE "+
+	"      ,OTHER_CAUSE                                                    "+
+	"      ,REMARK                                                         "+
+	"      ,ACTIVE_TIME                                                    "+
+	"      ,IS_SUCC    "+
+	"  FROM PODS.VIEW_ODS_2I2C_ACTIVE_DAY                                 "+
+	" WHERE 1=1 ";
 	var s;
     if(orgLevel!=1){
 		s=query("SELECT userid FROM PORTAL.TAB_PORTAL_2I2C_TEAM WHERE userid="+userId);
 	    if(s!=null&&s.length>0){
-			 sql+=" AND ti.USERID='"+userId+"'"; 
+			 sql+=" AND USERID='"+userId+"'"; 
 	    }else{
-	    	 sql+=" AND T2.GROUP_ID_1='"+region+"'";    	
+	    	 sql+=" AND GROUP_ID_1='"+region+"'";    	
 	    }
 	} 
 	if(activeStatus){
-		sql+=" AND T2.ACTIVE_STATUS='"+activeStatus+"'                       		";
+		sql+=" AND ACTIVE_STATUS='"+activeStatus+"'                       		";
 	}
 	if(isFirst){
-		sql+=" AND T2.IS_FIRST='"+isFirst+"'                       		            ";
+		sql+=" AND IS_FIRST='"+isFirst+"'                       		            ";
 	}
 	if(serviceName){
-		sql+=" AND T2.SERVICE_NAME='"+serviceName+"'                       		    ";
+		sql+=" AND SERVICE_NAME='"+serviceName+"'                       		    ";
 	}
 	if(orderNo){
-		sql+=" AND T2.ORDER_NO='"+orderNo+"'                       		            ";
+		sql+=" AND ORDER_NO='"+orderNo+"'                       		            ";
 	}
 	if(serviceNumber){
-		sql+=" AND T2.SERVICE_NUMBER='"+serviceNumber+"'                       		";
+		sql+=" AND SERVICE_NUMBER='"+serviceNumber+"'                       		";
 	}
 	if(bookNum){
-		sql+=" AND T2.BOOK_NUM='"+bookNum+"'                       		            ";
+		sql+=" AND BOOK_NUM='"+bookNum+"'                       		            ";
 	}
 	//排序
 	if (orderBy != '') {
