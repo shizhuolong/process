@@ -5,7 +5,7 @@ var report = null;
 var downSql="";
 var dealDate="";
 $(function() {
-	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_HQ_DEV_DETAIL_MON"));
+	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_HQ_DEV_USER_DETAIL_MON"));
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -84,7 +84,7 @@ function getSql(dealDate){
 	var unitCode=$("#unitCode").val();
 	var product_name=$("#product_name").val();
 	var hq_chan_code=$("#hq_chan_code").val();
-	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	var where=" WHERE 1=1";
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
@@ -110,6 +110,6 @@ function getSql(dealDate){
 	"            THEN '是'                             "+
 	"            ELSE '否'                             "+
 	"            END      IS_4G_NET                   "+
-	"FROM  PMRT.TB_MRT_HQ_DEV_DETAIL_MON              "+
+	"FROM  PMRT.TB_MRT_HQ_DEV_USER_DETAIL_MON PARTITION(P"+dealDate+")"+
 	where;
 }
