@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["分公司","区县","宽带账号","用户名","装机地址","联系电话","套餐ID","套餐名称","入网时间","状态","局站","接入方式","宽带速率","代理商ID","代理商名称","渠道经理"]];
-var field=["GROUP_ID_1_NAME","GROUP_ID_2_NAME","DEVICE_NUMBER","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_ID","PRODUCT_NAME","INNET_DATE","STATUS_NAME","EXCH_NAME","INPUT_TYPE","SPEED_M","HQ_CHAN_CODE","HQ_CHAN_NAME","HQ_NAME"];
+var title=[["分公司","区县","宽带账号","用户名","装机地址","联系电话","套餐ID","套餐名称","入网时间","状态","局站","接入方式","宽带速率","代理商ID","代理商名称","渠道经理","余额","续费金额"]];
+var field=["GROUP_ID_1_NAME","GROUP_ID_2_NAME","DEVICE_NUMBER","CUSTOMER_NAME","STD_6_NAME","CONTACT_PHONE","PRODUCT_ID","PRODUCT_NAME","INNET_DATE","STATUS_NAME","EXCH_NAME","INPUT_TYPE","SPEED_M","HQ_CHAN_CODE","HQ_CHAN_NAME","HQ_NAME","BALANCE","KDXF"];
 var report = null;
 var downSql="";
 var dealDate="";
