@@ -1,5 +1,5 @@
 var nowData;
-var title = [["地市","基层单元","HR编码","人员姓名","角色类型","发展任务","发展完成","发展任务完成率","积分任务","积分完成","积分任务完成率","收入任务","收入完成","收入任务完成率","月度发展任务","月度发展完成","月度发展任务完成率"]];
+var title = [["地市","基层单元","HR编码","人员姓名","角色类型","发展任务累计","发展完成累计","发展任务完成率累计","积分任务","积分完成","积分任务完成率","收入任务","收入完成","收入任务完成率","分月发展任务","分月发展完成","分月发展任务完成率"]];
 var field = ["GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","TASK_DEV","DEV_COUNT","DEV_COMPLETE","TASK_JF","JF_COUNT","JF_COMPLETE","TASK_INCOME","TOTAL_FEE","INCOME_COMPLETE","TASK_DEV_MON","DEV_COUNT_MON","DEV_COMPLETE_MON"];
 var report = null;
 var dealDate = "";
@@ -100,8 +100,8 @@ function getsql() {
 	var code = $("#code").val();
 	var orderBy = "";
 
-	var sql = "SELECT DEAL_DATE                    "+
-		",GROUP_ID_1_NAME                          "+
+	var sql = "SELECT                              "+
+		"GROUP_ID_1_NAME                          "+
 		",UNIT_NAME                                "+
 		",HR_ID                                    "+
 		",NAME                                     "+
@@ -149,7 +149,6 @@ function getsql() {
 
 // ///////////////////////下载开始/////////////////////////////////////////////
 function downsAll() {
-	var title = [["账期","地市","基层单元","HR编码","人员姓名","角色类型","发展任务","发展完成","发展任务完成率","积分任务","积分完成","积分任务完成率","收入任务","收入完成","收入任务完成率"]];
 	showtext = 'KPI完成率汇总-' + dealDate;
 	downloadExcel(downSql, title, showtext);
 }
