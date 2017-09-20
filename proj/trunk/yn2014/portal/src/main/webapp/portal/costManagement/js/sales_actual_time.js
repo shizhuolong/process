@@ -156,7 +156,9 @@ function showDataDetail(orgCode,orgName,dayStr,orgLevel,devType,dealDate){
 		  		{field:'SUBSCRIPTION_ID',title:'用户编码',width:130},
 		  		{field:'SERVICE_NUM',title:'用户号码',width:97},
 		  		{field:'WG_NET_TYPE',title:'网别',width:50},
-		  		{field:'JOIN_DATE',title:'入网时间',width:100}
+		  		{field:'JOIN_DATE',title:'入网时间',width:100},
+		  		{field:'PRODUCT_ID',title:'套餐编码',width:100},
+		  		{field:'PRODUCT_NAME',title:'套餐名称',width:100},
 		      ]]
 	});
 	/*$("#chanlDataDeatil").find(".datagrid-toolbar").find("A").css({
@@ -282,7 +284,9 @@ function downsAll(orgCode,orgName,dealDate,orgLevel,devType,dealDate){
 				"        T.SUBSCRIPTION_ID, 					"+	//--用户编码
 				"        T.SERVICE_NUM, 						"+	//--用户号码
 				"        T.WG_NET_TYPE, 						"+	//--网别
-				"        T.JOIN_DATE 							"+	//--入网时间
+				"        T.JOIN_DATE,							"+	//--入网时间
+				"        T.PRODUCT_ID,							"+	//--套餐编号
+				"        T.PRODUCT_NAME 						"+	//--套餐名称
 				"   FROM PODS.VIEW_ODS_DEVE_INFO_HOUR T         "+
 				//显示数据为(给定时间dealDate)当天的零点到给定时间(到小时)之间的数据,传入参数dayStr作为查询时候DEAL_DATE参数，dealDate为入网时间JOIN_DATE的参数
 				"  WHERE SUBSTR(T.DEAL_DATE, 1, 8) = '"+dayStr+"' AND T.JOIN_DATE<='"+dealDate+"'" ;
@@ -301,7 +305,7 @@ function downsAll(orgCode,orgName,dealDate,orgLevel,devType,dealDate){
 		sql+=" AND T.WG_NET_TYPE ='"+devType+"'";
 	}
 	
-	var title=[["账期","地市名称","营服名称","渠道编码","渠道名称","BSS发展编码","直销礼包编码","HR编码","直销人/渠道经理","用户编码","用户号码","网别","入网时间"]];
+	var title=[["账期","地市名称","营服名称","渠道编码","渠道名称","BSS发展编码","直销礼包编码","HR编码","直销人/渠道经理","用户编码","用户号码","网别","入网时间","套餐编号","套餐名称"]];
 	showtext = "("+orgName+")("+devType+")实时销量明细-"+dealDate;
 	downloadExcel(sql,title,showtext);
 }
