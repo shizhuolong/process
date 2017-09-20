@@ -28,12 +28,13 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/income_mon_list.js?v=10"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/income_mon_list.js?v=15"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
+	<input type="hidden" id="username" value="<%=user.getUsername()%>">
 	<div class="search-div">
 				<table style="margin: 0px 0; border:none;width:100%;font-size:100%;">
 					<tr>
@@ -59,6 +60,9 @@
 					    <td width="1%">
 						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="exportBtn" onclick="exportData()">导出</a>
 					    </td>
+					    <td width="1%" id="confirmTd">
+						    <a style="cursor:pointer;margin-left: 20px;" class="default-btn" id="confirmBtn" onclick="confirmImport()">确认</a>
+					    </td> 
 					</tr>
 				</table>
 	</div>
