@@ -36,7 +36,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/jquery-easyui-1.4.5/echarts.min.js"></script> 
  <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script> 
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/sales_actual_time.js"></script> 
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/sales_actual_time.js?v=1"></script> 
 <style type="text/css">
 /* 让toolbar位置右显示css样式 */
 .datagrid-toolbar {
