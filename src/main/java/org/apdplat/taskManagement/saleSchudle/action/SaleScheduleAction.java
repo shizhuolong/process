@@ -2,11 +2,16 @@ package org.apdplat.taskManagement.saleSchudle.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +44,8 @@ public class SaleScheduleAction extends BaseAction {
 	private FileDocumentService fileDocumentService;
 	@Autowired
 	private CommonParamService commonParamService;
+	@Resource
+	DataSource dataSource;
 	
 	private String saleType;
 	private String sumTaskInfoJsonStr;	//任务汇总json串
@@ -300,6 +307,17 @@ public class SaleScheduleAction extends BaseAction {
 			List<TaskRegionBean> detailList = JsonUtils.jsonInfo2TaskRegionBeanList(taskInfoJsonStr);
 			saleScheduleService.addChanlManagerTask(taskId,taskCode,detailList);
 			resultInfo.setCode(ResultInfo._CODE_OK_);
+			Connection conn =null;
+			CallableStatement stmt=null;
+			//调用存储过程
+			conn = dataSource.getConnection();
+			stmt = conn.prepareCall("{CALL PORTAL.PRC_PORTAL_TASK_DETAIL(?,?)}");
+			String dateValue=request.getParameter("dateValue");
+			stmt.setString(1,dateValue);
+			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
+			stmt.executeUpdate();
+			conn.close();
+			stmt.close();
 			resultInfo.setMsg("操作成功！");
 		}catch(BusiException e) {
 			logger.error(e.getMessage(),e);

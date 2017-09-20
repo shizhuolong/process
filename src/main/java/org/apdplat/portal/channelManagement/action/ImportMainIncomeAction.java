@@ -65,7 +65,7 @@ public class ImportMainIncomeAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_MAIN_INCOME_MON_TEMP";
-		String field="INSERT_TIME,DEAL_DATE,LOGIN_NAME,GROUP_ID_1,GROUP_ID_1_NAME,ALL_INCOME_NUM,MOB_INCOME_NUM,INCOME_4G_NUM,INCOME_3G_NUM,INCOME_2G_NUM,INCOME_NET_NUM,NOT_ICT_NUM,INCOME_ICT_NUM,INCOME_IDT_NUM,HX_FLOW";
+		String field="IS_CONFIRM,INSERT_TIME,DEAL_DATE,LOGIN_NAME,GROUP_ID_1,GROUP_ID_1_NAME,ALL_INCOME_NUM,MOB_INCOME_NUM,INCOME_4G_NUM,INCOME_3G_NUM,INCOME_2G_NUM,INCOME_NET_NUM,NOT_ICT_NUM,INCOME_ICT_NUM,INCOME_IDT_NUM,HX_FLOW";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -90,7 +90,7 @@ public class ImportMainIncomeAction extends BaseAction {
 					int start = sheet.getFirstRowNum()+3;
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+resultTableName+"("+field+") values(sysdate,'"+dealDate+"','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?)";
+					String sql = "INSERT INTO "+resultTableName+"("+field+") values('0',sysdate,'"+dealDate+"','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?)";
 					pre=conn.prepareStatement(sql);
 					for (int y = start; y <= end; y++) {
 						row = sheet.getRow(y);
@@ -141,7 +141,18 @@ public class ImportMainIncomeAction extends BaseAction {
 		Struts2Utils.getRequest().setAttribute("dealDate", dealDate);
 		return "success";
 	}
-
+    
+	public void confirm(){
+		try {
+			String usql="UPDATE PMRT.TAB_MRT_MAIN_INCOME_MON SET IS_CONFIRM=1 WHERE DEAL_DATE='"+dealDate+"'";
+			SpringManager.getUpdateDao().update(usql);
+			this.reponseJson("确认成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.reponseJson("出现异常，确认失败！");
+		}
+	}
+	
 	public void downfile() {
 		File f=new File(ServletActionContext.getServletContext().getRealPath("/portal/channelManagement/down/import_main_income.xls"));
 		HttpServletResponse resp=ServletActionContext.getResponse();
