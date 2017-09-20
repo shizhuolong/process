@@ -78,7 +78,9 @@
 		       T.SUBSCRIPTION_ID,
 		       T.SERVICE_NUM,
 		       T.WG_NET_TYPE,
-		       T.JOIN_DATE
+		       T.JOIN_DATE,
+		       T.PRODUCT_ID,
+		       T.PRODUCT_NAME
 		  FROM PODS.VIEW_ODS_DEVE_INFO_HOUR T
 		 WHERE SUBSTR(T.DEAL_DATE, 1, 8) = #{startDate} AND T.JOIN_DATE &lt;=#{endDate}
 		  <choose>
