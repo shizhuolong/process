@@ -8,8 +8,10 @@ var downSql="";
 
 $(function() {
 	var orgLevel=$("#orgLevel").val();
-	if(orgLevel==2){
+	var username=$("#username").val();
+	if(username!="admin"&&username!="huangzq17"){
 		$("#repeatImportTd").remove();
+		$("#confirmTd").remove();
 	}
 	report = new LchReport({
 		title : title,
@@ -44,6 +46,22 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
+
+function confirmImport(){
+	var dealDate=$("#dealDate").val();
+	$.ajax({
+        url: $("#ctx").val()+"/mainIncome/import-main-income!confirm.action",
+        type: 'post',
+        dataType: 'json',
+        data: {
+        	dealDate: dealDate
+        },
+        success: function (r) {
+        	alert(r);
+        	search(0);
+        }
+    });
+}
 //列表信息
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
@@ -51,7 +69,21 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var dealDate=$("#dealDate").val();
 	var code=$("#code").val();
+	var username=$("#username").val();
+	var where="";
+	if(username!="admin"&&username!="huangzq17"){
+		if(!isConfirm(dealDate)){
+			where=" AND 1=2";
+		}
+	}else{
+		if(isConfirm(dealDate)){
+			$("#confirmTd").hide();
+		}else{
+			$("#confirmTd").show();
+		}
+	}
 	var sql="SELECT "+field.join(",")+" FROM PMRT.VIEW_MRT_INCOME_MON WHERE DEAL_DATE='"+dealDate+"'";
+	sql+=where;
 	var orgLevel=$("#orgLevel").val();
 	var regionCode=$("#regionCode").val();
 	if(regionCode!=""){
@@ -88,6 +120,18 @@ function search(pageNumber) {
 
  function repeatImport(){
 	 window.location.href=$("#ctx").val()+"/portal/channelManagement/jsp/import_main_income.jsp";
+ }
+ 
+ function isConfirm(dealDate){
+   var s="SELECT IS_CONFIRM FROM PMRT.TAB_MRT_MAIN_INCOME_MON WHERE DEAL_DATE="+dealDate;	 
+   var r=query(s);
+   if(r!=null&&r.length>0){
+	   if(r[0].IS_CONFIRM=="1"){
+		   return true;
+	   }
+	   return false;
+   }
+   return false;
  }
  
  function exportData(){
