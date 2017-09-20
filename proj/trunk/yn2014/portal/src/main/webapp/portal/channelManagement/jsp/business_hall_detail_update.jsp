@@ -177,7 +177,7 @@ table tr td {
 
 							<tr>
 								<th width="240">月房租:</th>
-								<td><input name="resultMap.mon_rent" value="${detail["MON_RENT"]}"/></td>
+								<td><input name="resultMap.mon_rent" readonly value="${detail["MON_RENT"]}"/></td>
 								<th width="200">物业管理费用:</th>
 								<td><input name="resultMap.pm_fee" value="${detail["PM_FEE"]}"/></td>
 							</tr>
