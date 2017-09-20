@@ -100,6 +100,7 @@ public class GhUploadAction extends BaseAction {
 							pre.setString(3,getCellValue(row.getCell(8)));
 						}else{
 							err.add("导入第"+(y+1)+"条记录失败,存在多余或缺少的字段");
+							Struts2Utils.getRequest().setAttribute("err", err);
 							return "error";
 						}
 						pre.addBatch();
