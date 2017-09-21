@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -309,12 +311,12 @@ public class SaleScheduleAction extends BaseAction {
 			resultInfo.setCode(ResultInfo._CODE_OK_);
 			Connection conn =null;
 			CallableStatement stmt=null;
+			String dateValue=request.getParameter("dateValue");
+			dateValue=getLastDayByDealDate(dateValue);
 			//调用存储过程
 			conn = dataSource.getConnection();
 			stmt = conn.prepareCall("{CALL PORTAL.PRC_PORTAL_TASK_DETAIL(?,?)}");
-			Date date=new Date();
-			SimpleDateFormat s=new SimpleDateFormat("yyyymmdd");
-			stmt.setString(1,s.format(date));
+			stmt.setString(1,dateValue);
 			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
 			stmt.executeUpdate();
 			conn.close();
@@ -332,6 +334,20 @@ public class SaleScheduleAction extends BaseAction {
 		this.reponseJson(resultInfo);
 	}
 	
+	public String getLastDayByDealDate(String dateValue) throws ParseException{
+		Calendar lastDate = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");
+		lastDate.setTime(sdf.parse(dateValue));
+		// 设置为这个月的第 1 天
+		lastDate.set(Calendar.DATE, 1);
+		//加一个月
+		lastDate.add(Calendar.MONTH, 1);
+		//再减少一天
+		lastDate.add(Calendar.DATE, -1);
+		String format = s.format(lastDate.getTime());
+		return format;
+	}
 	
 	/**上传附件**/
 	private void doUploadFiles(String workNo) throws BusiException {
