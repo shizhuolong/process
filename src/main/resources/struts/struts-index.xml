@@ -12,6 +12,7 @@
 		
 		<action name="index_*" class="org.apdplat.portal.index.action.IndexAction" method="{1}">
 			<result name="success">/portal/index/index.jsp</result>
+			<result name="chnlManager">/portal/index/chnlManagerIndex.jsp</result>
 			<result name="amline1">/portal/index/fusionChart/Data/amchart/amline_data_2.jsp</result>
         </action>
         
