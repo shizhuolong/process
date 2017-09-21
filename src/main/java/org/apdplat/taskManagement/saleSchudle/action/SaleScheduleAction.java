@@ -312,8 +312,9 @@ public class SaleScheduleAction extends BaseAction {
 			//调用存储过程
 			conn = dataSource.getConnection();
 			stmt = conn.prepareCall("{CALL PORTAL.PRC_PORTAL_TASK_DETAIL(?,?)}");
-			String dateValue=request.getParameter("dateValue");
-			stmt.setString(1,dateValue);
+			Date date=new Date();
+			SimpleDateFormat s=new SimpleDateFormat("yyyymmdd");
+			stmt.setString(1,s.format(date));
 			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
 			stmt.executeUpdate();
 			conn.close();
