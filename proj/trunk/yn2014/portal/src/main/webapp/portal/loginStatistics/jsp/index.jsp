@@ -32,7 +32,7 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/loginStatistics/js/index.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/loginStatistics/js/index.js?v=3"></script>
 </head>
 <body class="easyui-layout">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -59,8 +59,10 @@
                 	<td width="6%" style="padding-left:10px;" align="right">登录方式：</td>
                     <td width="15%">
                     	<select id='appName' name='appName' style='width:150px;height:20px;font-size: 12px; '>
+                    		<option value=''>全部</option>
                     		<option value ="portal">基层单元web</option>
                     		<option value ="appservice">基层单元app</option>
+                    		<option value ="sso">云门户</option>
                     	</select>
                     </td>
                 	<td width="5%" style="padding-left:10px;" align="right">起始日期：</td>
@@ -92,7 +94,6 @@
 								<th>工号</th>
 								<th>联系电话</th>
 								<th>登录次数</th>
-								<th>最后登录时间</th>
 							</tr>
 						</thead>
 						<tbody id="dataBody">
