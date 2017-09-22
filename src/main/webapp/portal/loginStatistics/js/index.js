@@ -58,8 +58,7 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['REALNAME'])+"</td>"
 					+"<td>"+isNull(n['USERNAME'])+"</td>"
 					+"<td>"+isNull(n['PHONE'])+"</td>"
-					+"<td>"+isNull(n['TIMES'])+"</td>"
-					+"<td>"+isNull(n['LOGINTIME'])+"</td>";
+					+"<td>"+isNull(n['TIMES'])+"</td>";
 				content+="</tr>";
 			});
 			if(content != "") {
@@ -144,9 +143,12 @@ function downloadExcel() {
 				"               TO_CHAR(T.LOGINTIME, 'yyyymmdd') AS LOGINTIME,                         "+
 				"               COUNT(T.USERNAME) AS TIMES                                             "+
 				"          FROM PORTAL.APDP_LOG_USERLOGIN T                                            "+
-				"         WHERE TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN "+startTime+" AND "+endTime	+
-				"           AND T.APPNAME = '/"+appName+"'"												+
-				"         GROUP BY T.APPNAME, T.USERNAME, T.LOGINTIME) L,                              "+
+				"         WHERE TO_CHAR(T.LOGINTIME, 'yyyymmdd') BETWEEN "+startTime+" AND "+endTime	;
+				if(appName!=""){
+					sql+=" AND T.APPNAME = '/"+appName+"'";
+				}
+	
+				sql+="  GROUP BY T.APPNAME, T.USERNAME, T.LOGINTIME) L,                                "+
 				"       PORTAL.APDP_USER U,                                                            "+
 				"       PORTAL.APDP_ORG O                                                              "+
 				" WHERE UPPER(U.USERNAME) = UPPER(L.USERNAME)                                          "+
@@ -162,7 +164,7 @@ function downloadExcel() {
 	}
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['地市','营服中心','姓名','工号','联系电话','登录次数','最后登录时间'];
+   var _head=['地市','营服中心','姓名','工号','联系电话','登录次数','登录时间'];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
