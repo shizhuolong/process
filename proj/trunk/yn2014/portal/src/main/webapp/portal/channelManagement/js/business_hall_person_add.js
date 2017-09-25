@@ -12,7 +12,7 @@ $(function() {
 	$("#deal_date").val(deal_date);
 	code=$("#code").val();
 	orgLevel=$("#orgLevel").val();
-	$("#user_code").blur(function(){
+	$("#user_code").change(function(){
 		var user_code=$.trim($(this).val());
 		if(orgLevel==1){
 		sql="SELECT T.USER_CODE,T.USER_LOGIN_NAME,T.HQ_DEPT_ID,T.DEPT_NAME                "+
@@ -46,7 +46,7 @@ $(function() {
         	alert("工位错误！");
         }
 	});
-	$("#hr_id").blur(function(){
+	$("#hr_id").change(function(){
 		var hq_chan_code=$("#hq_chan_code").val();
 		var hr_id=$.trim($(this).val());
 		var region=$("#region").val();
@@ -76,7 +76,7 @@ $(function() {
         }
 	});
 	
-	$("#f_hr_id").blur(function(){
+	$("#f_hr_id").change(function(){
 		var f_hr_id=$.trim($("#f_hr_id").val());
 		var user_code=$("#user_code").val();
 		var hq_chan_code=$("#hq_chan_code").val();
