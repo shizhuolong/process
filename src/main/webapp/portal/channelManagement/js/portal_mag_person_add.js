@@ -7,10 +7,10 @@ $(function() {
 	orgLevel=$("#orgLevel").val();
 	chooseMonth=art.dialog.data('chooseMonth');
 	$("#chooseMonth").val(chooseMonth);
-	$("#hr_id").blur(function(){
+	$("#hr_id").change(function(){
 		initName();
 	});
-	$("#hq_chan_code").blur(function(){
+	$("#hq_chan_code").change(function(){
 		initChanName();
 	});
 	//关闭dailog
