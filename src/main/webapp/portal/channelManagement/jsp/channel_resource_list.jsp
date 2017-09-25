@@ -29,7 +29,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js?v=2"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role) {
