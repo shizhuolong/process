@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-easyui-1.3.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_details.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_details.js?v=1"></script>
 <title>渠道明细</title>
 <style type="text/css">
 	table {
@@ -89,6 +89,12 @@
                                 <td id="town_name"></td>
                                 <th>渠道属性:</th>
                                 <td id="is_jk"></td>
+                            </tr>
+                            <tr>
+                                <th>战略渠道简称:</th>
+                                <td id="start_short_name"></td>
+                                <th>战略渠道级别:</th>
+                                <td id="start_leve"></td>
                             </tr>
                         </table>
                         <div class="title" style="border-bottom: 2px solid #e7d4b3;"><i></i>渠道联系方式</div>
