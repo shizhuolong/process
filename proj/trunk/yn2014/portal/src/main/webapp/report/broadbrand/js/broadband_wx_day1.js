@@ -101,5 +101,5 @@ function search(pageNumber) {
  
 function downsAll(){
 	var showtext = '公共池待续费用户清单-'+dealDate;
-	downloadExcel(downSql,title,showtext);
+	downloadExcelOnePage(downSql,title,showtext);
 }
