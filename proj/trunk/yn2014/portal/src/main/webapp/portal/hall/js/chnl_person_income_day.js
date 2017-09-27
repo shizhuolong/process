@@ -105,7 +105,7 @@ function downsAll() {
 	var showtext = '用户收入日报-' + dealDate;
 	var title=[["地市","营服中心","人员姓名","渠道名称","渠道状态","营服类型","当日出账收入","","","","","","","本月累计出账收入","","","","","","","累计环比","累计同比"],
 	           ["","","","","","","合计","移网","其中2I2C","专线","宽带","固话","其他","合计","移网","其中2I2C","专线","宽带","固话","其他","",""]];
-	downloadExcel(sql,title,showtext);
+	downloadExcelOnePage(sql,title,showtext);
 }
 
 function getSql(orgLevel,where){
