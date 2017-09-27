@@ -40,7 +40,7 @@
                     <td width="4%" style="text-align:right;">账期：</td>
                     <td width="6%">
                         <input type="text"  class="Wdate default-text-input wper80" readonly="readonly"
-                        onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
+                        onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
                     </td>
                     <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
