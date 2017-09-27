@@ -672,6 +672,38 @@
 		form.submit();  
 		form.remove();  
 	}
+	function downloadExcelOnePage(sql,header,fileName){
+		var headerStr=[];
+		for(var i=0;i<header.length;i++){
+			headerStr[i]=header[i].join(",");
+		}
+		headerStr=headerStr.join("||");
+		
+		var form = $("<form>");  
+		form.attr('style','display:none');  
+		form.attr('target','');  
+		form.attr('method','post');  
+		form.attr('action',$("#ctx").val()+"/devIncome/devIncome_export.action?oneSheet=true&only="+(new Date()).valueOf());  
+		  
+		var fileNameInput = $('<input>');  
+		fileNameInput.attr('type','hidden');  
+		fileNameInput.attr('name','fileName');  
+		fileNameInput.attr('value',fileName); 
+		var tableTitleInput = $('<input>');
+		tableTitleInput.attr('type','hidden');  
+		tableTitleInput.attr('name','tableTitle');  
+		tableTitleInput.attr('value',headerStr); 
+		var sqlInput = $('<input>');
+		sqlInput.attr('type','hidden');  
+		sqlInput.attr('name','sql');  
+		sqlInput.attr('value',sql); 
+		$('body').append(form);  
+		form.append(fileNameInput);
+		form.append(tableTitleInput);
+		form.append(sqlInput);   
+		form.submit();  
+		form.remove();  
+	}	
 String.prototype.endWith = function(str) {
 	if (str == null || str == "" || this.length == 0
 			|| str.length > this.length)
