@@ -94,7 +94,7 @@ $(function(){
 });
 
 </script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/chnlManagerIndex.js?v=45"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/chnlManagerIndex.js?v=46"></script>
 <style type="text/css">
 
 #contentTop th,#contentTop td{
