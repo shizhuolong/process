@@ -1,7 +1,7 @@
 $(function(){
 	  // 路径配置
-	var myMenu = new SDMenu("my_menu");
-	myMenu.init();
+/*	var myMenu = new SDMenu("my_menu");
+	myMenu.init();*/
 	yearTaskCompleteRate();
 	timeTaskCompleteRate();
 	initDevAndIncome();
