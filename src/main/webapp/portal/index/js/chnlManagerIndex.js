@@ -9,7 +9,7 @@ $(function(){
 	jfRank(0);
 	ruleImages();
 	marketUser();
-	devNumber()
+	devNumber();
 	//最新公告
 	listBulls();
 });
