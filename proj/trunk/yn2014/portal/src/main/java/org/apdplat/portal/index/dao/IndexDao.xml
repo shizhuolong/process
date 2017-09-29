@@ -499,10 +499,78 @@
  		 WHERE ROWNUM &lt;= #{number}
 	</select>
 	<!-- 把用户已阅的弹出公告信息存入数据库（addAlertBull） -->
-	<insert id="addAlertBull" parameterType="java.util.Map" >
+	<insert id="addAlertBull" parameterType="java.util.Map">
 		INSERT INTO PORTAL.TAB_PORTAL_MENU_OPERATE
 		  (USER_ID, USER_NAME, MENU_ID, MENU_NAME, FLAG)
 		VALUES
 		  (#{userId}, #{userName}, #{menuId}, #{menuName}, #{menuState})
 	</insert>
+	
+	<select id="checkChnlAgent" parameterType="java.lang.String" resultType="java.util.Map">
+	   SELECT T2.HR_ID 
+		 FROM PORTAL.TAB_PORTAL_QJ_PERSON T
+		JOIN PORTAL.APDP_USER T2
+		ON (T.HR_ID=T2.HR_ID)
+		WHERE T.DEAL_DATE=TO_CHAR(SYSDATE-1,'yyyymm') AND T.USER_CODE=2 AND T2.HR_ID=#{hrId}
+	</select>
+	
+	<select id="searchLeftRankData" parameterType="java.lang.String" resultType="java.util.Map">
+	    SELECT * FROM PMRT.VIEW_DEV_INCOME_RANK WHERE DEAL_DATE=#{maxDate} AND HR_ID=#{hrId}
+	</select>
+	
+	<select id="searchLeftTopData" parameterType="java.lang.String" resultType="java.util.Map">
+	    SELECT
+		  SUM(T.DEV_BB_NUM1) LJ_DEV_KD,
+		  SUM(T.DEV_MOB_NUM1) LJ_DEV_MOB_NUM,
+		  case sum(nvl(T.LAST_SR_ALL_NUM,0))
+		    when 0 then
+		    '-'
+		    else
+		    round((sum(nvl(T.SR_ALL_NUM,0))-sum(nvl(T.LAST_SR_ALL_NUM,0)))/sum(nvl(T.LAST_SR_ALL_NUM,0))/100,2)||'%'
+		    end ALL_SR_MOB_RATIO
+		    FROM PMRT.TAB_MRT_TARGET_CH_DAY PARTITION(P${maxDate}) T WHERE HR_ID =#{hrId}
+	</select>
+	
+	<select id="getMaxDateTop" resultType="java.util.Map">
+	   SELECT DEAL_DATE MAXDATE FROM PMRT.MAX_DEAL
+	</select>
+	
+	<select id="getMaxDate" resultType="java.util.Map">
+	   SELECT MAX(DEAL_DATE) MAXDATE FROM PMRT.VIEW_DEV_INCOME_RANK
+	</select>
+	
+	<select id="searchTaskRateData" parameterType="java.lang.String" resultType="java.util.Map">
+	  SELECT * FROM PMRT.VIEW_INCOME_TASK_PER WHERE HR_ID=#{hrId}
+	</select>
+	
+	<select id="queryJfRank" parameterType="java.util.Map" resultType="java.util.Map">
+		  SELECT GROUP_ID_1_NAME,                    
+		       UNIT_NAME,                                  
+		       UNIT_TYPE,                                  
+		       HR_ID,                                      
+		       NAME,                                       
+		       JOB,                                        
+		       SR,                                         
+		       ALL_JF,                                     
+		       GRADE,                                      
+		       RANK                                        
+		  FROM PMRT.VIEW_UNIT_HR_SRJF_BANK t               
+		 WHERE hr_id = #{hrId}                          
+		union all                                          
+		SELECT GROUP_ID_1_NAME,                            
+		       UNIT_NAME,                                  
+		       UNIT_TYPE,                                  
+		       HR_ID,                                      
+		       NAME,                                       
+		       JOB,                                        
+		       SR,                                         
+		       ALL_JF,                                     
+		       GRADE,                                      
+		       RANK                                        
+		  FROM PMRT.VIEW_UNIT_HR_SRJF_BANK t               
+		 WHERE grade in (SELECT grade                      
+		                   FROM PMRT.VIEW_UNIT_HR_SRJF_BANK
+		                  WHERE hr_id = #{hrId})        
+		   and hr_id &lt;&gt; #{hrId}                         
+	</select>
 </mapper>

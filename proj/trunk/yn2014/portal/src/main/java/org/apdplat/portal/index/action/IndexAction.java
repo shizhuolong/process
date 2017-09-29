@@ -17,6 +17,7 @@ import org.apdplat.platform.util.StringUtil;
 import org.apdplat.portal.index.model.EchartsSeries;
 import org.apdplat.portal.index.service.IndexService;
 import org.apdplat.workflow.service.WorkOrderService;
+import org.omg.CORBA.CurrentHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -69,10 +70,57 @@ public class IndexAction extends BaseAction {
 	 * @return
 	 */
 	public String index() {
+		 User user = UserHolder.getCurrentLoginUser();
+	     String hrId=user.getHrId();
+	     Map<String,Object> isCheck=indexService.checkChnlAgent(hrId);
+	     if(isCheck!=null){//渠道经理，跳转渠道经理专用工作台
+	    	    Map<String, Object> m=getLeftData();
+	 			request.setAttribute("m", m);
+	 			return "chnlManager";
+	     }
 		return SUCCESS;
 	}
 	
+	public Map<String, Object> getLeftData(){
+		User user = UserHolder.getCurrentLoginUser();
+		String hrId=user.getHrId();
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("hrId", hrId);
+		Map<String, Object> m = indexService.searchLeftRankData(params);
+		return m;
+	}
 	
+	public void getTaskRateData(){
+		User user = UserHolder.getCurrentLoginUser();
+		String hrId=user.getHrId();
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("hrId", hrId);
+		Map<String, Object> m = indexService.searchTaskRateData(params);
+		this.reponseJson(m);
+	}
+	
+	private Map<String,Object> resultMap;
+	
+	public Map<String, Object> getResultMap() {
+		return resultMap;
+	}
+
+	public void setResultMap(Map<String, Object> resultMap) {
+		this.resultMap = resultMap;
+	}
+
+	public void getJfRank(){
+		User user = UserHolder.getCurrentLoginUser();
+		String hrId=user.getHrId();
+		String rows=request.getParameter("rows");
+		String page=request.getParameter("page");
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		resultMap.put("hrId", hrId);
+		resultMap.put("rows", rows);
+		resultMap.put("page", page);
+		Object list=indexService.queryJfRank(resultMap);
+		this.reponseJson(list);
+	}
 	/**
 	 * 查询收入与发展数据
 	 * @return
