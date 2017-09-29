@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","导入时间","审批时间","销售时间","审批意见"]];
-var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","CREATE_TIME","CHECK_TIME","SALE_TIME","OPTIONS"];
+var title=[["工单编号","地市","类型","品牌","型号","内存","颜色","终端串码","营业厅名称","渠道编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","导入时间","审批时间","销售时间","审批意见"]];
+var field=["WORK_FLOW_CODE","GROUP_ID_1_NAME","IMPORT_TYPE","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE","REALNAME","IS_BACK","CREATE_TIME","CHECK_TIME","SALE_TIME","OPTIONS"];
 var report = null;
 var downSql="";
 var workNo="";
@@ -113,7 +113,7 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var field1=["WORK_FLOW_CODE","GROUP_ID_1_NAME","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE"];
+	var field1=["WORK_FLOW_CODE","GROUP_ID_1_NAME","IMPORT_TYPE","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE"];
 	var sql="";
 	var orgLevel=$("#orgLevel").val();
 	var regionCode=$("#regionCode").val();
@@ -244,7 +244,7 @@ function initBusiness(status){
  }
  
  function exportData(){
-	var title=[["工单编号","地市","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","导入时间","审批时间","销售时间"]];
+	var title=[["工单编号","地市","类型","品牌","型号","内存","颜色","终端串码","营业厅名称","营业厅编码","供应商名称","供应商渠道编码","进货价","零售价","发起人","销售状态","导入时间","审批时间","销售时间"]];
 	var showtext = '终端导出';
 	downloadExcel(downSql,title,showtext);
  }
