@@ -10,6 +10,8 @@ import org.apdplat.portal.index.dao.IndexDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+
 @Service
 public class IndexService {
 	
@@ -202,6 +204,38 @@ public class IndexService {
 		params.put("userId", userId);
 		params.put("number", number);
 		return indexDao.listAccess(params);
+	}
+	public Map<String, Object> searchLeftRankData(Map<String, Object> params) {
+		Map<String,Object> maxDate=indexDao.getMaxDate();
+		params.put("maxDate", maxDate.get("MAXDATE"));
+		Map<String,Object> r=new HashMap<String,Object>();   
+		r=indexDao.searchLeftRankData(params);
+		maxDate=indexDao.getMaxDateTop();
+		params.put("maxDate", maxDate.get("MAXDATE"));
+		Map<String,Object> m=indexDao.searchLeftTopData(params);
+		if(r==null){
+			r=new HashMap<String,Object>();
+		}
+		if(m!=null){
+			r.put("LJ_DEV_KD", m.get("LJ_DEV_KD"));
+			r.put("LJ_DEV_MOB_NUM", m.get("LJ_DEV_MOB_NUM"));
+			r.put("ALL_SR_MOB_RATIO", m.get("ALL_SR_MOB_RATIO"));
+		}
+		return r;
+	}
+	public Map<String, Object> searchTaskRateData(Map<String, Object> params) {
+		return indexDao.searchTaskRateData(params);
+	}
+	public Map<String, Object> checkChnlAgent(String hrId) {
+		return indexDao.checkChnlAgent(hrId);
+	}
+	public Object queryJfRank(Map<String, Object> params) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		PageList<Map<String, Object>> rows = indexDao
+				.queryJfRank(params);
+		result.put("rows", rows);
+		result.put("pagin", rows.getPaginator());
+		return result;
 	}
 	
 }

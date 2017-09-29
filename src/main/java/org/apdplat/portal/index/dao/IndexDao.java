@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+
 public interface IndexDao {
 
 	/**
@@ -138,6 +140,12 @@ public interface IndexDao {
 	 * @param paramsMap
 	 * @throws Exception
 	 */
-	public int  addAlertBull(Map<String,String> paramsMap) throws Exception;
-	
+	public int addAlertBull(Map<String,String> paramsMap) throws Exception;
+	public Map<String, Object> searchLeftRankData(Map<String,Object> paramsMap);
+	public Map<String, Object> searchLeftTopData(Map<String,Object> paramsMap);
+	public Map<String, Object> getMaxDate();
+	public Map<String, Object> getMaxDateTop();
+	public Map<String, Object> searchTaskRateData(Map<String, Object> params);
+	public Map<String, Object> checkChnlAgent(String hrId);
+	public PageList<Map<String, Object>> queryJfRank(Map<String, Object> params);
 }
