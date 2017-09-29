@@ -54,7 +54,28 @@ function search(pageNumber) {
 	var orgLevel=$("#orgLevel").val();
 	var code=$("#code").val();
 	var hrId=$("#hrId").val();
-	var sql="SELECT "+field.join(",")+" FROM PMRT.TB_MRT_BROADBAND_WX_DAY WHERE IS_JKDJ=1 AND DEAL_DATE LIKE '%"+dealDate+"%'";
+	var sql="SELECT "+
+	"GROUP_ID_1_NAME,                                  "+
+	"GROUP_ID_2_NAME,                                  "+
+	"DEVICE_NUMBER,                                    "+
+	"SUBSTR(CUSTOMER_NAME, 1, 1) || '**' CUSTOMER_NAME,"+
+	"STD_6_NAME,                                       "+
+	"REPLACE(CONTACT_PHONE,                            "+
+	"        SUBSTR(CONTACT_PHONE, 4, 4),              "+
+	"        '****') CONTACT_PHONE,                    "+
+	"PRODUCT_ID,                                       "+
+	"PRODUCT_NAME,                                     "+
+	"INNET_DATE,                                       "+
+	"STATUS_NAME,                                      "+
+	"EXCH_NAME,                                        "+
+	"INPUT_TYPE,                                       "+
+	"SPEED_M,                                          "+
+	"HQ_CHAN_CODE,                                     "+
+	"HQ_CHAN_NAME,                                     "+
+	"HQ_NAME,                                          "+
+	"BALANCE,                                          "+
+	"KDXF                                              "+ 
+	" FROM PMRT.TB_MRT_BROADBAND_WX_DAY WHERE IS_JKDJ=1 AND DEAL_DATE LIKE '%"+dealDate+"%'";
     if(orgLevel==1){
 		
 	}else if(orgLevel==2){
