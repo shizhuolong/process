@@ -112,7 +112,7 @@ function downsAll() {
 	if(hq_zy!=''){
 		where+=" AND T1.HQ_ZY = '"+hq_zy+"'";
 	}
-	var sql = "SELECT T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T0.IS_DS,T0.END_TIME,"+getSumSql(4)+where+" GROUP BY T1.HQ_CHAN_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T0.IS_DS,T0.END_TIME ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HQ_CHAN_CODE";
+	var sql = "SELECT T1.GROUP_ID_1_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T1.IS_DS,T1.END_TIME,"+getSumSql(4)+where+" GROUP BY T1.HQ_CHAN_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.IS_DS,T1.END_TIME ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HQ_CHAN_CODE";
 	var showtext = '云南联通渠道效能分析明细表-' + startDate+"-"+endDate;
 	var title=[["地市","所属基层单元","渠道编码","渠道名称","目前经营者开始合作时间","渠道状态","渠道专业","三级属性","是否自建他营","是否社会化合作","是否代收费点(1是 0不是)","清算终止时间","人数","发展用户数","","","","","","","","出账用户数","","","业务受理量","代收费金额","代收服务费占代收金额比","毛利","其中：零售毛利","出账收入","成本合计","人工成本（应发数）","","","","佣金","渠道补贴","终端补贴","柜台及场地出租收入","房租费","营业厅装修","客户接入成本","卡成本","水电物业安保费","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费","成本占收比(%)","其中：出账收入明细","","","","","","其中：佣金明细分类一","","","","","","其中：佣金明细分类二","","","","其中：佣金占收比分类一","","","","","其中：佣金占收比分类二","","","","用户欠费","用户预存款","二次续费率","终止清算佣金"],
 	           ["","","","","","","","","","","","","","2G发展量","3G发展量","4G发展量","宽带发展量","专租线发展量","固话发展量","其他发展量","合计","移网","固网","合计","","","","","","","","合同制","紧密型","财务列账","小计","","","","","","","","","","","","","","","","","","","","","移网","专线","宽带","固话","其他","小计","移网","专线","宽带","固话","不可分摊","合计","按发展渠道","按受理渠道","BOT建设方","合计","移网","专线","宽带","固话","总佣金占收比","发展渠道","受理渠道","BOT建设方","合计","","","",""]];
@@ -143,7 +143,7 @@ function getSql(orgLevel,where){
 	}else if(orgLevel==3){
 		return " SELECT T1.UNIT_NAME ROW_NAME,T1.UNIT_ID ROW_ID,'--' UNIT_NAME,'--' HQ_CHAN_CODE,'--' HQ_CHAN_NAME,'--' BUSI_BEGIN_TIME,'--' HQ_STATE,'--' HQ_ZY,'--' THIRD_TYPE,'--' IS_TY,'--' IS_SOCIAL,'--' IS_DS,'--' END_TIME,"+getSumSql(orgLevel)+where+" GROUP BY T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME ORDER BY T1.GROUP_ID_1,T1.UNIT_ID";
 	}else if(orgLevel==4){
-		return " SELECT T1.HQ_CHAN_NAME ROW_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T0.IS_DS,T0.END_TIME,"+getSumSql(orgLevel)+where+" GROUP BY T1.HQ_CHAN_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T0.IS_DS,T0.END_TIME ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HQ_CHAN_CODE";
+		return " SELECT T1.HQ_CHAN_NAME ROW_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T1.IS_DS,T1.END_TIME,"+getSumSql(orgLevel)+where+" GROUP BY T1.HQ_CHAN_NAME,T1.UNIT_NAME,T1.HQ_CHAN_CODE,T1.HQ_CHAN_NAME,T1.BUSI_BEGIN_TIME,T1.HQ_STATE,T1.HQ_ZY,T1.THIRD_TYPE,T1.IS_TY,T1.IS_SOCIAL,T1.GROUP_ID_1,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.IS_DS,T1.END_TIME ORDER BY T1.GROUP_ID_1,T1.UNIT_ID,T1.HQ_CHAN_CODE";
 	}
   }
 
@@ -322,6 +322,8 @@ function getSumSql(level){
 		"                     ,THIRD_TYPE                "+
 		"                     ,IS_TY                     "+
 		"                     ,IS_SOCIAL                 "+
+		"                     ,IS_DS                  "+
+		"                     ,END_TIME               "+
 		"              FROM PMRT.TAB_MRT_HQ_ABILITY_MON T"+
 		"              WHERE T.DEAL_DATE='"+endDate+"'   "+
 		"              )T1                               "+
