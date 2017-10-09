@@ -157,8 +157,15 @@
 	</delete>
 	
 	<select id="isHqCodePass" parameterType="java.util.Map" resultType="java.util.Map">
-	   SELECT * FROM PAPP.TAB_COMM_IMPORT_TEMP WHERE AGENTID NOT IN (SELECT A.BSS_CHNL_CODE FROM PCDE.TB_CDE_CHANL_CODE A)
-	     AND ACCOUNT_ID=#{username}
-		AND GROUP_ID=#{code}
+	   SELECT T.BSS_CHNL_CODE FROM PAPP.TAB_COMM_IMPORT_TEMP T
+ 		WHERE NOT EXISTS (SELECT 1
+                   FROM (SELECT A.BSS_CHNL_CODE FROM PCDE.TB_CDE_CHANL_CODE A
+                         UNION  ALL
+                         SELECT A.HQ_CHAN_CODE BSS_CHNL_CODE FROM PCDE.TB_CDE_CHANL_CODE A
+                         ) T1
+                   WHERE T.AGENTID=T1.BSS_CHNL_CODE   
+                   )
+                   AND T.ACCOUNT_ID=#{username}
+		           AND T.GROUP_ID=#{code} 
 	</select>
 </mapper>
