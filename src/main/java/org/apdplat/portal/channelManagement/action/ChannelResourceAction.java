@@ -57,6 +57,7 @@ public class ChannelResourceAction extends BaseAction {
 			String chn_cde_4_name = request.getParameter("chn_cde_4_name");
 			String isMark=request.getParameter("isMark");
 			String isAgent=request.getParameter("isAgent");
+			String isStart=request.getParameter("isStart");
 			if (hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 				resultMap.put("hq_chan_code", hq_chan_code);
 			}
@@ -84,6 +85,9 @@ public class ChannelResourceAction extends BaseAction {
 			if (isAgent != null && !"".equals(isAgent.trim())) {
 				resultMap.put("isAgent", isAgent);
 			}
+			if (isStart != null && !"".equals(isStart.trim())) {
+                resultMap.put("isStart", isStart);
+            }
 			Object result = channelResourceService.listChannel(resultMap);
 			this.reponseJson(result);
 		} catch (Exception e) {
