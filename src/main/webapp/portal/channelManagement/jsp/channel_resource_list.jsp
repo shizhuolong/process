@@ -29,7 +29,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js?v=2"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js?v=3"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role) {
@@ -104,7 +104,7 @@
 							</select>
 						</td>
 					</tr>
-					<tr height="35px" clospan="4">
+					<tr height="35px">
 				     	<td width="10%" style="padding-left: 10px;">是否代理点：</td>
 						<td width="20%">
 							<select class="default-text-input wper80" name="isAgent" id="isAgent">
@@ -113,6 +113,14 @@
 								<option value="0">否</option>
 							</select>
 						</td>
+						<td width="10%" >是否战略渠道：</td>
+                        <td width="20%">
+                            <select class="default-text-input wper80" name="isStart" id="isStart">
+                                <option value="">全部</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </td>
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -137,6 +145,8 @@
 							<th>渠道属性2</th>
 							<th>渠道属性3</th>
 							<th>渠道属性4</th>
+							<th>战略渠道简称</th>
+                            <th>战略渠道级别</th>
 							<th>操作</th>
 						</tr>
 					</thead>
