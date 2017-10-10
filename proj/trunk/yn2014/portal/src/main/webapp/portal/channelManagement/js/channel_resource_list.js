@@ -78,6 +78,7 @@ function search(pageNumber) {
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
 	var isMark= $("#isMark").val();
 	var isAgent= $("#isAgent").val();
+	var isStart= $("#isStart").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -97,7 +98,8 @@ function search(pageNumber) {
            	"chn_cde_3_name":chn_cde_3_name,
            	"chn_cde_4_name":chn_cde_4_name,
            	"isMark":isMark,
-           	"isAgent":isAgent
+           	"isAgent":isAgent,
+           	"isStart":isStart
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -119,7 +121,9 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['CHN_CDE_1_NAME'])+"</td>"
 				+"<td>"+isNull(n['CHN_CDE_2_NAME'])+"</td>"
 				+"<td>"+isNull(n['CHN_CDE_3_NAME'])+"</td>"
-				+"<td>"+isNull(n['CHN_CDE_4_NAME'])+"</td>";
+				+"<td>"+isNull(n['CHN_CDE_4_NAME'])+"</td>"
+				+"<td>"+isNull(n['START_SHORT_NAME'])+"</td>"
+				+"<td>"+isNull(n['START_LEVE'])+"</td>";
 				//是否已经划分营服中心
 				var isDivision = n['ISDIVISION'];
 				var is_mark=n['IS_MARK'];
@@ -548,6 +552,7 @@ function downloadExcel() {
 	var chn_cde_4_name = $.trim($("#chn_cde_4_name").val());
 	var isMark=$("#isMark").val();
 	var isAgent=$("#isAgent").val();
+	var isStart=$("#isStart").val();
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
@@ -560,7 +565,7 @@ function downloadExcel() {
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
 		"AND    T.HQ_CHAN_CODE=T3.HQ_CHAN_CODE                                                               "+   
-		"AND T.IS_SIGN = 1  AND T.GROUP_ID_1 !=16017                                                         ";
+		"AND    T.IS_SIGN = 1  AND T.GROUP_ID_1 !=16017                                                         ";
 	}else if(orgLevel == "2") {
 	    sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
 		"       T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                  "+
@@ -627,8 +632,14 @@ function downloadExcel() {
 	if (isAgent == "0"){
 		sql+=" AND T.CHNL_TYPE IS NULL";
 	}
+	if (isStart == "1"){
+		sql+=" AND T.START_SHORT_NAME IS NOT NULL AND T.START_LEVE IS NOT NULL";
+	}
+	if (isStart == "0"){
+		sql+=" AND T.START_SHORT_NAME IS NULL AND T.START_LEVE IS NULL";
+	}
 	sql += " ORDER BY T.GROUP_ID_1, T.UNIT_ID";
-	var showtext="Sheet";
+   var showtext="Sheet";
    var showtext1="result";
    var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','代理点类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度","渠道属性","战略渠道简称","战略渠道级别","是否有照片"];
    loadWidowMessage(1);
