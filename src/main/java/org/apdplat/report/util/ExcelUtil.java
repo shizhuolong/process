@@ -3,11 +3,13 @@ package org.apdplat.report.util;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -215,6 +217,7 @@ public class ExcelUtil {
 		createHeader(sheet, titleStyle, titles);
 		createBody(sheet, bodyStyle,bottomStyle, datas, titles.size());*/
 		if(datas!=null){
+			sheetSize=50000;
 			int l=datas.size();
 			int tIndex=l/sheetSize;
 			if(l%sheetSize!=0){
@@ -300,16 +303,36 @@ public class ExcelUtil {
 			for (int x = 0; x < tcx; x++) {
 				HSSFCell cell = row.createCell(x);
 				cell.setCellStyle(style);
-				cell.setCellValue(bodyData.get(y)[x]);
+				String value=bodyData.get(y)[x];
+				if(value!=null){
+					 //判断data是否为数值型
+                    boolean isNum = value.matches("^(-?\\d+)(\\.\\d+)?$");
+                    //判断data是否为整数（小数部分是否为0）
+                    boolean isInteger=value.toString().matches("^[-\\+]?[\\d]*$");
+                    //判断data是否为百分数（是否包含“%”）
+                    boolean isPercent=value.toString().contains("%");
+                    if(isNum  && !isPercent){
+                    	if (isInteger) {
+                    		 style.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,#0"));  
+                        }else{
+                            style.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.0"));  
+                        } 
+                    	 cell.setCellStyle(style);
+                       	 cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                       	 cell.setCellValue(Double.valueOf(value));
+                    }else{
+                    	cell.setCellValue(value);
+                    }
+				}
 			}
 		}
-		for (int y = end; y <= end; y++) {
+		/*for (int y = end; y <= end; y++) {
 			HSSFRow row = sheet.createRow((y-start) + startRow);
 			for (int x = 0; x < tcx; x++) {
 				HSSFCell cell = row.createCell(x);
 				cell.setCellStyle(bottomStyle);
 			}
-		}
+		}*/
 
 	}
 	public static void createPageBody(HSSFSheet sheet, HSSFCellStyle style,HSSFCellStyle bottomStyle,

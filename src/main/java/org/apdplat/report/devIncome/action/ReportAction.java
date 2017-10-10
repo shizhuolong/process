@@ -56,6 +56,8 @@ public class ReportAction extends BaseAction {
 			response.setContentType("application/x-msdownload;charset=utf-8");
 			response.addHeader("Content-Disposition", "attachment; filename=\""
 					+ fileName + "\"");
+			String oneSheet=request.getParameter("oneSheet");
+			System.out.println("------------"+oneSheet);
 
 			String[] ts = tableTitle.split("\\|\\|");
 			List<String[]> titles = new ArrayList<String[]>();
@@ -66,7 +68,13 @@ public class ReportAction extends BaseAction {
 			//List<String[]> datas = db.findList(sql);
 			os = response.getOutputStream();
 			//ExcelUtil.exportExcel(os, titles, datas);
-			ExcelUtil.exportPageExcel(os, titles, db,sql);
+			if(oneSheet!=null&&oneSheet.equals("true")){
+				System.out.println("------------");
+				List<String[]> datas=db.findList(sql);
+				ExcelUtil.exportExcel(os, titles, datas);;
+			}else{
+				ExcelUtil.exportPageExcel(os,titles,db,sql);
+			}
 			os.close();
 		} catch (Exception e) {
 			e.printStackTrace();
