@@ -60,9 +60,10 @@ function search(pageNumber) {
 	"DEVICE_NUMBER,                                    "+
 	"SUBSTR(CUSTOMER_NAME, 1, 1) || '**' CUSTOMER_NAME,"+
 	"STD_6_NAME,                                       "+
-	"REPLACE(CONTACT_PHONE,                            "+
+	/*"REPLACE(CONTACT_PHONE,                            "+
 	"        SUBSTR(CONTACT_PHONE, 4, 4),              "+
-	"        '****') CONTACT_PHONE,                    "+
+	"        '****') */
+	"CONTACT_PHONE,                    "+
 	"PRODUCT_ID,                                       "+
 	"PRODUCT_NAME,                                     "+
 	"INNET_DATE,                                       "+
