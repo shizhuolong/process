@@ -39,30 +39,30 @@
 		<form id="searchForm" method="post">
 			<table width="60%" style="margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="1%" style="text-align:right;">账期：</td>
-					<td width="4%">
+				    <td width="4%" style="text-align:right;">账期：</td>
+					<td width="8%">
 						<input type="text" class="Wdate default-text-input wper80" readonly="readonly"
 						onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate">
 					</td>
-					<td width="1%" align="right">地市：</td>
-					<td width="4%">
+					<td width="4%" align="right">地市：</td>
+					<td width="10%">
 						<select name="regionCode" id="regionCode" class="default-text-input wper80">
 								<option value=''>请选择</option>
 						</select>
 					</td>
-					<td width="2%" style="text-align:right;">渠道编码：</td>
-					<td width="4%">
+					<td width="8%" style="text-align:right;">渠道编码：</td>
+					<td width="8%">
 						<input type="text" class="default-text-input wper80" id="hqChanCode">
 					</td>
-					<td width="2%" style="text-align:right;">HR编码：</td>
-					<td width="4%">
+					<td width="5%" style="text-align:right;">HR编码：</td>
+					<td width="8%">
 						<input type="text" class="default-text-input wper80" id="hr_id">
 					</td>
-					<td width="1%">
+					<td width="5%">
 						<a class="default-btn" href="#" id="searchBtn"
 						style="float: right; margin-right: 48px;">查询</a>
 					</td>
-					<td width="1%">
+					<td width="5%">
 						<a class="default-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
 					</td>
 				</tr>
