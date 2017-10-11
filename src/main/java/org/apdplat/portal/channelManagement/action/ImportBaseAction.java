@@ -98,7 +98,7 @@ public class ImportBaseAction extends BaseAction {
 		String realname=user.getRealName();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP";
-		String field="IS_BACK,STATUS,CREATE_TIME,GROUP_ID_1,GROUP_ID_1_NAME,USER_NAME,REALNAME,ZD_BRAND,ZD_TYPES,ZD_MEMORY,ZD_COLOR,ZD_IEMI,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,IN_PRICE,OUT_PRICE";
+		String field="IS_BACK,STATUS,CREATE_TIME,GROUP_ID_1,GROUP_ID_1_NAME,USER_NAME,REALNAME,IMPORT_TYPE,ZD_BRAND,ZD_TYPES,ZD_MEMORY,ZD_COLOR,ZD_IEMI,YYT_HQ_NAME,YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,IN_PRICE,OUT_PRICE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 			Struts2Utils.getRequest().setAttribute("err", err);
@@ -128,7 +128,7 @@ public class ImportBaseAction extends BaseAction {
 					int end = sheet.getLastRowNum();
 					Row row;
 					String sql = "INSERT INTO "+ resultTableName+"("+field+") values('0','0',sysdate"+",'"+regionCode+"','"+regionName+"','"+username+"','"+realname+"'";
-					for(int i=0;i<11;i++){
+					for(int i=0;i<12;i++){
 						sql+=",?";
 					}
 					sql+=")";
@@ -141,9 +141,9 @@ public class ImportBaseAction extends BaseAction {
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
 						for (int i = cstart; i < cend; i++) {
-							    if(i==4){
+							    if(i==5){
 							    	if(getCellValue(row.getCell(i)).contains("E14")){
-							    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
+							    		err.add("第6列不是文本格式，请按操作文档将数字列转换为文本格式再导入！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
@@ -154,51 +154,41 @@ public class ImportBaseAction extends BaseAction {
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
-							    	if(i==10){
+							    	if(i==11){
 							    		if(getCellValue(row.getCell(i)).contains(".0")){
-								    		err.add("模板不是文本格式，请将数字列转换为文本格式再导入！");
+								    		err.add("第12列不是文本格式，请按操作文档转换为文本格式再导入！");
 								    		Struts2Utils.getRequest().setAttribute("err", err);
 											return "error";
 								    	}
 							    	}
-							    	if(Double.valueOf(getCellValue(row.getCell(10)))<Double.valueOf(getCellValue(row.getCell(9)))){
+							    	if(Double.valueOf(getCellValue(row.getCell(11)))<Double.valueOf(getCellValue(row.getCell(10)))){
 							    		err.add("零售价不能低于进货价，请检查！");
 							    		Struts2Utils.getRequest().setAttribute("err", err);
 										return "error";
 							    	}
 							    }
-							    pre.setString(i+1,getCellValue(row.getCell(i)));
+							    String value="";
+							    if(i==1||i==3){
+							    	value=getCellValue(row.getCell(i)).toUpperCase();
+							    }else if(i==2){
+							    	value=getCellValue(row.getCell(i)).toLowerCase();
+							    }else{
+							    	value=getCellValue(row.getCell(i));
+							    }
+							    if(value==null||value.equals("")){
+							    	err.add("第"+(start+1)+"行，第"+(i+1)+"列不能为空，可填未知！");
+						    		Struts2Utils.getRequest().setAttribute("err", err);
+									return "error";
+							    }
+							    pre.setString(i+1,value);
 						}
 						pre.addBatch();
 					}
 					pre.executeBatch();
 					conn.commit();
 					conn.setAutoCommit(true);
-					String isNullSql="SELECT ZD_BRAND,                                                      "+
-							"       ZD_TYPES,                                                      "+
-							"       ZD_COLOR,                                                      "+
-							"       ZD_IEMI,                                                       "+
-							"       YYT_HQ_NAME,                                                   "+
-							"       YYT_CHAN_CODE,                                                 "+
-							"       SUP_HQ_NAME,                                                   "+
-							"       SUP_HQ_CODE,                                                   "+
-							"       IN_PRICE,                                                      "+
-							"       OUT_PRICE                                                      "+
-							"  FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP                                  "+
-							" WHERE GROUP_ID_1='"+regionCode+"' AND (ZD_BRAND IS NULL OR ZD_TYPES IS NULL OR ZD_COLOR IS NULL OR   "+
-							"       ZD_IEMI IS NULL OR YYT_HQ_NAME IS NULL OR YYT_CHAN_CODE IS NULL"+
-							"       OR SUP_HQ_NAME IS NULL OR SUP_HQ_CODE IS NULL                  "+
-							"       OR IN_PRICE IS NULL OR OUT_PRICE IS NULL                       "+
-							"     )                                                                ";
-					List<Map<String,String>> l=SpringManager.getFindDao().find(isNullSql);
-					if(l!=null&&l.size()>0){
-						err.add("模板中有空的字段，请检查！");
-						Struts2Utils.getRequest().setAttribute("err", err);
-						return "error";
-					}
-					
 					String isRepeatTemp="SELECT ZD_IEMI FROM(SELECT ZD_IEMI,count(*) c FROM AGENTS.TAB_MRT_YYT_ZD_BASE_TEMP WHERE GROUP_ID_1='"+regionCode+"' GROUP BY ZD_IEMI) WHERE c>1";
-					l=SpringManager.getFindDao().find(isRepeatTemp);
+					List<Map<String,String>> l=SpringManager.getFindDao().find(isRepeatTemp);
 					if(l!=null&&l.size()>0){
 						err.add("终端串号："+l.get(0).get("ZD_IEMI")+"在模板中重复，请检查！");
 						Struts2Utils.getRequest().setAttribute("err", err);
