@@ -1,5 +1,5 @@
 var nowData = [];
-var title=[["账期","用户号码","套餐类型","套餐名称","上月消费额","是否三无极低","是否使用过4G网络"]];
+var title=[["账期","用户号码","套餐类型","套餐名称","本月消费额","是否三无极低","是否使用过4G网络"]];
 var field=["DEAL_DATE","DEVICE_NUMBER","PRODUCT_TYPE","PRODUCT_NAME","LAST_SR","IS_SW_JD","IS_4G_NET"];
 var report = null;
 var downSql="";
@@ -101,7 +101,7 @@ function getSql(dealDate){
 	"      ,DEVICE_NUMBER                              "+
 	"      ,PRODUCT_TYPE                               "+
 	"      ,PRODUCT_NAME                               "+
-	"      ,NVL(LAST_SR,0) LAST_SR                     "+
+	"      ,NVL(SR,0) LAST_SR                     "+
 	"      ,CASE WHEN NVL(IS_SW,0)=1 AND NVL(IS_JD,0)=1"+
 	"            THEN '是'                             "+
 	"            ELSE '否'                             "+
