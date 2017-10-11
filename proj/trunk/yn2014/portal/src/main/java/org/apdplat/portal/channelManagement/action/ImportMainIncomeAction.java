@@ -65,7 +65,7 @@ public class ImportMainIncomeAction extends BaseAction {
 		String username=user.getUsername();
 		List<String> err = new ArrayList<String>();
 		String resultTableName = "PMRT.TAB_MRT_MAIN_INCOME_MON_TEMP";
-		String field="IS_CONFIRM,INSERT_TIME,DEAL_DATE,LOGIN_NAME,GROUP_ID_1,GROUP_ID_1_NAME,ALL_INCOME_NUM,MOB_INCOME_NUM,INCOME_4G_NUM,INCOME_3G_NUM,INCOME_2G_NUM,INCOME_NET_NUM,NOT_ICT_NUM,INCOME_ICT_NUM,INCOME_IDT_NUM,HX_FLOW";
+		String field="IS_CONFIRM,INSERT_TIME,DEAL_DATE,LOGIN_NAME,GROUP_ID_1,GROUP_ID_1_NAME,ALL_INCOME_NUM,MOB_INCOME_NUM,INCOME_4G_NUM,INCOME_3G_NUM,INCOME_2G_NUM,INCOME_NET_NUM,NOT_ICT_NUM,INCOME_ICT_NUM,INCOME_IDT_NUM,HX_FLOW,HAND_3G,KM_ELE_FOMER,KM_ELE_APPOR,OTHER_AREA_ELE";
 		if (uploadFile == null) {
 			err.add("上传文件为空！");
 		} else {
@@ -90,7 +90,7 @@ public class ImportMainIncomeAction extends BaseAction {
 					int start = sheet.getFirstRowNum()+3;
 					int end = sheet.getLastRowNum();
 					Row row;
-					String sql = "INSERT INTO "+resultTableName+"("+field+") values('0',sysdate,'"+dealDate+"','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?)";
+					String sql = "INSERT INTO "+resultTableName+"("+field+") values('0',sysdate,'"+dealDate+"','"+username+"',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					pre=conn.prepareStatement(sql);
 					for (int y = start; y <= end; y++) {
 						row = sheet.getRow(y);
@@ -99,7 +99,7 @@ public class ImportMainIncomeAction extends BaseAction {
 						int cstart = row.getFirstCellNum();
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
-						if(cend!=12){
+						if(cend!=15){
 							err.add("列数量不对，请严格按照标准模板导入！");
 							Struts2Utils.getRequest().setAttribute("err", err);
 							return "error";
