@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["州市","营服名称","集客渠道名称","渠道编码","用户号码","业务办理时间","套餐名称"]];
-var field=["GROUP_ID_1_NAME","UNIT_NAME","GROUP_ID_4_NAME","HQ_CHAN_CODE","DEVICE_NUMBER","DEAL_DATE","PRODUCT_NAME"];
+var title=[["州市编码","州市","营服编码","营服名称","渠道名称","渠道编码","用户号码","办理时间","套餐ID","套餐名称","发展人编码","发展人HR","发展人名称"]];
+var field=["GROUP_ID_1","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME","GROUP_ID_4_NAME","HQ_CHAN_CODE","DEVICE_NUMBER","DEAL_DATE","PRODUCT_ID","PRODUCT_NAME","DEVELOPER","DEVELOPER_HR","DEVELOPER_NAME"];
 var report = null;
 var downSql="";
 var dealDate="";
@@ -79,11 +79,12 @@ function downsAll(){
 }
 
 function getSql(){
-	dealDate=$("#dealDate").val();
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	var hqChanCode=$("#hqChanCode").val();
-	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	var where=" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND  '"+endDate+"'";
 	if(regionCode!=''){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
