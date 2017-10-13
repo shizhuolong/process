@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_ods_234g_base_model_mon.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tb_ods_234g_base_model_mon.js?v=1"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -99,6 +99,10 @@
 								<option value='0'>否</option>
 						</select>
 					</td>
+					<td width="6%" align="right">渠道编码：</td>
+                    <td width="13%">
+                        <input name="hqChanCode" id="hqChanCode" class="default-text-input wper80"/>
+                    </td>
 				</tr>
 			</table>
 		</form>
