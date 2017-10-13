@@ -22,7 +22,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<script type="text/javascript" src="/sso-demo/scripts/jquery.js"></script>
+<!-- <script type="text/javascript" src="/sso-demo/scripts/jquery.js"></script> -->
 
 <title>Success Page</title>
 
@@ -43,6 +43,7 @@
 	boolean status = false;
 	String error_info = "IDP处理出错";
 	UserEntry userentry = null;
+	String username="";//账号
 	System.out.println("token==" + token.length());
 	if (token != null && token.length() > 0) {
 		String url = AppConstant.checkAuthenticationPath + "?token=" + token + "&appid=" + AppConstant.appId; //"&appid=APP-e835fa18b1e72c0954a92066d292e619";
@@ -84,6 +85,7 @@
 		if (userDetailsServiceImpl != null) {
 			try{
 				userDetails = userDetailsServiceImpl.loadUserByUsername(userName);
+				username=userDetails.getUsername();
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -107,7 +109,12 @@
 				returnurl="/portal/platform/index.jsp";
 			}
 %>
-			<script type="text/javascript">document.location='<%=returnurl.replace("/sso-protect", "")%>';</script>
+			<script type="text/javascript">
+			  var returnurl="<%=returnurl%>";
+			  var username="<%=username%>";
+			  document.location='/portal/checkCode.jsp?returnurl='+returnurl+'&username='+username;
+			  <%-- document.location='<%=returnurl.replace("/sso-protect", "")%>'; --%>
+			</script>
 <%
 		}
 	}
