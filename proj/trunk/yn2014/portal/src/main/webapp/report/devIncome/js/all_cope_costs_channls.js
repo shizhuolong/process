@@ -102,11 +102,11 @@ function search(){
 
 
 function downsAll() {
-	var preField=" SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.CHN_CDE_1_NAME,";
+	var preField=" SELECT T.DEAL_DATE,T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.CHN_CDE_1_NAME,HQ_CHANL_CODE,";
 	var where="";
 	var sumSql=getSumSql();
 	/*var orderBy=" ORDER BY T.GROUP_ID_1,T.HQ_CHAN_CODE";*/
-	var groupBy=" GROUP BY T.DEAL_DATE,T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.CHN_CDE_1_NAME";
+	var groupBy=" GROUP BY T.DEAL_DATE,T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.CHN_CDE_1_NAME,HQ_CHANL_CODE";
 	//先根据用户信息得到前几个字段
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
@@ -132,8 +132,8 @@ function downsAll() {
 	}
 	var sql = preField + sumSql+where+groupBy;
 	var showtext = '全成本渠道费用应付报表' + dealDate;
-	var title=[["账期","地市","营服中心","渠道名称","渠道类型","净收入(出账收入-赠费-退费)","","","","","发展量","","","","","渠道支撑费用预提","","","发展佣金预提","","","","业务办理佣金预提","","","","","","","佣金合计","渠道费用占收比"],
-	            ["","","","","","2G","3G","4G","固网","合计","2G","3G","4G","固网","合计","房租","渠道补贴","装修费","一次性代办费","话费分成","奖罚佣金","小计","代收代办服务费","固网佣金","客服部维系（走手工佣金）","增值佣金","其他","手工调整（非系统计算）","小计","",""]
+	var title=[["账期","地市","营服中心","渠道名称","渠道类型","渠道编码","净收入(出账收入-赠费-退费)","","","","","发展量","","","","","渠道支撑费用预提","","","发展佣金预提","","","","业务办理佣金预提","","","","","","","佣金合计","渠道费用占收比"],
+	            ["","","","","","","2G","3G","4G","固网","合计","2G","3G","4G","固网","合计","房租","渠道补贴","装修费","一次性代办费","话费分成","奖罚佣金","小计","代收代办服务费","固网佣金","客服部维系（走手工佣金）","增值佣金","其他","手工调整（非系统计算）","小计","",""]
 			  ];
 	downloadExcel(sql,title,showtext);
 }
