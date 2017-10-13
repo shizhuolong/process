@@ -30,7 +30,7 @@ String time = new SimpleDateFormat("yyyyMM").format(ca.getTime());
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/page/javascript/jlkh/tb_jcdy_jf_all_mon1.js?v=2"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/page/javascript/jlkh/tb_jcdy_jf_all_mon1.js?v=3"></script>
 </head>
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
