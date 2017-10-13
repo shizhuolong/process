@@ -53,6 +53,7 @@ function search(pageNumber) {
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
+	var hqChanCode=$("#hqChanCode").val();
 //条件
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON T1  where  t1.deal_date ='"+time+"'";
 	if(time!=''){
@@ -75,6 +76,9 @@ function search(pageNumber) {
 	}
 	if(isZLWB!=''){
 		sql+=" and T1.IS_ZLWB= '"+isZLWB+"'";
+	}
+	if(hqChanCode!=''){
+		sql+=" and T1.ORIGINAL_CHNL like '%"+hqChanCode+"%'";
 	}
 //权限
 	
@@ -132,6 +136,8 @@ function downsAll(){
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
+	var hqChanCode=$("#hqChanCode").val();
+	
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_BASE_MODEL_MON  T1 where 1 = 1 AND t1.deal_date ='"+time+"'";
 	if(time!=''){
 		sql+=" and to_date(T1.deal_date,'YYYYMM') >= ADD_MONTHS(to_date("+time+",'YYYYMM'),-5)";
@@ -153,6 +159,9 @@ function downsAll(){
 	}
 	if(isZLWB!=''){
 		sql+=" and T1.IS_ZLWB= '"+isZLWB+"'";
+	}
+	if(hqChanCode!=''){
+		sql+=" and T1.ORIGINAL_CHNL like '%"+hqChanCode+"%'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
