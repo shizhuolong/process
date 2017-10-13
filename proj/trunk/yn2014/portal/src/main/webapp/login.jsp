@@ -85,10 +85,6 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
         }
         var contextPath='<%=contextPath%>';
         
-        //刷新验证码
-        function refeshCode() {
-        	$("#checkCode").attr("src",contextPath+'/security/jcaptcha.png?rand="'+Math.random()+'"');
-        }
         
         //登录
         function login() {
@@ -127,7 +123,7 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
                          location.replace(contextPath+"/platform/index.jsp");
                          return;
                      }  
-                     refeshCode();
+                     //refeshCode();
                      $("#j_password").val("");
                      $("#j_captcha").val("");
                      $("#j_password").focus();
@@ -171,6 +167,64 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
 	    		login();
     		} 
     	}
+        
+        var InterValObj; //timer变量，控制时间 
+        var count = 60; //间隔函数，1秒执行 
+        var curCount;//当前剩余秒数 
+          
+        function sendMessage() { 
+           if($("#j_username").val()==""){
+        	   alert("用户名不能为空！");
+        	   return;
+           }
+           curCount=count;
+        　               　//设置button效果，开始计时 
+           $("#sendBtn").attr("disabled", "true"); 
+           $("#sendBtn").val(curCount + "秒后可重发"); 
+           InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次 
+           sendCode();
+        } 
+          
+        //timer处理函数 
+        function SetRemainTime() { 
+              if(curCount == 0) {         
+                window.clearInterval(InterValObj);//停止计时器 
+                $("#sendBtn").removeAttr("disabled");//启用按钮 
+                $("#sendBtn").val("重新发送验证码"); 
+              } else { 
+                curCount--; 
+                $("#sendBtn").val(curCount + "秒后可重发"); 
+              } 
+            } 
+        
+        function sendCode(){
+        	$.ajax({
+        		url: contextPath+'/sendCode/send-code!sendCode.action',
+		        type: 'post',
+		        dataType: 'json',
+		        async:false,
+		        data: {
+		        	username: $("#j_username").val()
+		        },
+		        success: function (r) {
+		        	//Ext.ux.Toast.msg(r);
+		        	alert(r);
+		        	if(r=="用户名不存在！"){
+		        		window.clearInterval(InterValObj);//停止计时器 
+		                $("#sendBtn").removeAttr("disabled");//启用按钮
+		                $("#sendBtn").val("发送验证码");
+		        	}esle if(r=="验证码发送失败,用户电话信息不存在！"){
+		        		window.clearInterval(InterValObj);//停止计时器 
+		                $("#sendBtn").removeAttr("disabled");//启用按钮 
+		                $("#sendBtn").val("发送验证码");
+		        	}else if(r=="验证码发送失败，请重新操作！"){
+		        		window.clearInterval(InterValObj);//停止计时器 
+		                $("#sendBtn").removeAttr("disabled");//启用按钮
+		                $("#sendBtn").val("发送验证码");
+		        	}
+		        }
+		    });
+        }
     </script>
 
 </head>
@@ -209,7 +263,7 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
                                 onkeypress="enterPress(event)"/>
                                 <!-- <span><img src="images/v-code.png" style="vertical-align:middle;" /></span> -->
                                 <span id="code">
-                                	<a class="fr" href="javascript:refeshCode()"><img id="checkCode" src="<%=contextPath%>/security/jcaptcha.png?rand=<%Math.random();%>" alt="点击换一张" style="vertical-align:middle;"/></a>
+                                	<a class="fr"><input style="border: none;background-color:#e9871e;color:white;height:30px;" type="button" id="sendBtn" onclick="sendMessage();" value="发送验证码"/></a>
                                 </span>
                             </td>
                         </tr>
