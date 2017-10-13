@@ -157,7 +157,7 @@
 	</delete>
 	
 	<select id="isHqCodePass" parameterType="java.util.Map" resultType="java.util.Map">
-	   SELECT T.BSS_CHNL_CODE FROM PAPP.TAB_COMM_IMPORT_TEMP T
+	   SELECT T.AGENTID FROM PAPP.TAB_COMM_IMPORT_TEMP T
  		WHERE NOT EXISTS (SELECT 1
                    FROM (SELECT A.BSS_CHNL_CODE FROM PCDE.TB_CDE_CHANL_CODE A
                          UNION  ALL
