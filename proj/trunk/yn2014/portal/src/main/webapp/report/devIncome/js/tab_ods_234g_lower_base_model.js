@@ -52,6 +52,7 @@ function search(pageNumber) {
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
+	var hqChanCode=$("#hqChanCode").val();
 //条件
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_LOWER_BASE_MODEL where 1 = 1 ";
 	if(time!=''){
@@ -74,6 +75,9 @@ function search(pageNumber) {
 	}
 	if(isZLWB!=''){
 		sql+=" and IS_ZLWB= '"+isZLWB+"'";
+	}
+	if(hqChanCode!=''){
+		sql+=" and HQ_CHAN_CODE like '%"+hqChanCode+"%'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
@@ -149,6 +153,7 @@ function downsAll(){
 	var isSW=$("#isSW").val();
 	var isJD=$("#isJD").val();
 	var isZLWB=$("#isZLWB").val();
+	var hqChanCode=$("#hqChanCode").val();
 //条件
 	var sql = "SELECT "+getSql()+" FROM PODS.TAB_ODS_234G_LOWER_BASE_MODEL where 1 = 1 ";
 	if(time!=''){
@@ -171,6 +176,9 @@ function downsAll(){
 	}
 	if(isZLWB!=''){
 		sql+=" and IS_ZLWB= '"+isZLWB+"'";
+	}
+	if(hqChanCode!=''){
+		sql+=" and HQ_CHAN_CODE like '%"+hqChanCode+"%'";
 	}
 //权限
 	var orgLevel=$("#orgLevel").val();
