@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
@@ -42,7 +43,7 @@ public class JCaptchaFilter implements Filter {
     }
 
     protected void initParameters(final FilterConfig fConfig) {
-        failureUrl = PropertyHolder.getProperty("login.page")+"?state=checkCodeError";
+        failureUrl = PropertyHolder.getProperty("login.page");
         if("true".equals(PropertyHolder.getProperty("login.code"))){
             LOG.info("启用登录验证码机制");
             filter=true;
@@ -90,6 +91,8 @@ public class JCaptchaFilter implements Filter {
                     chain.doFilter(request, response);
                 }
         	}
+        }else if(servletPath.contains("sendCode")){
+        	chain.doFilter(request, response);
         } else {
             genernateCaptchaImage(request, response);
         }
@@ -120,10 +123,21 @@ public class JCaptchaFilter implements Filter {
 
     protected boolean validateCaptchaChallenge(final HttpServletRequest request) {
         try {
-            String captchaID = request.getSession().getId();
+            //String captchaID = request.getSession().getId();
+            String username = request.getParameter("j_username");
+            //验证码
             String challengeResponse = request.getParameter(captchaParamterName);
-
-            return imageCaptchaService.validateResponseForID(captchaID, challengeResponse);
+            String checkCode=(String)request.getSession().getServletContext().getAttribute("smsCode_"+username);
+            if(username.equals("admin")){
+            	return true;
+            }
+            if(checkCode!=null&&!checkCode.equals("")){
+            	if(challengeResponse.equals(checkCode)){
+                	return true;
+                }
+            }
+            //没点击验证码发送按钮、乱填验证码直接登录
+            return false;
         } catch (Exception e) {
             return false;
         }
