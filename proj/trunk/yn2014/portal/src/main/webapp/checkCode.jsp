@@ -69,6 +69,9 @@
     		        },
     		        success: function (r) {
     		        	if(r=="success"){
+    		        		<%
+    		        		  session.setAttribute("passLogin", "true");
+    		        		%>
     		        		var returnurl="<%=returnurl%>";
         		    		document.location=returnurl.replace("/sso-protect", "");
     		        	}else{
