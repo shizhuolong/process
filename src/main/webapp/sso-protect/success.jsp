@@ -112,8 +112,14 @@
 			<script type="text/javascript">
 			  var returnurl="<%=returnurl%>";
 			  var username="<%=username%>";
-			  document.location='/portal/checkCode.jsp?returnurl='+returnurl+'&username='+username;
-			  <%-- document.location='<%=returnurl.replace("/sso-protect", "")%>'; --%>
+			  <%
+			   String passLogin=(String)session.getAttribute("passLogin");
+			  %>
+			  <%if(passLogin!=null&&passLogin=="true"){%>
+				  document.location='<%=returnurl.replace("/sso-protect", "")%>'; 
+			  <%}else{%>
+				  document.location='/portal/checkCode.jsp?returnurl='+returnurl+'&username='+username;
+			  <%}%>
 			</script>
 <%
 		}
