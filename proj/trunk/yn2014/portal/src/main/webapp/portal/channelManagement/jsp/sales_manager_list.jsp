@@ -37,7 +37,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=78"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=79"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
