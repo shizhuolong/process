@@ -213,7 +213,7 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
 		        		window.clearInterval(InterValObj);//停止计时器 
 		                $("#sendBtn").removeAttr("disabled");//启用按钮
 		                $("#sendBtn").val("发送验证码");
-		        	}esle if(r=="验证码发送失败,用户电话信息不存在！"){
+		        	}else if(r=="验证码发送失败,用户电话信息不存在！"){
 		        		window.clearInterval(InterValObj);//停止计时器 
 		                $("#sendBtn").removeAttr("disabled");//启用按钮 
 		                $("#sendBtn").val("发送验证码");
