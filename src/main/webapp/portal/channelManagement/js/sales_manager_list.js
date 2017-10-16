@@ -96,7 +96,8 @@ function search(pageNumber) {
 	if(order_type!=''){
 		sql+=" AND IS_BACK='"+order_type+"'";
 		if(order_type=='0'){//销售单
-			sql+=" AND SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate;
+			sql+=" AND (SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate+
+			" OR SUBSTR(BACK_TIME,0,8) BETWEEN "+startDate+" AND "+endDate+")";
 		}
 	}
 	if(hallName!=''){
@@ -149,7 +150,8 @@ function search(pageNumber) {
 	if(order_type!=''){
 		downSql+=" AND IS_BACK='"+order_type+"'";
 		if(order_type=='0'){//销售单
-			downSql+=" AND SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate;
+			downSql+=" AND (SUBSTR(ACC_TIME,0,8) BETWEEN "+startDate+" AND "+endDate+
+			" OR SUBSTR(BACK_TIME,0,8) BETWEEN "+startDate+" AND "+endDate+")";
 		}
 	}
 	if(hallName!=''){
