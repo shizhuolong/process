@@ -55,6 +55,8 @@ Array.prototype.shuffle = function() {
 $(function() {
 	initTeam();
 	listServiceNames();
+	listServiceOrders();
+	listServiceProducts();
 	$("input:radio[name='disType']").change(function (){
 		var disType=$(this).val();
 		if(1==disType){
@@ -74,6 +76,10 @@ function getAllOrders(){
 	var activeStatus=$("#activeStatus").val();
 	var isFirst=$("#isFirst").val();
 	var serviceName=$("#serviceName").val();
+	var startTime=$("#startTime").val();
+	var endTime=$("#endTime").val();
+	var serviceOrder=$("#serviceOrder").val();
+	var serviceProduct=$("#serviceProduct").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -81,6 +87,10 @@ function getAllOrders(){
 		cache:false,
 		url:$("#ctx").val()+"/t2i2c/t2i2c!undistributedOrderList.action",
 		data:{
+			"resultMap.startTime":startTime,
+			"resultMap.endTime":endTime,
+			"resultMap.serviceOrder":serviceOrder,
+			"resultMap.serviceProduct":serviceProduct,
 			"resultMap.activeStatus":activeStatus,
 			"resultMap.isFirst":isFirst,
 			"resultMap.serviceName":serviceName,
@@ -170,13 +180,21 @@ function search(pageNumber) {
 	var activeStatus=$("#activeStatus").val();
 	var isFirst=$("#isFirst").val();
 	var serviceName=$("#serviceName").val();
+	var startTime=$("#startTime").val();
+	var endTime=$("#endTime").val();
+	var serviceOrder=$("#serviceOrder").val();
+	var serviceProduct=$("#serviceProduct").val();
 	
 	$.ajax({
 		type:"POST",
 		dataType:'json',
 		cache:false,
-		url:$("#ctx").val()+"/t2i2c/t2i2c!undistributedOrderList.action",
+		url:$("#ctx").val()+"/t2i2c/t2i2c!topList.action",
 		data:{
+			"resultMap.startTime":startTime,
+			"resultMap.endTime":endTime,
+			"resultMap.serviceOrder":serviceOrder,
+			"resultMap.serviceProduct":serviceProduct,
 			"resultMap.activeStatus":activeStatus,
 			"resultMap.isFirst":isFirst,
 			"resultMap.serviceName":serviceName,
@@ -454,4 +472,50 @@ function query(sql){
 	    }
 	});
 	return ls;
+}
+function listServiceOrders(){
+	var $serviceOrder = $("#serviceOrder");
+	var sql = " SELECT distinct T.ORDER_STATUS FROM PODS.TB_ODS_2I2C_ORDER_STATUS T where T.ORDER_STATUS is not null ";
+	
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].ORDER_STATUS
+					+ '" selected >'
+					+ d[0].ORDER_STATUS + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].ORDER_STATUS + '">' + d[i].ORDER_STATUS + '</option>';
+			}
+		}
+		var $h = $(h);
+		$serviceOrder.empty().append($h);
+	} else {
+		alert("获取订单状态失败");
+	}
+}
+function listServiceProducts(){
+	var $serviceProduct = $("#serviceProduct");
+	var sql = " SELECT distinct T.SHOOP_NAME FROM PODS.TB_ODS_2I2C_SHOOP_NAME T where T.SHOOP_NAME is not null ";
+	
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].SHOOP_NAME
+					+ '" selected >'
+					+ d[0].SHOOP_NAME + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				h += '<option value="' + d[i].SHOOP_NAME + '">' + d[i].SHOOP_NAME + '</option>';
+			}
+		}
+		var $h = $(h);
+		$serviceProduct.empty().append($h);
+	} else {
+		alert("获取商品信息失败");
+	}
 }
