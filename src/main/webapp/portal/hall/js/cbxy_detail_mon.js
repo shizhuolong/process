@@ -3,9 +3,14 @@ $(function(){
 	if(maxDate!=null){
 		$("#dealDate").val(maxDate);
 	}
-	var title=[["组织架构","本月成本","","","","","","","","本年累计成本","","","","","","","","当月销售毛利","本年累计销售毛利"],
-	           ["","发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","",""]];
-	var field=["ROW_NAME","DEV_COMM","CL_COMM","JF_COMM","BT","HQ_RENT","KHJR_AMOUNT","KCB_COST","ZXSD_FEE","DEV_COMM1","CL_COMM1","JF_COMM1","BT1","HQ_RENT1","KHJR_AMOUNT1","KCB_COST1","ZXSD_FEE1","ML_NUM","ML_NUM1"];
+	var title=[["组织架构","本月成本","","","","","","","","","","","","","","","","","","","",
+	            "本年累计成本","","","","","","","","","","","","","","","","","","","","当月收入","本年累计收入","当月销售毛利","本年累计销售毛利","当月毛利率","本年累计毛利率"],
+	           ["","发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","人工成本（应发数）","柜台及场地出租收入","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费",
+	            "发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","人工成本（应发数）","柜台及场地出租收入","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费",
+	            "","","","","",""]];
+	var field=["ROW_NAME","DEV_COMM","CL_COMM","JF_COMM","BT","HQ_RENT","KHJR_AMOUNT","KCB_COST","ZXSD_FEE","MAN_COST_ALL","GT_PLACE_RENT","ADV_FEE","YWYP_FEE","CH_PRO_PRE","SALE_DETAIL_SR","SALE_DETAIL_COST","BG_FEE","CAR_FEE","ZD_FEE","CL_FEE","TX_FEE",
+	           "DEV_COMM1","CL_COMM1","JF_COMM1","BT1","HQ_RENT1","KHJR_AMOUNT1","KCB_COST1","ZXSD_FEE1","MAN_COST_ALL1","GT_PLACE_RENT1","ADV_FEE1","YWYP_FEE1","CH_PRO_PRE1","SALE_DETAIL_SR1","SALE_DETAIL_COST1","BG_FEE1","CAR_FEE1","ZD_FEE1","CL_FEE1","TX_FEE1",
+	           "SR_DETAIL_SUM","SR_DETAIL_SUM1","ML_NUM","ML_NUM1","ML_RATE","ML_RATE1"];
 	$("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -109,11 +114,15 @@ function downsAll() {
 	if(hq_hr_id!=""){
 		where+=" AND HQ_HR_ID LIKE '%"+hq_hr_id+"%'";
 	}
-	var field=["GROUP_ID_1_NAME","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","HQ_STATE","DEV_COMM","CL_COMM","JF_COMM","BT","HQ_RENT","KHJR_AMOUNT","KCB_COST","ZXSD_FEE","DEV_COMM1","CL_COMM1","JF_COMM1","BT1","HQ_RENT1","KHJR_AMOUNT1","KCB_COST1","ZXSD_FEE1","ML_NUM","ML_NUM1"];
-	var sql = "SELECT "+field.join(",")+" FROM PMRT.TB_MRT_HQ_CBXY_DETAIL_MON"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE";
+	var field=["GROUP_ID_1_NAME","UNIT_NAME","HQ_HR_ID","HQ_NAME","HQ_CHAN_CODE","HQ_CHAN_NAME","HQ_STATE","DEV_COMM","CL_COMM","JF_COMM","BT","HQ_RENT","KHJR_AMOUNT","KCB_COST","ZXSD_FEE","MAN_COST_ALL","GT_PLACE_RENT","ADV_FEE","YWYP_FEE","CH_PRO_PRE","SALE_DETAIL_SR","SALE_DETAIL_COST","BG_FEE","CAR_FEE","ZD_FEE","CL_FEE","TX_FEE",
+	           "DEV_COMM1","CL_COMM1","JF_COMM1","BT1","HQ_RENT1","KHJR_AMOUNT1","KCB_COST1","ZXSD_FEE1","MAN_COST_ALL1","GT_PLACE_RENT1","ADV_FEE1","YWYP_FEE1","CH_PRO_PRE1","SALE_DETAIL_SR1","SALE_DETAIL_COST1","BG_FEE1","CAR_FEE1","ZD_FEE1","CL_FEE1","TX_FEE1",
+	           "SR_DETAIL_SUM","SR_DETAIL_SUM1","ML_NUM","ML_NUM1"];
+	var sql = "SELECT "+field.join(",")+",PMRT.LINK_RATIO_ZB(ML_NUM,SR_DETAIL_SUM,2) ML_RATE,PMRT.LINK_RATIO_ZB(ML_NUM1,SR_DETAIL_SUM1,2) ML_RATE1 FROM PMRT.TB_MRT_HQ_CBXY_DETAIL_MON"+where+" ORDER BY GROUP_ID_1,UNIT_ID,HQ_HR_ID,HQ_CHAN_CODE";
 	var showtext = '渠道经理成本效益月报-' + dealDate;
-	var title=[["地市","营服","渠道经理HR","渠道经理","渠道编码","渠道名称","渠道状态","本月成本","","","","","","","","本年累计成本","","","","","","","","当月销售毛利","本年累计销售毛利"],
-	           ["","","","","","","","发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","",""]];
+	var title=[["地市","营服","渠道经理HR","渠道经理","渠道编码","渠道名称","渠道状态","本月成本","","","","","","","","","","","","","","","","","","","","本年累计成本","","","","","","","","","","","","","","","","","","","","当月收入","本年累计收入","当月销售毛利","本年累计销售毛利","当月毛利率","本年累计毛利率"],
+	           ["","","","","","","","发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","人工成本（应发数）","柜台及场地出租收入","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费",
+	            "发展用户佣金","存量用户佣金","缴费佣金","补贴","房租","客户接入成本","卡成本","装修水电","人工成本（应发数）","柜台及场地出租收入","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费",
+	            "","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -165,23 +174,58 @@ function getSql(orgLevel,where){
   }
 
 function getSumSql(){
-	return ",SUM(DEV_COMM) DEV_COMM     "+
-	",SUM(CL_COMM)  CL_COMM             "+
-	",SUM(JF_COMM)  JF_COMM             "+
-	",SUM(BT)      BT                   "+
-	",SUM(HQ_RENT) HQ_RENT              "+
-	",SUM(KHJR_AMOUNT) KHJR_AMOUNT      "+
-	",SUM(KCB_COST)    KCB_COST         "+
-	",SUM(ZXSD_FEE)   ZXSD_FEE          "+
-	",SUM(DEV_COMM1) DEV_COMM1          "+
-	",SUM(CL_COMM1)  CL_COMM1           "+
-	",SUM(JF_COMM1)  JF_COMM1           "+
-	",SUM(BT1)      BT1                 "+
-	",SUM(HQ_RENT1) HQ_RENT1            "+
-	",SUM(KHJR_AMOUNT1) KHJR_AMOUNT1    "+
-	",SUM(KCB_COST1)    KCB_COST1       "+
-	",SUM(ZXSD_FEE1)   ZXSD_FEE1        "+
-	",SUM(ML_NUM)     ML_NUM            "+
-	",SUM(ML_NUM1)     ML_NUM1          "+
+	return ",SUM(DEV_COMM) DEV_COMM,  "+
+	"   SUM(DEV_COMM) DEV_COMM,								            "+
+    "   SUM(CL_COMM) CL_COMM,								            "+
+    "   SUM(JF_COMM) JF_COMM,								            "+
+    "   SUM(BT) BT,								                        "+
+    "   SUM(HQ_RENT) HQ_RENT,								            "+
+    "   SUM(KHJR_AMOUNT) KHJR_AMOUNT,								    "+
+    "   SUM(KCB_COST) KCB_COST,								            "+
+    "   SUM(ZXSD_FEE) ZXSD_FEE,								            "+
+    "   								                                "+
+   // "   --新增列								                        "+
+    "   SUM(MAN_COST_ALL )	    MAN_COST_ALL    						"+	
+    "  ,SUM(GT_PLACE_RENT    )	    GT_PLACE_RENT   	       			"+			
+    "  ,SUM(ADV_FEE          )	    ADV_FEE         	      			"+			
+    "  ,SUM(YWYP_FEE         )	    YWYP_FEE        	      			"+			
+    "  ,SUM(CH_PRO_PRE       )	    CH_PRO_PRE      	      			"+			
+    "  ,SUM(SALE_DETAIL_SR   )	    SALE_DETAIL_SR  	      			"+			
+    "  ,SUM(SALE_DETAIL_COST )	    SALE_DETAIL_COST	      			"+			
+    "  ,SUM(BG_FEE           )	    BG_FEE          	      			"+			
+    "  ,SUM(CAR_FEE          )	    CAR_FEE         	      			"+			
+    "  ,SUM(ZD_FEE           )	    ZD_FEE          	      			"+			
+    "  ,SUM(CL_FEE           )	    CL_FEE          	      			"+			
+    "  ,SUM(TX_FEE           )	    TX_FEE    ,      					"+		
+ //   "   								                                "+
+    "   SUM(DEV_COMM1) DEV_COMM1,								        "+
+    "   SUM(CL_COMM1) CL_COMM1,								            "+
+    "   SUM(JF_COMM1) JF_COMM1,								            "+
+    "   SUM(BT1) BT1,								                    "+
+    "   SUM(HQ_RENT1) HQ_RENT1,								            "+
+    "   SUM(KHJR_AMOUNT1) KHJR_AMOUNT1,								    "+
+    "   SUM(KCB_COST1) KCB_COST1,								        "+
+    "   SUM(ZXSD_FEE1) ZXSD_FEE1,								        "+
+   // "   --新增列								                        "+
+    "   SUM(MAN_COST_ALL1    ) 	MAN_COST_ALL1    		      			"+		
+    "  ,SUM(GT_PLACE_RENT1   ) 	GT_PLACE_RENT1   		       			"+		
+    "  ,SUM(ADV_FEE1         ) 	ADV_FEE1         		      			"+		
+    "  ,SUM(YWYP_FEE1        ) 	YWYP_FEE1        		      			"+		
+    "  ,SUM(CH_PRO_PRE1      ) 	CH_PRO_PRE1      		      			"+		
+    "  ,SUM(SALE_DETAIL_SR1  ) 	SALE_DETAIL_SR1  		      			"+		
+    "  ,SUM(SALE_DETAIL_COST1) 	SALE_DETAIL_COST1		      			"+		
+    "  ,SUM(BG_FEE1          ) 	BG_FEE1          		      			"+		
+    "  ,SUM(CAR_FEE1         ) 	CAR_FEE1         		      			"+		
+    "  ,SUM(ZD_FEE1          ) 	ZD_FEE1          		      			"+		
+    "  ,SUM(CL_FEE1          ) 	CL_FEE1          		      			"+		
+    "  ,SUM(TX_FEE1          ) 	TX_FEE1   							    "+
+    "  ,SUM(SR_DETAIL_SUM)     SR_DETAIL_SUM							"+	
+    "  ,SUM(SR_DETAIL_SUM1)    SR_DETAIL_SUM1 ,                         "+
+	//"                                                                   "+
+    "   SUM(ML_NUM) ML_NUM,								                "+
+    "   SUM(ML_NUM1) ML_NUM1								 			"+					
+    //"   --新增列								                        "+
+    "  ,PMRT.LINK_RATIO_ZB(SUM(ML_NUM),SUM(SR_DETAIL_SUM),2) ML_RATE	"+							
+    "  ,PMRT.LINK_RATIO_ZB(SUM(ML_NUM1),SUM(SR_DETAIL_SUM1),2) ML_RATE1 "+
 	"FROM PMRT.TB_MRT_HQ_CBXY_DETAIL_MON";    
 }
