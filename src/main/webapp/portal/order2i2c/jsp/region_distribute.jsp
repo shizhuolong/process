@@ -1,7 +1,16 @@
+<%@page import="org.apdplat.module.security.model.Org"%>
+<%@page import="org.apdplat.module.security.service.UserHolder"%>
+<%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	String path = request.getContextPath();
+    String path = request.getContextPath();
+    Calendar ca = Calendar.getInstance();
+    ca.add(Calendar.DATE, 0);
+    String time = new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,6 +21,8 @@
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css">
 <link rel="stylesheet" type="text/css" href="<%=path%>/portal/order2i2c/css/jquery.jOrgChart.css?v=2">
 <link href="<%=path%>/js/artDialog4.1.7/skins/default.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet"
+    href="<%=path%>/page/js/date/skin/WdatePicker.css">
 <script type="text/javascript" src="<%=path%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=path%>/portal/order2i2c/js/json2.js"></script>
 <script type="text/javascript" src="<%=path%>/js/artDialog4.1.7/artDialog.js"></script>
@@ -19,6 +30,8 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/portal/order2i2c/js/jquery.jOrgChart.js?v=2"></script>
 <script type="text/javascript" src="<%=path%>/portal/order2i2c/js/region_distribute.js?v=11"></script>
+<script type="text/javascript"
+    src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript">
 	var path = "<%=path%>";
 </script>
@@ -40,6 +53,32 @@
 							<div class="sticky-wrap">
 								<table>
 		                       		<tr>
+		                       		    <td align="right">开始时间：</td>
+                                        <td width="5%"><input type="text" style="width: 100px;"
+                                        class="Wdate default-text-input wper80" readonly
+                                        onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})"
+                                        value="<%=time%>" id="startTime" name="startTime" />
+                                        </td>
+                                        <td width="5%" align="right">结束时间：</td>
+                                        <td width="5%"><input type="text" style="width: 100px;"
+                                        class="Wdate default-text-input wper80" readonly
+                                        onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})"
+                                        value="<%=time%>" id="endTime" name="endTime" />
+                                        </td>
+                                        <td align="right">订单状态：</td>
+                                        <td>
+                                            <select class="default-text-input wper80" name="serviceOrder" id="serviceOrder">
+                                            
+                                            </select>
+                                        </td>
+                                        <td align="right">商品名称：</td>
+                                        <td>
+                                            <select class="default-text-input wper80" name="serviceProduct" id="serviceProduct">
+                                              
+                                            </select>
+                                        </td>
+                                   </tr>
+                                   <tr>
 					                	<td align="right">激活状态：</td>
 					                    <td>
 					                    	<select class="default-text-input wper80" name="activeStatus" id="activeStatus">
