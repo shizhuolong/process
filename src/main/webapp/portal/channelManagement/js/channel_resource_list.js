@@ -79,6 +79,7 @@ function search(pageNumber) {
 	var isMark= $("#isMark").val();
 	var isAgent= $("#isAgent").val();
 	var isStart= $("#isStart").val();
+	var isfy= $("#isfy").val();
 	$.ajax({
 		type:"POST",
 		dataType:'json',
@@ -99,7 +100,8 @@ function search(pageNumber) {
            	"chn_cde_4_name":chn_cde_4_name,
            	"isMark":isMark,
            	"isAgent":isAgent,
-           	"isStart":isStart
+           	"isStart":isStart,
+           	"isfy":isfy
 	   	}, 
 	   	success:function(data){
 	   		if(data.msg) {
@@ -123,36 +125,46 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['CHN_CDE_3_NAME'])+"</td>"
 				+"<td>"+isNull(n['CHN_CDE_4_NAME'])+"</td>"
 				+"<td>"+isNull(n['START_SHORT_NAME'])+"</td>"
-				+"<td>"+isNull(n['START_LEVE'])+"</td>";
+				+"<td>"+isNull(n['START_LEVE'])+"</td>"
+				+"<td>"+isNull(n['ISFY'])+"</td>";
 				//是否已经划分营服中心
 				var isDivision = n['ISDIVISION'];
 				var is_mark=n['IS_MARK'];
+				var is_mult=n['IS_MULT'];
 				if(isGrantedNew(UPDATE_ROLE)) {
+					content+="<td>";
+					if(is_mult=="0"){
+						content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' onclick='fymark(this);'>复用打标</a>&nbsp;&nbsp;";
+					}else if(is_mult=="1"){
+						content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' onclick='unfymark(this);'>取消复用</a>&nbsp;&nbsp;";
+					}else{//2,只能在后台修改复用打标
+						
+					}
 					if(is_mark=="0"){
 						//已划分
 						if(isDivision == "1") {
-							content += "<td><a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
 								       "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideNotMark(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
 									   "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						} else {
-							content += "<td><a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideNotMark(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						}
 					}else{//已打标
 						if(isDivision == "1") {
-							content += "<td><a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
 								       "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideIsMark(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
 									   "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						} else {
-							content += "<td><a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideIsMark(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						}
 					}
 					
 				}else {
-					content += "<td><a href='#' group_id_4='"+n['GROUP_ID_4']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' onclick='showDetails(this);'>详细信息</a></td>";
+					content += "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' onclick='showDetails(this);'>详细信息</a></td>";
 				}
 				
 				content+="</tr>";
@@ -160,7 +172,7 @@ function search(pageNumber) {
 			if(content != "") {
 				$("#dataBody").empty().html(content);
 			}else {
-				$("#dataBody").empty().html("<tr><td colspan='8'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='12'>暂无数据</td></tr>");
 			}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -510,6 +522,49 @@ function mark(ele){
 		});
 	}
 }
+
+function fymark(ele){
+	var hq_chan_code=$(ele).attr("hq_chan_code");
+	$.ajax({
+        url: $("#ctx").val()+"/channelManagement/channelResource_fymark.action",
+        type: 'post',
+        dataType: 'json',
+        async:false,
+        data: {
+        	hq_chan_code: hq_chan_code,
+        	type:'1'
+        },
+        success: function (r) {
+        	if(r.state=="1"){
+               search(0);   
+        	}else{
+        		alert(r.msg)
+        	}
+        }
+    });
+}
+
+function unfymark(ele){
+	var hq_chan_code=$(ele).attr("hq_chan_code");
+	$.ajax({
+        url: $("#ctx").val()+"/channelManagement/channelResource_fymark.action",
+        type: 'post',
+        dataType: 'json',
+        async:false,
+        data: {
+        	hq_chan_code: hq_chan_code,
+        	type:'0'
+        },
+        success: function (r) {
+        	if(r.state=="1"){
+               search(0);   
+        	}else{
+        		alert(r.msg)
+        	}
+        }
+    });
+}
+
 //分页
 function initPagination(totalCount) {
 	 $("#totalCount").html(totalCount);
@@ -553,6 +608,7 @@ function downloadExcel() {
 	var isMark=$("#isMark").val();
 	var isAgent=$("#isAgent").val();
 	var isStart=$("#isStart").val();
+	var isfy=$("#isfy").val();
 	var sql = "";
 	if(orgLevel=="1") {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,T3.CHN_CDE_1_NAME,T3.CHN_CDE_2_NAME,T3.CHN_CDE_3_NAME,T3.CHN_CDE_4_NAME, "+
@@ -560,7 +616,7 @@ function downloadExcel() {
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
 		",T.START_SHORT_NAME,T.START_LEVE                                                                   "+
-		",T.IS_PHOTO FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
+		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
@@ -572,7 +628,7 @@ function downloadExcel() {
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
 		",T.START_SHORT_NAME,T.START_LEVE             "+
-		",T.IS_PHOTO FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
+		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
@@ -584,7 +640,7 @@ function downloadExcel() {
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
 		",T.START_SHORT_NAME,T.START_LEVE             "+
-		",T.IS_PHOTO FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
+		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
@@ -595,7 +651,7 @@ function downloadExcel() {
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                            "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.START_SHORT_NAME,T.START_LEVE             "+
-		",T.IS_PHOTO FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
+		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
 		"WHERE T.UNIT_ID = T2.UNIT_ID                                                                        "+
@@ -638,10 +694,16 @@ function downloadExcel() {
 	if (isStart == "0"){
 		sql+=" AND T.START_SHORT_NAME IS NULL AND T.START_LEVE IS NULL";
 	}
+	if (isfy == "0"){
+		sql+=" AND T.IS_MULT ='0'";
+	}
+	if (isfy == "1"){
+		sql+=" AND T.IS_MULT IN('1','2')";
+	}
 	sql += " ORDER BY T.GROUP_ID_1, T.UNIT_ID";
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','代理点类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度","渠道属性","战略渠道简称","战略渠道级别","是否有照片"];
+   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','代理点类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度","渠道属性","战略渠道简称","战略渠道级别","是否有照片","是否复用渠道"];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
