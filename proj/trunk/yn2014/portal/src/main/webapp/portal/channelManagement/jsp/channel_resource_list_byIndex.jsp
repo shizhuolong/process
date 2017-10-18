@@ -29,7 +29,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/extend.jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/plus.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/wgreport/bireport/js/analize/helper.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_resource_list.js?v=10"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role) {
@@ -121,6 +121,16 @@
                             </select>
                         </td>
 					</tr>
+					<tr height="35px">
+				     	<td width="10%" style="padding-left: 10px;">是否复用渠道：</td>
+						<td width="20%">
+							<select class="default-text-input wper80" name="isfy" id="isfy">
+								<option value="">全部</option>
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
+						</td>
+					</tr>
 					<tr>
 						<td colspan="4">
                          	<a class="default-btn fLeft mr10" href="#" id="searchBtn" style="margin-left: 300px;">查询</a>
@@ -153,7 +163,7 @@
 					<tbody id="dataBody">
 					</tbody>
 					<tr>
-						<td colspan="10">
+						<td colspan="13">
 								<div class="page_count">
 									<div class="page_count_left">
 										共有 <span id="totalCount"></span> 条数据
