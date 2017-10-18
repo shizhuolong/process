@@ -27,6 +27,7 @@ import java.util.Map;
 
 
 
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface ChannelResourceDao {
@@ -134,4 +135,6 @@ public interface ChannelResourceDao {
 	public int count(Map<String, Object> params);
 	
 	public void updateMarkStatus(Map<String, String> params);
+	
+	public void fymark(Map<String, Object> params);
 }
