@@ -176,6 +176,9 @@ public class ChannelResourceService {
 	public int count(Map<String, Object> params) {
 		return channelResourceDao.count(params);
 	}
+	public void fymark(Map<String, Object> params) {
+		channelResourceDao.fymark(params);
+	}
 	
 	
 }

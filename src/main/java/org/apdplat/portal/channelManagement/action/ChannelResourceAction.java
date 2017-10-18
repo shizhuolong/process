@@ -58,6 +58,7 @@ public class ChannelResourceAction extends BaseAction {
 			String isMark=request.getParameter("isMark");
 			String isAgent=request.getParameter("isAgent");
 			String isStart=request.getParameter("isStart");
+			String isfy=request.getParameter("isfy");
 			if (hq_chan_code != null && !"".equals(hq_chan_code.trim())) {
 				resultMap.put("hq_chan_code", hq_chan_code);
 			}
@@ -87,6 +88,9 @@ public class ChannelResourceAction extends BaseAction {
 			}
 			if (isStart != null && !"".equals(isStart.trim())) {
                 resultMap.put("isStart", isStart);
+            }
+			if (isfy != null && !"".equals(isfy.trim())) {
+                resultMap.put("isfy", isfy);
             }
 			Object result = channelResourceService.listChannel(resultMap);
 			this.reponseJson(result);
@@ -450,6 +454,25 @@ public class ChannelResourceAction extends BaseAction {
 		int count = channelResourceService.count(params);
 		this.reponseJson(count);
     }
+    
+    public void fymark() {
+		Map m = new HashMap<String, String>();
+		try {
+			String hq_chan_code = request.getParameter("hq_chan_code");
+			String type = request.getParameter("type");
+			Map<String,Object> params=new HashMap<String,Object>();
+			params.put("hq_chan_code", hq_chan_code);
+			params.put("type", type);
+			channelResourceService.fymark(params);
+			m.put("msg", "操作成功！");
+			m.put("state", "1");
+		} catch (Exception e) {
+			logger.error("出现异常，操作失败！", e);
+			m.put("state", "0");
+			m.put("msg", "出现异常,操作失败！");
+		}
+		this.reponseJson(m);
+	}
     
 	public Map<String, String> getResultMap() {
 		return resultMap;
