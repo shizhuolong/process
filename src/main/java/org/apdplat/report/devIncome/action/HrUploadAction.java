@@ -24,6 +24,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
+import org.apdplat.module.security.model.Org;
+import org.apdplat.module.security.model.User;
+import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.util.Struts2Utils;
 import org.apdplat.wgreport.common.SpringManager;
@@ -47,11 +50,34 @@ public class HrUploadAction extends BaseAction{
 		boolean r=false;
 		Connection conn =null;
 		CallableStatement stmt=null;
+		User user = UserHolder.getCurrentLoginUser();
+		Org org=user.getOrg();
+		String orgLevel=org.getOrgLevel();
+		String type="";
+		String regionCode="";
+		if(orgLevel.equals("1")){//省级用户导入
+			type="1";
+		}else{//市级用户导入
+			type="2";
+			regionCode=org.getRegionCode();
+		}
 		try{
 			String time=request.getParameter("time");
-			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE DEAL_DATE="+time;
+			String csql="";
+			if(type.equals("2")){
+				csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='2'";
+			}else{
+				csql="DELETE FROM PTEMP.TB_TMP_JCDY_HR_SALARY WHERE DEAL_DATE='"+time+"' AND TYPE='1'";
+			}
+			
 			SpringManager.getUpdateDao().update(csql);
-			String sql="INSERT INTO PTEMP.TB_TMP_JCDY_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"'";
+			String sql="";
+			if(type.equals("2")){
+				sql="INSERT INTO PTEMP.TB_TMP_JCDY_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='2'";
+			}else{
+				sql="INSERT INTO PTEMP.TB_TMP_JCDY_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND TYPE='1'";
+			}
+			
 			SpringManager.getUpdateDao().update(sql);
 			/*//调用存储过程
 			conn = dataSource.getConnection();
@@ -127,14 +153,30 @@ public class HrUploadAction extends BaseAction{
 			err.add("上传文件为空");
 		}else{
 			try{
+				User user = UserHolder.getCurrentLoginUser();
+				Org org=user.getOrg();
+				String orgLevel=org.getOrgLevel();
+				
+				String type="";
+				if(orgLevel.equals("1")){//省级用户导入
+					type="1";
+				}else{//市级用户导入
+					type="2";
+					regionCode=org.getRegionCode();
+				}
+				String delSql="";
 				//上传时覆盖
-				String delSql="delete from "+resultTableName+" where deal_date='"+time+"'";
+				if(type.equals("2")){
+					delSql="delete from "+resultTableName+" where deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='"+type+"'";
+				}else{
+					delSql="delete from "+resultTableName+" where deal_date='"+time+"' AND TYPE='"+type+"'";
+				}
 				SpringManager.getUpdateDao().update(delSql);
 				FileInputStream in=new FileInputStream(uploadFile);
 				HSSFWorkbook wb = new HSSFWorkbook(in);
 				int sheetNum=wb.getNumberOfSheets();//得到sheet数量
 				SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-				String fields="DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,OWN_ORG,DIS_NUM,SALARY_UNIT,SALARY_MONTH,POST_SALARY,MULTI_PAY,AREA_PAY,WARM_PAY,HOLD_SALAY,MON_SALARY_1,MON_SALARY_2,YEAR_SALARY,YEAR_SALARY_NOCOST,OVERTIME_PAY,MULTI_WY,MULTI_CB,NIGHT_PAY,FESTIVITY_PAY,SPECIAL_PAY,OTHER_TAX_PAY,UP_PAY,ADJUST_SALARY,POST_KH_PAY,JX_KH_PAY,OTHER1,OTHER2,OTHER_PLACE_PAY,GOV_SPECIAL_PAY,PETITION_POST_PAY,G3_PAY,NATIVE_LAN_PAY,HURT_PAY,CHINA_ONE_NO_TAX,CHINA_ONE_TAX,JT_NO_TAX,JT_TAX,FUNERAL_PENSION,COLLECTIVE_WELFARE,COVERALL,FAMILY_ALLOWANCE,SEVERANCE_PACKAGE,OTHER_SALA_NO_COST,OTHER_SALA_JT,TREATMENT,PROVIDE_AGE_NOTAX,PROVIDE_AGE_TAX,PROVIDE_AGE_COM,INDIVIDUAL,INDIVIDUAL_COM,PROVIDE_AGE_PER,PROVIDE_COM,TREATMENT_PER,TREATMENT_COM,UNEMPLOYE_PER,UNEMPLOYE_COM,HURT_COM,MATERNITY_COM,BIGMEDI_TAX,MON_BIGMEDI,BIGMEDI_PER,BIGMEDI_COM,PROVIDE_ADJUST_PER,PROVIDE_ADJUST_COM,TREATMENT_ADJUST_PER,TREATMENT_ADJUST_COM,UNEMPLOYE_ADJUST_PER,UNEMPLOYE_ADJUST_COM,HURT_ADJUST_COM,MATERNITY_ADJUST_COM,DIS_SOCIAL,HOUSING_PER,HOUSING_COM,HOUSING_ADUST_PER,HOUSING_ADUST_COM,BC_HOUSING_PER,BC_HOUSING_COM,LABOR_NO_TAX,LABOR_TAX,LABOUR_FEE,EDU_FEE,EDU_PAY,LABOR_ADJUST,EDU_ADJUST,INCOME_TAX_ADJUST,ADD_NO_TAX,OTHER_TAX,MANA_FEE,OTHER_ASSURANCE,SALARY_PAY_TOTAL,DEDUCTED_TOTAL,INCOME_TAX_DISS,YEAR_JJ_TAX,LEAVE_TAX,FACT_TOTAL,ALL_SALARY,SALARY_COST";
+				String fields="TYPE,DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,OWN_ORG,DIS_NUM,SALARY_UNIT,SALARY_MONTH,POST_SALARY,MULTI_PAY,AREA_PAY,WARM_PAY,HOLD_SALAY,MON_SALARY_1,MON_SALARY_2,YEAR_SALARY,YEAR_SALARY_NOCOST,OVERTIME_PAY,MULTI_WY,MULTI_CB,NIGHT_PAY,FESTIVITY_PAY,SPECIAL_PAY,OTHER_TAX_PAY,UP_PAY,ADJUST_SALARY,POST_KH_PAY,JX_KH_PAY,OTHER1,OTHER2,OTHER_PLACE_PAY,GOV_SPECIAL_PAY,PETITION_POST_PAY,G3_PAY,NATIVE_LAN_PAY,HURT_PAY,CHINA_ONE_NO_TAX,CHINA_ONE_TAX,JT_NO_TAX,JT_TAX,FUNERAL_PENSION,COLLECTIVE_WELFARE,COVERALL,FAMILY_ALLOWANCE,SEVERANCE_PACKAGE,OTHER_SALA_NO_COST,OTHER_SALA_JT,TREATMENT,PROVIDE_AGE_NOTAX,PROVIDE_AGE_TAX,PROVIDE_AGE_COM,INDIVIDUAL,INDIVIDUAL_COM,PROVIDE_AGE_PER,PROVIDE_COM,TREATMENT_PER,TREATMENT_COM,UNEMPLOYE_PER,UNEMPLOYE_COM,HURT_COM,MATERNITY_COM,BIGMEDI_TAX,MON_BIGMEDI,BIGMEDI_PER,BIGMEDI_COM,PROVIDE_ADJUST_PER,PROVIDE_ADJUST_COM,TREATMENT_ADJUST_PER,TREATMENT_ADJUST_COM,UNEMPLOYE_ADJUST_PER,UNEMPLOYE_ADJUST_COM,HURT_ADJUST_COM,MATERNITY_ADJUST_COM,DIS_SOCIAL,HOUSING_PER,HOUSING_COM,HOUSING_ADUST_PER,HOUSING_ADUST_COM,BC_HOUSING_PER,BC_HOUSING_COM,LABOR_NO_TAX,LABOR_TAX,LABOUR_FEE,EDU_FEE,EDU_PAY,LABOR_ADJUST,EDU_ADJUST,INCOME_TAX_ADJUST,ADD_NO_TAX,OTHER_TAX,MANA_FEE,OTHER_ASSURANCE,SALARY_PAY_TOTAL,DEDUCTED_TOTAL,INCOME_TAX_DISS,YEAR_JJ_TAX,LEAVE_TAX,FACT_TOTAL,ALL_SALARY,SALARY_COST";
 				System.out.println("准备导入...");
 				if(sheetNum>0){
 					HSSFSheet sheet = wb.getSheetAt(0);
@@ -146,7 +188,7 @@ public class HrUploadAction extends BaseAction{
 						Date date=new Date();
 						String createTime=s.format(date);
 						String sql="insert into "+resultTableName+"("+fields+")";
-						String values=" values('"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
+						String values=" values('"+type+"','"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
 						HSSFRow row =sheet.getRow(y);
 						if(row==null) continue;
 						int cstart=row.getFirstCellNum();
@@ -171,21 +213,21 @@ public class HrUploadAction extends BaseAction{
 							continue;
 						}
 					}
-					String hrNoNotExist="SELECT HR_NO FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE HR_NO NOT IN(SELECT DISTINCT HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON)";
+					String hrNoNotExist="SELECT HR_NO FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND TYPE='"+type+"' AND HR_NO NOT IN(SELECT DISTINCT HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON)";
 					List<Map<String,String>> l=SpringManager.getFindDao().find(hrNoNotExist);
 					if(l!=null&&l.size()>0){
 						for(int i=0;i<l.size();i++){
 							err.add("hr编码"+l.get(i).get("HR_NO")+"错误，请核查！");
 						}
 					}
-					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where deal_date='"+time+"'";
-					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where deal_date='"+time+"'";
+					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where deal_date='"+time+"' AND TYPE='"+type+"'";
+					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP where deal_date='"+time+"' AND TYPE='"+type+"'";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
 						err.add("导入的excel表中有员工工号重复数据");
 					}
 					String updateRegionCode="MERGE INTO PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP T1   "+
 							"USING PORTAL.TAB_PORTAL_QJ_PERSON T2             "+
-							"ON    (T1.HR_NO=T2.HR_ID AND T1.DEAL_DATE="+time+" AND T2.DEAL_DATE="+time+")"+
+							"ON    (T1.HR_NO=T2.HR_ID AND T1.TYPE='"+type+"' AND T1.DEAL_DATE="+time+" AND T2.DEAL_DATE="+time+")"+
 							"WHEN MATCHED THEN                                "+
 							"  UPDATE SET T1.GROUP_ID_1=T2.GROUP_ID_1         ";
 					
