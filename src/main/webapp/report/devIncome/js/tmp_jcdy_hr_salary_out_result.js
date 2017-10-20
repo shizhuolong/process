@@ -16,6 +16,7 @@ $(function() {
 			};
 		}
 	});
+	initType();
 	search(0);
 	$("#searchBtn").click(function(){
 		search(0);
@@ -36,6 +37,18 @@ function initPagination(totalCount) {
 		num_edge_entries : 2
 	});
 }
+
+function initType(){
+	var orgLevel=$("#orgLevel").val();
+	var h="";
+	if(orgLevel==1){
+		h="<option value='1'>省级导入</option><option value='2'>地市导入</option>";
+	}else{
+		h="<option value='2'>地市导入</option>";
+	}
+	$("#type").empty().append($(h));
+}
+
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
@@ -43,7 +56,8 @@ function search(pageNumber) {
 	var time=$("#time").val();
 	var regionCode=$("#regionCode").val();
 	var userId=$("#userId").val();
-	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE DEAL_DATE='"+time+"'";
+	var type=$("#type").val();
+	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE DEAL_DATE='"+time+"' AND TYPE='"+type+"'";
 	if(regionCode!=""){
 		sql+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
@@ -77,7 +91,7 @@ function search(pageNumber) {
 }
 function downsAll() {
 	var time=$("#time").val();
-	var showtext = "调整后外包导入-"+time;
+	var showtext = "调整后外包导出-"+time+"-"+$("#type").find("option:selected").text();
 	downloadExcel(downSql,title,showtext);
 }
 
