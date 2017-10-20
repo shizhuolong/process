@@ -24,6 +24,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
+import org.apdplat.module.security.model.Org;
+import org.apdplat.module.security.model.User;
+import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
 import org.apdplat.platform.util.Struts2Utils;
 import org.apdplat.wgreport.common.SpringManager;
@@ -48,13 +51,35 @@ public class OrUploadAction extends BaseAction{
 		boolean r=false;
 		Connection conn=null;
 		CallableStatement stmt=null;
+		User user = UserHolder.getCurrentLoginUser();
+		Org org=user.getOrg();
+		String orgLevel=org.getOrgLevel();
+		String type="";
+		String regionCode="";
+		if(orgLevel.equals("1")){//省级用户导入
+			type="1";
+		}else{//市级用户导入
+			type="2";
+			regionCode=org.getRegionCode();
+		}
 		try{
 			String time=request.getParameter("time");
-			String csql="DELETE FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE DEAL_DATE="+time;
-			SpringManager.getUpdateDao().update(csql);
-			String sql="INSERT INTO PTEMP.TB_TMP_JCDY_OUT_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"'";
-			SpringManager.getUpdateDao().update(sql);
+			String csql="";
+			if(type.equals("2")){
+				csql="DELETE FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='2'";
+			}else{
+				csql="DELETE FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY WHERE DEAL_DATE='"+time+"' AND TYPE='1'";
+			}
 			
+			SpringManager.getUpdateDao().update(csql);
+			String sql="";
+			if(type.equals("2")){
+				sql="INSERT INTO PTEMP.TB_TMP_JCDY_OUT_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='2'";
+			}else{
+				sql="INSERT INTO PTEMP.TB_TMP_JCDY_OUT_HR_SALARY SELECT * FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND TYPE='1'";
+			}
+			
+			SpringManager.getUpdateDao().update(sql);
 			/*//调用存储过程
 			conn = dataSource.getConnection();
 			stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
@@ -66,8 +91,8 @@ public class OrUploadAction extends BaseAction{
 			if(num!=0){
 				r=false;
 				return;
-			}*/
-			//////////
+			}
+			//////////*/
 			r=true;
 			Struts2Utils.renderJson("{\"ok\":"+r+"}", "no-cache");
 		}catch(Exception e){
@@ -125,19 +150,35 @@ public class OrUploadAction extends BaseAction{
 	public String importTax(){
 		List<String> err=new ArrayList<String>();
 		String resultTableName="PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP";
+		
 		if(uploadFile==null){
 			err.add("上传文件为空");
 		}else{
 			try{
+				User user = UserHolder.getCurrentLoginUser();
+				Org org=user.getOrg();
+				String orgLevel=org.getOrgLevel();
+				String type="";
+				if(orgLevel.equals("1")){//省级用户导入
+					type="1";
+				}else{//市级用户导入
+					type="2";
+					regionCode=org.getRegionCode();
+				}
+				String delSql="";
+				if(type.equals("2")){
+					delSql="delete from "+resultTableName+" where deal_date='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='"+type+"'";
+				}else{
+					delSql="delete from "+resultTableName+" where deal_date='"+time+"' AND TYPE='"+type+"'";
+				}
 				//上传时覆盖
-				String delSql="delete from "+resultTableName+" where deal_date='"+time+"'";
 				SpringManager.getUpdateDao().update(delSql);
 				FileInputStream in=new FileInputStream(uploadFile);
 				HSSFWorkbook wb = new HSSFWorkbook(in);
 				int sheetNum=wb.getNumberOfSheets();//得到sheet数量
 				SimpleDateFormat s=new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 				System.out.println("准备导入...");
-				String fields="DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,OWN_COMPANY,OWN_ORG,POST_SALARY,JX_SALARY,SUBSIDY,FESTIVITY_PAY,OVERTIME_PAY,OTHER_PAY,SALARY_PAY_TOTAL,OTHER_COST_1,OTHER_COST_1_ITEM,HOUSING,INCOME_TAX,FACT_TOTAL,PROVIDE_AGE,BIRTH_FEE,UNEMPLOYE,TREATMENT,HURT_FEE,GJJ_FEE,DEDUCTED_TOTAL,BEGIN_DATE,DEDUCT_DATE,UNION_DUES,MANA_FEE,FAX_FEE,OTHER_MAN_PAY,NOTE,COST_TOTAL";
+				String fields="TYPE,DEAL_DATE,GROUP_ID_1,CREATOR,CREATETIME,HR_NO,USER_NAME,OWN_COMPANY,OWN_ORG,POST_SALARY,JX_SALARY,SUBSIDY,FESTIVITY_PAY,OVERTIME_PAY,OTHER_PAY,SALARY_PAY_TOTAL,OTHER_COST_1,OTHER_COST_1_ITEM,HOUSING,INCOME_TAX,FACT_TOTAL,PROVIDE_AGE,BIRTH_FEE,UNEMPLOYE,TREATMENT,HURT_FEE,GJJ_FEE,DEDUCTED_TOTAL,BEGIN_DATE,DEDUCT_DATE,UNION_DUES,MANA_FEE,FAX_FEE,OTHER_MAN_PAY,NOTE,COST_TOTAL";
 				if(sheetNum>0){
 					HSSFSheet sheet = wb.getSheetAt(0);
 					System.out.println("导入Sheet页0:"+sheet.getSheetName());
@@ -148,7 +189,7 @@ public class OrUploadAction extends BaseAction{
 						Date date=new Date();
 						String createTime=s.format(date);
 						String sql="INSERT INTO "+resultTableName+"("+fields+")";
-						String values=" VALUES('"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
+						String values=" VALUES('"+type+"','"+time+"','"+regionCode+"','"+userId+"','"+createTime+"',";
 						HSSFRow row =sheet.getRow(y);
 						if(row==null) continue;
 						int cstart=row.getFirstCellNum();
@@ -173,21 +214,21 @@ public class OrUploadAction extends BaseAction{
 							continue;
 						}
 					}
-					String hrNoNotExist="SELECT HR_NO FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE HR_NO NOT IN(SELECT DISTINCT HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON)";
+					String hrNoNotExist="SELECT HR_NO FROM PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND TYPE='"+type+"' AND HR_NO NOT IN(SELECT DISTINCT HR_ID FROM PORTAL.TAB_PORTAL_QJ_PERSON)";
 					List<Map<String,String>> l=SpringManager.getFindDao().find(hrNoNotExist);
 					if(l!=null&&l.size()>0){
 						for(int i=0;i<l.size();i++){
 							err.add("hr编码"+l.get(i).get("HR_NO")+"错误，请核查！");
 						}
 					}
-					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where deal_date='"+time+"'";
-					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where deal_date='"+time+"'";
+					String lsql="select distinct hr_no from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where deal_date='"+time+"' AND TYPE='"+type+"'";
+					String rsql="select hr_no from PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP where deal_date='"+time+"' AND TYPE='"+type+"'";
 					if(SpringManager.getFindDao().find(lsql).size()!=SpringManager.getFindDao().find(rsql).size()){
 						err.add("导入的excel表中人员编号有重复数据");
 					}
 					String updateRegionCode="MERGE INTO PTEMP.TB_TMP_JCDY_OUT_HR_SALARY_TEMP T1   "+
 							"USING PORTAL.TAB_PORTAL_QJ_PERSON T2             "+
-							"ON    (T1.HR_NO=T2.HR_ID AND T1.DEAL_DATE="+time+" AND T2.DEAL_DATE="+time+")"+
+							"ON    (T1.HR_NO=T2.HR_ID AND T1.TYPE='"+type+"' AND T1.DEAL_DATE="+time+" AND T2.DEAL_DATE="+time+")"+
 							"WHEN MATCHED THEN                                "+
 							"  UPDATE SET T1.GROUP_ID_1=T2.GROUP_ID_1         ";
 					
