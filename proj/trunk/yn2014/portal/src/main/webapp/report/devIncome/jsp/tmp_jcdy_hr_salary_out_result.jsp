@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>调整后合同(新)</title>
+<title>调整后外包(新)</title>
 <link href="<%=path%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=path%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/jpagination.css" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="<%=path%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=path%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=path%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/report/devIncome/js/tmp_jcdy_hr_salary_out_result.js?v=1"></script>
+<script type="text/javascript" src="<%=path%>/report/devIncome/js/tmp_jcdy_hr_salary_out_result.js?v=8"></script>
 </head>
 <body style="overflow-x:auto;margin:5px;margin-top:0;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -38,10 +38,16 @@
 				<table style="margin: 0px 0; border:none;width:100%;">
 					<tr>
 						<td  width="2%">账期：</td>
-						<td width="4%">
+						<td width="1%">
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						</td>
+						<td width="4%" style="text-align:right;">导入类型：</td>
+						<td width="4%">
+						     <select name="type" id="type" class="default-text-input wper100">
+								
+						     </select>
+					    </td>
 						<td width="2%" style="text-align:right;">地市：</td>
 						<td width="4%">
 						     <select name="regionCode" id="regionCode" class="default-text-input wper100">
