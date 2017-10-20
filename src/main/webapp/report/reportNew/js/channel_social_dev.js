@@ -46,6 +46,7 @@ function search(pageNumber) {
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
 	var code=$("#code").val();
+	var region=$("#region").val();
 	var orgLevel=$("#orgLevel").val();
 	
 	var dealDate=$("#dealDate").val();
