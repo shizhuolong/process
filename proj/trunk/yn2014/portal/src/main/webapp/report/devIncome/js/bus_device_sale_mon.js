@@ -35,7 +35,7 @@ $(function(){
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
 					level=2;
-				}else if(orgLevel==3){//点击市
+				}else if(orgLevel==3||orgLevel==4){//点击市
 					where1+=" AND GROUP_ID_1='"+code+"'";
 					where2+=" AND T.GROUP_ID_1='"+code+"'";
 					where3+=" AND GROUP_ID_1='"+code+"'";
