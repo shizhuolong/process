@@ -139,10 +139,21 @@ function getSql(){
 	"                                  THEN HQ_CHAN_CODE                                                                                                                                                                        "+
 	"                                  END)                                                                                                                                                                                     "+
 	"                       ,2)        HB_ZJTY                                                                                                                                                                                  "+
-	"       ,0        LAST_HQ_NUM_ZLLS                                                                                                                                                                                          "+
-	"       ,0        THIS_HQ_NUM_ZLLS                                                                                                                                                                                          "+
-	"       ,0        JZ_HQ_NUM_ZLLS                                                                                                                                                                                            "+
-	"       ,'0.00%'  HB_ZLLS                                                                                                                                                                                                   "+
+",COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') < '"+dealDate+"'  "+
+"           THEN T2.HQ_CHNL_ID                                "+
+"       END) LAST_HQ_NUM_ZLLS                               "+
+",COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') <= '"+dealDate+"'  "+
+"            THEN T2.HQ_CHNL_ID                                "+
+"       END) THIS_HQ_NUM_ZLLS                           "+
+",COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') = '"+dealDate+"'  "+
+ "           THEN T2.HQ_CHNL_ID                             "+
+ "      END) JZ_HQ_NUM_ZLLS                               "+
+ ",PMRT.LINK_RATIO(COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') <= '"+dealDate+"'  "+
+ "                           THEN T2.HQ_CHNL_ID                  "+
+  "                          END)                               "+
+  "               ,COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') < '"+dealDate+"'  "+
+  "                          THEN T2.HQ_CHNL_ID                          "+
+  "                          END),2) HB_ZLLS                              "+
 	"      ,COUNT(CASE WHEN TO_CHAR(CREATE_TIME,'YYYYMM')<'"+dealDate+"' AND CHN_CDE_1_NAME ='社会' AND CHN_CDE_2_NAME ='实体' AND CHN_CDE_3_NAME ='代理点'                                                                             "+
 	"                  THEN HQ_CHAN_CODE                                                                                                                                                                                        "+
 	"                  END)             LAST_HQ_NUM_BLQD                                                                                                                                                                        "+
@@ -176,6 +187,8 @@ function getSql(){
 	"                                  END)                                                                                                                                                                                     "+
 	"                       ,2)        HB_SHZX                                                                                                                                                                                  "+
 	"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                                                                                                                                          "+
+	"LEFT JOIN (SELECT HQ_CHNL_ID FROM PCDE.TB_CDE_CHAIN_CHANNEL_TREE) T2  "+
+    "ON(T.HQ_CHAN_CODE=T2.HQ_CHNL_ID)                                      "+
 	"JOIN PCDE.TB_CDE_REGION_CODE T1                                                                                                                                                                                            "+
 	"ON(T.GROUP_ID_1=T1.GROUP_ID_1)                                                                                                                                                                                             ";
 	return sql;
