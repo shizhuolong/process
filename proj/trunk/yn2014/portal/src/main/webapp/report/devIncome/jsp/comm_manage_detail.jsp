@@ -4,6 +4,7 @@
 <%@page import="org.apdplat.module.security.model.Org"%>
 <%@page import="org.apdplat.module.security.service.UserHolder"%>
 <%@page import="org.apdplat.module.security.model.User"%>
+<%@page import="java.net.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -12,7 +13,8 @@
 	Calendar ca=Calendar.getInstance();
 	ca.add(Calendar.MONTH, -1);
 	String time=new SimpleDateFormat("yyyyMM").format(ca.getTime());
-	String comm_name=request.getParameter("comm_name");
+	String comm_name1=request.getParameter("comm_name");
+	String comm_name=URLDecoder.decode(comm_name1,"UTF-8");
 	String hrIds=request.getParameter("hrIds");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
