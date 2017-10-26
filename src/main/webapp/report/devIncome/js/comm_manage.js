@@ -173,7 +173,7 @@ function openDetail(obj){
 	var chnlName=$(obj).attr("chnlName");
 	var qdate=$("#mon").val();
 	var area_name=$(obj).attr("area_name");
-	var url=$("#ctx").val()+"/report/devIncome/jsp/comm_manage_detail.jsp?tablecode="+tablecode+"&comm_name="+comm_name+"&level="+level+"&code="+code+"&chnlName="+chnlName+"&qdate="+qdate+"&hrIds="+hrIds;
+	var url=$("#ctx").val()+"/report/devIncome/jsp/comm_manage_detail.jsp?tablecode="+tablecode+"&comm_name="+encodeURI(encodeURI(comm_name))+"&level="+level+"&code="+code+"&chnlName="+chnlName+"&qdate="+qdate+"&hrIds="+hrIds;
 	window.parent.openWindow(area_name,null,url);
 }
 
