@@ -310,8 +310,8 @@ function getSumSql(level){
 	"                       SUM(CASE WHEN DEAL_DATE='"+endDate+"' THEN NVL(INNET_7_NUM, 0)END),                "+
 	"                       'FM999990.99'))                                                             "+
 	"       END || '%' SECOND_PAY,SUM(T0.COMM_STOP) COMM_STOP                                                                      "+
-	"                     ,SUM(T1.ORIGINAL_INCOME) ORIGINAL_INCOME              "+
-	"                     ,SUM(T1.YF_COMM) YF_COMM              "+
+	"                     ,SUM(T0.ORIGINAL_INCOME) ORIGINAL_INCOME              "+
+	"                     ,SUM(T0.YF_COMM) YF_COMM              "+
 	"  FROM PMRT.VIEW_MRT_HQ_ABILITY_DETAIL_MON T0                                                        ";
 	
 	sql+="LEFT JOIN (SELECT GROUP_ID_1,GROUP_ID_1_NAME," +
@@ -326,8 +326,6 @@ function getSumSql(level){
 		"                     ,IS_SOCIAL                 "+
 		"                     ,IS_DS                  "+
 		"                     ,END_TIME               "+
-		"                     ,ORIGINAL_INCOME               "+
-		"                     ,YF_COMM               "+
 		"              FROM PMRT.TAB_MRT_HQ_ABILITY_MON T"+
 		"              WHERE T.DEAL_DATE='"+endDate+"'   "+
 		"              )T1                               "+
