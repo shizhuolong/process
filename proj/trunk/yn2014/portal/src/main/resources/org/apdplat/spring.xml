@@ -8,7 +8,7 @@
     http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
     http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     <context:component-scan base-package="${basePackage}" />
-    
+       
    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
@@ -213,7 +213,7 @@
    
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
         <property name="basePackage" value="org.apdplat.portal.*.dao,org.apdplat.workflow.dao,org.apdplat.performanceAppraisal.*.dao,
-        org.apdplat.taskManagement.*.dao,org.apdplat.report.*.dao,org.apdplat.warningAndMonitor.*.dao,org.apdplat.monitorUser.*.dao" />   
+        org.apdplat.taskManagement.*.dao,org.apdplat.report.*.dao,org.apdplat.warningAndMonitor.*.dao,org.apdplat.monitorUser.*.dao,org.apdplat.manager.dao," />   
     </bean>      
    
    
