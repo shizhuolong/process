@@ -206,11 +206,9 @@ public class IndexService {
 		return indexDao.listAccess(params);
 	}
 	public Map<String, Object> searchLeftRankData(Map<String, Object> params) {
-		Map<String,Object> maxDate=indexDao.getMaxDate();
-		params.put("maxDate", maxDate.get("MAXDATE"));
 		Map<String,Object> r=new HashMap<String,Object>();   
 		r=indexDao.searchLeftRankData(params);
-		maxDate=indexDao.getMaxDateTop();
+		Map<String,Object> maxDate=indexDao.getMaxDateTop();
 		params.put("maxDate", maxDate.get("MAXDATE"));
 		Map<String,Object> m=indexDao.searchLeftTopData(params);
 		if(r==null){
