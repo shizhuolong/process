@@ -303,15 +303,13 @@ function marketUser(){
 	var str = "";
 	if(data==null || data.length==0) {
 		str+= "<tr>";
-		str+= "<td colspan='4' align='center'>暂无数据</td>";
+		str+= "<td colspan='2' align='center'>暂无数据</td>";
 		str+= "</tr>";
 	} else {
 		for(var i=0; i<data.length; i++) {
 			str+= "<tr>";
-			str+="<td>"+data[i].HR_ID+"</td>";
 			str+="<td>"+data[i].ITEM_TYPE+"</td>";
 			str+="<td>"+data[i].TYPE_VALUE+"</td>";
-			str+="<td>"+data[i].LEV+"</td>";
 			str+= "</tr>";
 		}
 	}

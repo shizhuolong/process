@@ -94,7 +94,7 @@ $(function(){
 });
 
 </script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/chnlManagerIndex.js?v=10"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/index/js/chnlManagerIndex.js?v=11"></script>
 <style type="text/css">
 
 #contentTop th,#contentTop td{
@@ -288,10 +288,8 @@ TABLE {
                               <table class="default-table" id="market_user" style="width:170%;">
                                                  <thead>
                                                      <tr>
-														<th class="first">HR编码</th>
-														<th>指标类型</th>
+														<th class="first">指标类型</th>
 														<th>指标值</th>
-														<th>排名</th>
 													</tr>
                                                  </thead>
                                                  <tbody>
