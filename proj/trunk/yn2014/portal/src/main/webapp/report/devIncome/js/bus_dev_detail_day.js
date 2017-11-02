@@ -64,7 +64,7 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var regionCode=$("#regionCode").val();
 	var orgLevel = $("#orgLevel").val();
-	var region = $("#region").val();
+	var region = $("#code").val();
 	var sql ="";
 	var order = "";
 	var groupBy = "";
