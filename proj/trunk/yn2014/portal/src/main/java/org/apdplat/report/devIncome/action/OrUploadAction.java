@@ -80,6 +80,10 @@ public class OrUploadAction extends BaseAction{
 			}
 			
 			SpringManager.getUpdateDao().update(sql);
+			if(type.equals("2")){
+				 String u="UPDATE PTEMP.TB_TMP_JCDY_OUT_HR_SALARY SET JX_SALARY='' WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"' AND TYPE='2'";
+				 SpringManager.getUpdateDao().update(u);
+			}
 			/*//调用存储过程
 			conn = dataSource.getConnection();
 			stmt = conn.prepareCall("call PMRT.PRC_MRT_JF_BASE_SALARY_MON(?,?,?)");
