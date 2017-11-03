@@ -30,14 +30,16 @@ $(function(){
 			var orgLevel='';
 			var dealDate=$("#dealDate").val();
 			var where="";
+			var where1="";
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				if(orgLevel==2){//点击省
-					sql=getSql(orgLevel,where);
+					sql=getSql(orgLevel,where,where1);
 				}else if(orgLevel==3){//点击市
 					where+=" WHERE DEAL_DATE='"+dealDate+"' AND GROUP_ID_1='"+code+"'";
-					sql=getSql(orgLevel,where);
+					where1+=" WHERE DEAL_DATE='"+dealDate+"' AND GROUP_ID_1='"+code+"'";
+					sql=getSql(orgLevel,where,where1);
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -47,11 +49,12 @@ $(function(){
 				code=$("#region").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					sql=getSql(orgLevel,where);
+					sql=getSql(orgLevel,where,where1);
 				}else if(orgLevel==2||orgLevel==3){//市
 					where+=" AND GROUP_ID_1='"+code+"'";
+					where1+=" AND GROUP_ID_1='"+code+"'";
 					orgLevel=2;
-					sql=getSql(orgLevel,where);
+					sql=getSql(orgLevel,where,where1);
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -78,21 +81,26 @@ function downsAll() {
 	var operateType=$("#operateType").val();
 	var hall_id=$.trim($("#hall_id").val());
 	var where=" WHERE DEAL_DATE='"+dealDate+"'";
+	var where1=" WHERE DEAL_DATE='"+dealDate+"'";
 	if (orgLevel == 1) {//省
 		
 	} else {//市或者其他层级
 		where += " AND GROUP_ID_1='"+region+"' ";
+		where1 += " AND GROUP_ID_1='"+region+"' ";
 	} 
 	
 	
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
+		where1+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(operateType!=""){
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
+		where1+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
 	if(hallType!=""){
 		where += " AND CHNL_TYPE ='"+hallType+"' ";
+		where1 += " AND CHNL_TYPE ='"+hallType+"' ";
 	}
 	if(hall_id!=""){
 		where += " AND HALL_ID LIKE '%"+hall_id+"%' ";
@@ -105,7 +113,7 @@ function downsAll() {
 	downloadExcel(sql,title,showtext);
 }
 
-function getSql(orgLevel,where){
+function getSql(orgLevel,where,where1){
 	var hallType = $("#hallType").val();
 	var regionCode=$("#regionCode").val();
 	var operateType=$("#operateType").val();
@@ -114,12 +122,15 @@ function getSql(orgLevel,where){
 	
 	if(regionCode!=""){
 		where+=" AND GROUP_ID_1='"+regionCode+"'";
+		where1+=" AND GROUP_ID_1='"+regionCode+"'";
 	}
 	if(operateType!=""){
 		where+=" AND OPERATE_TYPE='"+operateType+"'";
+		where1+=" AND OPERATE_TYPE='"+operateType+"'";
 	}
 	if(hallType!=""){
 		where += " AND CHNL_TYPE ='"+hallType+"' ";
+		where1 += " AND CHNL_TYPE ='"+hallType+"' ";
 	}
 	if(hall_id!=""){
 		where += " AND HALL_ID LIKE '%"+hall_id+"%' ";
@@ -396,145 +407,154 @@ function getSql(orgLevel,where){
 		"GROUP BY T.GROUP_ID_1,                                                                        "+
 		"         T.GROUP_ID_1_NAME                                                                    ";
 	}else{
-		return "SELECT GROUP_ID_1_NAME,BUS_HALL_NAME ROW_NAME                                                           "+
-		"      ,HALL_ID                                                                                                 "+
-		"      ,YYY_TYPE                                                                                                "+
-		"      ,CHNL_TYPE                                                                                               "+
-		"      ,OPERATE_TYPE                                                                                            "+
-		"      ,ROUND(SR_ACC/10000,3) SR_ACC                                                                                                  "+
-		"      ,ROUND(SR_NEW/10000,3) SR_NEW                                                                                                  "+
-		"      ,DEV_NEW                                                                                                 "+
-		"      ,ACCEPT                                                                                                  "+
-		"     ,ROUND(MON_RENT/10000,3) MON_RENT                                                                                     "+
-		"     ,ROUND(MON_RENT_ZY/10000,3) MON_RENT_ZY                                                                                    "+
-		"     ,ROUND(WE_FEE/10000,3)    WE_FEE                                                                                      "+
-		"     ,ROUND(RENT_MAN_MON/10000,3) RENT_MAN_MON                                                                                   "+
-		"     ,ROUND(SECURITY/10000,3) SECURITY                                                                                   "+
-		"     ,ROUND(FIT_FEE/10000,3) FIT_FEE                                                                                    "+
-		"     ,ROUND(COMM_ACC_JZ/10000,3)  COMM_ACC_JZ                                                                                   "+
-		"     ,ROUND(COMM_ACC_QDBT/10000,3) COMM_ACC_QDBT                                                                                  "+
-		"     ,ROUND(ZDBT1/10000,3) ZDBT1                                                                                          "+
-		"     ,ROUND(PER_COST/10000,3) PER_COST                                                                                       "+
-		"     ,ROUND(JMWB/10000,3) JMWB                                                                                       "+
-		"     ,ROUND(GT_RENT/10000,3) GT_RENT                                                                                         "+
-		"      ,ROUND(ML_SR_ACC/10000,3) ML_SR_ACC                                                                                               "+
-		"      ,ML_RATE                                                                                                 "+
-		"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                              "+
-		"      ,ML_RATE1                                                                                                "+
-		"      ,ML_RATEL                                                                                                "+
-		"      ,ML_RATE_LTMN                                                                                            "+
-		"      ,ML_RATEL12                                                                                              "+
-		"      ,RN                                                                                                      "+
-		"      ,T_MANAGE_NAME	                                                                                        "+
-		"      ,CASE WHEN RN<=ROUND(T_NUM * 0.2 ,0)                                                                     "+
-		"            THEN '优秀 <image src=\"..\\images\\good.png\" />'                                                     "+
-		"            WHEN RN>ROUND(T_NUM * 0.2 ,0) AND RN <=ROUND(T_NUM * 0.9 ,0)                                       "+
-		"            THEN '良好 <image src=\"..\\images\\good.png\" />'                                                     "+
-		"            ELSE '差评 <image src=\"..\\images\\bad.png\" />'  END evaluate                                        "+
-		"FROM(                                                                                                          "+
-		"SELECT GROUP_ID_1_NAME                                                                                         "+
-		"      ,BUS_HALL_NAME                                                                                           "+
-		"      ,HALL_ID                                                                                                 "+
-		"      ,YYY_TYPE                                                                                                "+
-		"      ,CHNL_TYPE                                                                                               "+
-		"      ,OPERATE_TYPE                                                                                            "+
-		"      ,SR_ACC                                                                                                  "+
-		"      ,SR_NEW                                                                                                  "+
-		"      ,DEV_NEW                                                                                                 "+
-		"      ,ACCEPT                                                                                                  "+
-		"      ,MON_RENT                                                                                                "+
-		"      ,MON_RENT_ZY                                                                                             "+
-		"      ,WE_FEE                                                                                                  "+
-		"      ,RENT_MAN_MON                                                                                            "+
-		"      ,SECURITY                                                                                                "+
-		"      ,FIT_FEE                                                                                                 "+
-		"      ,COMM_ACC_JZ                                                                                             "+
-		"      ,COMM_ACC_QDBT                                                                                           "+
-		"      ,ZDBT1                                                                                                   "+
-		"      ,PER_COST                                                                                                "+
-		"      ,JMWB                                                                                                    "+
-		"      ,GT_RENT                                                                                                 "+
-		"      ,ML_SR_ACC                                                                                               "+
-		"      ,ML_RATE                                                                                                 "+
-		"      ,ML_SR_ACC1                                                                                              "+
-		"      ,ML_RATE1                                                                                                "+
-		"      ,ML_RATEL                                                                                                "+
-		"      ,ML_RATE_LTMN                                                                                            "+
-		"      ,ML_RATEL12                                                                                              "+
-		"      ,ROW_NUMBER() OVER (PARTITION BY T.DEAL_DATE ORDER BY TO_NUMBER(REPLACE(ML_RATE,'%'))                    "+
-		" DESC) RN                                                                                                      "+
-		"      ,T_MANAGE_NAME	                                                                                        "+
-		"      ,T1.T_NUM                                                                                                "+
-		"FROM(                                                                                                          "+
-		"SELECT GROUP_ID_1_NAME                                                                                         "+
-		"      ,BUS_HALL_NAME                                                                                           "+
-		"      ,HALL_ID                                                                                                 "+
-		"      ,YYY_TYPE                                                                                                "+
-		"      ,CHNL_TYPE                                                                                               "+
-		"      ,OPERATE_TYPE                                                                                            "+
-		"      ,DEAL_DATE                                                                                               "+
-		"      ,T_MANAGE_NAME                                                                                           "+
-		"      ,COUNT(HALL_ID)  T_NUM                                                                                   "+
-		"      ,SUM(NVL(SR_ACC,0))                 SR_ACC                                                               "+
-		"      ,SUM(NVL(SR_NEW,0))                 SR_NEW                                                               "+
-		"      ,SUM(NVL(DEV_NEW,0))                DEV_NEW                                                              "+
-		"      ,SUM(NVL(ACCEPT,0))                 ACCEPT                                                               "+
-		"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                                             "+
-		"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                                     "+
-		"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                                          "+
-		"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                                               "+
-		"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                                         "+
-		"      ,SUM(NVL(SECURITY,0))               SECURITY                                                             "+
-		"      ,SUM(NVL(FIT_FEE,0))                FIT_FEE                                                              "+
-		"      ,SUM(NVL(COMM_ACC_JZ,0))            COMM_ACC_JZ                                                          "+
-		"      ,SUM(NVL(COMM_ACC_QDBT,0))          COMM_ACC_QDBT                                                        "+
-		"      ,SUM(NVL(ZDBT1,0))                  ZDBT1                                                                "+
-		"      ,SUM(NVL(PER_COST,0))               PER_COST                                                             "+
-		"      ,SUM(NVL(JMWB,0))                   JMWB                                                                 "+
-		"      ,SUM(NVL(GT_RENT,0))                GT_RENT                                                              "+
-		"      ,SUM(NVL(ML_SR_ACC,0))              ML_SR_ACC                                                            "+
-		"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(SR_ACC,0))<>0                                                    "+
-		"                                 THEN SUM(NVL(ML_SR_ACC,0))*100/SUM(NVL(SR_ACC,0))                             "+
-		"                                 ELSE 0 END ||  '%'                                                            "+
-		"                          ,2)             ML_RATE                                                              "+
-		"      ,SUM(NVL(ML_SR_ACC1,0))             ML_SR_ACC1                                                           "+
-		"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(SR_ACC1,0))<>0                                                   "+
-		"                                 THEN SUM(NVL(ML_SR_ACC1,0))*100/SUM(NVL(SR_ACC1,0))                           "+
-		"                                 ELSE 0 END ||  '%'                                                            "+
-		"                          ,2)             ML_RATE1                                                             "+
-		"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ML_SR_ACCL,0))<>0                                                "+
-		"                                 THEN (SUM(NVL(ML_SR_ACC,0))-SUM(NVL(ML_SR_ACCL,0)))*100                       "+
-		"                                      /SUM(NVL(ML_SR_ACCL,0))                                                  "+
-		"                                 ELSE 0 END ||  '%'                                                            "+
-		"                          ,2)             ML_RATEL                                                             "+
-		"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ML_SR_ACC_LTMN,0))<>0                                            "+
-		"                                 THEN (SUM(NVL(ML_SR_ACC,0))-SUM(NVL(ML_SR_ACC_LTMN,0)))*100                   "+
-		"                                      /SUM(NVL(ML_SR_ACC_LTMN,0))                                              "+
-		"                                 ELSE 0 END ||  '%'                                                            "+
-		"                          ,2)              ML_RATE_LTMN                                                        "+
-		"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ML_SR_ACCL12,0))<>0                                              "+
-		"                                 THEN (SUM(NVL(ML_SR_ACC,0))-SUM(NVL(ML_SR_ACCL12,0)))*100                     "+
-		"                                      /SUM(NVL(ML_SR_ACCL12,0))                                                "+
-		"                                 ELSE 0 END ||  '%'                                                            "+
-		"                          ,2)              ML_RATEL12                                                          "+
-		"FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                                               "+
-		                                            where+
-		"GROUP BY GROUP_ID_1_NAME                                                                                       "+
-		"        ,BUS_HALL_NAME                                                                                         "+
-		"        ,HALL_ID                                                                                               "+
-		"        ,YYY_TYPE                                                                                              "+
-		"        ,CHNL_TYPE                                                                                             "+
-		"        ,OPERATE_TYPE                                                                                          "+
-		"        ,DEAL_DATE                                                                                             "+
-		"        ,T_MANAGE_NAME                                                                                         "+
-		")  T                                                                                                           "+
-		"LEFT JOIN (SELECT DEAL_DATE,COUNT(HALL_ID) T_NUM                                                               "+
-		"            FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                                   "+
-		                                            where+
-		"            GROUP BY DEAL_DATE ) T1                                                                            "+
-		"ON(T.DEAL_DATE=T1.DEAL_DATE)                                                                                   "+
-		")                                                                                                              "+
-		"ORDER BY RN                                                                                                    ";
+		return "SELECT BUS_HALL_NAME ROW_NAME                                                           "+
+							"      ,HALL_ID ROW_ID                                                                                                "+
+							",HALL_ID"+
+							"      ,YYY_TYPE                                                                                                "+
+							"      ,CHNL_TYPE                                                                                               "+
+							"      ,OPERATE_TYPE                                                                                            "+
+							"      ,ROUND(SR_ACC/10000,3) SR_ACC                                                                                                  "+
+							"      ,ROUND(SR_NEW/10000,3) SR_NEW                                                                                                  "+
+	                        "      ,ROUND(CB_ACC/10000,3) CB_ACC                                                                                                  "+
+							"      ,DEV_NEW                                                                                                 "+
+							"      ,ACCEPT                                                                                                  "+
+							"     ,ROUND(MON_RENT/10000,3) MON_RENT                                                                                     "+
+							"     ,ROUND(MON_RENT_ZY/10000,3) MON_RENT_ZY                                                                                    "+
+							"     ,ROUND(WE_FEE/10000,3)    WE_FEE                                                                                      "+
+							"     ,ROUND(RENT_MAN_MON/10000,3) RENT_MAN_MON                                                                                   "+
+							"     ,ROUND(SECURITY/10000,3) SECURITY                                                                                   "+
+							"     ,ROUND(FIT_FEE/10000,3) FIT_FEE                                                                                    "+
+							"     ,ROUND(COMM_ACC_JZ/10000,3)  COMM_ACC_JZ                                                                                   "+
+							"     ,ROUND(COMM_ACC_QDBT/10000,3) COMM_ACC_QDBT                                                                                  "+
+							"     ,ROUND(ZDBT1/10000,3) ZDBT1                                                                                          "+
+							"     ,ROUND(PER_COST/10000,3) PER_COST                                                                                       "+
+							"     ,ROUND(JMWB/10000,3) JMWB                                                                                       "+
+							"     ,ROUND(GT_RENT/10000,3) GT_RENT                                                                                         "+
+							"      ,ROUND(ML_SR_ACC/10000,3) ML_SR_ACC                                                                                               "+
+							"      ,ML_RATE                                                                                                 "+
+							"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                              "+
+							"      ,ML_RATE1                                                                                                "+
+							"      ,ML_RATEL                                                                                                "+
+							"      ,ML_RATE_LTMN                                                                                            "+
+							"      ,ML_RATEL12                                                                                              "+
+							"      ,RN                                                                                                      "+
+							"      ,T_MANAGE_NAME	                                                                                        "+
+							"      ,CASE WHEN RN<=ROUND(T_NUM * 0.2 ,0)                                                                     "+
+							"            THEN '优秀[):]'                                                     "+
+							"            WHEN RN>ROUND(T_NUM * 0.2 ,0) AND RN <=ROUND(T_NUM * 0.9 ,0)                                       "+
+							"            THEN '良好[):]'                                                     "+
+							"            ELSE '差评[:\'\'(]' END evaluate                                        "+
+							"FROM(                                                                                                          "+
+							"SELECT GROUP_ID_1_NAME                                                                                         "+
+                            "      ,GROUP_ID_1                                                                                           "+							
+                            "      ,T.DEAL_DATE                                                                                           "+                          
+                            "      ,BUS_HALL_NAME                                                                                           "+
+							"      ,HALL_ID                                                                                                 "+
+							"      ,YYY_TYPE                                                                                                "+
+							"      ,CHNL_TYPE                                                                                               "+
+							"      ,OPERATE_TYPE                                                                                            "+
+							"      ,SR_ACC                                                                                                  "+
+	                        "      ,CB_ACC                                                                                                  "+
+							"      ,SR_NEW                                                                                                  "+
+							"      ,DEV_NEW                                                                                                 "+
+							"      ,ACCEPT                                                                                                  "+
+							"      ,MON_RENT                                                                                                "+
+							"      ,MON_RENT_ZY                                                                                             "+
+							"      ,WE_FEE                                                                                                  "+
+							"      ,RENT_MAN_MON                                                                                            "+
+							"      ,SECURITY                                                                                                "+
+							"      ,FIT_FEE                                                                                                 "+
+							"      ,COMM_ACC_JZ                                                                                             "+
+							"      ,COMM_ACC_QDBT                                                                                           "+
+							"      ,ZDBT1                                                                                                   "+
+							"      ,PER_COST                                                                                                "+
+							"      ,JMWB                                                                                                    "+
+							"      ,GT_RENT                                                                                                 "+
+							"      ,ML_SR_ACC                                                                                               "+
+							"      ,ML_RATE                                                                                                 "+
+							"      ,ML_SR_ACC1                                                                                              "+
+							"      ,ML_RATE1                                                                                                "+
+							"      ,ML_RATEL                                                                                                "+
+							"      ,ML_RATE_LTMN                                                                                            "+
+							"      ,ML_RATEL12                                                                                              "+
+							"      ,ROW_NUMBER() OVER (PARTITION BY T.DEAL_DATE ORDER BY TO_NUMBER(REPLACE(ML_RATE,'%'))                    "+
+							" DESC) RN                                                                                                      "+
+							"      ,T_MANAGE_NAME	                                                                                        "+
+							"      ,T1.T_NUM                                                                                                "+
+							"FROM(                                                                                                          "+
+							"SELECT GROUP_ID_1_NAME                                                                                         "+
+                            "      ,GROUP_ID_1                                                                                           "+							
+							"      ,BUS_HALL_NAME                                                                                           "+
+							"      ,HALL_ID                                                                                                 "+
+							"      ,YYY_TYPE                                                                                                "+
+							"      ,CHNL_TYPE                                                                                               "+
+							"      ,OPERATE_TYPE                                                                                            "+
+							"      ,DEAL_DATE                                                                                               "+
+							"      ,T_MANAGE_NAME                                                                                           "+
+							"      ,COUNT(HALL_ID)  T_NUM                                                                                   "+
+							"      ,SUM(NVL(SR_ACC,0))                 SR_ACC                                                               "+
+							"      ,SUM(NVL(SR_NEW,0))                 SR_NEW                                                               "+
+							"      ,SUM(NVL(DEV_NEW,0))                DEV_NEW                                                              "+
+							"      ,SUM(NVL(ACCEPT,0))                 ACCEPT                                                               "+
+	                        "      ,SUM(NVL(CB_ACC,0))                 CB_ACC                                                               "+
+							"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                                             "+
+							"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                                     "+
+							"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                                          "+
+							"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                                               "+
+							"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                                         "+
+							"      ,SUM(NVL(SECURITY,0))               SECURITY                                                             "+
+							"      ,SUM(NVL(FIT_FEE,0))                FIT_FEE                                                              "+
+							"      ,SUM(NVL(COMM_ACC_JZ,0))            COMM_ACC_JZ                                                          "+
+							"      ,SUM(NVL(COMM_ACC_QDBT,0))          COMM_ACC_QDBT                                                        "+
+							"      ,SUM(NVL(ZDBT1,0))                  ZDBT1                                                                "+
+							"      ,SUM(NVL(PER_COST,0))               PER_COST                                                             "+
+							"      ,SUM(NVL(JMWB,0))                   JMWB                                                                 "+
+							"      ,SUM(NVL(GT_RENT,0))                GT_RENT                                                              "+
+							"      ,SUM(NVL(ML_SR_ACC,0))              ML_SR_ACC                                                            "+
+							"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(SR_ACC,0))<>0                                                    "+
+							"                                 THEN SUM(NVL(ML_SR_ACC,0))*100/SUM(NVL(SR_ACC,0))                             "+
+							"                                 ELSE 0 END ||  '%'                                                            "+
+							"                          ,2)             ML_RATE                                                              "+
+							"      ,SUM(NVL(ML_SR_ACC1,0))             ML_SR_ACC1                                                           "+
+							"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(SR_ACC1,0))<>0                                                   "+
+							"                                 THEN SUM(NVL(ML_SR_ACC1,0))*100/SUM(NVL(SR_ACC1,0))                           "+
+							"                                 ELSE 0 END ||  '%'                                                            "+
+							"                          ,2)             ML_RATE1                                                             "+
+							"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ML_SR_ACCL,0))<>0                                                "+
+							"                                 THEN (SUM(NVL(ML_SR_ACC,0))-SUM(NVL(ML_SR_ACCL,0)))*100                       "+
+							"                                      /SUM(NVL(ML_SR_ACCL,0))                                                  "+
+							"                                 ELSE 0 END ||  '%'                                                            "+
+							"                          ,2)             ML_RATEL                                                             "+
+							"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ML_SR_ACC_LTMN,0))<>0                                            "+
+							"                                 THEN (SUM(NVL(ML_SR_ACC,0))-SUM(NVL(ML_SR_ACC_LTMN,0)))*100                   "+
+							"                                      /SUM(NVL(ML_SR_ACC_LTMN,0))                                              "+
+							"                                 ELSE 0 END ||  '%'                                                            "+
+							"                          ,2)              ML_RATE_LTMN                                                        "+
+							"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ML_SR_ACCL12,0))<>0                                              "+
+							"                                 THEN (SUM(NVL(ML_SR_ACC,0))-SUM(NVL(ML_SR_ACCL12,0)))*100                     "+
+							"                                      /SUM(NVL(ML_SR_ACCL12,0))                                                "+
+							"                                 ELSE 0 END ||  '%'                                                            "+
+							"                          ,2)              ML_RATEL12                                                          "+
+							"FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                                               "+
+							where1+
+							"GROUP BY GROUP_ID_1_NAME                                                                                       "+
+                            "        ,GROUP_ID_1                                                                                         "+
+							"        ,BUS_HALL_NAME                                                                                         "+
+							"        ,HALL_ID                                                                                               "+
+							"        ,YYY_TYPE                                                                                              "+
+							"        ,CHNL_TYPE                                                                                             "+
+							"        ,OPERATE_TYPE                                                                                          "+
+							"        ,DEAL_DATE                                                                                             "+
+							"        ,T_MANAGE_NAME                                                                                         "+
+							")  T                                                                                                           "+
+							"LEFT JOIN (SELECT DEAL_DATE,COUNT(HALL_ID) T_NUM                                                               "+
+							"            FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                                   "+
+							                                            where1+
+							"            GROUP BY DEAL_DATE ) T1                                                                            "+
+							"ON(T.DEAL_DATE=T1.DEAL_DATE)                                                                                   "+
+							")                                                                                                              "+
+							                       where+
+							"ORDER BY RN                                                                                              ";
 	}
   }
 	function getDownSql(where){
