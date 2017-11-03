@@ -24,7 +24,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tmp_jcdy_hr_salary_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/tmp_jcdy_hr_salary_list.js?v=1"></script>
 <script type="text/javascript">
     var paths="<%=path%>";
 </script>

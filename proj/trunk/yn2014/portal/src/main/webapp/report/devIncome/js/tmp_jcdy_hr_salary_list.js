@@ -53,7 +53,13 @@ function search(pageNumber) {
 	var end = pageSize * pageNumber;
 	var time=$("#time").val();
 	var userId=$("#userId").val();
-	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"'";
+	var orgLevel=$("#orgLevel").val();
+	var type=1;
+	if(orgLevel==2){
+		type=2;
+	}
+	
+	var sql="SELECT "+field.join(",")+" FROM PTEMP.TB_TMP_JCDY_HR_SALARY_TEMP WHERE DEAL_DATE='"+time+"' AND TYPE='"+type+"'";
 	downSql=sql;
 	var csql = sql;
 	var cdata = query("select count(*) total from (" + csql+")");
