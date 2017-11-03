@@ -99,11 +99,6 @@ public class ImportMainIncomeAction extends BaseAction {
 						int cstart = row.getFirstCellNum();
 						int cend = row.getLastCellNum();
 						System.out.println(cstart + "：" + cend);
-						if(cend!=15){
-							err.add("列数量不对，请严格按照标准模板导入！");
-							Struts2Utils.getRequest().setAttribute("err", err);
-							return "error";
-						}
 						for (int i = cstart; i < cend; i++) {
 							pre.setString(i+1,getCellValue(row.getCell(i)));
 						}
