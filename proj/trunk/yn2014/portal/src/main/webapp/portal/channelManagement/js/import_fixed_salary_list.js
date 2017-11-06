@@ -7,9 +7,9 @@ $(function() {
 	orgLevel = $("#orgLevel").val();
 	code = $("#code").val();
 	orgId = $("#orgId").val();
-	/*if(orgLevel==1){
+	if(orgLevel==1){
 		$("#reppeatBtn").remove();
-	}*/
+	}
 
 	$("#searchBtn").click(function(){
 		search(0);
