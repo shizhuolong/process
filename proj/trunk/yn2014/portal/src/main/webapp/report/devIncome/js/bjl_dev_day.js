@@ -108,7 +108,7 @@ function getSumSql(preField,where,groupBy,level) {
 	var sql= preField+"     T.ALL_NUM                                                                                              "+
 	"       ,T.ALL_NUM1                                                                                                            "+
 	"       ,PODS.GET_RADIX_POINT(CASE WHEN T1.ALL_NUM1<>0                                                                         "+
-	"                                  THEN T.ALL_NUM1/T1.ALL_NUM1*100-1                                                       "+
+	"                                  THEN T.ALL_NUM1/T1.ALL_NUM1*100-100                                                       "+
 	"                                  ELSE 0                                                                                          "+
 	"                                  END || '%' ,2)    HB_ALL                                                                        "+
 	"       ,T.BJL_398_NUM                                                                                                             "+
