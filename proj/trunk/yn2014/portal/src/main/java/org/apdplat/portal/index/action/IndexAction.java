@@ -17,7 +17,6 @@ import org.apdplat.platform.util.StringUtil;
 import org.apdplat.portal.index.model.EchartsSeries;
 import org.apdplat.portal.index.service.IndexService;
 import org.apdplat.workflow.service.WorkOrderService;
-import org.omg.CORBA.CurrentHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -536,12 +535,17 @@ public class IndexAction extends BaseAction {
 	 */
 	
 	public void addAccessTimes(){
-		User user = UserHolder.getCurrentLoginUser();
-		String userId=user.getId()+"";
-		String url=this.request.getParameter("url");
-		String text=this.request.getParameter("text");
-		int r=indexService.addAccessTimes(userId, url,text);
-		this.reponseJson(r);
+		try {
+			User user = UserHolder.getCurrentLoginUser();
+			String userId=user.getId()+"";
+			String url=this.request.getParameter("url");
+			String text=this.request.getParameter("text");
+			int r=indexService.addAccessTimes(userId, url,text);
+			this.reponseJson(r);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.reponseJson(0);
 	}
 	/**
 	 * 访问统计列表
