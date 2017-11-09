@@ -63,7 +63,7 @@ function search(pageNumber) {
 	}else if(orgLevel==2){
 		where += " AND GROUP_ID_1 =" + code;
 	}else{
-		where += " AND HR_ID IN (SELECT PORTAL.HR_PERM('"+hrId+"', '"+dealDate1+"') FROM DUAL)";
+		where += " AND HR_ID IN (SELECT PORTAL.HR_PERM('"+hr_id+"', '"+dealDate1+"') FROM DUAL)";
 	}
 	//条件
 	if(regionCode!=''){
