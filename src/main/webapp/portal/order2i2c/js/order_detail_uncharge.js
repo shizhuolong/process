@@ -95,9 +95,6 @@ function search(pageNumber) {
 	if(isFirst){
 		sql+=" AND IS_PAY_LJ='"+isFirst+"'";
 	}
-	if(serviceName){
-		sql+=" AND USER_STATUS_CBSS='"+serviceName+"'";
-	}
 	if(serviceNumber){
 		sql+=" AND DEVICE_NUMBER='"+serviceNumber+"'";
 	}
