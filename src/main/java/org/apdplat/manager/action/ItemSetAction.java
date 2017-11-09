@@ -147,9 +147,74 @@ public class ItemSetAction extends BaseAction {
 			dao.delete(m);
 			result.put("msg", "删除成功！");
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.put("msg", "删除失败！");
 		}
-		
+		this.reponseJson(result);
+	}
+	
+	public void mark(){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			User user = UserHolder.getCurrentLoginUser();
+			Org org = user.getOrg();
+			String group_id_1 = org.getRegionCode();
+			Map<String,Object> m=new HashMap<String,Object>();
+			m.put("group_id_1", group_id_1);
+			m.put("dealDate", dealDate);
+			dao.updateStatus(m);
+			result.put("msg", "生成成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("msg", "生成失败！");
+		}
+		this.reponseJson(result);
+	}
+	
+	public void saveMark() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Connection conn = null;
+		PreparedStatement updatepre = null;
+		String table = "PMRT.TAB_MRT_CHNL_UNIT_EVAL_MON";
+		try {
+			User user = UserHolder.getCurrentLoginUser();
+			Org org = user.getOrg();
+			String username = user.getUsername();
+			String group_id_1 = org.getRegionCode();
+			conn = this.getCon();
+			String[] data = dataString.split(",");
+			String updateSql = "UPDATE "+ table
+					+ " SET KRI_WEIGHT=?,KPI_SCORE=?,OPERATE_NAME='"+username+"' WHERE DEAL_DATE=" + dealDate
+					+ " AND GROUP_ID_1='" + group_id_1
+					+ "' AND HR_ID=? AND USER_CODE=2";
+			updatepre = conn.prepareStatement(updateSql);
+			for (int i = 0; i < data.length; i++) {
+				String[] s = data[i].split("\\|");
+					updatepre.setString(1, s[1].trim() + "%");
+					updatepre.setString(2, s[2].trim());
+					updatepre.setString(3, s[0]);
+					updatepre.addBatch();
+			}
+			updatepre.executeBatch();
+			conn.commit();
+			conn.setAutoCommit(true);
+			updatepre.clearBatch();
+			result.put("ok", "true");
+			result.put("msg", "保存成功！");
+		} catch (Exception e) {
+			result.put("ok", "false");
+			result.put("msg", "出现异常，保存失败！");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (updatepre != null)
+					updatepre.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		this.reponseJson(result);
 	}
 	

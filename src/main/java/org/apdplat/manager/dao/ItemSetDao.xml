@@ -14,4 +14,8 @@
 <delete id="delete" parameterType="java.util.Map">
      DELETE FROM PMRT.TAB_MRT_INDEX_DEPLOY_MON WHERE DEAL_DATE=#{dealDate} AND GROUP_ID_1=#{group_id_1} AND INDEX_ID=#{id}
 </delete>
+
+<update id="updateStatus" parameterType="java.util.Map">
+    UPDATE PMRT.TAB_MRT_CHNL_UNIT_EVAL_MON SET STATUS=1 WHERE GROUP_ID_1=#{group_id_1} AND DEAL_DATE=#{dealDate} AND USER_CODE=2
+</update>
 </mapper>

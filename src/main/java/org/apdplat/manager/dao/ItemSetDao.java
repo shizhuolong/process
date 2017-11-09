@@ -11,4 +11,6 @@ public interface ItemSetDao {
 
 	void delete(Map<String, Object> m);
 
+	void updateStatus(Map<String, Object> m);
+
 }
