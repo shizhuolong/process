@@ -363,7 +363,6 @@ function search(pageNumber) {
  
  function save(){
 		var url = $("#ctx").val()+'/salesManager/sales-manager!save.action';
-		$("#saveBtn").hide();
 		$('#addForm').form('submit',{
 			url:url,
 			dataType:"json",
@@ -404,6 +403,13 @@ function search(pageNumber) {
 						return false;
 					}
 				}
+				var acc_time=$("#acc_time").val().substring(0,8);
+			    var date=new Date();
+			    var today=date.pattern("yyyyMMdd");
+			    if(acc_time!=today){
+			    	alert("受理时间需是当天日期！");
+			    	return false;
+			    }
 				if($("#is_back").val()=="1"){//换机
 					if($("#zd_iemi").val()==old_zd_iemi){//防止换机,未修改直接保存
 						return false;
@@ -414,6 +420,7 @@ function search(pageNumber) {
 				 $("#developer_id").val($.trim($("#developer_id").val()));
 				 $("#operator_id").val($.trim($("#operator_id").val()));
 				 $("#out_price").val($.trim($("#out_price").val()));
+				 $("#saveBtn").hide();
 			},
 			success:function(data){
 				var d = $.parseJSON(data);
