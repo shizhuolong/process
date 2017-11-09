@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.portal.index.dao.IndexDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
@@ -185,14 +184,15 @@ public class IndexService {
 	/**
 	 * 添加访问次数
 	 */
-	
-	public int addAccessTimes(String userId,String url,String text){
-		Map<String, Object> params=new HashMap<String, Object>();
-		params.put("userId", userId);
-		params.put("url", url);
-		params.put("text", text);
-		
-		return indexDao.addAccessTimes(params);
+	@Transactional
+	public int addAccessTimes(String userId,String url,String text) throws Exception{
+		    Map<String, Object> params=new HashMap<String, Object>();
+			params.put("userId", userId);
+			params.put("url", url);
+			params.put("text", text);
+			int r=indexDao.addAccessTimes(params);
+			indexDao.addAccessTimeDetail(params);
+			return r;
 	}
 	/**
 	 * 访问统计列表

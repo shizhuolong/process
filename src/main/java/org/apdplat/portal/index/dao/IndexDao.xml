@@ -477,6 +477,12 @@
 		  VALUES
 		    (#{url}, #{text}, #{userId}, 1)
 	</update>
+	
+	<insert id="addAccessTimeDetail" parameterType="java.util.Map">
+	   insert into portal.module_accessTime_detail(url,text,userid,access_time)
+	   values(#{url}, #{text}, #{userId},sysdate)
+	</insert>
+	
 	<select id="listAccess" parameterType="java.util.Map" resultType="java.util.Map" useCache="false">
 		SELECT * FROM (
          	SELECT 

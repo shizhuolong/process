@@ -148,4 +148,5 @@ public interface IndexDao {
 	public Map<String, Object> searchTaskRateData(Map<String, Object> params);
 	public Map<String, Object> checkChnlAgent(String hrId);
 	public PageList<Map<String, Object>> queryJfRank(Map<String, Object> params);
+	public void addAccessTimeDetail(Map<String, Object> params);
 }
