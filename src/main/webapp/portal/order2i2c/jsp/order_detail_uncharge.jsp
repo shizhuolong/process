@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_detail_uncharge.js?v=17"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_detail_uncharge.js?v=18"></script>
 <script type="text/javascript">
     var path="<%=path%>";
 </script>
@@ -54,12 +54,8 @@
 				<td width="4%" style="text-align: right;">是否首充：</td>
 				<td width="4%"><select class="default-text-input wper80" name="isFirst"	id="isFirst">
 						<option value="">全部</option>
-						<option value="已首充">已首充</option>
-						<option value="未首充">未首充</option>
-				</select></td>
-				<td width="4%" style="text-align: right;">用户状态：</td>
-				<td width="4%"><select class="default-text-input wper80"
-					name="serviceName" id="serviceName">
+						<option value="1">已首充</option>
+						<option value="0">未首充</option>
 				</select></td>
 				<td width="4%" align="right">订购号码：</td>
 				<td width="4%">
