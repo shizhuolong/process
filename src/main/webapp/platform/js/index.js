@@ -59,10 +59,10 @@ function process(str){
 function openTab(node,event,url){
     event.stopEvent();
     
-    openWindow(node.text,node.attributes.iconCls,url);
+    openWindow(node.id,node.text,node.attributes.iconCls,url);
 }
                         
-function openWindow(text,iconCls,url){
+function openWindow(moduleid,text,iconCls,url){
 	if(iconCls == "funMenu") {
 		iconCls = "computer";
 	}
@@ -101,7 +101,8 @@ function openWindow(text,iconCls,url){
         url : contextPath + '/index/index_addAccessTimes.action',
         params:{  
             text:text,
-            url:url
+            url:url,
+            moduleid:moduleid
         }, 
         success : function(response, options) {
     	
