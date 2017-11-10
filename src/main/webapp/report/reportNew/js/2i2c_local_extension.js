@@ -245,7 +245,7 @@ function getDownSql(where) {
 	"           END) FIRST_LJ,                                                                        "+
 	"       count(distinct unit_id) num_unit,                                                         "+
 	"       sum(nvl(is_sales,0)) IS_SALES,                  "+
-	"       sum(nvl(person_dev_num,0) PERSON_DEV_NUM "+
+	"       sum(nvl(person_dev_num,0)) PERSON_DEV_NUM "+
 	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T                                "+
 	" WHERE t.payment_fee_first >= 20                                                                 "+
 	"   and substr(payment_time_first, 1, 8) >= 20171020                                    "+
