@@ -185,11 +185,12 @@ public class IndexService {
 	 * 添加访问次数
 	 */
 	@Transactional
-	public int addAccessTimes(String userId,String url,String text) throws Exception{
+	public int addAccessTimes(String userId,String url,String text,String moduleid) throws Exception{
 		    Map<String, Object> params=new HashMap<String, Object>();
 			params.put("userId", userId);
 			params.put("url", url);
 			params.put("text", text);
+			params.put("moduleid", moduleid);
 			int r=indexDao.addAccessTimes(params);
 			indexDao.addAccessTimeDetail(params);
 			return r;
