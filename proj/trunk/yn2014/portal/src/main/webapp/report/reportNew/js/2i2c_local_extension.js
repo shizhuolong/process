@@ -80,16 +80,13 @@ function getSql(where,orgLevel){
 	var endDete=$("#endDate").val();
 	if(orgLevel==1){
 		preSql="SELECT GROUP_ID_1 ROW_ID,AREA_NAME ROW_NAME,";
-		var sumSql = "sum(PERSON_DEV_NUM) PERSON_DEV_NUM";
 		groupBy=" GROUP BY GROUP_ID_1,AREA_NAME";
 	}else if(orgLevel==2){
 		preSql="SELECT GROUP_ID_1 ROW_ID,AREA_NAME ROW_NAME,";
-		var sumSql = "sum(PERSON_DEV_NUM) PERSON_DEV_NUM";
 		groupBy=" GROUP BY GROUP_ID_1,AREA_NAME";
 	}else if(orgLevel==3){
 		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
-		var sumSql = "PERSON_DEV_NUM";
-		groupBy=" GROUP BY UNIT_ID,UNIT_NAME,PERSON_DEV_NUM";
+		groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
 	}
 	var sql=preSql+
 	"       SUM(CASE                                                                                  "+
@@ -162,18 +159,8 @@ function getSql(where,orgLevel){
 	"              0                                                                                  "+
 	"           END) FIRST_LJ,                                                                        "+
 	"       count(distinct unit_id) num_unit,                                                         "+
-	"       case                                                                                      "+
-	"         when SUM(CASE                                                                           "+
-	"                    WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN "+
-	"                     1                                                                           "+
-	"                    ELSE                                                                         "+
-	"                     0                                                                           "+
-	"                  END) >= 10 then                                                                "+
-	"          1                                                                                      "+
-	"         else                                                                                    "+
-	"          0                                                                                      "+
-	"       end IS_SALES,                                                                             "+
-	sumSql+
+	"       sum(nvl(is_sales,0)) IS_SALES,                                          "+
+	"       sum(nvl(person_dev_num,0)) PERSON_DEV_NUM "+
 	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T                                "+
 	" WHERE t.payment_fee_first >= 20                                                                 "+
 	"   and substr(payment_time_first, 1, 8) >= 20171020                                    "+
@@ -257,23 +244,13 @@ function getDownSql(where) {
 	"              0                                                                                  "+
 	"           END) FIRST_LJ,                                                                        "+
 	"       count(distinct unit_id) num_unit,                                                         "+
-	"       case                                                                                      "+
-	"         when SUM(CASE                                                                           "+
-	"                    WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN "+
-	"                     1                                                                           "+
-	"                    ELSE                                                                         "+
-	"                     0                                                                           "+
-	"                  END) >= 10 then                                                                "+
-	"          1                                                                                      "+
-	"         else                                                                                    "+
-	"          0                                                                                      "+
-	"       end IS_SALES,                                                                             "+
-	"       PERSON_DEV_NUM                                            "+
+	"       sum(nvl(is_sales,0)) IS_SALES,                  "+
+	"       sum(nvl(person_dev_num,0) PERSON_DEV_NUM "+
 	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T                                "+
 	" WHERE t.payment_fee_first >= 20                                                                 "+
 	"   and substr(payment_time_first, 1, 8) >= 20171020                                    "+
 	where +
-	" GROUP BY AREA_NAME, UNIT_ID, UNIT_NAME,PERSON_DEV_NUM";
+	" GROUP BY AREA_NAME, UNIT_ID, UNIT_NAME";
 }
 
 function downsAll() {
