@@ -540,7 +540,9 @@ public class IndexAction extends BaseAction {
 			String userId=user.getId()+"";
 			String url=this.request.getParameter("url");
 			String text=this.request.getParameter("text");
-			int r=indexService.addAccessTimes(userId, url,text);
+			String moduleid=this.request.getParameter("moduleid");
+			moduleid=moduleid.replace("module-", "");
+			int r=indexService.addAccessTimes(userId, url,text,moduleid);
 			this.reponseJson(r);
 		} catch (Exception e) {
 			e.printStackTrace();

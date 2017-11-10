@@ -310,4 +310,5 @@ public class HrUploadAction extends BaseAction{
 		}
 		return value;
 	}
+
 }
