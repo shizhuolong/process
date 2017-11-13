@@ -4,7 +4,7 @@ $(function(){
 	maxDate = getMaxDate("pmrt.tb_DW_V_D_HLW_OUTLINE_USER");
 	var field=["ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
 	var title=[["州市","当天","","","","","月累计","","","累计","","","过程指标","",""],
-			   ["","首冲20","首冲50","首冲100","营销成本","人工成本","首冲数","人工成本","营销成本","首冲数","人工成本","营销成本","区县/营服数","有销量区县/营服数","有销量人数"]];
+			   ["","首冲20","首冲50","首冲100","营销成本","人工成本","首冲数","营销成本","人工成本","首冲数","营销成本","人工成本","区县/营服数","有销量区县/营服数","有销量人数"]];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		$("#lch_DataHead").find("TH").unbind();
@@ -288,7 +288,7 @@ function downsAll() {
 	var sql = getDownSql(where);
 	var field=["ROW_ID","ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
 	var title=[["州市ID","州市","当天","","","","","月累计","","","累计","","","过程指标","",""],
-			   ["","","首冲20","首冲50","首冲100","人工成本","营销成本","首冲数","人工成本","营销成本","首冲数","人工成本","营销成本","区县/营服数","有销量区县/营服数","有销量人数"]];
+			   ["","","首冲20","首冲50","首冲100","营销成本","人工成本","首冲数","营销成本","人工成本","首冲数","营销成本","人工成本","区县/营服数","有销量区县/营服数","有销量人数"]];
 	showtext = "2I2C地推推广情况";
 	downloadExcel(downsql,title,showtext);
 }
