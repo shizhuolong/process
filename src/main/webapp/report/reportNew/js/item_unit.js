@@ -136,7 +136,27 @@ function downsAll(){
 }
 
 function initLevelName(line){
-	var sql="select DISTINCT LEVEL_1_NAME from PODS.TB_ODS_DWA_PROV_AC_ITEM_UNIT WHERE LINE_NAME='"+line+"'";
+	var sql="SELECT                                                   "+
+	"DISTINCT T2.LEVEL_1_NAME LEVEL_1_NAME                                "+
+	"          FROM PODS.TB_ODS_DWA_PROV_GB_UNIT T1           "+
+	"          LEFT JOIN PODS.TB_ODS_DWA_PROV_AC_ITEM_unit T2 "+
+	"            ON INSTR(T1.ACCOUNT_CODE, T2.AC_PREFIX) = 1  "+
+	"         WHERE T1.DEAL_DATE = '201710'                   "+
+	"           AND T1.UNIT_ID IS NOT NULL                    "+
+	"           AND T2.LEVEL_1_NAME IS NOT NULL               "+
+	"           AND T1.GROUP_ID_1 IN( '16001','16a017')        "+
+	"           AND T2.LINE_NAME = '"+line+"'               "+
+	"           union all                                     "+
+	"           SELECT                                        "+
+	"              DISTINCT T2.LEVEL_2_NAME LEVEL_1_NAME                   "+
+	"          FROM PODS.TB_ODS_DWA_PROV_GB_UNIT T1           "+
+	"          LEFT JOIN PODS.TB_ODS_DWA_PROV_AC_ITEM_unit T2 "+
+	"            ON INSTR(T1.ACCOUNT_CODE, T2.AC_PREFIX) = 1  "+
+	"         WHERE T1.DEAL_DATE = '201710'                   "+
+	"           AND T2.LEVEL_2_NAME IS NOT NULL               "+
+	"           AND T1.UNIT_ID IS NOT NULL                    "+
+	"           AND T1.GROUP_ID_1 IN( '16001','16017')        "+
+	"           AND T2.LINE_NAME = '"+line+"'               ";
 	var d=query(sql);
 	var h="";
 	if(d!=null&&d.length>0){
