@@ -48,7 +48,7 @@ if(loginUser!=null){
         <script type="text/javascript" src="js/onlineUser.js"></script>
         <!-- <script type="text/javascript" src="js/onlineChat.js"></script> -->
         <!-- <script type="text/javascript" src="js/indexPage_apdplat.js"></script> -->
-        <script type="text/javascript" src="js/index.js?v=1"></script>
+        <script type="text/javascript" src="js/index.js?v=5"></script>
         <script type="text/javascript" src="js/modfiyPassword.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
         <script type="text/javascript">            

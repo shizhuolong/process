@@ -56,13 +56,14 @@ function process(str){
     str=str.replace("Z", "-z");
     return str;
 }
+var moduleid;
 function openTab(node,event,url){
     event.stopEvent();
-    
-    openWindow(node.id,node.text,node.attributes.iconCls,url);
+    moduleid=node.id;
+    openWindow(node.text,node.attributes.iconCls,url);
 }
                         
-function openWindow(moduleid,text,iconCls,url){
+function openWindow(text,iconCls,url){
 	if(iconCls == "funMenu") {
 		iconCls = "computer";
 	}
