@@ -4,7 +4,7 @@ $(function(){
 	maxDate = getMaxDate("pmrt.tb_DW_V_D_HLW_OUTLINE_USER");
 	var field=["ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
 	var title=[["州市","当天","","","","","月累计","","","累计","","","过程指标","",""],
-			   ["","首冲20","首冲50","首冲100","人工成本","营销成本","首冲数","人工成本","营销成本","首冲数","人工成本","营销成本","区县/营服数","有销量区县/营服数","有销量人数"]];
+			   ["","首冲20","首冲50","首冲100","营销成本","人工成本","首冲数","人工成本","营销成本","首冲数","人工成本","营销成本","区县/营服数","有销量区县/营服数","有销量人数"]];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		$("#lch_DataHead").find("TH").unbind();
@@ -22,10 +22,9 @@ $(function(){
 			
 		},
 		getSubRowsCallBack:function($tr){
-			var orgLevel='';
 			var region =$("#region").val();
 			var code=$("#code").val();
-			var orgLevel=$("#orgLevel").val();
+			var orgLevel="";
 			var hr_id=$("#hr_id").val();
 			var regionCode=$("#regionCode").val();
 			var unitCode=$("#unitCode").val();
@@ -33,15 +32,26 @@ $(function(){
 			var endDete=$("#endDate").val();
 			var dealDate=endDete.substr(0,6);
 			var where="";
+			//条件
+			if(regionCode!=''){
+				where+= " AND GROUP_ID_1 ='"+regionCode+"'";
+			}
+			if(unitCode!=''){
+				where+= " AND UNIT_ID ='"+unitCode+"'";
+			}
+			//权限
 			if($tr){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				var parentId=$tr.attr("parentId");
 				if(orgLevel==2){//省进去点击市
+					where+=" AND GROUP_ID_0='"+code+"'";
+				}else if(orgLevel==3){//点击市
 					where+=" AND GROUP_ID_1='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
+				sql=getSql(where,orgLevel);
 				orgLevel++;
 			}else{
 				//先根据用户信息得到前几个字段
@@ -51,19 +61,15 @@ $(function(){
 					where+=" AND GROUP_ID_0='"+code+"'";
 				}else if(orgLevel==2){//市
 					where+=" AND GROUP_ID_1='"+code+"'";
+				}else if(orgLevel==3){//营服
+					where+=" AND UNIT_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}};
 				}
+				sql=getSql(where,orgLevel);
 				orgLevel++;
 			}
-			
-			if(regionCode!=''){
-				where+= " AND GROUP_ID_1 ='"+regionCode+"'";
-			}
-			if(unitCode!=''){
-				where+= " AND UNIT_ID ='"+unitCode+"'";
-			}
-			var sql=getSql(where,orgLevel);
+			downsql=sql;
 			var d=query(sql);
 			return {data:d,extra:{orgLevel:orgLevel}};
 		}
@@ -79,8 +85,8 @@ function getSql(where,orgLevel){
 	var startDete=$("#startDate").val();
 	var endDete=$("#endDate").val();
 	if(orgLevel==1){
-		preSql="SELECT GROUP_ID_1 ROW_ID,AREA_NAME ROW_NAME,";
-		groupBy=" GROUP BY GROUP_ID_1,AREA_NAME";
+		preSql="SELECT GROUP_ID_0 ROW_ID,'云南省' ROW_NAME,";
+		groupBy=" GROUP BY GROUP_ID_0";
 	}else if(orgLevel==2){
 		preSql="SELECT GROUP_ID_1 ROW_ID,AREA_NAME ROW_NAME,";
 		groupBy=" GROUP BY GROUP_ID_1,AREA_NAME";
@@ -280,11 +286,11 @@ function downsAll() {
 		where+= " AND UNIT_ID ='"+unitCode+"'";
 	}
 	var sql = getDownSql(where);
-	var field=["GROUP_ID_1","PART_AREA","UNIT_ID","UNIT_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
-	var title=[["州市","营服编码","营服","当天","","","","","月累计","","","累计","","","过程指标","",""],
-			   ["","","","首冲20","首冲50","首冲100","人工成本","营销成本","首冲数","人工成本","营销成本","首冲数","人工成本","营销成本","区县/营服数","有销量区县/营服数","有销量人数"]];
+	var field=["ROW_ID","ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
+	var title=[["州市ID","州市","当天","","","","","月累计","","","累计","","","过程指标","",""],
+			   ["","","首冲20","首冲50","首冲100","人工成本","营销成本","首冲数","人工成本","营销成本","首冲数","人工成本","营销成本","区县/营服数","有销量区县/营服数","有销量人数"]];
 	showtext = "2I2C地推推广情况";
-	downloadExcel(sql,title,showtext);
+	downloadExcel(downsql,title,showtext);
 }
 
 function getMaxDate(tableName){
