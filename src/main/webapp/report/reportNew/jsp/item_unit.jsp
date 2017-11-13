@@ -88,7 +88,6 @@
 			<div class="page_count_right">
 				<div id="pagination"></div>
 			</div>
-		</div>
-		
+		</div>	
 </body>
 </html>
