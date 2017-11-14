@@ -26,7 +26,8 @@ $(function() {
 	});
 	$("#line").change(function(){
 		var line=$(this).val();
-		initLevelName(line);
+		initLevel1Name(line);
+		initLevel2Name(line);
 	});
 });
 
@@ -86,6 +87,7 @@ function getSql(){
 	var regionCode=$("#regionCode").val();
 	var line=$("#line").val();
 	var level_1_name=$("#level_1_name").val();
+	var level_2_name=$("#level_2_name").val();
 	var where=" WHERE T1.DEAL_DATE='"+dealDate+"' AND T1.UNIT_ID IS NOT NULL";
 	
     if(regionCode!=""){
@@ -96,6 +98,9 @@ function getSql(){
     }
     if(level_1_name!=""){
     	where+=" AND T2.LEVEL_1_NAME='"+level_1_name+"'";
+    }
+    if(level_2_name!=""){
+    	where+=" AND T2.LEVEL_2_NAME='"+level_2_name+"'";
     }
 	return "SELECT T1.DEAL_DATE,                                                      "+
 	"               T1.GROUP_ID_1,                                             "+
@@ -135,9 +140,9 @@ function downsAll(){
 	downloadExcel(downSql,title,showtext);
 }
 
-function initLevelName(line){
-	var sql="SELECT                                                   "+
-	"DISTINCT T2.LEVEL_1_NAME LEVEL_1_NAME                                "+
+function initLevel1Name(line){
+	var sql="SELECT                                     "+
+	"DISTINCT T2.LEVEL_1_NAME                              "+
 	"          FROM PODS.TB_ODS_DWA_PROV_GB_UNIT T1           "+
 	"          LEFT JOIN PODS.TB_ODS_DWA_PROV_AC_ITEM_unit T2 "+
 	"            ON INSTR(T1.ACCOUNT_CODE, T2.AC_PREFIX) = 1  "+
@@ -145,10 +150,22 @@ function initLevelName(line){
 	"           AND T1.UNIT_ID IS NOT NULL                    "+
 	"           AND T2.LEVEL_1_NAME IS NOT NULL               "+
 	"           AND T1.GROUP_ID_1 IN( '16001','16a017')        "+
-	"           AND T2.LINE_NAME = '"+line+"'               "+
-	"           union all                                     "+
-	"           SELECT                                        "+
-	"              DISTINCT T2.LEVEL_2_NAME LEVEL_1_NAME                   "+
+	"           AND T2.LINE_NAME = '"+line+"'               ";
+	var d=query(sql);
+	var h="";
+	if(d!=null&&d.length>0){
+		for(var i=0;i<d.length;i++){
+			h+="<option value='"+d[i].LEVEL_1_NAME+"'>"+d[i].LEVEL_1_NAME+"</option>";
+		}
+	}else{
+		h+="<option value=''>全部</option>"
+	}
+	$("#level_1_name").append($(h));
+}
+
+function initLevel2Name(line){
+	var sql="SELECT                                         "+
+	"              DISTINCT T2.LEVEL_2_NAME                   "+
 	"          FROM PODS.TB_ODS_DWA_PROV_GB_UNIT T1           "+
 	"          LEFT JOIN PODS.TB_ODS_DWA_PROV_AC_ITEM_unit T2 "+
 	"            ON INSTR(T1.ACCOUNT_CODE, T2.AC_PREFIX) = 1  "+
@@ -161,10 +178,10 @@ function initLevelName(line){
 	var h="";
 	if(d!=null&&d.length>0){
 		for(var i=0;i<d.length;i++){
-			h+="<option value='"+d[i].LEVEL_1_NAME+"'>"+d[i].LEVEL_1_NAME+"</option>";
+			h+="<option value='"+d[i].LEVEL_2_NAME+"'>"+d[i].LEVEL_2_NAME+"</option>";
 		}
 	}else{
 		h+="<option value=''>全部</option>"
 	}
-	$("#level_1_name").empty().append($(h));
+	$("#level_2_name").append($(h));
 }
