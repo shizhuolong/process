@@ -42,7 +42,7 @@
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id=region value="<%=org.getRegionCode()%>">
 		<form id="searchForm" method="post" style="width:100%">
-			<table style="width:70%;margin: 10px 0; border:none;">
+			<table style="width:100%;margin: 10px 0; border:none;">
 				<tr height="35px">
 					<td width="6%" style="padding-left: 1px;" align="right">账期：</td>
 					<td width="10%">
@@ -69,6 +69,12 @@
 								<option value=''>请选择</option>
 						</select>
 					</td>
+					<td width="8%" align="right">科目小类：</td>
+					<td width="13%">
+                        <select name="level_2_name" id="level_2_name" class="default-text-input wper90">
+                                <option value=''>请选择</option>
+                        </select>
+                    </td>
 			        <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
                         style="float: right; margin-right: 10px;">查询</a>
