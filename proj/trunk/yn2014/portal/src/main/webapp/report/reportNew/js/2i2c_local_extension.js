@@ -48,6 +48,10 @@ $(function(){
 					where+=" AND GROUP_ID_0='"+code+"'";
 				}else if(orgLevel==3){//点击市
 					where+=" AND GROUP_ID_1='"+code+"'";
+				}else if(orgLevel==4){//点击市
+					where+=" AND UNIT_ID='"+code+"'";
+				}else if(orgLevel==5){//点击市
+					where+=" AND HALL_CODE='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -63,6 +67,10 @@ $(function(){
 					where+=" AND GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服
 					where+=" AND UNIT_ID='"+code+"'";
+				}else if(orgLevel==4){//渠道
+					where+=" AND HALL_CODE='"+code+"'";
+				}else if(orgLevel==5){
+					where+=" AND HR_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -93,6 +101,12 @@ function getSql(where,orgLevel){
 	}else if(orgLevel==3){
 		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
 		groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
+	}else if(orgLevel==4){
+		preSql="SELECT HALL_CODE ROW_ID,HALL_NAME ROW_NAME,";
+		groupBy=" GROUP BY HALL_CODE,HALL_NAME";
+	}else if(orgLevel==5){
+		preSql="SELECT OPEN_PERSON_CODE ROW_ID,OPEN_PERSON_NAME ROW_NAME,";
+		groupBy=" GROUP BY OPEN_PERSON_CODE,OPEN_PERSON_NAME";
 	}
 	var sql=preSql+
 	"       SUM(CASE                                                                                  "+
@@ -174,118 +188,7 @@ function getSql(where,orgLevel){
 	return sql;
 }
 
-function getDownSql(where) {
-	var startDete=$("#startDate").val();
-	var endDete=$("#endDate").val();
-	return "SELECT AREA_NAME,                                                                      "+
-	"       UNIT_ID,                                                                                  "+
-	"       UNIT_NAME,                                                                                "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) =  '"+endDete+"' AND                                   "+
-	"                  t.payment_fee_first >= 20 and t.payment_fee_first < 50 THEN                    "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_20,                                                                          "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND                                    "+
-	"                  t.payment_fee_first >= 50 and t.payment_fee_first < 100 THEN                   "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_50,                                                                          "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND                                    "+
-	"                  t.payment_fee_first >= 100 THEN                                                "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_100,                                                                         "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' THEN                                   "+
-	"              PROMOTION_FEE                                                                      "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) PROMOTION_FEE,                                                                   "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' THEN                                   "+
-	"              FIRST_REWARD                                                                       "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) FIRST_REWARD,                                                                    "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND '"+endDete+"' THEN                  "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_MONTH,                                                                       "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND '"+endDete+"' THEN                  "+
-	"              PROMOTION_FEE                                                                      "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) PROMOTION_MONTH,                                                                 "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND '"+endDete+"' THEN                    "+
-	"              FIRST_REWARD                                                                       "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) FIRST_MONTH,                                                                     "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN        "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_LJ,                                                                          "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN       "+
-	"              PROMOTION_FEE                                                                      "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) PROMOTION_LJ,                                                                    "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN       "+
-	"              FIRST_REWARD                                                                       "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) FIRST_LJ,                                                                        "+
-	"       count(distinct unit_id) num_unit,                                                         "+
-	"       sum(nvl(is_sales,0)) IS_SALES,                  "+
-	"       sum(nvl(person_dev_num,0)) PERSON_DEV_NUM "+
-	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T                                "+
-	" WHERE t.payment_fee_first >= 20                                                                 "+
-	"   and substr(payment_time_first, 1, 8) >= 20171020                                    "+
-	where +
-	" GROUP BY AREA_NAME, UNIT_ID, UNIT_NAME";
-}
-
 function downsAll() {
-	//先根据用户信息得到前几个字段
-	var code=$("#code").val();
-	var region=$("#region").val();
-	var orgLevel=$("#orgLevel").val();
-	var hr_id=$("#hr_id").val();
-	var regionCode=$("#regionCode").val();
-	var unitCode=$("#unitCode").val();
-	var startDete=$("#startDate").val();
-	var endDete=$("#endDate").val();
-	var dealDate=endDete.substr(0,6);
-	var where="";
-	if(orgLevel==1){
-
-	}else if(orgLevel==2){
-		where += " AND GROUP_ID_1 =" + code;
-	}else{
-		where += " AND UNIT_ID =" + code;
-	}
-	//条件
-	if(regionCode!=''){
-		where+= " AND GROUP_ID_1 ='"+regionCode+"'";
-	}
-	if(unitCode!=''){
-		where+= " AND UNIT_ID ='"+unitCode+"'";
-	}
-	var sql = getDownSql(where);
 	var field=["ROW_ID","ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
 	var title=[["州市ID","州市","当天","","","","","月累计","","","累计","","","过程指标","",""],
 			   ["","","首冲20","首冲50","首冲100","营销成本","人工成本","首冲数","营销成本","人工成本","首冲数","营销成本","人工成本","区县/营服数","有销量区县/营服数","有销量人数"]];
@@ -300,4 +203,15 @@ function getMaxDate(tableName){
 		return r[0]["DEAL_DATE"];
 	}
 	return "";
+}
+
+function showDesc(){
+	var url = $("#ctx").val()+"/report/reportNew/jsp/2i2c_local_extension_explain.jsp";
+	art.dialog.open(url,{
+		id:'bindDescDialog',
+		width:'600px',
+		height:'200px',
+		lock:true,
+		resize:false
+	});
 }
