@@ -30,6 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/2i2c_local_extension.js?v=4"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
@@ -63,6 +64,9 @@
                         <select name="unitCode" id="unitCode" class="default-text-input wper80">
                                 <option value=''>请选择</option>
                         </select>
+                    </td>
+                    <td width="5%">
+                        <a class="default-gree-btn" href="#" style="float: right;" id="exportDesc" onclick="showDesc();">说明</a>
                     </td>
                     <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
