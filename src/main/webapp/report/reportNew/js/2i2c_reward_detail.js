@@ -2,8 +2,8 @@ var nowData = [];
 var report = null;
 var orderBy='';
 var maxDate=null;
-var field=["AREA_NAME","UNIT_NAME","ORDER_ID","ORDER_DATE" ,"ORDER_STATE" ,"ORDER_NUMBER" ,"PRODUCT_NAME" ,"HALL_NAME" ,"HALL_CODE" ,"OPEN_PERSON_CODE" ,"OPEN_PERSON_NAME" ,"ACTIVE_CODE","ACTIVE_NAME","PAY_MODE","ORDER_FLAG","IS_TRANS","OPEN_DATE","ACTIVE_STATE","ACTIVE_TIME","ORDER_CERT_NUMBER","USER_STATUS_DESC","STATUS_CHG_DATE","REMOVE_FLAG_DESC","CERT_TYPE","CERT_NUMBER","USER_ID","DEVICE_NUMBER","IS_THIS_DEV","IS_INNET","IS_YW_REAL","IS_2ND","INNET_DATE","CLOSE_DATE","IS_PAY_LJ","PAYMENT_ID","PAYMENT_NAME","PAYMENT_TIME_FIRST","PRODUCT_ID","PRODUCT_NAME_U","PRODUCT_MIAN_U","PAYMENT_FEE_FIRST","PAYMENT_FEE_LJ","PAYMENT_NUM","BALANCE","EMP_TYPE","HR_ID","PROMOTION_FEE","FIRST_REWARD"];
-var title=[["地市","区县/营服","订单ID","订单时间","订单状态","订购号码","产品名称","渠道名称","渠道ID","开户人员发展编码","开户人姓名","激活人员发展编码","激活人姓名","交付方式","订单类型","是否转线上","开户时间","激活状态","激活时间","订单证件号","用户状态","用户状态变更时间","销户标识","证件类型","证件号码","用户ID","用户号码","是否本期发展","是否在网","是否异网","是否二次充值","入网时间","销户时间","是否累计有充值","最后一次缴费ID","最后一次缴费方式名称","首次缴费时间","产品ID","子产品","主产品","首次缴费金额","累计缴费金额","累计缴费次数","实时余额","用工性质","HR编码","营销成本","人工成本"]];
+var field=["AREA_NAME","UNIT_NAME","ORDER_ID","ORDER_DATE" ,"ORDER_STATE" ,"ORDER_NUMBER" ,"PRODUCT_NAME" ,"HALL_NAME" ,"HALL_CODE" ,"OPEN_PERSON_CODE" ,"OPEN_PERSON_NAME" ,"ACTIVE_CODE","ACTIVE_NAME","PAY_MODE","ORDER_FLAG","IS_TRANS","OPEN_DATE","ACTIVE_STATE","ACTIVE_TIME","ORDER_CERT_NUMBER","USER_STATUS_DESC","STATUS_CHG_DATE","REMOVE_FLAG_DESC","CERT_TYPE","CERT_NUMBER","USER_ID","DEVICE_NUMBER","IS_THIS_DEV","IS_INNET","IS_YW_REAL","IS_2ND","INNET_DATE","CLOSE_DATE","IS_PAY_LJ","PAYMENT_ID","PAYMENT_NAME","PAYMENT_TIME_FIRST","PRODUCT_ID","PRODUCT_NAME_U","PRODUCT_MIAN_U","PAYMENT_FEE_FIRST","PAYMENT_FEE_LJ","PAYMENT_NUM","BALANCE","EMP_TYPE","HR_ID","NAME","PROMOTION_FEE","FIRST_REWARD"];
+var title=[["地市","区县/营服","订单ID","订单时间","订单状态","订购号码","产品名称","渠道名称","渠道ID","开户人员发展编码","开户人姓名","激活人员发展编码","激活人姓名","交付方式","订单类型","是否转线上","开户时间","激活状态","激活时间","订单证件号","用户状态","用户状态变更时间","销户标识","证件类型","证件号码","用户ID","用户号码","是否本期发展","是否在网","是否异网","是否二次充值","入网时间","销户时间","是否累计有充值","最后一次缴费ID","最后一次缴费方式名称","首次缴费时间","产品ID","子产品","主产品","首次缴费金额","累计缴费金额","累计缴费次数","实时余额","用工性质","HR编码","姓名","营销成本","人工成本"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -175,6 +175,7 @@ function getSql(){
 	",BALANCE             "+
 	",EMP_TYPE            "+
 	",HR_ID               "+
+	",NAME               "+
 	",PROMOTION_FEE       "+
 	",FIRST_REWARD        "+
 	"FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER ";
