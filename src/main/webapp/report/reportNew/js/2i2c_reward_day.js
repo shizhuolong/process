@@ -2,7 +2,7 @@ var nowData = [];
 var report = null;
 var orderBy='';
 var field=["GROUP_ID_1_NAME","UNIT_NAME","NAME","PHONE" ,"HR_ID" ,"OPEN_PERSON_CODE" ,"HQ_CHAN_NAME" ,"HQ_CHAN_CODE" ,"CHNL_TYPE" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"EMP_TYPE"];
-var title=[["州市","区县/营服","发展人姓名","发展人电话","发展人HR编码","发展人编码","渠道名称","渠道编码","发展渠道类型","推广费","首冲激励","用工性质"]];
+var title=[["州市","区县/营服","发展人姓名","发展人电话","发展人HR编码","发展人编码","渠道名称","渠道编码","发展渠道类型","推广费","首充激励","用工性质"]];
 $(function() {
 	report = new LchReport({
 		title : title,
