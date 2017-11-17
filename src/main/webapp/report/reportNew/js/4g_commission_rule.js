@@ -1,8 +1,8 @@
 var nowData = [];
 var report = null;
 var orderBy='';
-var field=["DEAL_DATE","GROUP_ID_1_NAME","GROUP_ID_2_NAME","FD_CHNL_CODE" ,"PAY_23G_FEE" ,"RULE_23G_NAME" ,"COMM_23G_FEE" ,"PAY_4G_FEE" ,"RULE_4G_NAME" ,"COMM_4G_FEE"];
-var title=[["账期","州市","区县","总部渠道编码","2G/3G代收费金额（元）","2G/3G代收费佣金规则","2G/3G代收费佣金（元）","4G代收费金额（元）","4G代收费佣金规则","4G代收费佣金（元）"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","GROUP_ID_2_NAME","FD_CHNL_CODE","HQ_CHAN_NAME" ,"PAY_23G_FEE" ,"RULE_23G_NAME" ,"COMM_23G_FEE" ,"PAY_4G_FEE" ,"RULE_4G_NAME" ,"COMM_4G_FEE"];
+var title=[["账期","州市","区县","总部渠道编码","渠道名称","2G/3G代收费金额（元）","2G/3G代收费佣金规则","2G/3G代收费佣金（元）","4G代收费金额（元）","4G代收费佣金规则","4G代收费佣金（元）"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -108,6 +108,7 @@ function getSql(where){
 	"        GROUP_ID_1_NAME,                                    "+
 	"        GROUP_ID_2_NAME,                                    "+
 	"        FD_CHNL_CODE,                                       "+
+	"        HQ_CHAN_NAME,                                       "+
 	"        PAY_23G_FEE,                                        "+
 	"        RULE_23G_NAME,                                      "+
 	"        COMM_23G_FEE,                                       "+
