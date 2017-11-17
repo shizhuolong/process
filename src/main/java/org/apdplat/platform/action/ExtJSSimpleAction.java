@@ -165,7 +165,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }else{
                 LOG.info("前台界面传递了版本信息,version="+version);
             }
-            if(version!=model.getVersion()){
+            if(!version.equals(model.getVersion())){
                 LOG.info("当前数据的版本为 "+model.getVersion()+",您的版本为 "+version);
                 throw new RuntimeException("您的数据已过期，请重新修改");
             }
