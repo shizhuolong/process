@@ -61,8 +61,8 @@ function search(pageNumber) {
 	var startDate=$("#startDate").val();
 	var endDate=$("#endDate").val();
 	var dealDate=maxDate.substr(0,6);
-	var where=" WHERE ACCT_DATE='"+maxDate+"' ";
-	where += "AND substr(payment_time_first, 1, 8) BETWEEN '"+startDate+"' AND '"+endDate+"'";
+	var where=" WHERE ";
+	where += " substr(payment_time_first, 1, 8) BETWEEN '"+startDate+"' AND '"+endDate+"'";
 	//权限
 	if(orgLevel==1){
 
@@ -178,7 +178,7 @@ function getSql(){
 	",NAME               "+
 	",PROMOTION_FEE       "+
 	",FIRST_REWARD        "+
-	"FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER ";
+	"FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER partition(p"+maxDate+")";
 	return sql;
 }
 
