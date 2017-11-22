@@ -108,7 +108,7 @@ function getSql(){
 	"        THIS_DEV_NUM1,                "+
 	"        CHNL_PRODUCE,                 "+
 	"        FOURTH_JD_DEV                 "+
-	"FROM PMRT.TAB_MRT_LITTLE_HZZY_Q4TH_F  ";
+	"FROM PMRT.TAB_MRT_LITTLE_HZZY_Q4TH_DAY_F  ";
 	return sql;
 }
 

@@ -1,8 +1,8 @@
 var nowData = [];
 var report = null;
 var orderBy='';
-var field=["GROUP_ID_1_NAME","THIS_DAY_CHNL","THIS_WEEK_CHNL","THIS_MONTH_CHNL" ,"FOURTH_JD_CHNL" ,"FOURTH_JD_JSRW" ,"FOURTH_JD_WCL" ,"DEV_NUM_ZB" ,"THIS_DEV_NUM" ,"THIS_DEV_NUM1" ,"CHNL_PRODUCE" ,"FOURTH_JD_DEV"];
-var title=[["州市","当日拓展网点数","本周拓展网点数","当月累计拓展网点数","四季度累计网点数","四季度建设任务","四季度任务完成率","当月有销量网点占比","所有网点当日销量","所有网点当月累计销量","所有网点当月店均产能","四季度累计销量"]];
+var field=["GROUP_ID_1_NAME","THIS_DAY_CHNL","THIS_WEEK_CHNL","THIS_MONTH_CHNL" ,"FOURTH_JD_CHNL" ,"DLS_RW","MDSL_RW" ,"FOURTH_JD_WCL" ,"DEV_NUM_ZB" ,"THIS_DEV_NUM" ,"THIS_DEV_NUM1" ,"CHNL_PRODUCE" ,"FOURTH_JD_DEV"];
+var title=[["州市","当日拓展网点数","本周拓展网点数","当月累计拓展网点数","四季度累计网点数","代理商任务数","门店任务数量 ","四季度任务完成率","当月有销量网点占比","所有网点当日销量","所有网点当月累计销量","所有网点当月店均产能","四季度累计销量"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -101,14 +101,15 @@ function getSql(){
 	"        THIS_WEEK_CHNL,               "+
 	"        THIS_MONTH_CHNL,              "+
 	"        FOURTH_JD_CHNL,               "+
-	"        FOURTH_JD_JSRW,               "+
+	"        DLS_RW,               "+
+	"        MDSL_RW,               "+
 	"        FOURTH_JD_WCL,                "+
 	"        DEV_NUM_ZB,                   "+
 	"        THIS_DEV_NUM,                 "+
 	"        THIS_DEV_NUM1,                "+
 	"        CHNL_PRODUCE,                 "+
 	"        FOURTH_JD_DEV                 "+
-	"FROM PMRT.TAB_MRT_LITTLE_ZL_Q4TH_F  ";
+	"FROM PMRT.TAB_MRT_LITTLE_ZL_Q4TH_DAY_F  ";
 	return sql;
 }
 

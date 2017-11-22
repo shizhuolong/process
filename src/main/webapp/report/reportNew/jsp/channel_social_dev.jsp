@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/channel_social_dev.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/channel_social_dev.js?v=2"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
