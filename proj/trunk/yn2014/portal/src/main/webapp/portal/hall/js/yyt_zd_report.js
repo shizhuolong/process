@@ -147,7 +147,7 @@ function downsAll() {
 	if(yyt_hq_code!=""){
 		where+=" AND YYT_HQ_CODE LIKE '%"+yyt_hq_code+"%'";
 	}
-	var title=[["组织架构","营业厅编码","营业厅名称","日-裸机销售（顺价销售）","日-裸机销售（带卡销售）","日-合计","毛利合计","毛利分享","营销成本","营业厅利润"]];
+	var title=[["组织架构","时间","营业厅编码","营业厅名称","日-裸机销售（顺价销售）","日-裸机销售（带卡销售）","日-合计","毛利合计","毛利分享","营销成本","营业厅利润"]];
 	var sql = getDownSql(where);
 	var showtext = '营业厅终端销售统计-' + startDate+"-"+endDate;
 	downloadExcel(sql,title,showtext);
