@@ -103,7 +103,7 @@ function downsAll() {
 	var orgLevel=$("#orgLevel").val();
 	var dealDate=$("#dealDate").val();
 	var code=$("#code").val();
-	var where=" WHERE DEAL_DATE = "+dealDate;
+	var where=" WHERE DEAL_DATE = "+dealDate+" AND GROUP_LEVEL=2";
 	var regionCode=$("#regionCode").val();
 	var unitCode=$("#unitCode").val();
 	
