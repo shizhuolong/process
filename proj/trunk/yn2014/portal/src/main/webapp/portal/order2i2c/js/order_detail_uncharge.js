@@ -89,7 +89,7 @@ function search(pageNumber) {
 	    if(s!=null&&s.length>0){
 			 sql+=" AND USERID='"+userId+"'"; 
 	    }else{
-	    	 sql+=" AND GROUP_ID_1='"+region+"'";    	
+	    	 sql+=" AND GROUP_ID_1="+region;   	
 	    }
 	}
 	if(isFirst){
@@ -113,7 +113,7 @@ function search(pageNumber) {
 		return;
 	}
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+	+ " ) tt ) ttt where ttt.r>" + start +"and r<=" + end;
 	nowData = query(sql);
 	if (pageNumber == 1) {
 		initPagination(total);

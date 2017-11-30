@@ -64,7 +64,7 @@ function search(pageNumber) {
 	var orderNo=$("#orderNo").val();
 	var serviceNumber=$("#serviceNumber").val();
 	var bookNum=$("#bookNum").val();
-	var sql="SELECT ORDER_NO                                               "+
+	var sql="SELECT /*PARALLEL(T,8)*/ ORDER_NO                                               "+
 	"      ,ORDER_TIME                                                     "+
 	"      ,GROUP_ID_0_NAME                                                "+
 	"      ,GROUP_ID_1_NAME                                                "+
@@ -91,7 +91,7 @@ function search(pageNumber) {
 	"      ,REMARK                                                         "+
 	"      ,ACTIVE_TIME                                                    "+
 	"      ,IS_SUCC    "+
-	"  FROM PODS.VIEW_ODS_2I2C_ACTIVE_DAY                                 "+
+	"  FROM PODS.VIEW_ODS_2I2C_ACTIVE_DAY T                                "+
 	" WHERE 1=1 ";
 	var s;
     if(orgLevel!=1){
@@ -99,7 +99,7 @@ function search(pageNumber) {
 	    if(s!=null&&s.length>0){
 			 sql+=" AND USERID='"+userId+"'"; 
 	    }else{
-	    	 sql+=" AND GROUP_ID_1='"+region+"'";    	
+	    	 sql+=" AND GROUP_ID_1="+region;    	
 	    }
 	} 
 	if(activeStatus){
@@ -134,7 +134,7 @@ function search(pageNumber) {
 		return;
 	}
 	sql = "select ttt.* from ( select tt.*,rownum r from (" + sql
-			+ " ) tt where rownum<=" + end + " ) ttt where ttt.r>" + start;
+			+ " ) tt ) ttt where ttt.r>" + start +"and r<=" + end;
 	nowData = query(sql);
 	if (pageNumber == 1) {
 		initPagination(total);
