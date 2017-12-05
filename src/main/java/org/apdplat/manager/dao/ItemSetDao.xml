@@ -18,4 +18,8 @@
 <update id="updateStatus" parameterType="java.util.Map">
     UPDATE PMRT.TAB_MRT_CHNL_UNIT_EVAL_MON SET STATUS=1 WHERE GROUP_ID_1=#{group_id_1} AND DEAL_DATE=#{dealDate} AND USER_CODE=2
 </update>
+
+<select id="listTreeData" resultType="org.apdplat.manager.bean.TreeJson">
+    SELECT id,rolename text,parent_id pid FROM portal.apdp_role order by id
+</select>
 </mapper>
