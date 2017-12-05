@@ -71,6 +71,13 @@ public class T2i2cAction extends BaseAction{
 		resultMap.put("regionCode", regionCode);
 		this.reponseJson(t2I2CService.undistributedOrderList(resultMap));
 	}
+	public void topList(){
+        User user = UserHolder.getCurrentLoginUser();
+        Org org = user.getOrg();
+        String regionCode=org.getRegionCode();
+        resultMap.put("regionCode", regionCode);
+        this.reponseJson(t2I2CService.undistributedOrderList(resultMap));
+    }
 	/**
 	 * 查询任务明细
 	 */
