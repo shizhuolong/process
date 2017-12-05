@@ -2,9 +2,9 @@ var report;
 var maxDate=null;
 $(function(){
 	maxDate = getMaxDate("pmrt.tb_DW_V_D_HLW_OUTLINE_USER");
-	var field=["ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
-	var title=[["州市","当天","","","","","月累计","","","累计","","","过程指标","",""],
-			   ["","首充20","首充50","首充100","营销成本","人工成本","首充数","营销成本","人工成本","首充数","营销成本","人工成本","区县/营服数","有销量区县/营服数","有销量人数"]];
+	var field=["ROW_NAME","NUM_20","NUM_50","NUM_100" ,"PROMOTION_FEE" ,"FIRST_REWARD" ,"NUM_MONTH" ,"PROMOTION_MONTH" ,"FIRST_MONTH" ,"NUM_LJ" ,"PROMOTION_LJ" ,"FIRST_LJ","NUM_UNIT_DAY","SALES_DAY","PERSON_DAY","NUM_UNIT","IS_SALES","PERSON_DEV_NUM"];
+	var title=[["州市","当天","","","","","月累计","","","累计","","","当天过程指标","","","过程指标","",""],
+			   ["","首充20","首充50","首充100","营销成本","人工成本","首充数","营销成本","人工成本","首充数","营销成本","人工成本","区县/营服数","有销量区县/营服数","有销量人数","区县/营服数","有销量区县/营服数","有销量人数"]];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		$("#lch_DataHead").find("TH").unbind();
@@ -31,7 +31,7 @@ $(function(){
 			var startDete=$("#startDate").val();
 			var endDete=$("#endDate").val();
 			var dealDate=endDete.substr(0,6);
-			var where="";
+			var where=" WHERE 1=1 ";
 			//条件
 			if(regionCode!=''){
 				where+= " AND GROUP_ID_1 ='"+regionCode+"'";
@@ -109,81 +109,137 @@ function getSql(where,orgLevel){
 		groupBy=" GROUP BY OPEN_PERSON_CODE,OPEN_PERSON_NAME";
 	}
 	var sql=preSql+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) =  '"+endDete+"' AND                                   "+
-	"                  t.payment_fee_first >= 20 and t.payment_fee_first < 50 THEN                    "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_20,                                                                          "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND                                    "+
-	"                  t.payment_fee_first >= 50 and t.payment_fee_first < 100 THEN                   "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_50,                                                                          "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND                                    "+
-	"                  t.payment_fee_first >= 100 THEN                                                "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_100,                                                                         "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' THEN                                   "+
-	"              PROMOTION_FEE                                                                      "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) PROMOTION_FEE,                                                                   "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' THEN                                   "+
-	"              FIRST_REWARD                                                                       "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) FIRST_REWARD,                                                                    "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND '"+endDete+"' THEN                  "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_MONTH,                                                                       "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND '"+endDete+"' THEN                  "+
-	"              PROMOTION_FEE                                                                      "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) PROMOTION_MONTH,                                                                 "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND '"+endDete+"' THEN                    "+
-	"              FIRST_REWARD                                                                       "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) FIRST_MONTH,                                                                     "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN        "+
-	"              1                                                                                  "+
-	"             ELSE                                                                                "+
-	"              0                                                                                  "+
-	"           END) NUM_LJ,                                                                          "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN       "+
-	"              PROMOTION_FEE                                                                      "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) PROMOTION_LJ,                                                                    "+
-	"       SUM(CASE                                                                                  "+
-	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND '"+endDete+"' THEN       "+
-	"              FIRST_REWARD                                                                       "+
-	"             else                                                                                "+
-	"              0                                                                                  "+
-	"           END) FIRST_LJ,                                                                        "+
-	"       count(distinct unit_id) num_unit,                                                         "+
-	"       sum(nvl(is_sales,0)) IS_SALES,                                          "+
-	"       sum(nvl(person_dev_num,0)) PERSON_DEV_NUM "+
-	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T                                "+
-	" WHERE t.payment_fee_first >= 20                                                                 "+
-	"   and substr(payment_time_first, 1, 8) >= 20171020                                    "+
+	"       sum(nvl(NUM_20,0)) NUM_20,                                             "+
+	"       sum(nvl(NUM_50,0)) NUM_50,                                             "+
+	"       sum(nvl(NUM_100,0)) NUM_100,                                           "+
+	"       sum(nvl(PROMOTION_FEE,0)) PROMOTION_FEE,                               "+
+	"       sum(nvl(FIRST_REWARD,0)) FIRST_REWARD,                                 "+
+	"       sum(nvl(NUM_MONTH,0)) NUM_MONTH,                                       "+
+	"       sum(nvl(PROMOTION_MONTH,0)) PROMOTION_MONTH,                           "+
+	"       sum(nvl(FIRST_MONTH,0)) FIRST_MONTH,                                   "+
+	"       sum(nvl(NUM_LJ,0)) NUM_LJ,                                             "+
+	"       sum(nvl(PROMOTION_LJ,0)) PROMOTION_LJ,                                 "+
+	"       sum(nvl(FIRST_LJ,0)) FIRST_LJ,                                         "+
+	"       count(distinct unit_id) NUM_UNIT_DAY,                                  "+
+	"       sum(nvl(sales_day,0)) SALES_DAY,                                       "+
+	"       sum(nvl(num_person,0)) PERSON_DAY,                                     "+
+	"       count(distinct unit_id) NUM_UNIT,                                      "+
+	"       sum(nvl(is_sales, 0)) IS_SALES,                                        "+
+	"       sum(nvl(person_dev_num, 0)) PERSON_DEV_NUM                             "+
+	"       FROM (                                                                 "+
+	"SELECT GROUP_ID_0,                                                            "+
+	"       GROUP_ID_1,                                                            "+
+	"       AREA_NAME,                                                             "+
+	"       UNIT_ID,                                                               "+
+	"       UNIT_NAME,                                                             "+
+	"       HALL_CODE,                                                             "+
+	"       HALL_NAME,                                                             "+
+	"       OPEN_PERSON_CODE,                                                      "+
+	"       OPEN_PERSON_NAME,                                                      "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND           "+
+	"                  t.payment_fee_first >= 20 and t.payment_fee_first < 50 THEN "+
+	"              1                                                               "+
+	"             ELSE                                                             "+
+	"              0                                                               "+
+	"           END) NUM_20,                                                       "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND           "+
+	"                  t.payment_fee_first >= 50 and t.payment_fee_first < 100 THEN "+
+	"              1                                                               "+
+	"             ELSE                                                             "+
+	"              0                                                               "+
+	"           END) NUM_50,                                                       "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' AND           "+
+	"                  t.payment_fee_first >= 100 THEN                             "+
+	"              1                                                               "+
+	"             ELSE                                                             "+
+	"              0                                                               "+
+	"           END) NUM_100,                                                      "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' THEN          "+
+	"              PROMOTION_FEE                                                   "+
+	"             else                                                             "+
+	"              0                                                               "+
+	"           END) PROMOTION_FEE,                                                "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) = '"+endDete+"' THEN          "+
+	"              FIRST_REWARD                                                    "+
+	"             else                                                             "+
+	"              0                                                               "+
+	"           END) FIRST_REWARD,                                                 "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND     "+
+	"                  '"+endDete+"' THEN                                             "+
+	"              1                                                               "+
+	"             ELSE                                                             "+
+	"              0                                                               "+
+	"           END) NUM_MONTH,                                                    "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND     "+
+	"                  '"+endDete+"' THEN                                             "+
+	"              PROMOTION_FEE                                                   "+
+	"             else                                                             "+
+	"              0                                                               "+
+	"           END) PROMOTION_MONTH,                                              "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) BETWEEN '"+startDete+"' AND     "+
+	"                  '"+endDete+"' THEN                                             "+
+	"              FIRST_REWARD                                                    "+
+	"             else                                                             "+
+	"              0                                                               "+
+	"           END) FIRST_MONTH,                                                  "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND       "+
+	"                  '"+endDete+"' THEN                                             "+
+	"              1                                                               "+
+	"             ELSE                                                             "+
+	"              0                                                               "+
+	"           END) NUM_LJ,                                                       "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND       "+
+	"                  '"+endDete+"' THEN                                             "+
+	"              PROMOTION_FEE                                                   "+
+	"             else                                                             "+
+	"              0                                                               "+
+	"           END) PROMOTION_LJ,                                                 "+
+	"       SUM(CASE                                                               "+
+	"             WHEN substr(payment_time_first, 1, 8) BETWEEN 20171020 AND       "+
+	"                  '"+endDete+"' THEN                                             "+
+	"              FIRST_REWARD                                                    "+
+	"             else                                                             "+
+	"              0                                                               "+
+	"           END) FIRST_LJ,                                                     "+
+	"       case                                                                   "+
+	"         when ROW_NUMBER()                                                    "+
+	"          OVER(PARTITION BY T.AREA_NAME, UNIT_ID ORDER BY T.UNIT_ID) = 1      "+
+	"          and (SELECT nvl(PERSON_DEV_NUM,0)                                   "+
+	"          FROM (SELECT /*+parallel(8)*/  unit_id,                             "+
+	"                       count(*) PERSON_DEV_NUM                                "+
+	"                   FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T  "+
+	"                 WHERE  substr(payment_time_first, 1, 8) = '"+endDete+"'         "+
+	"                 GROUP BY unit_id) t1                                         "+
+	"         WHERE t.unit_id = t1.unit_id)>=5                                     "+
+	"          then                                                                "+
+	"           1                                                                  "+
+	"         else                                                                 "+
+	"          0                                                                   "+
+	"       end  sales_day,                                                        "+
+	"       COUNT(DISTINCT CASE WHEN SUBSTR(PAYMENT_TIME_FIRST,1,8)='"+endDete+"' THEN OPEN_PERSON_CODE END) num_person, "+                                                  "+
+	"       sum(nvl(is_sales, 0)) IS_SALES,                                        "+
+	"       sum(nvl(person_dev_num, 0)) PERSON_DEV_NUM                             "+
+	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T      "+
+	" GROUP BY GROUP_ID_0,                                                         "+
+	"          GROUP_ID_1,                                                         "+
+	"          AREA_NAME,                                                          "+
+	"          UNIT_ID,                                                            "+
+	"          UNIT_NAME,                                                          "+
+	"          HALL_CODE,                                                          "+
+	"          HALL_NAME,                                                          "+
+	"          OPEN_PERSON_CODE,                                                   "+
+	"          OPEN_PERSON_NAME                                                    "+
+	"    )                                                                         "+
 	where+groupBy;
 	return sql;
 }
