@@ -5,10 +5,10 @@ var orderBy = " ORDER BY GROUP_ID_1,UNIT_ID";
 var report = null; 
 var downSql="";
 $(function() {
-	/*var orgLevel=$("#orgLevel").val();
+	var orgLevel=$("#orgLevel").val();
 	if(orgLevel==1){
 		$("#reppeatBtn").remove();
-	}*/
+	}
 	report = new LchReport({
 		title : title,
 		field : field,
