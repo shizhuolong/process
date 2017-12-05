@@ -1,5 +1,7 @@
 package org.apdplat.module.security.action;
 
+import org.apdplat.manager.bean.TreeJson;
+import org.apdplat.manager.dao.ItemSetDao;
 import org.apdplat.module.module.model.Command;
 import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -33,14 +36,23 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
     private ServiceFacade serviceFacade;
     private List<Command> commands;
     private boolean recursion=false;
-
+    @Autowired
+	private ItemSetDao dao;
+    
     public String store(){            
         if(recursion){
         	User user = UserHolder.getCurrentLoginUser();
         	if(user.isSuperManager()) {
-	            long rootId = roleService.getRootRole().getId();
+	            /*long rootId = roleService.getRootRole().getId();
 	            String json=roleService.toJson(rootId,recursion,null,roleService.hasRoleIds());
-	            Struts2Utils.renderJson(json);
+	            Struts2Utils.renderJson(json);*/
+	            List<TreeJson> allMenu = dao.listTreeData();
+	            for(TreeJson t:allMenu){
+	    			t.setId("role-"+t.getId());
+	    			t.setPid("role-"+t.getPid());
+	    		}
+	    		String l=TreeJson.createTreeJson(allMenu);
+	    		Struts2Utils.renderJson(l);
         	}else {
         		Long param[] = {user.getId(),user.getId()};
             	String roleSql = "SELECT DISTINCT T2.ID,T2.ROLENAME FROM APDP_USER_ROLE T1 INNER JOIN APDP_ROLE T2 ON T1.ROLEID=T2.ID WHERE T1.USERID=?";
