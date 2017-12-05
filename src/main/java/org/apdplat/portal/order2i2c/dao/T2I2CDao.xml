@@ -15,6 +15,19 @@
 			<if test="serviceName!=null and serviceName!=''">
 				and t.SERVICE_NAME=#{serviceName}
 			</if>
+			<if test="serviceOrder!=null and serviceOrder!=''">
+                and t.ORDER_STATUS=#{serviceOrder}
+            </if>
+            <if test="serviceProduct!=null and serviceProduct!=''">
+                and t.SHOOP_NAME=#{serviceProduct}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and DEAL_DATE between #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}
+            </if>
+            
 	</select>
 	
 	<select id="taskListDetail" parameterType="java.util.Map" resultType="java.util.Map">
