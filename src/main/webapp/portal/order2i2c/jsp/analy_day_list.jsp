@@ -11,7 +11,7 @@
 	Org org = user.getOrg();
 	String path = request.getContextPath();
 	Calendar ca = Calendar.getInstance();
-	ca.add(Calendar.DATE, 0);
+	ca.add(Calendar.DAY_OF_MONTH, -1);
 	String time = new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 <html>
@@ -37,13 +37,14 @@
 <script type="text/javascript"
 	src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript"
-	src="<%=path%>/portal/order2i2c/js/analy_day_list.js?v=2"></script>
+	src="<%=path%>/portal/order2i2c/js/analy_day_list.js?v=3"></script>
 </head>
 <body style="overflow-x: auto; margin: 5px; margin-top: 0;">
 	<input type="hidden" id="ctx" value="<%=path%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="username" value="<%=user.getUsername()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<div class="search-div">
 		<table style="margin: 0px 0; border: none; width: 100%;font-size:100%;">
 			<tr>
