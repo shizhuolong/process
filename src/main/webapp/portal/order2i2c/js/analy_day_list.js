@@ -7,9 +7,9 @@ var report = null;
 var downSql="";
 var orderBy="";
 $(function() {
-	var maxDate=getMaxDate("PODS.VIEW_ODS_2I2C_ANALY_DAY");
-	$("#startTime").val(maxDate);
-	$("#endTime").val(maxDate);	
+//	var maxDate=getMaxDate("PODS.VIEW_ODS_2I2C_ANALY_DAY");
+//	$("#startTime").val(maxDate);
+//	$("#endTime").val(maxDate);	
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -134,5 +134,5 @@ function getSql(){
 	"     ,DENSE_RANK()OVER(PARTITION BY T.GROUP_ID_1,T.TEAM_NAME ORDER BY TRIM('.' FROM TO_CHAR(CASE WHEN SUM(NVL(T.ALLOT_NUM,0))=0 THEN 0 "+
 	"                                 ELSE SUM(NVL(T.FIRST_NUM,0))*100/SUM(NVL(T.ALLOT_NUM,0)) END                                          "+
 	"                                    ,'FM9999990.99'))DESC) FIRST_RANK                                                                  "+
-	"FROM  PODS.VIEW_ODS_2I2C_ANALY_DAY T                                                                                                   ";
+	"FROM  PODS.VIEW_ODS_2I2C_ANALY_DAY T                                                                                                ";
 }
