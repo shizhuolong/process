@@ -1,6 +1,6 @@
 var nowData = [];
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","SUBSCRIPTION_ID","DEVICE_NUMBER","NET_TYPE","HQ_CHAN_CODE"];
-var title=[["账期","地市名称","营服名称","HR编码","姓名","人员角色","用户编号","用户号码","用户类型","渠道编码"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_NAME","HR_ID","NAME","USER_ROLE","SUBSCRIPTION_ID","DEVICE_NUMBER","NET_TYPE","HQ_CHAN_CODE","PRODUCT_ID","PRODUCT_NAME"];
+var title=[["账期","地市名称","营服名称","HR编码","姓名","人员角色","用户编号","用户号码","用户类型","渠道编码","套餐编码","套餐名称"]];
 var orderBy='';	
 var report = null;
 $(function() {
@@ -135,7 +135,9 @@ function getSql(){
 			"       T.SUBSCRIPTION_ID,                                      "+
 			"       T.DEVICE_NUMBER,                                        "+
 			"       DECODE(T.NET_TYPE,-1,'固网', 01, '2G', 02, '3G', 03, '3G上网卡', 04, '4G') AS NET_TYPE,                                             "+
-			"       T.HQ_CHAN_CODE                                          "+
+			"       T.HQ_CHAN_CODE,                                          "+
+			"       T.PRODUCT_ID,                                          "+ //套餐编码
+			"       T.PRODUCT_NAME                                          "+ //套餐名称
 			"  FROM PODS.TB_ODS_JCDY_DEV_HR_MON PARTITION(P"+dealDate+") T  ";
 	return s;
 }
