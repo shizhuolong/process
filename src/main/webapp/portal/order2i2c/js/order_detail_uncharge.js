@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","商品名称","子商品名称","用户状态","用户状态变更时间","销户标识","证件类型","证件号码","用户ID","用户号码","是否本期新发展","是否在网","是否异网","是否二次充值","入网时间","销户时间","是否累计现金缴费","最后一次缴费方式ID","最后一次缴费方式名称","首次缴费时间","首次缴费金额","累计缴费金额","累计缴费次数","实时余额","回访人","回访时间","回访失败","回访成功","其他原因"]];
-var field=["ACCT_DATE","AREA_DESC","PRODUCT_MAIN","PRODUCT_NAME","USER_STATUS_DESC","UPDATE_TIME","REMOVE_FLAG","CERT_TYPE_DESC","CERT_NUMBER","USER_ID","DEVICE_NUMBER","IS_THIS_DEV","IS_INNET","IS_ECT","IS_TWO_PAY","INNET_DATE","CLOSE_DATE","IS_CASH_CHARGE","PAYMENT_ID","PAYMENT_NAME","PAYMENT_TIME_FIRST","PAYMENT_FEE_FIRST","PAYMENT_FEE_LJ","PAYMENT_NUM","BALANCE","VISIT_NAME","VISIT_TIME","FAIL_VISIT","SUCC_VISIT","OTHER_CAUSE"];
+var title=[["账期","地市","商品名称","子商品名称","用户状态","用户状态变更时间","销户标识","证件类型","证件号码","用户ID","是否本期新发展","是否在网","是否异网","是否二次充值","入网时间","销户时间","是否累计现金缴费","最后一次缴费方式ID","最后一次缴费方式名称","首次缴费时间","首次缴费金额","累计缴费金额","累计缴费次数","实时余额","联系人","用户号码","联系电话","回访人","回访时间","回访失败","回访成功","其他原因"]];
+var field=["ACCT_DATE","AREA_DESC","PRODUCT_MAIN","PRODUCT_NAME","USER_STATUS_DESC","UPDATE_TIME","REMOVE_FLAG","CERT_TYPE_DESC","CERT_NUMBER","USER_ID","IS_THIS_DEV","IS_INNET","IS_ECT","IS_TWO_PAY","INNET_DATE","CLOSE_DATE","IS_CASH_CHARGE","PAYMENT_ID","PAYMENT_NAME","PAYMENT_TIME_FIRST","PAYMENT_FEE_FIRST","PAYMENT_FEE_LJ","PAYMENT_NUM","BALANCE","CUST_NAME","DEVICE_NUMBER","BOOK_NUM","VISIT_NAME","VISIT_TIME","FAIL_VISIT","SUCC_VISIT","OTHER_CAUSE"];
 
 var orderBy="";
 var report = null;
