@@ -1,5 +1,5 @@
-var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","ITEMCODE","ITEMDESC","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","HQ_CHAN_NAME","SOURCE_CRE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY"];
-var title=[['帐期','地市名称','营服中心','人员姓名','HR编码','用户编码','用户号码','入网时间','操作员工号','部门ID','套餐编码','指标编码','指标描述','指标值','发展人编码','所属渠道','渠道名称','原始积分','渠道系数','乘渠道系数后积分','区域系数','乘区域系数后积分','积分金额']];
+var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","OFFICE_ID","PRODUCT_ID","PRODUCT_NAME","ITEMCODE","ITEMDESC","ITEMVALUE","DEVELOPER_ID","HQ_CHANL_CODE","HQ_CHAN_NAME","SOURCE_CRE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY"];
+var title=[['帐期','地市名称','营服中心','人员姓名','HR编码','用户编码','用户号码','入网时间','操作员工号','部门ID','套餐编码',"套餐名称",'指标编码','指标描述','指标值','发展人编码','所属渠道','渠道名称','原始积分','渠道系数','乘渠道系数后积分','区域系数','乘区域系数后积分','积分金额']];
 var nowData = [];
 var report=null;
 $(function() {
@@ -90,6 +90,7 @@ function getSql(){
 			"        T.OPERATOR_ID,                                        "+
 			"        T.OFFICE_ID,                                          "+
 			"        T.PRODUCT_ID,                                         "+
+			"        T.PRODUCT_NAME,                                         "+ //套餐名称
 			"        T.ITEMCODE,                                           "+
 			"        T.ITEMDESC,                                           "+
 			"        T.ITEMVALUE,                                          "+
