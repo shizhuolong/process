@@ -226,7 +226,7 @@ function getSql(where,orgLevel){
 	"         else                                                                 "+
 	"          0                                                                   "+
 	"       end  sales_day,                                                        "+
-	"       COUNT(DISTINCT CASE WHEN SUBSTR(PAYMENT_TIME_FIRST,1,8)='"+endDete+"' THEN OPEN_PERSON_CODE END) num_person, "+                                                  "+
+	"       COUNT(DISTINCT CASE WHEN SUBSTR(PAYMENT_TIME_FIRST,1,8)='"+endDete+"' THEN OPEN_PERSON_CODE END) num_person, "+
 	"       sum(nvl(is_sales, 0)) IS_SALES,                                        "+
 	"       sum(nvl(person_dev_num, 0)) PERSON_DEV_NUM                             "+
 	"  FROM pmrt.tb_DW_V_D_HLW_OUTLINE_USER PARTITION(p"+maxDate+") T      "+
