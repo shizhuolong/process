@@ -1,6 +1,6 @@
 var nowData = [];
-var title=[["账期","地市","营服中心","人员姓名","HR编码","用户编码","用户号码","入网时间","操作员工号","渠道编码","套餐编码","指标编码","指标描述","备注","指标值","发展人编码","渠道名称","原始积分","渠道系数","乘渠道系数后积分","区域系数","乘区域系数后积分","积分金额"]];
-var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","HQ_CHANL_CODE","PRODUCT_ID","ITEMCODE","ITEMDESC","REMARK","ITEMVALUE","DEVELOPER_ID","HQ_CHAN_NAME","SOURCE_CRE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY"];
+var title=[["账期","地市","营服中心","人员姓名","HR编码","用户编码","用户号码","入网时间","操作员工号","渠道编码","套餐编码","套餐名称","指标编码","指标描述","备注","指标值","发展人编码","渠道名称","原始积分","渠道系数","乘渠道系数后积分","区域系数","乘区域系数后积分","积分金额"]];
+var field=["DEAL_DATE","AREA_NAME","UNIT_NAME","USER_NAME","HR_NO","SUBSCRIPTION_ID","SERVICE_NUM","JOIN_DATE","OPERATOR_ID","HQ_CHANL_CODE","PRODUCT_ID","PRODUCT_NAME","ITEMCODE","ITEMDESC","REMARK","ITEMVALUE","DEVELOPER_ID","HQ_CHAN_NAME","SOURCE_CRE","HQ_RATIO","HQ_CRE","UNIT_RATIO","UNIT_CRE","UNIT_MONEY"];
 var orderBy = '';
 var report = null;
 $(function() {
@@ -128,6 +128,7 @@ function getSql(){
 	"        OPERATOR_ID,                                          "+
 	"        HQ_CHANL_CODE,                                        "+
 	"        PRODUCT_ID,                                           "+
+	"        PRODUCT_NAME,                                           "+ //套餐名称
 	"        ITEMCODE,                                             "+
 	"        ITEMDESC,                                             "+
 	"        NVL(REMARK, ' ') REMARK,                              "+
