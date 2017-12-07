@@ -14,6 +14,9 @@ public class TreeJson implements Serializable {
     private String id; 
     private String pid; 
     private String text; 
+    private Boolean disabled;
+    private String iconCls;
+    private String type;//区分是命令表里面的菜单，还是菜单表里面的菜单
     private List<TreeJson> children = new ArrayList<TreeJson>();
 
 public static List<TreeJson> formatTree(List<TreeJson> list) {
@@ -83,6 +86,30 @@ public static List<TreeJson> formatTree(List<TreeJson> list) {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public Boolean getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(Boolean disabled) {
+		this.disabled = disabled;
+	}
+	
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public List<TreeJson> getChildren() {

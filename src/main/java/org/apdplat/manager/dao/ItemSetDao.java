@@ -16,5 +16,7 @@ public interface ItemSetDao {
 	void updateStatus(Map<String, Object> m);
 
 	List<TreeJson> listTreeData();
+	
+	List<TreeJson> listMenuData();
 
 }

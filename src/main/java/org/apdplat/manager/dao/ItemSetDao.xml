@@ -22,4 +22,10 @@
 <select id="listTreeData" resultType="org.apdplat.manager.bean.TreeJson">
     SELECT id,rolename text,parent_id pid FROM portal.apdp_role order by id
 </select>
+
+<select id="listMenuData" resultType="org.apdplat.manager.bean.TreeJson">
+    SELECT id,parentmodule_id pid,chinese text,english iconCls,'0' type FROM portal.apdp_module 
+		UNION ALL
+	SELECT id,module_id pid,chinese text,english iconCls,'1' type FROM portal.apdp_command	
+</select>
 </mapper>
