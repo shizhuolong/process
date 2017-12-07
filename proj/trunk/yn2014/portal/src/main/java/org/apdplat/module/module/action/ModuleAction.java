@@ -8,9 +8,10 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.manager.bean.TreeJson;
+import org.apdplat.manager.dao.ItemSetDao;
 import org.apdplat.module.module.model.Module;
 import org.apdplat.module.module.service.ModuleService;
-import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
@@ -31,7 +32,8 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
         private ModuleService moduleService;
         @Autowired
         private ServiceFacade serviceFacade;
-        
+        @Autowired
+    	private ItemSetDao dao;
         
         private String node;
         private boolean privilege=false;
@@ -84,11 +86,22 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
                      String[] temp=node.split("-");
                      long id=Long.parseLong(temp[1]);
                      module=moduleService.getModule(id);
+                     String json=moduleService.toJsonForPrivilege(module);
+                     Struts2Utils.renderJson(json);
                  }else if(node.trim().startsWith("root")){
-                     module=moduleService.getRootModule();
+                     //module=moduleService.getRootModule();
+                     List<TreeJson> allMenu=dao.listMenuData();
+                	 for(TreeJson t:allMenu){
+                		 if(t.getType().equals("0")){
+                			 t.setId("module-"+t.getId());
+                		 }else{
+                			 t.setId("command-"+t.getId());
+                		 }
+     	    			t.setPid("module-"+t.getPid());
+     	    		}
+     	    		String l=TreeJson.createTreeJson(allMenu);
+     	    		Struts2Utils.renderJson(l);
                  }
-                 String json=moduleService.toJsonForPrivilege(module);
-                 Struts2Utils.renderJson(json);
             }else {
 	            User user = UserHolder.getCurrentLoginUser();
 	            String path = ServletActionContext.getRequest().getContextPath();

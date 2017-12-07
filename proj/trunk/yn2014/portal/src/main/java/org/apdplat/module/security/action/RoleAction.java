@@ -43,33 +43,53 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         if(recursion){
         	User user = UserHolder.getCurrentLoginUser();
         	if(user.isSuperManager()) {
-	            /*long rootId = roleService.getRootRole().getId();
-	            String json=roleService.toJson(rootId,recursion,null,roleService.hasRoleIds());
+	            long rootId = roleService.getRootRole().getId();
+	            /*String json=roleService.toJson(rootId,recursion,null,roleService.hasRoleIds());
 	            Struts2Utils.renderJson(json);*/
-	            List<TreeJson> allMenu = dao.listTreeData();
-	            for(TreeJson t:allMenu){
+	            List<TreeJson> allRole = dao.listTreeData();
+	            for(TreeJson t:allRole){
 	    			t.setId("role-"+t.getId());
 	    			t.setPid("role-"+t.getPid());
 	    		}
-	    		String l=TreeJson.createTreeJson(allMenu);
+	    		String l=TreeJson.createTreeJson(allRole);
 	    		Struts2Utils.renderJson(l);
         	}else {
-        		Long param[] = {user.getId(),user.getId()};
+        		Long param[] = {user.getId()};
             	String roleSql = "SELECT DISTINCT T2.ID,T2.ROLENAME FROM APDP_USER_ROLE T1 INNER JOIN APDP_ROLE T2 ON T1.ROLEID=T2.ID WHERE T1.USERID=?";
-            	roleSql += " UNION SELECT DISTINCT T1.ID,T1.ROLENAME FROM APDP_ROLE T1 INNER JOIN APDP_USERGROUP_ROLE T2 ON T1.ID=T2.ROLEID INNER JOIN APDP_USER_USERGROUP T3 ON T2.USERGROUPID=T3.USERGROUPID WHERE T3.USERID=?";
-            	String childSql = "SELECT ID,ROLENAME FROM APDP_ROLE WHERE PARENT_ID=?";
             	List<Map> list = serviceFacade.queryForMap(roleSql, param);
             	if(list.isEmpty()) {
             		Struts2Utils.renderJson("");
             	}else{
 	            	List<String> roleIds=new ArrayList<String>();
+	            	
 	            	for(Map m:list){
 	            		if(m!=null)
 	            			roleIds.add(((BigDecimal)m.get("ID")).longValue()+"");
 	            	}
-	            	long rootId = roleService.getRootRole().getId();
-	 	            String json=roleService.toJson(rootId,recursion,roleIds,roleService.hasRoleIds());
-	 	            Struts2Utils.renderJson(json);
+	            	List<TreeJson> allRole = dao.listTreeData();
+	            	List<Map> hasRoleIds = roleService.hasRoleIds();
+	            	List<String> funcIds=new ArrayList<String>();
+	            	for(Map m:hasRoleIds){
+	            		if(m!=null&&m.containsKey("ID")){
+	            			String tid=(String)m.get("ID");
+	            			funcIds.add(tid);
+	            		}
+	            	}
+		            for(TreeJson t:allRole){
+		    			if(roleIds.contains(t.getId())){
+		    				t.setDisabled(false);
+		    			}else{
+		    				if(funcIds.contains(t.getId())){
+		    					t.setDisabled(false);
+			    			}else{
+			    				t.setDisabled(true);
+			    			}
+		    			}
+		    			t.setId("role-"+t.getId());
+		    			t.setPid("role-"+t.getPid());
+		    		}
+		    		String l=TreeJson.createTreeJson(allRole);
+		    		Struts2Utils.renderJson(l);
             	}
             	/*
             	Map map = null;
@@ -104,8 +124,15 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         }
         //如果指定了node则采用自定义的查询方式
         if(node.trim().startsWith("root")){
-            String json=roleService.toRootJson(recursion);
-            Struts2Utils.renderJson(json);
+            /*String json=roleService.toRootJson(recursion);
+            Struts2Utils.renderJson(json);*/
+        	 List<TreeJson> allRole = dao.listTreeData();
+	            for(TreeJson t:allRole){
+	    			t.setId("role-"+t.getId());
+	    			t.setPid("role-"+t.getPid());
+	    		}
+	    		String l=TreeJson.createTreeJson(allRole);
+	    		Struts2Utils.renderJson(l);
         }else{
             String[] attr=node.trim().split("-");
             if(attr.length==2){
