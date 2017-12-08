@@ -61,7 +61,7 @@
 						</c:if>
 					</td>
 					<td>
-                        <a href='<%=path%>/workflow/work-flow!delete.action?deploymentId=${process.deploymentId}'>删除</a>
+                        <a url='<%=path%>/workflow/work-flow!delete.action?deploymentId=${process.deploymentId}' onclick='delProcess($(this))'>删除</a>
                         <!--  <a href='${ctx }/workflow/process/convert-to-model/${process.id}'>转换为Model</a>-->
                     </td>
 				</tr>
@@ -70,4 +70,12 @@
 	</table>   
 	<tags:pagination page="${pagination}" paginationSize="${pagination.pageSize}"/>     
 </body>
+<script type="text/javascript">
+  function delProcess(obj){
+	  if(confirm("确认要删除？")){
+		  var url=obj.attr("url");
+		  window.location.href=url;
+	  }
+  }
+</script>
 </html>
