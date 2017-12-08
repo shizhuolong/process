@@ -46,7 +46,20 @@ function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var start = pageSize * (pageNumber - 1);
 	var end = pageSize * pageNumber;
-	var sql=getSql();
+	var orgLevel=$("#orgLevel").val();
+	var region=$("#region").val();
+	var s;
+	var where="";
+	//权限控制
+    if(orgLevel!=1){
+		s=query("SELECT userid FROM PORTAL.TAB_PORTAL_2I2C_TEAM WHERE userid="+userId);
+	    if(s!=null&&s.length>0){
+			 where=" AND T3.USERID='"+userId+"' "; 
+	    }else{
+	    	 where=" AND T4.GROUP_ID_1="+region;   	
+	    }
+	}
+	var sql=getSql(where);
 	var orgLevel=$("#orgLevel").val();
 	var region=$("#region").val();
 	downSql=sql;
@@ -87,7 +100,7 @@ function downAll(){
 	downloadExcel(downSql,title,showtext);
 }
 
-function getSql(){
+function getSql(where){
 	var startTime=$("#startTime").val();
 	var endTime=$("#endTime").val();
 	return "SELECT DISTINCT                                                                                                       "+
@@ -113,7 +126,8 @@ function getSql(){
 	"ON   (T1.NAME_ID=T3.ID)                                                                                               "+
 	"JOIN PCDE.TB_CDE_REGION_CODE T4                                                                                       "+
 	"ON   (T3.GROUP_ID_1=T4.GROUP_ID_1)                                                                                    "+
-	"GROUP BY T1.NAME_ID                                                                                                   "+
+	where +
+	" GROUP BY T1.NAME_ID                                                                                                   "+
 	"        ,T3.NAME                                                                                                      "+
 	"        ,T1.TEAM_NAME                                                                                                 "+
 	"        ,CASE WHEN T2.OUTBOUND IS NOT NULL THEN T2.OUTBOUND END                                                       "+
