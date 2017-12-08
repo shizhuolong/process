@@ -28,6 +28,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.util.Pagination;
+import org.apdplat.portal.order2i2c.action.HttpSendMessageUtil;
+import org.apdplat.wgreport.common.SpringManager;
 import org.apdplat.workflow.WorkflowConstant;
 import org.apdplat.workflow.vo.WorkOrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -580,9 +582,27 @@ public class WorkOrderService {
 			taskTo4AService.sendAddOrderTo4A(workOrderVo);
 		}catch(Exception e){e.printStackTrace();}
 		//添加短信发送 
+		if(workOrderVo.getNextDealer()==null||"".equals(workOrderVo.getNextDealer())){
+			sendMessage(workOrderVo);
+		}
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public void sendMessage(WorkOrderVo workOrderVo) {
+		try {
+			String startMan=workOrderVo.getStartMan();
+			String queryPhone="SELECT PHONE FROM PORTAL.APDP_USER WHERE ID='"+startMan+"'";
+			List<Map<String,String>> r=SpringManager.getFindDao().find(queryPhone);
+			String phone="";
+			if(r!=null&&r.size()>0){
+				phone=r.get(0).get("PHONE");
+				String content = "您发起的主题为\""+workOrderVo.getTitle()+"\"的工单已审批通过，请登录OA或基层结束工单！";
+				HttpSendMessageUtil.sendMessage(phone, content);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	 public String formatBlankValueToNull(String val){
 		   if(val==null)  return null ;
