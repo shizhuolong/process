@@ -37,12 +37,13 @@
 <script type="text/javascript"
 	src="<%=path%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript"
-	src="<%=path%>/portal/order2i2c/js/out_call_list.js?v=2"></script>
+	src="<%=path%>/portal/order2i2c/js/out_call_list.js?v=3"></script>
 </head>
 <body style="overflow-x: auto; margin: 5px; margin-top: 0;">
 	<input type="hidden" id="ctx" value="<%=path%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
 	<input type="hidden" id="code" value="<%=org.getCode()%>">
+	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
 	<input type="hidden" id="userId" value="<%=user.getId()%>">
 	<div class="search-div">
 		<table style="margin: 0px 0; border: none; width: 100%;font-size:100%;">
