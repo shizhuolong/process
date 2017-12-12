@@ -2,11 +2,11 @@ $(function(){
 	var maxDate=getMaxDate("PMRT.TB_MRT_BUS_HALL_INCOME_MON");
 	$("#startDate").val(maxDate);
 	$("#endDate").val(maxDate);
-	var title=[["营业厅开帐收入月报表","","","","","","","","","","","","","","","","","","","",""],
-	           ["州市","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","合计","环比","同比","定比上季度月均","全渠道收入","占全渠道份额","份额环比"],
-	           ["","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","",""]];
+	var title=[["营业厅开帐收入月报表","","","","","","","","","","","","","","","","","","","","","",""],
+	           ["州市","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","其中2I2C","","合计","环比","同比","定比上季度月均","全渠道收入","占全渠道份额","份额环比"],
+	           ["","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","",""]];
     
-	var field=["HQ_CHAN_CODE","T_TYPE","OPERATE_TYPE","THIS_YW_SR","HB_YW","THIS_4G_SR","HB_4G","NETW_SR","HB_NETW","THIS_GWKD_SR","HB_GWKD","THIS_ZHWJ_SR","HB_ZHWJ","ALL_SR","HB_ALL","TB_ALL","DB_ALL","ALL1_SR","ALL_CHANL_SR","HB_ALL_CHANL"];
+	var field=["HQ_CHAN_CODE","T_TYPE","OPERATE_TYPE","THIS_YW_SR","HB_YW","THIS_4G_SR","HB_4G","NETW_SR","HB_NETW","THIS_GWKD_SR","HB_GWKD","THIS_ZHWJ_SR","HB_ZHWJ","THIS_2I2C_SR","HB_2I2C","ALL_SR","HB_ALL","TB_ALL","DB_ALL","ALL1_SR","ALL_CHANL_SR","HB_ALL_CHANL"];
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -127,6 +127,15 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"       PODS.GET_RADIX_POINT(                                                                       "+
 			"          CASE WHEN T1.THIS_ZHWJ_SR<>0 THEN (T.THIS_ZHWJ_SR-T1.THIS_ZHWJ_SR)*100/T1.THIS_ZHWJ_SR   "+
 			"               ELSE 0 END ||'%',2) HB_ZHWJ,                                                        "+
+			"T.THIS_2I2C_SR,                                                                            "+
+			"       PODS.GET_RADIX_POINT(CASE                                                           "+
+			"                              WHEN T1.THIS_2I2C_SR <> 0 THEN                               "+
+			"                               (T.THIS_2I2C_SR - T1.THIS_2I2C_SR) * 100 / T1.THIS_2I2C_SR  "+
+			"                              ELSE                                                         "+
+			"                               0                                                           "+
+			"                            END || '%',                                                    "+
+			"                            2) HB_2I2C,                                                    "+			
+			
 			"       T.ALL_SR,                                                                                   "+
 			"       PODS.GET_RADIX_POINT(                                                                       "+
 			"          CASE WHEN T1.ALL_SR<>0 THEN (T.ALL_SR-T1.ALL_SR)*100/T1.ALL_SR                           "+
@@ -155,7 +164,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                         "+
 			"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                         "+
 			"           ,SUM(ALL_SR) ALL_SR                                                                     "+
-			"                                                                                                   "+
+			"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR                                                                                        "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
 			"      WHERE DEAL_DATE="+startDate+"                                                                 "+
 			    where+
@@ -181,6 +190,8 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                         "+
 			"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                         "+
 			"           ,SUM(ALL_SR) ALL_SR                                                                     "+
+			
+			"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 			"           ,SUM(all1_sr) all1_sr                                                                   "+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                         "+
 			"      WHERE DEAL_DATE="+getLastMonth(startDate)+"                                                   "+
@@ -225,7 +236,15 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"       PODS.GET_RADIX_POINT(                                                                      "+
 			"          CASE WHEN T1.THIS_ZHWJ_SR<>0 THEN (T.THIS_ZHWJ_SR-T1.THIS_ZHWJ_SR)*100/T1.THIS_ZHWJ_SR  "+
 			"               ELSE 0 END ||'%',2) HB_ZHWJ,                                                       "+
-			"                                                                                                  "+
+
+			"T.THIS_2I2C_SR,                                                                            "+
+			"       PODS.GET_RADIX_POINT(CASE                                                           "+
+			"                              WHEN T1.THIS_2I2C_SR <> 0 THEN                               "+
+			"                               (T.THIS_2I2C_SR - T1.THIS_2I2C_SR) * 100 / T1.THIS_2I2C_SR  "+
+			"                              ELSE                                                         "+
+			"                               0                                                           "+
+			"                            END || '%',                                                    "+
+			"                            2) HB_2I2C,                                                    "+			
 			"       T.ALL_SR,                                                                                  "+
 			"       PODS.GET_RADIX_POINT(                                                                      "+
 			"          CASE WHEN T1.ALL_SR<>0 THEN (T.ALL_SR-T1.ALL_SR)*100/T1.ALL_SR                          "+
@@ -254,6 +273,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                        "+
 			"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                        "+
 			"           ,SUM(ALL_SR) ALL_SR                                                                    "+
+			"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
 			"      WHERE DEAL_DATE="+startDate+"                                                                "+
 			    where+
@@ -279,6 +299,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"           ,SUM(THIS_GWKD_SR) THIS_GWKD_SR                                                        "+
 			"           ,SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR                                                        "+
 			"           ,SUM(ALL_SR) ALL_SR                                                                    "+
+			"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 			"      FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                        "+
 			"      WHERE DEAL_DATE="+getLastMonth(startDate)+"                                                  "+
 			    where+
@@ -347,6 +368,15 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"                               0                                                           "+
 			"                            END || '%',                                                    "+
 			"                            2) HB_ZHWJ,                                                    "+
+			
+			"T.THIS_2I2C_SR,                                                                            "+
+			"       PODS.GET_RADIX_POINT(CASE                                                           "+
+			"                              WHEN T1.THIS_2I2C_SR <> 0 THEN                               "+
+			"                               (T.THIS_2I2C_SR - T1.THIS_2I2C_SR) * 100 / T1.THIS_2I2C_SR  "+
+			"                              ELSE                                                         "+
+			"                               0                                                           "+
+			"                            END || '%',                                                    "+
+			"                            2) HB_2I2C,                                                    "+			
 			"       T.ALL_SR,                                                                           "+
 			"       PODS.GET_RADIX_POINT(CASE                                                           "+
 			"                              WHEN T1.ALL_SR <> 0 THEN                                     "+
@@ -402,6 +432,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"               SUM(THIS_GWKD_SR) THIS_GWKD_SR,                                             "+
 			"               SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                             "+
 			"               SUM(ALL_SR) ALL_SR                                                          "+
+			"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 			"          FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                             "+
 			"         WHERE DEAL_DATE = "+startDate+"                                                   "+
 			                where+
@@ -434,6 +465,7 @@ function getSumSql(levelSql,startDate,endDate,where,where1) {
 			"                    SUM(THIS_GWKD_SR) THIS_GWKD_SR,                                        "+
 			"                    SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                        "+
 			"                    SUM(ALL_SR) ALL_SR                                                     "+
+			"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 			"               FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                        "+
 			"              WHERE DEAL_DATE = "+getLastMonth(startDate)+"                                "+
 			                        where+
@@ -499,6 +531,15 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"                               0                                                                                                                                "+
 		"                            END || '%',                                                                                                                         "+
 		"                            2) HB_ZHWJ,                                                                                                                         "+
+		
+		"T.THIS_2I2C_SR,                                                                            "+
+		"       PODS.GET_RADIX_POINT(CASE                                                           "+
+		"                              WHEN T1.THIS_2I2C_SR <> 0 THEN                               "+
+		"                               (T.THIS_2I2C_SR - T1.THIS_2I2C_SR) * 100 / T1.THIS_2I2C_SR  "+
+		"                              ELSE                                                         "+
+		"                               0                                                           "+
+		"                            END || '%',                                                    "+
+		"                            2) HB_2I2C,                                                    "+			
 		"       T.ALL_SR,                                                                                                                                                "+
 		"       PODS.GET_RADIX_POINT(CASE                                                                                                                                "+
 		"                              WHEN T1.ALL_SR <> 0 THEN                                                                                                          "+
@@ -542,6 +583,8 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"               SUM(THIS_GWKD_SR) THIS_GWKD_SR,                                                                                                                  "+
 		"               SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                                                                                                  "+
 		"               SUM(ALL_SR) ALL_SR                                                                                                                               "+
+		"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
+		
 		"          FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                                                                                  "+
 		"         WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate+"                                                                                                  "+
 		                   where+
@@ -569,6 +612,7 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"                    SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                                                                                             "+
 		"                    SUM(ALL_SR) ALL_SR,                                                                                                                         "+
 		"                    SUM(all1_sr) all1_sr                                                                                                                        "+
+		"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 		"               FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                                                                             "+
 		"              WHERE DEAL_DATE  BETWEEN TO_CHAR(ADD_MONTHS(TO_DATE('"+startDate+"','YYYYMM'),MONTHS_BETWEEN(TO_DATE('"+startDate+"','YYYYMM'),TO_DATE('"+endDate+"','YYYYMM'))-1),'YYYYMM')"+
 		"                                AND TO_CHAR(ADD_MONTHS(TO_DATE('"+startDate+"','YYYYMM'),-1),'YYYYMM')                                                          "+
@@ -622,6 +666,14 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"                               0                                                                                                                                  "+
 		"                            END || '%',                                                                                                                           "+
 		"                            2) HB_ZHWJ,                                                                                                                           "+
+		"T.THIS_2I2C_SR,                                                                            "+
+		"       PODS.GET_RADIX_POINT(CASE                                                           "+
+		"                              WHEN T1.THIS_2I2C_SR <> 0 THEN                               "+
+		"                               (T.THIS_2I2C_SR - T1.THIS_2I2C_SR) * 100 / T1.THIS_2I2C_SR  "+
+		"                              ELSE                                                         "+
+		"                               0                                                           "+
+		"                            END || '%',                                                    "+
+		"                            2) HB_2I2C,                                                    "+			
 		"       T.ALL_SR,                                                                                                                                                  "+
 		"       PODS.GET_RADIX_POINT(CASE                                                                                                                                  "+
 		"                              WHEN T1.ALL_SR <> 0 THEN                                                                                                            "+
@@ -665,6 +717,7 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"               SUM(THIS_GWKD_SR) THIS_GWKD_SR,                                                                                                                    "+
 		"               SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                                                                                                    "+
 		"               SUM(ALL_SR) ALL_SR                                                                                                                                 "+
+		"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 		"          FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                                                                                    "+
 		"         WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate+"                                                                                                    "+
 		                  where+
@@ -692,6 +745,7 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"                    SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                                                                                               "+
 		"                    SUM(ALL_SR) ALL_SR,                                                                                                                           "+
 		"                    SUM(all1_sr) all1_sr                                                                                                                          "+
+		"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 		"               FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                                                                               "+
 		"              WHERE DEAL_DATE  BETWEEN TO_CHAR(ADD_MONTHS(TO_DATE('"+startDate+"','YYYYMM'),MONTHS_BETWEEN(TO_DATE('"+startDate+"','YYYYMM'),TO_DATE('"+endDate+"','YYYYMM'))-1),'YYYYMM') "+
 		"                                AND TO_CHAR(ADD_MONTHS(TO_DATE('"+startDate+"','YYYYMM'),-1),'YYYYMM')                                                            "+
@@ -749,6 +803,15 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"                               0                                                                                                                                    "+
 		"                            END || '%',                                                                                                                             "+
 		"                            2) HB_ZHWJ,                                                                                                                             "+
+		
+		"T.THIS_2I2C_SR,                                                                            "+
+		"       PODS.GET_RADIX_POINT(CASE                                                           "+
+		"                              WHEN T1.THIS_2I2C_SR <> 0 THEN                               "+
+		"                               (T.THIS_2I2C_SR - T1.THIS_2I2C_SR) * 100 / T1.THIS_2I2C_SR  "+
+		"                              ELSE                                                         "+
+		"                               0                                                           "+
+		"                            END || '%',                                                    "+
+		"                            2) HB_2I2C,                                                    "+			
 		"       T.ALL_SR,                                                                                                                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                                                                                                    "+
 		"                              WHEN T1.ALL_SR <> 0 THEN                                                                                                              "+
@@ -797,6 +860,7 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"               SUM(THIS_GWKD_SR) THIS_GWKD_SR,                                                                                                                      "+
 		"               SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                                                                                                      "+
 		"               SUM(ALL_SR) ALL_SR                                                                                                                                   "+
+		"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 		"          FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON T                                                                                                                    "+
 		"         WHERE DEAL_DATE BETWEEN "+startDate+" AND "+endDate+"                                                                                                      "+
 		             where+
@@ -829,6 +893,7 @@ function getDifferentDateSql(levelSql,startDate,endDate,where,where1){
 		"                    SUM(THIS_ZHWJ_SR) THIS_ZHWJ_SR,                                                                                                                 "+
 		"                    SUM(ALL_SR) ALL_SR,                                                                                                                             "+
 		"                    SUM(all1_sr) all1_sr                                                                                                                            "+
+		"           ,SUM(THIS_2I2C_SR) THIS_2I2C_SR"+
 		"               FROM PMRT.TB_MRT_BUS_HALL_INCOME_MON                                                                                                                 "+
 		"              WHERE DEAL_DATE  BETWEEN TO_CHAR(ADD_MONTHS(TO_DATE('"+startDate+"','YYYYMM'),MONTHS_BETWEEN(TO_DATE('"+startDate+"','YYYYMM'),TO_DATE('"+endDate+"','YYYYMM'))-1),'YYYYMM')   "+
 		"                                AND TO_CHAR(ADD_MONTHS(TO_DATE('"+startDate+"','YYYYMM'),-1),'YYYYMM')                                                              "+
@@ -879,9 +944,9 @@ function downsAll() {
 	}
 	
 	var showtext = '营业厅开账收入月报表-' + startDate;
-	var title=[["营业厅开帐收入月报表","","","","","","","","","","","","","","","","","","","","",""],
-	           ["州市","营业厅","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","合计","环比","同比","定比上季度月均","全渠道收入","占全渠道份额","份额环比"],
-	           ["","","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","","",""]];
+	var title=[["营业厅开帐收入月报表","","","","","","","","","","","","","","","","","","","","","","",""],
+	           ["州市","营业厅","渠道编码","厅类型","经营模式（自营/柜台外包/他营）","移动网收入","","其中4G收入","","固网收入","","其中宽带收 入","","其中智慧沃家收入","","其中2I2C","","合计","环比","同比","定比上季度月均","全渠道收入","占全渠道份额","份额环比"],
+	           ["","","","","","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","环比","当月","","","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 

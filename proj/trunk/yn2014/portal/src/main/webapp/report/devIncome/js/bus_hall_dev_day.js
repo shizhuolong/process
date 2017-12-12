@@ -19,14 +19,14 @@ function search(){
 	startDate=$("#startDate").val();
 	endDate=$("#endDate").val();
 	if(startDate==endDate){
-		title=[["组织架构","经营模式","厅类型","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
-		       ["","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
-		field=["OPERATE_TYPE","CHNL_TYPE","THIS_YW_NUM","THIS_YW_NUM1","HB1_THIS_YW","THIS_NET_NUM","THIS_NET_NUM1","HB1_THIS_NET","THIS_YWGW_NUM","THIS_YWGW_NUM1","HB1_THIS_YWGW","THIS_ZHWJ_NUM","THIS_ZHWJ_NUM1","HB1_THIS_ZHWJ","THIS_QC_NUM","THIS_QC_NUM1","ZB_QC"];
+		title=[["组织架构","经营模式","厅类型","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","","","其中2I2C","",""],
+		       ["","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比","当日","本月累计","累计环比"]];
+		field=["OPERATE_TYPE","CHNL_TYPE","THIS_YW_NUM","THIS_YW_NUM1","HB1_THIS_YW","THIS_NET_NUM","THIS_NET_NUM1","HB1_THIS_NET","THIS_YWGW_NUM","THIS_YWGW_NUM1","HB1_THIS_YWGW","THIS_ZHWJ_NUM","THIS_ZHWJ_NUM1","HB1_THIS_ZHWJ","THIS_QC_NUM","THIS_QC_NUM1","ZB_QC","THIS_2I2C_NUM","THIS_2I2C_NUM1","HB1_THIS_2I2C"];
 	    sumSql=getSumSql();
 	}else{
-		title=[["组织架构","经营模式","厅类型","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
-		       ["","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
-		field=["OPERATE_TYPE","CHNL_TYPE","THIS_YW_NUM","HB1_THIS_YW","THIS_NET_NUM","HB1_THIS_NET","THIS_YWGW_NUM","HB1_THIS_YWGW","THIS_ZHWJ_NUM","HB1_THIS_ZHWJ","THIS_QC_NUM","ZB_QC"];
+		title=[["组织架构","经营模式","厅类型","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量","","其中2I2C",""],
+		       ["","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比","本月累计","累计环比"]];
+		field=["OPERATE_TYPE","CHNL_TYPE","THIS_YW_NUM","HB1_THIS_YW","THIS_NET_NUM","HB1_THIS_NET","THIS_YWGW_NUM","HB1_THIS_YWGW","THIS_ZHWJ_NUM","HB1_THIS_ZHWJ","THIS_QC_NUM","ZB_QC","THIS_2I2C_NUM","HB1_THIS_2I2C"];
 		sumSql=getSumSql1();
 	}
 	var report=new LchReport({
@@ -159,6 +159,17 @@ function getSumSql() {
 		"                               0                                                                               "+	//
 		"                            END || '%',                                                                        "+	//
 		"                            2) ZB_QC                                                                           "+	//
+		
+		 ",SUM(NVL(T1.THIS_2I2C_NUM, 0)) THIS_2I2C_NUM,                                                            "+
+		 "      SUM(NVL(T1.THIS_2I2C_NUM1, 0)) THIS_2I2C_NUM1,                                                    "+
+		 "      PODS.GET_RADIX_POINT(CASE                                                                         "+
+		 "                             WHEN SUM(NVL(T1.LAST_2I2C_NUM1, 0)) <> 0 THEN                              "+
+		 "                              (SUM(NVL(T1.THIS_2I2C_NUM1, 0)) - SUM(NVL(T1.LAST_2I2C_NUM1, 0))) * 100 / "+
+		 "                              SUM(NVL(T1.LAST_2I2C_NUM1, 0))                                            "+
+		 "                             ELSE                                                                       "+
+		 "                              0                                                                         "+
+		 "                           END || '%',                                                                  "+
+		 "                           2) HB1_THIS_2I2C                                                             "+
 		"  FROM PMRT.TB_MRT_BUS_HALL_DEV_DAY T1                                                                         "+	//
 		" WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                  ";	//
 
@@ -206,6 +217,16 @@ function getSumSql1() {
 		"                      ELSE                                                                                                 "+		//
 		"                       0                                                                                                   "+		//
 		"                    END || '%',2)    ZB_QC                                                                                 "+		//--七彩流量日租卡环比
+		
+		",SUM(NVL(T1.THIS_2I2C_NUM, 0)) THIS_2I2C_NUM,                                                            "+
+		"         PODS.GET_RADIX_POINT(CASE                                                                      "+
+		"                              WHEN SUM(NVL(T1.LAST_2I2C_NUM, 0)) <> 0 THEN                              "+
+		"                               (SUM(NVL(T1.THIS_2I2C_NUM, 0)) - SUM(NVL(T1.LAST_2I2C_NUM, 0))) * 100 /  "+
+		"                               SUM(NVL(T1.LAST_2I2C_NUM, 0))                                            "+
+		"                              ELSE                                                                      "+
+		"                               0                                                                        "+
+		"                            END || '%',                                                                 "+
+		"                            2) HB1_THIS_2I2C                                                            "+  
 		"  FROM PMRT.TB_MRT_BUS_HALL_DEV_DAY T1                                                                                     "+		//
 		" WHERE T1.DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                              ";		//
 
@@ -240,11 +261,11 @@ function downsAll() {
 	var sql = 'SELECT' + preField + sumSql+where+groupBy+orderBy;
 	var showtext = '营业厅发展报表' + startDate+"-"+endDate;
 	if(startDate==endDate){
-		title=[["地市","营业厅","厅类型","渠道编码","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","",""],
-		       ["","","","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比"]];
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","移动网发展","","","固网发展","","","移动网+固网发展","","","其中智慧沃家发展","","","其中七彩流量日租卡发展量","","","其中2I2C","",""],
+		       ["","","","","","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","累计环比","当日","本月累计","占发展比","当日","本月累计","累计环比"]];
 	}else{
-		title=[["地市","营业厅","厅类型","渠道编码","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量",""],
-		       ["","","","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比"]];
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","移动网发展","","固网发展","","移动网+固网发展","","其中智慧沃家发展","","其中七彩流量日租卡发展量","","其中2I2",""],
+		       ["","","","","","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","累计环比","本月累计","占发展比","本月累计","累计环比"]];
 	}
 	downloadExcel(sql,title,showtext);
 }
