@@ -188,9 +188,8 @@ function getSql(where,level){
 		"                      GROUP_ID_1,                                                                                 "+
 		"                      GROUP_ID_1_NAME,                                                                            "+
 		"                      UNIT_iD,                                                                                    "+
-		"                      ROW_NUMBER()OVER(PARTITION BY UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,"+
-		"                      YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,GROUP_ID_1,"+
-		"                      GROUP_ID_1_NAME,UNIT_ID ORDER BY DEAL_DATE DESC)RN                                          "+
+		"                      ROW_NUMBER()OVER(PARTITION BY HQ_CHAN_CODE "+
+		"                       ORDER BY DEAL_DATE DESC)RN                "+
 		"             FROM PMRT.TAB_MRT_YYT_ABILITY_MON                                                                    "+
 		                where1+
 		"             )WHERE RN=1                                                                                          "+
@@ -248,9 +247,8 @@ function getSql(where,level){
 		"                      GROUP_ID_1,                                                                                 "+
 		"                      GROUP_ID_1_NAME,                                                                            "+
 		"                      UNIT_iD,                                                                                    "+
-		"                      ROW_NUMBER()OVER(PARTITION BY UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME,"+
-		"                      YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,GROUP_ID_1,"+
-		"                      GROUP_ID_1_NAME,UNIT_ID ORDER BY DEAL_DATE DESC)RN                                          "+
+		"                      ROW_NUMBER()OVER(PARTITION BY HQ_CHAN_CODE "+
+		"                       ORDER BY DEAL_DATE DESC)RN                "+
 		"             FROM PMRT.TAB_MRT_YYT_ABILITY_MON                                                                    "+
 		                where1+
 		"             )WHERE RN=1                                                                                          "+
@@ -310,9 +308,8 @@ function getSql(where,level){
 		"                      GROUP_ID_1,                                                                                   "+
 		"                      GROUP_ID_1_NAME,                                                                              "+
 		"                      UNIT_iD,                                                                                      "+
-		"                      ROW_NUMBER()OVER(PARTITION BY UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME, "+
-		"                      YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,GROUP_ID_1,  "+
-		"                      GROUP_ID_1_NAME,UNIT_ID ORDER BY DEAL_DATE DESC)RN                                            "+
+		"                      ROW_NUMBER()OVER(PARTITION BY HQ_CHAN_CODE "+
+		"                       ORDER BY DEAL_DATE DESC)RN                "+
 		"             FROM PMRT.TAB_MRT_YYT_ABILITY_MON                                                                      "+
 		    where1+
 		"             )WHERE RN=1                                                                                            "+
@@ -372,9 +369,8 @@ function getSql(where,level){
 		"                      GROUP_ID_1,                                                                                   "+
 		"                      GROUP_ID_1_NAME,                                                                              "+
 		"                      UNIT_iD,                                                                                      "+
-		"                      ROW_NUMBER()OVER(PARTITION BY UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME, "+
-		"                      YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,GROUP_ID_1,  "+
-		"                      GROUP_ID_1_NAME,UNIT_ID ORDER BY DEAL_DATE DESC)RN                                            "+
+		"                      ROW_NUMBER()OVER(PARTITION BY HQ_CHAN_CODE "+
+		"                       ORDER BY DEAL_DATE DESC)RN                "+
 		"             FROM PMRT.TAB_MRT_YYT_ABILITY_MON                                                                      "+
 		              where1+
 		"             )WHERE RN=1                                                                                            "+
@@ -452,9 +448,8 @@ function getDownSql(where){
 	"                      GROUP_ID_1,                                                                                   "+
 	"                      GROUP_ID_1_NAME,                                                                              "+
 	"                      UNIT_iD,                                                                                      "+
-	"                      ROW_NUMBER()OVER(PARTITION BY UNIT_NAME,YYT_CODE,YYT_NAME,YYT_ADDR,HQ_CHAN_CODE,HQ_CHAN_NAME, "+
-	"                      YYT_CREATE_TIME,BUSI_BEGIN_TIME,YYT_TYPE,BUSI_MODE,THIRD_ATTRI,BUSI_NAME,RENT_NO,GROUP_ID_1,  "+
-	"                      GROUP_ID_1_NAME,UNIT_ID ORDER BY DEAL_DATE DESC)RN                                            "+
+	"                      ROW_NUMBER()OVER(PARTITION BY HQ_CHAN_CODE "+
+	"                       ORDER BY DEAL_DATE DESC)RN                "+
 	"             FROM PMRT.TAB_MRT_YYT_ABILITY_MON                                                                      "+
 	              where1+
 	"             )WHERE RN=1                                                                                            "+
