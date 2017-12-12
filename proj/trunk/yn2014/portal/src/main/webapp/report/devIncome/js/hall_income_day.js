@@ -19,15 +19,15 @@ function search(){
 	startDate=$("#startDate").val();
 	endDate=$("#endDate").val();
 	if(startDate==endDate){
-		title=[["组织架构","经营模式","厅类型","全业务（移动网+宽带）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","",""],
-		       ["","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%"]
+		title=[["组织架构","经营模式","厅类型","全业务（移动网+宽带）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","","","2I2C（万元）","","",""],
+		       ["","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比"]
 			];
-		field=["OPERATE_TYPE","CHNL_TYPE","ALL_SR","ALL_SR1","ALL_HBJZ","ALL_LJHB","YWGW_01","THIS_YW_SR","THIS_YW_SR1","YW_HBJZ","YW_LJHB","YW_01","THIS_NET_SR","THIS_NET_SR1","NET_HBJZ","NET_LJHB","NET_01","THIS_ZHWJ_SR","THIS_ZHWJ_SR1","ZHWJ_HBJZ","ZHWJ_LJHB","ZHWJ_01"];
+		field=["OPERATE_TYPE","CHNL_TYPE","ALL_SR","ALL_SR1","ALL_HBJZ","ALL_LJHB","YWGW_01","THIS_YW_SR","THIS_YW_SR1","YW_HBJZ","YW_LJHB","YW_01","THIS_NET_SR","THIS_NET_SR1","NET_HBJZ","NET_LJHB","NET_01","THIS_ZHWJ_SR","THIS_ZHWJ_SR1","ZHWJ_HBJZ","ZHWJ_LJHB","ZHWJ_01","THIS_2I2C_SR","THIS_2I2C_SR1","HBJZ_2I2C","LJHB_2I2C"];
 	    sumSql=getSumSql();
 	}else{
-		title=[["组织架构","经营模式","厅类型","全业务（移动网+宽带）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
-		       ["","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
-		field=["OPERATE_TYPE","CHNL_TYPE","ALL_SR","ALL_LJHB","THIS_YW_SR","YW_LJHB","THIS_NET_SR","NET_LJHB","THIS_ZHWJ_SR","ZHWJ_LJHB"];
+		title=[["组织架构","经营模式","厅类型","全业务（移动网+宽带）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）","","2I2C（万元）",""],
+		       ["","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
+		field=["OPERATE_TYPE","CHNL_TYPE","ALL_SR","ALL_LJHB","THIS_YW_SR","YW_LJHB","THIS_NET_SR","NET_LJHB","THIS_ZHWJ_SR","ZHWJ_LJHB","THIS_2I2C_SR","HB_2I2C"];
 		sumSql=getSumSql1();
 	}
 	var report=new LchReport({
@@ -145,6 +145,18 @@ function getSumSql() {
     	"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(ZHWJ_01,0))<>0                                                           "+	    //
     	"                                 THEN SUM(NVL(THIS_ZHWJ_SR1,0))*100/SUM(NVL(ZHWJ_01,0))                                "+	    //
     	"                                 ELSE 0 END || '%' ,2)       ZHWJ_01                     								"+		//--定比1月                                                                   
+    	
+    	",SUM(NVL(THIS_2I2C_SR, 0)) THIS_2I2C_SR,                                                         "+
+    	"      SUM(NVL(THIS_2I2C_SR1, 0)) THIS_2I2C_SR1,                                                 "+
+    	"      SUM(NVL(THIS_2I2C_SR1, 0)) - SUM(NVL(LAST_2I2C_SR1, 0)) HBJZ_2I2C,                        "+
+    	"      PODS.GET_RADIX_POINT(CASE                                                                 "+
+    	"                             WHEN SUM(NVL(LAST_2I2C_SR1, 0)) <> 0 THEN                          "+
+    	"                              (SUM(NVL(THIS_2I2C_SR1, 0)) - SUM(NVL(LAST_2I2C_SR1, 0))) * 100 / "+
+    	"                              SUM(NVL(LAST_2I2C_SR1, 0))                                        "+
+    	"                             ELSE                                                               "+
+    	"                              0                                                                 "+
+    	"                           END || '%',                                                          "+
+    	"                           2) LJHB_2I2C                                                         "+
     	"  FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY                                                                               "+	
     	" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
 	return s;
@@ -168,6 +180,16 @@ function getSumSql1() {
     	"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(LAST_ZHWJ_SR,0))<>0	                                                    "+	
     	"                                 THEN (SUM(NVL(THIS_ZHWJ_SR,0))-SUM(NVL(LAST_ZHWJ_SR,0)))*100/SUM(NVL(LAST_ZHWJ_SR,0))	"+	 
     	"                                 ELSE 0 END|| '%',2)     ZHWJ_LJHB                                                     "+		//--累计环比 
+    	
+    	",SUM(NVL(THIS_2I2C_SR, 0)) THIS_2I2C_SR,                                                        "+
+    	"PODS.GET_RADIX_POINT(CASE                                                                      "+
+    	"                              WHEN SUM(NVL(LAST_2I2C_SR, 0)) <> 0 THEN                         "+
+    	"                               (SUM(NVL(THIS_2I2C_SR, 0)) - SUM(NVL(LAST_2I2C_SR, 0))) * 100 / "+
+    	"                               SUM(NVL(LAST_2I2C_SR, 0))                                       "+
+    	"                              ELSE                                                             "+
+    	"                               0                                                               "+
+    	"                            END || '%',                                                        "+
+    	"                            2) HB_2I2C                                                         "+
     	"  FROM PMRT.TB_MRT_BUS_HALL_INCOME_DAY 	                                                                            "+	
     	" WHERE DEAL_DATE BETWEEN '"+startDate+"' AND '"+endDate+"'                                                          ";
 	return s;
@@ -201,12 +223,12 @@ function downsAll() {
 	var sql = 'SELECT' + preField + sumSql+where+groupBy+orderBy;
 	var showtext = '营业厅收入报表' + startDate+"-"+endDate;
 	if(startDate==endDate){
-		title=[["地市","营业厅","厅类型","渠道编码","经营模式","全业务（移动网+宽带）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","",""],
-		       ["","","","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%"]
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","全业务（移动网+宽带）","","","","","其中移动网收入","","","","","其中固网收入","","","","","智慧沃家（万元）","","","","","2I2C（万元）","","",""],
+		       ["","","","","","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比","定比1月%","当日","本月累计","环比净增","环比"]
 			];
 	}else{
-		title=[["地市","营业厅","厅类型","渠道编码","经营模式","全业务（移动网+宽带）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）",""],
-		       ["","","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","","","","","","","","","","","",""]];
+		title=[["地市","营业厅","厅类型","渠道编码","经营模式","全业务（移动网+宽带）","","其中移动网收入","","其中固网收入","","智慧沃家（万元）","","2I2C（万元）",""],
+		       ["","","","","","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比","累计","累计环比"]];
 	}
 	downloadExcel(sql,title,showtext);
 }
