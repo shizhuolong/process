@@ -42,14 +42,16 @@ $(document).ready(function(){
         				navindex = "3";
         			}else if(txt == "统计分析") {
         				navindex = "4";
-        			}else if(txt == "负面清单") {
+        			}else if(txt == "业务专题") {
         				navindex = "5";
-        			}else if(txt == "经营管控") {
+        			}else if(txt == "负面清单") {
         				navindex = "6";
-        			}else if(txt == "资源管理") {
+        			}else if(txt == "经营管控") {
         				navindex = "7";
-        			}else if(txt == "系统管理") {
+        			}else if(txt == "资源管理") {
         				navindex = "8";
+        			}else if(txt == "系统管理") {
+        				navindex = "9";
         			}else if(txt == "预警监控") {
         				navindex = "9";
         			}
