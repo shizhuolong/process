@@ -44,13 +44,13 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				var parentId=$tr.attr("parentId");
-				if(orgLevel==2){//省进去点击市
+				if(orgLevel==2){
 					where+=" AND GROUP_ID_0='"+code+"'";
-				}else if(orgLevel==3){//点击市
+				}else if(orgLevel==3){
 					where+=" AND GROUP_ID_1='"+code+"'";
-				}else if(orgLevel==4){//点击市
+				}else if(orgLevel==4){
 					where+=" AND UNIT_ID='"+code+"'";
-				}else if(orgLevel==5){//点击市
+				}else if(orgLevel==5){
 					where+=" AND HALL_CODE='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
