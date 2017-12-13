@@ -324,7 +324,7 @@ $(function(){
 				if(orgLevel==2){//点击市
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
-					where=' where t.GROUP_ID_1=\''+code+"\' ";
+					where=' where t.GROUP_ID_1='+code+" ";
 				}else if(orgLevel==3){//点击营服中心
 					preField=" t.AGENT_M_USERID ROW_ID,t.AGENT_M_NAME||'('|| case t.PER_TYPE when '1' then '客户经理' when '2' then '渠道经理' else '小区经理' end ||')' ROW_NAME,t.PER_TYPE ";
 					groupBy=' group by t.AGENT_M_USERID,t.AGENT_M_NAME,t.PER_TYPE ';
@@ -348,16 +348,16 @@ $(function(){
 				if(orgLevel==1){//省
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where t.GROUP_ID_0=\''+code+"\' ";
+					where=' where t.GROUP_ID_0='+code+" ";
 					orgLevel=2;
 					
 					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.VIEW_MRT_TARGET_ORIGINAL_MON t ';
-					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  and  t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
+					provinceSql+=' where t.GROUP_ID_0='+code+'  and  t.DEAL_DATE >= '+startDate+' AND t.DEAL_DATE <= '+endDate;
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where t.GROUP_ID_1=\''+code+"\' ";
+					where=' where t.GROUP_ID_1='+code+" ";
 				}else if(orgLevel==3){//营服中心
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
@@ -374,7 +374,7 @@ $(function(){
 			
 			
 			if(where!=''){
-				where+=' AND t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
+				where+=' AND t.DEAL_DATE >= '+startDate+' AND t.DEAL_DATE <= '+endDate;
 			}
 			if(where!=''){
 				sql+=where;
@@ -603,9 +603,9 @@ function downsAll() {
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
-		where += " AND t.GROUP_ID_0='" + code + "' ";
+		where += " AND t.GROUP_ID_0=" + code + " ";
 	} else if (orgLevel == 2) {//市
-		where += " AND t.GROUP_ID_1='" + code + "' ";
+		where += " AND t.GROUP_ID_1=" + code + " ";
 	} else if (orgLevel == 3) {//营服中心
 		where=" AND t.UNIT_ID IN("+_unit_relation(code)+") ";
 	} else if (orgLevel >= 4) {//
