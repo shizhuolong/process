@@ -142,7 +142,7 @@ var nowData = [];
 					+ startDate + "' and '"+endDate+"' and t.unit_id='" + unitId
 					+ "' and t.per_type='" + agentType
 					+ "' and  t.AGENT_M_USERID='" + agentId + "' ";
-		} else {
+		}else {
 			sql += "  from PMRT.TAB_MRT_TARGET_HQ_MON t where t.deal_date between '"
 				    + startDate + "' and '"+endDate+ "' and t.unit_id='" + unitId
 					+ "' and t.per_type='" + agentType
