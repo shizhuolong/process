@@ -333,7 +333,7 @@ $(function(){
 				if(orgLevel==2){//点击市
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
-					where=' where t.GROUP_ID_1=\''+code+"\' ";
+					where=' where t.GROUP_ID_1='+code+" ";
 				}else if(orgLevel==3){//点击营服中心
 					preField=" t.AGENT_M_USERID ROW_ID,t.AGENT_M_NAME||'('|| case t.PER_TYPE when '1' then '客户经理' when '2' then '渠道经理' else '小区经理' end ||')' ROW_NAME,t.PER_TYPE ";
 					groupBy=' group by t.AGENT_M_USERID,t.AGENT_M_NAME,t.PER_TYPE ';
@@ -357,13 +357,13 @@ $(function(){
 				if(orgLevel==1){//省
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where t.GROUP_ID_0=\''+code+"\' ";
+					where=' where t.GROUP_ID_0='+code+" ";
 					orgLevel=2;
 					
 					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.TAB_MRT_TARGET_HQ_MON t ';
-					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  and  t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
+					provinceSql+=' where t.GROUP_ID_0='+code+'  and  t.DEAL_DATE >= '+startDate+' AND t.DEAL_DATE <= '+endDate;
 					if(regionCode!=''){
-						provinceSql+=" AND t.GROUP_ID_1='"+regionCode+"'";
+						provinceSql+=" AND t.GROUP_ID_1="+regionCode+" ";
 					}
 					if(chnlType!=''){
 						provinceSql+=" AND t.CHANL_TYPE='"+chnlType+"'";
@@ -372,7 +372,7 @@ $(function(){
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where t.GROUP_ID_1=\''+code+"\' ";
+					where=' where t.GROUP_ID_1='+code+" ";
 				}else if(orgLevel==3){//营服中心
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
@@ -395,7 +395,7 @@ $(function(){
 				where+=" AND t.CHANL_TYPE='"+chnlType+"'";
 			}
 			if(where!=''){
-				where+=' AND t.DEAL_DATE BETWEEN '+startDate+' AND '+endDate;
+				where+=' AND t.DEAL_DATE >= '+startDate+' AND t.DEAL_DATE <= '+endDate;
 			}
 			if(where!=''){
 				sql+=where;
@@ -639,13 +639,14 @@ function getdownField(where){
 }
 
 function downsAll() {
+	$("#exportBtn").hide();
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
 	var regionCode = $("#regionCode").val();
 	var chnlType = $("#chnlType").val();
-    var where=" WHERE T.DEAL_DATE BETWEEN "+startDate+" AND "+endDate;	
+    var where=" WHERE T.DEAL_DATE >= "+startDate+" AND T.DEAL_DATE <= "+endDate;	
     if(regionCode!=''){
-		where+=" AND T.GROUP_ID_1='"+regionCode+"'";
+		where+=" AND T.GROUP_ID_1="+regionCode;
 	}
 	if(chnlType!=''){
 		where+=" AND T.CHANL_TYPE='"+chnlType+"'";
@@ -654,9 +655,9 @@ function downsAll() {
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
-		where += " AND t.GROUP_ID_0='" + code + "' ";
+		where += " AND t.GROUP_ID_0=" + code ;
 	} else if (orgLevel == 2) {//市
-		where += " AND t.GROUP_ID_1='" + code + "' ";
+		where += " AND t.GROUP_ID_1=" + code ;
 	} else if (orgLevel == 3) {//营服中心
 		where += " AND t.unit_id='" + code + "' ";
 	} else if (orgLevel >= 4) {//
@@ -670,5 +671,6 @@ function downsAll() {
 	           ["地市","营服中心","人员","类型","HR编码","渠道（小区）名称","渠道（小区）状态","渠道（小区）编码","长话王","市话王","包打王","流量王","日租卡","其他","合计","单卡","购机送费","存费送机","存费送费","本省自备机","上网卡","其他","合计","本地单卡","本地套餐合约惠机","本地套餐存费送费","全国套餐购机送费","全国套餐存费送机","全国套餐合约惠机","全国套餐存费送费","其他","合计","ADSL","LAN","EOC","FTTH","其中10M及以上","合计","","","长话王","市话王","包打王","流量王","日租卡","其他","合计","单卡","购机送费","存费送机","存费送费","本省自备机","上网卡","其他","合计","本地单卡","本地套餐合约惠机","本地套餐存费送费","全国套餐购机送费","全国套餐存费送机","全国套餐合约惠机","全国套餐存费送费","其他","合计","ADSL","LAN","EOC","FTTH","其中10M及以上","合计","长话王","市话王","包打王","流量王","日租卡","其他","合计","单卡","购机送费","存费送机","存费送费","本省自备机","上网卡","其他","合计","本地单卡","本地套餐合约惠机","本地套餐存费送费","全国套餐购机送费","全国套餐存费送机","全国套餐合约惠机","全国套餐存费送费","其他","合计","ADSL","LAN","EOC","FTTH","其中10M及以上","合计","专租线发展(不含ICT)","ICT","专租线收入(不含ICT)","ICT","","","通话分钟数","MOU","流量","户均流量","通话分钟数","MOU","流量","户均流量","通话分钟数","MOU","流 量","户均流量","2G","3G","4G","专租线(不含ICT)","ICT",""]];
 
 	downloadExcel(sql,title,showtext);
+	$("#exportBtn").show();
 }
 ////////////////////////////////////////////////////////////////////////

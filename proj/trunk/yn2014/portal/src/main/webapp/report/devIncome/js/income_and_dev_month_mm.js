@@ -171,7 +171,7 @@ $(function(){
 				if(orgLevel==2){//点击市
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
-					where=' where t.GROUP_ID_1=\''+code+"\' ";
+					where=' where t.GROUP_ID_1='+code+" ";
 				}else if(orgLevel==3){//点击营服中心
 					preField=" t.AGENT_M_USERID ROW_ID,t.AGENT_M_NAME||'('|| case t.PER_TYPE when '1' then '客户经理' when '2' then '渠道经理' else '小区经理' end ||')' ROW_NAME,t.PER_TYPE ";
 					groupBy=' group by t.AGENT_M_USERID,t.AGENT_M_NAME,t.PER_TYPE ';
@@ -195,16 +195,16 @@ $(function(){
 				if(orgLevel==1){//省
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where t.GROUP_ID_0=\''+code+"\' ";
+					where=' where t.GROUP_ID_0='+code+" ";
 					orgLevel=2;
 					
 					provinceSql=' union all select t.group_id_0 ROW_ID,\'全省合计\' ROW_NAME,'+sumSql+' from PMRT.TAB_MRT_TARGET_CH_MON t ';
-					provinceSql+=' where t.GROUP_ID_0=\''+code+'\'  and  t.DEAL_DATE='+qdate+' ';
+					provinceSql+=' where t.GROUP_ID_0='+code+'  and  t.DEAL_DATE='+qdate+' ';
 					provinceSql+=' group by t.group_id_0 ';
 				}else if(orgLevel==2){//市
 					preField=' t.group_id_1 ROW_ID,t.group_id_1_name ROW_NAME';
 					groupBy=' group by t.group_id_1,t.group_id_1_name ';
-					where=' where t.GROUP_ID_1=\''+code+"\' ";
+					where=' where t.GROUP_ID_1='+code+" ";
 				}else if(orgLevel==3){//营服中心
 					preField=' t.unit_id ROW_ID,t.unit_name ROW_NAME';
 					groupBy=' group by t.unit_id,t.unit_name ';
@@ -254,6 +254,7 @@ $(function(){
 	});
 
 	$("#searchBtn").click(function(){
+		$("#exportBtn").show();
 		report.showSubRow();
 		report.showAllCols(0);
 		$("#lch_DataBody").find("TR").each(function(){
@@ -303,6 +304,7 @@ function getdownField(){
 	return fs;
 }
 function downsAll() {
+	$("#exportBtn").hide();
 	var qdate = $.trim($("#month").val());
 	
 	var preField=' t.group_id_1_name,t.unit_name,t.agent_m_name,case t.PER_TYPE when \'1\' then \'客户经理\' when \'2\' then \'渠道经理\' else \'小区经理\' end  PER_TYPE ,t.HR_ID,t.group_id_4_name,t.state,t.HQ_CHAN_CODE,t.DEAL_DATE ';
@@ -316,9 +318,9 @@ function downsAll() {
 	var code = $("#code").val();
 	var orgLevel = $("#orgLevel").val();
 	if (orgLevel == 1) {//省
-		where = " where t.GROUP_ID_0='" + code + "' ";
+		where = " where t.GROUP_ID_0=" + code + " ";
 	} else if (orgLevel == 2) {//市
-		where = " where t.GROUP_ID_1='" + code + "' ";
+		where = " where t.GROUP_ID_1=" + code + " ";
 	} else if (orgLevel == 3) {//营服中心
 		where+=" where t.unit_id IN("+_unit_relation(code)+") ";
 	} else if (orgLevel >= 4) {//
@@ -361,5 +363,6 @@ function downsAll() {
 	            ]];
 
 	downloadExcel(sql,title,showtext);
+	
 }
 ////////////////////////////////////////////////////////////////////////
