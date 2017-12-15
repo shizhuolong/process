@@ -28,11 +28,11 @@ public class ItemSetAction extends BaseAction {
 	private ItemSetDao dao;
 	private String dealDate;
 	private String dataString;
-
+    private String index_type;
 	@ResponseBody
 	@RequestMapping(value = "/listItem")
 	public void listItem() {
-		List<Map<String, Object>> list = dao.listItem();
+		List<Map<String, Object>> list = dao.listItem(index_type);
 		List<Map<String,Object>> ids=getCheckIds();
 		for(Map<String, Object> m:ids){
 			for(Map<String, Object> l:list){
@@ -50,7 +50,7 @@ public class ItemSetAction extends BaseAction {
 		Connection conn = null;
 		PreparedStatement addpre = null;
 		PreparedStatement updatepre = null;
-		String fields = "INSERT_TIME,DEAL_DATE,GROUP_ID_1,GROUP_ID_1_NAME,INDEX_ID,INDEX_NAME,KRI_WEIGHT,MIN_PROP,MIN_VALUE,MAX_PROP,MAX_VALUE,FULL_MARKS,UPDATE_TIME,OPERATE_NAME";
+		String fields = "INDEX_TYPE,INSERT_TIME,DEAL_DATE,GROUP_ID_1,GROUP_ID_1_NAME,INDEX_ID,INDEX_NAME,KRI_WEIGHT,MIN_PROP,MIN_VALUE,MAX_PROP,MAX_VALUE,FULL_MARKS,UPDATE_TIME,OPERATE_NAME";
 		String table = "PMRT.TAB_MRT_INDEX_DEPLOY_MON";
 		try {
 			User user = UserHolder.getCurrentLoginUser();
@@ -61,7 +61,7 @@ public class ItemSetAction extends BaseAction {
 			conn = this.getCon();
 			String[] data = dataString.split(",");
 			String addSql = "INSERT INTO " + table + "(" + fields
-					+ ") VALUES(SYSDATE," + dealDate + ",'"
+					+ ") VALUES('"+index_type+"',SYSDATE," + dealDate + ",'"
 					+ group_id_1 + "','" + group_id_1_name
 					+ "',?,?,?,?,?,?,?,?,'','" + username + "')";
 			String updateSql = "UPDATE "
@@ -129,6 +129,7 @@ public class ItemSetAction extends BaseAction {
 		Map<String,Object> m=new HashMap<String,Object>();
 		m.put("group_id_1", group_id_1);
 		m.put("dealDate", dealDate);
+		m.put("index_type", index_type);
 		List<Map<String, Object>> ids = dao.getCheckIds(m);
 		return ids;
 	}
@@ -162,6 +163,7 @@ public class ItemSetAction extends BaseAction {
 			Map<String,Object> m=new HashMap<String,Object>();
 			m.put("group_id_1", group_id_1);
 			m.put("dealDate", dealDate);
+			m.put("index_type", index_type);
 			dao.updateStatus(m);
 			result.put("msg", "生成成功！");
 		} catch (Exception e) {
@@ -186,7 +188,7 @@ public class ItemSetAction extends BaseAction {
 			String updateSql = "UPDATE "+ table
 					+ " SET KRI_WEIGHT=?,KPI_SCORE=?,OPERATE_NAME='"+username+"' WHERE DEAL_DATE=" + dealDate
 					+ " AND GROUP_ID_1='" + group_id_1
-					+ "' AND HR_ID=? AND USER_CODE=2";
+					+ "' AND HR_ID=? AND USER_CODE=2 AND USER_TYPE='"+index_type+"'";
 			updatepre = conn.prepareStatement(updateSql);
 			for (int i = 0; i < data.length; i++) {
 				String[] s = data[i].split("\\|");
@@ -234,4 +236,13 @@ public class ItemSetAction extends BaseAction {
 		this.dataString = dataString;
 	}
 
+	public String getIndex_type() {
+		return index_type;
+	}
+
+	public void setIndex_type(String index_type) {
+		this.index_type = index_type;
+	}
+
+	
 }
