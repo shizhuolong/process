@@ -1,9 +1,15 @@
 var name="";
 var dealDate="";
+var mark_type="";
 $(function() {
 	if(isHavingOper()){
+		mark_type=$("#mark_type").val();
 		search();
 		$("#searchBtn").click(function(){
+			search();
+		});
+		$("#mark_type").change(function(){
+			mark_type=$(this).val();
 			search();
 		});
 	}
@@ -26,7 +32,7 @@ function search(){
 	var code=$("#code").val();
 	var lastMonth=$("#lastMonth").val();
 	var sql="SELECT * FROM PMRT.TAB_MRT_CHNL_UNIT_EVAL_MON"+
-	" WHERE USER_CODE=2 AND STATUS=1 AND DEAL_DATE="+dealDate+" AND UNIT_ID='"+code+"'";
+	" WHERE USER_CODE=2 AND USER_TYPE="+mark_type+" AND STATUS=1 AND DEAL_DATE="+dealDate+" AND UNIT_ID='"+code+"'";
 	var r=query(sql);
 	var content="";
 	if(r!=null&&r.length>0){
@@ -108,7 +114,8 @@ function save(){
         async: false,
 		data:{
 			dealDate:dealDate,
-			dataString:dataString
+			dataString:dataString,
+			index_type:mark_type
 		},
 		 success:function(data){
 			alert(data.msg);
@@ -122,7 +129,7 @@ function save(){
 
 function checkWeight(sumWeight){
 	var regionCode=$("#regionCode").val();
-	var sql="SELECT SUM(REPLACE(KRI_WEIGHT,'%')) TOTAL FROM PMRT.TAB_MRT_INDEX_DEPLOY_MON WHERE DEAL_DATE="+dealDate+" AND GROUP_ID_1='"+regionCode+"'";
+	var sql="SELECT SUM(REPLACE(KRI_WEIGHT,'%')) TOTAL FROM PMRT.TAB_MRT_INDEX_DEPLOY_MON WHERE INDEX_TYPE="+mark_type+" AND DEAL_DATE="+dealDate+" AND GROUP_ID_1='"+regionCode+"'";
     var d=query(sql);
     var total=0;
     if(d!=null&&d.length>0&&d[0]!="null"){

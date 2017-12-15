@@ -32,7 +32,7 @@ function initItemTree(){
 	var setting = {
 		async : {
 			enable : true,////启用异步加载
-			url : $("#ctx").val()+"/itemSet/item-set!listItem.action?dealDate="+dealDate+"&index_type=1",
+			url : $("#ctx").val()+"/itemSet/item-set!listItem.action?dealDate="+dealDate+"&index_type=2",
 			autoParam : ["id=id","name=name"]
 		},
 		check: {    
@@ -59,7 +59,7 @@ function search(){
 	dealDate=$("#dealDate").val();
 	var regionCode=$("#regionCode").val();
 	var lastMonth=$("#lastMonth").val();
-	var sql="SELECT * FROM PMRT.TAB_MRT_INDEX_DEPLOY_MON WHERE DEAL_DATE="+dealDate+" AND GROUP_ID_1='"+regionCode+"' AND INDEX_TYPE=1 ORDER BY INSERT_TIME";
+	var sql="SELECT * FROM PMRT.TAB_MRT_INDEX_DEPLOY_MON WHERE DEAL_DATE="+dealDate+" AND GROUP_ID_1='"+regionCode+"' AND INDEX_TYPE=2 ORDER BY INSERT_TIME";
 	var r=query(sql);
 	var content="";
 	if(r!=null&&r.length>0){
@@ -190,7 +190,7 @@ function save(){
 		data:{
 			dealDate:dealDate,
 			dataString:dataString,
-			index_type:"1"
+			index_type:"2"
 		},
 		 success:function(data){
 			alert(data.msg);
@@ -265,7 +265,7 @@ function toPoint(percent){
 //提交审批
 function mark(){
 	var regionCode=$("#regionCode").val();
-	var sql="SELECT STATUS FROM PMRT.TAB_MRT_CHNL_UNIT_EVAL_MON WHERE DEAL_DATE='"+dealDate+"' AND GROUP_ID_1='"+regionCode+"' AND STATUS=1 AND USER_TYPE=1";
+	var sql="SELECT STATUS FROM PMRT.TAB_MRT_CHNL_UNIT_EVAL_MON WHERE DEAL_DATE='"+dealDate+"' AND GROUP_ID_1='"+regionCode+"' AND STATUS=1 AND USER_TYPE=2";
 	var r=query(sql);
 	if(r!=null&&r.length>0){
 		alert(dealDate+"账期工单已生成，请勿重复生成！");
@@ -279,7 +279,7 @@ function mark(){
 	        async: false,
 	        data:{
 				dealDate:dealDate,
-				index_type:"1"
+				index_type:"2"
 			},
 			success:function(data){
 				alert(data.msg);

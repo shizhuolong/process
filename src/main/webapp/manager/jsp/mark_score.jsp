@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/zTree/js/jquery.ztree.core-3.1.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/zTree/js/jquery.ztree.all-3.1.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/manager/js/mark_score.js?v=27"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/manager/js/mark_score.js?v=28"></script>
 <style type="text/css">
   /* .default-dt .sticky-wrap {
      width:1600px;
@@ -49,12 +49,19 @@
 	<div data-options="region:'center',title:''">
 		<div id="container">
 			<form id="searchForm" method="post">
-				<table width="30%">
+				<table width="60%">
 				 <tr>
 					<td width="4%" style="text-align: right;">账期：</td>
 					<td width="6%">
 					   <input type="text" class="Wdate default-text-input wper80" style="width:100px;"
 								onclick="WdatePicker({skin:'whyGreen',onpicked:change(),dateFmt:'yyyyMM',isShowClear:false})" value="<%=dealDate%>" id="dealDate"/>
+					</td>
+					<td width="4%" style="text-align: right;">打分类型：</td>
+					<td width="6%">
+					   <select class="default-text-input wper80" id="mark_type" name="mark_type">
+					      <option value="1">渠道经理</option>
+					      <option value="2">宽固经理</option>
+					   </select>
 					</td>
 					<td width="1%">
 						   <a class="default-btn" href="#" id="searchBtn"
