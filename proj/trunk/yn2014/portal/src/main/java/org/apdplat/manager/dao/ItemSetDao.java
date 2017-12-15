@@ -7,7 +7,7 @@ import org.apdplat.manager.bean.TreeJson;
 
 public interface ItemSetDao {
 
-	List<Map<String, Object>> listItem();
+	List<Map<String, Object>> listItem(String index_type);
 
 	List<Map<String, Object>> getCheckIds(Map<String, Object> m);
 
