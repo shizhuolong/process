@@ -119,9 +119,17 @@ function getSql(){
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	$("#exportBtn").hide();
 	showtext = "大乡大镇地推发展情况";
 	downloadExcel(downSql,title,showtext);
-	$("#exportBtn").show();
 }
 /////////////////////////下载结束/////////////////////////////////////////////
+function showDesc(){
+	var url = $("#ctx").val()+"/report/reportNew/jsp/region_local_dev_explain.jsp";
+	art.dialog.open(url,{
+		id:'bindDescDialog',
+		width:'600px',
+		height:'200px',
+		lock:true,
+		resize:false
+	});
+}
