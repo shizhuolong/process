@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_detail_uncharge.js?v=18"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_detail_uncharge.js?v=20"></script>
 <script type="text/javascript">
     var path="<%=path%>";
 </script>
