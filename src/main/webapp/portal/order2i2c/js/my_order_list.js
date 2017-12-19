@@ -74,15 +74,15 @@ function search(pageNumber) {
 	"      ,ORDER_STATUS                                                   "+
 	"      ,CUST_NAME                                                      "+
 	"      ,CARD_ID                                                        "+
-	"      ,BOOK_NUM                                                       "+
 	"      ,SEX                                                            "+
 	"      ,AGE                                                            "+
 	"      ,PRODUCT_NAME                                                   "+
-	"      ,SERVICE_NUMBER                                                 "+
 	"      ,ADDR_NAME                                                      "+
 	"      ,LOG_TRACK                                                      "+
 	"      ,ACTIVE_STATUS                                                  "+
 	"      ,ACTIVE_RG                                                      "+
+	"      ,BOOK_NUM                                                       "+
+	"      ,SERVICE_NUMBER                                                 "+
 	"      ,NAME                                                           "+
 	"      ,INSERT_TIME                                                    "+
 	"      ,FAIL_CAUSE "+
