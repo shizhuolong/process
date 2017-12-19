@@ -125,3 +125,13 @@ function downsAll(){
 	downloadExcel(downSql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
+function showDesc(){
+	var url = $("#ctx").val()+"/report/reportNew/jsp/low_local_dev_explain.jsp";
+	art.dialog.open(url,{
+		id:'bindDescDialog',
+		width:'600px',
+		height:'200px',
+		lock:true,
+		resize:false
+	});
+}
