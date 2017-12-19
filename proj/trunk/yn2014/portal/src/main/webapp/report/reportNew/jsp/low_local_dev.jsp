@@ -30,7 +30,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/low_local_dev.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/low_local_dev1.js"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -65,6 +66,9 @@
                         </select>
                     </td>
                     <td width="5%">
+                        <a class="default-gree-btn" href="#" style="float: right;" id="exportDesc" onclick="showDesc();">说明</a>
+                    </td>
+                    <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
                         style="float: right; margin-left: 10px; margin-right: 10px;">查询</a>
                     </td>
@@ -76,14 +80,6 @@
 		</form>
 		
 		<div id="lchcontent"></div>
-		<div class="page_count">
-			<div class="page_count_left">
-				共有 <span id="totalCount"></span> 条数据
-			</div>
-			<div class="page_count_right">
-				<div id="pagination"></div>
-			</div>
-		</div>
 		
 </body>
 </html>
