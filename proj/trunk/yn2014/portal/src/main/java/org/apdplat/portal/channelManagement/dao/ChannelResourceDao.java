@@ -28,6 +28,8 @@ import java.util.Map;
 
 
 
+
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface ChannelResourceDao {
@@ -137,4 +139,8 @@ public interface ChannelResourceDao {
 	public void updateMarkStatus(Map<String, String> params);
 	
 	public void fymark(Map<String, Object> params);
+	
+    public List<Map<String, Object>> loadBusinessName(Map<String, String> params);
+    
+    public List<Map<String, Object>> loadSchoolName(Map<String, String> params);
 }
