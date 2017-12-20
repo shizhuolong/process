@@ -283,6 +283,30 @@ public class ChannelResourceAction extends BaseAction {
 		this.reponseJson(list);
 	}
 	
+	//获取商圈名称
+	public void loadBusinessName() {
+        String businessName=request.getParameter("business_name");
+        String group_id_1=request.getParameter("group_id_1");
+        Map<String,String> params=new HashMap<String,String>();
+        params.put("businessName",businessName);
+        params.put("group_id_1",group_id_1);
+        List<Map<String, Object>> list = channelResourceService
+                .loadBusinessName(params);
+        this.reponseJson(list);
+    }
+	
+	//获取学校名称
+	public void loadSchoolName() {
+        String schoolName=request.getParameter("school_name");
+        String group_id_1=request.getParameter("group_id_1");
+        Map<String,String> params=new HashMap<String,String>();
+        params.put("schoolName",schoolName);
+        params.put("group_id_1",group_id_1);
+        List<Map<String, Object>> list = channelResourceService
+                .loadSchoolName(params);
+        this.reponseJson(list);
+    }
+	
 	public void updateAgent() {
 		Map m = new HashMap<String, String>();
 		try {
@@ -294,6 +318,10 @@ public class ChannelResourceAction extends BaseAction {
 			String city_name = request.getParameter("city_name");
 			String town_id = request.getParameter("town_id");
 			String town_name = request.getParameter("town_name");
+			String business_id=request.getParameter("business_id");
+			String business_name=request.getParameter("business_name");
+			String school_id=request.getParameter("school_id");
+			String school_name=request.getParameter("school_name");
 			params.put("chnl_id", chnl_id);
 			params.put("chnl_type", chnl_type);
 			params.put("city_id", city_id);
@@ -301,6 +329,10 @@ public class ChannelResourceAction extends BaseAction {
 			params.put("town_id", town_id);
 			params.put("town_name", town_name);
 			params.put("hq_chan_code", hq_chan_code);
+			params.put("business_id", business_id);
+			params.put("business_name", business_name);
+			params.put("school_id", school_id);
+			params.put("school_name", school_name);
 			channelResourceService.updateAgent(params);
 			m.put("msg", "修改成功！");
 		} catch (Exception e) {
@@ -319,10 +351,18 @@ public class ChannelResourceAction extends BaseAction {
 			String city_name = request.getParameter("city_name");
 			String town_id = request.getParameter("town_id");
 			String town_name = request.getParameter("town_name");
+			String business_id = request.getParameter("business_id");
+			String business_name = request.getParameter("business_name");
+			String school_id = request.getParameter("school_id");
+			String school_name = request.getParameter("school_name");
 			params.put("city_id", city_id);
 			params.put("city_name", city_name);
 			params.put("town_id", town_id);
 			params.put("town_name", town_name);
+			params.put("business_id", business_id);
+			params.put("business_name", business_name);
+			params.put("school_id", school_id);
+			params.put("school_name", school_name);
 			params.put("hq_chan_code", hq_chan_code);
 			channelResourceService.updateNotAgent(params);
 			m.put("msg", "修改成功！");
