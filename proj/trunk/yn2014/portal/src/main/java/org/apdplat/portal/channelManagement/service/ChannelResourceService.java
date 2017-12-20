@@ -180,5 +180,12 @@ public class ChannelResourceService {
 		channelResourceDao.fymark(params);
 	}
 	
+    public List<Map<String, Object>> loadBusinessName(Map<String, String> params) {
+        return channelResourceDao.loadBusinessName(params);
+    }
+    
+    public List<Map<String, Object>> loadSchoolName(Map<String, String> params) {
+        return channelResourceDao.loadSchoolName(params);
+    }
 	
 }
