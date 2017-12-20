@@ -64,6 +64,23 @@ $(function() {
 	$("#notAgent_city_id").change(function(){
 		listTownType(false,$(this).val());
 	});
+	
+	$("#searchBusiness").click(function(){
+		var business_name=$.trim($("#businessName").val());
+		listBusinessName(true,business_name,$group_id_1);
+	});
+	$("#searchSchool").click(function(){
+		var school_name=$.trim($("#schoolName").val());
+		listSchoolName(true,school_name,$group_id_1);
+	});
+	$("#notAgent_searchBusiness").click(function(){
+		var business_name=$.trim($("#notAgent_businessName").val());
+		listBusinessName(false,business_name,$group_id_1);
+	});
+	$("#notAgent_searchSchool").click(function(){
+		var school_name=$.trim($("#notAgent_schoolName").val());
+		listSchoolName(false,school_name,$group_id_1);
+	});
 });
 
 //列表信息
@@ -126,6 +143,11 @@ function search(pageNumber) {
 				+"<td>"+isNull(n['CHN_CDE_4_NAME'])+"</td>"
 				+"<td>"+isNull(n['START_SHORT_NAME'])+"</td>"
 				+"<td>"+isNull(n['START_LEVE'])+"</td>"
+				+"<td>"+isNull(n['IS_LS'])+"</td>"
+				+"<td>"+isNull(n['BUSINESS_ID'])+"</td>"
+				+"<td>"+isNull(n['BUSINESS_NAME'])+"</td>"
+				+"<td>"+isNull(n['SCHOOL_ID'])+"</td>"
+				+"<td>"+isNull(n['SCHOOL_NAME'])+"</td>"
 				+"<td>"+isNull(n['ISFY'])+"</td>";
 				//是否已经划分营服中心
 				var isDivision = n['ISDIVISION'];
@@ -143,21 +165,21 @@ function search(pageNumber) {
 					if(is_mark=="0"){
 						//已划分
 						if(isDivision == "1") {
-							content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' business_id='"+isNull(n['BUSINESS_ID'])+"' school_id='"+isNull(n['SCHOOL_ID'])+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
 								       "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideNotMark(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
 									   "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						} else {
-							content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='0' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' business_id='"+isNull(n['BUSINESS_ID'])+"' school_id='"+isNull(n['SCHOOL_ID'])+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='mark(this);'>打标</a>&nbsp;&nbsp;"+
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideNotMark(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						}
 					}else{//已打标
 						if(isDivision == "1") {
-							content += "<a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' business_id='"+isNull(n['BUSINESS_ID'])+"' school_id='"+isNull(n['SCHOOL_ID'])+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
 								       "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideIsMark(this);'>修改渠道归属</a>&nbsp;&nbsp;" +
 									   "<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						} else {
-							content += "<a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
+							content += "<a href='#' is_mark='1' hq_chan_code='"+n['HQ_CHAN_CODE']+"' chnl_id='"+isNull(n['CHNL_ID'])+"' city_id='"+isNull(n['CITY_ID'])+"' town_id='"+isNull(n['TOWN_ID'])+"' business_id='"+isNull(n['BUSINESS_ID'])+"' school_id='"+isNull(n['SCHOOL_ID'])+"' group_id_1='"+n['GROUP_ID_1']+"' onclick='mark(this);'>已打标</a>&nbsp;&nbsp;"+
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' group_id_1='"+n['GROUP_ID_1']+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' onclick='channelDivideIsMark(this);'>渠道归属划分</a>&nbsp;&nbsp;&nbsp;" +
 									"<a href='#' group_id_4='"+n['GROUP_ID_4']+"' onclick='showDetails(this);'>详细信息</a></td>";
 						}
@@ -290,7 +312,7 @@ function isExist(){
 
 function updateAgent(){
 	var hq_chan_code=art.dialog.data("hq_chan_code");
-	if($("#agent_chnl_id").val()==""||$("#agent_city_id").val()==""||$("#agent_town_id").val()==""){
+	if($("#agent_chnl_id").val()==""||$("#agent_city_id").val()==""||$("#agent_town_id").val()==""||$("#agent_business_name").val()==""||$("#agent_school_name").val()==""){
 		alert("下拉选择不能为空！");
 		return;
 	}
@@ -306,7 +328,11 @@ function updateAgent(){
 			city_id:$("#agent_city_id").val(),
 			city_name:$("#agent_city_id").find("option:selected").attr("city_name"),
 			town_id:$("#agent_town_id").val(),
-			town_name:$("#agent_town_id").find("option:selected").attr("town_name")
+			town_name:$("#agent_town_id").find("option:selected").attr("town_name"),
+			business_id:$("#agent_business_name").val(),
+			business_name:$("#agent_business_name").find("option:selected").attr("business_name"),
+			school_id:$("#agent_school_name").val(),
+			school_name:$("#agent_school_name").find("option:selected").attr("school_name")
 		},
 		 success:function(data){
 			alert(data.msg);
@@ -321,7 +347,7 @@ function updateAgent(){
 
 function updateNotAgent(){
 	var hq_chan_code=art.dialog.data("hq_chan_code");
-	if($("#notAgent_city_id").val()==""||$("#notAgent_town_id").val()==""){
+	if($("#notAgent_city_id").val()==""||$("#notAgent_town_id").val()==""||$("#notAgent_school_name").val()==""||$("#notAgent_business_name").val()==""){
 		alert("下拉框不能为空！");
 		return;
 	}
@@ -335,7 +361,11 @@ function updateNotAgent(){
 			city_id:$("#notAgent_city_id").val(),
 			city_name:$("#notAgent_city_id").find("option:selected").attr("city_name"),
 			town_id:$("#notAgent_town_id").val(),
-			town_name:$("#notAgent_town_id").find("option:selected").attr("town_name")
+			town_name:$("#notAgent_town_id").find("option:selected").attr("town_name"),
+			business_id:$("#notAgent_business_name").val(),
+			business_name:$("#notAgent_business_name").find("option:selected").attr("business_name"),
+			school_id:$("#notAgent_school_name").val(),
+			school_name:$("#notAgent_school_name").find("option:selected").attr("school_name"),
 		},
 		 success:function(data){
 			alert(data.msg);
@@ -471,9 +501,13 @@ function isHavingMark(hq_chan_code,type){
 
 function mark(ele){
 	var hq_chan_code=$(ele).attr("hq_chan_code");
+	var group_id_1=$(ele).attr("group_id_1");
+	$group_id_1=group_id_1;
 	var chnl_id=$(ele).attr("chnl_id");
 	var city_id=$(ele).attr("city_id");
 	var town_id=$(ele).attr("town_id");
+	var business_id=$.trim($(ele).attr("business_id"));
+	var school_id=$.trim($(ele).attr("school_id"));
 	art.dialog.data("hq_chan_code",hq_chan_code);
 	var pointType=isAgentPoint(hq_chan_code);
 	var orgLevel=$("#orgLevel").val();
@@ -491,12 +525,16 @@ function mark(ele){
 		var agent_city_id=$("#agent_city_id").val();
 		listTownType(true,agent_city_id);
 		$("#agent_town_id").val(town_id);
+		$("#agent_business_name").val(business_id);
+		$("#agent_school_name").val(school_id);
+		listSchoolName(true,"",group_id_1);
+		listBusinessName(true,"",group_id_1);
 		formdiv.show();
 		art.dialog.data("type",0);
 		formdiv.dialog({
 			title : '修改',
 			width : 450,
-			height : 200,
+			height : 250,
 			closed : false,
 			cache : false,
 			modal : false,
@@ -509,6 +547,11 @@ function mark(ele){
 		var notAgent_city_id=$("#notAgent_city_id").val();
 		listTownType(false,notAgent_city_id);
 		$("#notAgent_town_id").val(town_id);
+		$("#notAgent_city_id").val(city_id);
+		$("#notAgent_business_name").val(business_id);
+		$("#notAgent_school_name").val(school_id);
+		listSchoolName(false,"",group_id_1);
+		listBusinessName(false,"",group_id_1);
 		art.dialog.data("type",1);
 		formdiv.show();
 		formdiv.dialog({
@@ -615,7 +658,12 @@ function downloadExcel() {
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
-		",T.START_SHORT_NAME,T.START_LEVE                                                                   "+
+		",T.START_SHORT_NAME,T.START_LEVE,                                                                   "+
+		"   CASE WHEN T.IS_LS='0' THEN '否' ELSE '是' END IS_LS, "+
+		"	T.BUSINESS_ID, "+
+		"	T.BUSINESS_NAME, "+
+		"	T.SCHOOL_ID,  "+
+		"	T.SCHOOL_NAME "+
 		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -627,7 +675,12 @@ function downloadExcel() {
 		"       T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                  "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
-		",T.START_SHORT_NAME,T.START_LEVE             "+
+		",T.START_SHORT_NAME,T.START_LEVE,             "+
+		"   CASE WHEN T.IS_LS='0' THEN '否' ELSE '是' END IS_LS, "+
+		"	T.BUSINESS_ID, "+
+		"	T.BUSINESS_NAME, "+
+		"	T.SCHOOL_ID,  "+
+		"	T.SCHOOL_NAME "+
 		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -639,7 +692,12 @@ function downloadExcel() {
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                 "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
 		",T.CITY_NAME,T.TOWN_NAME,T3.LOG_NO,T3.LAT_NO,CASE WHEN IS_JK ='0' THEN '公众渠道' ELSE '集客渠道' END IS_JK "+
-		",T.START_SHORT_NAME,T.START_LEVE             "+
+		",T.START_SHORT_NAME,T.START_LEVE,             "+
+		"   CASE WHEN T.IS_LS='0' THEN '否' ELSE '是' END IS_LS, "+
+		"	T.BUSINESS_ID, "+
+		"	T.BUSINESS_NAME, "+
+		"	T.SCHOOL_ID,  "+
+		"	T.SCHOOL_NAME "+
 		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -650,7 +708,12 @@ function downloadExcel() {
 		sql = "SELECT T.GROUP_ID_1_NAME,T.UNIT_NAME,T.GROUP_ID_4_NAME,T.HQ_CHAN_CODE,                 "+
 		"        T.CHNL_TYPE,CASE WHEN T2.IS_DEFAULT = 0 THEN '是' ELSE '否' END AS ISDIVISION                            "+
 		"        ,DECODE(T3.STATUS,'00','草稿','01','待审核','10','正常','11','清算','12','终止',NULL) STATUS       "+
-		",T.START_SHORT_NAME,T.START_LEVE             "+
+		",T.START_SHORT_NAME,T.START_LEVE,             "+
+		"   CASE WHEN T.IS_LS='0' THEN '否' ELSE '是' END IS_LS, "+
+		"	T.BUSINESS_ID, "+
+		"	T.BUSINESS_NAME, "+
+		"	T.SCHOOL_ID,  "+
+		"	T.SCHOOL_NAME "+
 		",T.IS_PHOTO,CASE WHEN T.IS_MULT='0' THEN '否' ELSE '是' END ISFY FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                   "+
 		",PCDE.TAB_CDE_GROUP_CODE T2                                                                         "+
 		",PCDE.TB_CDE_CHANL_HQ_CODE T3                                                                       "+
@@ -703,7 +766,7 @@ function downloadExcel() {
 	sql += " ORDER BY T.GROUP_ID_1, T.UNIT_ID";
    var showtext="Sheet";
    var showtext1="result";
-   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','代理点类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度","渠道属性","战略渠道简称","战略渠道级别","是否有照片","是否复用渠道"];
+   var _head=['地市名称','营服中心','渠道名称','渠道编码','渠道属性1','渠道属性2','渠道属性3','渠道属性4','渠道类型','是否划分营服中心','状态',"区县","乡镇","经度","纬度","渠道属性","战略渠道简称","战略渠道级别","是否连锁","商圈编码","商圈名称","学校编码","学校名称","是否有照片","是否复用渠道"];
    loadWidowMessage(1);
    _execute(3001,{type:12,
 		     data:{
@@ -742,4 +805,70 @@ function loadWidowMessage(flag){
 	}else{
 		$.messager.progress('close'); 
 	}
+}
+
+//获取商圈列表
+function listBusinessName(isAgent,business_name,group_id_1){
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_loadBusinessName.action", 
+        dataType: "json",
+        data:{
+        	"business_name":business_name,
+        	"group_id_1":group_id_1
+        },
+		success:function(d){
+			if (d&&d[0]) {
+				var h = '';
+				h += '<option value="" selected>请选择</option>';
+					for (var i = 0; i < d.length; i++) {
+						h += '<option business_name="'+d[i].BUSINESS_NAME+'" value="' + d[i].BUSINESS_ID + '">' + d[i].BUSINESS_NAME + '</option>';
+					}
+					if(isAgent){
+						$("#agent_business_name").empty().append($(h));
+					}else{
+						$("#notAgent_business_name").empty().append($(h));
+					}	
+    	   } else {
+    		   alert("获取乡商圈失败!");
+    	   }
+	    },
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+    		alert("获取乡商圈失败!");
+		} 
+	});
+}
+
+//获取学校列表
+function listSchoolName(isAgent,school_name,group_id_1){
+	$.ajax({ 
+        type: "POST", 
+        async: false,
+        url: $("#ctx").val()+"/channelManagement/channelResource_loadSchoolName.action", 
+        dataType: "json",
+        data:{
+        	"school_name":school_name,
+        	"group_id_1":group_id_1
+        },
+		success:function(d){
+			if (d&&d[0]) {
+				var h = '';
+				h += '<option value="" selected>请选择</option>';
+					for (var i = 0; i < d.length; i++) {
+						h += '<option school_name="'+d[i].SCHOOL_NAME+'" value="' + d[i].SCHOOL_ID + '">' + d[i].SCHOOL_NAME + '</option>';
+					}
+					if(isAgent){
+						$("#agent_school_name").empty().append($(h));
+					}else{
+						$("#notAgent_school_name").empty().append($(h));
+					}	
+    	   } else {
+    		   alert("获取学校名称失败!");
+    	   }
+	    },
+    	error: function (XMLHttpRequest, textStatus, errorThrown) { 
+    		alert("获取学校名称失败!");
+		} 
+	});
 }
