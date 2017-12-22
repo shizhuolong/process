@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apdplat.portal.channelManagement.dao.ImportChannelDao">
+
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ID,
+		   HQ_CHAN_CODE,
+	       HQ_CHAN_NAME,
+	       START_MONTH,
+	       END_MONTH,
+	       ASSESS_TARGET,
+	       RATE_THREE,
+	       RATE_SIX,
+	       RATE_NINE,
+	       RATE_TWELVE
+	    FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL 
+		WHERE GROUP_ID_1 = #{code}
+		AND ADD_STATE IS NULL
+	</select>
+
+    <insert id="addChannel" parameterType="java.util.Map">
+        INSERT INTO PMRT.TAB_MRT_YSDZ_NEW_CHANL 
+        (GROUP_ID_1,GROUP_ID_1_NAME,USERNAME,CREATE_TIME,HQ_CHAN_CODE,HQ_CHAN_NAME,START_MONTH,
+        END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,ID) VALUES
+        (#{regionCode},#{regionName},#{username},${create_time}
+        ,#{hq_chan_code},#{hq_chan_name},${start_month}
+        ,${end_month},${assess_target},${rate_three},${rate_six}
+        ,${rate_nine},${rate_twelve},#{id})
+    </insert>
+    
+    <select id="findById" resultType="java.util.Map">
+        SELECT HQ_CHAN_CODE,HQ_CHAN_NAME,START_MONTH,
+        END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE
+        FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL WHERE Id=#{id}
+    </select>
+    
+    <update id="updateChannel" parameterType="java.util.Map">
+        update PMRT.TAB_MRT_YSDZ_NEW_CHANL set 
+        GROUP_ID_1=#{regionCode},GROUP_ID_1_NAME=#{regionName},
+        USERNAME=#{username},CREATE_TIME=${create_time},
+        START_MONTH=${start_month},END_MONTH=${end_month},
+        ASSESS_TARGET=${assess_target},RATE_THREE=${rate_three},
+        RATE_SIX=${rate_six},RATE_NINE=${rate_nine},
+        RATE_TWELVE=${rate_twelve} where id=#{id}
+    </update>
+</mapper>
