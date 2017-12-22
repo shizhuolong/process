@@ -1,9 +1,9 @@
 var nowData = [];
 var report = null;
 var orderBy='';
-var field=["GROUP_ID_1_NAME","LAST_HQ_NUM_ALL","THIS_HQ_NUM_ALL" ,"JZ_HQ_NUM_ALL" ,"HB_ALL" ,"LAST_HQ_NUM_HZT" ,"THIS_HQ_NUM_HZT" ,"JZ_HQ_NUM_HZT" ,"HB_HZT" ,"LAST_HQ_NUM_ZJTY" ,"THIS_HQ_NUM_ZJTY" ,"JZ_HQ_NUM_ZJTY" ,"HB_ZJTY" ,"LAST_HQ_NUM_ZLLS" ,"THIS_HQ_NUM_ZLLS" ,"JZ_HQ_NUM_ZLLS" ,"HB_ZLLS" ,"LAST_HQ_NUM_BLQD" ,"THIS_HQ_NUM_BLQD" ,"JZ_HQ_NUM_BLQD" ,"HB_BLQD" ,"LAST_HQ_NUM_SHZX" ,"THIS_HQ_NUM_SHZX" ,"JZ_HQ_NUM_SHZX" ,"HB_SHZX"];
-var title=[["州市","渠道新增汇总","","","","合作厅、专营店、社区沃店","","","","其中：自建他营模式渠道","","","","战略连锁渠道","","","","便利型渠道","","","","社会直销渠道","","",""],
-           ["","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比"]];
+var field=["GROUP_ID_1_NAME","LAST_HQ_NUM_ALL","THIS_HQ_NUM_ALL" ,"JZ_HQ_NUM_ALL" ,"HB_ALL" ,"LAST_HQ_NUM_HZT" ,"THIS_HQ_NUM_HZT" ,"JZ_HQ_NUM_HZT" ,"HB_HZT" ,"LAST_HQ_NUM_ZJTY" ,"THIS_HQ_NUM_ZJTY" ,"JZ_HQ_NUM_ZJTY" ,"HB_ZJTY" ,"LAST_HQ_NUM_BLQD" ,"THIS_HQ_NUM_BLQD" ,"JZ_HQ_NUM_BLQD" ,"HB_BLQD" ,"LAST_HQ_NUM_SHZX" ,"THIS_HQ_NUM_SHZX" ,"JZ_HQ_NUM_SHZX" ,"HB_SHZX"];
+var title=[["州市","渠道新增汇总","","","","合作厅、专营店、社区沃店","","","","其中：自建他营模式渠道","","","","便利型渠道","","","","社会直销渠道","","",""],
+           ["","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比","上月渠道数量（家）","本月渠道数量（家）","渠道净增","渠道数量环比"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -139,7 +139,7 @@ function getSql(){
 	"                                  THEN HQ_CHAN_CODE                                                                                                                                                                        "+
 	"                                  END)                                                                                                                                                                                     "+
 	"                       ,2)        HB_ZJTY                                                                                                                                                                                  "+
-",COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') < '"+dealDate+"'  "+
+/*",COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') < '"+dealDate+"'  "+
 "           THEN T2.HQ_CHNL_ID                                "+
 "       END) LAST_HQ_NUM_ZLLS                               "+
 ",COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') <= '"+dealDate+"'  "+
@@ -153,7 +153,7 @@ function getSql(){
   "                          END)                               "+
   "               ,COUNT(CASE WHEN TO_CHAR(CREATE_TIME, 'YYYYMM') < '"+dealDate+"'  "+
   "                          THEN T2.HQ_CHNL_ID                          "+
-  "                          END),2) HB_ZLLS                              "+
+  "                          END),2) HB_ZLLS                              "+*/
 	"      ,COUNT(CASE WHEN TO_CHAR(CREATE_TIME,'YYYYMM')<'"+dealDate+"' AND CHN_CDE_1_NAME ='社会' AND CHN_CDE_2_NAME ='实体' AND CHN_CDE_3_NAME ='代理点'                                                                             "+
 	"                  THEN HQ_CHAN_CODE                                                                                                                                                                                        "+
 	"                  END)             LAST_HQ_NUM_BLQD                                                                                                                                                                        "+

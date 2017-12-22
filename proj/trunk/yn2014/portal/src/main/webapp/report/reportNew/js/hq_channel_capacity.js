@@ -1,10 +1,10 @@
 var nowData = [];
 var report = null;
 var orderBy='';
-var field=["GROUP_ID_1_NAME","DEV_HQ_NUM","DEV_HQ_ZB" ,"DEV_HQ_HB" ,"DEV_0_HQ_NUM" ,"DEV_HQ_ZB0" ,"DEV_HQ_HB0" ,"DEV_0_HQ_NUM1" ,"DEV_L5_HQ_NUM" ,"DEV_L20_HQ_NUM" ,"DEV_L50_HQ_NUM" ,"DEV_L80_HQ_NUM" ,"DEV_L120_HQ_NUM" ,"DEV_120_HQ_NUM" ,"DEV_M120_HQ_NUM" ,"CN" ,"HZT_DEV_0_HQ_NUM" ,"HZT_DEV_L5_HQ_NUM" ,"HZT_DEV_L20_HQ_NUM" ,"HZT_DEV_L50_HQ_NUM" ,"HZT_DEV_L80_HQ_NUM" ,"HZT_DEV_L120_HQ_NUM" ,"HZT_DEV_120_HQ_NUM" ,"HZT_DEV_M120_HQ_NUM" ,"ZJTY_DEV_0_HQ_NUM","ZJTY_DEV_L5_HQ_NUM","ZJTY_DEV_L20_HQ_NUM","ZJTY_DEV_L50_HQ_NUM","ZJTY_DEV_L80_HQ_NUM","ZJTY_DEV_L120_HQ_NUM",
-           "ZJTY_DEV_120_HQ_NUM","ZJTY_DEV_M120_HQ_NUM","ZLLS_DEV_0_HQ_NUM","ZLLS_DEV_L5_HQ_NUM","ZLLS_DEV_L20_HQ_NUM","ZLLS_DEV_L50_HQ_NUM","ZLLS_DEV_L80_HQ_NUM","ZLLS_DEV_L120_HQ_NUM","ZLLS_DEV_120_HQ_NUM","ZLLS_DEV_M120_HQ_NUM","BLQD_DEV_0_HQ_NUM","BLQD_DEV_L5_HQ_NUM","BLQD_DEV_L20_HQ_NUM","BLQD_DEV_L50_HQ_NUM","BLQD_DEV_L80_HQ_NUM","BLQD_DEV_L120_HQ_NUM","BLQD_DEV_120_HQ_NUM","BLQD_DEV_M120_HQ_NUM","SHZX_DEV_0_HQ_NUM","SHZX_DEV_L5_HQ_NUM","SHZX_DEV_L20_HQ_NUM","SHZX_DEV_L50_HQ_NUM","SHZX_DEV_L80_HQ_NUM","SHZX_DEV_L120_HQ_NUM","SHZX_DEV_120_HQ_NUM","SHZX_DEV_M120_HQ_NUM"];
-var title=[["州市","产能汇总","","","","","","全省汇总","","","","","","","","","合作厅、专营店、社区沃店（家）","","","","","","","","其中：自建他营模式渠道","","","","","","","","战略连锁渠道","","","","","","","","便利型渠道","","","","","","","","社会直销渠道","","","","","","",""],
-           ["","有销量渠道（家）","有销量渠道占比","有销量渠道环比上月","零销量渠道（家）","零销量渠道占比","零销量渠道环比上月","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120","120≤X","店均产能","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120","120≤X"]];
+var field=["GROUP_ID_1_NAME","DEV_HQ_NUM","DEV_HQ_ZB" ,"DEV_HQ_HB" ,"DEV_0_HQ_NUM" ,"DEV_HQ_ZB0" ,"DEV_HQ_HB0" ,"DEV_0_HQ_NUM1" ,"DEV_L5_HQ_NUM" ,"DEV_L20_HQ_NUM" ,"DEV_L50_HQ_NUM" ,"DEV_L80_HQ_NUM" ,"DEV_L120_HQ_NUM" ,"DEV_M120_HQ_NUM" ,"CN" ,"HZT_DEV_0_HQ_NUM" ,"HZT_DEV_L5_HQ_NUM" ,"HZT_DEV_L20_HQ_NUM" ,"HZT_DEV_L50_HQ_NUM" ,"HZT_DEV_L80_HQ_NUM" ,"HZT_DEV_L120_HQ_NUM"  ,"HZT_DEV_M120_HQ_NUM" ,"ZJTY_DEV_0_HQ_NUM","ZJTY_DEV_L5_HQ_NUM","ZJTY_DEV_L20_HQ_NUM","ZJTY_DEV_L50_HQ_NUM","ZJTY_DEV_L80_HQ_NUM","ZJTY_DEV_L120_HQ_NUM",
+           "ZJTY_DEV_M120_HQ_NUM","BLQD_DEV_0_HQ_NUM","BLQD_DEV_L5_HQ_NUM","BLQD_DEV_L20_HQ_NUM","BLQD_DEV_L50_HQ_NUM","BLQD_DEV_L80_HQ_NUM","BLQD_DEV_L120_HQ_NUM","BLQD_DEV_M120_HQ_NUM","SHZX_DEV_0_HQ_NUM","SHZX_DEV_L5_HQ_NUM","SHZX_DEV_L20_HQ_NUM","SHZX_DEV_L50_HQ_NUM","SHZX_DEV_L80_HQ_NUM","SHZX_DEV_L120_HQ_NUM","SHZX_DEV_M120_HQ_NUM"];
+var title=[["州市","产能汇总","","","","","","全省汇总","","","","","","","","","合作厅、专营店、社区沃店（家）","","","","","","","其中：自建他营模式渠道","","","","","","","便利型渠道","","","","","","","社会直销渠道","","","","",""],
+           ["","有销量渠道（家）","有销量渠道占比","有销量渠道环比上月","零销量渠道（家）","零销量渠道占比","零销量渠道环比上月","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120≤X","店均产能","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120≤X","0","1≤X＜5","5≤X＜20","20≤X＜50","50≤X＜80","80≤X＜120","120≤X"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -100,7 +100,7 @@ function getSql(){
 	"      ,DEV_L50_HQ_NUM         "+
 	"      ,DEV_L80_HQ_NUM         "+
 	"      ,DEV_L120_HQ_NUM        "+
-	"      ,DEV_120_HQ_NUM         "+
+	//"      ,DEV_120_HQ_NUM         "+
 	"      ,DEV_M120_HQ_NUM        "+
 	"      ,CN                     "+
 	"      ,HZT_DEV_0_HQ_NUM       "+
@@ -109,7 +109,7 @@ function getSql(){
 	"      ,HZT_DEV_L50_HQ_NUM     "+
 	"      ,HZT_DEV_L80_HQ_NUM     "+
 	"      ,HZT_DEV_L120_HQ_NUM    "+
-	"      ,HZT_DEV_120_HQ_NUM     "+
+	//"      ,HZT_DEV_120_HQ_NUM     "+
 	"      ,HZT_DEV_M120_HQ_NUM    "+
 	"      ,ZJTY_DEV_0_HQ_NUM      "+
 	"      ,ZJTY_DEV_L5_HQ_NUM     "+
@@ -117,23 +117,23 @@ function getSql(){
 	"      ,ZJTY_DEV_L50_HQ_NUM    "+
 	"      ,ZJTY_DEV_L80_HQ_NUM    "+
 	"      ,ZJTY_DEV_L120_HQ_NUM   "+
-	"      ,ZJTY_DEV_120_HQ_NUM    "+
+	//"      ,ZJTY_DEV_120_HQ_NUM    "+
 	"      ,ZJTY_DEV_M120_HQ_NUM   "+
-	"      ,ZLLS_DEV_0_HQ_NUM      "+
+	/*"      ,ZLLS_DEV_0_HQ_NUM      "+
 	"      ,ZLLS_DEV_L5_HQ_NUM     "+
 	"      ,ZLLS_DEV_L20_HQ_NUM    "+
 	"      ,ZLLS_DEV_L50_HQ_NUM    "+
 	"      ,ZLLS_DEV_L80_HQ_NUM    "+
 	"      ,ZLLS_DEV_L120_HQ_NUM   "+
 	"      ,ZLLS_DEV_120_HQ_NUM    "+
-	"      ,ZLLS_DEV_M120_HQ_NUM   "+
+	"      ,ZLLS_DEV_M120_HQ_NUM   "+*/
 	"      ,BLQD_DEV_0_HQ_NUM      "+
 	"      ,BLQD_DEV_L5_HQ_NUM     "+
 	"      ,BLQD_DEV_L20_HQ_NUM    "+
 	"      ,BLQD_DEV_L50_HQ_NUM    "+
 	"      ,BLQD_DEV_L80_HQ_NUM    "+
 	"      ,BLQD_DEV_L120_HQ_NUM   "+
-	"      ,BLQD_DEV_120_HQ_NUM    "+
+	//"      ,BLQD_DEV_120_HQ_NUM    "+
 	"      ,BLQD_DEV_M120_HQ_NUM   "+
 	"      ,SHZX_DEV_0_HQ_NUM      "+
 	"      ,SHZX_DEV_L5_HQ_NUM     "+
@@ -141,7 +141,7 @@ function getSql(){
 	"      ,SHZX_DEV_L50_HQ_NUM    "+
 	"      ,SHZX_DEV_L80_HQ_NUM    "+
 	"      ,SHZX_DEV_L120_HQ_NUM   "+
-	"      ,SHZX_DEV_120_HQ_NUM    "+
+	//"      ,SHZX_DEV_120_HQ_NUM    "+
 	"      ,SHZX_DEV_M120_HQ_NUM   "+
 	"FROM PMRT.VIEW_MRT_HQ_EFF_MON ";
 	return sql;
