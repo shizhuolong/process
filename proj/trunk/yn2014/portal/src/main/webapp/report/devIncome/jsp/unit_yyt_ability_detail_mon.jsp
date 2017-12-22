@@ -26,7 +26,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/unit_yyt_ability_detail_mon.js?v=21"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/unit_yyt_ability_detail_mon.js?v=22"></script>
 </head>
 <body style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
