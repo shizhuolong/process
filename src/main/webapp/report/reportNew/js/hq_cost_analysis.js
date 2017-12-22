@@ -1,10 +1,10 @@
 var nowData = [];
 var report = null;
 var orderBy='';
-var field=["GROUP_ID_1_NAME","HQ_COST_ALL","SR_NUM_ALL" ,"CB_ZB_ALL" ,"YWYJ_ZB_ALL" ,"GWYJ_ZB_ALL" ,"RENT_ZB_ALL" ,"QDBT_ZB_ALL" ,"ZX_FEE_ZB_ALL" ,"CB_OTHER_ZB_ALL" ,"HQ_COS_HZT" ,"SR_NUM_HZT" ,"CB_ZB_HZT" ,"YWYJ_ZB_HZT" ,"GWYJ_ZB_HZT" ,"RENT_ZB_HZT" ,"QDBT_ZB_HZT" ,"ZX_FEE_ZB_HZT" ,"CB_OTHER_ZB_HZT" ,"HQ_COST_ZJTY" ,"SR_NUM_ZJTY" ,"CB_ZB_ZJTY" ,"YWYJ_ZB_ZJTY" ,"GWYJ_ZB_ZJTY" ,"RENT_ZB_ZJTY","QDBT_ZB_ZJTY","ZX_FEE_ZB_ZJTY","CB_OTHER_ZB_ZJTY","HQ_COST_ZLLS","SR_NUM_ZLLS",
-           "CB_ZB_ZLLS","YWYJ_ZB_ZLLS","GWYJ_ZB_ZLLS","RENT_ZB_ZLLS","QDBT_ZB_ZLLS","ZX_FEE_ZB_ZLLS","CB_OTHER_ZB_ZLLS","HQ_COST_BLQD","SR_NUM_BLQD","CB_ZB_BLQD","YWYJ_ZB_BLQD","GWYJ_ZB_BLQD","RENT_ZB_BLQD","QDBT_ZB_BLQD","ZX_FEE_ZB_BLQD","CB_OTHER_ZB_BLQD","HQ_COST_SHZX","SR_NUM_SHZX","CB_ZB_SHZX","YWYJ_ZB_SHZX","GWYJ_ZB_SHZX","RENT_ZB_SHZX","QDBT_ZB_SHZX","ZX_FEE_ZB_SHZX","CB_OTHER_ZB_SHZX"];
-var title=[["州市","汇总","","","","","","","","","合作厅、专营店、社区沃店","","","","","","","","","其中：自建他营模式渠道","","","","","","","","","战略连锁渠道","","","","","","","","","便利性渠道","","","","","","","","","社会直销渠道","","","","","","","",""],
-           ["","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比"
+var field=["GROUP_ID_1_NAME","HQ_COST_ALL","SR_NUM_ALL" ,"CB_ZB_ALL" ,"YWYJ_ZB_ALL" ,"GWYJ_ZB_ALL" ,"RENT_ZB_ALL" ,"QDBT_ZB_ALL" ,"ZX_FEE_ZB_ALL" ,"CB_OTHER_ZB_ALL" ,"HQ_COS_HZT" ,"SR_NUM_HZT" ,"CB_ZB_HZT" ,"YWYJ_ZB_HZT" ,"GWYJ_ZB_HZT" ,"RENT_ZB_HZT" ,"QDBT_ZB_HZT" ,"ZX_FEE_ZB_HZT" ,"CB_OTHER_ZB_HZT" ,"HQ_COST_ZJTY" ,"SR_NUM_ZJTY" ,"CB_ZB_ZJTY" ,"YWYJ_ZB_ZJTY" ,"GWYJ_ZB_ZJTY" ,"RENT_ZB_ZJTY","QDBT_ZB_ZJTY","ZX_FEE_ZB_ZJTY","CB_OTHER_ZB_ZJTY",
+           "HQ_COST_BLQD","SR_NUM_BLQD","CB_ZB_BLQD","YWYJ_ZB_BLQD","GWYJ_ZB_BLQD","RENT_ZB_BLQD","QDBT_ZB_BLQD","ZX_FEE_ZB_BLQD","CB_OTHER_ZB_BLQD","HQ_COST_SHZX","SR_NUM_SHZX","CB_ZB_SHZX","YWYJ_ZB_SHZX","GWYJ_ZB_SHZX","RENT_ZB_SHZX","QDBT_ZB_SHZX","ZX_FEE_ZB_SHZX","CB_OTHER_ZB_SHZX"];
+var title=[["州市","汇总","","","","","","","","","合作厅、专营店、社区沃店","","","","","","","","","其中：自建他营模式渠道","","","","","","","","","便利性渠道","","","","","","","","","社会直销渠道","","","","","","","",""],
+           ["","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比"
             ,"本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比","本年累计<br>成本（万元）","本年累计<br>收入(万元)","本年累计<br>成本占收比","移网佣金<br>占比","宽固佣金<br>占比","房租占比","渠道补贴<br>占比","装修补贴<br>占比","其他成本<br>占比"]];
 $(function() {
 	report = new LchReport({
@@ -116,7 +116,7 @@ function getSql(){
 	"      ,QDBT_ZB_ZJTY                                     "+
 	"      ,ZX_FEE_ZB_ZJTY                                   "+
 	"      ,CB_OTHER_ZB_ZJTY                                 "+
-	"      ,ROUND(NVL(HQ_COST_ZLLS,0)/10000,2) HQ_COST_ZLLS  "+
+/*	"      ,ROUND(NVL(HQ_COST_ZLLS,0)/10000,2) HQ_COST_ZLLS  "+
 	"      ,ROUND(NVL(SR_NUM_ZLLS ,0)/10000,2) SR_NUM_ZLLS   "+
 	"      ,CB_ZB_ZLLS                                       "+
 	"      ,YWYJ_ZB_ZLLS                                     "+
@@ -124,7 +124,7 @@ function getSql(){
 	"      ,RENT_ZB_ZLLS                                     "+
 	"      ,QDBT_ZB_ZLLS                                     "+
 	"      ,ZX_FEE_ZB_ZLLS                                   "+
-	"      ,CB_OTHER_ZB_ZLLS                                 "+
+	"      ,CB_OTHER_ZB_ZLLS                                 "+*/
 	"      ,ROUND(NVL(HQ_COST_BLQD,0)/10000,2) HQ_COST_BLQD  "+
 	"      ,ROUND(NVL(SR_NUM_BLQD ,0)/10000,2) SR_NUM_BLQD   "+
 	"      ,CB_ZB_BLQD                                       "+
@@ -149,8 +149,8 @@ function getSql(){
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var title = [["州市","汇总","","","","","","","","","合作厅、专营店、社区沃店","","","","","","","","","其中：自建他营模式渠道","","","","","","","","","战略连锁渠道","","","","","","","","","便利性渠道","","","","","","","","","社会直销渠道","","","","","","","",""],
-	             ["","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比"
+	var title = [["州市","汇总","","","","","","","","","合作厅、专营店、社区沃店","","","","","","","","","其中：自建他营模式渠道","","","","","","","","","便利性渠道","","","","","","","","","社会直销渠道","","","","","","","",""],
+	             ["","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比"
 	              ,"本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比","本年累计成本（万元）","本年累计收入(万元)","本年累计成本占收比","移网佣金占比","宽固佣金占比","房租占比","渠道补贴占比","装修补贴占比","其他成本占比"]];
 	showtext = "成本分析";
 	downloadExcel(downSql,title,showtext);

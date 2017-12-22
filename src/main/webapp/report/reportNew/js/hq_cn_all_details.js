@@ -1,9 +1,9 @@
 var nowData = [];
 var report = null;
 var orderBy='';
-var field=["GROUP_ID_1_NAME","JZ_HQNUM_ALL" ,"HQNUM_ALL" ,"CN_AVG_ALL" ,"CBSR_ZB_ALL" ,"JZ_HQNUM_HZT" ,"HQNUM_HZT" ,"CN_AVG_HZT" ,"CBSR_ZB_HZT" ,"JZ_HQNUM_ZJTY" ,"HQNUM_ZJTY" ,"CN_AVG_ZJTY" ,"CBSR_ZB_ZJTY" ,"JZ_HQNUM_ZLLS" ,"HQNUM_ZLLS" ,"CN_AVG_ZLLS" ,"CBSR_ZB_ZLLS" ,"JZ_HQNUM_BLQD" ,"HQNUM_BLQD" ,"CN_AVG_BLQD" ,"CBSR_ZB_BLQD" ,"JZ_HQNUM_SHZX" ,"HQNUM_SHZX" ,"CN_AVG_SHZX" ,"CBSR_ZB_SHZX"];
-var title=[["州市","全渠道汇总","","","","合作厅、专营店、社区沃店","","","","其中：自建他营模式渠道","","","","战略连锁渠道","","","","便利型渠道","","","","社会直销渠道","","",""],
-           ["","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比"]];
+var field=["GROUP_ID_1_NAME","JZ_HQNUM_ALL" ,"HQNUM_ALL" ,"CN_AVG_ALL" ,"CBSR_ZB_ALL" ,"JZ_HQNUM_HZT" ,"HQNUM_HZT" ,"CN_AVG_HZT" ,"CBSR_ZB_HZT" ,"JZ_HQNUM_ZJTY" ,"HQNUM_ZJTY" ,"CN_AVG_ZJTY" ,"CBSR_ZB_ZJTY"  ,"JZ_HQNUM_BLQD" ,"HQNUM_BLQD" ,"CN_AVG_BLQD" ,"CBSR_ZB_BLQD" ,"JZ_HQNUM_SHZX" ,"HQNUM_SHZX" ,"CN_AVG_SHZX" ,"CBSR_ZB_SHZX"];
+var title=[["州市","全渠道汇总","","","","合作厅、专营店、社区沃店","","","","其中：自建他营模式渠道","","","","便利型渠道","","","","社会直销渠道","","",""],
+           ["","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比","本月渠道净增","渠道累计数量","店均产能","成本占收比"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -99,10 +99,10 @@ function getSql(){
 	"      ,HQNUM_ZJTY                    "+
 	"      ,CN_AVG_ZJTY                   "+
 	"      ,CBSR_ZB_ZJTY                  "+
-	"      ,JZ_HQNUM_ZLLS                 "+
+/*	"      ,JZ_HQNUM_ZLLS                 "+
 	"      ,HQNUM_ZLLS                    "+
 	"      ,CN_AVG_ZLLS                   "+
-	"      ,CBSR_ZB_ZLLS                  "+
+	"      ,CBSR_ZB_ZLLS                  "+*/
 	"      ,JZ_HQNUM_BLQD                 "+
 	"      ,HQNUM_BLQD                    "+
 	"      ,CN_AVG_BLQD                   "+
