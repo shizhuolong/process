@@ -1,6 +1,7 @@
 var report;
 var maxDate=null;
 $(function(){
+	list_unit_type();
 	var field=["ROW_NAME","SC_DEV_DAY","SC_DEV_MON","SC_DEV_LJ","XCS_ZHL","MSG_ZHL","ALL_ZHL","SC_XN_DAY"];
 	var title=[["组织架构","日首充发展数","月累计首充数","累计首充数","闪电购转化率","码上购转化率","综合转化率","日效能人数"]];
 	$("#searchBtn").click(function(){
@@ -25,6 +26,7 @@ $(function(){
 			var orgLevel="";
 			var regionCode=$("#regionCode").val();
 			var unitCode=$("#unitCode").val();
+			var unitType=$("#unitType").val();
 			var dealDate=$("#dealDate").val();
 			var where=" WHERE DEAL_DATE = "+dealDate;
 			//条件
@@ -33,6 +35,9 @@ $(function(){
 			}
 			if(unitCode!=''){
 				where+= " AND UNIT_ID ='"+unitCode+"'";
+			}
+			if(unitType!=''){
+				where+= " AND UNIT_TYPE ='"+unitType+"'";
 			}
 			//权限
 			if($tr){
@@ -157,4 +162,29 @@ function showDesc(){
 		lock:true,
 		resize:false
 	});
+}
+
+function list_unit_type(){
+	var sql = " SELECT distinct UNIT_TYPE FROM PMRT.TB_MRT_DW_V_D_HLW_OUTLINE";
+	var d=query(sql);
+	if (d) {
+		var h = '';
+		if (d.length == 1) {
+			h += '<option value="' + d[0].UNIT_TYPE
+					+ '" selected >'
+					+ d[0].UNIT_TYPE + '</option>';
+		} else {
+			h += '<option value="" selected>请选择</option>';
+			for (var i = 0; i < d.length; i++) {
+				if(d[i]!=null){
+					h += '<option value="' + d[i].UNIT_TYPE + '">' + d[i].UNIT_TYPE + '</option>';
+				}
+		//		h += '<option value="' + d[i].UNIT_TYPE + '">' + d[i].UNIT_TYPE + '</option>';
+			}
+		}
+		var $h = $(h);
+		$("#unitType").empty().append($h);
+	} else {
+		alert("获取营服类型失败");
+	}
 }
