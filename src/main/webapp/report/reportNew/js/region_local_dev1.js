@@ -24,15 +24,11 @@ $(function(){
 			var code=$("#code").val();
 			var orgLevel="";
 			var regionCode=$("#regionCode").val();
-			var unitCode=$("#unitCode").val();
 			var dealDate=$("#dealDate").val();
 			var where=" WHERE DEAL_DATE = "+dealDate;
 			//条件
 			if(regionCode!=''){
 				where+= " AND GROUP_ID_1 ='"+regionCode+"'";
-			}
-			if(unitCode!=''){
-				where+= " AND UNIT_ID ='"+unitCode+"'";
 			}
 			//权限
 			if($tr){
@@ -44,7 +40,7 @@ $(function(){
 				}else if(orgLevel==3){
 					where+=" AND GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==4){
-					where+=" AND UNIT_ID='"+code+"'";
+					where+=" AND CITY_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -59,7 +55,7 @@ $(function(){
 				}else if(orgLevel==2){//市
 					where+=" AND GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服
-					where+=" AND UNIT_ID='"+code+"'";
+					where+=" AND GROUP_ID_1='"+region+"'";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -87,8 +83,8 @@ function getSql(where,orgLevel){
 		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,";
 		groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
 	}else if(orgLevel==3){
-		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,";
-		groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
+		preSql="SELECT CITY_ID ROW_ID,CITY_NAME ROW_NAME,";
+		groupBy=" GROUP BY CITY_ID,CITY_NAME";
 	}else if(orgLevel==4){
 		preSql="SELECT TOWN_ID ROW_ID,TOWN_NAME ROW_NAME,";
 		groupBy=" GROUP BY TOWN_ID,TOWN_NAME";
@@ -106,7 +102,7 @@ function getSql(where,orgLevel){
 }
 
 function getDownSql(where){
-	var sql = "SELECT GROUP_ID_1_NAME,UNIT_NAME,TOWN_NAME,"+
+	var sql = "SELECT GROUP_ID_1_NAME,CITY_NAME,TOWN_NAME,"+
 	"        SUM(NVL(SC_DEV_DAY,0)) SC_DEV_DAY,                                               "+
 	"        SUM(NVL(SC_DEV_MON,0)) SC_DEV_MON,                                               "+
 	"        SUM(NVL(SC_DEV_LJ,0)) SC_DEV_LJ,                                                 "+
@@ -114,7 +110,7 @@ function getDownSql(where){
 	"        SUM(NVL(HQ_NUM_DAY,0)) HQ_NUM_DAY,                                               "+
 	"        SUM(NVL(SC_XN_DAY,0)) SC_XN_DAY                                                  "+
 	"     FROM  PMRT.TB_MRT_DW_V_D_HLW_OUTLINE_TOWN                                           "+
-	where + " GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME,TOWN_ID,TOWN_NAME";
+	where + " GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,CITY_ID,CITY_NAME,TOWN_ID,TOWN_NAME";
 	return sql;
 }
 
@@ -126,7 +122,6 @@ function downsAll() {
 	var region=$("#region").val();
 	var orgLevel=$("#orgLevel").val();
 	var regionCode=$("#regionCode").val();
-	var unitCode=$("#unitCode").val();
 	var dealDate=$("#dealDate").val();
 
 	var where=" WHERE DEAL_DATE = "+dealDate;
@@ -136,14 +131,11 @@ function downsAll() {
 	}else if(orgLevel==2){
 		where += " AND GROUP_ID_1 =" + code;
 	}else{
-		where += " AND UNIT_ID ='"+code+"' ";
+		where += " AND GROUP_ID_1 ='"+region+"' ";
 	}
 	//条件
 	if(regionCode!=''){
 		where+= " AND GROUP_ID_1 ='"+regionCode+"'";
-	}
-	if(unitCode!=''){
-		where+= " AND UNIT_ID ='"+unitCode+"'";
 	}
 	
 	var downsql = getDownSql(where);
