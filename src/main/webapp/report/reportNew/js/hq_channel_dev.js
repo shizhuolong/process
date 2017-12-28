@@ -187,6 +187,10 @@ function getSql(){
 	"                                  END)                                                                                                                                                                                     "+
 	"                       ,2)        HB_SHZX                                                                                                                                                                                  "+
 	"FROM PCDE.TAB_CDE_CHANL_HQ_CODE T                                                                                                                                                                                          "+
+	
+	"JOIN (SELECT HQ_CHAN_CODE HQ_CHANL_CODE ,DEAL_DATE FROM PCDE.TB_CDE_CHNL_TYPE_MON WHERE CHNL_TYPE='社会实体') T4 "+
+    "ON(T.HQ_CHAN_CODE=T4.HQ_CHANL_CODE AND T4.DEAL_DATE="+dealDate+") "+
+
 	"LEFT JOIN (SELECT HQ_CHNL_ID FROM PCDE.TB_CDE_CHAIN_CHANNEL_TREE) T2  "+
     "ON(T.HQ_CHAN_CODE=T2.HQ_CHNL_ID)                                      "+
 	"JOIN PCDE.TB_CDE_REGION_CODE T1                                                                                                                                                                                            "+
