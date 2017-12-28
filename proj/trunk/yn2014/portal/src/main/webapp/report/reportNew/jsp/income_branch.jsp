@@ -10,8 +10,8 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	Calendar ca=Calendar.getInstance();
-	ca.add(Calendar.DAY_OF_MONTH, -1);
-	String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+	ca.add(Calendar.MONTH, -1);
+	String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>双低区县地推发展情况</title>
+<title>以收定支</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/low_local_dev1.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/income_branch.js?v=1"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -48,12 +48,11 @@
 		<form id="searchForm" method="post" style="width:100%">
 			<table style="width:100%;margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="3%" style="padding-left: 1px;" align="right">账期：</td>
+				   <td width="5%" style="padding-left: 1px;" align="right">账期：</td>
                     <td width="8%">
-                        <input type="text"  class="Wdate default-text-input wper80" 
-                        onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd'})" value="<%=dealDate %>" id="dealDate">
-                    </td>
-					<td width="3%" style="text-align:right;">地市：</td>
+                        <input type="text" style="width:100px" class="Wdate" id="dealDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/>
+                    </td>                   
+                    <td width="3%" style="text-align:right;">地市：</td>
                     <td width="8%">
                         <select name="regionCode" id="regionCode" class="default-text-input wper100">
                                 <option value=''>请选择</option>
@@ -64,15 +63,10 @@
                         <select name="unitCode" id="unitCode" class="default-text-input wper80">
                                 <option value=''>请选择</option>
                         </select>
-                    </td>
-                    <td width="3%" align="right">营服类型：</td>
+                    </td> 
+                    <td width="7%" align="right">渠道编码：</td>
                     <td width="8%">
-                        <select name="unitType" id="unitType" class="default-text-input wper80">
-                                <option value=''>请选择</option>
-                        </select>
-                    </td>
-                    <td width="5%">
-                        <a class="default-gree-btn" href="#" style="float: right;" id="exportDesc" onclick="showDesc();">说明</a>
+                        <input name="hqChanName" id="hqChanName" class="default-text-input wper80"/>
                     </td>
                     <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
@@ -82,6 +76,7 @@
                         <a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
                     </td>
 				</tr>
+				
 			</table>
 		</form>
 		
