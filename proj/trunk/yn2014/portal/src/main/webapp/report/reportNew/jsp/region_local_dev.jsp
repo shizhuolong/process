@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/region_local_dev1.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/region_local_dev1.js?v=1"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -56,12 +56,6 @@
 					<td width="3%" style="text-align:right;">地市：</td>
                     <td width="8%">
                         <select name="regionCode" id="regionCode" class="default-text-input wper100">
-                                <option value=''>请选择</option>
-                        </select>
-                    </td>
-                    <td width="3%" align="right">营服：</td>
-                    <td width="8%">
-                        <select name="unitCode" id="unitCode" class="default-text-input wper80">
                                 <option value=''>请选择</option>
                         </select>
                     </td>
