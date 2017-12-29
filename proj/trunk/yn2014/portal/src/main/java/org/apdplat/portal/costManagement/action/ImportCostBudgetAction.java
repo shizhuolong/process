@@ -237,8 +237,7 @@ public class ImportCostBudgetAction extends BaseAction {
 			// 验证成本中心名称和帐期不能为空
 			for (int i = 1; i < list.size(); i++) {
 				String[] str = list.get(i);
-				String str1 = str[1];
-				String str8 = str[8];
+				String str1 = str[1]; 
 				if (str1 == null || "".equals(str1.trim())) {
 					resultMsg = "成本中心名称不能为空!";
 					break;
