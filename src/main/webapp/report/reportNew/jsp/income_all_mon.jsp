@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>以收定支</title>
+<title>收入总体情况月报</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/income_branch.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/income_all_mon.js"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -48,10 +48,10 @@
 		<form id="searchForm" method="post" style="width:100%">
 			<table style="width:100%;margin: 10px 0; border:none;">
 				<tr height="35px">
-				   <td width="5%" style="padding-left: 1px;" align="right">账期：</td>
+				    <td width="5%" style="padding-left: 1px;" align="right">账期：</td>
                     <td width="8%">
                         <input type="text" style="width:100px" class="Wdate" id="dealDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/>
-                    </td>                   
+                    </td>   					
                     <td width="3%" style="text-align:right;">地市：</td>
                     <td width="8%">
                         <select name="regionCode" id="regionCode" class="default-text-input wper100">
@@ -63,7 +63,11 @@
                         <select name="unitCode" id="unitCode" class="default-text-input wper80">
                                 <option value=''>请选择</option>
                         </select>
-                    </td> 
+                    </td>
+                     <td width="7%" align="right">渠道经理HR：</td>
+                    <td width="8%">
+                        <input name="hqChanCode" id="hqHrId" class="default-text-input wper80"/>
+                    </td>
                     <td width="7%" align="right">渠道编码：</td>
                     <td width="8%">
                         <input name="hqChanName" id="hqChanName" class="default-text-input wper80"/>
