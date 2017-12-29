@@ -51,14 +51,14 @@ $(function(){
 				code=$tr.attr("row_id");
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				var parentId=$tr.attr("parentId");
-				if(orgLevel==2){//省进去点击市
-					
-				}else if(orgLevel==3){//点击市
-					
-				}else if(orgLevel==4){//点击市
-					
-				}else if(orgLevel==5){//点击市
-					
+				if(orgLevel==2){
+					where+=" AND GROUP_ID_0='"+code+"'";
+				}else if(orgLevel==3){
+					where+=" AND GROUP_ID_1='"+code+"'";
+				}else if(orgLevel==4){
+					where+=" AND UNIT_ID='"+code+"'";
+				}else if(orgLevel==5){
+					where+=" AND HR_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -69,15 +69,11 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					
+					where+=" AND GROUP_ID_0='"+code+"'";
 				}else if(orgLevel==2){//市
-					
+					where+=" AND GROUP_ID_1='"+code+"'";
 				}else if(orgLevel==3){//营服
-					
-				}else if(orgLevel==4){//渠道
-					
-				}else if(orgLevel==5){
-					
+					where+=" AND UNIT_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -852,6 +848,6 @@ function downsAll() {
 	")T4                                                                                                                                   "+
 	"ON(T.ROW_ID=T4.ROW_ID) ";
 	
-	showtext = "多维度收入日报";
+	showtext = "多维度收入月报";
 	downloadExcel(sql,title,showtext);
 }
