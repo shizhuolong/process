@@ -39,7 +39,7 @@ $(function(){
 				where+= " AND UNIT_ID ='"+unitCode+"'";
 			}
 			if(hqHrId!=''){
-				where+= " AND HQ_HR_ID ='"+hqHrId+"'";
+				where+= " AND HR_ID ='"+hqHrId+"'";
 			}
 			if(hqChanName!=''){
 				where+= " AND HQ_CHAN_CODE ='"+hqChanName+"'";
@@ -56,7 +56,7 @@ $(function(){
 				}else if(orgLevel==4){
 					where+=" AND UNIT_ID='"+code+"'";
 				}else if(orgLevel==5){
-					where+=" AND HQ_HR_ID='"+code+"'";
+					where+=" AND HR_ID='"+code+"'";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -90,8 +90,6 @@ $(function(){
 });
 
 function getSql(where,orgLevel,dealDete){
-	var startDete=$("#startDate").val();
-	var endDete=$("#endDate").val();
 	var sql="";
 	if(orgLevel==1){
 		sql="SELECT T.ROW_ID                                                                            "+
@@ -195,8 +193,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=201701                                                                 "+
+		"    WHERE DEAL_DATE="+dealDete+"                                                                 "+
 		//"   --其他筛选条件                                                                        "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		")T                                                                                         "+
 		"LEFT JOIN (                                                                                "+
@@ -219,8 +218,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-1),'YYYYMM')              "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-1),'YYYYMM')              "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		")T1                                                                                        "+
 		"ON(T.ROW_ID=T1.ROW_ID)                                                                     "+
@@ -244,8 +244,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-12),'YYYYMM')             "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-12),'YYYYMM')             "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		")T2                                                                                        "+
 		"ON(T.ROW_ID=T2.ROW_ID)  ";                                                
@@ -352,8 +353,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=201701                                                                 "+
+		"    WHERE DEAL_DATE="+dealDete+"                                                                 "+
 		//"   --其他筛选条件                                                                        "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -379,8 +381,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-1),'YYYYMM')              "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-1),'YYYYMM')              "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -407,8 +410,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-12),'YYYYMM')             "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-12),'YYYYMM')             "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -519,8 +523,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                             "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                              "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                          "+
-		"    WHERE DEAL_DATE=201701                                                                    "+
+		"    WHERE DEAL_DATE="+dealDete+"                                                                    "+
 		//"   --其他筛选条件                                                                           "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                       "+
 		"            ,GROUP_ID_1                                                                       "+
 		"            ,GROUP_ID_1_NAME                                                                  "+
@@ -550,8 +555,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                             "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                              "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                          "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-1),'YYYYMM')                 "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-1),'YYYYMM')                 "+
 		//" --其他筛选条件                                                                             "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                       "+
 		"            ,GROUP_ID_1                                                                       "+
 		"            ,GROUP_ID_1_NAME                                                                  "+
@@ -582,8 +588,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                             "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                              "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                          "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-12),'YYYYMM')                "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-12),'YYYYMM')                "+
 		//" --其他筛选条件                                                                             "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                       "+
 		"            ,GROUP_ID_1                                                                       "+
 		"            ,GROUP_ID_1_NAME                                                                  "+
@@ -698,8 +705,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=201701                                                                 "+
+		"    WHERE DEAL_DATE="+dealDete+"                                                                 "+
 		//"   --其他筛选条件                                                                        "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -733,8 +741,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-1),'YYYYMM')              "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-1),'YYYYMM')              "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -769,8 +778,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-12),'YYYYMM')             "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-12),'YYYYMM')             "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -896,8 +906,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=201701                                                                 "+
+		"    WHERE DEAL_DATE="+dealDete+"                                                                 "+
 		//"   --其他筛选条件                                                                        "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -935,8 +946,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-1),'YYYYMM')              "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-1),'YYYYMM')              "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -975,8 +987,9 @@ function getSql(where,orgLevel,dealDete){
 		"          ,NVL(SUM(XYW_DXF_NUM),0)    XYW_DXF_NUM                                          "+
 		"          ,NVL(SUM(XYW_XF_NUM ),0)    XYW_XF_NUM                                           "+
 		"    FROM PMRT.TB_MRT_KDGJ_DWD_WX_MON                                                       "+
-		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE(201701,'YYYYMM'),-12),'YYYYMM')             "+
+		"    WHERE DEAL_DATE=TO_CHAR(ADD_MONTHS(TO_DATE("+dealDete+",'YYYYMM'),-12),'YYYYMM')             "+
 		//" --其他筛选条件                                                                          "+
+		where +
 		"    GROUP BY GROUP_ID_0                                                                    "+
 		"            ,GROUP_ID_1                                                                    "+
 		"            ,GROUP_ID_1_NAME                                                               "+
@@ -1010,7 +1023,7 @@ function downsAll() {
 		where+= " AND UNIT_ID ='"+unitCode+"'";
 	}
 	if(hqHrId!=''){
-		where+= " AND HQ_HR_ID ='"+hqHrId+"'";
+		where+= " AND HR_ID ='"+hqHrId+"'";
 	}
 	if(hqChanName!=''){
 		where+= " AND HQ_CHAN_CODE ='"+hqChanName+"'";
