@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_detail_uncharge.js?v=20"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/order_detail_uncharge.js?v=21"></script>
 <script type="text/javascript">
     var path="<%=path%>";
 </script>
@@ -61,6 +61,12 @@
 				<td width="4%">
 					<input class="default-text-input wper80" name="serviceNumber" type="text" id="serviceNumber"/>
 				</td>
+				<td width="4%" style="text-align: right;">是否回访成功：</td>
+                <td width="4%"><select class="default-text-input wper80" name="succVisit" id="succVisit">
+                        <option value="">全部</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                </select></td>
 				<td width="10%">
 				  <a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 				  <a class="default-btn" href="#" style="float: right;" onclick="exportAll()">导出</a>
