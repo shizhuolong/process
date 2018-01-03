@@ -64,6 +64,7 @@ function search(pageNumber) {
 	var orderNo=$("#orderNo").val();
 	var serviceNumber=$("#serviceNumber").val();
 	var bookNum=$("#bookNum").val();
+	var isSucc=$("#isSucc").val();
 	var sql="SELECT /*PARALLEL(T,8)*/ ORDER_NO                                               "+
 	"      ,ORDER_TIME                                                     "+
 	"      ,GROUP_ID_0_NAME                                                "+
@@ -119,6 +120,9 @@ function search(pageNumber) {
 	}
 	if(bookNum){
 		sql+=" AND BOOK_NUM='"+bookNum+"'                       		            ";
+	}isSucc
+	if(isSucc){
+		sql+=" AND IS_SUCC='"+isSucc+"'                       		            ";
 	}
 	//排序
 	if (orderBy != '') {

@@ -82,6 +82,7 @@ function search(pageNumber) {
 	var serviceName=$("#serviceName").val();
 	var userId=$("#userId").val();
 	var serviceNumber=$("#serviceNumber").val();
+	var succVisit=$("#succVisit").val();
 	var sql="SELECT ORDER_NO,"+field.join(",")+" FROM PODS.TAB_ODS_DWDDK_USER PARTITION(P"+dealDate+") WHERE 1=1";
 	var s;
     if(orgLevel!=1){
@@ -97,6 +98,9 @@ function search(pageNumber) {
 	}
 	if(serviceNumber){
 		sql+=" AND DEVICE_NUMBER='"+serviceNumber+"'";
+	}
+	if(succVisit){
+		sql+=" AND IS_SUCC='"+succVisit+"'";
 	}
 	
 	//排序
