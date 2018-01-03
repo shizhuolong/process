@@ -146,18 +146,23 @@
 					<thead>
 						<tr>
 							<th class="first">地市名称</th>
-							<th>营服中心</th>
-							<th>渠道名称</th>
-							<th>渠道编码</th>
-							<th>代理点类型</th>
-							<th>渠道属性1</th>
-							<th>渠道属性2</th>
-							<th>渠道属性3</th>
-							<th>渠道属性4</th>
-							<th>战略渠道简称</th>
+                            <th>营服中心</th>
+                            <th>渠道名称</th>
+                            <th>渠道编码</th>
+                            <th>渠道类型</th>
+                            <th>渠道属性1</th>
+                            <th>渠道属性2</th>
+                            <th>渠道属性3</th>
+                            <th>渠道属性4</th>
+                            <th>战略渠道简称</th>
                             <th>战略渠道级别</th>
+                            <th>是否连锁</th>
+                            <th>商圈编码</th>
+                            <th>商圈名称</th>
+                            <th>学校编码</th>
+                            <th>学校名称</th>
                             <th>是否复用渠道</th>
-							<th>操作</th>
+                            <th>操作</th>
 						</tr>
 					</thead>
 					<tbody id="dataBody">
@@ -212,6 +217,24 @@
 					</td>
 				</tr>
 				<tr>
+                    <td style="width:100px;">商圈名称:</td>
+                    <td style="width:100px;">
+                      <select id="agent_business_name" name="business_id" style="width:100px;">
+                      </select>
+                    </td>
+                    <td><input style="width:70px;margin-left: 20px;" id="businessName" type="text" value=""/></td>
+                    <td><input class="default-gree-btn fLeft mr10" id="searchBusiness" type="button" value="查询"/></td>
+                </tr>
+                <tr>
+                    <td style="width:100px;">学校名称:</td>
+                    <td style="width:100px;">
+                      <select id="agent_school_name" name="school_id" style="width:100px;">
+                      </select>
+                    </td>
+                    <td><input style="width:70px;margin-left: 20px;" type="text" id="schoolName" value=""/> </td>
+                    <td><input class="default-gree-btn fLeft mr10" id="searchSchool" type="button" value="查询"/></td>
+                </tr>
+				<tr>
 	                <td style="padding-left: 120px;padding-top: 20px;" colspan="3">
 		                <a href="#" class="default-btn fLeft mr10" id="updateAgentBtn">保存</a>
 		                <a href="#" class="default-btn fLeft ml10" id="cancleBtn" onclick="cancel('updateAgentFormDiv');">取消</a>
@@ -241,6 +264,24 @@
 					  <a style="margin-left: 20px;" class="default-gree-btn fLeft mr10" href="#" id="notAgentMoreTown" onclick="openNotAgentTownType();">更多</a>
 					</td>
 				</tr>
+				<tr>
+                    <td style="width:100px;">商圈名称:</td>
+                    <td style="width:100px;">
+                      <select id="notAgent_business_name" name="business_id" style="width:100px;">
+                      </select>
+                    </td>
+                    <td><input style="width:70px;margin-left: 20px;" id="notAgent_businessName" type="text" value=""/></td>
+                    <td><input class="default-gree-btn fLeft mr10" id="notAgent_searchBusiness" type="button" value="查询"/></td>
+                </tr>
+                <tr>
+                    <td style="width:100px;">学校名称:</td>
+                    <td style="width:100px;">
+                      <select id="notAgent_school_name" name="school_id" style="width:100px;">
+                      </select>
+                    </td>
+                    <td><input style="width:70px;margin-left: 20px;" type="text" id="notAgent_schoolName" value=""/> </td>
+                    <td><input class="default-gree-btn fLeft mr10" id="notAgent_searchSchool" type="button" value="查询"/></td>
+                </tr>
 				<tr>
 	                <td colspan="3" style="padding-left: 120px;width:100px;">
 		                <a href="#" class="default-btn fLeft mr10" id="updateNotAgentBtn">保存</a>
