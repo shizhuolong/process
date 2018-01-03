@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/my_order_list.js?v=12"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/order2i2c/js/my_order_list.js?v=13"></script>
 <script type="text/javascript">
     var paths="<%=path%>";
 </script>
@@ -55,10 +55,11 @@
 				<td width="15%"><select class="default-text-input wper80"
 					name="serviceName" id="serviceName">
 				</select></td>
-				<td><a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
-				<a class="default-btn" href="#" onclick="exportAll()"
-						style="float: right; margin-right: 30px;">导出</a>
+				<td ><a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
 				</td>
+				<td><a class="default-btn" href="#" onclick="exportAll()"
+                        style="float: right; margin-right: 30px;">导出</a>
+                </td>
 			</tr>
 			<tr>
 				<td width="8%" align="right">订单编号：</td>
@@ -73,6 +74,14 @@
 				<td width="13%">
 					<input class="default-text-input wper80" name="bookNum" type="text" id="bookNum"/>
 				</td>
+				<td width="8%" align="right">是否回访成功：</td>
+                <td width="13%">
+                    <select class="default-text-input wper80" name="isSucc" id="isSucc">
+                        <option value="">全部</option>
+                        <option value="是">是</option>
+                        <option value="否" selected>否</option>
+                </select>
+                </td>
 			</tr>
 		</table>
 	</form>
