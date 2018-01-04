@@ -39,7 +39,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_batch_renew.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_batch_renew.js?v=14"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
