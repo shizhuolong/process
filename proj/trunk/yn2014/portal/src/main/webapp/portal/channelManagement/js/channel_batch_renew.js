@@ -1,7 +1,7 @@
 $(function(){
 	var pageNumber =1;
 	var pageSize = 10;
-	var url=$("#ctx").val()+"/channel/renew-channel!findByIds.action";
+	var url=$("#ctx").val()+"/renew/renew-process!findByIds.action";
 	var id=$("#uu_id").val();
 	$.ajax({
 		type:"POST",
@@ -21,18 +21,18 @@ $(function(){
 					content+="<tr>"
 					+"<td><input readonly='readonly' style='border-style:none' value="+isNull(n['HQ_CHAN_CODE'])+"></td>"
 	                +"<td><input readonly='readonly' style='border-style:none' value="+isNull(n['HQ_CHAN_NAME'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['START_MONTH'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['END_MONTH'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['HZ_YEAR'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['ASSESS_TARGET'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['YSDZ_XS'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['ZX_BT'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['HZ_MS'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['FW_FEE'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['RATE_THREE'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['RATE_SIX'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['RATE_NINE'])+"></td>"
-	                +"<td><input style='border-style:none' value="+isNull(n['RATE_TWELVE'])+"></td>"
+	                +"<td><input readonly='readonly' style='border-style:none' value="+isNull(n['START_MONTH'])+"></td>"
+	                +"<td><input readonly='readonly' style='border-style:none' value="+getEndMonth(n['END_MONTH'])+"></td>"
+	                +"<td><input readonly='readonly' style='border-style:none' value="+isNull(n['HZ_YEAR']+1)+"></td>"
+	                +"<td><input value="+isNull(n['ASSESS_TARGET'])+"></td>"
+	                +"<td><input value="+isNull(n['YSDZ_XS'])+"></td>"
+	                +"<td><input value="+isNull(n['ZX_BT'])+"></td>"
+	                +"<td><input value="+isNull(n['HZ_MS'])+"></td>"
+	                +"<td><input value="+isNull(n['FW_FEE'])+"></td>"
+	                +"<td><input value="+isNull(n['RATE_THREE'])+"></td>"
+	                +"<td><input value="+isNull(n['RATE_SIX'])+"></td>"
+	                +"<td><input value="+isNull(n['RATE_NINE'])+"></td>"
+	                +"<td><input value="+isNull(n['RATE_TWELVE'])+"></td>"
 	                +"<td style='border-style:none; margin:0; padding: 0px;'><input type='hidden' style='border-style:none' value="+isNull(n['ID'])+"></td>"
 	                +"</tr>";
 				});
@@ -54,6 +54,14 @@ function isNull(obj){
 		return "&nbsp;";
 	}
 	return obj;
+}
+
+function getEndMonth(obj){
+	obj=obj+"";
+	var year=obj.substring(0,4);
+	var endYear=parseInt(year)+1;
+	var endMonth=obj.substring(4,6);
+	return endYear+endMonth;
 }
 
 function save(){
@@ -78,7 +86,7 @@ function save(){
         str += hz_year+ ","+end_month+","+assess_target+","+rate_three+","+rate_six+","+
         rate_nine+","+rate_twelve+","+ysdz_xs+","+zx_bt+","+hz_ms+","+fw_fee+","+uu_id+"|"
     });
-	var url = $("#ctx").val()+"/channel/renew-channel!renewBatch.action";
+	var url = $("#ctx").val()+"/renew/renew-process!renewBatch.action";
 	$.ajax({
 		type:"POST",
 		dataType:'json',

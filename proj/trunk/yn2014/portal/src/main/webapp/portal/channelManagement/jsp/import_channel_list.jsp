@@ -1,6 +1,3 @@
-<%@page import="java.util.Calendar"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="org.apdplat.module.security.model.Org"%>
@@ -11,9 +8,6 @@
 	User user = UserHolder.getCurrentLoginUser();
 	Org org = user.getOrg();
 	String paySession=session.getId();
-	Calendar ca=Calendar.getInstance();
-    ca.add(Calendar.DAY_OF_MONTH, -1);
-    String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,7 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>合同拟稿人发起审批界面</title>
+<title>渠道考核合同审批</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css">
 <link href="<%=request.getContextPath()%>/platform/theme/style/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -37,9 +31,10 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/import_channel_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/import_channel_list.js?v=8"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -60,14 +55,20 @@
 						<form id="taskForm" method="post">
 						    <input type="hidden" id="isHavingFile" name="isHavingFile">
 							<input type="hidden" id="actNodeName" name="actNodeName">
+							<input type="hidden" id="businessKey" name="businessKey" value="">
 							<div class="main-block">
 								<div class="title">
-									<i></i>渠道导入
+									<i></i>渠道考核合同审批(发起)
 								</div>
 								<table id="sm-payment-order-apply" style="width: 100%;">
 									<tr>
-										<td>
-											<a class="default-btn fLeft mr10" href="#" id="searchBtn">查询</a>
+	                                   	<th style="width: 70px;">工单主题：</th>
+                                        <td colspan="5">
+											<input class="default-text-input w480" id="theme" name="theme" type="text" />
+										</td>
+                                   </tr>
+								   <tr>
+										<td colspan="2">
 											<a class="default-gree-btn fLeft mr10" href="#" id="newBtn">新增</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="downExcelTemp">模板下载</a>
 											<a class="default-gree-btn fLeft mr10" href="#" id="importExcel">清空导入</a>
@@ -112,14 +113,27 @@
 										</table>
 									</div>
 								</div>
-								
+								<div class="title-o"><i style="margin-top:20px;">上传附件</i></div>
+								<span style="color:red;font-size:10px;">注意：上传采取批量覆盖的方式，支持批量上传；先点击添加附件选择文件，再点击开始上传。</span>
+								<!-- 上传附件 -->
+								<div region="south" style="height:auto;" >
+									<div style="margin-left:10px;margin-top:10px"><input type="file" name="uploadify" id="uploadify" align="right"/></div>
+									<br/>
+									<div id="fileQueue"></div> 
+									<p><span id="speed"></span></p>
+									<p>
+										&nbsp;&nbsp;<a style="font-size:15px;" href="javascript:uploasFile()">开始上传</a>&nbsp;
+										<a style="font-size:15px;"  href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消选择</a>
+									</p>
+								</div> 
+								<!--上传附件-->
 								<div id="chose-sender">
                                	<div class="title-o"><i style="margin-top:40px;">选择发送人</i></div>
                                	<table width="70%" id="sm-payment-order-apply">
                                      <tr>
                                          <td width="15%">审核步骤：</td>
                                          <td width="35%">
-                                     		<input class="default-text-input" name="nextRouter" type="text" id="nextRouter" value="地市管理部门经理审批" readonly="readonly"/>
+                                     		<input class="default-text-input" name="nextRouter" type="text" id="nextRouter" value="市场部经理" readonly="readonly"/>
                                          </td>
                                          <td width="20%">选择下一步审批人：</td>
                                          <td width="35%">

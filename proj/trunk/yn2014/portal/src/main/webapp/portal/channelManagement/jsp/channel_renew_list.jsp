@@ -12,8 +12,8 @@
 	Org org = user.getOrg();
 	String paySession=session.getId();
 	Calendar ca=Calendar.getInstance();
-    ca.add(Calendar.DAY_OF_MONTH, -1);
-    String dealDate=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
+    ca.add(Calendar.MONTH, -1);
+    String dealDate=new SimpleDateFormat("yyyyMM").format(ca.getTime());
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -39,9 +39,10 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_renew_list.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_renew_list.js?v=9"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -67,6 +68,8 @@
 						<form id="taskForm" method="post">
 						    <input type="hidden" id="isHavingFile" name="isHavingFile">
 							<input type="hidden" id="actNodeName" name="actNodeName">
+							<input type="hidden" id="id" name="id">
+							<input type="hidden" id="type" name="type" value="1">
 							<div class="main-block">
 								<div class="title">
 									<i></i>渠道续签
@@ -77,11 +80,11 @@
 					                    <td width="8%">
 					                        <input name="hqChanName" id="hqChanName" class="default-text-input wper80"/>
 					                    </td>
-					                    <td width="5%" style="padding-left: 1px;" align="right">开始月份：</td>
+					                    <td width="6%" style="padding-left: 1px;" align="right">开始月份：</td>
 					                    <td width="8%">
 					                        <input type="text" style="width:100px" class="Wdate" id="startDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/>
 					                    </td>
-					                    <td width="5%" style="padding-left: 1px;" align="right">结束月份：</td>
+					                    <td width="6%" style="padding-left: 1px;" align="right">结束月份：</td>
 					                    <td width="8%">
 					                        <input type="text" style="width:100px" class="Wdate" id="endDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/>
 					                    </td>
@@ -120,7 +123,7 @@
 												<tbody id="dataBody">
 												</tbody>
 												<tr>
-												<td colspan="14">
+												<td colspan="16">
 													<div class="page_count">
 														<div class="page_count_left">
 															共有 <span id="totalCount"></span> 条数据
@@ -147,20 +150,65 @@
     <div id="addFormDiv" style="display:none;">
            <form id="updateForm" method="POST">
            <table style="border-collapse:separate; border-spacing:0px 10px;">
-                <tr><th>渠道编码：</th><td><input readonly="readonly" id="hq_chan_code" type="text" name="hq_chan_code"/></td></tr>
-                <tr><th>渠道名称：</th><td><input readonly="readonly" id="hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
-                <tr><th>合作年份：</th><td><input readonly="readonly" id="hz_year" type="text" name="hz_year"/></td></tr>
-                <tr><th>年考核指定金额：</th><td><input min="0" required id="assess_target" type="text" name="assess_target"/></td></tr>
-                <tr><th>以收定支考核系数：</th><td><input min="0" required id="ysdz_xs" type="text" name="assess_target"/></td></tr>
-                <tr><th>装修补贴：</th><td><input id="zx_bt" type="text" name="assess_target"/></td></tr>
-                <tr><th>合作模式：</th><td><input id="hz_ms" type="text" name="assess_target"/></td></tr>
-                <tr><th>房租（房补）：</th><td><input id="fw_fee" type="text" name="assess_target"/></td></tr>
-                <tr><th>考核进度：</th></tr>
-                <tr><th>1-3月：</th><td><input id="rate_three" type="text" name="rate_three"/></td></tr>
-                <tr><th>1-6月：</th><td><input id="rate_six" type="text" name="rate_six"/></td></tr>
-                <tr><th>1-9月：</th><td><input id="rate_nine" type="text" name="rate_nine"/></td></tr>
-                <tr><th>1-12月：</th><td><input id="rate_twelve" type="text" name="rate_twelve"/></td></tr>
+                <tr>
+	                 <th style="width: 70px;">工单主题：</th>
+                     <td colspan="3">
+					    <input class="default-text-input w480" id="theme" name="theme" type="text" />
+					 </td>						                                     	
+                </tr>
+                <tr><th>渠道编码：</th><td><input readonly="readonly" style='border-style:none' id="hq_chan_code" type="text" name="hq_chan_code"/></td>
+                <th>渠道名称：</th><td><input readonly="readonly" style='border-style:none' id="hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
+                <tr><th>合作年份：</th><td><input readonly="readonly" style='border-style:none' id="hz_year" type="text" name="hz_year"/></td>
+                <th>年考核指定金额：</th><td><input min="0" required id="assess_target" type="text" name="assess_target"/></td></tr>
+                
+                <tr><th>以收定支考核系数：</th><td><input min="0" required id="ysdz_xs" type="text" name="assess_target"/></td>
+                <th>装修补贴：</th><td><input id="zx_bt" type="text" name="assess_target"/></td></tr>
+                
+                <tr><th>合作模式：</th><td><input id="hz_ms" type="text" name="assess_target"/></td>
+                <th>房租（房补）：</th><td><input id="fw_fee" type="text" name="assess_target"/></td></tr>
+                
+                <tr><th colspan="4">考核进度</th></tr>
+                <tr><th>1-3月：</th><td><input id="rate_three" type="text" name="rate_three"/></td>
+                <th>1-6月：</th><td><input id="rate_six" type="text" name="rate_six"/></td></tr>
+                <tr><th>1-9月：</th><td><input id="rate_nine" type="text" name="rate_nine"/></td>
+                <th>1-12月：</th><td><input id="rate_twelve" type="text" name="rate_twelve"/></td></tr>
            </table>
+           
+           <div class="title-o"><i style="margin-top:20px;">上传附件</i></div>
+								<span style="color:red;font-size:10px;">注意：上传采取批量覆盖的方式，支持批量上传；先点击添加附件选择文件，再点击开始上传。</span>
+								<!-- 上传附件 -->
+								<div region="south" style="height:auto;" >
+									<div style="margin-left:10px;margin-top:10px"><input type="file" name="uploadify" id="uploadify" align="right"/></div>
+									<br/>
+									<div id="fileQueue"></div> 
+									<p><span id="speed"></span></p>
+									<p>
+										&nbsp;&nbsp;<a style="font-size:15px;" href="javascript:uploasFile()">开始上传</a>&nbsp;
+										<a style="font-size:15px;"  href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消选择</a>
+									</p>
+								</div> 
+								<!--上传附件-->
+								
+           <div id="chose-sender">
+                               	<div class="title-o"><i style="margin-top:40px;">选择发送人</i></div>
+                               	<table width="100%" id="sm-payment-order-apply">
+                                     <tr>
+                                         <td width="15%">审核步骤：</td>
+                                         <td width="35%">
+                                     		<input class="default-text-input" name="nextRouter" type="text" id="nextRouter" value="市场部经理" readonly="readonly"/>
+                                         </td>
+                                         <td width="25%">选择下一步审批人：</td>
+                                         <td width="35%">
+                                       		<select class="default-text-input wper80" id="nextDealer" name="nextDealer">
+                                       		</select>
+                                         </td>
+                                     </tr>
+                                 </table>    
+                               </div>
+                               <div class="center mt30 mb20">
+                               		<input type="button" class="default-btn mauto" value="发送" id="submitTask" style="border: 0px;">
+                               </div>
+							</div>
            </form>
     </div>  
     

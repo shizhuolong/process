@@ -2,7 +2,7 @@
 *数据导入
 */
 function importExcel(){
-	var url = $("#ctx").val()+"/channel/import-channel!importToTemp.action";
+	var url = $("#ctx").val()+"/contract/contract-process!importToTemp.action";
 	$('#importForm').form('submit', {   
 	    url:url,
 	    onSubmit: function(){   

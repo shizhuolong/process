@@ -1,5 +1,6 @@
 var isNeedApprover = true;
 var pageSize = 10;
+var isHavingFile="notWithFile";
 $(function(){
 	//使用插件校验Form
 	$("#updateForm").validate({
@@ -7,13 +8,15 @@ $(function(){
 	        $(element).valid();
 	    }
 	});
-	
+	initUpload();
 	search(0);
 	
 	$("#searchBtn").click(function(){
 		search(0);
 	});
-	
+	$("#submitTask").click(function(){
+		submitTask();
+	});
 	$("#renewBtn").click(function(){
 		var id_array=new Array();  
 		$('input[name="selected"]:checked').each(function(){  
@@ -32,15 +35,7 @@ $(function(){
 		   		    lock: true
 				});
 			}
-		
-		/*
-		art.dialog.open('/portal/portal/channelManagement/jsp/channel_renew.jsp?id=' + idstr, {
-			width: '100%',   
-		    height: '50%',    
-			title : '批量续签'
-		});*/
-	});
-	
+		});
 });
 
 function search(pageNumber) {
@@ -50,7 +45,7 @@ function search(pageNumber) {
 		dataType:'json',
 		cache:false,
 		async: false,
-		url:$("#ctx").val()+"/channel/renew-channel!list.action",
+		url:$("#ctx").val()+"/renew/renew-process!list.action",
 		data:{
 		   "resultMap.page":pageNumber,
            "resultMap.rows":pageSize
@@ -90,7 +85,7 @@ function search(pageNumber) {
 				$("#submitTask").attr("disabled",false);
 			}else {
 				$("#submitTask").attr("disabled",true);
-				$("#dataBody").empty().html("<tr><td colspan='14'>暂无数据</td></tr>");
+				$("#dataBody").empty().html("<tr><td colspan='16'>暂无数据</td></tr>");
 			}
 	   	},
 	   	error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -100,109 +95,214 @@ function search(pageNumber) {
 }
 
 function renew(obj){
-	var uu_id=$(obj).attr("uu_id");
 	var formdiv=$('#addFormDiv');
-	var url = $("#ctx").val()+"/channel/renew-channel!findById.action";
-	$.get(url,
-		  {id:uu_id},
-		  function(data){
-		  	 if(data!=null&&data!=""){
-		  		var data=eval("("+data+")");
-		  		$("#hq_chan_code").val(data.HQ_CHAN_CODE);
-		  		$("#hq_chan_name").val(data.HQ_CHAN_NAME);
-		  		$("#hz_year").val(data.HZ_YEAR);
-		  		$("#assess_target").val(data.ASSESS_TARGET);
-		  		$("#rate_three").val(data.RATE_THREE);
-		  		$("#rate_six").val(data.RATE_SIX);
-		  		$("#rate_nine").val(data.RATE_NINE);
-		  		$("#rate_twelve").val(data.RATE_TWELVE);
-		  		$("#ysdz_xs").val(data.YSDZ_XS);
-		  		$("#zx_bt").val(data.ZX_BT);
-		  		$("#hz_ms").val(data.HZ_MS);
-		  		$("#fw_fee").val(data.FW_FEE);
-		  	 }
-	      });
+	initReNewData(obj);
+	findNextDealer("contract_marketManager","2");
 	formdiv.show();
 	formdiv.dialog({
+		id:"renewDialog",
 		title : '续签',
-		width : 400,
-		height : 550,
+		width : 800,
+		height : 500,
 		closed : false,
 		cache : false,
 		modal : true,
-		maximizable : true,
-		buttons: {
-	        "保存": function() {
-	        	$(this).dialog("close");
-	        	formdiv.hide();
-	        	var url = $("#ctx").val()+"/channel/renew-channel!renew.action";
-	        	var hq_chan_code=$.trim($("#hq_chan_code").val());
-	        	var hq_chan_name=$.trim($("#hq_chan_name").val());
-	        	var assess_target=$.trim($("#assess_target").val());
-	        	var rate_three=$.trim($("#rate_three").val());
-	        	var rate_six=$.trim($("#rate_six").val());
-	        	var rate_nine=$.trim($("#rate_nine").val());
-	        	var rate_twelve=$.trim($("#rate_twelve").val());
-	        	var hz_year=$.trim($("#hz_year").val());
-	        	var ysdz_xs=$.trim($("#ysdz_xs").val());
-	        	var zx_bt=$.trim($("#zx_bt").val());
-	        	var hz_ms=$.trim($("#hz_ms").val());
-	        	var fw_fee=$.trim($("#fw_fee").val());
-	        	
-	        	$.post(
-	        			 url,
-	        			 {
-	        			   "resultMap.hq_chan_code":hq_chan_code,
-	        			   "resultMap.hq_chan_name":hq_chan_name,
-	        			   "resultMap.assess_target":assess_target,
-	        			   "resultMap.rate_three":rate_three,
-	        			   "resultMap.rate_six":rate_six,
-	        			   "resultMap.rate_nine":rate_nine,
-	        			   "resultMap.rate_twelve":rate_twelve,
-	        			   "resultMap.id":uu_id,
-	        			   "resultMap.ysdz_xs":ysdz_xs,
-	        			   "resultMap.zx_bt":zx_bt,
-	        			   "resultMap.hz_ms":hz_ms,
-	        			   "resultMap.fw_fee":fw_fee,
-	        			   "resultMap.hz_year":hz_year
-	        			   
-	        			 },
-	        			 function(data,status){
-	        				var win = artDialog.open.origin;//来源页面
-	        			    var data = eval(data);
-	        			    if(data!=""&&null!=data){
-	        			    	win.art.dialog({
-	        			    		title:"续签失败",
-	        			    		icon:'error',
-	        			    		content:data,
-	        			    		width:'100px',
-	        			    		height:'200px',
-	        			    		lock:true,
-	        			    		ok: function () {
-	        							win.art.dialog.close();
-	        			   		    }
-	        			    	});
-	        			    }else{
-	        			    	win.art.dialog({
-	        			   			title: '提示',
-	        			   		    content: '续签成功',
-	        			   		    icon: 'succeed',
-	        			   		    lock: true,
-	        			   		    ok: function () {
-	        			   		    	//var win = artDialog.open.origin;//来源页面
-	        			   		    	win.art.dialog.close();
-	        							//调用父页面的search方法，刷新列表
-	        							win.search(0);
-	        			   		    }
-	        			   		});
-	        			    }
-	        			 });
-	        },
-	        "返回": function() {
-	        	$(this).dialog("close");
-	        }
-	    }
+		maximizable : true
 	});
+}
+
+function initReNewData(obj){
+	var uu_id=$(obj).attr("uu_id");
+	$("#id").val(uu_id);
+	var url = $("#ctx").val()+"/renew/renew-process!findById.action";
+	$.get(url,
+			  {id:uu_id},
+			  function(data){
+			  	 if(data!=null&&data!=""){
+			  		var data=eval("("+data+")");
+			  		$("#hq_chan_code").val(data.HQ_CHAN_CODE);
+			  		$("#hq_chan_name").val(data.HQ_CHAN_NAME);
+			  		$("#hz_year").val(data.HZ_YEAR);
+			  		$("#assess_target").val(data.ASSESS_TARGET);
+			  		$("#rate_three").val(data.RATE_THREE);
+			  		$("#rate_six").val(data.RATE_SIX);
+			  		$("#rate_nine").val(data.RATE_NINE);
+			  		$("#rate_twelve").val(data.RATE_TWELVE);
+			  		$("#ysdz_xs").val(data.YSDZ_XS);
+			  		$("#zx_bt").val(data.ZX_BT);
+			  		$("#hz_ms").val(data.HZ_MS);
+			  		$("#fw_fee").val(data.FW_FEE);
+			  	 }
+		      });
+}
+
+//提交审批
+function submitTask(){
+	if(validate()) {
+		art.dialog.confirm("您确定提交审批吗？",function(){
+			var actNodeName = $("#nextDealer option:selected").text();
+			$("#actNodeName").val(actNodeName);
+			$("#isHavingFile").val(isHavingFile);
+			$("#taskForm").form("submit",{
+				url:$("#ctx").val()+'/renew/renew-process!doSubmitTask.action',
+				onSubmit:function(){
+					jQuery.blockUI({
+						message: "<div style='text-align:center;'><h2>正在发送中，请稍等...</h2></div>",
+						fadeIn: 700,
+						centerY: true,
+						showOverlay: true
+					});	
+					var isOk=save();
+					if(isOk){
+						return true;
+					}
+					return false;
+				},
+				success:function(data){
+					data=eval('('+data+')');
+					jQuery.unblockUI();
+					if(data.code=='OK') {
+						art.dialog({
+				   			title: '提示',
+				   		    content: "提交成功！",
+				   		    icon: 'succeed',
+				   		    lock: true,
+				   		    ok: function () {
+				   		    	search(0);
+				   		    }
+				   		});
+					}
+					return false;
+				},
+			 	error:function(XMLHttpRequest, textStatus, errorThrown){
+				   alert("发送失败！"+errorThrown);
+			   	}
+	      	});
+		},function(){
+			art.dialog.tips('执行取消操作');
+		});
+	}
+}
+
+function validate(){
+	var flag = true ;
+	var nextRouter = $("#nextRouter").val();
+	var theme = $.trim($("#theme").val());
+	if(!isNotBlank(theme)) {
+		art.dialog.alert("工单主题不能为空！");
+		return false;
+	}
+	if(!isNotBlank(nextRouter)){
+		art.dialog.alert("下一环节不能为空！");
+		return false;
+	}
+	if(isNeedApprover) {
+		if(!isNotBlank($("#nextDealer").val())){
+			art.dialog.alert("请选择下一步处理人！");
+			flag = false;
+		}
+	}
+	return flag; 
+}
+
+//下一步审批人
+function findNextDealer(taskId,taskFlag) {
+	
+	var url = "";
+	if(taskFlag == '4') {	//查本部门领导
+		url = $("#ctx").val()+"/approver/approver-handler!DepartmentManager.action";
+	}else {
+		//查询节点上配置的人员
+		url = $("#ctx").val()+"/approver/approver-handler!qryTaskApprover.action";
+	}
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		cache:false,
+		async:false,
+		url:url,
+		data:{
+     		taskId:taskId,
+        	taskFlag:taskFlag
+		}, 
+	 	success:function(data){
+	 		var str = "";
+	 		$.each(data,function(i,n){
+	 			str += "<option value='"+n.USER_ID+"'>"+n.USER_NAME+"</option>";
+			});
+	 		$("#nextDealer").html(str);
+		 }
+	 });
+}
+function isNotBlank(obj){
+    return !(obj == undefined || obj == null || obj =='' || obj=='null');
+}
+function save(){
+	$("#renewDialog").dialog("close");
+	$('#addFormDiv').hide();
+	var url = $("#ctx").val()+"/renew/renew-process!renew.action";
+	var hq_chan_code=$.trim($("#hq_chan_code").val());
+	var hq_chan_name=$.trim($("#hq_chan_name").val());
+	var assess_target=$.trim($("#assess_target").val());
+	var rate_three=$.trim($("#rate_three").val());
+	var rate_six=$.trim($("#rate_six").val());
+	var rate_nine=$.trim($("#rate_nine").val());
+	var rate_twelve=$.trim($("#rate_twelve").val());
+	var hz_year=$.trim($("#hz_year").val());
+	var ysdz_xs=$.trim($("#ysdz_xs").val());
+	var zx_bt=$.trim($("#zx_bt").val());
+	var hz_ms=$.trim($("#hz_ms").val());
+	var fw_fee=$.trim($("#fw_fee").val());
+	
+	$.post(
+			 url,
+			 {
+			   "resultMap.hq_chan_code":hq_chan_code,
+			   "resultMap.hq_chan_name":hq_chan_name,
+			   "resultMap.assess_target":assess_target,
+			   "resultMap.rate_three":rate_three,
+			   "resultMap.rate_six":rate_six,
+			   "resultMap.rate_nine":rate_nine,
+			   "resultMap.rate_twelve":rate_twelve,
+			   "resultMap.id":uu_id,
+			   "resultMap.ysdz_xs":ysdz_xs,
+			   "resultMap.zx_bt":zx_bt,
+			   "resultMap.hz_ms":hz_ms,
+			   "resultMap.fw_fee":fw_fee,
+			   "resultMap.hz_year":hz_year
+			   
+			 },
+			 function(data,status){
+				var win = artDialog.open.origin;//来源页面
+			    var data = eval(data);
+			    if(data.state=="0"){
+			    	win.art.dialog({
+			    		title:data.msg,
+			    		icon:'error',
+			    		content:data,
+			    		width:'100px',
+			    		height:'200px',
+			    		lock:true,
+			    		ok: function () {
+							win.art.dialog.close();
+			   		    }
+			    	});
+			    }else{
+			    	$("#id").val(data.id);
+			    	win.art.dialog({
+			   			title: '成功',
+			   		    content: data.msg,
+			   		    icon: 'succeed',
+			   		    lock: true,
+			   		    ok: function () {
+			   		    	//var win = artDialog.open.origin;//来源页面
+			   		    	win.art.dialog.close();
+							//调用父页面的search方法，刷新列表
+							win.search(0);
+			   		    }
+			   		});
+			    }
+			 });
 }
 
 function initPagination(totalCount) {
@@ -216,6 +316,113 @@ function initPagination(totalCount) {
   	num_display_entries: 5, 
   	num_edge_entries: 2
 	 });
+}
+function initUpload() {
+	/*  注：上传路径 tomcat用jsessionid, weblogic 用portalSession [2013-05-09 H]*/
+	$("#uploadify").uploadify({//url:$("#ctx").val()+"/twoSupported/two-supported!list.action",
+		   'uploader'       : path+'/js/jqueryUpload/uploadify.swf',
+		   'script'         : path+'/processUpload/process-upload!upload.action?paySession='+paySession,//servlet的路径或者.jsp 这是访问servlet 'scripts/uploadif' 
+		   'method'         :'GET',  //如果要传参数，就必须改为GET
+		   'cancelImg'      : path+'/images/cancel.png',
+		   'folder'         : 'upload', //要上传到的服务器路径，
+		   'queueID'        : 'fileQueue',
+		   'buttonImg'  	: path+'/images/file-btn1.jpg',
+		   //'wmode'			: 'transparent',
+		   'auto'           : false, //选定文件后是否自动上传，默认false
+		   'multi'          : true, //是否允许同时上传多文件，默认false
+		   'simUploadLimit' : 1, //一次同步上传的文件数目  
+		   'sizeLimit'      : 536870912, //设置单个文件大小限制，单位为byte  
+		   'queueSizeLimit' : 10, //限制在一次队列中的次数（可选定几个文件）。默认值= 999，而一次可传几个文件有 simUploadLimit属性决定。
+		   //'fileDesc'       : '支持格式:jpg或gif', //如果配置了以下的'fileExt'属性，那么这个属性是必须的  
+		   'fileDesc'       : '', //如果配置了以下的'fileExt'属性，那么这个属性是必须的  
+		   //'fileExt'        : '*.jpg;*.gif;*.docx;*.doc;*.xls;*.txt;*.pdf;*.zip',//允许的格式
+		   'fileExt'        : '',//允许的格式
+		   'fileDataName'	:'uploadify',  
+		   'width'			:82,
+		   'height'			:28,
+	   　  	onComplete: function (event, queueID, fileObj, response, data) {
+			   if(response=='error') {
+				   $.messager.alert('提示','文件:'+fileObj.name+'上传失败','error');
+			   }else {
+				    isHavingFile="withFile";
+			  		$("#speed").append("<span>&nbsp;&nbsp;&nbsp;<a href='#' onclick='downloadFile(this)' path='"+response+"' name='"+fileObj.name+"'>"+fileObj.name
+					  		    +"</a>&nbsp;&nbsp;&nbsp;<a href='###' path='"+response+"' onclick='delAttachement(this)'><font color='red'>删除</font></a><br/><br/></span>");
+			   }
+		   　},  
+   　		  onError: function(event, queueID, fileObj) {  
+		   　	 alert("文件:" + fileObj.name + "上传失败");  
+		   　},  
+	   　 	  onCancel: function(event, queueID, fileObj){  
+		   　	 //alert("取消了" + fileObj.name);  
+		   　},
+		  onProgress:function(event,queueId,fileObj,data) {
+			 //$("#speed").html("percentage:"+data.percentage+"  speed:"+data.speed);
+	   	  },
+	   	  onAllComplete:function(event,data) {
+	   		$.unblockUI(); 
+	   	  }
+  });
+}
+
+//上传
+function uploasFile(){ 
+	var content = $("#fileQueue").html();
+	if(!content){
+		return;//队列里面没文件，不能上传
+	}
+	$.ajax({
+		type:"post",
+		dataType:'json',
+        cache:false,
+        async:false,
+		url:path+'/processUpload/process-upload!beforeUpload.action',
+		success:function(data){
+			if(isNotBlank(content)) {
+				 jQuery.blockUI({
+				        message: "<div style='text-align:center;'><span>正在上传中，请稍等...</span></div>",
+				        fadeIn: 700,
+				        centerY: true,
+				        showOverlay: true
+			      });
+				}
+			    $("#speed").empty();
+			  	jQuery('#uploadify').uploadifyUpload(); 
+		},
+		error:function(XMLResponse){
+			alert("上传出现异常，上传失败！");
+		}
+	});
+}
+
+//删除附件
+function delAttachement(element) {
+	//此处要去掉空格，否则不能删除数据库中的记录
+	var filePath = $.trim($(element).attr("path"));
+	$.ajax({
+		type:"post",
+		dataType:'json',
+		data:{filePath:filePath},
+        cache:false,
+		url:path+'/processUpload/process-upload!deleteFile.action',
+		success:function(data){
+			if(data.success) {
+				$(element).parent().remove();
+			}
+		},
+		error:function(XMLResponse){
+			alert(XMLResponse);
+		}
+	});
+}
+//附件下载
+function downloadFile(element) {
+	var filePath = $.trim($(element).attr("path"));
+	var fileName = $(element).attr("name");
+	fileName=fileName.replace(/%/g,"%25");
+    filePath=filePath.replace(/%/g,"%25");
+	filePath = encodeURI(encodeURI(filePath));
+	fileName = encodeURI(encodeURI(fileName));
+	window.location.href=path+"/processUpload/process-upload!download.action?fileName="+fileName+"&filePath="+filePath;
 }
 
 function isNull(obj){
