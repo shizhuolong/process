@@ -2,6 +2,17 @@ var isNeedApprover = true;
 var pageSize = 10;
 var isHavingFile="notWithFile";
 $(function(){
+	//使用插件校验插件校验非空
+	$("#addForm").validate({
+	       onfocusout: function(element){
+	           $(element).valid();
+	       }
+	   });
+	$("#updateForm").validate({
+	       onfocusout: function(element){
+	           $(element).valid();
+	       }
+	});
 	if($("#orgLevel").val()!=2){
 		$("#importExcel").remove();
 	}
@@ -51,7 +62,12 @@ function search(pageNumber) {
                 +"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
                 +"<td>"+isNull(n['START_MONTH'])+"</td>"
                 +"<td>"+isNull(n['END_MONTH'])+"</td>"
+                +"<td>"+isNull(n['HZ_YEAR'])+"</td>"
                 +"<td>"+isNull(n['ASSESS_TARGET'])+"</td>"
+                +"<td>"+isNull(n['YSDZ_XS'])+"</td>"
+                +"<td>"+isNull(n['ZX_BT'])+"</td>"
+                +"<td>"+isNull(n['HZ_MS'])+"</td>"
+                +"<td>"+isNull(n['FW_FEE'])+"</td>"
                 +"<td>"+isNull(n['RATE_THREE'])+"</td>"
                 +"<td>"+isNull(n['RATE_SIX'])+"</td>"
                 +"<td>"+isNull(n['RATE_NINE'])+"</td>"
@@ -91,13 +107,17 @@ function edit(obj){
 		  		$("#up_rate_six").val(data.RATE_SIX);
 		  		$("#up_rate_nine").val(data.RATE_NINE);
 		  		$("#up_rate_twelve").val(data.RATE_TWELVE);
+		  		$("#up_ysdz_xs").val(data.YSDZ_XS);
+		  		$("#up_zx_bt").val(data.ZX_BT);
+		  		$("#up_hz_ms").val(data.HZ_MS);
+		  		$("#up_fw_fee").val(data.FW_FEE);
 		  	 }
 	      });
 	formdiv.show();
 	formdiv.dialog({
 		title : '修改',
-		width : 300,
-		height : 400,
+		width : 400,
+		height : 500,
 		closed : false,
 		cache : false,
 		modal : true,
@@ -116,6 +136,10 @@ function edit(obj){
 	        	var rate_six=$.trim($("#up_rate_six").val());
 	        	var rate_nine=$.trim($("#up_rate_nine").val());
 	        	var rate_twelve=$.trim($("#up_rate_twelve").val());
+	        	var ysdz_xs=$.trim($("#up_ysdz_xs").val());
+	        	var zx_bt=$.trim($("#up_zx_bt").val());
+	        	var hz_ms=$.trim($("#up_hz_ms").val());
+	        	var fw_fee=$.trim($("#up_fw_fee").val());
 	        	$.post(
 	        			 url,
 	        			 {
@@ -128,7 +152,11 @@ function edit(obj){
 	        			   rate_six:rate_six,
 	        			   rate_nine:rate_nine,
 	        			   rate_twelve:rate_twelve,
-	        			   id:uu_id
+	        			   id:uu_id,
+	        			   ysdz_xs:ysdz_xs,
+	        			   zx_bt:zx_bt,
+	        			   hz_ms:hz_ms,
+	        			   fw_fee:fw_fee
 	        			 },
 	        			 function(data,status){
 	        				var win = artDialog.open.origin;//来源页面
@@ -200,7 +228,7 @@ function initPagination(totalCount) {
 }
 
 function isNull(obj){
-	if(obj == undefined || obj == null || obj == '' || obj == null) {
+	if(obj == undefined || obj == null) {
 		return "&nbsp;";
 	}
 	return obj;
@@ -311,8 +339,8 @@ function addChannel(){
 	$('#addFormDiv').dialog({
 		id: 'addDialog',
 		title : '添加',
-		width : 300,
-		height : 400,
+		width : 400,
+		height : 500,
 		modal: true,
 		buttons: {
 	        "保存": function() {
@@ -328,6 +356,10 @@ function addChannel(){
 	        	var rate_six=$.trim($("#rate_six").val());
 	        	var rate_nine=$.trim($("#rate_nine").val());
 	        	var rate_twelve=$.trim($("#rate_twelve").val());
+	        	var ysdz_xs=$.trim($("#ysdz_xs").val());
+	        	var zx_bt=$.trim($("#zx_bt").val());
+	        	var hz_ms=$.trim($("#hz_ms").val());
+	        	var fw_fee=$.trim($("#fw_fee").val());
 	        	$.post(
 	        			 url,
 	        			 {
@@ -339,7 +371,11 @@ function addChannel(){
 	        			   rate_three:rate_three,
 	        			   rate_six:rate_six,
 	        			   rate_nine:rate_nine,
-	        			   rate_twelve:rate_twelve
+	        			   rate_twelve:rate_twelve,
+	        			   ysdz_xs:ysdz_xs,
+	        			   zx_bt:zx_bt,
+	        			   hz_ms:hz_ms,
+	        			   fw_fee:fw_fee
 	        			 },
 	        			 function(data,status){
 	        				var win = artDialog.open.origin;//来源页面
