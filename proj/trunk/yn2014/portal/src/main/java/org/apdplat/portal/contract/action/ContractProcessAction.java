@@ -253,8 +253,8 @@ public class ContractProcessAction extends BaseAction {
 	        String msg=legalValid(lsql);
 	        if(!(msg!=null&&msg.equals(""))){
 	            String rsql="SELECT HQ_CHAN_CODE FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL "
-	                    +" WHERE BUSINESS_KEY IS NOT NULL "
-	                    +" AND HQ_CHAN_CODE='"+hq_chan_code+"'";
+	                    +" WHERE "
+	                    +" HQ_CHAN_CODE='"+hq_chan_code+"'";
 	            String rmsg=repeatValid(rsql);
 	            if(rmsg!=null&&rmsg.equals("")){
 	                service.addChannel(params);
