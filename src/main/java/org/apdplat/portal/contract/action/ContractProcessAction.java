@@ -268,7 +268,7 @@ public class ContractProcessAction extends BaseAction {
 	        
         } catch (Exception e) {
             e.printStackTrace();
-            resultMsg+=e.getMessage();
+            resultMsg+="渠道添加失败";
         }
 	    this.reponseJson(resultMsg);
 	}
