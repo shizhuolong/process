@@ -84,7 +84,7 @@ public class ContractProcessAction extends BaseAction {
 		String resultTableName = "PMRT.TAB_MRT_YSDZ_NEW_CHANL_TEMP";
 		service.delTemp(regionCode);
 		String field="GROUP_ID_1,GROUP_ID_1_NAME,USERNAME,CREATE_TIME,HQ_CHAN_CODE,HQ_CHAN_NAME,START_MONTH,"
-		        + "END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,ID";
+		        + "END_MONTH,ASSESS_TARGET,YSDZ_XS,ZX_BT,HZ_MS,FW_FEE,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,ID,HZ_YEAR";
 		if (uploadFile == null) {
 		    resMsg="上传文件为空！";
 		} else {
@@ -107,11 +107,13 @@ public class ContractProcessAction extends BaseAction {
 					int end = sheet.getLastRowNum();
 					Row row;
 					String sql = "INSERT INTO "+ resultTableName+"("+field+") values("+regionCode+",'"+regionName+"','"+username+"',sysdate";
-                    for(int i=0;i<10;i++){
+                    for(int i=0;i<15;i++){
                         sql+=",?";
                     }
                     sql+=")";					
                     pre=conn.prepareStatement(sql);
+                    int start_year = 0;
+                    int end_year = 0;
 						for (int y = start; y <= end; y++) {
 	                        row = sheet.getRow(y);
 	                        if (row == null)
@@ -127,8 +129,15 @@ public class ContractProcessAction extends BaseAction {
                                     if(!isMatch){
                                         resMsg+="<br>"+"第"+y+"行不是数字";
                                     }
+                                    if(i==2){
+                                        start_year= getYear(getCellValue(row.getCell(i)));
+                                    }
+                                    if(i==3){
+                                        end_year= getYear(getCellValue(row.getCell(i)));
+                                    }
+                                    
 	                            }
-	                            if(i>=5){
+	                            if(i>=9){
 	                                String pattern="(^\\d+\\.?\\d+\\%$)?";
 	                                String content=getCellValue(row.getCell(i));
 	                                boolean isMatch = Pattern.matches(pattern, content);
@@ -139,7 +148,8 @@ public class ContractProcessAction extends BaseAction {
 	                            pre.setString(i+1,getCellValue(row.getCell(i)));
 	                        }
 	                        String uuid=UUIDGeneratorUtils.getUUID();
-	                        pre.setString(10,uuid);
+	                        pre.setString(14,uuid);
+	                        pre.setInt(15, end_year-start_year);
 	                        pre.addBatch();
 	                    }
 					pre.executeBatch();
@@ -208,7 +218,12 @@ public class ContractProcessAction extends BaseAction {
 	    String rate_six = request.getParameter("rate_six");
 	    String rate_nine = request.getParameter("rate_nine");
 	    String rate_twelve = request.getParameter("rate_twelve");
+	    String ysdz_xs = request.getParameter("ysdz_xs");
+	    String zx_bt = request.getParameter("zx_bt");
+	    String hz_ms = request.getParameter("hz_ms");
+	    String fw_fee = request.getParameter("fw_fee");
 	    String id=UUIDGeneratorUtils.getUUID();
+	    int hz_year = getYear(end_month)-getYear(start_month);
 	    Map<String, String> params = new HashMap<String,String>();
 	    params.put("regionCode", regionCode);
 	    params.put("regionName", regionName);
@@ -223,6 +238,11 @@ public class ContractProcessAction extends BaseAction {
 	    params.put("rate_six", rate_six);
 	    params.put("rate_nine", rate_nine);
 	    params.put("rate_twelve", rate_twelve);
+	    params.put("ysdz_xs", ysdz_xs);
+	    params.put("zx_bt", zx_bt);
+	    params.put("hz_ms", hz_ms);
+	    params.put("fw_fee", fw_fee);
+	    params.put("hz_year", String.valueOf(hz_year));
 	    params.put("id", id);
 	    String resultMsg="";
 	    try {
@@ -275,6 +295,11 @@ public class ContractProcessAction extends BaseAction {
         String rate_nine = request.getParameter("rate_nine");
         String rate_twelve = request.getParameter("rate_twelve");
         String id = request.getParameter("id");
+        String ysdz_xs = request.getParameter("ysdz_xs");
+        String zx_bt = request.getParameter("zx_bt");
+        String hz_ms = request.getParameter("hz_ms");
+        String fw_fee = request.getParameter("fw_fee");
+        int hz_year = getYear(end_month)-getYear(start_month);
         Map<String, String> params = new HashMap<String,String>();
         params.put("regionCode", regionCode);
         params.put("regionName", regionName);
@@ -290,6 +315,11 @@ public class ContractProcessAction extends BaseAction {
         params.put("rate_nine", "'"+rate_nine+"'");
         params.put("rate_twelve", "'"+rate_twelve+"'");
         params.put("id", id);
+        params.put("ysdz_xs", ysdz_xs);
+        params.put("zx_bt", zx_bt);
+        params.put("hz_ms", hz_ms);
+        params.put("fw_fee", fw_fee);
+        params.put("hz_year", String.valueOf(hz_year));
         String resultMsg="";
         try {
             service.updateChannel(params);
@@ -516,5 +546,10 @@ public class ContractProcessAction extends BaseAction {
 		this.isHavingFile = isHavingFile;
 	}
 	
+	public int getYear(String obj){
+	    String year=obj.substring(0,4);
+	    return Integer.parseInt(year);
+	}
+
 }
 
