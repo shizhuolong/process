@@ -24,6 +24,8 @@
 <link href="<%=request.getContextPath()%>/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css" />
 <link href="<%=path%>/css/uploadify.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/messages_zh.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery.blockUI.js"></script>
 <script type="text/javascript" type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery.easyui.min.js"></script>
 <script type="text/javascript" type="text/javascript" src="<%=request.getContextPath()%>/platform/theme/js/jquery-ui.js"></script>
@@ -39,6 +41,11 @@
    var path="<%=path%>";
    var paySession="<%=paySession%>";
 </script>
+<style>
+	.error{
+	    color:red;
+	}
+</style>
 </head>
 <body>
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
@@ -84,7 +91,12 @@
                                                         <th rowspan="2">渠道名称</th>
                                                         <th rowspan="2">开始月</th>
                                                         <th rowspan="2">结束月</th>         
+                                                        <th rowspan="2">合作年份</th>        
                                                         <th rowspan="2">年考核指定金额</th>
+                                                        <th rowspan="2">以收定支考核系数</th>
+                                                        <th rowspan="2">装修补贴</th>
+                                                        <th rowspan="2">合作模式</th>
+                                                        <th rowspan="2">房租（房补）</th>
                                                         <th colspan="4">考核进度</th>
                                                         <th rowspan="2">操作</th>
 												    </tr>
@@ -160,31 +172,39 @@
            <table style="border-collapse:separate; border-spacing:0px 10px;">
                 <tr><th>渠道编码：</th><td><input readonly="readonly" id="up_hq_chan_code" type="text" name="hq_chan_code"/></td></tr>
                 <tr><th>渠道名称：</th><td><input readonly="readonly" id="up_hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
-                <tr><th>开始月：</th><td><input class="Wdate" id="up_start_month" type="text" readonly="readonly" onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/></td></tr>
-                <tr><th>结束月：</th><td><input class="Wdate" id="up_end_month" type="text" readonly="readonly" onclick="WdatePicker({minDate:'#F{$dp.$D(\'up_start_month\')}',isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/></td></tr>
-                <tr><th>年考核指定金额：</th><td><input id="up_assess_target" type="text" name="assess_target"/></td></tr>
+                <tr><th>开始月：</th><td><input required class="Wdate" id="up_start_month" type="text" readonly="readonly" onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/></td></tr>
+                <tr><th>结束月：</th><td><input required class="Wdate" id="up_end_month" type="text" readonly="readonly" onclick="WdatePicker({minDate:'#F{$dp.$D(\'up_start_month\')}',isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/></td></tr>
+                <tr><th>年考核指定金额：</th><td><input required id="up_assess_target" type="text" name="assess_target"/></td></tr>
+                <tr><th>以收定支考核系数：</th><td><input required id="up_ysdz_xs" type="text" name="ysdz_xs"/></td></tr>
+                <tr><th>装修补贴：</th><td><input required id="up_zx_bt" type="text" name="up_zx_bt"/></td></tr>
+                <tr><th>合作模式：</th><td><select id="up_hz_ms"><option value ="专营-他建他营">专营-他建他营</option><option value ="专营-自建他营">专营-自建他营</option></select></td></tr>
+                <tr><th>房租（房补）：</th><td><input required id="up_fw_fee" type="text" name="up_fw_fee"/></td></tr>
                 <tr><th>考核进度：</th></tr>
-                <tr><th>1-3月：</th><td><input id="up_rate_three" type="text" name="rate_three"/></td></tr>
-                <tr><th>1-6月：</th><td><input id="up_rate_six" type="text" name="rate_six"/></td></tr>
-                <tr><th>1-9月：</th><td><input id="up_rate_nine" type="text" name="rate_nine"/></td></tr>
-                <tr><th>1-12月：</th><td><input id="up_rate_twelve" type="text" name="rate_twelve"/></td></tr>
+                <tr><th>1-3月：</th><td><input required id="up_rate_three" type="text" name="rate_three"/></td></tr>
+                <tr><th>1-6月：</th><td><input required id="up_rate_six" type="text" name="rate_six"/></td></tr>
+                <tr><th>1-9月：</th><td><input required id="up_rate_nine" type="text" name="rate_nine"/></td></tr>
+                <tr><th>1-12月：</th><td><input required id="up_rate_twelve" type="text" name="rate_twelve"/></td></tr>
            </table>
            </form>
     </div>
     
     <div id="addFormDiv" style="display:none;">
-           <form id="updateForm" method="POST">
+           <form id="addForm" method="POST">
            <table style="border-collapse:separate; border-spacing:0px 10px;">
-                <tr><th>渠道编码：</th><td><input id="hq_chan_code" type="text" name="hq_chan_code"/></td></tr>
-                <tr><th>渠道名称：</th><td><input id="hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
-                <tr><th>开始月：</th><td><input class="Wdate" id="start_month" type="text" readonly="readonly" onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/></td></tr>
-                <tr><th>结束月：</th><td><input class="Wdate" id="end_month" type="text" readonly="readonly" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_month\')}',isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/></td></tr>
-                <tr><th>年考核指定金额：</th><td><input id="assess_target" type="text" name="assess_target"/></td></tr>
+                <tr><th>渠道编码：</th><td><input required id="hq_chan_code" type="text" name="hq_chan_code"/></td></tr>
+                <tr><th>渠道名称：</th><td><input required id="hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
+                <tr><th>开始月：</th><td><input required class="Wdate" id="start_month" type="text" readonly="readonly" onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/></td></tr>
+                <tr><th>结束月：</th><td><input required class="Wdate" id="end_month" type="text" readonly="readonly" onclick="WdatePicker({minDate:'#F{$dp.$D(\'start_month\')}',isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMM'})"/></td></tr>
+                <tr><th>年考核指定金额：</th><td><input required id="assess_target" type="text" name="assess_target"/></td></tr>
+                <tr><th>以收定支考核系数：</th><td><input required id="ysdz_xs" type="text" name="ysdz_xs"/></td></tr>
+                <tr><th>装修补贴：</th><td><input required id="zx_bt" type="text" name="zx_bt"/></td></tr>
+                <tr><th>合作模式：</th><td><select id="hz_ms"><option value ="专营-他建他营">专营-他建他营</option><option value ="专营-自建他营">专营-自建他营</option></select></td></tr><!-- </th><td><input required id="hz_ms" type="text" name="hz_ms"/></td></tr> -->
+                <tr><th>房租（房补）：</th><td><input required id="fw_fee" type="text" name="fw_fee"/></td></tr>
                 <tr><th>考核进度：</th></tr>
-                <tr><th>1-3月：</th><td><input id="rate_three" type="text" name="rate_three"/></td></tr>
-                <tr><th>1-6月：</th><td><input id="rate_six" type="text" name="rate_six"/></td></tr>
-                <tr><th>1-9月：</th><td><input id="rate_nine" type="text" name="rate_nine"/></td></tr>
-                <tr><th>1-12月：</th><td><input id="rate_twelve" type="text" name="rate_twelve"/></td></tr>
+                <tr><th>1-3月：</th><td><input required id="rate_three" type="text" name="rate_three"/></td></tr>
+                <tr><th>1-6月：</th><td><input required id="rate_six" type="text" name="rate_six"/></td></tr>
+                <tr><th>1-9月：</th><td><input required id="rate_nine" type="text" name="rate_nine"/></td></tr>
+                <tr><th>1-12月：</th><td><input required id="rate_twelve" type="text" name="rate_twelve"/></td></tr>
            </table>
            </form>
     </div>  
