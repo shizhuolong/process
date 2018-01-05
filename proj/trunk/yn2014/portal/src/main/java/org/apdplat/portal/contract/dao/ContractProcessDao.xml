@@ -10,6 +10,11 @@
 	       START_MONTH,
 	       END_MONTH,
 	       ASSESS_TARGET,
+	       HZ_YEAR,
+	       YSDZ_XS,
+	       ZX_BT,
+	       HZ_MS,
+	       FW_FEE,
 	       RATE_THREE,
 	       RATE_SIX,
 	       RATE_NINE,
@@ -25,16 +30,18 @@
     <insert id="addChannel" parameterType="java.util.Map">
         INSERT INTO PMRT.TAB_MRT_YSDZ_NEW_CHANL 
         (GROUP_ID_1,GROUP_ID_1_NAME,USERNAME,CREATE_TIME,HQ_CHAN_CODE,HQ_CHAN_NAME,START_MONTH,
-        END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,ID) VALUES
+        END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,ID,YSDZ_XS,ZX_BT,HZ_MS,FW_FEE,HZ_YEAR) VALUES
         (#{regionCode},#{regionName},#{username},${create_time}
-        ,#{hq_chan_code},#{hq_chan_name},${start_month}
-        ,${end_month},${assess_target},${rate_three},${rate_six}
-        ,${rate_nine},${rate_twelve},#{id})
+        ,#{hq_chan_code},#{hq_chan_name},#{start_month,jdbcType=INTEGER}
+        ,#{end_month,jdbcType=INTEGER},#{assess_target,jdbcType=DOUBLE}
+        ,#{rate_three},#{rate_six},#{rate_nine},#{rate_twelve},#{id}
+        ,#{ysdz_xs,jdbcType=DOUBLE},#{zx_bt,jdbcType=DOUBLE},#{hz_ms},#{fw_fee,jdbcType=DOUBLE},${hz_year})
     </insert>
     
     <select id="findById" resultType="java.util.Map">
         SELECT HQ_CHAN_CODE,HQ_CHAN_NAME,START_MONTH,
-        END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE
+        END_MONTH,ASSESS_TARGET,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,
+        YSDZ_XS,ZX_BT,HZ_MS,FW_FEE
         FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL WHERE ID=#{id}
     </select>
     
@@ -42,10 +49,14 @@
         update PMRT.TAB_MRT_YSDZ_NEW_CHANL set 
         GROUP_ID_1=#{regionCode},GROUP_ID_1_NAME=#{regionName},
         USERNAME=#{username},CREATE_TIME=${create_time},
-        START_MONTH=${start_month},END_MONTH=${end_month},
+        START_MONTH=#{start_month,jdbcType=INTEGER},END_MONTH=#{end_month,jdbcType=INTEGER},
         ASSESS_TARGET=${assess_target},RATE_THREE=${rate_three},
         RATE_SIX=${rate_six},RATE_NINE=${rate_nine},
-        RATE_TWELVE=${rate_twelve} WHERE ID=#{id}
+        RATE_TWELVE=${rate_twelve},YSDZ_XS=#{ysdz_xs,jdbcType=DOUBLE},
+        ZX_BT=#{zx_bt,jdbcType=DOUBLE},HZ_MS=#{hz_ms},
+        FW_FEE=#{fw_fee,jdbcType=DOUBLE},
+        HZ_YEAR=${hz_year}
+        WHERE ID=#{id}
     </update>
     
     <select id="getDataListCount" parameterType="java.util.Map" resultType="int">
