@@ -2,12 +2,11 @@ var isNeedApprover = true;
 var pageSize = 10;
 var isHavingFile="notWithFile";
 $(function(){
-	//使用插件校验插件校验非空
 	$("#addForm").validate({
 	       onfocusout: function(element){
 	           $(element).valid();
 	       }
-	   });
+	});
 	$("#updateForm").validate({
 	       onfocusout: function(element){
 	           $(element).valid();
@@ -140,6 +139,9 @@ function edit(obj){
 	        	var zx_bt=$.trim($("#up_zx_bt").val());
 	        	var hz_ms=$.trim($("#up_hz_ms").val());
 	        	var fw_fee=$.trim($("#up_fw_fee").val());
+	        	var form = $("#updateForm");
+	        	var b=validateNotNull(form);
+	        	if(b){
 	        	$.post(
 	        			 url,
 	        			 {
@@ -188,6 +190,7 @@ function edit(obj){
 	        			   		});
 	        			    }
 	        			 });
+	        	}
 	        },
 	        "返回": function() {
 	        	$(this).dialog("close");
@@ -360,6 +363,9 @@ function addChannel(){
 	        	var zx_bt=$.trim($("#zx_bt").val());
 	        	var hz_ms=$.trim($("#hz_ms").val());
 	        	var fw_fee=$.trim($("#fw_fee").val());
+	        	var form = $("#addForm");
+	        	var b=validateNotNull(form);
+	        	if(b){
 	        	$.post(
 	        			 url,
 	        			 {
@@ -407,6 +413,7 @@ function addChannel(){
 	        			   		});
 	        			    }
 	        			 });
+	        	}
 	        },
 	        "返回": function() {
 	          $(this).dialog("close");
@@ -521,4 +528,16 @@ function downloadFile(element) {
 	filePath = encodeURI(encodeURI(filePath));
 	fileName = encodeURI(encodeURI(fileName));
 	window.location.href=path+"/processUpload/process-upload!download.action?fileName="+fileName+"&filePath="+filePath;
+}
+
+//校验form中带name的input非空
+function validateNotNull(form){
+	var values = form.serializeArray(); 
+	for (var i=0;i<values.length;i++){ 
+			if(values[i].value=="" || values[i].value==null){ 
+				alert("必填项不能为空");
+				return false;
+			}
+	}
+	return true;
 }
