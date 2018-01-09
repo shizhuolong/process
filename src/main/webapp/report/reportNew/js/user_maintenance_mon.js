@@ -3,7 +3,7 @@ var maxDate=null;
 $(function(){
 	var field=["ROW_NAME","ALL_DXF_NUM","ALL_XF_NUM","ALL_XF_RATE","ALL_XF_RATE_TB","ALL_XF_RATE_HB","RH_DXF_NUM","RH_DXF_USER_ZB","RH_XF_NUM","RH_XF_RATE","RH_XF_RATE_TB","RH_XF_RATE_HB","TV_DXF_NUM","TV_DXF_USER_ZB","TV_XF_NUM","TV_XF_RATE","TV_XF_RATE_TB","TV_XF_RATE_HB","DKD_DXF_NUM","DKD_DXF_USER_ZB","DKD_XF_NUM","DKD_XF_RATE","DKD_XF_RATE_TB","DKD_XF_RATE_HB","ZW_DXF_NUM","ZW_DXF_USER_ZB","ZW_XF_NUM","ZW_XF_RATE","ZW_XF_RATE_TB","ZW_XF_RATE_HB","BOT_DXF_NUM","BOT_DXF_USER_ZB","BOT_XF_NUM","BOT_XF_RATE","BOT_XF_RATE_TB","BOT_XF_RATE_HB","EOC_DXF_NUM","EOC_DXF_USER_ZB","EOC_XF_NUM","EOC_XF_RATE","EOC_XF_RATE_TB","EOC_XF_RATE_HB","XYW_DXF_NUM","XYW_DXF_USER_ZB","XYW_XF_NUM","XYW_XF_RATE","XYW_XF_RATE_TB","XYW_XF_RATE_HB"];
 	var title=[["组织架构","总体维系情况","","","","","产品维度","","","","","","","","","","","","","","","","","","资源维度","","","","","","","","","","","","","","","","","","","","","","",""],
-			   ["","","","","","","融合业务用户(含智慧沃家)","","","","","","TV用户","","","","","","资源维度","","","","","","单宽带用户","","","","","","自网用户","","","","","","","BOT用户","","","","","","广电用户","","","","","","校园网用户","","","","",""],
+			   ["","","","","","","融合业务用户(含智慧沃家)","","","","","","TV用户","","","","","","单宽带用户","","","","","","自网用户","","","","","","BOT用户","","","","","","广电用户","","","","","","校园网用户","","","","",""],
 			   ["","待续费用户","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比","待续费用户","占比","已续费用户","续费率","同比","环比"]];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
