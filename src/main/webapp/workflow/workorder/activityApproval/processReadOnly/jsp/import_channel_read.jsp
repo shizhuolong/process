@@ -61,8 +61,13 @@
 												        <th rowspan="2">渠道编码</th>
                                                         <th rowspan="2">渠道名称</th>
                                                         <th rowspan="2">开始月</th>
-                                                        <th rowspan="2">结束月</th>         
+                                                        <th rowspan="2">结束月</th>
+                                                        <th rowspan="2">合作年份</th>        
                                                         <th rowspan="2">年考核指定金额</th>
+                                                        <th rowspan="2">以收定支考核系数</th>
+                                                        <th rowspan="2">装修补贴</th>
+                                                        <th rowspan="2">合作模式</th>
+                                                        <th rowspan="2">房租（房补）</th>
                                                         <th colspan="4">考核进度</th>
 												    </tr>
 													<tr>
