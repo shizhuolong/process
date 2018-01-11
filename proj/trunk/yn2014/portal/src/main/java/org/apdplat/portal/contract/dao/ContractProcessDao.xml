@@ -87,7 +87,12 @@
 	       RATE_THREE,
 	       RATE_SIX,
 	       RATE_NINE,
-	       RATE_TWELVE
+	       RATE_TWELVE,
+	       HZ_YEAR,
+           YSDZ_XS,
+           ZX_BT,
+           HZ_MS,
+           FW_FEE
 	    FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL 
 		WHERE BUSINESS_KEY=#{businessKey}
 	</select>
