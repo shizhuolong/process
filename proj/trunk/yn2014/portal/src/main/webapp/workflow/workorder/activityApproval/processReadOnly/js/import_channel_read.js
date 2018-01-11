@@ -39,7 +39,12 @@ function search(pageNumber) {
 	                +"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 	                +"<td>"+isNull(n['START_MONTH'])+"</td>"
 	                +"<td>"+isNull(n['END_MONTH'])+"</td>"
+	                +"<td>"+isNull(n['HZ_YEAR'])+"</td>"
 	                +"<td>"+isNull(n['ASSESS_TARGET'])+"</td>"
+	                +"<td>"+isNull(n['YSDZ_XS'])+"</td>"
+	                +"<td>"+isNull(n['ZX_BT'])+"</td>"
+	                +"<td>"+isNull(n['HZ_MS'])+"</td>"
+	                +"<td>"+isNull(n['FW_FEE'])+"</td>"
 	                +"<td>"+isNull(n['RATE_THREE'])+"</td>"
 	                +"<td>"+isNull(n['RATE_SIX'])+"</td>"
 	                +"<td>"+isNull(n['RATE_NINE'])+"</td>"
@@ -98,7 +103,12 @@ function downsAll(){
 				"HQ_CHAN_NAME,                   "+
 				"START_MONTH,                    "+
 				"END_MONTH,                      "+
+				"HZ_YEAR,                      "+
 				"ASSESS_TARGET,                  "+
+				"YSDZ_XS,                  "+
+				"ZX_BT,                  "+
+				"HZ_MS,                  "+
+				"FW_FEE,                  "+
 				"RATE_THREE,                     "+
 				"RATE_SIX,                       "+
 				"RATE_NINE,                      "+
@@ -107,8 +117,8 @@ function downsAll(){
 	            " WHERE BUSINESS_KEY ='"+businessKey+"'";
 	
 	var showtext = '渠道考核合同审批数据';
-	var title=[["渠道编码","渠道名称","开始月","结束月","年考核指定金额","考核进度","","",""],
-	           ["","","","","","1-3月","1-6月","1-9月","1-12月"]];
+	var title=[["渠道编码","渠道名称","开始月","结束月","合作年份","年考核指定金额","以收定支系数","装修补贴","合作模式","房屋租金（房屋补贴）","考核进度","","",""],
+	           ["","","","","","","","","","","1-3月","1-6月","1-9月","1-12月"]];
 	downloadExcel(downSql,title,showtext);
 }
 
