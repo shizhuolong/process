@@ -42,8 +42,8 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['HQ_CHAN_CODE'])+"</td>"
 	                +"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 	                +"<td>"+isNull(n['START_MONTH'])+"</td>"
-	                +"<td>"+n['END_MONTH']+"</td>"
-	                +"<td>"+n['HZ_YEAR']+"</td>"
+	                +"<td>"+isNull(n['END_MONTH'])+"</td>"
+	                +"<td>"+isNull(n['HZ_YEAR'])+"</td>"
 	                +"<td>"+isNull(n['ASSESS_TARGET'])+"</td>"
 	                +"<td>"+isNull(n['YSDZ_XS'])+"</td>"
 	                +"<td>"+isNull(n['ZX_BT'])+"</td>"
@@ -355,7 +355,7 @@ function initPagination(totalCount) {
 }
 
 function isNull(obj){
-	if(obj == undefined || obj == null || obj == '' || obj == null) {
+	if(obj == undefined || obj == null) {
 		return "&nbsp;";
 	}
 	return obj;
