@@ -49,7 +49,12 @@ function search(pageNumber) {
 	                +"<td>"+isNull(n['HQ_CHAN_NAME'])+"</td>"
 	                +"<td>"+isNull(n['START_MONTH'])+"</td>"
 	                +"<td>"+isNull(n['END_MONTH'])+"</td>"
+	                +"<td>"+isNull(n['HZ_YEAR'])+"</td>"
 	                +"<td>"+isNull(n['ASSESS_TARGET'])+"</td>"
+	                +"<td>"+isNull(n['YSDZ_XS'])+"</td>"
+	                +"<td>"+isNull(n['ZX_BT'])+"</td>"
+	                +"<td>"+isNull(n['HZ_MS'])+"</td>"
+	                +"<td>"+isNull(n['FW_FEE'])+"</td>"
 	                +"<td>"+isNull(n['RATE_THREE'])+"</td>"
 	                +"<td>"+isNull(n['RATE_SIX'])+"</td>"
 	                +"<td>"+isNull(n['RATE_NINE'])+"</td>"
@@ -84,11 +89,16 @@ function renew(obj){
 		  		$("#up_hq_chan_name").val(data.HQ_CHAN_NAME);
 		  		$("#up_start_month").val(data.START_MONTH);
 		  		$("#up_end_month").val(data.END_MONTH);
+		  		$("#up_hz_year").val(data.HZ_YEAR);
 		  		$("#up_assess_target").val(data.ASSESS_TARGET);
 		  		$("#up_rate_three").val(data.RATE_THREE);
 		  		$("#up_rate_six").val(data.RATE_SIX);
 		  		$("#up_rate_nine").val(data.RATE_NINE);
 		  		$("#up_rate_twelve").val(data.RATE_TWELVE);
+		  		$("#up_ysdz_xs").val(data.YSDZ_XS);
+		  		$("#up_zx_bt").val(data.ZX_BT);
+		  		$("#up_hz_ms").val(data.HZ_MS);
+		  		$("#up_fw_fee").val(data.FW_FEE);
 		  	 }
 	      });
 	formdiv.show();
@@ -114,6 +124,11 @@ function renew(obj){
 	        	var rate_six=$.trim($("#up_rate_six").val());
 	        	var rate_nine=$.trim($("#up_rate_nine").val());
 	        	var rate_twelve=$.trim($("#up_rate_twelve").val());
+	        	var hz_year=$.trim($("#up_hz_year").val());
+	        	var ysdz_xs=$.trim($("#up_ysdz_xs").val());
+	        	var zx_bt=$.trim($("#up_zx_bt").val());
+	        	var hz_ms=$.trim($("#up_hz_ms").val());
+	        	var fw_fee=$.trim($("#up_fw_fee").val());
 	        	$.post(
 	        			 url,
 	        			 {
@@ -126,6 +141,11 @@ function renew(obj){
 	        			   rate_six:rate_six,
 	        			   rate_nine:rate_nine,
 	        			   rate_twelve:rate_twelve,
+	        			   hz_year:hz_year,
+	        			   ysdz_xs:ysdz_xs,
+	        			   zx_bt:zx_bt,
+	        			   hz_ms:hz_ms,
+	        			   fw_fee:fw_fee,
 	        			   id:uu_id
 	        			 },
 	        			 function(data,status){
@@ -189,6 +209,10 @@ function addChannel(){
 	        	var rate_six=$.trim($("#rate_six").val());
 	        	var rate_nine=$.trim($("#rate_nine").val());
 	        	var rate_twelve=$.trim($("#rate_twelve").val());
+	        	var ysdz_xs=$.trim($("#ysdz_xs").val());
+	        	var zx_bt=$.trim($("#zx_bt").val());
+	        	var hz_ms=$.trim($("#hz_ms").val());
+	        	var fw_fee=$.trim($("#fw_fee").val());
 	        	$.post(
 	        			 url,
 	        			 {
@@ -200,7 +224,11 @@ function addChannel(){
 	        			   rate_three:rate_three,
 	        			   rate_six:rate_six,
 	        			   rate_nine:rate_nine,
-	        			   rate_twelve:rate_twelve
+	        			   rate_twelve:rate_twelve,
+	        			   ysdz_xs:ysdz_xs,
+	        			   zx_bt:zx_bt,
+	        			   hz_ms:hz_ms,
+	        			   fw_fee:fw_fee
 	        			 },
 	        			 function(data,status){
 	        				var win = artDialog.open.origin;//来源页面
