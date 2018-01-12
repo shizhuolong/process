@@ -26,6 +26,15 @@
 	    <if test="orgLevel != 1">
 			AND GROUP_ID_1 = #{code} 
 		</if>
+		<if test="startDate != ''">
+			AND START_MONTH&gt;=#{startDate} 
+		</if>
+		<if test="endDate != ''">
+			AND END_MONTH&lt;=#{endDate}
+		</if>
+		<if test="hqChanCode != ''">
+			AND HQ_CHAN_CODE LIKE #{hqChanCode} 
+		</if>
 	</select>
      
     <select id="findByIds" resultType="java.util.Map">
