@@ -70,10 +70,27 @@ public class RenewProcessAction extends BaseAction {
             message.put("id", uuid);
             message.put("state", "1");
         } catch (Exception e) {
+        	e.printStackTrace();
         	message.put("msg", "保存失败！");
-        	 message.put("state", "0");
+        	message.put("state", "0");
         }
         this.reponseJson(message);
+	}
+	//修改，用于退回拟稿人界面
+	public void edit(){
+	    User user = UserHolder.getCurrentLoginUser();
+        Org org = user.getOrg();
+        String code = org.getCode();
+        String username=user.getUsername();
+        resultMap.put("code", code);
+        resultMap.put("username", username);
+        try {
+            service.update(resultMap);
+            this.reponseJson("");
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	this.reponseJson("修改失败！");
+        }
 	}
 	
 	//根据多个id查询
@@ -91,24 +108,35 @@ public class RenewProcessAction extends BaseAction {
 	    String username=user.getUsername();
 	    String param=request.getParameter("param");
 	    Connection conn=null;
+	    String ids="";//记录插入记录的id，返回前台，用于发送生成工单编号
+	    Map<String,String> message=new HashMap<String,String>();
 	    try {
             conn=this.getCon();
             conn.setAutoCommit(false);
             String sql = "INSERT INTO PMRT.TAB_MRT_YSDZ_NEW_CHANL         "+
                         "(GROUP_ID_1,GROUP_ID_1_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME,ADD_STATE,  "+
-                        "RENEW_STATE,CREATE_TIME,START_MONTH,IS_VALID,USERNAME,ID,HZ_YEAR,          "+
+                        "RENEW_STATE,LOCK_RENEW,CREATE_TIME,START_MONTH,IS_VALID,USERNAME,ID,HZ_YEAR,  "+
                         "END_MONTH,ASSESS_TARGET,RATE_THREE,  "+
                         "RATE_SIX,RATE_NINE,RATE_TWELVE,YSDZ_XS,ZX_BT,HZ_MS,FW_FEE) "+
-                        "SELECT GROUP_ID_1,GROUP_ID_1_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME,ADD_STATE, "+
-                        "1,sysdate,START_MONTH,1,'"+username+"',?,?,?,?,?,?,?,?,?,?,?,? "+
+                        "SELECT GROUP_ID_1,GROUP_ID_1_NAME,HQ_CHAN_CODE,HQ_CHAN_NAME, "+
+                        "2,1,0,sysdate,START_MONTH,1,'"+username+"',?,?,?,?,?,?,?,?,?,?,?,? "+
                         "FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL WHERE ID = ? ";
             PreparedStatement pre = conn.prepareStatement(sql);
+            int index=0;
             for (String params: param.split("\\|")){
+            	index++;
                 String [] s=params.split(",");
+                String uuid="";
+                uuid = UUIDGeneratorUtils.getUUID();
+                pre.setString(1, uuid);
+                if(index==1){
+                	 ids+="'"+uuid+"'";
+                }else{
+                	ids+=",'"+uuid+"'";
+                }
+               
                 for(int i=0;i<s.length;i++){
                     if(i==0){
-                        String uuid = UUIDGeneratorUtils.getUUID();
-                        pre.setString(i+1, uuid);
                         int hz_year=Integer.parseInt(s[i])+1;
                         pre.setString(i+2, Integer.toString(hz_year));
                     }else if(i==1){
@@ -125,6 +153,11 @@ public class RenewProcessAction extends BaseAction {
             pre.executeBatch();
             conn.commit();
             conn.setAutoCommit(true);
+            message.put("state", "1");
+            message.put("ids", ids);
+            String oldIds=request.getParameter("oldIds");
+            service.updateOldData(oldIds);
+            this.reponseJson(message);
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -132,7 +165,8 @@ public class RenewProcessAction extends BaseAction {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-            this.reponseJson( e.getMessage());
+            message.put("state", "0");
+            this.reponseJson(message);
         } finally{
             try {
                 if(conn!=null){
@@ -165,8 +199,13 @@ public class RenewProcessAction extends BaseAction {
 			map.put("title", theme);
 			map.put("nextDealer", nextDealer);
 			map.put("isHavingFile", isHavingFile);
-			map.put("id", id);
 			map.put("type", type);
+			if(type.equals("2")){
+				 id = "(" + id + ")";
+				 map.put("id", id);
+			}else{
+				map.put("id", id);
+			}
 			service.doSendOrder(map);
 			info.setCode(ResultInfo._CODE_OK_);
 		} catch (BusiException e) {

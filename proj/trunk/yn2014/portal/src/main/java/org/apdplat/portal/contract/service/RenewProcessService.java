@@ -47,15 +47,9 @@ public class RenewProcessService {
 
     @Transactional
     public void renew(Map<String, String> resultMap) throws Exception{
-        Map<String, Object> map = dao.findById(resultMap.get("id"));
-        String end_month = map.get("END_MONTH").toString();
-        String hzYear = map.get("HZ_YEAR").toString();
-        int endMonth=Integer.parseInt(end_month.substring(0, 4))+1;
-        end_month=endMonth+end_month.substring(4);
-        int hz_year=Integer.parseInt(hzYear)+1;
-        resultMap.put("end_month", end_month);
-        resultMap.put("hz_year", Integer.toString(hz_year));
         dao.renew(resultMap);
+        String id="'"+resultMap.get("id").toString()+"'";
+        dao.updateOldData(id);
     }
 
     public Object findByIds(Map<String, String> param) {
@@ -157,4 +151,12 @@ public class RenewProcessService {
    		}
    		return true;
    	}
+
+	public void update(Map<String, String> resultMap) {
+		dao.update(resultMap);
+	}
+
+	public void updateOldData(String ids) {
+		dao.updateOldData(ids);
+	}
 }
