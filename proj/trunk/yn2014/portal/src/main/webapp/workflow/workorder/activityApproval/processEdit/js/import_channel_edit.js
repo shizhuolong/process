@@ -19,6 +19,13 @@ $(function(){
 	});
 });
 
+function change(){
+	$("#up_end_month").val(getEndMonth($("#up_start_month").val()));
+}
+function changeEndDateAdd(){
+	$("#end_month").val(getEndMonth($("#start_month").val()));
+}
+
 function search(pageNumber) {
 	pageNumber = pageNumber + 1;
 	var businessKey = $("#businessKey").val();
@@ -59,7 +66,7 @@ function search(pageNumber) {
 	                +"<td>"+isNull(n['RATE_SIX'])+"</td>"
 	                +"<td>"+isNull(n['RATE_NINE'])+"</td>"
 	                +"<td>"+isNull(n['RATE_TWELVE'])+"</td>"
-	                +"<td><a href='#' uu_id='"+isNull(n['ID'])+"' onclick='renew($(this));' style='color:#BA0C0C;'>续签</a></td>"
+	                +"<td><a href='#' uu_id='"+isNull(n['ID'])+"' onclick='edit($(this));' style='color:#BA0C0C;'>修改</a></td>"
 	                +"</tr>";
 				});
 			if(content != "") {
@@ -76,9 +83,9 @@ function search(pageNumber) {
 	});
 }
 
-function renew(obj){
+function edit(obj){
 	var uu_id=$(obj).attr("uu_id");
-	var formdiv=$('#addFormDiv');
+	var formdiv=$('#updateFormDiv');
 	var url = $("#ctx").val()+"/contract/contract-process!findById.action";
 	$.get(url,
 		  {id:uu_id},
@@ -89,7 +96,6 @@ function renew(obj){
 		  		$("#up_hq_chan_name").val(data.HQ_CHAN_NAME);
 		  		$("#up_start_month").val(data.START_MONTH);
 		  		$("#up_end_month").val(data.END_MONTH);
-		  		$("#up_hz_year").val(data.HZ_YEAR);
 		  		$("#up_assess_target").val(data.ASSESS_TARGET);
 		  		$("#up_rate_three").val(data.RATE_THREE);
 		  		$("#up_rate_six").val(data.RATE_SIX);
@@ -104,8 +110,8 @@ function renew(obj){
 	formdiv.show();
 	formdiv.dialog({
 		title : '修改',
-		width : 300,
-		height : 400,
+		width : 400,
+		height : 500,
 		closed : false,
 		cache : false,
 		modal : true,
@@ -124,11 +130,13 @@ function renew(obj){
 	        	var rate_six=$.trim($("#up_rate_six").val());
 	        	var rate_nine=$.trim($("#up_rate_nine").val());
 	        	var rate_twelve=$.trim($("#up_rate_twelve").val());
-	        	var hz_year=$.trim($("#up_hz_year").val());
 	        	var ysdz_xs=$.trim($("#up_ysdz_xs").val());
 	        	var zx_bt=$.trim($("#up_zx_bt").val());
 	        	var hz_ms=$.trim($("#up_hz_ms").val());
 	        	var fw_fee=$.trim($("#up_fw_fee").val());
+	        	var form = $("#updateForm");
+	        	var b=validateNotNull(form,2);
+	        	if(b){
 	        	$.post(
 	        			 url,
 	        			 {
@@ -141,12 +149,11 @@ function renew(obj){
 	        			   rate_six:rate_six,
 	        			   rate_nine:rate_nine,
 	        			   rate_twelve:rate_twelve,
-	        			   hz_year:hz_year,
+	        			   id:uu_id,
 	        			   ysdz_xs:ysdz_xs,
 	        			   zx_bt:zx_bt,
 	        			   hz_ms:hz_ms,
-	        			   fw_fee:fw_fee,
-	        			   id:uu_id
+	        			   fw_fee:fw_fee
 	        			 },
 	        			 function(data,status){
 	        				var win = artDialog.open.origin;//来源页面
@@ -170,7 +177,7 @@ function renew(obj){
 	        			   		    icon: 'succeed',
 	        			   		    lock: true,
 	        			   		    ok: function () {
-	        			   		    	var win = artDialog.open.origin;//来源页面
+	        			   		    	//var win = artDialog.open.origin;//来源页面
 	        			   		    	win.art.dialog.close();
 	        							//调用父页面的search方法，刷新列表
 	        							win.search(0);
@@ -178,6 +185,7 @@ function renew(obj){
 	        			   		});
 	        			    }
 	        			 });
+	        	}
 	        },
 	        "返回": function() {
 	        	$(this).dialog("close");
@@ -192,8 +200,8 @@ function addChannel(){
 	$('#addFormDiv').dialog({
 		id: 'addDialog',
 		title : '添加',
-		width : 300,
-		height : 400,
+		width : 400,
+		height : 500,
 		modal: true,
 		buttons: {
 	        "保存": function() {
@@ -213,6 +221,9 @@ function addChannel(){
 	        	var zx_bt=$.trim($("#zx_bt").val());
 	        	var hz_ms=$.trim($("#hz_ms").val());
 	        	var fw_fee=$.trim($("#fw_fee").val());
+	        	var form = $("#addForm");
+	        	var b=validateNotNull(form,1);
+	        	if(b){
 	        	$.post(
 	        			 url,
 	        			 {
@@ -260,12 +271,54 @@ function addChannel(){
 	        			   		});
 	        			    }
 	        			 });
+	        	}
 	        },
 	        "返回": function() {
 	          $(this).dialog("close");
 	        }
 		}
 	});
+}
+
+//校验form中带name的input非空
+function validateNotNull(form,type){
+	var values = form.serializeArray(); 
+	for (var i=0;i<values.length;i++){ 
+			if(values[i].value=="" || values[i].value==null){ 
+				alert("必填项不能为空");
+				return false;
+			}
+	}
+	var rate_three;
+	var rate_six;
+	var rate_nine;
+	var rate_twelve;
+	
+	if(type==1){
+		rate_three=$.trim($("#rate_three").val());
+		rate_six=$.trim($("#rate_six").val());
+		rate_nine=$.trim($("#rate_nine").val());
+		rate_twelve=$.trim($("#rate_twelve").val());
+	}else{
+		rate_three=$.trim($("#up_rate_three").val());
+		rate_six=$.trim($("#up_rate_six").val());
+		rate_nine=$.trim($("#up_rate_nine").val());
+		rate_twelve=$.trim($("#up_rate_twelve").val());
+	}
+	if(rate_three.indexOf("%") == -1||rate_six.indexOf("%") == -1
+    		||rate_nine.indexOf("%") == -1||rate_twelve.indexOf("%") == -1){
+		alert("百分数请加上百分号%！");
+		return false;
+	}
+	rate_three=rate_three.replace("%","");
+	rate_six=rate_six.replace("%","");
+	rate_nine=rate_nine.replace("%","");
+	rate_twelve=rate_twelvereplace("%","");
+	if(parseInt(rate_three)>100||parseInt(rate_six)>100||parseInt(rate_nine)>100||parseInt(rate_twelve)>100){
+		alert("百分数填写不能大于100%！");
+		return false;
+	}
+	return true;
 }
 
 //导入excel
