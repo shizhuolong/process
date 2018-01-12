@@ -3,6 +3,8 @@ package org.apdplat.portal.contract.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 
 public interface RenewProcessDao {
@@ -44,5 +46,7 @@ public interface RenewProcessDao {
 	void insertToFileResult(Map<String, String> map);
 
 	void deleteFilesByKey(String businessKey);
+
+	void updateOldData(@Param(value="ids")String ids);
 
 }

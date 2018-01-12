@@ -1,9 +1,14 @@
 package org.apdplat.portal.contract.service;
 
 import java.io.File;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -23,9 +28,9 @@ public class ContractProcessServiceTask {
 	@Autowired
 	private TaskService taskService;
 	
-	
 	@Transactional(rollbackFor=Exception.class)
 	public void complete(DelegateExecution delegateExecution) throws Exception {
+	
 		try{
 			String businessKey = delegateExecution.getProcessBusinessKey();
 			Map<String,String> params=new HashMap<String,String>();
