@@ -455,7 +455,7 @@ public class ContractProcessAction extends BaseAction {
     }
 		
 	public void downloadExcelTemp() {
-		String path = "/portal/channelManagement/down/import_channel.xls";
+		String path = "/portal/contract/down/import_channel.xls";
 		String fileName = "import_channel.xls";
 		try {
 			this.download(path, fileName);

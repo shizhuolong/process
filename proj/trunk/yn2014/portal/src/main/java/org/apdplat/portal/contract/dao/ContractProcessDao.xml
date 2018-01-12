@@ -21,7 +21,8 @@
 	       RATE_TWELVE
 	    FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL 
 		WHERE GROUP_ID_1 = #{regionCode}
-		AND BUSINESS_KEY IS NULL
+		AND BUSINESS_KEY IS NULL 
+		AND ADD_STATE IS NULL
 		<if test="orgLevel != 2">
 			AND 1=2
 		</if>
@@ -64,6 +65,7 @@
 			COUNT(*) AS TOTALCOUNT
   		FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL 
  		WHERE BUSINESS_KEY IS NULL
+ 		AND ADD_STATE IS NULL
  		AND GROUP_ID_1 = #{regionCode} 
 		<if test="orgLevel != 2">
 			AND 1=2
@@ -74,7 +76,7 @@
 		UPDATE PMRT.TAB_MRT_YSDZ_NEW_CHANL 
    			SET BUSINESS_KEY = #{businessKey},ADD_STATE='1'
  		WHERE GROUP_ID_1 = #{regionCode} 
-   		AND BUSINESS_KEY IS NULL
+   		AND BUSINESS_KEY IS NULL AND ADD_STATE IS NULL
 	</update> 
 	
 	<select id="listByWorkNo" parameterType="java.util.Map" resultType="java.util.Map">
@@ -107,7 +109,7 @@
 	</delete>
 	
 	<delete id="delResultNotKey" parameterType="java.util.Map">
-		DELETE FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL WHERE GROUP_ID_1=#{regionCode} AND BUSINESS_KEY IS NULL
+		DELETE FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL WHERE GROUP_ID_1=#{regionCode} AND BUSINESS_KEY IS NULL AND ADD_STATE IS NULL
 	</delete>
 	
 	<delete id="delResultByKey" parameterType="java.util.Map">
@@ -116,7 +118,7 @@
 	
 	<update id="updateInitId" parameterType="java.util.Map">
 		UPDATE PMRT.TAB_MRT_YSDZ_NEW_CHANL SET BUSINESS_KEY=#{businessKey} WHERE
-		GROUP_ID=#{regionCode} AND BUSINESS_KEY IS NULL
+		GROUP_ID=#{regionCode} AND BUSINESS_KEY IS NULL AND ADD_STATE IS NULL
 	</update>
 	
 	<insert id="importToResult" parameterType="java.util.Map">
