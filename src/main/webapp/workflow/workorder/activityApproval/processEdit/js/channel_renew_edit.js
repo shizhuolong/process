@@ -81,7 +81,6 @@ function edit(obj){
 		  		var data=eval("("+data+")");
 		  		$("#hq_chan_code").val(data.HQ_CHAN_CODE);
 		  		$("#hq_chan_name").val(data.HQ_CHAN_NAME);
-		  		//续签合作年份默认加1年
 		  		$("#start_month").val(data.START_MONTH);
 		  		$("#end_month").val(data.END_MONTH);
 		  		$("#hz_year").val(data.HZ_YEAR);
@@ -122,7 +121,9 @@ function edit(obj){
 	        	var zx_bt=$.trim($("#zx_bt").val());
 	        	var hz_ms=$.trim($("#hz_ms").val());
 	        	var fw_fee=$.trim($("#fw_fee").val());
-	        	
+	        	if(!validateNotNull()){
+	        		return;
+	        	}
 	        	$.post(
 	        			 url,
 	        			 {
@@ -139,7 +140,6 @@ function edit(obj){
 	        			   "resultMap.hz_ms":hz_ms,
 	        			   "resultMap.fw_fee":fw_fee,
 	        			   "resultMap.hz_year":hz_year
-	        			   
 	        			 },
 	        			 function(data,status){
 	        				var win = artDialog.open.origin;//来源页面
@@ -177,6 +177,31 @@ function edit(obj){
 	        }
 	    }
 	});
+}
+
+function validateNotNull(){
+	var rate_three;
+	var rate_six;
+	var rate_nine;
+	var rate_twelve;
+	rate_three=$.trim($("#rate_three").val());
+	rate_six=$.trim($("#rate_six").val());
+	rate_nine=$.trim($("#rate_nine").val());
+	rate_twelve=$.trim($("#rate_twelve").val());
+	if(rate_three.indexOf("%") == -1||rate_six.indexOf("%") == -1
+    		||rate_nine.indexOf("%") == -1||rate_twelve.indexOf("%") == -1){
+		alert("百分数请加上百分号%！");
+		return false;
+	}
+	rate_three=rate_three.replace("%","");
+	rate_six=rate_six.replace("%","");
+	rate_nine=rate_nine.replace("%","");
+	rate_twelve=rate_twelve.replace("%","");
+	if(parseInt(rate_three)>100||parseInt(rate_six)>100||parseInt(rate_nine)>100||parseInt(rate_twelve)>100){
+		alert("百分数填写不能大于100%！");
+		return false;
+	}
+	return true;
 }
 
 function initFileDiv(){
