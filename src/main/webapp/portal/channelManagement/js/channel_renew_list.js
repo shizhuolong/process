@@ -3,7 +3,7 @@ var pageSize = 10;
 var isHavingFile="notWithFile";
 $(function(){
 	//使用插件校验Form
-	$("#updateForm").validate({
+	$("#taskForm").validate({
 	    onfocusout: function(element){
 	        $(element).valid();
 	    }
@@ -57,7 +57,7 @@ function search(pageNumber) {
 	   		}
 	   		var pages=data;
 	   		if(pageNumber == 1) {
-				initPagination(pages.pagin.totalCount);
+	   			initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
 	   		$.each(pages.rows,function(i,n){
@@ -111,9 +111,9 @@ function renew(obj){
 	});
 }
 
+var uu_id="";
 function initReNewData(obj){
-	var uu_id=$(obj).attr("uu_id");
-	$("#id").val(uu_id);
+	uu_id=$(obj).attr("uu_id");
 	var url = $("#ctx").val()+"/renew/renew-process!findById.action";
 	$.get(url,
 			  {id:uu_id},
@@ -122,7 +122,10 @@ function initReNewData(obj){
 			  		var data=eval("("+data+")");
 			  		$("#hq_chan_code").val(data.HQ_CHAN_CODE);
 			  		$("#hq_chan_name").val(data.HQ_CHAN_NAME);
-			  		$("#hz_year").val(data.HZ_YEAR);
+			  		//续签合作年份默认加1年
+			  		$("#start_month").val(data.START_MONTH);
+			  		$("#end_month").val(getEndMonth(data.END_MONTH));
+			  		$("#hz_year").val(parseInt(data.HZ_YEAR)+1);
 			  		$("#assess_target").val(data.ASSESS_TARGET);
 			  		$("#rate_three").val(data.RATE_THREE);
 			  		$("#rate_six").val(data.RATE_SIX);
@@ -136,6 +139,14 @@ function initReNewData(obj){
 		      });
 }
 
+function getEndMonth(obj){
+	obj=obj+"";
+	var year=obj.substring(0,4);
+	var endYear=parseInt(year)+1;
+	var endMonth=obj.substring(4,6);
+	return endYear+endMonth;
+}
+
 //提交审批
 function submitTask(){
 	if(validate()) {
@@ -143,6 +154,10 @@ function submitTask(){
 			var actNodeName = $("#nextDealer option:selected").text();
 			$("#actNodeName").val(actNodeName);
 			$("#isHavingFile").val(isHavingFile);
+			var isOk=save();
+			if(!isOk){
+				return;
+			}
 			$("#taskForm").form("submit",{
 				url:$("#ctx").val()+'/renew/renew-process!doSubmitTask.action',
 				onSubmit:function(){
@@ -152,11 +167,11 @@ function submitTask(){
 						centerY: true,
 						showOverlay: true
 					});	
-					var isOk=save();
-					if(isOk){
-						return true;
+					var isPass=checkForm();
+					if(!isPass){
+						return false;
 					}
-					return false;
+					return true;
 				},
 				success:function(data){
 					data=eval('('+data+')');
@@ -164,15 +179,15 @@ function submitTask(){
 					if(data.code=='OK') {
 						art.dialog({
 				   			title: '提示',
-				   		    content: "提交成功！",
+				   		    content: "发送成功！",
 				   		    icon: 'succeed',
 				   		    lock: true,
 				   		    ok: function () {
-				   		    	search(0);
+				   		    	$("#submitTask").remove();
+				   		    	search(0); 
 				   		    }
 				   		});
 					}
-					return false;
 				},
 			 	error:function(XMLHttpRequest, textStatus, errorThrown){
 				   alert("发送失败！"+errorThrown);
@@ -190,6 +205,10 @@ function validate(){
 	var theme = $.trim($("#theme").val());
 	if(!isNotBlank(theme)) {
 		art.dialog.alert("工单主题不能为空！");
+		return false;
+	}
+	if(!checkForm()) {
+		art.dialog.alert("表单不能为空！");
 		return false;
 	}
 	if(!isNotBlank(nextRouter)){
@@ -237,9 +256,25 @@ function findNextDealer(taskId,taskFlag) {
 function isNotBlank(obj){
     return !(obj == undefined || obj == null || obj =='' || obj=='null');
 }
+function checkForm(){
+	if($("#assess_target").val()==""
+		||$("#zx_bt").val()==""
+		||$("#hz_ms").val()==""
+		||$("#fw_fee").val()==""
+		||$("#rate_three").val()==""
+		||$("#rate_six").val()==""
+		||$("#rate_nine").val()==""
+		||$("#rate_twelve").val()==""
+			){
+		return false;
+	}
+	return true;
+}
+
 function save(){
-	$("#renewDialog").dialog("close");
-	$('#addFormDiv').hide();
+	var isOk=true;
+	//$("#renewDialog").dialog("close");
+	//$('#addFormDiv').hide();
 	var url = $("#ctx").val()+"/renew/renew-process!renew.action";
 	var hq_chan_code=$.trim($("#hq_chan_code").val());
 	var hq_chan_name=$.trim($("#hq_chan_name").val());
@@ -253,10 +288,15 @@ function save(){
 	var zx_bt=$.trim($("#zx_bt").val());
 	var hz_ms=$.trim($("#hz_ms").val());
 	var fw_fee=$.trim($("#fw_fee").val());
+	var end_month=$.trim($("#end_month").val());
 	
-	$.post(
-			 url,
-			 {
+	$.ajax({
+		type:"POST",
+		dataType:'json',
+		cache:false,
+		async:false,
+		url:url,
+		data:{
 			   "resultMap.hq_chan_code":hq_chan_code,
 			   "resultMap.hq_chan_name":hq_chan_name,
 			   "resultMap.assess_target":assess_target,
@@ -264,45 +304,29 @@ function save(){
 			   "resultMap.rate_six":rate_six,
 			   "resultMap.rate_nine":rate_nine,
 			   "resultMap.rate_twelve":rate_twelve,
-			   "resultMap.id":uu_id,
 			   "resultMap.ysdz_xs":ysdz_xs,
-			   "resultMap.zx_bt":zx_bt,
+			   "resultMap.zx_bt":zx_bt, 
 			   "resultMap.hz_ms":hz_ms,
 			   "resultMap.fw_fee":fw_fee,
-			   "resultMap.hz_year":hz_year
-			   
-			 },
-			 function(data,status){
-				var win = artDialog.open.origin;//来源页面
-			    var data = eval(data);
-			    if(data.state=="0"){
-			    	win.art.dialog({
-			    		title:data.msg,
-			    		icon:'error',
-			    		content:data,
-			    		width:'100px',
-			    		height:'200px',
-			    		lock:true,
-			    		ok: function () {
-							win.art.dialog.close();
-			   		    }
-			    	});
-			    }else{
-			    	$("#id").val(data.id);
-			    	win.art.dialog({
-			   			title: '成功',
-			   		    content: data.msg,
-			   		    icon: 'succeed',
-			   		    lock: true,
-			   		    ok: function () {
-			   		    	//var win = artDialog.open.origin;//来源页面
-			   		    	win.art.dialog.close();
-							//调用父页面的search方法，刷新列表
-							win.search(0);
-			   		    }
-			   		});
-			    }
-			 });
+			   "resultMap.hz_year":hz_year,
+			   "resultMap.end_month":end_month,
+			   "resultMap.id":uu_id
+	   	}, 
+	   	success:function(data){
+		    if(data.state=="0"){
+		    	art.dialog.alert(data.msg);
+		    	isOk=false;
+		    }else{
+		    	$("#id").val(data.id);
+		    	isOk=true;
+		    }
+		 
+		},
+	   	error:function(XMLHttpRequest, textStatus, errorThrown){
+		   alert("出现异常！");
+	    }
+	});
+	return isOk;
 }
 
 function initPagination(totalCount) {
@@ -319,7 +343,7 @@ function initPagination(totalCount) {
 }
 function initUpload() {
 	/*  注：上传路径 tomcat用jsessionid, weblogic 用portalSession [2013-05-09 H]*/
-	$("#uploadify").uploadify({//url:$("#ctx").val()+"/twoSupported/two-supported!list.action",
+	$("#uploadify").uploadify({
 		   'uploader'       : path+'/js/jqueryUpload/uploadify.swf',
 		   'script'         : path+'/processUpload/process-upload!upload.action?paySession='+paySession,//servlet的路径或者.jsp 这是访问servlet 'scripts/uploadif' 
 		   'method'         :'GET',  //如果要传参数，就必须改为GET
