@@ -42,7 +42,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/swfobject.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jqueryUpload/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_renew_list.js?v=9"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/channelManagement/js/channel_renew_list.js?v=21"></script>
 <script type="text/javascript">
    var path="<%=path%>";
    var paySession="<%=paySession%>";
@@ -65,11 +65,7 @@
 				<div id="cc" style="width: 100%; height: 500px;">
 					<div data-options="region:'center'">
 						<div id="main" class="clearfix">
-						<form id="taskForm" method="post">
-						    <input type="hidden" id="isHavingFile" name="isHavingFile">
-							<input type="hidden" id="actNodeName" name="actNodeName">
-							<input type="hidden" id="id" name="id">
-							<input type="hidden" id="type" name="type" value="1">
+						<form id="searchForm" method="post">
 							<div class="main-block">
 								<div class="title">
 									<i></i>渠道续签
@@ -148,7 +144,11 @@
 	</div>
 	
     <div id="addFormDiv" style="display:none;">
-           <form id="updateForm" method="POST">
+           <form id="taskForm" method="POST">
+			 <input type="hidden" id="isHavingFile" name="isHavingFile">
+			 <input type="hidden" id="actNodeName" name="actNodeName">
+			 <input type="hidden" id="id" name="id">
+			 <input type="hidden" id="type" name="type" value="1">			    
            <table style="border-collapse:separate; border-spacing:0px 10px;">
                 <tr>
 	                 <th style="width: 70px;">工单主题：</th>
@@ -158,6 +158,10 @@
                 </tr>
                 <tr><th>渠道编码：</th><td><input readonly="readonly" style='border-style:none' id="hq_chan_code" type="text" name="hq_chan_code"/></td>
                 <th>渠道名称：</th><td><input readonly="readonly" style='border-style:none' id="hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
+                
+                <tr><th>开始时间：</th><td><input readonly="readonly" style='border-style:none' id="start_month" type="text" name="start_month"/></td>
+                <th>结束时间：</th><td><input readonly="readonly" style='border-style:none' id="end_month" type="text" name="end_month"/></td></tr>
+                
                 <tr><th>合作年份：</th><td><input readonly="readonly" style='border-style:none' id="hz_year" type="text" name="hz_year"/></td>
                 <th>年考核指定金额：</th><td><input min="0" required id="assess_target" type="text" name="assess_target"/></td></tr>
                 
