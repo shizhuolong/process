@@ -55,7 +55,7 @@ function search(pageNumber) {
 	var where = " WHERE DEAL_DATE="+dealDate;
 	if(orgLevel==1){
 
-	}else if(orgLevel==2){
+	}else if(orgLevel==2||orgLevel==3){
 		where += " AND GROUP_ID_1 =" + region;
 	}else{
 		where += " AND 1=2";
