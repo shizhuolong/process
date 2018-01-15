@@ -56,8 +56,10 @@ function search(pageNumber) {
 	var where = " WHERE T.DEAL_DATE = "+dealDate;
 	if(orgLevel==1){
 
-	}else{
+	}else if(orgLevel==2||orgLevel==3){
 		where += " AND T.GROUP_ID_1 =" + region;
+	}else{
+		where += " AND 1=2 ";
 	}
 	//条件
 	if(regionCode!=''){
