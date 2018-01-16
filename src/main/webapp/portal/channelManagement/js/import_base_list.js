@@ -116,7 +116,7 @@ function search(pageNumber) {
 	var field1=["WORK_FLOW_CODE","GROUP_ID_1_NAME","IMPORT_TYPE","ZD_BRAND","ZD_TYPES","ZD_MEMORY","ZD_COLOR","ZD_IEMI","YYT_HQ_NAME","YYT_CHAN_CODE","SUP_HQ_NAME","SUP_HQ_CODE","IN_PRICE","OUT_PRICE"];
 	var sql="";
 	var orgLevel=$("#orgLevel").val();
-	var regionCode=$("#regionCode").val();
+	var regionCode=$("#region").val();
 	var status=$("#status").val();
 	var zd_brands=$("#zd_brands").val();
 	var is_back=$("#is_back").val();
@@ -173,7 +173,7 @@ function search(pageNumber) {
 }
 
 function initBusiness(status){
-	var regionCode=$("#regionCode").val();
+	var regionCode=$("#region").val();
 	var s="SELECT DISTINCT WORK_FLOW_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE STATUS='"+status+"' AND GROUP_ID_1='"+regionCode+"'";
     var r=query(s);
     var h="";
@@ -188,7 +188,7 @@ function initBusiness(status){
 }
 
  function getWorkNo(){
-		var regionCode=$("#regionCode").val();
+		var regionCode=$("#region").val();
 	    var sql="SELECT WORK_FLOW_CODE FROM AGENTS.TAB_MRT_YYT_ZD_BASE WHERE GROUP_ID_1='"+regionCode+"' AND STATUS='1'";
 	    var d=query(sql);
 	    if(d!=null&&d.length>0){
