@@ -83,7 +83,7 @@ public class ContractProcessAction extends BaseAction {
 		String businessKey = request.getParameter("businessKey");
 		String resultTableName = "PMRT.TAB_MRT_YSDZ_NEW_CHANL_TEMP";
 		service.delTemp(regionCode);
-		String field="GROUP_ID_1,GROUP_ID_1_NAME,USERNAME,CREATE_TIME,HQ_CHAN_CODE,HQ_CHAN_NAME,START_MONTH,"
+		String field="GROUP_ID_1,GROUP_ID_1_NAME,USERNAME,CREATE_TIME,HQ_CHAN_CODE,START_MONTH,"
 		        + "END_MONTH,ASSESS_TARGET,YSDZ_XS,ZX_BT,HZ_MS,FW_FEE,RATE_THREE,RATE_SIX,RATE_NINE,RATE_TWELVE,ID,HZ_YEAR";
 		if (uploadFile == null) {
 		    resMsg="上传文件为空！";
@@ -107,7 +107,7 @@ public class ContractProcessAction extends BaseAction {
 					int end = sheet.getLastRowNum();
 					Row row;
 					String sql = "INSERT INTO "+ resultTableName+"("+field+") values("+regionCode+",'"+regionName+"','"+username+"',sysdate";
-                    for(int i=0;i<15;i++){
+                    for(int i=0;i<14;i++){
                         sql+=",?";
                     }
                     sql+=")";					
@@ -129,15 +129,15 @@ public class ContractProcessAction extends BaseAction {
                                     if(!isMatch){
                                         resMsg+="<br>"+"第"+y+"行不是数字";
                                     }
-                                    if(i==2){
+                                    if(i==1){
                                         start_year= getYear(getCellValue(row.getCell(i)));
                                     }
-                                    if(i==3){
+                                    if(i==2){
                                         end_year= getYear(getCellValue(row.getCell(i)));
                                     }
                                     
 	                            }
-	                            if(i>=9){
+	                            if(i>=8){
 	                                String pattern="(^\\d+\\.?\\d+\\%$)?";
 	                                String content=getCellValue(row.getCell(i));
 	                                boolean isMatch = Pattern.matches(pattern, content);
@@ -148,22 +148,18 @@ public class ContractProcessAction extends BaseAction {
 	                            pre.setString(i+1,getCellValue(row.getCell(i)));
 	                        }
 	                        String uuid=UUIDGeneratorUtils.getUUID();
-	                        pre.setString(14,uuid);
-	                        pre.setInt(15, end_year-start_year);
+	                        pre.setString(13,uuid);
+	                        pre.setInt(14, end_year-start_year);
 	                        pre.addBatch();
 	                    }
 					pre.executeBatch();
 					conn.commit();
 					conn.setAutoCommit(true);
-					String lsql = "select HQ_CHAN_CODE, HQ_CHAN_NAME               "+
+					String lsql = "select HQ_CHAN_CODE               "+
 			                "  from PMRT.TAB_MRT_YSDZ_NEW_CHANL_TEMP t             "+
 			                " where GROUP_ID_1="+regionCode+" AND (HQ_CHAN_CODE NOT IN"+
 			                "       (SELECT HQ_CHAN_CODE                           "+
 			                "          FROM PCDE.TAB_CDE_CHANL_HQ_CODE             "+
-			                "         where CHNL_TYPE in ('专营-他建他营', '专营-自建他营')) "+
-			                "    or HQ_CHAN_NAME NOT IN                            "+
-			                "       (SELECT GROUP_ID_4_NAME                           "+
-			                "          FROM pcde.tab_cde_chanl_hq_code             "+
 			                "         where CHNL_TYPE in ('专营-他建他营', '专营-自建他营'))) ";
 					resMsg += legalValid(lsql);
 					String rsql="SELECT HQ_CHAN_CODE,HQ_CHAN_NAME FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL_TEMP WHERE "
@@ -248,8 +244,7 @@ public class ContractProcessAction extends BaseAction {
 	    try {
 	        String lsql="SELECT HQ_CHAN_CODE,GROUP_ID_4_NAME HQ_CHAN_NAME FROM pcde.tab_cde_chanl_hq_code "
 	                + " where CHNL_TYPE in ('专营-他建他营', '专营-自建他营') " 
-	                + " and HQ_CHAN_CODE='"+hq_chan_code+"'"
-	                + " and GROUP_ID_4_NAME='"+hq_chan_name+"' ";
+	                + " and HQ_CHAN_CODE='"+hq_chan_code+"'";
 	        String msg=legalValid(lsql);
 	        if(!(msg!=null&&msg.equals(""))){
 	            String rsql="SELECT HQ_CHAN_CODE FROM PMRT.TAB_MRT_YSDZ_NEW_CHANL "
@@ -262,8 +257,8 @@ public class ContractProcessAction extends BaseAction {
 	                this.reponseJson("该渠道正在审核或已经审核通过，不允许重复添加！");
 	            }
 	        }else{
-	            resultMsg+="渠道名称或渠道编码错误！";
-	            this.reponseJson("渠道名称或渠道编码错误！");
+	            resultMsg+="渠道编码错误！";
+	            this.reponseJson("渠道编码错误！");
 	        }
 	        
         } catch (Exception e) {
@@ -399,9 +394,9 @@ public class ContractProcessAction extends BaseAction {
 	        pre = conn.createStatement();
 	        ResultSet rs = pre.executeQuery(sql);
 	        if(rs.next()){
-	            resMsg+="以下渠道编码或渠道名称不正确：";
+	            resMsg+="以下渠道编码不正确：";
 	            do{  
-	                resMsg+="<br>"+rs.getString("HQ_CHAN_CODE")+" ，"+rs.getString("HQ_CHAN_NAME");
+	                resMsg+="<br>"+rs.getString("HQ_CHAN_CODE");
 	            } while(rs.next());
 	        }
 	        conn.close();
@@ -550,6 +545,13 @@ public class ContractProcessAction extends BaseAction {
 	    String year=obj.substring(0,4);
 	    return Integer.parseInt(year);
 	}
-
+	
+	public void findByChanCode(){
+	    Map<String, Object> map = service.findByChanCode(resultMap);
+	    if(map==null||(map!=null&&map.size()==0)){
+	        outJsonPlainString(response,"{\"msg\":\"渠道编码错误！\"}");
+	    }
+        this.reponseJson(map);
+	}
 }
 
