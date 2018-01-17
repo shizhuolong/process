@@ -97,11 +97,11 @@ function getSql(dealDate){
 	"      UNION ALL                                                                                                        "+
 	"      SELECT '营业厅类型为空' ,GROUP_ID_1,GROUP_ID_1_NAME,HQ_CHAN_CODE,YYY_NAME ,2 ,'到固话信息维护处修改' SOLVE_TYPE           "+
 	"      FROM PTEMP.TB_TEMP_BUS_HALL_INFO                                                                                 "+
-	"      WHERE IS_BALL=1 AND YYY_TYPE IS NULL  AND DEAL_DATE="+dealDate+"                                                 "+
+	"      WHERE IS_BALL=1 AND YYY_TYPE IS NULL AND OPERATE_TYPE = '自营'  AND DEAL_DATE="+dealDate+"                                                 "+
 	"      UNION ALL                                                                                                        "+
 	"      SELECT '营业厅年房租为0' ,GROUP_ID_1,GROUP_ID_1_NAME,HQ_CHAN_CODE,YYY_NAME  ,3 ,'上工单申请修改' SOLVE_TYPE             "+
 	"      FROM PTEMP.TB_TEMP_BUS_HALL_INFO                                                                                 "+
-	"      WHERE IS_BALL=1 AND PACT_MONEY=0  AND DEAL_DATE="+dealDate+"                                                     "+
+	"      WHERE IS_BALL=1 AND PACT_MONEY=0 AND OPERATE_TYPE = '自营'  AND DEAL_DATE="+dealDate+"                                                     "+
 	"      UNION ALL                                                                                                        "+
 	"      SELECT '未导入成本的地市',T3.GROUP_ID_1,T3.GROUP_ID_1_NAME ,'','',4 ,'到成本导入处导入' SOLVE_TYPE                                                  "+
 	"      FROM PCDE.TB_CDE_REGION_CODE T3                                                                                  "+
@@ -110,7 +110,7 @@ function getSql(dealDate){
 	"            FROM PCDE.TB_CDE_CHANL_HQ_CODE T1                                                                          "+
 	"            JOIN PMRT.TB_MRT_CLOSE_COST T2                                                                             "+
 	"            ON T1.HQ_CHAN_CODE=T2.HQ_CHAN_CODE AND T2.DEAL_DATE="+dealDate+"                                           "+
-	"            )  AND T3.GROUP_ID_1 NOT IN(16099,16017)                                                                   "+
+	"            )  AND T3.GROUP_ID_1 NOT IN(16099,16017,16018)                                                                   "+
 	"      UNION ALL                                                                                                        "+
 	"      SELECT DISTINCT '成本数据导入重复的地市' ,GROUP_ID_1 ,GROUP_ID_1_NAME,'','',5 ,'' SOLVE_TYPE                                         "+
 	"      FROM PCDE.TB_CDE_CHANL_HQ_CODE WHERE HQ_CHAN_CODE IN (                                                           "+
