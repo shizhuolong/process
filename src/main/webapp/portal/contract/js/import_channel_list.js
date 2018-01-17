@@ -26,6 +26,30 @@ $(function(){
 	$("#newBtn").click(function(){
 		addChannel();
 	});
+	$("#hq_chan_code").blur(function(){
+		var hq_chan_code = $("#hq_chan_code").val();
+		if(isNotBlank(hq_chan_code)){
+			$.ajax({
+				type:"POST",
+				dataType:'json',
+				cache:false,
+				url:$("#ctx").val()+"/contract/contract-process!findByChanCode.action",
+				data:{
+				   "resultMap.hq_chan_code":hq_chan_code
+			   	}, 
+			   	success:function(data){
+			   		if(data.msg) {
+			   			alert(data.msg);
+			   			return;
+			   		}
+			   		$("#hq_chan_name").val(data.GROUP_ID_4_NAME);
+			   	},
+			   	error:function(XMLHttpRequest, textStatus, errorThrown){
+					   alert("加载渠道名称失败！");
+				}
+			});
+		}
+	});
 	
 	findNextDealer("contract_marketManager","2");
 	$("#submitTask").click(function(){

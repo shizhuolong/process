@@ -174,11 +174,11 @@
                 <tr><th>渠道名称：</th><td><input readonly="readonly" id="up_hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
                 <tr><th>开始月：</th><td><input required class="Wdate" id="up_start_month" type="text" readonly="readonly" onclick="WdatePicker({isShowClear:false,skin:'whyGreen',onpicked:change(),dateFmt:'yyyyMM'})"/></td></tr>
                 <tr><th>结束月：</th><td><input id="up_end_month" type="text" readonly="readonly" /></td></tr>
-                <tr><th>年考核指定金额：</th><td><input required id="up_assess_target" type="text" name="assess_target"/></td></tr>
-                <tr><th>以收定支考核系数：</th><td><input required id="up_ysdz_xs" type="text" name="ysdz_xs"/></td></tr>
-                <tr><th>装修补贴：</th><td><input required id="up_zx_bt" type="text" name="up_zx_bt"/></td></tr>
+                <tr><th>年考核指定金额：</th><td><input required min=0 id="up_assess_target" type="text" name="assess_target"/></td></tr>
+                <tr><th>以收定支考核系数：</th><td><input required min=0 id="up_ysdz_xs" type="text" name="ysdz_xs"/></td></tr>
+                <tr><th>装修补贴：</th><td><input required min=0 id="up_zx_bt" type="text" name="up_zx_bt"/></td></tr>
                 <tr><th>合作模式：</th><td><select id="up_hz_ms"><option value ="专营-他建他营">专营-他建他营</option><option value ="专营-自建他营">专营-自建他营</option></select></td></tr>
-                <tr><th>房租（房补）：</th><td><input required id="up_fw_fee" type="text" name="up_fw_fee"/></td></tr>
+                <tr><th>房租（房补）：</th><td><input required min=0 id="up_fw_fee" type="text" name="up_fw_fee"/></td></tr>
                 <tr><th>考核进度：</th></tr>
                 <tr><th>1-3月：</th><td><input required id="up_rate_three" type="text" name="rate_three"/></td></tr>
                 <tr><th>1-6月：</th><td><input required id="up_rate_six" type="text" name="rate_six"/></td></tr>
@@ -192,14 +192,14 @@
            <form id="addForm" method="POST">
            <table style="border-collapse:separate; border-spacing:0px 10px;">
                 <tr><th>渠道编码：</th><td><input required id="hq_chan_code" type="text" name="hq_chan_code"/></td></tr>
-                <tr><th>渠道名称：</th><td><input required id="hq_chan_name" type="text" name="hq_chan_name"/></td></tr>
+                <tr><th>渠道名称：</th><td><input id="hq_chan_name" type="text" name="hq_chan_name" readonly="readonly" /></td></tr>
                 <tr><th>开始月：</th><td><input required class="Wdate" id="start_month" type="text" readonly="readonly" onclick="WdatePicker({isShowClear:false,skin:'whyGreen',onpicked:changeEndDateAdd(),dateFmt:'yyyyMM'})"/></td></tr>
                 <tr><th>结束月：</th><td><input id="end_month" type="text" readonly="readonly" /></td></tr>
-                <tr><th>年考核指定金额：</th><td><input required id="assess_target" type="text" name="assess_target"/></td></tr>
-                <tr><th>以收定支考核系数：</th><td><input required id="ysdz_xs" type="text" name="ysdz_xs"/></td></tr>
-                <tr><th>装修补贴：</th><td><input required id="zx_bt" type="text" name="zx_bt"/></td></tr>
+                <tr><th>年考核指定金额：</th><td><input required min=0 id="assess_target" type="text" name="assess_target"/></td></tr>
+                <tr><th>以收定支考核系数：</th><td><input required min=0 id="ysdz_xs" type="text" name="ysdz_xs"/></td></tr>
+                <tr><th>装修补贴：</th><td><input required min=0 id="zx_bt" type="text" name="zx_bt"/></td></tr>
                 <tr><th>合作模式：</th><td><select id="hz_ms"><option value ="专营-他建他营">专营-他建他营</option><option value ="专营-自建他营">专营-自建他营</option></select></td></tr><!-- </th><td><input required id="hz_ms" type="text" name="hz_ms"/></td></tr> -->
-                <tr><th>房租（房补）：</th><td><input required id="fw_fee" type="text" name="fw_fee"/></td></tr>
+                <tr><th>房租（房补）：</th><td><input required min=0 id="fw_fee" type="text" name="fw_fee"/></td></tr>
                 <tr><th>考核进度：</th></tr>
                 <tr><th>1-3月：</th><td><input required id="rate_three" type="text" name="rate_three"/></td></tr>
                 <tr><th>1-6月：</th><td><input required id="rate_six" type="text" name="rate_six"/></td></tr>
