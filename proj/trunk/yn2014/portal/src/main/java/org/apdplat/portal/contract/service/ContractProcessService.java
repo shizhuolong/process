@@ -44,6 +44,7 @@ public class ContractProcessService {
     @Transactional
     public void addChannel(Map<String, String> params) {
         dao.addChannel(params);
+        updateChanName();
     }
 
     public Map<String, Object> findById(String id) {
@@ -120,10 +121,12 @@ public class ContractProcessService {
 		if(isBussinessNull(resultMap)){
 			dao.delResultNotKey(resultMap);
 			dao.importToResult(resultMap);
+			updateChanName();
 		}else{
 			dao.delResultByKey(resultMap);
 			dao.importToResult(resultMap);
 			dao.updateInitId(resultMap);
+			updateChanName();
 		}
 	}
 	
@@ -149,4 +152,14 @@ public class ContractProcessService {
 		String processKey = PropertyHolder.getProperty("contractProcessKey");
 		System.out.println(processKey);
 	}
+
+    public Map<String, Object> findByChanCode(Map<String, String> resultMap) {
+        return dao.findByChanCode(resultMap);
+    }
+    
+    //更新渠道名称
+    @Transactional
+    public void updateChanName(){
+        dao.updateChanName();
+    }
 }

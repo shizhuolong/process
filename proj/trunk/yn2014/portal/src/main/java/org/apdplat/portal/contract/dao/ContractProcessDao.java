@@ -43,4 +43,8 @@ public interface ContractProcessDao {
 
 	void deleteFilesByKey(String businessKey);
 
+    Map<String, Object> findByChanCode(Map<String, String> resultMap);
+
+    void updateChanName();
+
 }
