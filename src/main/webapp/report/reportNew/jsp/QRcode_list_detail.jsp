@@ -31,7 +31,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/QRcode_list_detail.js?v=1"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/QRcode_list_detail.js?v=2"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -62,6 +62,10 @@
                         <select name="unitCode" id="unitCode" class="default-text-input wper80">
                                 <option value=''>请选择</option>
                         </select>
+                    </td>
+                    <td width="5%" style="text-align:right;">二维码编码：</td>
+                    <td width="8%">
+                        <input type="text" name="stroeCode" id="stroeCode" class="default-text-input wper80"></input>
                     </td>
                     <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
