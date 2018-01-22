@@ -87,13 +87,13 @@
 								<td colspan='2'>点击<b>浏览</b>,选择编辑好的EXCEL数据文件，提交即可。
 								</td>
 							</tr> 
-							<tr>
+							<%-- <tr>
 								<th  width="100px">第三步</th>
 								<td width="6%">账期：
 								    <input type="text" style="width: 200px;" class="Wdate default-text-input wper80" readonly
 						            onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMM',isShowClear:false})" value="<%=time%>" id="time" name="time"/>
 						         </td>
-							</tr>
+							</tr> --%>
 							<tr>
 								<th  width="100px">上传文件</th>
 								<td>
@@ -101,7 +101,7 @@
 								</td>
 								<td colspan="2">
 								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="upload">提交</a><span style="display:inline-block;">&nbsp;
-								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" onclick="toBack();">返回</a><span style="display:inline-block;">
+								    <a style="display:inline-block;" class="default-btn"  style="cursor: pointer" id="toBack" onclick="toBack();">返回</a><span style="display:inline-block;">
 								</td>
 							</tr>
 							<tr>
