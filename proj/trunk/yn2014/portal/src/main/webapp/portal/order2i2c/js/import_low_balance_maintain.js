@@ -9,6 +9,7 @@ function downloadFile() {
 //完成
 function complete(){
 	$("#upload").hide();
+	$("#toBack").hide();
 	var flag=checkOptions();
 	 if(flag){
 		//$.addMessage({msg:'正在导入数据!请稍后......',storeDom:$("#showmsg")});
