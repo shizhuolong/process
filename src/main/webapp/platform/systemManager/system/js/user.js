@@ -212,7 +212,7 @@ CreateModel = function() {
                                                             name: 'model.phone',
                                                             fieldLabel: '联系电话',
                                                             blankText : '联系电话不能为空',
-                                                            /*regex:/^((13[0-2])|(145)|(15[5-6])|(18[5-6])|(176))\d{8}$/,*/
+                                                            regex:/^((13[0-2])|(145)|(15[5-6])|(18[5-6])|(176)|(166))\d{8}$/,
                                                             regexText:'联系电话格式不正确'
                                                         },
                                                         {
@@ -606,7 +606,7 @@ ModifyModel = function() {
                                                                 fieldLabel: '联系电话',
                                                                 allowBlank: false,
                                                                 blankText : '联系电话不能为空',
-                                                                regex:/^((13[0-2])|(145)|(15[5-6])|(18[5-6])|(176))\d{8}$/,
+                                                                regex:/^((13[0-2])|(145)|(15[5-6])|(18[5-6])|(176)|(166))\d{8}$/,
                                                                 regexText:'联系电话格式不正确'
                                                             },{
                                                                 xtype:'textfield',
