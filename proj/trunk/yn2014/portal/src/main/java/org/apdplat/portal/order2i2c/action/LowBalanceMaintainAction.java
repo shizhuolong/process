@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -40,39 +44,28 @@ import org.springframework.stereotype.Controller;
 })
 public class LowBalanceMaintainAction extends BaseAction {
 	private File uploadFile;
-	private String time;
+	@Resource
+    DataSource dataSource;
 	
-	/*public void importToResult() {
-		String delRepeat = "DELETE PMRT.TAB_MRT_RENT_ALL_MON WHERE DEAL_DATE='"	+ time+ "' AND GROUP_ID_1='"+regionCode+"'";
-		SpringManager.getUpdateDao().update(delRepeat);
-		String importToResult = "INSERT INTO PMRT.TAB_MRT_RENT_ALL_MON SELECT * FROM PMRT.TAB_MRT_RENT_ALL_MON_TEMP WHERE DEAL_DATE='"+time+"' AND GROUP_ID_1='"+regionCode+"'";
-		SpringManager.getUpdateDao().update(importToResult);
+	public void importToResult() {
+	    Calendar ca=Calendar.getInstance();
+        String time=new SimpleDateFormat("yyyyMMdd").format(ca.getTime());
 		Connection conn =null;
 		CallableStatement stmt=null;
-		Connection conn1 =null;
-		CallableStatement stmt1=null;
 		//调用存储过程
 		try {
-			conn = dataSource.getConnection();
-			stmt = conn.prepareCall("{call PMRT.PRC_MRT_IRON_IMPORT_GROUP(?,?,?,?)}");
-			
-			stmt.setString(1,time);
-			stmt.setString(2,"TAB_MRT_RENT_ALL_MON_TEMP");
-			stmt.setString(3,"TAB_MRT_RENT_ALL_MON");
-			stmt.registerOutParameter(4,java.sql.Types.DECIMAL);
-			stmt.executeUpdate();
 			//调用存储过程
-			conn1 = dataSource.getConnection();
-			stmt1 = conn1.prepareCall("{call PMRT.PRC_MRT_IRON_UNIT_REFRESH(?,?)}");
-			stmt1.setString(1,time);
-			stmt1.registerOutParameter(2,java.sql.Types.DECIMAL);
-			stmt1.executeUpdate();
-			conn1.close();
-			stmt1.close();
+			conn = dataSource.getConnection();
+			stmt = conn.prepareCall("{call pmrt.prc_mrt_2i2c_visit_detail(?,?)}");
+			stmt.setString(1,time);
+			stmt.registerOutParameter(2,java.sql.Types.DECIMAL);
+			stmt.executeUpdate();
+			conn.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	public String importToTemp() {
 		User user = UserHolder.getCurrentLoginUser();
@@ -131,7 +124,7 @@ public class LowBalanceMaintainAction extends BaseAction {
 					pre.executeBatch();
 					conn.commit();
 					conn.setAutoCommit(true);
-//					importToResult();
+					importToResult();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -194,14 +187,6 @@ public class LowBalanceMaintainAction extends BaseAction {
 
 	public void setUploadFile(File uploadFile) {
 		this.uploadFile = uploadFile;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 	private String getCellValue(Cell cell){
