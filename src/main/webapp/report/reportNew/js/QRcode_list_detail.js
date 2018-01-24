@@ -1,22 +1,55 @@
 var report;
+var qdate="";
+var orderBy="";
+var code="";
+var orgLevel="";
+var area_name="";
 $(function(){
 	var field=["ROW_NAME","DEVELOPER_NAME","DEVELOPER_ID","STROECODE" ,"STROENAME" ,"TDC_NAME" ,"TDC_PHONE" ,"DD" ,"XL" ,"XS" ,"XX"];
 	var title=[["州市","发展人","发展人编码","二维码编码","二维码名称","二维码联系人","二维码对应手机","订单量","销量","线上","线下"]];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
-		$("#lch_DataHead").find("TH").unbind();
-		$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+		 $("#lch_DataBody").find("TR").each(function(row){
+				$(this).find("TD").each(function(col){
+					if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+						
+					}else{
+						var tn=getColumnName(field[col]);
+						var text=$(this).text();
+						code=$(this).parent().attr("row_id");
+						orgLevel=$(this).parent().attr("orgLevel");
+						area_name=$(this).parent().attr("row_name");
+						if(tn!=null){
+							$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tn='+tn+' level='+(orgLevel-1)+' area_name='+area_name+' code='+code+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+						}
+					}
+				});
+		 });
 	});
 	report=new LchReport({
 		title:title,
 		field:field,
 		css:[{gt:0,css:LchReport.RIGHT_ALIGN}],
-		rowParams:["ROW_ID"],//第一个为rowId
+		rowParams:["ROW_ID","ROW_NAME"],//第一个为rowId
 		content:"lchcontent",
 		orderCallBack:function(index,type){
-			
-		},afterShowSubRows:function(){
-			
+			report.showSubRow();
+			 $("#lch_DataBody").find("TR").each(function(row){
+					$(this).find("TD").each(function(col){
+						if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+							
+						}else{
+							var tn=getColumnName(field[col]);
+							var text=$(this).text();
+							code=$(this).parent().attr("row_id");
+							orgLevel=$(this).parent().attr("orgLevel");
+							area_name=$(this).parent().attr("row_name");
+							if(tn!=null){
+								$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tn='+tn+' level='+(orgLevel-1)+' area_name='+area_name+' code='+code+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+							}
+						}
+					});
+			 });
 		},
 		getSubRowsCallBack:function($tr){
 			var region =$("#region").val();
@@ -72,14 +105,73 @@ $(function(){
 			}
 			var d=query(sql);
 			return {data:d,extra:{orgLevel:orgLevel}};
+		},
+		afterShowSubRows:function(){
+			$("#lch_DataBody").find("TR").each(function(row){
+				$(this).find("TD").each(function(col){
+					if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+						
+					}else{
+						var tn=getColumnName(field[col]);
+						var text=$(this).text();
+						code=$(this).parent().attr("row_id");
+						orgLevel=$(this).parent().attr("orgLevel");
+						area_name=$(this).parent().attr("row_name");
+						if(tn!=null){
+							$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tn='+tn+' level='+(orgLevel-1)+' area_name='+area_name+' code='+code+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+						}
+					}
+				});
+		    });
 		}
 	});
 	report.showSubRow();
+	$("#lch_DataBody").find("TR").each(function(row){
+		$(this).find("TD").each(function(col){
+			if(($(this).find("A").hasClass("sub_on"))||($(this).find("A").hasClass("sub_off"))){
+			}else{
+				var tn=getColumnName(field[col]);
+				var text=$(this).text();
+				code=$(this).parent().attr("row_id");
+				orgLevel=$(this).parent().attr("orgLevel");
+				area_name=$(this).parent().attr("row_name");
+				if(tn!=null){
+					$(this).empty().html('<a onclick="openDetail(this)" style="color:blue;cursor:pointer;" class="data" tn='+tn+' level='+(orgLevel-1)+' area_name='+area_name+' code='+code+' qdate='+qdate+' detail_name="'+area_name+'—'+tn+'明细">'+text+'</a>');
+				}
+			}
+		});
+    });
     ///////////////////////////////////////////
-	$("#lch_DataHead").find("TH").unbind();
-	$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
+	//$("#lch_DataHead").find("TH").unbind();
+	//$("#lch_DataHead").find(".sub_on,.sub_off,.space").remove();
 	///////////////////////////////////////////
 });
+
+function openDetail(obj){
+	var level=$(obj).attr("level");
+	var code=$(obj).attr("code");
+	var qdate = $("#dealDate").val();
+	var tn = $(obj).attr("tn");
+	var is_pay = "";
+	if(tn=="销量"){
+		is_pay = "xl";
+	}
+	var area_name=$(obj).attr("area_name");
+	var url=$("#ctx").val()+"/report/reportNew/jsp/Qrcode_detail.jsp?level="+level+"&code="+code+"&qdate="+qdate+"&isPayLj="+is_pay;
+	window.parent.openWindow(area_name,null,url);
+}	
+
+function getColumnName(tbcode){
+	var tn = "";
+	if(tbcode == 'DD') {
+		tn = "订单";
+	}else if(tbcode == 'XL') {
+		tn = "销量";
+	}else{
+		tn = null;
+	}
+	return tn;
+}	
 
 function getSql(where,orgLevel){
 	var dealDate=$("#dealDate").val();
