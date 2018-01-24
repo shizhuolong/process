@@ -1,7 +1,9 @@
 var nowData = [];
 var report = null;
-var field=["REGION_NAME_ABBR","HQ_QCD_NUM","DEVELOP_QCD_NUM","QCD_NUM","HQ_QCD_NUM_TDC","PERSON_QCD_NUM" ,"TDC_ID_NUM" ,"TDC_ID_DEV" ,"TDC_ID_DEV_ALL"];
-var title=[["州市","渠道经理发展轻触点数","存量渠道发展轻触点数","无二维码轻触点","有二维码轻触点","有效能轻触点发展人数","有效二维码数","有销量的二维码数","累计发展量"]];
+var orderBy='';
+var maxDate=null;
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME" ,"HQ_CHAN_CODE" ,"HQ_CHAN_NAME" ,"DEVELOPER_ID" ,"DEVELOPER_NAME" ,"STROECODE" ,"STROENAME" ,"TDC_NAME" ,"TDC_PHONE","SERACH_NUMBER","ORD_ID","SAL_STYE","PAY_FEE"];
+var title=[["账期","地市","营服编码","营服名称" ,"渠道编码" ,"渠道名称" ,"发展人" ,"发展人姓名" ,"二维码编码" ,"二维码名称" ,"二维码联系人" ,"二维码对应手机号","客户联系电话","订单编码","销售类型","首充"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -19,13 +21,14 @@ $(function() {
 			};
 		}
 	});
+	$("#dealDate").val($("#qdate").val());
 	search(0);
 	$("#searchBtn").click(function(){
 		search(0);
 	});
 });
 
-var pageSize = 25;
+var pageSize = 15;
 //分页
 function initPagination(totalCount) {
 	$("#totalCount").html(totalCount);
@@ -47,23 +50,35 @@ function search(pageNumber) {
 	var code=$("#code").val();
 	var region=$("#region").val();
 	var orgLevel=$("#orgLevel").val();
+	var level=$("#level").val();
+	var isPayLj=$("#isPayLj").val();
 	var dealDate=$("#dealDate").val();
-	var regionCode=$("#regionCode").val();
-	
+	var where = " where deal_date = "+dealDate;
 	//权限
-	var where = "WHERE DEAL_DATE = '"+dealDate+"'";
 	if(orgLevel==1){
 
 	}else if(orgLevel==2||orgLevel==3){
 		where += " AND GROUP_ID_1 =" + region;
 	}else{
-		where += " AND 1=2 ";
-	}
-	//条件
-	if(regionCode!=''){
-		where+= " AND GROUP_ID_1 ='"+regionCode+"'";
+		where += " AND 1=2";
 	}
 	
+	if(code!=null&&code!=""){
+		if(level==1){
+			where+=" AND group_id_1='"+code+"'";
+		}else if(level==2){
+			where+=" AND unit_id='"+code+"'";
+		}else if(level==3){
+			where+=" AND HQ_CHAN_CODE='"+code+"'";
+		}else{
+			where+=" AND 1=2 ";
+		}
+	}
+	//条件
+	if(isPayLj=="xl"){
+		where+= " AND is_pay_lj=1 ";
+	}
+		
 	var sql=getSql();
 	sql+=where;
 	downSql=sql;
@@ -97,26 +112,30 @@ function search(pageNumber) {
 }
 
 function getSql(){
-	var dealDate=$("#dealDate").val();
-	var sql="SELECT                    "+
-	"DEAL_DATE,"+
-	"REGION_NAME_ABBR,"+
-	"HQ_QCD_NUM,"+
-	"DEVELOP_QCD_NUM,"+
-	"QCD_NUM,"+
-	"HQ_QCD_NUM_TDC,"+
-	"PERSON_QCD_NUM,"+
-	"TDC_ID_NUM,"+
-	"TDC_ID_DEV,"+
-	"TDC_ID_DEV_ALL "+
-	"FROM PMRT.TAB_MRT_QCD_CODE_REPORT ";
+	var sql="SELECT                                    "+
+	"DEAL_DATE ,                               "+
+	"GROUP_ID_1_NAME  ,                        "+
+	"UNIT_ID ,                                 "+
+	"UNIT_NAME ,                               "+
+	"HQ_CHAN_CODE,                             "+
+	"HQ_CHAN_NAME ,                            "+
+	"DEVELOPER_ID ,                            "+
+	"DEVELOPER_NAME ,                          "+
+	"STROECODE ,                               "+
+	"STROENAME,                                "+
+	"TDC_NAME,                                 "+
+	"TDC_PHONE,                                "+
+	"SERACH_NUMBER ,                           "+
+	"ORD_ID,                                   "+
+	"decode(SAL_STYE ,1,'线上',2,'线下') SAL_STYE, "+
+	"pay_fee                                   "+
+	"FROM PMRT.TAB_MRT_QC_TDC_DETAIL ";
 	return sql;
 }
 
 /////////////////////////下载开始/////////////////////////////////////////////
 function downsAll(){
-	var title=[["账期","州市","渠道经理发展轻触点数","存量渠道发展轻触点数","无二维码轻触点","有二维码轻触点","有效能轻触点发展人数","有效二维码数","有销量的二维码数","累计发展量"]];
-	showtext = "轻触点渠道";
+	showtext = "二维码明细";
 	downloadExcel(downSql,title,showtext);
 }
 /////////////////////////下载结束/////////////////////////////////////////////
