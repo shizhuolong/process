@@ -73,8 +73,8 @@ function search(pageNumber) {
 	"      ,IS_FAIL                        "+
 	"      ,IS_SUCC                        "+
 	"FROM PMRT.VIEW_MRT_2I2C_VISIT_DETAIL  "+
-	" WHERE DEAL_DATE="+dealDate +
-	" AND NAME_ID='"+userId+"' ";
+//	" WHERE DEAL_DATE="+dealDate +
+	" WHERE NAME_ID='"+userId+"' ";
 	if(deviceNumber!=''){
 		sql+=" AND DEVICE_NUMBER='"+deviceNumber+"'       ";
 	}

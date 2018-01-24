@@ -45,11 +45,11 @@
 		<table width="100%"
 			style="margin: 10px 0; border: none; font-size: 100%;">
 			<tr>
-			    <td width="5%">账期：</td>
+			    <%-- <td width="5%">账期：</td>
                 <td width="8%"><input type="text" style="width: 100px;"
                     class="Wdate default-text-input wper80" readonly
                     onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyyMMdd',isShowClear:false})"
-                    value="<%=dealDate%>" id="dealDate" name="dealDate" /></td>
+                    value="<%=dealDate%>" id="dealDate" name="dealDate" /></td> --%>
 				<td width="8%" style="text-align: right;">用户号码：</td>
                 <td width="10%"><input type="text" style="margin-right: 30px"
                     class="default-text-input wper80" id="deviceNumber" name="deviceNumber" /></td>
