@@ -119,7 +119,7 @@ function getDownSql(orgLevel,code){
 
 function isCanEdit(){
 	var day=$("#day").val().substr(6,8); 
-	if(parseInt(day)<=21){
+	if(parseInt(day)<=24){
 		if(initDate==dealDate){
 			var hrId=$("#hrId").val();
 			var s=" SELECT HR_ID FROM PMRT.TAB_MRT_TS_R_CBSS WHERE DEAL_DATE='"+dealDate+"' AND HR_ID='"+hrId+"'";//hrId存在才有修改权限
