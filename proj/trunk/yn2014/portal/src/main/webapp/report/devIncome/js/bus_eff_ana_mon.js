@@ -1,10 +1,10 @@
 $(function(){
 	$("#dealDate").val(getMaxDate("PMRT.TB_MRT_BUS_EFF_ANA_MON"));
-	var title=[["组织架构","渠道编码","产权模式","厅类型","经营模式","开帐收入","","新增发展","业务受理量","成本类","","","","","","","","","","","","当月毛利","当月毛利率","累计毛利","累计毛利率","毛利增长","","","月环比排名","店长名字","评议标识"],
-	           ["","","","","","本月","其中新增收入","","","房租","","水电","物管","安保","装修","集中佣金","渠道补贴","终端补贴","人工成本","紧密外包","房租收入","","","","","环比","同比","定比去年12月","","",""],
-	           ["","","","","","","","","","本月房租成本","其中自有产权估算房租成本","","","","","","","","","","","","","","","","","","","",""]];
+	var title=[["组织架构","渠道编码","产权模式","厅类型","经营模式","开帐收入","","新增发展","业务受理量","成本类","","","","","","","","","","","","","","","","","","","","","当月毛利","当月毛利率","累计毛利","累计毛利率","毛利增长","","","月环比排名","店长名字","评议标识"],
+	           ["","","","","","本月","其中新增收入","","","房租","","人工成本","佣金","渠道补贴","终端补贴","柜台及场地出租收入","营业厅装修","客户接入成本","卡成本","水电物业","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费","","","","","环比","同比","定比去年12月","","",""],
+	           ["","","","","","","","","","本月房租成本","其中自有产权估算房租成本","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]];
     
-	var field=["HALL_ID","YYY_TYPE","CHNL_TYPE","OPERATE_TYPE","SR_ACC","SR_NEW","DEV_NEW","ACCEPT","MON_RENT","MON_RENT_ZY","WE_FEE","RENT_MAN_MON","SECURITY","FIT_FEE","COMM_ACC_JZ","COMM_ACC_QDBT","ZDBT1","PER_COST","JMWB","GT_RENT","ML_SR_ACC","ML_RATE","ML_SR_ACC1","ML_RATE1","ML_RATEL","ML_RATE_LTMN","ML_RATEL12","RN","T_MANAGE_NAME","EVALUATE"];
+	var field=["HALL_ID","YYY_TYPE","CHNL_TYPE","OPERATE_TYPE","SR_ACC","SR_NEW","DEV_NEW","ACCEPT","MON_RENT","MON_RENT_ZY","PER_COST","COMM_ACC_JZ","COMM_ACC_QDBT","ZDBT1","GT_RENT","FIT_FEE","KHJR_AMOUNT","KCB_COST","WE_FEE","ADV_FEE","YWYP_FEE","CH_PRO_PRE","SALE_DETAIL_SR","SALE_DETAIL_COST","BG_FEE","CAR_FEE","ZD_FEE","CL_FEE","TX_FEE","ML_SR_ACC","ML_RATE","ML_SR_ACC1","ML_RATE1","ML_RATEL","ML_RATE_LTMN","ML_RATEL12","RN","T_MANAGE_NAME","EVALUATE"];
     $("#searchBtn").click(function(){
 		//$("#searchForm").find("TABLE").find("TR:eq(0)").find("TD:last").remove();
 		report.showSubRow();
@@ -107,9 +107,9 @@ function downsAll() {
 	}
 	var sql = getDownSql(where);
 	var showtext = '营业厅毛利率评价月报表-' + dealDate;
-	var title=[["地市","营业厅","渠道编码","产权模式","厅类型","经营模式","开帐收入","","新增发展","业务受理量","成本类","","","","","","","","","","","","当月毛利","当月毛利率","累计毛利","累计毛利率","毛利增长","","","月环比排名","店长名字","评议标识"],
-	           ["","","","","","","本月","其中新增收入","","","房租","","水电","物管","安保","装修","集中佣金","渠道补贴","终端补贴","人工成本","紧密外包","房租收入","","","","","环比","同比","定比去年12月","","",""],
-	           ["","","","","","","","","","","本月房租成本","其中自有产权估算房租成本","","","","","","","","","","","","","","","","","","","",""]];
+	var title=[["地市","营业厅","渠道编码","产权模式","厅类型","经营模式","开帐收入","","新增发展","业务受理量","成本类","","","","","","","","","","","","","","","","","","","","","当月毛利","当月毛利率","累计毛利","累计毛利率","毛利增长","","","月环比排名","店长名字","评议标识"],
+	           ["","","","","","","本月","其中新增收入","","","房租","","人工成本","佣金","渠道补贴","终端补贴","柜台及场地出租收入","营业厅装修","客户接入成本","卡成本","水电物业","广告宣传费","业务用品及材料费","存货跌价准备","零售收入","零售成本","办公费","车辆使用费","招待费","差旅费","通信费","","","","","环比","同比","定比去年12月","","",""],
+	           ["","","","","","","","","","","本月房租成本","其中自有产权估算房租成本","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]];
 	downloadExcel(sql,title,showtext);
 }
 
@@ -149,17 +149,29 @@ function getSql(orgLevel,where,where1){
 		"       SUM(NVL(T.ACCEPT, 0)) ACCEPT,                                                          "+
 		"       SUM(NVL(ROUND(T.MON_RENT/10000,3), 0)) MON_RENT,                                                      "+
 		"       SUM(ROUND(T.MON_RENT_ZY/10000,3)) MON_RENT_ZY,                                                        "+
-		"       SUM(NVL(ROUND(T.WE_FEE/10000,3), 0)) WE_FEE,                                                          "+
-		"       SUM(NVL(ROUND(T.RENT_MAN_MON/10000,3), 0)) RENT_MAN_MON,                                              "+
-		"       SUM(NVL(ROUND(T.SECURITY/10000,3), 0)) SECURITY,                                                      "+
-		"       SUM(NVL(ROUND(T.FIT_FEE/10000,3), 0)) FIT_FEE,                                                        "+
-		"       SUM(NVL(ROUND(T.COMM_ACC_JZ/10000,3), 0)) COMM_ACC_JZ,                                                "+
-		"       SUM(NVL(ROUND(T.COMM_ACC_QDBT/10000,3), 0)) COMM_ACC_QDBT,                                            "+
-		"       SUM(NVL(ROUND(T.ZDBT1/10000,3）, 0)) ZDBT1,                                                            "+
-		"       SUM(NVL(ROUND(T.PER_COST/10000,3), 0)) PER_COST,                                                      "+
-		"       SUM(NVL(ROUND(T.JMWB/10000,3), 0)) JMWB,                                                              "+
-		"       SUM(NVL(ROUND(T.GT_RENT/10000,3), 0)) GT_RENT,                                                        "+
-		"       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
+		
+		"SUM(NVL(ROUND(T.PER_COST    / 10000, 3), 0)) PER_COST     "+
+		",SUM(NVL(ROUND(T.COMM_ACC_JZ          / 10000, 3), 0)) COMM_ACC_JZ           "+
+		",SUM(NVL(ROUND(T.COMM_ACC_QDBT         / 10000, 3), 0)) COMM_ACC_QDBT          "+
+		",SUM(NVL(ROUND(T.ZDBT1         / 10000, 3), 0)) ZDBT1          "+
+		",SUM(NVL(ROUND(T.GT_RENT   / 10000, 3), 0)) GT_RENT    "+
+		",SUM(NVL(ROUND(T.FIT_FEE       / 10000, 3), 0)) FIT_FEE        "+
+		",SUM(NVL(ROUND(T.KHJR_AMOUNT     / 10000, 3), 0)) KHJR_AMOUNT      "+
+		",SUM(NVL(ROUND(T.KCB_COST        / 10000, 3), 0)) KCB_COST         "+
+		",SUM(NVL(ROUND(T.WE_FEE        / 10000, 3), 0)) WE_FEE         "+
+		",SUM(NVL(ROUND(T.ADV_FEE         / 10000, 3), 0)) ADV_FEE          "+
+		",SUM(NVL(ROUND(T.YWYP_FEE        / 10000, 3), 0)) YWYP_FEE         "+
+		",SUM(NVL(ROUND(T.CH_PRO_PRE      / 10000, 3), 0)) CH_PRO_PRE       "+
+		",SUM(NVL(ROUND(T.SALE_DETAIL_SR  / 10000, 3), 0)) SALE_DETAIL_SR   "+
+		",SUM(NVL(ROUND(T.SALE_DETAIL_COST/ 10000, 3), 0)) SALE_DETAIL_COST "+
+		",SUM(NVL(ROUND(T.BG_FEE          / 10000, 3), 0)) BG_FEE           "+
+		",SUM(NVL(ROUND(T.CAR_FEE         / 10000, 3), 0)) CAR_FEE          "+
+		",SUM(NVL(ROUND(T.ZD_FEE          / 10000, 3), 0)) ZD_FEE           "+
+		",SUM(NVL(ROUND(T.CL_FEE          / 10000, 3), 0)) CL_FEE           "+
+		",SUM(NVL(ROUND(T.TX_FEE          / 10000, 3), 0)) TX_FEE           "+
+
+		
+		",       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T.SR_ACC, 0)) <> 0 THEN                            "+
 		"                               SUM(NVL(T.ML_SR_ACC, 0)) * 100 / SUM(NVL(T.SR_ACC, 0))         "+
@@ -214,17 +226,29 @@ function getSql(orgLevel,where,where1){
 		"                     ELSE                                                                     "+
 		"                      0                                                                       "+
 		"                   END) MON_RENT_ZY,                                                          "+
-		"               SUM(NVL(WE_FEE, 0)) WE_FEE,                                                    "+
-		"               SUM(NVL(RENT_MAN_MON, 0)) RENT_MAN_MON,                                        "+
-		"               SUM(NVL(SECURITY, 0)) SECURITY,                                                "+
-		"               SUM(NVL(FIT_FEE, 0)) FIT_FEE,                                                  "+
-		"               SUM(NVL(COMM_ACC_JZ, 0)) COMM_ACC_JZ,                                          "+
-		"               SUM(NVL(COMM_ACC_QDBT, 0)) COMM_ACC_QDBT,                                      "+
-		"               SUM(NVL(ZDBT1, 0)) ZDBT1,                                                      "+
-		"               SUM(NVL(PER_COST, 0)) PER_COST,                                                "+
-		"               SUM(NVL(JMWB, 0)) JMWB,                                                        "+
-		"               SUM(NVL(GT_RENT, 0)) GT_RENT,                                                  "+
-		"               SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC,                                              "+
+		
+		"SUM(PER_COST    )   PER_COST     "+ 
+		",SUM(COMM_ACC_JZ          )   COMM_ACC_JZ           "+ 
+		",SUM(COMM_ACC_QDBT         )   COMM_ACC_QDBT          "+ 
+		",SUM(ZDBT1         )   ZDBT1          "+ 
+		",SUM(GT_RENT   )   GT_RENT    "+ 
+		",SUM(FIT_FEE       )   FIT_FEE        "+ 
+		",SUM(KHJR_AMOUNT     )   KHJR_AMOUNT      "+ 
+		",SUM(KCB_COST        )   KCB_COST         "+ 
+		",SUM(WE_FEE        )   WE_FEE         "+ 
+		",SUM(ADV_FEE         )   ADV_FEE          "+ 
+		",SUM(YWYP_FEE        )   YWYP_FEE         "+ 
+		",SUM(CH_PRO_PRE      )   CH_PRO_PRE       "+ 
+		",SUM(SALE_DETAIL_SR  )   SALE_DETAIL_SR   "+ 
+		",SUM(SALE_DETAIL_COST)   SALE_DETAIL_COST "+ 
+		",SUM(BG_FEE          )   BG_FEE           "+ 
+		",SUM(CAR_FEE         )   CAR_FEE          "+ 
+		",SUM(ZD_FEE          )   ZD_FEE           "+ 
+		",SUM(CL_FEE          )   CL_FEE           "+ 
+		",SUM(TX_FEE          )   TX_FEE           "+ 
+
+		
+		",               SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC,                                              "+
 		"               SUM(NVL(ML_SR_ACC1, 0)) ML_SR_ACC1,                                            "+
 		"               SUM(NVL(SR_ACC1, 0)) SR_ACC1                                                   "+
 		"        FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                      "+
@@ -279,17 +303,28 @@ function getSql(orgLevel,where,where1){
 		"       SUM(NVL(T.ACCEPT, 0)) ACCEPT,                                                          "+
 	    "       SUM(NVL(ROUND(T.MON_RENT/10000,3), 0)) MON_RENT,                                                      "+
 		"       SUM(ROUND(T.MON_RENT_ZY/10000,3)) MON_RENT_ZY,                                                        "+
-		"       SUM(NVL(ROUND(T.WE_FEE/10000,3), 0)) WE_FEE,                                                          "+
-		"       SUM(NVL(ROUND(T.RENT_MAN_MON/10000,3), 0)) RENT_MAN_MON,                                              "+
-		"       SUM(NVL(ROUND(T.SECURITY/10000,3), 0)) SECURITY,                                                      "+
-		"       SUM(NVL(ROUND(T.FIT_FEE/10000,3), 0)) FIT_FEE,                                                        "+
-		"       SUM(NVL(ROUND(T.COMM_ACC_JZ/10000,3), 0)) COMM_ACC_JZ,                                                "+
-		"       SUM(NVL(ROUND(T.COMM_ACC_QDBT/10000,3), 0)) COMM_ACC_QDBT,                                            "+
-		"       SUM(NVL(ROUND(T.ZDBT1/10000,3）, 0)) ZDBT1,                                                            "+
-		"       SUM(NVL(ROUND(T.PER_COST/10000,3), 0)) PER_COST,                                                      "+
-		"       SUM(NVL(ROUND(T.JMWB/10000,3), 0)) JMWB,                                                              "+
-		"       SUM(NVL(ROUND(T.GT_RENT/10000,3), 0)) GT_RENT,                                                        "+
-		"       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
+		
+		"SUM(NVL(ROUND(T.PER_COST    / 10000, 3), 0)) PER_COST     "+
+		",SUM(NVL(ROUND(T.COMM_ACC_JZ          / 10000, 3), 0)) COMM_ACC_JZ           "+
+		",SUM(NVL(ROUND(T.COMM_ACC_QDBT         / 10000, 3), 0)) COMM_ACC_QDBT          "+
+		",SUM(NVL(ROUND(T.ZDBT1         / 10000, 3), 0)) ZDBT1          "+
+		",SUM(NVL(ROUND(T.GT_RENT   / 10000, 3), 0)) GT_RENT    "+
+		",SUM(NVL(ROUND(T.FIT_FEE       / 10000, 3), 0)) FIT_FEE        "+
+		",SUM(NVL(ROUND(T.KHJR_AMOUNT     / 10000, 3), 0)) KHJR_AMOUNT      "+
+		",SUM(NVL(ROUND(T.KCB_COST        / 10000, 3), 0)) KCB_COST         "+
+		",SUM(NVL(ROUND(T.WE_FEE        / 10000, 3), 0)) WE_FEE         "+
+		",SUM(NVL(ROUND(T.ADV_FEE         / 10000, 3), 0)) ADV_FEE          "+
+		",SUM(NVL(ROUND(T.YWYP_FEE        / 10000, 3), 0)) YWYP_FEE         "+
+		",SUM(NVL(ROUND(T.CH_PRO_PRE      / 10000, 3), 0)) CH_PRO_PRE       "+
+		",SUM(NVL(ROUND(T.SALE_DETAIL_SR  / 10000, 3), 0)) SALE_DETAIL_SR   "+
+		",SUM(NVL(ROUND(T.SALE_DETAIL_COST/ 10000, 3), 0)) SALE_DETAIL_COST "+
+		",SUM(NVL(ROUND(T.BG_FEE          / 10000, 3), 0)) BG_FEE           "+
+		",SUM(NVL(ROUND(T.CAR_FEE         / 10000, 3), 0)) CAR_FEE          "+
+		",SUM(NVL(ROUND(T.ZD_FEE          / 10000, 3), 0)) ZD_FEE           "+
+		",SUM(NVL(ROUND(T.CL_FEE          / 10000, 3), 0)) CL_FEE           "+
+		",SUM(NVL(ROUND(T.TX_FEE          / 10000, 3), 0)) TX_FEE           "+
+
+		",       SUM(NVL(ROUND(T.ML_SR_ACC/10000,3), 0)) ML_SR_ACC,                                                    "+
 		"       PODS.GET_RADIX_POINT(CASE                                                              "+
 		"                              WHEN SUM(NVL(T.SR_ACC, 0)) <> 0 THEN                            "+
 		"                               SUM(NVL(T.ML_SR_ACC, 0)) * 100 / SUM(NVL(T.SR_ACC, 0))         "+
@@ -352,17 +387,28 @@ function getSql(orgLevel,where,where1){
 		"                     ELSE                                                                     "+
 		"                      0                                                                       "+
 		"                   END) MON_RENT_ZY,                                                          "+
-		"               SUM(NVL(WE_FEE, 0)) WE_FEE,                                                    "+
-		"               SUM(NVL(RENT_MAN_MON, 0)) RENT_MAN_MON,                                        "+
-		"               SUM(NVL(SECURITY, 0)) SECURITY,                                                "+
-		"               SUM(NVL(FIT_FEE, 0)) FIT_FEE,                                                  "+
-		"               SUM(NVL(COMM_ACC_JZ, 0)) COMM_ACC_JZ,                                          "+
-		"               SUM(NVL(COMM_ACC_QDBT, 0)) COMM_ACC_QDBT,                                      "+
-		"               SUM(NVL(ZDBT1, 0)) ZDBT1,                                                      "+
-		"               SUM(NVL(PER_COST, 0)) PER_COST,                                                "+
-		"               SUM(NVL(JMWB, 0)) JMWB,                                                        "+
-		"               SUM(NVL(GT_RENT, 0)) GT_RENT,                                                  "+
-		"               SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC,                                              "+
+
+		"SUM(PER_COST    )   PER_COST     "+
+		",SUM(COMM_ACC_JZ          )   COMM_ACC_JZ           "+
+		",SUM(COMM_ACC_QDBT         )   COMM_ACC_QDBT          "+
+		",SUM(ZDBT1         )   ZDBT1          "+
+		",SUM(GT_RENT   )   GT_RENT    "+
+		",SUM(FIT_FEE       )   FIT_FEE        "+
+		",SUM(KHJR_AMOUNT     )   KHJR_AMOUNT      "+
+		",SUM(KCB_COST        )   KCB_COST         "+
+		",SUM(WE_FEE        )   WE_FEE         "+
+		",SUM(ADV_FEE         )   ADV_FEE          "+
+		",SUM(YWYP_FEE        )   YWYP_FEE         "+
+		",SUM(CH_PRO_PRE      )   CH_PRO_PRE       "+
+		",SUM(SALE_DETAIL_SR  )   SALE_DETAIL_SR   "+
+		",SUM(SALE_DETAIL_COST)   SALE_DETAIL_COST "+
+		",SUM(BG_FEE          )   BG_FEE           "+
+		",SUM(CAR_FEE         )   CAR_FEE          "+
+		",SUM(ZD_FEE          )   ZD_FEE           "+
+		",SUM(CL_FEE          )   CL_FEE           "+
+		",SUM(TX_FEE          )   TX_FEE           "+
+
+		",               SUM(NVL(ML_SR_ACC, 0)) ML_SR_ACC,                                              "+
 		"               SUM(NVL(ML_SR_ACC1, 0)) ML_SR_ACC1,                                            "+
 		"               SUM(NVL(SR_ACC1, 0)) SR_ACC1                                                   "+
 		"        FROM PMRT.TB_MRT_BUS_EFF_ANA_MON                                                      "+
@@ -420,16 +466,27 @@ function getSql(orgLevel,where,where1){
 							"      ,ACCEPT                                                                                                  "+
 							"     ,ROUND(MON_RENT/10000,3) MON_RENT                                                                                     "+
 							"     ,ROUND(MON_RENT_ZY/10000,3) MON_RENT_ZY                                                                                    "+
-							"     ,ROUND(WE_FEE/10000,3)    WE_FEE                                                                                      "+
-							"     ,ROUND(RENT_MAN_MON/10000,3) RENT_MAN_MON                                                                                   "+
-							"     ,ROUND(SECURITY/10000,3) SECURITY                                                                                   "+
-							"     ,ROUND(FIT_FEE/10000,3) FIT_FEE                                                                                    "+
-							"     ,ROUND(COMM_ACC_JZ/10000,3)  COMM_ACC_JZ                                                                                   "+
-							"     ,ROUND(COMM_ACC_QDBT/10000,3) COMM_ACC_QDBT                                                                                  "+
-							"     ,ROUND(ZDBT1/10000,3) ZDBT1                                                                                          "+
-							"     ,ROUND(PER_COST/10000,3) PER_COST                                                                                       "+
-							"     ,ROUND(JMWB/10000,3) JMWB                                                                                       "+
-							"     ,ROUND(GT_RENT/10000,3) GT_RENT                                                                                         "+
+							
+							",ROUND(PER_COST    /10000,3)  PER_COST      "+
+							",ROUND(COMM_ACC_JZ          /10000,3)  COMM_ACC_JZ            "+
+							",ROUND(COMM_ACC_QDBT         /10000,3)  COMM_ACC_QDBT           "+
+							",ROUND(ZDBT1         /10000,3)  ZDBT1           "+
+							",ROUND(GT_RENT   /10000,3)  GT_RENT     "+
+							",ROUND(FIT_FEE       /10000,3)  FIT_FEE         "+
+							",ROUND(KHJR_AMOUNT     /10000,3)  KHJR_AMOUNT       "+
+							",ROUND(KCB_COST        /10000,3)  KCB_COST          "+
+							",ROUND(WE_FEE        /10000,3)  WE_FEE          "+
+							",ROUND(ADV_FEE         /10000,3)  ADV_FEE           "+
+							",ROUND(YWYP_FEE        /10000,3)  YWYP_FEE          "+
+							",ROUND(CH_PRO_PRE      /10000,3)  CH_PRO_PRE        "+
+							",ROUND(SALE_DETAIL_SR  /10000,3)  SALE_DETAIL_SR    "+
+							",ROUND(SALE_DETAIL_COST/10000,3)  SALE_DETAIL_COST  "+
+							",ROUND(BG_FEE          /10000,3)  BG_FEE            "+
+							",ROUND(CAR_FEE         /10000,3)  CAR_FEE           "+
+							",ROUND(ZD_FEE          /10000,3)  ZD_FEE            "+
+							",ROUND(CL_FEE          /10000,3)  CL_FEE            "+
+							",ROUND(TX_FEE          /10000,3)  TX_FEE            "+
+							
 							"      ,ROUND(ML_SR_ACC/10000,3) ML_SR_ACC                                                                                               "+
 							"      ,ML_RATE                                                                                                 "+
 							"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                              "+
@@ -460,16 +517,27 @@ function getSql(orgLevel,where,where1){
 							"      ,ACCEPT                                                                                                  "+
 							"      ,MON_RENT                                                                                                "+
 							"      ,MON_RENT_ZY                                                                                             "+
-							"      ,WE_FEE                                                                                                  "+
-							"      ,RENT_MAN_MON                                                                                            "+
-							"      ,SECURITY                                                                                                "+
-							"      ,FIT_FEE                                                                                                 "+
-							"      ,COMM_ACC_JZ                                                                                             "+
-							"      ,COMM_ACC_QDBT                                                                                           "+
-							"      ,ZDBT1                                                                                                   "+
-							"      ,PER_COST                                                                                                "+
-							"      ,JMWB                                                                                                    "+
-							"      ,GT_RENT                                                                                                 "+
+							
+							",PER_COST     "+
+							",COMM_ACC_JZ           "+
+							",COMM_ACC_QDBT          "+
+							",ZDBT1          "+
+							",GT_RENT    "+
+							",FIT_FEE        "+
+							",KHJR_AMOUNT      "+
+							",KCB_COST         "+
+							",WE_FEE         "+
+							",ADV_FEE          "+
+							",YWYP_FEE         "+
+							",CH_PRO_PRE       "+
+							",SALE_DETAIL_SR   "+
+							",SALE_DETAIL_COST "+
+							",BG_FEE           "+
+							",CAR_FEE          "+
+							",ZD_FEE           "+
+							",CL_FEE           "+
+							",TX_FEE           "+
+							
 							"      ,ML_SR_ACC                                                                                               "+
 							"      ,ML_RATE                                                                                                 "+
 							"      ,ML_SR_ACC1                                                                                              "+
@@ -500,16 +568,28 @@ function getSql(orgLevel,where,where1){
 							"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                                             "+
 							"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                                     "+
 							"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                                          "+
-							"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                                               "+
-							"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                                         "+
-							"      ,SUM(NVL(SECURITY,0))               SECURITY                                                             "+
-							"      ,SUM(NVL(FIT_FEE,0))                FIT_FEE                                                              "+
-							"      ,SUM(NVL(COMM_ACC_JZ,0))            COMM_ACC_JZ                                                          "+
-							"      ,SUM(NVL(COMM_ACC_QDBT,0))          COMM_ACC_QDBT                                                        "+
-							"      ,SUM(NVL(ZDBT1,0))                  ZDBT1                                                                "+
-							"      ,SUM(NVL(PER_COST,0))               PER_COST                                                             "+
-							"      ,SUM(NVL(JMWB,0))                   JMWB                                                                 "+
-							"      ,SUM(NVL(GT_RENT,0))                GT_RENT                                                              "+
+							
+							",SUM(PER_COST    )   PER_COST     "+
+							",SUM(COMM_ACC_JZ          )   COMM_ACC_JZ           "+
+							",SUM(COMM_ACC_QDBT         )   COMM_ACC_QDBT          "+
+							",SUM(ZDBT1         )   ZDBT1          "+
+							",SUM(GT_RENT   )   GT_RENT    "+
+							",SUM(FIT_FEE       )   FIT_FEE        "+
+							",SUM(KHJR_AMOUNT     )   KHJR_AMOUNT      "+
+							",SUM(KCB_COST        )   KCB_COST         "+
+							",SUM(WE_FEE        )   WE_FEE         "+
+							",SUM(ADV_FEE         )   ADV_FEE          "+
+							",SUM(YWYP_FEE        )   YWYP_FEE         "+
+							",SUM(CH_PRO_PRE      )   CH_PRO_PRE       "+
+							",SUM(SALE_DETAIL_SR  )   SALE_DETAIL_SR   "+
+							",SUM(SALE_DETAIL_COST)   SALE_DETAIL_COST "+
+							",SUM(BG_FEE          )   BG_FEE           "+
+							",SUM(CAR_FEE         )   CAR_FEE          "+
+							",SUM(ZD_FEE          )   ZD_FEE           "+
+							",SUM(CL_FEE          )   CL_FEE           "+
+							",SUM(TX_FEE          )   TX_FEE           "+
+
+							
 							"      ,SUM(NVL(ML_SR_ACC,0))              ML_SR_ACC                                                            "+
 							"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(SR_ACC,0))<>0                                                    "+
 							"                                 THEN SUM(NVL(ML_SR_ACC,0))*100/SUM(NVL(SR_ACC,0))                             "+
@@ -570,16 +650,27 @@ function getSql(orgLevel,where,where1){
 		"      ,ACCEPT                                                                                                  "+
 		"      ,MON_RENT                                                                                                "+
 		"      ,MON_RENT_ZY                                                                                             "+
-		"      ,WE_FEE                                                                                                  "+
-		"      ,RENT_MAN_MON                                                                                            "+
-		"      ,SECURITY                                                                                                "+
-		"      ,FIT_FEE                                                                                                 "+
-		"      ,COMM_ACC_JZ                                                                                             "+
-		"      ,COMM_ACC_QDBT                                                                                           "+
-		"      ,ZDBT1                                                                                                   "+
-		"      ,PER_COST                                                                                                "+
-		"      ,JMWB                                                                                                    "+
-		"      ,GT_RENT                                                                                                 "+
+		
+		",PER_COST     "+
+		",COMM_ACC_JZ           "+
+		",COMM_ACC_QDBT          "+
+		",ZDBT1          "+
+		",GT_RENT    "+
+		",FIT_FEE        "+
+		",KHJR_AMOUNT      "+
+		",KCB_COST         "+
+		",WE_FEE         "+
+		",ADV_FEE          "+
+		",YWYP_FEE         "+
+		",CH_PRO_PRE       "+
+		",SALE_DETAIL_SR   "+
+		",SALE_DETAIL_COST "+
+		",BG_FEE           "+
+		",CAR_FEE          "+
+		",ZD_FEE           "+
+		",CL_FEE           "+
+		",TX_FEE           "+
+		
 		"      ,ML_SR_ACC                                                                                               "+
 		"      ,ML_RATE                                                                                                 "+
 		"      ,ML_SR_ACC1                                                                                              "+
@@ -607,16 +698,27 @@ function getSql(orgLevel,where,where1){
 		"      ,ACCEPT                                                                                                  "+
 		"      ,ROUND(MON_RENT/10000,3) MON_RENT                                                                                         "+
 		"      ,ROUND(MON_RENT_ZY/10000,3) MON_RENT_ZY                                                                                          "+
-		"      ,ROUND(WE_FEE/10000,3)     WE_FEE                                                                                          "+
-		"      ,ROUND(RENT_MAN_MON/10000,3)    RENT_MAN_MON                                                                                     "+
-		"      ,ROUND(SECURITY/10000,3)   SECURITY                                                                                      "+
-		"      ,ROUND(FIT_FEE/10000,3) FIT_FEE                                                                                         "+
-		"      ,ROUND(COMM_ACC_JZ/10000,3)     COMM_ACC_JZ                                                                                     "+
-		"      ,ROUND(COMM_ACC_QDBT/10000,3)   COMM_ACC_QDBT                                                                                     "+
-		"      ,ROUND(ZDBT1/10000,3)    ZDBT1                                                                                           "+
-		"      ,ROUND(PER_COST/10000,3)  PER_COST                                                                                           "+
-		"      ,ROUND(JMWB/10000,3)   JMWB                                                                                          "+
-		"      ,ROUND(GT_RENT/10000,3)        GT_RENT                                                                                      "+
+		
+		",ROUND(PER_COST    /10000,3)  PER_COST      "+
+		",ROUND(COMM_ACC_JZ          /10000,3)  COMM_ACC_JZ            "+
+		",ROUND(COMM_ACC_QDBT         /10000,3)  COMM_ACC_QDBT           "+
+		",ROUND(ZDBT1         /10000,3)  ZDBT1           "+
+		",ROUND(GT_RENT   /10000,3)  GT_RENT     "+
+		",ROUND(FIT_FEE       /10000,3)  FIT_FEE         "+
+		",ROUND(KHJR_AMOUNT     /10000,3)  KHJR_AMOUNT       "+
+		",ROUND(KCB_COST        /10000,3)  KCB_COST          "+
+		",ROUND(WE_FEE        /10000,3)  WE_FEE          "+
+		",ROUND(ADV_FEE         /10000,3)  ADV_FEE           "+
+		",ROUND(YWYP_FEE        /10000,3)  YWYP_FEE          "+
+		",ROUND(CH_PRO_PRE      /10000,3)  CH_PRO_PRE        "+
+		",ROUND(SALE_DETAIL_SR  /10000,3)  SALE_DETAIL_SR    "+
+		",ROUND(SALE_DETAIL_COST/10000,3)  SALE_DETAIL_COST  "+
+		",ROUND(BG_FEE          /10000,3)  BG_FEE            "+
+		",ROUND(CAR_FEE         /10000,3)  CAR_FEE           "+
+		",ROUND(ZD_FEE          /10000,3)  ZD_FEE            "+
+		",ROUND(CL_FEE          /10000,3)  CL_FEE            "+
+		",ROUND(TX_FEE          /10000,3)  TX_FEE            "+
+		
 		"      ,ROUND(ML_SR_ACC/10000,3)  ML_SR_ACC                                                                                             "+
 		"      ,ML_RATE                                                                                                 "+
 		"      ,ROUND(ML_SR_ACC1/10000,3) ML_SR_ACC1                                                                                             "+
@@ -645,16 +747,27 @@ function getSql(orgLevel,where,where1){
 		"      ,SUM(NVL(MON_RENT,0))               MON_RENT                                                             "+
 		"      ,SUM(CASE WHEN YYY_TYPE LIKE '自有%'                                                                     "+
 		"                THEN NVL(MON_RENT,0) ELSE 0 END) MON_RENT_ZY                                                          "+
-		"      ,SUM(NVL(WE_FEE,0))                 WE_FEE                                                               "+
-		"      ,SUM(NVL(RENT_MAN_MON,0))           RENT_MAN_MON                                                         "+
-		"      ,SUM(NVL(SECURITY,0))               SECURITY                                                             "+
-		"      ,SUM(NVL(FIT_FEE,0))                FIT_FEE                                                              "+
-		"      ,SUM(NVL(COMM_ACC_JZ,0))            COMM_ACC_JZ                                                          "+
-		"      ,SUM(NVL(COMM_ACC_QDBT,0))          COMM_ACC_QDBT                                                        "+
-		"      ,SUM(NVL(ZDBT1,0))                  ZDBT1                                                                "+
-		"      ,SUM(NVL(PER_COST,0))               PER_COST                                                             "+
-		"      ,SUM(NVL(JMWB,0))                   JMWB                                                                 "+
-		"      ,SUM(NVL(GT_RENT,0))                GT_RENT                                                              "+
+		
+		",SUM(PER_COST    )   PER_COST     "+
+		",SUM(COMM_ACC_JZ          )   COMM_ACC_JZ           "+
+		",SUM(COMM_ACC_QDBT         )   COMM_ACC_QDBT          "+
+		",SUM(ZDBT1         )   ZDBT1          "+
+		",SUM(GT_RENT   )   GT_RENT    "+
+		",SUM(FIT_FEE       )   FIT_FEE        "+
+		",SUM(KHJR_AMOUNT     )   KHJR_AMOUNT      "+
+		",SUM(KCB_COST        )   KCB_COST         "+
+		",SUM(WE_FEE        )   WE_FEE         "+
+		",SUM(ADV_FEE         )   ADV_FEE          "+
+		",SUM(YWYP_FEE        )   YWYP_FEE         "+
+		",SUM(CH_PRO_PRE      )   CH_PRO_PRE       "+
+		",SUM(SALE_DETAIL_SR  )   SALE_DETAIL_SR   "+
+		",SUM(SALE_DETAIL_COST)   SALE_DETAIL_COST "+
+		",SUM(BG_FEE          )   BG_FEE           "+
+		",SUM(CAR_FEE         )   CAR_FEE          "+
+		",SUM(ZD_FEE          )   ZD_FEE           "+
+		",SUM(CL_FEE          )   CL_FEE           "+
+		",SUM(TX_FEE          )   TX_FEE           "+
+		
 		"      ,SUM(NVL(ML_SR_ACC,0))              ML_SR_ACC                                                            "+
 		"      ,PODS.GET_RADIX_POINT(CASE WHEN SUM(NVL(SR_ACC,0))<>0                                                    "+
 		"                                 THEN SUM(NVL(ML_SR_ACC,0))*100/SUM(NVL(SR_ACC,0))                             "+
