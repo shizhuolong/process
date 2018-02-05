@@ -25,7 +25,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report-fix.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/income_and_dev_month_mm.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/income_and_dev_month_mm.js?v=1"></script>
 </head>
 <style>
 	
