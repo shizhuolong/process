@@ -51,13 +51,13 @@ public class HallMagPersonAction extends BaseAction {
 	    User user = UserHolder.getCurrentLoginUser();
         String username=user.getUsername();
 		Map<String,String> m=new HashMap<String,String>();
-		String chooseMonth = request.getParameter("chooseMonth");
-		String hq_chan_code = request.getParameter("hq_chan_code");
-		String hq_chan_name = request.getParameter("hq_chan_name");
-		String hr_id = request.getParameter("hr_id");
-		String name = request.getParameter("name");
-		String f_hr_id = request.getParameter("f_hr_id");
-		String f_user_name = request.getParameter("f_user_name");
+		String chooseMonth = request.getParameter("chooseMonth").trim();
+		String hq_chan_code = request.getParameter("hq_chan_code").trim();
+		String hq_chan_name = request.getParameter("hq_chan_name").trim();
+		String hr_id = request.getParameter("hr_id").trim();
+		String name = request.getParameter("name").trim();
+		String f_hr_id = request.getParameter("f_hr_id").trim();
+		String f_user_name = request.getParameter("f_user_name").trim();
 		Integer lev = 2;
 		if(hr_id.equals(f_hr_id)){
 		    lev = 1;
@@ -102,10 +102,10 @@ public class HallMagPersonAction extends BaseAction {
         String userName=user.getUsername();
         Map<String,String> m=new HashMap<String,String>();
         String chooseMonth= request.getParameter("chooseMonth");
-        String f_hr_id = request.getParameter("f_hr_id");
-        String hq_chan_code = request.getParameter("hq_chan_code");
-        String hr_id = request.getParameter("hr_id");
-        String hrId = request.getParameter("hrId");
+        String f_hr_id = request.getParameter("f_hr_id").trim();
+        String hq_chan_code = request.getParameter("hq_chan_code").trim();
+        String hr_id = request.getParameter("hr_id").trim();
+        String hrId = request.getParameter("hrId").trim();
         Integer lev = 2;
         if(hr_id.equals(f_hr_id)){
             lev = 1;
@@ -113,9 +113,9 @@ public class HallMagPersonAction extends BaseAction {
         m.put("chooseMonth",chooseMonth);
         m.put("hr_id",hr_id);
         m.put("hq_chan_code",hq_chan_code);
-        m.put("hq_chan_name",request.getParameter("hq_chan_name"));
-        m.put("hr_name",request.getParameter("hr_name"));
-        m.put("f_user_name",request.getParameter("f_user_name"));
+        m.put("hq_chan_name",request.getParameter("hq_chan_name").trim());
+        m.put("hr_name",request.getParameter("hr_name").trim());
+        m.put("f_user_name",request.getParameter("f_user_name").trim());
         m.put("f_hr_id",f_hr_id);
         m.put("userName",userName);
         m.put("lev", lev.toString());
