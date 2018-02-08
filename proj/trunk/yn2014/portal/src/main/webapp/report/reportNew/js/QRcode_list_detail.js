@@ -5,8 +5,8 @@ var code="";
 var orgLevel="";
 var area_name="";
 $(function(){
-	var field=["ROW_NAME","DEVELOPER_NAME","DEVELOPER_ID","STROECODE" ,"STROENAME" ,"TDC_NAME" ,"TDC_PHONE" ,"DD" ,"XL" ,"XS" ,"XX"];
-	var title=[["州市","发展人","发展人编码","二维码编码","二维码名称","二维码联系人","二维码对应手机","订单量","销量","线上","线下"]];
+	var field=["ROW_NAME","DEVELOPER_NAME","DEVELOPER_ID","STROECODE" ,"STROENAME" ,"TDC_ID" ,"TDC_NAME" ,"TDC_PHONE" ,"DD" ,"XL" ,"XS" ,"XX"];
+	var title=[["州市","发展人","发展人编码","二维码编码","二维码名称","二维码id","二维码联系人","二维码对应手机","订单量","销量","线上","线下"]];
 	$("#searchBtn").click(function(){
 		report.showSubRow();
 		 $("#lch_DataBody").find("TR").each(function(row){
@@ -68,7 +68,7 @@ $(function(){
 				where+= " AND UNIT_ID ='"+unitCode+"'";
 			}
 			if(stroeCode!=''){
-				where+= " AND STROECODE ='"+stroeCode+"'";
+				where+= " AND TDC_ID ='"+stroeCode+"'";
 			}
 			
 			//权限
@@ -176,14 +176,14 @@ function getColumnName(tbcode){
 function getSql(where,orgLevel){
 	var dealDate=$("#dealDate").val();
 	if(orgLevel==1){
-		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,'--' DEVELOPER_ID,'--' DEVELOPER_NAME,'--' STROECODE,'--' STROENAME,'--' TDC_NAME, '--' TDC_PHONE,";
+		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME,'--' DEVELOPER_ID,'--' DEVELOPER_NAME,'--' STROECODE,'--' STROENAME,'--' TDC_ID,'--' TDC_NAME, '--' TDC_PHONE,";
 		groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
 	}else if(orgLevel==2){
-		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,'--' DEVELOPER_ID,'--' DEVELOPER_NAME,'--' STROECODE,'--' STROENAME,'--' TDC_NAME, '--' TDC_PHONE,";
+		preSql="SELECT UNIT_ID ROW_ID,UNIT_NAME ROW_NAME,'--' DEVELOPER_ID,'--' DEVELOPER_NAME,'--' STROECODE,'--' STROENAME,'--' TDC_ID,'--' TDC_NAME, '--' TDC_PHONE,";
 		groupBy=" GROUP BY UNIT_ID,UNIT_NAME";
 	}else if(orgLevel==3){
-		preSql="SELECT deal_date,group_id_1_name,unit_name, HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME,DEVELOPER_ID,DEVELOPER_NAME,STROECODE,STROENAME,TDC_NAME,TDC_PHONE,";
-		groupBy=" GROUP BY deal_date,group_id_1_name,unit_name, HQ_CHAN_CODE,HQ_CHAN_NAME,DEVELOPER_ID,DEVELOPER_NAME,STROECODE,STROENAME,TDC_NAME,TDC_PHONE";
+		preSql="SELECT deal_date,group_id_1_name,unit_name, HQ_CHAN_CODE ROW_ID,HQ_CHAN_NAME ROW_NAME,DEVELOPER_ID,DEVELOPER_NAME,STROECODE,STROENAME,TDC_ID,TDC_NAME,TDC_PHONE,";
+		groupBy=" GROUP BY deal_date,group_id_1_name,unit_name, HQ_CHAN_CODE,HQ_CHAN_NAME,DEVELOPER_ID,DEVELOPER_NAME,STROECODE,STROENAME,TDC_ID,TDC_NAME,TDC_PHONE";
 	}
 	var sql=preSql+
 	"sum(dd) DD,"+
@@ -212,7 +212,7 @@ function downsAll() {
 		where+= " AND UNIT_ID ='"+unitCode+"'";
 	}
 	if(stroeCode!=''){
-		where+= " AND STROECODE ='"+stroeCode+"'";
+		where+= " AND TDC_ID ='"+stroeCode+"'";
 	}
 	//权限
 	if(orgLevel==2){
@@ -225,7 +225,7 @@ function downsAll() {
 		where+= " AND 1 =2 ";
 	}
 	var downsql = getSql(where,3);
-	var title=[["账期","地市","营服名称","渠道编码","渠道名称","发展人","发展人编码","二维码编码","二维码名称","二维码联系人","二维码对应手机","订单量","销量","线上","线下"]];
+	var title=[["账期","地市","营服名称","渠道编码","渠道名称","发展人","发展人编码","二维码编码","二维码名称","二维码id","二维码联系人","二维码对应手机","订单量","销量","线上","线下"]];
 	showtext = "二维码清单列表明细";
 	downloadExcel(downsql,title,showtext);
 }

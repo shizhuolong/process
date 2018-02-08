@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<title>二维码明细</title>
+<title>2I2C地推奖励清单明细</title>
 <link href="<%=request.getContextPath()%>/platform/theme/style/public.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/report/devIncome/css/lch-report.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jpagination.css" />
@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/Qrcode_detail.js?v=2"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/2i2c_reward_detail_new.js"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -41,18 +41,29 @@
 <body class="" style="overflow-x:auto;">
 	<input type="hidden" id="ctx" value="<%=request.getContextPath()%>">
 	<input type="hidden" id="orgLevel" value="<%=org.getOrgLevel()%>">
-	<input type="hidden" id="code" value="<%=request.getParameter("code")%>">
-    <input type="hidden" id="level" value="<%=request.getParameter("level")%>">
+	<input type="hidden" id="code" value="<%=org.getCode()%>">
 	<input type="hidden" id="region" value="<%=org.getRegionCode()%>">
-    <input type="hidden" id="qdate" value="<%=request.getParameter("qdate")%>">
-    <input type="hidden" id="isPayLj" value="<%=request.getParameter("isPayLj")%>">
+	<input type="hidden" id="hr_id" value="<%=user.getHrId()%>">
 		<form id="searchForm" method="post" style="width:100%">
 			<table style="width:100%;margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="5%" style="padding-left: 1px;" align="right">账期：</td>
+				    <td width="6%" style="padding-left: 1px;" align="right">首充时间：</td>
                     <td width="8%">
-                        <input type="text" style="width:100px" class="Wdate" id="dealDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/> </td> 
-                    
+                        <input type="text" style="width:90px" class="Wdate" id="dealDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>
+                    </td>
+					<td width="3%" style="text-align:right;">地市：</td>
+                    <td width="8%">
+                        <select name="regionCode" id="regionCode" class="default-text-input wper100">
+                                <option value=''>请选择</option>
+                        </select>
+                    </td>
+                    <td width="3%" align="right">营服：</td>
+                    <td width="8%">
+                        <select name="unitCode" id="unitCode" class="default-text-input wper80">
+                                <option value=''>请选择</option>
+                        </select>
+                    </td>
+                  
                     <td width="5%">
                         <a class="default-btn" href="#" id="searchBtn"
                         style="float: right; margin-left: 10px; margin-right: 10px;">查询</a>
@@ -60,6 +71,21 @@
                     <td width="5%">
                         <a class="default-gree-btn" href="#" id="exportBtn" onclick="downsAll()">导出</a>
                     </td>
+				</tr>
+				<tr>				    
+				    <td width="6%" style="text-align:right;">开户人员发<br>展人编码：</td>
+                    <td width="8%">
+                        <input type="text" name="openPersonCode" id="openPersonCode" class="default-text-input wper80"></input>
+                    </td>
+				    <td width="5%" style="text-align:right;">渠道编码：</td>
+                    <td width="8%">
+                        <input type="text" name="hqChanlCode" id="hqChanlCode" class="default-text-input wper80"></input>
+                    </td>
+                    <td width="5%" style="text-align:right;">用户号码：</td>
+                    <td width="8%">
+                        <input type="text" name="deviceNumber" id="deviceNumber" class="default-text-input wper80"></input>
+                    </td>
+                    
 				</tr>
 			</table>
 		</form>
