@@ -912,14 +912,17 @@ function exportUser(){
 		}
 	}
 	
-	var header=[["组织架构","用户名","姓名","密码",
-	             "备注","用户拥有的角色列表","用户拥有的用户组列表","用户拥有的岗位列表",
-	             "账号过期","账户锁定","信用过期","账户可用"
-	             ,"联系电话","邮箱","数据所有者名称","编号",
-	             "创建时间","上一次更新时间","更新次数","HR编码"]];
+	var header=[["账号","姓名","联系电话","邮箱",
+	             "hr编码","状态","组织架构"]];
 	var fileName="用户信息";
-	var sql="";
-	sql+=" SELECT o.orgname,                                                  ";
+	var sql="SELECT U.USERNAME,U.REALNAME,             "+
+			"U.PHONE,U.EMAIL,U.HR_ID,                  "+
+			"DECODE(U.ENABLED,1,'启用','停用')ENABLED, "+
+			"O.ORGNAME                                 "+
+			"FROM portal.apdp_User u                   "+
+			"join portal.apdp_org o               "+
+			"on u.org_id = o.id                        ";
+	/*sql+=" SELECT o.orgname,                                                  ";
 	sql+="        u.username,                                                 ";
 	sql+="        u.realname,                                                 ";
 	sql+="        u.password,                                                 ";
@@ -974,15 +977,15 @@ function exportUser(){
 	sql+="       group by ur.userid                                           ";
 	sql+="   ) r on                                                           ";
 	sql+="   r.userid=u.id                                                    ";
-	sql+="  where U.ENABLED=1 ";
-	if(search==true||search=='true'){
+	sql+="  where U.ENABLED=1 ";*/
+	/*if(search==true||search=='true'){
 		sql+="   and u.org_id in (select t.id                                     ";
 		sql+="                       from portal.apdp_org t                       ";
 		sql+="                      start with t.id = '"+orgId+"'                         ";
 		sql+="                     connect by prior t.id = t.parent_id)           ";
 	}else{
 		sql+="   and u.org_id ='"+orgId+"'  ";
-	}
+	}*/
 	if(userName!=''){
 		sql+="    and u.username = '"+userName+"'                             ";
 	}
