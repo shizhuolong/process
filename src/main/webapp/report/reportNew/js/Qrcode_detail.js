@@ -2,8 +2,8 @@ var nowData = [];
 var report = null;
 var orderBy='';
 var maxDate=null;
-var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME" ,"HQ_CHAN_CODE" ,"HQ_CHAN_NAME" ,"DEVELOPER_ID" ,"DEVELOPER_NAME" ,"STROECODE" ,"STROENAME" ,"TDC_NAME" ,"TDC_PHONE","SERACH_NUMBER","ORD_ID","SAL_STYE","PAY_FEE"];
-var title=[["账期","地市","营服编码","营服名称" ,"渠道编码" ,"渠道名称" ,"发展人" ,"发展人姓名" ,"二维码编码" ,"二维码名称" ,"二维码联系人" ,"二维码对应手机号","客户联系电话","订单编码","销售类型","首充"]];
+var field=["DEAL_DATE","GROUP_ID_1_NAME","UNIT_ID","UNIT_NAME" ,"HQ_CHAN_CODE" ,"HQ_CHAN_NAME" ,"DEVELOPER_ID" ,"DEVELOPER_NAME" ,"STROECODE" ,"STROENAME" ,"TDC_ID" ,"TDC_NAME" ,"TDC_PHONE","SERACH_NUMBER","ORD_ID","SAL_STYE","PAY_FEE"];
+var title=[["账期","地市","营服编码","营服名称" ,"渠道编码" ,"渠道名称" ,"发展人" ,"发展人姓名" ,"二维码编码" ,"二维码名称" ,"二维码id","二维码联系人" ,"二维码对应手机号","客户联系电话","订单编码","销售类型","首充"]];
 $(function() {
 	report = new LchReport({
 		title : title,
@@ -123,6 +123,7 @@ function getSql(){
 	"DEVELOPER_NAME ,                          "+
 	"STROECODE ,                               "+
 	"STROENAME,                                "+
+	"TDC_ID,                                 "+
 	"TDC_NAME,                                 "+
 	"TDC_PHONE,                                "+
 	"SERACH_NUMBER ,                           "+
