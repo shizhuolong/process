@@ -59,7 +59,10 @@ function search(pageNumber) {
 	var deviceNumber=$.trim($("#deviceNumber").val());
 	var empType=$.trim($("#empType").val());
 	var dealDate=$("#dealDate").val();
-	var where=" where 1=1 ";
+	var startDate=$("#startDate").val();
+	var endDate=$("#endDate").val();
+	var where=" WHERE ";
+	where += " substr(payment_time_first, 1, 8) BETWEEN '"+startDate+"' AND '"+endDate+"'";
 	//权限
 	if(orgLevel==1){
 

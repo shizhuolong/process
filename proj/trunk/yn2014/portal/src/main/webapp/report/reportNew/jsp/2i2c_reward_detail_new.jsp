@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/2i2c_reward_detail_new.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/reportNew/js/2i2c_reward_detail_new.js?v=1"></script>
 <style type="text/css">
   #lch_DataHead TR TH,#lch_DataBody TR TD{
    min-width: 10px;
@@ -47,7 +47,7 @@
 		<form id="searchForm" method="post" style="width:100%">
 			<table style="width:100%;margin: 10px 0; border:none;">
 				<tr height="35px">
-				    <td width="6%" style="padding-left: 1px;" align="right">首充时间：</td>
+				    <td width="6%" style="padding-left: 1px;" align="right">账期：</td>
                     <td width="8%">
                         <input type="text" style="width:90px" class="Wdate" id="dealDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>
                     </td>
@@ -85,7 +85,11 @@
                     <td width="8%">
                         <input type="text" name="deviceNumber" id="deviceNumber" class="default-text-input wper80"></input>
                     </td>
-                    
+                    <td width="5%" style="padding-left: 1px;" align="right">首充时间：</td>
+                    <td width="16%">
+                        <input type="text" style="width:90px" class="Wdate" id="startDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>至
+                        <input type="text" style="width:90px" class="Wdate" id="endDate" readonly="readonly" value="<%=dealDate %>"  onclick="WdatePicker({isShowClear:false,skin:'whyGreen',dateFmt:'yyyyMMdd'})"/>
+                    </td>
 				</tr>
 			</table>
 		</form>
