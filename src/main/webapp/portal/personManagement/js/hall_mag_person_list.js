@@ -15,7 +15,6 @@ $(function() {
 		$("#f_hr_id").val("");
 		$("#hq_chan_code").val("");
 	});
-	
 	$("#downloadExcel").click(function(){
 		downloadExcel();
 	});
@@ -92,7 +91,7 @@ function search(pageNumber) {
 	$("#addBtn").show();
 	chooseMonth=$("#deal_date").val();
 	sysTime = $("#sysTime").val()
-	if(sysTime-chooseMonth!=0&&sysTime-chooseMonth!=1){
+	if(sysTime-chooseMonth!=0){
 		$("#addBtn").hide();
 	}
 	pageNumber = pageNumber + 1;
@@ -124,7 +123,7 @@ function search(pageNumber) {
 				initPagination(pages.pagin.totalCount);
 			}
 	   		var content="";
-	   		if(sysTime-chooseMonth!=0&&sysTime-chooseMonth!=1){
+	   		if(sysTime-chooseMonth!=0){
 	   		    $.each(pages.rows,function(i,n){
 				content+="<tr>"
 				+"<td>"+isNull(n['GROUP_ID_1_NAME'])+"</td>"
