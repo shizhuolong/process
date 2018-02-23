@@ -32,7 +32,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/comm_manage_detail.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/comm_manage_detail.js?v=1"></script>
 <script type="text/javascript">
    var comm_name="<%=comm_name%>";
    var hrIds="<%=hrIds%>";
