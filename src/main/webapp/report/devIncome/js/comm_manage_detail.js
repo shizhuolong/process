@@ -1,5 +1,5 @@
 var nowData = [];
-var field=["DEAL_DATE","PAY_CHANL_ID","PAY_CHANL_NAME","DEV_CHANL_ID","DEV_CHANL_NAME","SERVICE_NUM","SUBSCRIPTION_ID","COMM_TYPE","COMMITEM","ITEMNAME","RULE_NAME","MOD_NAME","CHN_CDE_1_NAME","CHN_CDE_4_NAME","COMM","REMARK","TOTAL_FEE"];
+var field=["DEAL_DATE","PAY_CHANL_ID","PAY_CHANL_NAME","DEV_CHANL_ID","DEV_CHANL_NAME","SERVICE_NUM","SUBSCRIPTION_ID","COMM_TYPE","COMMITEM","ITEMNAME","RULE_NAME","MOD_NAME","CHN_CDE_1_NAME","CHN_CDE_4_NAME","COMM","REMARK","TITLE","TOTAL_FEE"];
 var title;
 var orderBy='';	
 var report = null;
@@ -60,9 +60,9 @@ function search(pageNumber) {
     var table="FROM PMRT.TAB_MRT_COMM_AGENT_DETAIL WHERE DEAL_DATE='"+time+"'";
 	
 	if(tablecode != null && tablecode != "") {
-		sql+="," + tablecode + " COMM,REMARK,TOTAL_FEE " + table +" AND "+tablecode + " != '0' ";
+		sql+="," + tablecode + " COMM,REMARK,TITLE,TOTAL_FEE " + table +" AND "+tablecode + " != '0' ";
 	}else {
-		sql+=",REMARK REMARK,TOTAL_FEE " + table;
+		sql+=",REMARK REMARK,TITLE,TOTAL_FEE " + table;
 	}
 	if(channel_query!=''){
 		sql+=" AND DEV_CHANL_NAME LIKE '%"+channel_query+"%'";
@@ -110,7 +110,7 @@ function search(pageNumber) {
 		initPagination(total);
 	}
 	nowData = d;
-	title=[["账期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","电话号码","用户编码","佣金类型","佣金科目","科目名称","规则名称","政策名称","渠道属性大类","渠道属性小类",comm_name,"说明","含税"]];
+	title=[["账期","结算渠道编码","结算渠道名称","发展渠道编码","发展渠道名称","电话号码","用户编码","佣金类型","佣金科目","科目名称","规则名称","政策名称","渠道属性大类","渠道属性小类",comm_name,"说明","工单名称","含税"]];
 	report = new LchReport({
 		title : title,
 		field : field,
@@ -176,9 +176,9 @@ function downsAll(){
 	var table="FROM PMRT.TAB_MRT_COMM_AGENT_DETAIL WHERE DEAL_DATE='"+time+"'";
 	
 	if(tablecode != null && tablecode != "") {
-		sql+="," + tablecode + " COMM,REMARK,TOTAL_FEE " + table +" AND "+tablecode + " != '0' ";
+		sql+="," + tablecode + " COMM,REMARK,TITLE,TOTAL_FEE " + table +" AND "+tablecode + " != '0' ";
 	}else {
-		sql+=",REMARK REMARK,TOTAL_FEE " + table;
+		sql+=",REMARK REMARK,TITLE,TOTAL_FEE " + table;
 	}
 	if(channel_query!=''){
 		sql+=" AND DEV_CHANL_NAME LIKE '%"+channel_query+"%'";
