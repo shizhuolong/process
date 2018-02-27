@@ -6,11 +6,11 @@
 	    INSERT INTO PMRT.TAB_MRT_YYT_ZD_ORDER(GROUP_ID_1,GROUP_ID_1_NAME,ORDER_CODE,YYT_HQ_NAME,
 		YYT_CHAN_CODE,SUP_HQ_NAME,SUP_HQ_CODE,ZD_BRAND,ZD_TYPES,IN_PRICE,OUT_PRICE,SALE_ML,YYT_ML,
 		YX_COST,YYT_PROFIT,SERVICE_NUM,DEVELOPER_ID,IS_CHANGE_PRICE,ACC_TIME,CREATE_USER,
-		CREATE_TIME,ZD_IEMI,OPERATOR_ID,IS_BACK)VALUES
+		CREATE_TIME,ZD_IEMI,OPERATOR_ID,IS_BACK,ZD_TYPE)VALUES
 		(#{group_id_1},#{group_id_1_name},#{order_code},#{yyt_hq_name},#{yyt_chan_code},#{sup_hq_name},
 		#{sup_hq_code},#{zd_brand},#{zd_types},#{in_price},#{out_price},#{sale_ml},#{yyt_ml},
 		#{yx_cost},#{yyt_profit},#{service_num},#{developer_id},#{is_change_price},#{acc_time},
-		#{username},#{create_time},#{zd_iemi},#{operator_id},'0')
+		#{username},#{create_time},#{zd_iemi},#{operator_id},'0',#{zd_type})
 	</insert>
 	
 	<update id="update" parameterType="java.util.Map">
