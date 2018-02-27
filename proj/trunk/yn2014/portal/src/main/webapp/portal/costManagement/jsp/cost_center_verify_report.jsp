@@ -23,7 +23,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/artDialog.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/pagination/jpagination.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_center_verify_report.js?v=4"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/portal/costManagement/js/cost_center_verify_report.js?v=5"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
 </head>
 <body>
