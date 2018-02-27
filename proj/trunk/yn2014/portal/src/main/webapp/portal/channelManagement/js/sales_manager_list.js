@@ -403,6 +403,11 @@ function search(pageNumber) {
 						return false;
 					}
 				}
+				if($("#zd_type").val()==""){
+					alert("请选择终端类型！");
+					return false;
+				}
+				
 				var acc_time=$("#acc_time").val().substring(0,8);
 			    var date=new Date();
 			    var today=date.pattern("yyyyMMdd");

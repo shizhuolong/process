@@ -37,7 +37,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/artDialog4.1.7/plugins/iframeTools.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/page/js/date/WdatePicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/report/devIncome/js/lch-report.js"></script>
-<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=83"></script>
+<script type="text/javascript" src="<%=path%>/portal/channelManagement/js/sales_manager_list.js?v=84"></script>
 <script type="text/javascript">
 	var privileges='<%=user.getAuthoritiesStr()%>';
 	function isGrantedNew(role){
@@ -221,6 +221,15 @@
  		          <td>营业员工位</td>
 		          <td>
 			          <input id="operator_id" name="resultMap.operator_id" required="true" class="easyui-validatebox" missingMessage="营业员工位不能为空" />
+		          </td>
+		          <td>终端类型</td>
+		          <td>
+			          <select id="zd_type" name="resultMap.zd_type">
+			             <option value=''>请选择</option>
+			             <option value='1'>普通手机终端</option>
+			             <option value='2'>全品类终端</option>
+			             <option value='3'>非手机终端</option>
+			          </select>
 		          </td>
 		       </tr>
 		       <tr>
