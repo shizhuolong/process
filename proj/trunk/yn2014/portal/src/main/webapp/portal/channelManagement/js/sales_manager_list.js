@@ -245,7 +245,7 @@ function search(pageNumber) {
    	 $('#addDiv').dialog({
    			title : '换机',
    			width : 700,
-   			height : 500,
+   			height : 550,
    			closed : false,
    			cache : false,
    			modal : false,
@@ -340,7 +340,7 @@ function search(pageNumber) {
 	 $('#addDiv').dialog({
 			title : '新增销售终端',
 			width : 700,
-			height : 500,
+			height : 550,
 			closed : false,
 			cache : false,
 			modal : false,
