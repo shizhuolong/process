@@ -75,6 +75,8 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['UNIT_NAME'])+"</td>"
 					+"<td>"+isNull(n['UNIT_ID'])+"</td>"
 					+"<td style='text-align:center;'>" 
+					+	"<a href='#' groupId1='"+n['GROUP_ID_1']+"' ccCode='"+n['CC_CODE']+"' onclick='editRow(this);'>修改</a>&nbsp;&nbsp;&nbsp;" 
+					+	"<a href='#' groupId1='"+n['GROUP_ID_1']+"' ccCode='"+n['CC_CODE']+"' onclick='saveRow(this);'>保存</a>" 
 					+"</td>" 
 					+"</tr>";
 				});
