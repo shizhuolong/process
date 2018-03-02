@@ -1,15 +1,24 @@
 package org.apdplat.portal.personManagement.action;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apdplat.module.security.model.Org;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.BaseAction;
+import org.apdplat.platform.exception.BusiException;
+import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.util.ResultInfo;
 import org.apdplat.portal.channelManagement.service.MagPersonService;
+import org.apdplat.portal.contract.service.ContractProcessService;
 import org.apdplat.portal.personManagement.service.HallMagPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,12 +29,16 @@ import org.springframework.stereotype.Controller;
 @Namespace("/personManagement")
 @Scope("prototype")
 public class HallMagPersonAction extends BaseAction {
-	//private final APDPlatLogger logger = new APDPlatLogger(getClass());
-	
+	private final APDPlatLogger logger = new APDPlatLogger(getClass());
+    @Resource
+    DataSource dataSource;
 	@Autowired
 	private HallMagPersonService magPersonService;
 
 	private Map<String, String> resultMap;
+	
+	private File uploadFile;
+    private String isHavingFile;
 
 	public void queryMagPerson() {
 	    User user = UserHolder.getCurrentLoginUser();
@@ -175,4 +188,94 @@ public class HallMagPersonAction extends BaseAction {
 	public void setResultMap(Map<String, String> resultMap) {
 		this.resultMap = resultMap;
 	}
+	
+	public File getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(File uploadFile) {
+        this.uploadFile = uploadFile;
+    }
+
+    public String getIsHavingFile() {
+        return isHavingFile;
+    }
+
+    public void setIsHavingFile(String isHavingFile) {
+        this.isHavingFile = isHavingFile;
+    }
+	
+	public void listPerson() {
+        User user = UserHolder.getCurrentLoginUser();
+        Org org = user.getOrg();
+        String region = org.getRegionCode();
+        String hrId=user.getHrId();
+        String orglevel = org.getOrgLevel();
+        resultMap.put("region", region);
+        resultMap.put("hrId", hrId);
+        resultMap.put("orglevel", orglevel);
+        Object result = magPersonService.listPerson(resultMap);
+        this.reponseJson(result);
+    }
+	
+	/**
+     * 提交审批 
+     */
+    public void doSubmitTask() {
+        ResultInfo info = new ResultInfo();
+        try {
+            String theme = request.getParameter("theme");
+            String nextDealer = request.getParameter("nextDealer");
+            if(StringUtils.isBlank(theme)) {
+                throw new BusiException("工单主题不能为空！");
+            }
+            if(StringUtils.isBlank(nextDealer)) {
+                throw new BusiException("请选择下一步审批人！");
+            }
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("title", theme);
+            map.put("nextDealer", nextDealer);
+            map.put("isHavingFile", isHavingFile);
+            magPersonService.doSendOrder(map);
+            info.setCode(ResultInfo._CODE_OK_);
+        } catch (BusiException e) {
+            logger.error(e.getMessage(), e);
+            info.setCode(ResultInfo._CODE_FAIL_);
+            info.setMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            info.setCode(ResultInfo._CODE_FAIL_);
+            info.setMsg("工单提交审批失败！");
+        }
+        this.reponseJson(info);
+    }
+    
+    //通过工单编号查询列表,用于非发起工单界面
+    public void listByWorkNo() {
+        try {
+            String businessKey = request.getParameter("businessKey");
+            if(businessKey == null || "".equals(businessKey)) {
+                throw new BusiException("工单编号不空，查询数据失败！");
+            }
+            
+            resultMap.put("businessKey", businessKey);
+            Object result = magPersonService.listByWorkNo(resultMap);
+            this.reponseJson(result);
+        } catch(BusiException e) {
+            logger.error(e.getMessage(), e);
+            outJsonPlainString(response,"{\"msg\":\""+e.getMessage()+"\"}");
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            logger.error("查询数据失败！",e);
+            outJsonPlainString(response,"{\"msg\":\"查询数据失败！\"}");
+        }
+    }
+    
+    public void queryFiles(){
+        String businessKey=request.getParameter("businessKey");
+        List<Map<String,Object>> fileInformation = magPersonService.queryFiles(businessKey);
+        this.reponseJson(fileInformation);
+    }
+    
+    
 }
