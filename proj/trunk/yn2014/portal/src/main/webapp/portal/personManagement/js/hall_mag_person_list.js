@@ -1,4 +1,4 @@
-var pageSize = 15;
+var pageSize = 10;
 var orgId = "";
 var orgLevel = "";
 var code = "";
@@ -147,9 +147,13 @@ function search(pageNumber) {
 					+"<td>"+isNull(n['NAME'])+"</td>"
 					+"<td>"+isNull(n['HR_ID'])+"</td>"
 					+"<td>"+isNull(n['F_USER_NAME'])+"</td>"
-					+"<td>"+isNull(n['F_HR_ID'])+"</td>"
-				    +"<td><a onclick='update($(this))' chooseMonth='"+chooseMonth+"' hq_chan_name='"+isNull(n['HQ_CHAN_NAME'])+"' hr_name='"+isNull(n['NAME'])+"' f_user_name='"+isNull(n['F_USER_NAME'])+"' f_hr_id='"+isNull(n['F_HR_ID'])+"' hr_id='"+isNull(n['HR_ID'])+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
+					+"<td>"+isNull(n['F_HR_ID'])+"</td>";
+					if(n['STATE']==2||n['STATE']==3){
+						content+="<td></td>";
+					}else{
+						content+="<td><a onclick='update($(this))' chooseMonth='"+chooseMonth+"' hq_chan_name='"+isNull(n['HQ_CHAN_NAME'])+"' hr_name='"+isNull(n['NAME'])+"' f_user_name='"+isNull(n['F_USER_NAME'])+"' f_hr_id='"+isNull(n['F_HR_ID'])+"' hr_id='"+isNull(n['HR_ID'])+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' href='#'>修改</a>&nbsp;&nbsp;" +
 				 		"<a onclick='del($(this))' chooseMonth='"+chooseMonth+"' hq_chan_code='"+isNull(n['HQ_CHAN_CODE'])+"' hr_id='"+isNull(n['HR_ID'])+"' href='#'>删除</a></td>";
+					}
 					content+="</tr>";
 	   			});
 	   		}
