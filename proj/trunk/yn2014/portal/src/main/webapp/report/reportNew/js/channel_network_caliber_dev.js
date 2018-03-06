@@ -30,17 +30,20 @@ $(function(){
 			var where="";
 			//条件
 			if(isAll==1){
-				where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_MON "+
-				" WHERE DEAL_DATE= "+dealDate;
+				where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_MON_ZX T1, "+
+				" PCDE.TB_CDE_REGION_CODE T2 "+
+				" WHERE DEAL_DATE= "+dealDate+" and T1.GROUP_ID_1=T2.GROUP_ID_1(+)";
 			}else if(isAll==2){
-				where+= " FROM PODS.view_ODS_WLKJ_FZYH_TMP_ZL "+
-				" WHERE DEAL_DATE= "+dealDate;
+				where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_TMP_ZL_ZX T1, "+
+				" PCDE.TB_CDE_REGION_CODE T2 "+
+				" WHERE DEAL_DATE= "+dealDate+" and T1.GROUP_ID_1=T2.GROUP_ID_1(+)";
 			}else{
-				where+= " FROM PODS.view_ODS_WLKJ_FZYH_TMP_CL "+
-				" WHERE DEAL_DATE= "+dealDate;
+				where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_TMP_CL_ZX T1, "+
+				" PCDE.TB_CDE_REGION_CODE T2 "+
+				" WHERE DEAL_DATE= "+dealDate+" and T1.GROUP_ID_1=T2.GROUP_ID_1(+)";
 			}
 			if(regionCode!=''){
-				where+= " AND GROUP_ID_1 ='"+regionCode+"'";
+				where+= " AND T1.GROUP_ID_1 ='"+regionCode+"'";
 			}
 			
 			//权限
@@ -49,9 +52,8 @@ $(function(){
 				orgLevel=parseInt($tr.attr("orgLevel"));
 				var parentId=$tr.attr("parentId");
 				if(orgLevel==2){
-					where+=" AND GROUP_ID_0='"+code+"'";
-				}else if(orgLevel==3){
-					where+=" AND GROUP_ID_1='"+code+"'";
+					where+=" AND T1.GROUP_ID_1='"+code+"'";
+					where+=" AND UNIT_ID <>'-' ";
 				}else{
 					return {data:[],extra:{}}
 				}
@@ -62,11 +64,13 @@ $(function(){
 				code=$("#code").val();
 				orgLevel=$("#orgLevel").val();
 				if(orgLevel==1){//省
-					where+=" AND GROUP_ID_1 NOT IN ('16097','16098')";
+					
 				}else if(orgLevel==2){//市
-					where+=" AND GROUP_ID_1='"+code+"'";
+					where+=" AND T1.GROUP_ID_1='"+code+"'";
+					orgLevel=1;
 				}else if(orgLevel==3){//营服
-					where+=" AND UNIT_ID='"+code+"'";
+					where+=" AND T1.UNIT_ID='"+code+"'";
+					orgLevel=2;
 				}else{
 					return {data:[],extra:{}};
 				}
@@ -85,17 +89,12 @@ $(function(){
 });
 
 function getSql(where,orgLevel){
-	var startDete=$("#startDate").val();
-	var endDete=$("#endDate").val();
 	if(orgLevel==1){
-		preSql="SELECT GROUP_ID_0 ROW_ID,'云南省' ROW_NAME";
-		groupBy=" GROUP BY GROUP_ID_0";
+		preSql="select T1.GROUP_ID_1 ROW_ID,T1.GROUP_ID_1_NAME ROW_NAME,T1.RANK";
+		groupBy=" GROUP BY T1.GROUP_ID_1 ,T1.GROUP_ID_1_NAME,T1.RANK ORDER BY T1.RANK";
 	}else if(orgLevel==2){
-		preSql="SELECT GROUP_ID_1 ROW_ID,GROUP_ID_1_NAME ROW_NAME";
-		groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME";
-	}else if(orgLevel==3){
-		preSql="SELECT GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID ROW_ID,UNIT_NAME ROW_NAME";
-		groupBy=" GROUP BY GROUP_ID_1,GROUP_ID_1_NAME,UNIT_ID,UNIT_NAME";
+		preSql="select T1.GROUP_ID_1 GROUP_ID_1,T1.GROUP_ID_1_NAME GROUP_ID_1_NAME,T1.UNIT_ID ROW_ID,T1.UNIT_NAME ROW_NAME";
+		groupBy=" GROUP BY T1.GROUP_ID_1 ,T1.GROUP_ID_1_NAME,T1.UNIT_ID,T1.UNIT_NAME";
 	}
 	var sql=preSql+
 	"  ,SUM(ZY_4G) ZY_4G                              "+
@@ -143,25 +142,28 @@ function downsAll() {
 	var where="";
 	//条件
 	if(isAll==1){
-		where+= " FROM PODS.VIEW_ODS_WLKJ_CZYH_MON "+
-		" WHERE DEAL_DATE= "+dealDate;
+		where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_MON_ZX T1, "+
+		" PCDE.TB_CDE_REGION_CODE T2 "+
+		" WHERE DEAL_DATE= "+dealDate+" and T1.GROUP_ID_1=T2.GROUP_ID_1(+)";
 	}else if(isAll==2){
-		where+= " FROM PODS.view_ODS_WLKJ_CZYH_TMP_ZL "+
-		" WHERE DEAL_DATE= "+dealDate;
+		where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_TMP_ZL_ZX T1, "+
+		" PCDE.TB_CDE_REGION_CODE T2 "+
+		" WHERE DEAL_DATE= "+dealDate+" and T1.GROUP_ID_1=T2.GROUP_ID_1(+)";
 	}else{
-		where+= " FROM PODS.view_ODS_WLKJ_CZYH_TMP_CL "+
-		" WHERE DEAL_DATE= "+dealDate;
+		where+= " FROM PODS.VIEW_ODS_WLKJ_FZYH_TMP_CL_ZX T1, "+
+		" PCDE.TB_CDE_REGION_CODE T2 "+
+		" WHERE DEAL_DATE= "+dealDate+" and T1.GROUP_ID_1=T2.GROUP_ID_1(+)";
 	}
 	if(regionCode!=''){
-		where+= " AND GROUP_ID_1 ='"+regionCode+"'";
+		where+= " AND T1.GROUP_ID_1 ='"+regionCode+"'";
 	}
 	
 	if(orgLevel==1){//省
 		
 	}else if(orgLevel==2){//市
-		where+=" AND GROUP_ID_1='"+code+"'";
+		where+=" AND T1.GROUP_ID_1='"+code+"'";
 	}else if(orgLevel==3){//营服
-		where+=" AND UNIT_ID='"+code+"'";
+		where+=" AND T1.UNIT_ID='"+code+"'";
 	}
 	var downsql=getSql(where,3);
 	showtext = "分渠道网络口径发展用户数"+dealDate;
